@@ -344,6 +344,48 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
 .gauge{text-align:center;padding:8px}
 .gauge svg{width:130px;height:80px}
 .gauge .g-label{font-size:10px;font-weight:600;margin-top:2px;color:var(--text2);line-height:1.2;max-width:120px;margin-left:auto;margin-right:auto}
+
+/* ── ODS Heatmap ── */
+.heatmap-wrap{overflow-x:auto}
+.heatmap{border-collapse:collapse;font-size:10px;width:100%}
+.heatmap th{padding:6px 4px;text-align:center;font-weight:700;white-space:nowrap;background:var(--primary);color:#fff;position:sticky;top:0}
+.heatmap th:first-child{text-align:left;min-width:80px}
+.heatmap td{padding:5px 4px;text-align:center;font-weight:700;border:1px solid var(--border);transition:all .2s;cursor:default}
+.heatmap td:first-child{text-align:left;font-weight:600;background:var(--card);white-space:nowrap}
+.heatmap tr:hover td{opacity:.9}
+
+/* ── Scatter / Bubble ── */
+.scatter-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:10px;font-weight:600;justify-content:center}
+.scatter-legend span{display:flex;align-items:center;gap:4px}
+.scatter-legend .sl-dot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+
+/* ── Tag Cloud ── */
+.tag-cloud{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:16px 0}
+.tag-cloud .tag{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;transition:all .3s;cursor:default;border:2px solid transparent;line-height:1}
+.tag-cloud .tag:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(0,0,0,.15);border-color:currentColor}
+
+/* ── Timeline Horizontal ── */
+.timeline-h{position:relative;padding:20px 0 40px;overflow-x:auto}
+.timeline-track{display:flex;align-items:flex-start;gap:0;position:relative;min-width:max-content;padding:0 20px}
+.timeline-track::before{content:'';position:absolute;top:28px;left:20px;right:20px;height:4px;background:linear-gradient(90deg,var(--accent),#22c55e,#f59e0b,#ef4444);border-radius:2px}
+.tl-item{position:relative;width:110px;flex-shrink:0;text-align:center;padding-top:44px}
+.tl-item .tl-dot{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;border:4px solid var(--card);box-shadow:0 0 0 3px var(--accent);background:var(--accent);z-index:2;transition:all .3s}
+.tl-item:hover .tl-dot{transform:translateX(-50%) scale(1.3);box-shadow:0 0 0 3px var(--accent),0 4px 12px rgba(67,97,238,.4)}
+.tl-item .tl-year{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:2px}
+.tl-item .tl-label{font-size:9px;color:var(--text2);line-height:1.3;font-weight:600}
+.tl-item.active .tl-dot{background:#22c55e;box-shadow:0 0 0 3px #22c55e}
+.tl-item.active .tl-year{color:#22c55e}
+.tl-item.future .tl-dot{background:var(--card);border-color:#94a3b8;box-shadow:0 0 0 3px #94a3b8}
+.tl-item.future .tl-year{color:#94a3b8}
+
+/* ── Urban vs Rural Cards ── */
+.ur-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:900px){.ur-compare{grid-template-columns:1fr}}
+.ur-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center;border-top:5px solid}
+.ur-card h4{font-size:14px;font-weight:700;margin-bottom:12px}
+.ur-card .ur-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.ur-card .ur-stat .ur-val{font-size:20px;font-weight:800}
+.ur-card .ur-stat .ur-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
 </style>
 </head>
 <body>
@@ -367,8 +409,11 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
     <a href="#mapa"><span class="ico">&#9650;</span> Mapa Territorial</a>
     <a href="#nna"><span class="ico">&#9829;</span> Diagn&#243;stico NNA</a>
     <a href="#desigualdad"><span class="ico">&#9888;</span> Desigualdad</a>
+    <a href="#territorial-adv"><span class="ico">&#9632;</span> Urbano vs Rural</a>
     <a href="#voz"><span class="ico">&#9998;</span> Voz Ciudadana</a>
     <a href="#gestion"><span class="ico">&#9881;</span> Gestión PLADECO</a>
+    <a href="#ods-sec"><span class="ico">&#9733;</span> Alineación ODS</a>
+    <a href="#suenos"><span class="ico">&#9829;</span> Sueños 2035</a>
     <a href="#ejes"><span class="ico">&#9654;</span> 6 Ejes Estratégicos</a>
     <a href="#foda"><span class="ico">&#9670;</span> Análisis FODA</a>
     <a href="#territorio"><span class="ico">&#9650;</span> Diagnóstico Territorial</a>
@@ -633,6 +678,41 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
   </div>
 </section>
 
+<!-- ═══ ANÁLISIS TERRITORIAL AVANZADO ═══ -->
+<section id="territorial-adv">
+  <div class="sec-header">
+    <div class="badge" style="background:#d1fae5;color:#059669">An&#225;lisis Avanzado</div>
+    <h2>Brechas Urbano-Rural</h2>
+    <p>Comparaci&#243;n de indicadores entre las 9 localidades urbanas y 16 localidades rurales</p>
+  </div>
+  <div class="ur-compare" id="urCompare"></div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Dispersi&#243;n Territorial: Inversi&#243;n vs Proyectos</h3>
+      <div class="viz-sub">Cada burbuja = 1 localidad. Tama&#241;o = poblaci&#243;n. Color: urbano/rural</div>
+      <canvas id="chartScatter"></canvas>
+      <div class="scatter-legend"><span><span class="sl-dot" style="background:#4361ee"></span>Urbano</span><span><span class="sl-dot" style="background:#22c55e"></span>Rural</span><span style="opacity:.6">Tama&#241;o = Poblaci&#243;n</span></div>
+    </div>
+    <div class="viz-card">
+      <h3>Inversi&#243;n Per C&#225;pita por Localidad</h3>
+      <div class="viz-sub">Miles de pesos por habitante — Brechas visibles entre localidades</div>
+      <canvas id="chartInvCap"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Proyectos BIP por 1.000 Habitantes</h3>
+      <div class="viz-sub">Densidad de proyectos — Concentraci&#243;n en localidades rurales</div>
+      <canvas id="chartBipDens"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Poblaci&#243;n por Localidad</h3>
+      <div class="viz-sub">Distribuci&#243;n de los 65.786 habitantes en 25 localidades</div>
+      <canvas id="chartPobLocal"></canvas>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ VOZ CIUDADANA ═══ -->
 <section id="voz">
   <div class="sec-header">
@@ -711,6 +791,55 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
       <h3>Departamentos Responsables</h3>
       <div class="viz-sub">Principales &#225;reas municipales a cargo de la implementaci&#243;n</div>
       <canvas id="chartDeptos"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ALINEACIÓN ODS ═══ -->
+<section id="ods-sec">
+  <div class="sec-header">
+    <div class="badge" style="background:#d1fae5;color:#059669">Agenda 2030</div>
+    <h2>Alineaci&#243;n con ODS</h2>
+    <p>225 acciones vinculadas a 13 de 17 Objetivos de Desarrollo Sostenible</p>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card viz-full">
+      <h3>Mapa de Calor: Cobertura ODS por Eje Estrat&#233;gico</h3>
+      <div class="viz-sub">Intensidad del color = n&#250;mero de acciones vinculadas. Hover para detalle.</div>
+      <div class="heatmap-wrap" id="odsHeatmap"></div>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Multi-cobertura ODS</h3>
+      <div class="viz-sub">Cada acci&#243;n contribuye a 2,5 ODS en promedio (563 contribuciones totales)</div>
+      <canvas id="chartODSMulti"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>ODS Cr&#237;ticos: Brecha de Cobertura</h3>
+      <div class="viz-sub">ODS no cubiertos y con menor vinculaci&#243;n en el PLADECO</div>
+      <canvas id="chartODSGap"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SUEÑOS 2035 ═══ -->
+<section id="suenos">
+  <div class="sec-header">
+    <div class="badge" style="background:#fce7f3;color:#db2777">Visi&#243;n</div>
+    <h2>Sue&#241;os para Rengo 2035</h2>
+    <p>&#191;C&#243;mo imaginan la comuna en 10 a&#241;os? Palabras clave de 140 encuestados</p>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card viz-full">
+      <div class="tag-cloud" id="tagCloud"></div>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card viz-full">
+      <h3>Hoja de Ruta PLADECO 2025-2035</h3>
+      <div class="viz-sub">Cronograma de hitos y plazos de implementaci&#243;n</div>
+      <div class="timeline-h"><div class="timeline-track" id="timeline"></div></div>
     </div>
   </div>
 </section>
@@ -1716,6 +1845,167 @@ function renderFinancial(){
     ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
 }
 
+// ── TERRITORIAL ADVANCED DATA ──
+const ODS_HEAT=[
+  [8,3,28,10,3,0,0,2,0,1,1,0,2],
+  [1,1,2,0,0,0,0,10,3,0,1,0,0],
+  [1,0,1,10,1,0,0,0,1,0,0,0,0],
+  [1,0,4,0,0,12,5,2,10,0,15,4,0],
+  [1,0,5,2,1,0,0,2,0,1,10,0,10],
+  [0,0,3,2,0,0,0,3,9,0,11,1,21]
+];
+const ODS_IDS=[1,2,3,4,5,6,7,8,9,10,11,13,16];
+const ODS_COLORS_MAP={1:'#e5243b',2:'#dda63a',3:'#4c9f38',4:'#c5192d',5:'#ff3a21',6:'#26bde2',7:'#fcc30b',8:'#a21942',9:'#fd6925',10:'#dd1367',11:'#fd9d24',13:'#3f7e44',16:'#00689d'};
+const SUENOS=[
+  {t:'Más segura',w:42,c:'#ef4444'},{t:'Con mejor salud',w:35,c:'#22c55e'},
+  {t:'Más verde',w:33,c:'#2a9d8f'},{t:'Con empleo',w:30,c:'#f59e0b'},
+  {t:'Más limpia',w:28,c:'#4361ee'},{t:'Más moderna',w:25,c:'#8b5cf6'},
+  {t:'Con mejor educación',w:24,c:'#db2777'},{t:'Sin delincuencia',w:22,c:'#e63946'},
+  {t:'Con áreas verdes',w:20,c:'#059669'},{t:'Más unida',w:18,c:'#7b2cbf'},
+  {t:'Inclusiva',w:16,c:'#06b6d4'},{t:'Con mejor transporte',w:15,c:'#457b9d'},
+  {t:'Digital',w:14,c:'#4338ca'},{t:'Con identidad',w:13,c:'#d97706'},
+  {t:'Más justa',w:12,c:'#dc2626'},{t:'Participativa',w:10,c:'#0891b2'},
+  {t:'Con cultura',w:9,c:'#9333ea'},{t:'Deportiva',w:8,c:'#16a34a'},
+  {t:'Con viviendas',w:7,c:'#ea580c'},{t:'Turística',w:6,c:'#0d9488'}
+];
+const TIMELINE=[
+  {year:'2024',label:'Diagnóstico Participativo',status:'active'},
+  {year:'2025',label:'Aprobación PLADECO',status:'active'},
+  {year:'2026',label:'Comisiones Validación',status:'active'},
+  {year:'2026',label:'Plan Inversión Corto Plazo',status:'current'},
+  {year:'2027',label:'Transformación Digital',status:'future'},
+  {year:'2028',label:'Evaluación 1ª Fase (112 acc.)',status:'future'},
+  {year:'2029',label:'Ajuste Mediano Plazo',status:'future'},
+  {year:'2030',label:'Agenda 2030 / ODS',status:'future'},
+  {year:'2032',label:'Evaluación 2ª Fase (91 acc.)',status:'future'},
+  {year:'2035',label:'Meta Final PLADECO',status:'future'}
+];
+
+// ── RENDER URBAN VS RURAL ──
+function renderURCompare(){
+  const urban=UV_DATA.filter(u=>u.tipo==='Urbano');
+  const rural=UV_DATA.filter(u=>u.tipo==='Rural');
+  const sumPob=arr=>arr.reduce((s,u)=>s+u.pob,0);
+  const sumBip=arr=>arr.reduce((s,u)=>s+u.bip,0);
+  const sumInv=arr=>arr.reduce((s,u)=>s+u.inv,0);
+  const uPob=sumPob(urban),rPob=sumPob(rural),uBip=sumBip(urban),rBip=sumBip(rural),uInv=sumInv(urban),rInv=sumInv(rural);
+  document.getElementById('urCompare').innerHTML=`
+    <div class="ur-card" style="border-top-color:#4361ee"><h4 style="color:#4361ee">&#9632; Zona Urbana (${urban.length} localidades)</h4>
+      <div class="ur-stats">
+        <div class="ur-stat"><div class="ur-val">${(uPob).toLocaleString('es-CL')}</div><div class="ur-lbl">Población</div></div>
+        <div class="ur-stat"><div class="ur-val">${uBip}</div><div class="ur-lbl">Proyectos BIP</div></div>
+        <div class="ur-stat"><div class="ur-val">$${(uInv/1e6).toFixed(0)}M</div><div class="ur-lbl">Inversión</div></div>
+      </div></div>
+    <div class="ur-card" style="border-top-color:#22c55e"><h4 style="color:#22c55e">&#9650; Zona Rural (${rural.length} localidades)</h4>
+      <div class="ur-stats">
+        <div class="ur-stat"><div class="ur-val">${(rPob).toLocaleString('es-CL')}</div><div class="ur-lbl">Población</div></div>
+        <div class="ur-stat"><div class="ur-val">${rBip}</div><div class="ur-lbl">Proyectos BIP</div></div>
+        <div class="ur-stat"><div class="ur-val">$${(rInv/1e6).toFixed(0)}M</div><div class="ur-lbl">Inversión</div></div>
+      </div></div>`;
+}
+function renderScatter(){
+  const data=UV_DATA.filter(u=>u.bip>0||u.inv>0).map(u=>({x:u.bip/u.pob*1000,y:u.inv/u.pob/1000,r:Math.max(4,u.pob/1500),label:u.name,tipo:u.tipo,pob:u.pob,bip:u.bip,inv:u.inv}));
+  new Chart(document.getElementById('chartScatter'),{type:'bubble',data:{
+    datasets:[
+      {label:'Urbano',data:data.filter(d=>d.tipo==='Urbano'),backgroundColor:'#4361ee55',borderColor:'#4361ee',borderWidth:2},
+      {label:'Rural',data:data.filter(d=>d.tipo==='Rural'),backgroundColor:'#22c55e55',borderColor:'#22c55e',borderWidth:2}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'Proyectos / 1.000 hab',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'Inversión per cápita (M$)',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>{const d=ctx.raw;return [`${d.label} (${d.tipo})`,`Pob: ${d.pob.toLocaleString('es-CL')}`,`BIP: ${d.bip} proy.`,`Inv: $${(d.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}M`];}}}}
+  }});
+}
+function renderInvCap(){
+  const sorted=[...UV_DATA].filter(u=>u.inv>0).sort((a,b)=>(b.inv/b.pob)-(a.inv/a.pob));
+  new Chart(document.getElementById('chartInvCap'),{type:'bar',data:{
+    labels:sorted.map(u=>u.name),
+    datasets:[{label:'Inv. per cápita (M$/hab)',data:sorted.map(u=>(u.inv/u.pob/1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+function renderBipDens(){
+  const sorted=[...UV_DATA].filter(u=>u.bip>0).sort((a,b)=>(b.bip/b.pob)-(a.bip/a.pob));
+  new Chart(document.getElementById('chartBipDens'),{type:'bar',data:{
+    labels:sorted.map(u=>u.name),
+    datasets:[{label:'Proyectos/1000hab',data:sorted.map(u=>(u.bip/u.pob*1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+function renderPobLocal(){
+  const sorted=[...UV_DATA].sort((a,b)=>b.pob-a.pob);
+  new Chart(document.getElementById('chartPobLocal'),{type:'bar',data:{
+    labels:sorted.map(u=>u.name),
+    datasets:[{label:'Población',data:sorted.map(u=>u.pob),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee88':'#22c55e88'),borderColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee':'#22c55e'),borderWidth:1,borderRadius:3}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
+}
+
+// ── RENDER ODS HEATMAP ──
+function renderODSHeatmap(){
+  const el=document.getElementById('odsHeatmap');
+  const ejeNames=['Eje 1: Social','Eje 2: Económico','Eje 3: Educación','Eje 4: Urbano/MA','Eje 5: Seguridad','Eje 6: Gestión'];
+  const maxV=Math.max(...ODS_HEAT.flat());
+  let html='<table class="heatmap"><thead><tr><th>Eje</th>';
+  ODS_IDS.forEach(id=>{html+=`<th style="font-size:9px">ODS ${id}</th>`;});
+  html+='<th>Total</th></tr></thead><tbody>';
+  ODS_HEAT.forEach((row,i)=>{
+    const total=row.reduce((s,v)=>s+v,0);
+    html+=`<tr><td>${ejeNames[i]}</td>`;
+    row.forEach((v,j)=>{
+      const pct=v/maxV;
+      const bg=v===0?'transparent':ODS_COLORS_MAP[ODS_IDS[j]]||(pct>.5?'#22c55e':'#f59e0b');
+      const opacity=v===0?0:Math.max(0.15,pct*0.85);
+      html+=`<td style="background:${bg};opacity:${v===0?0.3:1};color:${v>0?'#fff':'var(--text2)'};font-size:${v>0?'11px':'9px'}" title="Eje ${i+1} × ODS ${ODS_IDS[j]}: ${v} acciones">${v||'·'}</td>`;
+    });
+    html+=`<td style="font-weight:800;background:var(--primary);color:#fff">${total}</td></tr>`;
+  });
+  // Totals row
+  html+='<tr><td style="font-weight:800">Total</td>';
+  ODS_IDS.forEach((id,j)=>{
+    const colTotal=ODS_HEAT.reduce((s,row)=>s+row[j],0);
+    html+=`<td style="font-weight:800;background:var(--primary);color:#fff">${colTotal}</td>`;
+  });
+  html+='<td style="font-weight:800;background:var(--accent);color:#fff">225</td></tr>';
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+function renderODSMulti(){
+  new Chart(document.getElementById('chartODSMulti'),{type:'bar',data:{
+    labels:ODS_IDS.map(id=>'ODS '+id),
+    datasets:[{label:'Acciones vinculadas',data:ODS_IDS.map((id,j)=>ODS_HEAT.reduce((s,row)=>s+row[j],0)),backgroundColor:ODS_IDS.map(id=>(ODS_COLORS_MAP[id]||'#999')+'cc'),borderColor:ODS_IDS.map(id=>ODS_COLORS_MAP[id]||'#999'),borderWidth:1,borderRadius:4}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+function renderODSGap(){
+  const covered=new Set(ODS_IDS);
+  const all=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+  const gaps=all.filter(id=>!covered.has(id));
+  const low=ODS_IDS.map((id,j)=>({id,n:ODS_HEAT.reduce((s,row)=>s+row[j],0)})).sort((a,b)=>a.n-b.n).slice(0,6);
+  const labels=[...gaps.map(id=>'ODS '+id+' ✗'),...low.map(d=>'ODS '+d.id)];
+  const data=[...gaps.map(()=>0),...low.map(d=>d.n)];
+  const colors=[...gaps.map(()=>'#ef444466'),...low.map(d=>(ODS_COLORS_MAP[d.id]||'#999')+'cc')];
+  new Chart(document.getElementById('chartODSGap'),{type:'bar',data:{
+    labels,datasets:[{label:'Acciones',data,backgroundColor:colors,borderRadius:4}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw===0?'Sin cobertura':`${ctx.raw} acciones`}}}}});
+}
+
+// ── RENDER TAG CLOUD ──
+function renderTagCloud(){
+  const el=document.getElementById('tagCloud');
+  const maxW=Math.max(...SUENOS.map(s=>s.w));
+  el.innerHTML=SUENOS.map(s=>{
+    const size=14+Math.round((s.w/maxW)*24);
+    const opacity=0.6+(s.w/maxW)*0.4;
+    return `<span class="tag" style="font-size:${size}px;color:${s.c};opacity:${opacity};background:${s.c}11">${s.t}</span>`;
+  }).join('');
+}
+
+// ── RENDER TIMELINE ──
+function renderTimeline(){
+  const el=document.getElementById('timeline');
+  el.innerHTML=TIMELINE.map(t=>`
+    <div class="tl-item ${t.status}">
+      <div class="tl-dot"></div>
+      <div class="tl-year">${t.year}</div>
+      <div class="tl-label">${t.label}</div>
+    </div>
+  `).join('');
+}
+
 // ── RENDER VOZ CIUDADANA ──
 function renderParticipStats(){
   const el=document.getElementById('participStats');
@@ -1913,7 +2203,7 @@ function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
   },{threshold:0.08});
-  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card').forEach(el=>{
+  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag').forEach(el=>{
     el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
@@ -1968,6 +2258,16 @@ renderInequality();
 renderBIPSector();
 renderIdentityChart();
 renderFinancial();
+renderURCompare();
+renderScatter();
+renderInvCap();
+renderBipDens();
+renderPobLocal();
+renderODSHeatmap();
+renderODSMulti();
+renderODSGap();
+renderTagCloud();
+renderTimeline();
 renderParticipStats();
 renderRatingGrid();
 renderPriorBars();
