@@ -266,6 +266,37 @@ body.dark .foda-controls input{background:var(--card);color:var(--text);border-c
 .ineq-card.ok{border-left-color:#22c55e}
 .ineq-card.ok .ineq-icon{background:#d1fae5;color:#22c55e}
 
+/* ── Citizen Voice ── */
+.rating-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.rating-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+.rating-card .rc-val{font-size:32px;font-weight:800}
+.rating-card .rc-label{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.rating-card .rc-bar{height:5px;background:#e2e8f0;border-radius:3px;margin-top:8px;overflow:hidden}
+.rating-card .rc-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.rating-card .rc-stars{margin-top:4px;font-size:14px;letter-spacing:2px}
+.prior-bar-wrap{display:grid;gap:8px}
+.prior-row{display:flex;align-items:center;gap:10px;font-size:12px}
+.prior-row .pr-label{min-width:160px;font-weight:600;text-align:right}
+.prior-row .pr-bar{flex:1;height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden;position:relative}
+.prior-row .pr-fill{height:100%;border-radius:6px;transition:width 1s ease;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff}
+.prior-row .pr-count{min-width:30px;text-align:right;font-weight:700;font-size:13px}
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
+.stat-chip .sc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.stat-chip .sc-val{font-size:18px;font-weight:800}
+.stat-chip .sc-lbl{font-size:10px;color:var(--text2)}
+
+/* ── Gestión Section ── */
+.gestion-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:900px){.gestion-kpi{grid-template-columns:1fr}}
+.gk-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);text-align:center}
+.gk-card .gk-big{font-size:42px;font-weight:800;line-height:1}
+.gk-card .gk-label{font-size:12px;color:var(--text2);font-weight:600;margin-top:4px}
+.gk-card .gk-sub{font-size:10px;color:var(--text2);margin-top:2px}
+.incl-legend{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;font-size:11px;font-weight:600}
+.incl-legend span{display:flex;align-items:center;gap:4px}
+.incl-legend .dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
 /* ── UV Sort ── */
 .uv-table th.sortable{cursor:pointer;user-select:none;transition:background .2s}
 .uv-table th.sortable:hover{background:#2a3a5e}
@@ -336,6 +367,8 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
     <a href="#mapa"><span class="ico">&#9650;</span> Mapa Territorial</a>
     <a href="#nna"><span class="ico">&#9829;</span> Diagn&#243;stico NNA</a>
     <a href="#desigualdad"><span class="ico">&#9888;</span> Desigualdad</a>
+    <a href="#voz"><span class="ico">&#9998;</span> Voz Ciudadana</a>
+    <a href="#gestion"><span class="ico">&#9881;</span> Gestión PLADECO</a>
     <a href="#ejes"><span class="ico">&#9654;</span> 6 Ejes Estratégicos</a>
     <a href="#foda"><span class="ico">&#9670;</span> Análisis FODA</a>
     <a href="#territorio"><span class="ico">&#9650;</span> Diagnóstico Territorial</a>
@@ -543,16 +576,36 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
     <h2>Diagn&#243;stico NNA</h2>
     <p>4.036 ni&#241;os, ni&#241;as y adolescentes encuestados en 27 establecimientos educativos</p>
   </div>
+  <div class="stat-row">
+    <div class="stat-chip"><div class="sc-icon" style="background:#fce7f3;color:#db2777">&#9829;</div><div><div class="sc-val">4.036</div><div class="sc-lbl">NNA encuestados</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#dbeafe;color:#4361ee">&#9632;</div><div><div class="sc-val">27</div><div class="sc-lbl">Establecimientos</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#d1fae5;color:#22c55e">&#9632;</div><div><div class="sc-val">50,4%</div><div class="sc-lbl">Mujeres / 49,6% Hombres</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#fee2e2;color:#ef4444">&#9888;</div><div><div class="sc-val">58,7%</div><div class="sc-lbl">Apoderados sin herramientas</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#fef3c7;color:#d97706">&#9650;</div><div><div class="sc-val">62,1%</div><div class="sc-lbl">Apoderados acompa&#241;an tareas</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#e0e7ff;color:#4361ee">&#10003;</div><div><div class="sc-val">100%</div><div class="sc-lbl">Quiere participar</div></div></div>
+  </div>
   <div class="nna-grid" id="nnaGrid"></div>
   <div class="viz-row">
     <div class="viz-card">
       <h3>Salud Mental y Violencia NNA</h3>
-      <div class="viz-sub">Indicadores cr&#237;ticos del diagn&#243;stico infantil</div>
+      <div class="viz-sub">Indicadores cr&#237;ticos del diagn&#243;stico infantil (4.036 NNA)</div>
       <canvas id="chartNNA"></canvas>
     </div>
     <div class="viz-card">
+      <h3>Composici&#243;n Etaria NNA</h3>
+      <div class="viz-sub">Distribuci&#243;n por grupo etario de los 4.036 encuestados</div>
+      <canvas id="chartNNAAge"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Participaci&#243;n y Derechos NNA</h3>
+      <div class="viz-sub">&#191;Participa, se siente escuchado, conoce sus derechos?</div>
+      <canvas id="chartNNAPartic"></canvas>
+    </div>
+    <div class="viz-card">
       <h3>Voz de la Ciudadan&#237;a</h3>
-      <div class="viz-sub">119 encuestas ciudadanas + 21 encuestas NNA</div>
+      <div class="viz-sub">Identidad local percibida — Ciudadanos vs NNA</div>
       <canvas id="chartSurvey"></canvas>
     </div>
   </div>
@@ -576,6 +629,88 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
       <h3>Identidad Local Percibida</h3>
       <div class="viz-sub">Distribuci&#243;n seg&#250;n encuesta ciudadana (n=119) y NNA (n=21)</div>
       <canvas id="chartIdentity"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VOZ CIUDADANA ═══ -->
+<section id="voz">
+  <div class="sec-header">
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Participaci&#243;n</div>
+    <h2>Voz Ciudadana</h2>
+    <p>119 encuestas ciudadanas + 21 encuestas NNA — An&#225;lisis comparativo de prioridades y percepciones</p>
+  </div>
+  <div class="stat-row" id="participStats"></div>
+  <div class="rating-grid" id="ratingGrid"></div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Prioridades Ciudadanas para el PLADECO</h3>
+      <div class="viz-sub">&#191;Qu&#233; &#225;reas priorizar&#237;a usted en el plan? (n=119, opci&#243;n m&#250;ltiple)</div>
+      <div class="prior-bar-wrap" id="priorBars"></div>
+    </div>
+    <div class="viz-card">
+      <h3>Evaluaci&#243;n de Servicios Municipales</h3>
+      <div class="viz-sub">Calificaci&#243;n promedio 1-5 por &#225;rea de servicio</div>
+      <canvas id="chartServicios"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Infraestructura con Mayores Deficiencias</h3>
+      <div class="viz-sub">Principales &#225;reas de infraestructura se&#241;aladas como deficientes</div>
+      <canvas id="chartInfra"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Prioridades: Ciudadanos vs NNA</h3>
+      <div class="viz-sub">Comparaci&#243;n de prioridades entre adultos (n=119) y j&#243;venes (n=21)</div>
+      <canvas id="chartPriorComp"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Preparaci&#243;n ante Emergencias</h3>
+      <div class="viz-sub">Conocimiento del Plan Comunal y organizaci&#243;n comunitaria</div>
+      <canvas id="chartEmergencia"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Salud: Principales Problemas</h3>
+      <div class="viz-sub">Aspectos del sistema de salud con mayores deficiencias (n=119)</div>
+      <canvas id="chartSalud"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GESTIÓN PLADECO ═══ -->
+<section id="gestion">
+  <div class="sec-header">
+    <div class="badge" style="background:#fef3c7;color:#d97706">Implementaci&#243;n</div>
+    <h2>Gesti&#243;n del PLADECO</h2>
+    <p>225 acciones con responsables, financiamiento y enfoque de inclusi&#243;n</p>
+  </div>
+  <div class="gestion-kpi" id="gestionKPIs"></div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Acciones por Plazo y Eje</h3>
+      <div class="viz-sub">112 corto plazo · 91 mediano plazo · 22 largo plazo</div>
+      <canvas id="chartPlazoEje"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Financiamiento de Acciones</h3>
+      <div class="viz-sub">Distribuci&#243;n de fuentes de financiamiento (n=225)</div>
+      <canvas id="chartFinanc"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Enfoque de Inclusi&#243;n por Eje</h3>
+      <div class="viz-sub">Acciones que benefician a grupos prioritarios</div>
+      <div class="incl-legend"><span><span class="dot" style="background:#e63946"></span>NNA</span><span><span class="dot" style="background:#db2777"></span>G&#233;nero</span><span><span class="dot" style="background:#7b2cbf"></span>Discapacidad</span><span><span class="dot" style="background:#f4a261"></span>Adulto Mayor</span></div>
+      <canvas id="chartInclusion2"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Departamentos Responsables</h3>
+      <div class="viz-sub">Principales &#225;reas municipales a cargo de la implementaci&#243;n</div>
+      <canvas id="chartDeptos"></canvas>
     </div>
   </div>
 </section>
@@ -1003,6 +1138,67 @@ const BIP_SECTORS = [
   {s:'Turismo y Comercio',n:5,c:'#F1C40F'}
 ];
 
+// ── CITIZEN SURVEY AGGREGATED DATA ──
+const PRIOR_CIU=[
+  {name:'Seguridad pública',count:75,color:'#ef4444'},
+  {name:'Salud y bienestar',count:55,color:'#22c55e'},
+  {name:'Cultura/deporte/recreación',count:49,color:'#8b5cf6'},
+  {name:'Empleo y desarrollo',count:48,color:'#f59e0b'},
+  {name:'Educación y capacitación',count:40,color:'#4361ee'},
+  {name:'Medio ambiente',count:36,color:'#2a9d8f'},
+  {name:'Infraestructura',count:31,color:'#7b2cbf'},
+  {name:'Participación ciudadana',count:18,color:'#457b9d'},
+  {name:'Inclusión social',count:9,color:'#db2777'},
+  {name:'Innovación digital',count:9,color:'#06b6d4'}
+];
+const PRIOR_NNA=[
+  {name:'Salud y bienestar',count:12},{name:'Cultura/deporte/recreación',count:11},
+  {name:'Seguridad pública',count:10},{name:'Medio ambiente',count:8},
+  {name:'Educación y capacitación',count:5},{name:'Infraestructura',count:4},
+  {name:'Empleo y desarrollo',count:4},{name:'Participación ciudadana',count:3},
+  {name:'Inclusión social',count:2},{name:'Innovación digital',count:2}
+];
+const EVAL_SERV=[
+  {name:'Atención presencial',avg:3.35,icon:'★'},
+  {name:'Educación municipal',avg:3.12,icon:'★'},
+  {name:'Iluminación pública',avg:2.87,icon:'★'},
+  {name:'Atención salud',avg:2.89,icon:'★'},
+  {name:'Calles y tránsito',avg:2.82,icon:'★'},
+  {name:'Seguridad sector',avg:2.76,icon:'★'}
+];
+const INFRA_DEF=[
+  {name:'Calles y veredas',count:73,color:'#ef4444'},
+  {name:'Plazas y áreas verdes',count:56,color:'#22c55e'},
+  {name:'Alumbrado público',count:52,color:'#f59e0b'},
+  {name:'Espacios deportivos',count:33,color:'#4361ee'},
+  {name:'Edificios municipales',count:17,color:'#7b2cbf'},
+  {name:'Centros culturales',count:15,color:'#8b5cf6'}
+];
+const SALUD_DEF=[
+  {name:'Falta de especialistas',count:52,color:'#ef4444'},
+  {name:'Tiempos de espera',count:52,color:'#f59e0b'},
+  {name:'Infraestructura/equip.',count:34,color:'#4361ee'},
+  {name:'Déficit medicamentos',count:22,color:'#7b2cbf'},
+  {name:'Atención domiciliaria',count:18,color:'#2a9d8f'}
+];
+const EMERGENCIA={conoce:{no:71,escuchado:41,si:7},org:{no:62,algo:38,si:19}};
+const PARTICIPA={agrup:{si:68,no:37,rara:14},pladeco:{si:58,talvez:51,no:10}};
+const INCL_EJES=[
+  {eje:'Social',nna:15,gen:7,disc:5,am:18},
+  {eje:'Económico',nna:7,gen:2,disc:0,am:0},
+  {eje:'Educación',nna:11,gen:3,disc:2,am:3},
+  {eje:'Urbano/MA',nna:6,gen:0,disc:4,am:3},
+  {eje:'Seguridad',nna:9,gen:4,disc:0,am:7},
+  {eje:'Gestión',nna:2,gen:2,disc:0,am:0}
+];
+const DEPTOS=[
+  {name:'SECPLAC',n:28},{name:'DIDECO',n:22},{name:'DAEM',n:16},
+  {name:'Dir. Seguridad',n:14},{name:'Depto. Salud',n:13},{name:'DOM',n:12},
+  {name:'Administración',n:11},{name:'Aseo y Ornato',n:10},{name:'RRHH',n:9},
+  {name:'DAF',n:8},{name:'Informática',n:8},{name:'Tránsito',n:7},
+  {name:'OMIL',n:6},{name:'Protección Civil',n:6},{name:'Otros',n:55}
+];
+
 // ── RENDER MAP ──
 let mapInstance, mapMarkers = [], currentMapLayer = 'pop';
 function renderMap(){
@@ -1064,6 +1260,21 @@ function renderNNA(){
     datasets:[{label:'% NNA afectados',data:[42,72,76,31.5,18.2,12.4,4.1,14.2,18.9],
       backgroundColor:['#ef4444','#ef4444','#ef4444','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#ef4444'],
       borderRadius:6,hoverBackgroundColor:'#1e293b'}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
+}
+
+// ── RENDER NNA AGE + PARTICIPATION ──
+function renderNNAAge(){
+  new Chart(document.getElementById('chartNNAAge'),{type:'doughnut',data:{
+    labels:['6-12 años (35%)','12-15 años (32%)','15-18 años (33%)'],
+    datasets:[{data:[35,32,33],backgroundColor:['#4361ee88','#22c55e88','#f59e0b88'],borderColor:['#4361ee','#22c55e','#f59e0b'],borderWidth:2,hoverOffset:8}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}},plugins:[{id:'nnaAgeCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('4.036',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('NNA',left+width/2,top+height/2+10);c.restore();}}]});
+}
+function renderNNAPartic(){
+  new Chart(document.getElementById('chartNNAPartic'),{type:'bar',data:{
+    labels:['Participa agrupaciones','Quiere participar','Se siente escuchado','Conoce derechos','Identidad local','Usa plazas/parques'],
+    datasets:[{label:'% NNA',data:[52.4,100,24,41.3,47.6,61.9],
+      backgroundColor:['#22c55ecc','#22c55ecc','#ef4444cc','#f59e0bcc','#f59e0bcc','#22c55ecc'],borderRadius:6}]
   },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
 }
 
@@ -1505,6 +1716,115 @@ function renderFinancial(){
     ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
 }
 
+// ── RENDER VOZ CIUDADANA ──
+function renderParticipStats(){
+  const el=document.getElementById('participStats');
+  el.innerHTML=`
+    <div class="stat-chip"><div class="sc-icon" style="background:#e0e7ff;color:#4361ee">&#9998;</div><div><div class="sc-val">119</div><div class="sc-lbl">Encuestas ciudadanas</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#fce7f3;color:#db2777">&#9829;</div><div><div class="sc-val">21</div><div class="sc-lbl">Encuestas NNA</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#d1fae5;color:#22c55e">&#10003;</div><div><div class="sc-val">69%</div><div class="sc-lbl">Mujeres participantes</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#fef3c7;color:#d97706">&#9650;</div><div><div class="sc-val">57%</div><div class="sc-lbl">Participa en agrupaciones</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#fee2e2;color:#ef4444">&#9888;</div><div><div class="sc-val">56%</div><div class="sc-lbl">Identidad local débil</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:#dbeafe;color:#2563eb">&#9733;</div><div><div class="sc-val">92%</div><div class="sc-lbl">Quiere participar PLADECO</div></div></div>`;
+}
+function renderRatingGrid(){
+  const el=document.getElementById('ratingGrid');
+  el.innerHTML=EVAL_SERV.map(s=>{
+    const pct=(s.avg/5*100).toFixed(0);
+    const color=s.avg>=3.2?'#22c55e':s.avg>=2.8?'#f59e0b':'#ef4444';
+    const stars='★'.repeat(Math.round(s.avg))+'☆'.repeat(5-Math.round(s.avg));
+    return `<div class="rating-card"><div class="rc-val" style="color:${color}">${s.avg.toFixed(1)}</div><div class="rc-stars" style="color:${color}">${stars}</div><div class="rc-label">${s.name}</div><div class="rc-bar"><div class="rc-fill" style="width:${pct}%;background:${color}"></div></div></div>`;
+  }).join('');
+}
+function renderPriorBars(){
+  const el=document.getElementById('priorBars');
+  const maxC=Math.max(...PRIOR_CIU.map(p=>p.count));
+  el.innerHTML=PRIOR_CIU.map(p=>`
+    <div class="prior-row"><span class="pr-label">${p.name}</span>
+    <div class="pr-bar"><div class="pr-fill" style="width:0;background:${p.color}" data-w="${(p.count/maxC*100).toFixed(0)}%">${p.count} menciones</div></div>
+    <span class="pr-count">${(p.count/119*100).toFixed(0)}%</span></div>
+  `).join('');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){el.querySelectorAll('.pr-fill').forEach((f,i)=>{setTimeout(()=>{f.style.width=f.dataset.w;},i*80);});obs.unobserve(e.target);}});},{threshold:0.2});
+  obs.observe(el);
+}
+function renderServicios(){
+  new Chart(document.getElementById('chartServicios'),{type:'radar',data:{
+    labels:EVAL_SERV.map(s=>s.name),
+    datasets:[{label:'Promedio (1-5)',data:EVAL_SERV.map(s=>s.avg),borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.15)',borderWidth:2.5,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:EVAL_SERV.map(s=>s.avg>=3.2?'#22c55e':s.avg>=2.8?'#f59e0b':'#ef4444')}]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:9},backdropColor:'transparent'},pointLabels:{font:{size:10,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}/5`}}}}});
+}
+function renderInfraChart(){
+  new Chart(document.getElementById('chartInfra'),{type:'bar',data:{
+    labels:INFRA_DEF.map(d=>d.name),
+    datasets:[{label:'Menciones',data:INFRA_DEF.map(d=>d.count),backgroundColor:INFRA_DEF.map(d=>d.color+'cc'),borderRadius:6,hoverBackgroundColor:INFRA_DEF.map(d=>d.color)}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones (${(ctx.raw/119*100).toFixed(0)}%)`}}}}});
+}
+function renderPriorComp(){
+  const labels=['Seguridad','Salud','Cultura/deporte','Empleo','Educación','M. Ambiente','Infraestruc.','Participación','Inclusión','Innovación'];
+  new Chart(document.getElementById('chartPriorComp'),{type:'bar',data:{
+    labels,
+    datasets:[
+      {label:'Ciudadanos (n=119)',data:PRIOR_CIU.map(p=>(p.count/119*100).toFixed(1)),backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
+      {label:'NNA (n=21)',data:PRIOR_NNA.map(p=>(p.count/21*100).toFixed(1)),backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,mode:'index'}}}});
+}
+function renderEmergencia(){
+  new Chart(document.getElementById('chartEmergencia'),{type:'doughnut',data:{
+    labels:['No conoce Plan','Ha escuchado','Sí, participa'],
+    datasets:[{data:[EMERGENCIA.conoce.no,EMERGENCIA.conoce.escuchado,EMERGENCIA.conoce.si],
+      backgroundColor:['#ef444488','#f59e0b88','#22c55e88'],borderColor:['#ef4444','#f59e0b','#22c55e'],borderWidth:2,hoverOffset:8}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} personas (${(ctx.raw/119*100).toFixed(0)}%)`}}}},plugins:[{id:'emergCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('60%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle='#ef4444';c.fillText('No conoce',left+width/2,top+height/2+10);c.restore();}}]});
+}
+function renderSaludChart(){
+  new Chart(document.getElementById('chartSalud'),{type:'bar',data:{
+    labels:SALUD_DEF.map(d=>d.name),
+    datasets:[{label:'Menciones',data:SALUD_DEF.map(d=>d.count),backgroundColor:SALUD_DEF.map(d=>d.color+'cc'),borderRadius:6,hoverBackgroundColor:SALUD_DEF.map(d=>d.color)}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Menciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones`}}}}});
+}
+
+// ── RENDER GESTIÓN PLADECO ──
+function renderGestionKPIs(){
+  document.getElementById('gestionKPIs').innerHTML=`
+    <div class="gk-card" style="border-top:4px solid #22c55e"><div class="gk-big" style="color:#22c55e">112</div><div class="gk-label">Corto Plazo</div><div class="gk-sub">2025-2028 (50%)</div></div>
+    <div class="gk-card" style="border-top:4px solid #f59e0b"><div class="gk-big" style="color:#f59e0b">91</div><div class="gk-label">Mediano Plazo</div><div class="gk-sub">2028-2032 (40%)</div></div>
+    <div class="gk-card" style="border-top:4px solid #ef4444"><div class="gk-big" style="color:#ef4444">22</div><div class="gk-label">Largo Plazo</div><div class="gk-sub">2032-2035 (10%)</div></div>`;
+}
+function renderPlazoEje(){
+  new Chart(document.getElementById('chartPlazoEje'),{type:'bar',data:{
+    labels:['Social','Económico','Educación','Urbano/MA','Seguridad','Gestión'],
+    datasets:[
+      {label:'Corto',data:[35,8,7,12,18,32],backgroundColor:'#22c55ecc',borderRadius:4},
+      {label:'Mediano',data:[19,8,7,27,13,17],backgroundColor:'#f59e0bcc',borderRadius:4},
+      {label:'Largo',data:[4,2,0,14,1,1],backgroundColor:'#ef4444cc',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
+}
+function renderFinanc(){
+  new Chart(document.getElementById('chartFinanc'),{type:'doughnut',data:{
+    labels:['Municipal','FNDR','Sectorial'],
+    datasets:[{data:[170,54,1],backgroundColor:['#4361ee','#f59e0b','#22c55e'],borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:10}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'financCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('75.6%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Municipal',left+width/2,top+height/2+10);c.restore();}}]});
+}
+function renderInclusion2(){
+  new Chart(document.getElementById('chartInclusion2'),{type:'bar',data:{
+    labels:INCL_EJES.map(e=>e.eje),
+    datasets:[
+      {label:'NNA',data:INCL_EJES.map(e=>e.nna),backgroundColor:'#e6394699',borderRadius:3},
+      {label:'Género',data:INCL_EJES.map(e=>e.gen),backgroundColor:'#db277799',borderRadius:3},
+      {label:'Discapacidad',data:INCL_EJES.map(e=>e.disc),backgroundColor:'#7b2cbf99',borderRadius:3},
+      {label:'Adulto Mayor',data:INCL_EJES.map(e=>e.am),backgroundColor:'#f4a26199',borderRadius:3}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:false,grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+function renderDeptos(){
+  const top10=DEPTOS.slice(0,10);
+  new Chart(document.getElementById('chartDeptos'),{type:'bar',data:{
+    labels:top10.map(d=>d.name),
+    datasets:[{label:'Acciones a cargo',data:top10.map(d=>d.n),backgroundColor:['#4361ee','#22c55e','#f59e0b','#ef4444','#8b5cf6','#db2777','#06b6d4','#2a9d8f','#7b2cbf','#457b9d'].map(c=>c+'cc'),borderRadius:6,hoverBackgroundColor:['#4361ee','#22c55e','#f59e0b','#ef4444','#8b5cf6','#db2777','#06b6d4','#2a9d8f','#7b2cbf','#457b9d']}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones responsables`}}}}});
+}
+
 // ── FODA SEARCH + FILTER ──
 let fodaActiveFilter = 'all';
 function filterFODA(){
@@ -1593,7 +1913,7 @@ function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
   },{threshold:0.08});
-  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item').forEach(el=>{
+  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card').forEach(el=>{
     el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
@@ -1641,11 +1961,26 @@ renderGauges();
 renderPyramid();
 renderMap();
 renderNNA();
+renderNNAAge();
+renderNNAPartic();
 renderSurveyChart();
 renderInequality();
 renderBIPSector();
 renderIdentityChart();
 renderFinancial();
+renderParticipStats();
+renderRatingGrid();
+renderPriorBars();
+renderServicios();
+renderInfraChart();
+renderPriorComp();
+renderEmergencia();
+renderSaludChart();
+renderGestionKPIs();
+renderPlazoEje();
+renderFinanc();
+renderInclusion2();
+renderDeptos();
 animateCounters();
 initScrollProgress();
 initScrollReveal();
