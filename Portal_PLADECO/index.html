@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLADECO Rengo 2025-2035 | Portal Estratégico</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1a1a2e;--primary-light:#16213e;--accent:#4361ee;--accent2:#3a0ca3;
+  --eje1:#e63946;--eje2:#f4a261;--eje3:#2a9d8f;--eje4:#7b2cbf;--eje5:#d62828;--eje6:#457b9d;
+  --bg:#f0f2f5;--card:#fff;--text:#1e293b;--text2:#64748b;--border:#e2e8f0;
+  --shadow:0 2px 12px rgba(0,0,0,.06);--radius:14px;
+  --sidebar-w:260px;
+}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+
+/* ── Sidebar ── */
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--primary);color:#fff;z-index:100;display:flex;flex-direction:column;transition:transform .3s}
+.sidebar-brand{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-brand h2{font-size:15px;font-weight:700;letter-spacing:.5px}
+.sidebar-brand p{font-size:11px;opacity:.5;margin-top:2px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
+.sidebar-nav a{display:flex;align-items:center;gap:12px;padding:10px 24px;font-size:13px;color:rgba(255,255,255,.65);text-decoration:none;transition:all .2s;border-left:3px solid transparent}
+.sidebar-nav a:hover,.sidebar-nav a.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--accent)}
+.sidebar-nav a .ico{width:20px;text-align:center;font-size:14px;flex-shrink:0}
+.sidebar-nav .sep{height:1px;background:rgba(255,255,255,.06);margin:8px 24px}
+.sidebar-footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;opacity:.4;text-align:center}
+.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer}
+
+/* ── Main ── */
+.main{margin-left:var(--sidebar-w);min-height:100vh}
+section{padding:48px 40px;max-width:1200px;margin:0 auto}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 50%,var(--accent2) 100%);color:#fff;padding:80px 40px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;background:rgba(67,97,238,.15)}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;border-radius:50%;background:rgba(58,12,163,.12)}
+.hero-content{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.hero h1{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px}
+.hero h1 span{background:linear-gradient(90deg,#ffd166,#ef476f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{font-size:18px;opacity:.7;margin-bottom:36px;font-weight:300}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.hero-stat{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border-radius:16px;padding:20px 28px;min-width:140px;border:1px solid rgba(255,255,255,.12)}
+.hero-stat .num{font-size:36px;font-weight:800}
+.hero-stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.7;margin-top:2px}
+
+/* ── Section headers ── */
+.sec-header{margin-bottom:32px}
+.sec-header .badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:10px}
+.sec-header h2{font-size:26px;font-weight:800}
+.sec-header p{font-size:14px;color:var(--text2);margin-top:4px;max-width:700px}
+
+/* ── KPI Cards ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:32px}
+.kpi{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--accent);position:relative;overflow:hidden}
+.kpi .kpi-label{font-size:12px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.kpi .kpi-value{font-size:28px;font-weight:800;margin:6px 0 4px}
+.kpi .kpi-detail{font-size:11px;color:var(--text2)}
+.kpi .kpi-bar{height:6px;background:#e2e8f0;border-radius:3px;margin-top:10px;overflow:hidden}
+.kpi .kpi-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
+
+/* ── Ejes tabs ── */
+.eje-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.eje-tab{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
+.eje-tab:hover{border-color:currentColor;color:var(--text)}
+.eje-tab.active{color:#fff;border-color:transparent}
+.eje-panel{display:none;animation:fadeIn .3s}
+.eje-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.eje-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px;border-left:5px solid}
+.eje-card h4{font-size:15px;font-weight:700;margin-bottom:8px}
+.eje-card .actions{display:grid;gap:8px;margin-top:12px}
+.action-item{background:#f8fafc;border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start;font-size:13px;border:1px solid var(--border)}
+.action-item .a-code{font-weight:700;color:var(--accent);white-space:nowrap;font-size:11px}
+.action-item .a-meta{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+.action-item .a-tag{font-size:10px;padding:2px 8px;border-radius:4px;background:#e0e7ff;color:#4338ca;font-weight:600}
+
+/* ── FODA ── */
+.foda-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.foda-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-top:4px solid}
+.foda-card h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.foda-card .count{font-size:12px;color:var(--text2);margin-bottom:12px}
+.foda-card ul{list-style:none;max-height:320px;overflow-y:auto}
+.foda-card ul li{padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;line-height:1.5}
+.foda-card ul li:last-child{border:none}
+.foda-card ul li strong{color:var(--text);font-weight:700}
+.foda-f{border-top-color:#2a9d8f}.foda-d{border-top-color:#e63946}
+.foda-o{border-top-color:#457b9d}.foda-a{border-top-color:#f4a261}
+.foda-strats{margin-top:24px}
+.foda-strats .strat-card{background:var(--card);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--accent)}
+.foda-strats .strat-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.foda-strats .strat-card p{font-size:12px;color:#475569}
+
+/* ── UV Table ── */
+.uv-table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);background:var(--card)}
+.uv-table{width:100%;border-collapse:collapse;font-size:12px}
+.uv-table th{background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:600;position:sticky;top:0;white-space:nowrap}
+.uv-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.uv-table tr:hover td{background:#f8fafc}
+.uv-table .tipo-urbano{color:#4361ee;font-weight:600}
+.uv-table .tipo-rural{color:#2a9d8f;font-weight:600}
+
+/* ── Gallery ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.gallery-item{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;cursor:pointer}
+.gallery-item:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.gallery-item img{width:100%;height:220px;object-fit:cover;display:block}
+.gallery-item .caption{padding:12px 16px;font-size:13px;font-weight:600}
+
+/* ── Modal ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;justify-content:center;align-items:center;padding:24px}
+.modal-overlay.show{display:flex}
+.modal-overlay img{max-width:95vw;max-height:90vh;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.modal-close{position:fixed;top:20px;right:24px;color:#fff;font-size:32px;cursor:pointer;z-index:1001;background:none;border:none}
+
+/* ── Comisiones timeline ── */
+.com-timeline{position:relative;padding-left:40px}
+.com-timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--eje6),var(--eje1),var(--eje2),var(--eje3),var(--eje4),var(--eje5));border-radius:2px}
+.com-item{position:relative;margin-bottom:20px}
+.com-item::before{content:'';position:absolute;left:-34px;top:16px;width:12px;height:12px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 3px var(--accent)}
+.com-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.com-card .com-date{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px}
+.com-card h4{font-size:15px;font-weight:700;margin:4px 0 8px}
+.com-card .com-tags{display:flex;flex-wrap:wrap;gap:4px}
+.com-card .com-tag{font-size:10px;padding:3px 8px;border-radius:4px;background:#f1f5f9;color:#475569;font-weight:600}
+
+/* ── Docs ── */
+.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.doc-card{background:var(--card);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;transition:transform .2s}
+.doc-card:hover{transform:translateY(-2px)}
+.doc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.doc-icon.docx{background:#dbeafe;color:#2563eb}
+.doc-icon.xlsx{background:#d1fae5;color:#059669}
+.doc-icon.pptx{background:#fee2e2;color:#dc2626}
+.doc-icon.html{background:#fef3c7;color:#d97706}
+.doc-info h4{font-size:13px;font-weight:600}
+.doc-info p{font-size:11px;color:var(--text2)}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:40px;font-size:12px;color:var(--text2);border-top:1px solid var(--border);margin-top:40px}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .menu-toggle{display:block}
+  .main{margin-left:0}
+  .hero h1{font-size:28px}
+  .hero-stats{gap:12px}
+  .foda-grid{grid-template-columns:1fr}
+  section{padding:32px 16px}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+}
+@media print{
+  .sidebar,.menu-toggle,.back-to-top{display:none!important}
+  .main{margin-left:0}
+  section{break-inside:avoid}
+}
+
+/* ── Back to top ── */
+.back-to-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(67,97,238,.35);z-index:99;opacity:0;transform:translateY(10px);transition:all .3s;display:flex;align-items:center;justify-content:center}
+.back-to-top.show{opacity:1;transform:translateY(0)}
+.back-to-top:hover{background:var(--accent2);transform:translateY(-2px)}
+.uv-table tfoot td{background:var(--primary-light);color:#fff;font-weight:700;padding:10px 12px;border:none}
+.gallery-cat{grid-column:1/-1;font-size:14px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1.5px;padding:20px 0 8px;border-bottom:2px solid var(--border)}
+.gallery-cat:first-child{padding-top:0}
+.hero-brand{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:8px;font-weight:400}
+.kpi-alert{display:inline-block;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:6px;vertical-align:middle}
+.kpi-alert.red{background:#fee2e2;color:#dc2626}
+.kpi-alert.green{background:#d1fae5;color:#059669}
+.kpi-alert.amber{background:#fef3c7;color:#d97706}
+</style>
+</head>
+<body>
+
+<!-- Mobile toggle -->
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h2>PLADECO Rengo</h2>
+    <p>2025 — 2035</p>
+  </div>
+  <div class="sidebar-nav">
+    <a href="#hero" class="active"><span class="ico">&#9679;</span> Inicio</a>
+    <a href="#dashboard"><span class="ico">&#9632;</span> Dashboard</a>
+    <div class="sep"></div>
+    <a href="#ejes"><span class="ico">&#9654;</span> 6 Ejes Estratégicos</a>
+    <a href="#foda"><span class="ico">&#9670;</span> Análisis FODA</a>
+    <a href="#territorio"><span class="ico">&#9650;</span> Diagnóstico Territorial</a>
+    <div class="sep"></div>
+    <a href="#graficos"><span class="ico">&#9733;</span> Gráficos Analíticos</a>
+    <a href="#comisiones"><span class="ico">&#9201;</span> Comisiones</a>
+    <a href="#documentos"><span class="ico">&#9776;</span> Documentos</a>
+  </div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br>Mayo 2026</div>
+</nav>
+
+<div class="main">
+
+<!-- ═══ HERO ═══ -->
+<div class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-brand">&#9881; Ilustre Municipalidad de Rengo &middot; SECPLAC</div>
+    <h1>Plan de Desarrollo Comunal<br><span>Rengo 2025 — 2035</span></h1>
+    <p class="sub">Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">65.786</div><div class="lbl">Habitantes</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes</div></div>
+      <div class="hero-stat"><div class="num">32</div><div class="lbl">Objetivos</div></div>
+      <div class="hero-stat"><div class="num">200</div><div class="lbl">Políticas</div></div>
+      <div class="hero-stat"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></div>
+      <div class="hero-stat"><div class="num">15/17</div><div class="lbl">ODS Vinculados</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<section id="dashboard">
+  <div class="sec-header">
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Dashboard</div>
+    <h2>Indicadores Clave</h2>
+    <p>Línea base 2024 con metas escalonadas 2028 y 2035</p>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi" style="border-top-color:var(--eje1)">
+      <div class="kpi-label">Cobertura Preescolar <span class="kpi-alert amber">&#9650; Aumentar</span></div>
+      <div class="kpi-value">50,9%</div>
+      <div class="kpi-detail">Meta 2028: 65% | Meta 2035: 75%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:68%;background:var(--eje1)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje1)">
+      <div class="kpi-label">NNA Inseguros en Calle <span class="kpi-alert red">&#9660; Reducir</span></div>
+      <div class="kpi-value">54,4%</div>
+      <div class="kpi-detail">Meta 2028: 35% | Meta 2035: 20%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:37%;background:#ef4444"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje2)">
+      <div class="kpi-label">Empresas Comunales <span class="kpi-alert green">&#10003; Líder</span></div>
+      <div class="kpi-value">4.829</div>
+      <div class="kpi-detail">1a de la Región de O'Higgins</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:95%;background:var(--eje2)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje3)">
+      <div class="kpi-label">Deserción Ed. Media <span class="kpi-alert red">&#9660; Reducir</span></div>
+      <div class="kpi-value">11,6%</div>
+      <div class="kpi-detail">Meta 2028: &lt;8% | Meta 2035: &lt;5%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:43%;background:#f59e0b"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje3)">
+      <div class="kpi-label">Escolaridad Promedio</div>
+      <div class="kpi-value">11,1 años</div>
+      <div class="kpi-detail">Nacional: 12,1 | Brecha: -1,0 año</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:92%;background:var(--eje3)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje4)">
+      <div class="kpi-label">Áreas Verdes <span class="kpi-alert red">&#9660; Crítico</span></div>
+      <div class="kpi-value">1,96 m²/hab</div>
+      <div class="kpi-detail">OMS: 9-10 m² | Meta 2035: 9 m²</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:22%;background:var(--eje4)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje4)">
+      <div class="kpi-label">Alcantarillado <span class="kpi-alert amber">&#9650; Aumentar</span></div>
+      <div class="kpi-value">77%</div>
+      <div class="kpi-detail">Meta 2028: 83% | Meta 2035: 90%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:86%;background:var(--eje4)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje5)">
+      <div class="kpi-label">VIF Mujer <span class="kpi-alert red">&#9660; Reducir</span></div>
+      <div class="kpi-value">426 casos</div>
+      <div class="kpi-detail">Meta 2028: &lt;300 | Meta 2035: &lt;150</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:35%;background:#ef4444"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje5)">
+      <div class="kpi-label">Robos con Violencia <span class="kpi-alert red">&#9660; Reducir</span></div>
+      <div class="kpi-value">166 casos</div>
+      <div class="kpi-detail">Meta 2028: &lt;120 | Meta 2035: &lt;60</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:36%;background:#ef4444"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje6)">
+      <div class="kpi-label">Cumplimiento PLADECO Ant.</div>
+      <div class="kpi-value">40%</div>
+      <div class="kpi-detail">Meta 2028: 60% | Meta 2035: 100%</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:40%;background:var(--eje6)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje6)">
+      <div class="kpi-label">Transparencia CPLT <span class="kpi-alert green">&#10003; Líder</span></div>
+      <div class="kpi-value">97,89%</div>
+      <div class="kpi-detail">Nacional: 81,76% | +16,13 pp</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:98%;background:var(--eje6)"></div></div>
+    </div>
+    <div class="kpi" style="border-top-color:var(--eje6)">
+      <div class="kpi-label">Web Index <span class="kpi-alert green">&#10003; 1°</span></div>
+      <div class="kpi-value">0,846</div>
+      <div class="kpi-detail">1° de 33 comunas O'Higgins</div>
+      <div class="kpi-bar"><div class="kpi-bar-fill" style="width:85%;background:var(--eje6)"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EJES ═══ -->
+<section id="ejes">
+  <div class="sec-header">
+    <div class="badge" style="background:#dbeafe;color:#2563eb">Planificación Estratégica</div>
+    <h2>6 Ejes Estratégicos</h2>
+    <p>32 Objetivos Estratégicos y 200 Políticas para el período 2025-2035</p>
+  </div>
+  <div class="eje-tabs">
+    <div class="eje-tab active" style="background:var(--eje1)" onclick="showEje(0)">Eje 1: Social y Salud</div>
+    <div class="eje-tab" onclick="showEje(1)">Eje 2: Económico</div>
+    <div class="eje-tab" onclick="showEje(2)">Eje 3: Educación</div>
+    <div class="eje-tab" onclick="showEje(3)">Eje 4: Urbano y M.A.</div>
+    <div class="eje-tab" onclick="showEje(4)">Eje 5: Seguridad</div>
+    <div class="eje-tab" onclick="showEje(5)">Eje 6: Gestión Municipal</div>
+  </div>
+  <div id="eje-panels"></div>
+</section>
+
+<!-- ═══ FODA ═══ -->
+<section id="foda">
+  <div class="sec-header">
+    <div class="badge" style="background:#d1fae5;color:#059669">Análisis Estratégico</div>
+    <h2>FODA Comunal</h2>
+    <p>20 Fortalezas, 30 Debilidades, 15 Oportunidades y 15 Amenazas con estrategias cruzadas</p>
+  </div>
+  <div class="foda-grid">
+    <div class="foda-card foda-f">
+      <h3>Fortalezas</h3><div class="count">20 elementos identificados</div>
+      <ul>
+        <li><strong>F1:</strong> 4.829 empresas, 1a de la Región O'Higgins</li>
+        <li><strong>F2:</strong> Red APS: 3 CESFAM + 1 SAR + 1 SAPU; 91.606 consultas/año</li>
+        <li><strong>F3:</strong> 76% matrícula municipal; 2 Liceos Bicentenario; deserción bajó a 1,51%</li>
+        <li><strong>F4:</strong> Saneamiento financiero: patrimonio de -$1.460M a +$9.400M</li>
+        <li><strong>F5:</strong> Transparencia CPLT 97,89% (+81,5 pp desde 2012)</li>
+        <li><strong>F6:</strong> Parque Solar: 9.000 paneles, 17 GWh/año</li>
+        <li><strong>F7:</strong> Sitio web 0,846 (1° de 33 comunas)</li>
+        <li><strong>F8:</strong> PACCC aprobado (6,4% del país)</li>
+        <li><strong>F9:</strong> Sistema de Integridad Municipal (CSI, CI, OI)</li>
+        <li><strong>F10:</strong> Conectividad: Metrotren + Ruta 5 Sur</li>
+        <li><strong>F11:</strong> 330 organizaciones comunitarias vigentes</li>
+        <li><strong>F12:</strong> Inversión SECPLA: de $2.000M a $20.000M (+900%)</li>
+        <li><strong>F13:</strong> SUBDERE: 8° lugar nacional en Servicios (2018)</li>
+        <li><strong>F14:</strong> Consultas APS ESPA: 4.535 (+152% promedio regional)</li>
+        <li><strong>F15:</strong> IPP 34,16% (mayor autonomía fiscal)</li>
+        <li><strong>F16:</strong> Junta Vigilancia Río Claro: 74 años, 1.200 regantes</li>
+        <li><strong>F17:</strong> Diagnóstico participativo: 40+ entrevistas, 21 UV</li>
+        <li><strong>F18:</strong> Hospital Alta Complejidad: $20.000M comprometidos</li>
+        <li><strong>F19:</strong> Crecimiento: 54.533 a 65.786 hab (+20,6%)</li>
+        <li><strong>F20:</strong> Permisos circulación: $306M a $1.200M (+292%)</li>
+      </ul>
+    </div>
+    <div class="foda-card foda-d">
+      <h3>Debilidades</h3><div class="count">30 elementos identificados</div>
+      <ul>
+        <li><strong>D1:</strong> 50% dimensiones institucionales sin implementar</li>
+        <li><strong>D2:</strong> Código de Ética inexistente</li>
+        <li><strong>D3:</strong> Protocolo Acoso: 6/9 obligaciones Ley Karin incumplidas</li>
+        <li><strong>D4:</strong> COSOC inoperativo</li>
+        <li><strong>D5:</strong> Captación transferencias: 6,28% vs 13,89% promedio</li>
+        <li><strong>D6:</strong> Materialización BIP: 30,7%</li>
+        <li><strong>D7:</strong> 1,96 m²/hab áreas verdes vs 9-10 OMS</li>
+        <li><strong>D8:</strong> PACCC sin presupuesto ni responsable</li>
+        <li><strong>D9:</strong> 0 ciclovías</li>
+        <li><strong>D10:</strong> 48% funcionarios no percibe relevancia laboral</li>
+        <li><strong>D11:</strong> 170+ sumarios activos en DAEM</li>
+        <li><strong>D12:</strong> Desempleo 9,04%; empleo estacional 57%</li>
+        <li><strong>D13:</strong> Escolaridad 11,1 vs 12,1 nacional</li>
+        <li><strong>D14:</strong> Parvularia 50,9% (brecha crítica)</li>
+        <li><strong>D15:</strong> Dependencia FCM 55,8%</li>
+        <li><strong>D16:</strong> Alcantarillado rural 51,4% vs urbano 82,3%</li>
+        <li><strong>D17:</strong> Déficit vivienda: 1.401 unidades</li>
+        <li><strong>D18:</strong> CGR: 24 instrumentos control en 15 años</li>
+        <li><strong>D19:</strong> Sin sistema M&E</li>
+        <li><strong>D20:</strong> 12 instrumentos desarticulados</li>
+        <li><strong>D21:</strong> 4.136 personas en manzanas críticas BHT &lt;0,45</li>
+        <li><strong>D22:</strong> Identidad local débil: 66%</li>
+        <li><strong>D23:</strong> Brecha PAES: 12,20 pp</li>
+        <li><strong>D24:</strong> 35,3% hogares usan leña</li>
+        <li><strong>D25:</strong> Servicios municipales &lt;3,35/5</li>
+        <li><strong>D26:</strong> Reglamento Capacitación 14 años obsoleto</li>
+        <li><strong>D27:</strong> 36,41% superficie con erosión</li>
+        <li><strong>D28:</strong> Ed. superior 39% (61% sin formación)</li>
+        <li><strong>D29:</strong> Solo 11% usa trámites online</li>
+        <li><strong>D30:</strong> Sin hospital de alta complejidad operativo</li>
+      </ul>
+    </div>
+    <div class="foda-card foda-o">
+      <h3>Oportunidades</h3><div class="count">15 elementos identificados</div>
+      <ul>
+        <li><strong>O1:</strong> PLADECO como catalizador de articulación sistémica</li>
+        <li><strong>O2:</strong> Fondos externos no aprovechados (brecha 7,61 pp)</li>
+        <li><strong>O3:</strong> Embalse El Bollenar (mayor impacto hídrico)</li>
+        <li><strong>O4:</strong> Turismo enológico: Valle Apalta, "Rengo Origen"</li>
+        <li><strong>O5:</strong> ERD: 16 articulaciones identificadas (13 nivel alto)</li>
+        <li><strong>O6:</strong> Ley 21.455 (Cambio Climático) + Ley 21.807</li>
+        <li><strong>O7:</strong> Ley 21.180 (Transformación Digital): plazo 2027</li>
+        <li><strong>O8:</strong> Metrotren + Ruta 5: economía de servicios</li>
+        <li><strong>O9:</strong> Hospital $20.000M como ancla de desarrollo</li>
+        <li><strong>O10:</strong> Convenio CGR renovable</li>
+        <li><strong>O11:</strong> 439 ha humedales para gestión ambiental</li>
+        <li><strong>O12:</strong> OMIL +500 colocaciones/año</li>
+        <li><strong>O13:</strong> 91,4% hogares con internet</li>
+        <li><strong>O14:</strong> Crecimiento: ~70.000 hab hacia 2032</li>
+        <li><strong>O15:</strong> Manufactura 1° regional (953 unidades)</li>
+      </ul>
+    </div>
+    <div class="foda-card foda-a">
+      <h3>Amenazas</h3><div class="count">15 elementos identificados</div>
+      <ul>
+        <li><strong>A1:</strong> Delitos vida +126% (599 a 1.351 casos)</li>
+        <li><strong>A2:</strong> Drogas +440%; armas +308%</li>
+        <li><strong>A3:</strong> Envejecimiento: índice +34%; 19,7% AM</li>
+        <li><strong>A4:</strong> Megasequía 20 años; producción agrícola -30%</li>
+        <li><strong>A5:</strong> Riesgo legal Ley Karin (multas 100 UTM)</li>
+        <li><strong>A6:</strong> Emigración juvenil: 100% NNA evalúa negativamente</li>
+        <li><strong>A7:</strong> Cambio climático: 6 amenazas territoriales</li>
+        <li><strong>A8:</strong> VIF +27%: 608 casos; 18-28% denuncia</li>
+        <li><strong>A9:</strong> SLEP: riesgo pérdida autonomía educativa</li>
+        <li><strong>A10:</strong> Escrutinio institucional: caso CIC N°20</li>
+        <li><strong>A11:</strong> Pérdida bosque nativo: 145 ha</li>
+        <li><strong>A12:</strong> Dependencia sectorial: 57% empleo estacional</li>
+        <li><strong>A13:</strong> FCM 55,8%; gastos corrientes 82,1%</li>
+        <li><strong>A14:</strong> Rotación política: riesgo discontinuidad</li>
+        <li><strong>A15:</strong> 100% NNA evalúa negativamente Rengo; 66% identidad débil</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foda-strats">
+    <div class="strat-card" style="border-left-color:#2a9d8f">
+      <h4>FO — EXPLOTAR (Fortalezas + Oportunidades)</h4>
+      <p>Capitalizar PACCC (F8) con Ley 21.455 (O6) para fondos climáticos. Usar liderazgo web (F7) para Ley 21.180 (O7): Plataforma Vecino Digital. Articular base empresarial 1° (F1) con cluster enológico (O4): programa "Rengo Origen".</p>
+    </div>
+    <div class="strat-card" style="border-left-color:#e63946">
+      <h4>FA — DEFENDER (Fortalezas + Amenazas)</h4>
+      <p>Usar integridad (F9) para gestionar caso CIC N°20 (A10). Proteger base agrícola (F16) frente a megasequía (A4): Embalse El Bollenar. Red APS (F2) para anticipar envejecimiento (A3).</p>
+    </div>
+    <div class="strat-card" style="border-left-color:#457b9d">
+      <h4>DO — CORREGIR (Debilidades + Oportunidades)</h4>
+      <p>Usar PLADECO (O1) para articular 12 instrumentos (D20). Financiar con SUBDERE (O2) actualización Reglamento Capacitación (D26). Activar COSOC (O1) para corregir brecha participación (D4).</p>
+    </div>
+    <div class="strat-card" style="border-left-color:#f4a261">
+      <h4>DA — SOBREVIVIR (Debilidades + Amenazas)</h4>
+      <p>Reglamento que trascienda ciclos políticos (D19+D20 vs A14). Fondo contingencia presupuestaria (D15 vs A13). Actualizar Protocolo Acoso a Ley Karin (D3 vs A5) en 90 días.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TERRITORIO ═══ -->
+<section id="territorio">
+  <div class="sec-header">
+    <div class="badge" style="background:#fef3c7;color:#d97706">Diagnóstico Territorial</div>
+    <h2>21 Unidades Vecinales</h2>
+    <p>9 urbanas y 12 rurales con datos de población, inversión BIP y participación</p>
+  </div>
+  <div class="uv-table-wrap">
+    <table class="uv-table" id="uv-table">
+      <thead>
+        <tr><th>UV</th><th>Localidad</th><th>Tipo</th><th>Población</th><th>NNA</th><th>Proyectos BIP</th><th>Inversión M$</th><th>Inv./Cápita M$</th><th>Proy./1000 hab</th></tr>
+      </thead>
+      <tbody id="uv-tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ GRAFICOS ═══ -->
+<section id="graficos">
+  <div class="sec-header">
+    <div class="badge" style="background:#ede9fe;color:#7c3aed">Análisis Visual</div>
+    <h2>Gráficos Analíticos</h2>
+    <p>22 gráficos de diagnóstico, redes, brechas y planificación</p>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</section>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="this.classList.remove('show')">
+  <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">&times;</button>
+  <img id="modal-img" src="" alt="">
+</div>
+
+<!-- ═══ COMISIONES ═══ -->
+<section id="comisiones">
+  <div class="sec-header">
+    <div class="badge" style="background:#fee2e2;color:#dc2626">Implementación</div>
+    <h2>Comisiones de Trabajo</h2>
+    <p>Calendario de sesiones por eje estratégico — Mayo 2026</p>
+  </div>
+  <div class="com-timeline" id="com-timeline"></div>
+</section>
+
+<!-- ═══ DOCUMENTOS ═══ -->
+<section id="documentos">
+  <div class="sec-header">
+    <div class="badge" style="background:#f1f5f9;color:#475569">Documentación</div>
+    <h2>Entregables Finales</h2>
+    <p>Documentos, presentaciones y bases de datos del proceso PLADECO</p>
+  </div>
+  <div class="docs-grid" id="docs-grid"></div>
+</section>
+
+<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">&#9650;</button>
+
+<div class="footer">
+  <strong>PLADECO Rengo 2025-2035</strong> &mdash; Ilustre Municipalidad de Rengo<br>
+  Alcalde: Enrique Del Barrio Hernández &nbsp;|&nbsp; Director SECPLAC: Daniel Castillo Campos &nbsp;|&nbsp; Encargado: Osvaldo Mañán Arce<br>
+  <span style="opacity:.5;font-size:10px">Mayo 2026 &middot; Secretaría de Planificación Comunal</span>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ── DATA ──
+const EJES = [
+  {id:1,name:"Cultura, Turismo, Deportes, Recreación y Bienestar Social (Salud)",short:"Social y Salud",color:"#e63946",nOE:5,nAcc:54,
+   oes:[
+     {code:"OE 1.1",title:"Plan Comunal de Turismo Rural, Patrimonial y Enológico",actions:["Diagnóstico turístico y catastro de atractivos","Diseño Plan Comunal Turismo Valle de Apalta","Rutas turísticas patrimoniales señalizadas","Capacitación emprendedores turísticos"]},
+     {code:"OE 1.2",title:"Inventario y protección patrimonio histórico-cultural",actions:["Catastro bienes patrimoniales materiales e inmateriales","Plan de Protección Patrimonial Comunal","Programa rescate memoria histórica (toqui Rengo)"]},
+     {code:"OE 1.3",title:"Ampliar infraestructura deportiva (zonas rurales y periferias)",actions:["Construcción recintos deportivos rurales","Mejoramiento multicanchas (10→25 espacios)","Programas deportivos inclusivos (AM, PcD, mujeres)"]},
+     {code:"OE 1.4",title:"Fortalecer inclusión social: AM, PcD, migrantes",actions:["Programa cuidados AM en dependencia (170 graves)","Centro atención PcD (7.256 personas, 12,1%)","Oficina atención migrante (3.245, 5,1%)","Prevención maltrato adulto mayor"]},
+     {code:"OE 1.5",title:"Reducir consumo alcohol y drogas",actions:["Programa prevención con SENDA (1.073 casos)","Campañas sensibilización barrios priorizados","Programa salud mental comunitaria"]}
+   ]},
+  {id:2,name:"Desarrollo Económico Comunal",short:"Económico",color:"#f4a261",nOE:5,nAcc:17,
+   oes:[
+     {code:"OE 2.1",title:"Elevar Depto. Desarrollo Económico a Dirección",actions:["Modificación Reglamento Organización Interna","Dotación profesional nueva Dirección","Plan Comunal Desarrollo Económico Local"]},
+     {code:"OE 2.2",title:"Fortalecer OMIL con reconversión laboral temporeros",actions:["Capacitación reconversión laboral 200-400/año","Ferias empleo semestrales","Programa empleo femenino y jóvenes rurales"]},
+     {code:"OE 2.3",title:"Polos de emprendimiento e innovación",actions:["Polo emprendimiento (físico y virtual)","Programa formalización MIPYMES (50-100/año)","Incubadora negocios agrotech (15-30/año)"]},
+     {code:"OE 2.4",title:"Turismo rural y enológico como sector económico",actions:["Articular Valle de Apalta con emprendedores","Marca comunal 'Rengo Origen'","Circuito gastronómico y enológico"]},
+     {code:"OE 2.5",title:"Transición agricultura sustentable",actions:["Programas transición 50-200 productores","Reducción brecha empleo estacional","Articulación Metrotren como activo económico"]}
+   ]},
+  {id:3,name:"Educación y Capacitación para el Desarrollo Humano",short:"Educación",color:"#2a9d8f",nOE:5,nAcc:14,
+   oes:[
+     {code:"OE 3.1",title:"Universalizar parvularia al 70%",actions:["Ampliación salas cuna sectores deficitarios","Campaña educación inicial","Rehabilitación 7 jardines VTF (-27,9% matrícula)"]},
+     {code:"OE 3.2",title:"Reducir deserción media <6%",actions:["Programa retención: becas, alimentación, transporte","Sistema alerta temprana deserción","Apoyo socioemocional 500-1.000 estudiantes/año"]},
+     {code:"OE 3.3",title:"Aumentar educación superior al 50%",actions:["Convenios universidades/IP (3→8)","Becas municipales (30→80/año)","Fortalecer ed. media T-P con sector productivo"]},
+     {code:"OE 3.4",title:"Alcanzar 12,1 años escolaridad promedio",actions:["Programa nivelación estudios adultos","Alfabetización digital adultos mayores"]},
+     {code:"OE 3.5",title:"Ampliar oferta SENCE/OTEC",actions:["Articulación SENCE con mercado laboral (15-25 cursos)","Formación oficios jóvenes NiNi","Modernización 9 escuelas rurales"]}
+   ]},
+  {id:4,name:"Desarrollo Urbano, Vivienda, Infraestructura, Vialidad y Medio Ambiente",short:"Urbano y M.A.",color:"#7b2cbf",nOE:6,nAcc:43,
+   oes:[
+     {code:"OE 4.1",title:"Nuevo Plan Regulador Comunal al 2027",actions:["Tramitación nuevo PRC (16 años sin actualizar)","Protección suelos clase I (678 ha amenazadas)","Estudio capacidad carga urbana (~72.000 hab)"]},
+     {code:"OE 4.2",title:"Regeneración 5 barrios vulnerables",actions:["Diagnóstico y priorización barrios","Mejoramiento espacios públicos (15→35)","Programa viviendas (déficit cualitativo 28,8%)"]},
+     {code:"OE 4.3",title:"Red ciclovías 15 km zona urbana",actions:["Diseño red ciclovías urbanas (8→20 km)","Estacionamientos bicicletas (15→40 puntos)"]},
+     {code:"OE 4.4",title:"Alcantarillado al 90%",actions:["Extensión redes zonas desatendidas","Soluciones sanitarias rurales individuales"]},
+     {code:"OE 4.5",title:"Plan Gestión Riesgo Hídrico Río Claro",actions:["Plan gestión hídrico (embalse 10M m³)","Sistema alerta temprana crecidas","Mantenimiento canales 30-50 km/año"]},
+     {code:"OE 4.6",title:"Gestión ambiental integral",actions:["Plan áreas verdes (1,96→9 m²/hab OMS)","Gestión residuos sólidos (meta 30% reciclaje)","Plan eficiencia energética edificios"]}
+   ]},
+  {id:5,name:"Seguridad Pública y Gestión de Riesgos y Emergencias",short:"Seguridad",color:"#d62828",nOE:5,nAcc:28,
+   oes:[
+     {code:"OE 5.1",title:"Reducir NNA inseguros <25%",actions:["Recuperación espacios públicos seguros NNA","Iluminación y videovigilancia (50→120 puntos)","Participación NNA en diseño espacios"]},
+     {code:"OE 5.2",title:"Reducir VIF mujer <200 casos",actions:["Casa acogida y acompañamiento post-denuncia","Campañas violencia de género","Protección NNA víctimas VIF","Formación funcionarios detección VIF"]},
+     {code:"OE 5.3",title:"Reducir robos violentos <80",actions:["Patrullaje y videovigilancia zonas críticas","Prevención hurtos comercio (456 casos)","Red vecinal seguridad y alarmas"]},
+     {code:"OE 5.4",title:"Convivencia escolar 100% establecimientos",actions:["Programa anti-bullying (23,75% NNA expuesto)","Formación mediadores escolares","Protocolo intersectorial protección NNA"]},
+     {code:"OE 5.5",title:"Plan Gestión Riesgo Desastres (Ley 21.364)",actions:["Elaborar Plan Comunal GRD","Simulacros comunales 2-4/año","Mapas de riesgo participativos"]}
+   ]},
+  {id:6,name:"Innovación, Modernización y Optimización de la Gestión Municipal",short:"Gestión Municipal",color:"#457b9d",nOE:6,nAcc:44,
+   oes:[
+     {code:"OE 6.1",title:"Crear Unidad Monitoreo y Evaluación PLADECO",actions:["Diseñar Unidad M&E (cumpl. anterior: 40%)","Sistema KPI seguimiento semestral (10→20)","Tablero de control digital"]},
+     {code:"OE 6.2",title:"Actualizar Política RR.HH.",actions:["Actualización integral (7 años sin actualizar)","Programa bienestar laboral y equidad género","Plan capacitación continua (80→100%)"]},
+     {code:"OE 6.3",title:"Sistema integrado ERP Municipal",actions:["Implementación sistema ERP","Capacitación digital funcionarios 100%","Plataforma trámites en línea (10→30)"]},
+     {code:"OE 6.4",title:"Crear Unidad Medio Ambiente",actions:["Modificar Reglamento crear Unidad MA","Plan Comunal Acción Climática (67,46 ktCO2e)"]},
+     {code:"OE 6.5",title:"Dirección Desarrollo Económico",actions:["Modificar Reglamento Orgánico"]},
+     {code:"OE 6.6",title:"Rendición cuentas semestral PLADECO",actions:["Rendición con indicadores (2/año)","Plataforma digital seguimiento ciudadano","Cuenta pública participativa COSOC"]}
+   ]}
+];
+
+const UV_DATA = [
+  {id:"U01",name:"Rengo Centro",tipo:"Urbano",uv:"UV-1",pob:12500,nna:3188,bip:0,inv:0},
+  {id:"U02",name:"Rengo Norte",tipo:"Urbano",uv:"UV-2",pob:6500,nna:1658,bip:0,inv:0},
+  {id:"U03",name:"Rengo Sur",tipo:"Urbano",uv:"UV-3",pob:4500,nna:1148,bip:0,inv:0},
+  {id:"U04",name:"Rengo Oriente",tipo:"Urbano",uv:"UV-4",pob:3000,nna:765,bip:0,inv:0},
+  {id:"U05",name:"Rengo Poniente",tipo:"Urbano",uv:"UV-5",pob:2000,nna:510,bip:0,inv:0},
+  {id:"U06",name:"Rosario Centro",tipo:"Urbano",uv:"UV-6",pob:4500,nna:1148,bip:3,inv:638990},
+  {id:"U07",name:"Rosario Poniente",tipo:"Urbano",uv:"UV-7",pob:3700,nna:944,bip:0,inv:0},
+  {id:"U08",name:"Rienci Valencia",tipo:"Urbano",uv:"UV-8",pob:3200,nna:816,bip:1,inv:20000},
+  {id:"U09",name:"El Rodeo",tipo:"Urbano",uv:"UV-9",pob:2861,nna:730,bip:0,inv:0},
+  {id:"R01",name:"Apalta",tipo:"Rural",uv:"UV-10",pob:1850,nna:472,bip:9,inv:4755063},
+  {id:"R02",name:"Chanqueahue",tipo:"Rural",uv:"UV-11",pob:1420,nna:362,bip:12,inv:1625771},
+  {id:"R03",name:"Cobil",tipo:"Rural",uv:"UV-12",pob:1180,nna:301,bip:6,inv:772579},
+  {id:"R04",name:"Esmeralda",tipo:"Rural",uv:"UV-13",pob:2650,nna:676,bip:37,inv:54689470},
+  {id:"R05",name:"La Chimba",tipo:"Rural",uv:"UV-14",pob:1340,nna:342,bip:15,inv:7135875},
+  {id:"R06",name:"Las Pataguas",tipo:"Rural",uv:"UV-15",pob:1110,nna:283,bip:3,inv:66175},
+  {id:"R07",name:"Lo Cartagena",tipo:"Rural",uv:"UV-16",pob:1580,nna:403,bip:20,inv:3567339},
+  {id:"R08",name:"Lo de Lobo",tipo:"Rural",uv:"UV-17",pob:980,nna:250,bip:33,inv:12893712},
+  {id:"R09",name:"Los Choapinos",tipo:"Rural",uv:"UV-18",pob:2100,nna:536,bip:10,inv:1280750},
+  {id:"R10",name:"Los Gomeros",tipo:"Rural",uv:"UV-19",pob:1540,nna:393,bip:2,inv:14104},
+  {id:"R11",name:"Malambo",tipo:"Rural",uv:"UV-20",pob:1390,nna:354,bip:7,inv:1180331},
+  {id:"R12",name:"Naicura",tipo:"Rural",uv:"UV-21",pob:2050,nna:523,bip:0,inv:0},
+  {id:"R13",name:"Popeta",tipo:"Rural",uv:"—",pob:1320,nna:337,bip:35,inv:8362374},
+  {id:"R14",name:"Pueblo Hundido",tipo:"Rural",uv:"—",pob:830,nna:212,bip:2,inv:11199},
+  {id:"R15",name:"San Jorge",tipo:"Rural",uv:"—",pob:920,nna:235,bip:0,inv:0},
+  {id:"R16",name:"Santa Isabel",tipo:"Rural",uv:"—",pob:765,nna:195,bip:0,inv:0}
+];
+
+const GRAFICOS = [
+  {file:"G01_SNA_EgoNetwork.png",title:"Red SNA — Actores Institucionales"},
+  {file:"G02_SNA_Centralidad.png",title:"SNA — Centralidad de Actores"},
+  {file:"G03_SNA_Benchmarking.png",title:"SNA — Benchmarking Regional"},
+  {file:"G04_RedPoliticas.png",title:"Red de Políticas Públicas"},
+  {file:"G05_FODA.png",title:"Análisis FODA Integrado"},
+  {file:"G06_Gantt_2026_2035.png",title:"Cronograma Gantt 2026-2035"},
+  {file:"G07_Piramide_Demografica.png",title:"Pirámide Demográfica"},
+  {file:"G08_Financiero.png",title:"Análisis Financiero Municipal"},
+  {file:"G09_Heatmap_ODS.png",title:"Heatmap Vinculación ODS"},
+  {file:"G10_Radar_Brechas.png",title:"Radar de Brechas por Dimensión"},
+  {file:"G11_KPI_Panel.png",title:"Panel de Indicadores KPI"},
+  {file:"G12_Frecuencia_Acciones.png",title:"Frecuencia de Acciones por Eje"},
+  {file:"G13_Dashboard_Ejecutivo.png",title:"Dashboard Ejecutivo"},
+  {file:"G14_Matriz_Riesgos.png",title:"Matriz de Riesgos"},
+  {file:"G15_Mapa_Calor_Territorial.png",title:"Mapa de Calor Territorial"},
+  {file:"G16_Coherencia_Interna.png",title:"Coherencia Interna Instrumentos"},
+  {file:"G17_Analisis_Genero.png",title:"Análisis de Género"},
+  {file:"G18_Sankey_Flujo_Estrategico.png",title:"Sankey — Flujo Estratégico"},
+  {file:"G19_SNA_Articulacion_Institucional.png",title:"SNA — Articulación Institucional"},
+  {file:"G19_Red_Objetivos_Estrategicos.png",title:"Red Objetivos Estratégicos"},
+  {file:"G20_Sankey_Convergencia.png",title:"Sankey — Convergencia"},
+  {file:"Ficha_Resumen_PLADECO.png",title:"Ficha Resumen PLADECO"}
+];
+
+const COMISIONES = [
+  {fecha:"14 Mayo 2026",title:"Eje 6: Innovación y Gestión Municipal",tags:["DIG","Administración","SECPLAC","Finanzas","Jurídico"]},
+  {fecha:"14 Mayo 2026",title:"Eje 1: Desarrollo Comunitario (Org. Funcionales y Territoriales)",tags:["DIDECO"]},
+  {fecha:"15 Mayo 2026",title:"Eje 1: Salud y Bienestar Social",tags:["Salud","DIDECO","SENDA","COSAM"]},
+  {fecha:"15 Mayo 2026",title:"Eje 1: Deportes, Turismo y Cultura",tags:["Deporte","Turismo","Cultura","DOM"]},
+  {fecha:"19 Mayo 2026",title:"Eje 2: Desarrollo Económico Comunal",tags:["Finanzas","Inspección","Fomento Productivo","OMIL"]},
+  {fecha:"22 Mayo 2026",title:"Eje 3: Educación y Capacitación",tags:["DIDECO","DAEM","Fomento Productivo"]},
+  {fecha:"26 Mayo 2026",title:"Eje 4: Desarrollo Urbano e Infraestructura",tags:["SECPLAC","DIDECO","DOM","Tránsito","DAO","Gestión Riesgo"]},
+  {fecha:"27 Mayo 2026",title:"Eje 5: Seguridad Pública y Emergencias",tags:["DAEM","Seguridad Pública","SENDA","DIDECO","Gestión Riesgo"]},
+  {fecha:"Posterior",title:"Proyección Rengo 2035 (ICVU)",tags:["SECPLAC","Administración","Alcaldía"]},
+  {fecha:"Posterior",title:"Transformación Digital (Meta 2027)",tags:["DIG","Administración","Alcaldía","TIC"]},
+  {fecha:"Posterior",title:"Desarrollo Comunal (Infraestructura/Movilidad)",tags:["SECPLAC","Tránsito","DOM"]},
+  {fecha:"Posterior",title:"Desarrollo Comunitario: Brecha Urbano-Rural",tags:["DIDECO","SECPLAC","DAF","Fomento Productivo"]},
+  {fecha:"Posterior",title:"Desarrollo Humano y Capital Social",tags:["DIDECO","Salud","DAEM","COSAM"]},
+  {fecha:"Posterior",title:"Desarrollo Interno Municipal (RR.HH. y Clima)",tags:["Administración","RR.HH.","Jurídico","Finanzas"]},
+  {fecha:"Posterior",title:"Puzzle de Planificación — SECPLAC Equipo",tags:["SECPLAC Equipo"]}
+];
+
+const DOCS = [
+  {name:"Matriz PLADECO V6",desc:"Documento principal 6 ejes, 32 OE, 200 políticas",type:"docx"},
+  {name:"Convergencia Programa de Gobierno",desc:"200 políticas articuladas con compromisos",type:"xlsx"},
+  {name:"Relato Estratégico",desc:"Narrativa por eje estratégico",type:"docx"},
+  {name:"Presentación V3",desc:"Presentación ejecutiva PLADECO",type:"pptx"},
+  {name:"Tablas Completas",desc:"Base de datos tabular completa",type:"xlsx"},
+  {name:"Análisis Ejecutivo Sankey",desc:"Flujo estratégico de políticas",type:"docx"},
+  {name:"Análisis Ejecutivo SNA",desc:"Articulación institucional",type:"docx"},
+  {name:"FODA General v2",desc:"20F + 30D + 15O + 15A con estrategias cruzadas",type:"docx"},
+  {name:"Resumen Ejecutivo",desc:"Síntesis del proceso PLADECO",type:"docx"},
+  {name:"Análisis BIP/SNI",desc:"1.182 registros, inversión territorial",type:"docx"},
+  {name:"Diagnóstico NNA",desc:"Infancia y adolescencia comunal",type:"docx"},
+  {name:"DataStudio PLADECO",desc:"13 tablas CSV para dashboards",type:"xlsx"},
+  {name:"Gráfico Sankey Interactivo",desc:"Flujo estratégico D3.js",type:"html"},
+  {name:"Gráfico Red Objetivos",desc:"Grafo interactivo D3.js",type:"html"},
+  {name:"Gráfico Sankey Convergencia",desc:"Convergencia programa gobierno",type:"html"},
+  {name:"Ficha Resumen Visual",desc:"Ficha ejecutiva PLADECO",type:"html"},
+  {name:"Redes Sociales PLADECO",desc:"17 posts + 6 stories para difusión",type:"pptx"}
+];
+
+// ── RENDER EJES ──
+const ejeColors = EJES.map(e=>e.color);
+function renderEjes(){
+  const container = document.getElementById('eje-panels');
+  container.innerHTML = EJES.map((eje,i) => `
+    <div class="eje-panel ${i===0?'active':''}" id="eje-${i}">
+      <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+        <div style="background:${eje.color};color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700">${eje.nOE} Objetivos</div>
+        <div style="background:${eje.color}22;color:${eje.color};padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700">${eje.nAcc} Acciones</div>
+      </div>
+      ${eje.oes.map(oe => `
+        <div class="eje-card" style="border-left-color:${eje.color}">
+          <h4 style="color:${eje.color}">${oe.code}: ${oe.title}</h4>
+          <div class="actions">
+            ${oe.actions.map(a => `<div class="action-item"><div>${a}</div></div>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+function showEje(idx){
+  document.querySelectorAll('.eje-tab').forEach((t,i)=>{
+    t.classList.toggle('active',i===idx);
+    t.style.background = i===idx ? ejeColors[i] : '';
+    t.style.color = i===idx ? '#fff' : '';
+  });
+  document.querySelectorAll('.eje-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+}
+
+// ── RENDER UV TABLE ──
+function renderUV(){
+  const tbody = document.getElementById('uv-tbody');
+  tbody.innerHTML = UV_DATA.map(u => `
+    <tr>
+      <td>${u.uv}</td>
+      <td><strong>${u.name}</strong></td>
+      <td class="${u.tipo==='Urbano'?'tipo-urbano':'tipo-rural'}">${u.tipo}</td>
+      <td>${u.pob.toLocaleString('es-CL')}</td>
+      <td>${u.nna.toLocaleString('es-CL')}</td>
+      <td>${u.bip}</td>
+      <td>${u.inv > 0 ? (u.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0}) : '—'}</td>
+      <td>${u.pob > 0 && u.inv > 0 ? (u.inv/u.pob/1000).toLocaleString('es-CL',{maximumFractionDigits:1}) : '—'}</td>
+      <td>${u.pob > 0 && u.bip > 0 ? (u.bip/u.pob*1000).toFixed(1) : '—'}</td>
+    </tr>
+  `).join('');
+  const totPob=UV_DATA.reduce((s,u)=>s+u.pob,0), totNNA=UV_DATA.reduce((s,u)=>s+u.nna,0);
+  const totBIP=UV_DATA.reduce((s,u)=>s+u.bip,0), totInv=UV_DATA.reduce((s,u)=>s+u.inv,0);
+  const tfoot=document.createElement('tfoot');
+  tfoot.innerHTML=`<tr><td colspan="3">TOTAL COMUNA</td><td>${totPob.toLocaleString('es-CL')}</td><td>${totNNA.toLocaleString('es-CL')}</td><td>${totBIP}</td><td>${(totInv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}</td><td>${(totInv/totPob/1000).toLocaleString('es-CL',{maximumFractionDigits:1})}</td><td>${(totBIP/totPob*1000).toFixed(1)}</td></tr>`;
+  document.getElementById('uv-table').appendChild(tfoot);
+}
+
+// ── RENDER GALLERY ──
+function renderGallery(){
+  const cats=[
+    {name:"Redes y Articulación Institucional",items:[0,1,2,3,18,19]},
+    {name:"Análisis Estratégico",items:[4,13,15]},
+    {name:"Demografía y Territorio",items:[6,14]},
+    {name:"Finanzas Municipales",items:[7]},
+    {name:"Planificación y Seguimiento",items:[5,8,9,10,11,12,16]},
+    {name:"Síntesis y Convergencia",items:[17,20,21]}
+  ];
+  const container = document.getElementById('gallery');
+  container.innerHTML = cats.map(cat => `
+    <div class="gallery-cat">${cat.name}</div>
+    ${cat.items.map(i=>{const g=GRAFICOS[i];return `<div class="gallery-item" onclick="openModal('../Graficos/${g.file}')">
+      <img src="../Graficos/${g.file}" alt="${g.title}" loading="lazy">
+      <div class="caption">${g.title}</div>
+    </div>`;}).join('')}
+  `).join('');
+}
+function openModal(src){
+  document.getElementById('modal-img').src = src;
+  document.getElementById('modal').classList.add('show');
+}
+
+// ── RENDER COMISIONES ──
+function renderComisiones(){
+  const container = document.getElementById('com-timeline');
+  container.innerHTML = COMISIONES.map(c => `
+    <div class="com-item">
+      <div class="com-card">
+        <div class="com-date">${c.fecha}</div>
+        <h4>${c.title}</h4>
+        <div class="com-tags">${c.tags.map(t=>`<span class="com-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── RENDER DOCS ──
+function renderDocs(){
+  const icons = {docx:'W',xlsx:'X',pptx:'P',html:'&lt;/&gt;'};
+  const container = document.getElementById('docs-grid');
+  container.innerHTML = DOCS.map(d => `
+    <div class="doc-card">
+      <div class="doc-icon ${d.type}">${icons[d.type]}</div>
+      <div class="doc-info"><h4>${d.name}</h4><p>${d.desc}</p></div>
+    </div>
+  `).join('');
+}
+
+// ── SIDEBAR ACTIVE + BACK TO TOP ──
+const sections = document.querySelectorAll('section, .hero');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+const btnTop = document.getElementById('btnTop');
+window.addEventListener('scroll',()=>{
+  let current = '';
+  sections.forEach(s=>{if(window.scrollY >= s.offsetTop - 120) current = s.id;});
+  navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current);});
+  btnTop.classList.toggle('show', window.scrollY > 600);
+});
+
+// ── INIT ──
+renderEjes();
+renderUV();
+renderGallery();
+renderComisiones();
+renderDocs();
+</script>
+</body>
+</html>

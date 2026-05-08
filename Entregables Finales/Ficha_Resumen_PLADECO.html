@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLADECO Rengo 2025-2035 | Ficha Resumen Ejecutiva</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #FFFFFF;
+    color: #1C3557;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 297mm;
+    min-height: 210mm;
+    max-height: 210mm;
+    margin: 0 auto;
+    background: #FFFFFF;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen {
+    .page {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      margin: 20px auto;
+      border-radius: 4px;
+    }
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1C3557 0%, #0F2540 60%, #0D9488 100%);
+    color: #fff;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .header-left h1 {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .header-left .subtitle {
+    font-size: 12px;
+    font-weight: 300;
+    opacity: 0.85;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 11px;
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(13,148,136,0.4);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px 16px;
+    min-height: 0;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border-radius: 6px;
+    border: 2px solid #E2E8F0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-header {
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-header .icon { font-size: 13px; }
+
+  .card-body {
+    padding: 8px 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Color variants */
+  .bg-navy .card-header { background: #1C3557; }
+  .bg-teal .card-header { background: #0D9488; }
+  .bg-red .card-header { background: #C0392B; }
+
+  /* Stat rows */
+  .stat-row {
+    display: flex;
+    align-items: center;
+    padding: 3px 0;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-right: 6px;
+  }
+  .stat-label {
+    flex: 1;
+    color: #475569;
+    font-weight: 400;
+  }
+  .stat-value {
+    font-weight: 700;
+    color: #1C3557;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .stat-highlight {
+    color: #0D9488;
+    font-weight: 700;
+  }
+
+  /* Brechas */
+  .brecha-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 4px 0;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+  .brecha-item:last-child { border-bottom: none; }
+  .brecha-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 9px;
+    color: #fff;
+    flex-shrink: 0;
+    margin-right: 6px;
+    margin-top: 1px;
+  }
+  .brecha-content { flex: 1; }
+  .brecha-title { font-weight: 700; color: #1E293B; font-size: 11px; }
+  .brecha-detail { color: #64748B; font-size: 10px; margin-top: 1px; }
+  .brecha-arrow { color: #0D9488; font-weight: 700; }
+
+  .urgencia-critica { background: #DC2626; }
+  .urgencia-alta { background: #EA580C; }
+  .urgencia-media { background: #D97706; }
+  .urgencia-moderada { background: #0284C7; }
+
+  /* Strategic structure special stats */
+  .big-stat {
+    text-align: center;
+    padding: 4px 0;
+  }
+  .big-stat-number {
+    font-size: 26px;
+    font-weight: 800;
+    color: #1C3557;
+    line-height: 1;
+  }
+  .big-stat-label {
+    font-size: 10px;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+  .big-stats-row {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    padding: 4px 0;
+  }
+  .big-stats-row .big-stat {
+    flex: 1;
+    padding: 4px;
+    background: #F1F5F9;
+    border-radius: 4px;
+  }
+
+  /* Convergence bar */
+  .convergence-bar {
+    background: #E2E8F0;
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+    margin: 4px 0;
+  }
+  .convergence-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #0D9488, #14B8A6);
+    width: 97.9%;
+  }
+  .convergence-label {
+    font-size: 10px;
+    color: #64748B;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Financing mini-bars */
+  .finance-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    font-size: 10px;
+  }
+  .finance-label { width: 60px; color: #64748B; font-weight: 500; text-align: right; }
+  .finance-bar-wrap { flex: 1; height: 10px; background: #E2E8F0; border-radius: 4px; overflow: hidden; }
+  .finance-bar { height: 100%; border-radius: 4px; }
+  .finance-pct { width: 28px; font-weight: 700; color: #1C3557; font-size: 10px; }
+
+  /* EJES BAR */
+  .ejes-bar {
+    background: #1C3557;
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .ejes-bar-title {
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+  .eje-chip {
+    flex: 1;
+    text-align: center;
+    padding: 5px 4px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .eje-chip .eje-name { font-size: 8px; font-weight: 400; opacity: 0.85; display: block; }
+  .eje-chip .eje-count { font-size: 13px; font-weight: 800; display: block; }
+
+  /* FOOTER */
+  .footer {
+    background: #F8FAFC;
+    border-top: 2px solid #E2E8F0;
+    padding: 6px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9px;
+    color: #64748B;
+    flex-shrink: 0;
+  }
+  .footer-left { font-weight: 500; }
+  .footer-right { font-style: italic; opacity: 0.7; }
+
+  @media print {
+    body { background: none; }
+    .page {
+      box-shadow: none;
+      border-radius: 0;
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>PLADECO RENGO 2025-2035 <span style="opacity:0.6">|</span> Ficha Resumen Ejecutiva</h1>
+      <div class="subtitle">Plan de Desarrollo Comunal &mdash; Municipalidad de Rengo, Regi&oacute;n de O&rsquo;Higgins</div>
+    </div>
+    <div class="header-right">
+      <div class="header-badge">Documento de Planificaci&oacute;n Estrat&eacute;gica</div>
+    </div>
+  </div>
+
+  <!-- MAIN 3-COLUMN GRID -->
+  <div class="main-content">
+
+    <!-- COLUMN 1: Datos Comunales -->
+    <div class="column">
+      <div class="card bg-navy">
+        <div class="card-header"><span class="icon">&#x1F3DB;</span> Datos Comunales</div>
+        <div class="card-body">
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F465;</span>
+            <span class="stat-label">Poblaci&oacute;n (Censo 2024)</span>
+            <span class="stat-value">65.786 hab</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F4CD;</span>
+            <span class="stat-label">Superficie comunal</span>
+            <span class="stat-value">592 km&sup2;</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F3D8;</span>
+            <span class="stat-label">Centros urbanos</span>
+            <span class="stat-value">3 (Rengo, Rosario, Esmeralda)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F465;</span>
+            <span class="stat-label">Poblaci&oacute;n Rosario</span>
+            <span class="stat-value">12.000 hab</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F3E2;</span>
+            <span class="stat-label">Funcionarios municipales</span>
+            <span class="stat-value">939</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F4BC;</span>
+            <span class="stat-label">Empresas (1&deg; regional)</span>
+            <span class="stat-value">4.829</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F4C8;</span>
+            <span class="stat-label">&Iacute;ndice Des. Humano (IDHC)</span>
+            <span class="stat-value">0.51 &rarr; <span class="stat-highlight">0.74 (+45%)</span></span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F4CA;</span>
+            <span class="stat-label">&Iacute;ndice Competitividad (ICD)</span>
+            <span class="stat-value">0.10 &rarr; <span class="stat-highlight">0.88</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMN 2: Estructura Estrategica -->
+    <div class="column">
+      <div class="card bg-teal">
+        <div class="card-header"><span class="icon">&#x1F3AF;</span> Estructura Estrat&eacute;gica</div>
+        <div class="card-body">
+          <div class="big-stats-row">
+            <div class="big-stat">
+              <div class="big-stat-number">6</div>
+              <div class="big-stat-label">Ejes</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-number">32</div>
+              <div class="big-stat-label">Objetivos</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-number">93</div>
+              <div class="big-stat-label">Acciones</div>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F4CB;</span>
+            <span class="stat-label">Acciones Prog. de Gobierno</span>
+            <span class="stat-value">159</span>
+          </div>
+
+          <div style="padding: 4px 0;">
+            <div class="convergence-label">
+              <span>Convergencia PLADECO &times; Programa</span>
+              <span style="font-weight:700; color:#0D9488;">97.9%</span>
+            </div>
+            <div class="convergence-bar"><div class="convergence-fill"></div></div>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-icon">&#x1F4B0;</span>
+            <span class="stat-label">Inversi&oacute;n total (2026-2035)</span>
+            <span class="stat-value" style="color:#0D9488;">$46.000 M</span>
+          </div>
+
+          <div style="padding: 4px 0;">
+            <div style="font-size:8px; font-weight:600; color:#475569; margin-bottom:3px; text-transform:uppercase; letter-spacing:0.5px;">Financiamiento por fuente</div>
+            <div class="finance-row">
+              <span class="finance-label">Municipal</span>
+              <div class="finance-bar-wrap"><div class="finance-bar" style="width:27%; background:#1C3557;"></div></div>
+              <span class="finance-pct">27%</span>
+            </div>
+            <div class="finance-row">
+              <span class="finance-label">FNDR</span>
+              <div class="finance-bar-wrap"><div class="finance-bar" style="width:30%; background:#0D9488;"></div></div>
+              <span class="finance-pct">30%</span>
+            </div>
+            <div class="finance-row">
+              <span class="finance-label">Sectorial</span>
+              <div class="finance-bar-wrap"><div class="finance-bar" style="width:30%; background:#2563EB;"></div></div>
+              <span class="finance-pct">30%</span>
+            </div>
+            <div class="finance-row">
+              <span class="finance-label">PPP</span>
+              <div class="finance-bar-wrap"><div class="finance-bar" style="width:13%; background:#D97706;"></div></div>
+              <span class="finance-pct">13%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMN 3: Brechas Criticas -->
+    <div class="column">
+      <div class="card bg-red">
+        <div class="card-header"><span class="icon">&#x26A0;</span> 5 Brechas Cr&iacute;ticas</div>
+        <div class="card-body">
+          <div class="brecha-item">
+            <div class="brecha-num urgencia-critica">1</div>
+            <div class="brecha-content">
+              <div class="brecha-title">NNA que se sienten inseguros</div>
+              <div class="brecha-detail">Actual: <strong>54.41%</strong> <span class="brecha-arrow">&rarr;</span> Meta: <strong>&lt;25%</strong> &mdash; Reducci&oacute;n &gt;50% requerida</div>
+            </div>
+          </div>
+          <div class="brecha-item">
+            <div class="brecha-num urgencia-critica">2</div>
+            <div class="brecha-content">
+              <div class="brecha-title">Violencia intrafamiliar (VIF)</div>
+              <div class="brecha-detail">Actual: <strong>608 casos</strong> <span class="brecha-arrow">&rarr;</span> Meta: <strong>&lt;200 casos</strong> &mdash; Reducci&oacute;n 67%</div>
+            </div>
+          </div>
+          <div class="brecha-item">
+            <div class="brecha-num urgencia-alta">3</div>
+            <div class="brecha-content">
+              <div class="brecha-title">&Aacute;reas verdes por habitante</div>
+              <div class="brecha-detail">Actual: <strong>1.96 m&sup2;/hab</strong> <span class="brecha-arrow">&rarr;</span> Meta: <strong>9-10 m&sup2;/hab</strong> (est&aacute;ndar OMS)</div>
+            </div>
+          </div>
+          <div class="brecha-item">
+            <div class="brecha-num urgencia-media">4</div>
+            <div class="brecha-content">
+              <div class="brecha-title">Plan Regulador Comunal (PRC)</div>
+              <div class="brecha-detail"><strong>16 a&ntilde;os</strong> sin actualizar <span class="brecha-arrow">&rarr;</span> Nuevo PRC al <strong>2027</strong></div>
+            </div>
+          </div>
+          <div class="brecha-item">
+            <div class="brecha-num urgencia-moderada">5</div>
+            <div class="brecha-content">
+              <div class="brecha-title">Gasto en personal municipal</div>
+              <div class="brecha-detail">Actual: <strong>74.0%</strong> (umbral CGR: 70%) <span class="brecha-arrow">&rarr;</span> Meta: <strong>65%</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- EJES BAR -->
+  <div class="ejes-bar">
+    <span class="ejes-bar-title">6 Ejes Estrat&eacute;gicos</span>
+    <div class="eje-chip" style="background:#6D2E46;">
+      <span class="eje-name">Eje 1 &middot; Des. Social y Cultural</span>
+      <span class="eje-count">50 acciones</span>
+    </div>
+    <div class="eje-chip" style="background:#1E7E45;">
+      <span class="eje-name">Eje 2 &middot; Des. Econ&oacute;mico</span>
+      <span class="eje-count">16 acciones</span>
+    </div>
+    <div class="eje-chip" style="background:#E0A020; color:#1C3557;">
+      <span class="eje-name" style="color:#1C3557;">Eje 3 &middot; Educaci&oacute;n</span>
+      <span class="eje-count">14 acciones</span>
+    </div>
+    <div class="eje-chip" style="background:#B85042;">
+      <span class="eje-name">Eje 4 &middot; Territorio</span>
+      <span class="eje-count">32 acciones</span>
+    </div>
+    <div class="eje-chip" style="background:#C0392B;">
+      <span class="eje-name">Eje 5 &middot; Seguridad</span>
+      <span class="eje-count">27 acciones</span>
+    </div>
+    <div class="eje-chip" style="background:#0D9488;">
+      <span class="eje-name">Eje 6 &middot; Gesti&oacute;n Municipal</span>
+      <span class="eje-count">20 acciones</span>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">Alcalde: Enrique Del Barrio Hern&aacute;ndez &nbsp;|&nbsp; Director SECPLAC: Daniel Castillo Campos &nbsp;|&nbsp; Encargado: Osvaldo Ma&ntilde;&aacute;n Arce &nbsp;|&nbsp; Abril 2026</div>
+    <div class="footer-right">Fuente: Elaboraci&oacute;n propia &mdash; PLADECO Rengo 2025-2035</div>
+  </div>
+
+</div>
+</body>
+</html>

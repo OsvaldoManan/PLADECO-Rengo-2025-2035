@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrama de Procesos — Comisiones PLADECO Rengo 2025-2035</title>
+<style>
+  :root {
+    --eje1: #1B6B93;
+    --eje2: #E07A2F;
+    --eje3: #2D8F4E;
+    --eje4: #7B3FA0;
+    --eje5: #C23B3B;
+    --eje6: #2C5F8A;
+    --tema-extra: #3D5A80;
+    --puzzle: #1a1a2e;
+    --bg: #f8f9fc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --shadow: 0 4px 24px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px 32px 60px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 15px;
+    color: var(--text-light);
+    font-weight: 400;
+  }
+
+  /* ── Phase labels ── */
+  .phase {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 40px 0 20px;
+  }
+  .phase-number {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .phase-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .phase-sub {
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  /* ── Timeline connector ── */
+  .timeline {
+    position: relative;
+    padding-left: 52px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #cbd5e1, #94a3b8);
+    border-radius: 2px;
+  }
+
+  /* ── Commission Card ── */
+  .card {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid transparent;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1px);
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    left: -42px;
+    top: 28px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px currentColor;
+    z-index: 1;
+  }
+
+  .card-date {
+    position: absolute;
+    left: -130px;
+    top: 22px;
+    width: 72px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1.3;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .card-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 2px;
+    opacity: 0.7;
+  }
+
+  .card-body { margin-top: 10px; }
+
+  .card-section {
+    margin-bottom: 12px;
+  }
+  .card-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .card-section p,
+  .card-section li {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.6;
+  }
+  .card-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card-section ul li::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── Tags ── */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  /* ── OE badges ── */
+  .oe-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .oe {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    color: #fff;
+  }
+
+  /* ── Color accents per eje ── */
+  .eje1 { border-left-color: var(--eje1); color: var(--eje1); }
+  .eje1 .card-icon, .eje1 .oe { background: var(--eje1); }
+  .eje1::before { color: var(--eje1); background: var(--eje1); }
+  .eje1 ul li::before { background: var(--eje1); }
+
+  .eje2 { border-left-color: var(--eje2); color: var(--eje2); }
+  .eje2 .card-icon, .eje2 .oe { background: var(--eje2); }
+  .eje2::before { color: var(--eje2); background: var(--eje2); }
+  .eje2 ul li::before { background: var(--eje2); }
+
+  .eje3 { border-left-color: var(--eje3); color: var(--eje3); }
+  .eje3 .card-icon, .eje3 .oe { background: var(--eje3); }
+  .eje3::before { color: var(--eje3); background: var(--eje3); }
+  .eje3 ul li::before { background: var(--eje3); }
+
+  .eje4 { border-left-color: var(--eje4); color: var(--eje4); }
+  .eje4 .card-icon, .eje4 .oe { background: var(--eje4); }
+  .eje4::before { color: var(--eje4); background: var(--eje4); }
+  .eje4 ul li::before { background: var(--eje4); }
+
+  .eje5 { border-left-color: var(--eje5); color: var(--eje5); }
+  .eje5 .card-icon, .eje5 .oe { background: var(--eje5); }
+  .eje5::before { color: var(--eje5); background: var(--eje5); }
+  .eje5 ul li::before { background: var(--eje5); }
+
+  .eje6 { border-left-color: var(--eje6); color: var(--eje6); }
+  .eje6 .card-icon, .eje6 .oe { background: var(--eje6); }
+  .eje6::before { color: var(--eje6); background: var(--eje6); }
+  .eje6 ul li::before { background: var(--eje6); }
+
+  .extra { border-left-color: var(--tema-extra); color: var(--tema-extra); }
+  .extra .card-icon, .extra .oe { background: var(--tema-extra); }
+  .extra::before { color: var(--tema-extra); background: var(--tema-extra); }
+  .extra ul li::before { background: var(--tema-extra); }
+
+  .puzzle-card {
+    border-left-color: var(--puzzle);
+    color: var(--puzzle);
+    background: linear-gradient(135deg, #f8faff, #eef2ff);
+  }
+  .puzzle-card .card-icon { background: var(--puzzle); }
+  .puzzle-card::before { color: var(--puzzle); background: var(--puzzle); }
+  .puzzle-card ul li::before { background: var(--puzzle); }
+
+  /* ── Convergence Arrow ── */
+  .convergence {
+    text-align: center;
+    padding: 30px 0;
+    position: relative;
+  }
+  .convergence-arrow {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .convergence-arrow .dots {
+    display: flex;
+    gap: 6px;
+  }
+  .convergence-arrow .dots span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #94a3b8;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .convergence-arrow .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .convergence-arrow .dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+  .convergence-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--bg);
+    padding: 4px 16px;
+    border-radius: 12px;
+    border: 2px dashed #cbd5e1;
+  }
+  .big-arrow {
+    font-size: 28px;
+    color: #94a3b8;
+    line-height: 1;
+  }
+
+  /* ── Grid for posterior themes ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .grid-2 .card {
+    margin-bottom: 0;
+  }
+  .grid-2 .card::before { display: none; }
+  .grid-2 .card-date { display: none; }
+
+  /* ── Sub-card for Eje 1 splits ── */
+  .sub-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .sub-card {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--eje1);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .sub-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .sub-card-date {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--eje1);
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .sub-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--eje1);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .sub-card p, .sub-card li {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.55;
+  }
+  .sub-card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 6px;
+  }
+  .sub-card ul li {
+    padding: 2px 0;
+  }
+  .sub-card ul li::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--eje1);
+    margin-right: 7px;
+    vertical-align: middle;
+  }
+  .sub-card .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-light);
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; }
+    .page { padding: 20px; }
+    .card:hover { transform: none; box-shadow: var(--shadow); }
+    .sub-card:hover { transform: none; }
+    @page { size: A3 portrait; margin: 15mm; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .sub-cards { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .timeline { padding-left: 30px; }
+    .timeline::before { left: 8px; }
+    .card::before { left: -28px; }
+    .card-date { display: none; }
+  }
+
+  /* ── Summary Stats ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .stat {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1a1a2e, #3D5A80);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">Ilustre Municipalidad de Rengo</div>
+    <h1>Diagrama de Procesos: Comisiones PLADECO 2025-2035</h1>
+    <p>Flujo de trabajo para las comisiones temáticas por eje estratégico — Mayo 2026</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-number">6</div>
+      <div class="stat-label">Ejes Estratégicos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">32</div>
+      <div class="stat-label">Objetivos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">200</div>
+      <div class="stat-label">Políticas</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">13</div>
+      <div class="stat-label">Comisiones</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">14</div>
+      <div class="stat-label">Días de Trabajo</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FASE 1 ═══════════════ -->
+  <div class="phase">
+    <div class="phase-number" style="background: linear-gradient(135deg, #1a1a2e, #3D5A80);">1</div>
+    <div>
+      <div class="phase-label">Comisiones por Eje Estratégico</div>
+      <div class="phase-sub">14 al 27 de mayo 2026</div>
+    </div>
+  </div>
+
+  <!-- Eje 1 - Sub cards -->
+  <div style="margin-bottom: 28px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+      <div style="width:32px;height:32px;border-radius:8px;background:var(--eje1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;">1</div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--eje1);">Eje 1: Cultura, Turismo, Deportes, Recreación y Bienestar Social</div>
+        <div style="font-size:12px;color:var(--text-light);">OE 1.1 — OE 1.5 &nbsp;|&nbsp; 54 acciones &nbsp;|&nbsp; 3 sub-comisiones</div>
+      </div>
+    </div>
+    <div class="sub-cards">
+      <!-- Sub 1A -->
+      <div class="sub-card">
+        <div class="sub-card-date">14 Mayo</div>
+        <h4>Desarrollo Comunitario</h4>
+        <p>Organizaciones Funcionales y Territoriales</p>
+        <div class="section-label">Asuntos a tratar</div>
+        <ul>
+          <li>Fortalecimiento 78 JJVV y COSOC</li>
+          <li>Articulación 21 unidades vecinales</li>
+          <li>Brecha urbano-rural (82% la reconoce)</li>
+          <li>Plan intervención territorial por UV</li>
+          <li>Ley 20.500 y participación ciudadana</li>
+        </ul>
+        <div class="section-label">Integrantes</div>
+        <ul>
+          <li>Director/a DIDECO</li>
+          <li>Enc. Organizaciones Comunitarias</li>
+          <li>Enc. Desarrollo Comunitario</li>
+          <li>Representante COSOC</li>
+          <li>Representante SECPLAC</li>
+        </ul>
+        <div class="tags" style="margin-top:10px;">
+          <span class="tag" style="background:#e0f2fe;color:var(--eje1);">DIDECO</span>
+        </div>
+      </div>
+      <!-- Sub 1B -->
+      <div class="sub-card">
+        <div class="sub-card-date">15 Mayo</div>
+        <h4>Salud y Bienestar Social</h4>
+        <p>Inclusión social, prevención y salud mental</p>
+        <div class="section-label">Asuntos a tratar</div>
+        <ul>
+          <li>Programas AM (8.796, IE=72,1)</li>
+          <li>Centro atención PcD (7.256 personas)</li>
+          <li>Oficina migrante (3.245, 5,1%)</li>
+          <li>Prevención drogas/alcohol (1.073 casos)</li>
+          <li>Programa salud mental comunitaria</li>
+          <li>Maltrato adulto mayor (10 casos VIF-AM)</li>
+        </ul>
+        <div class="section-label">Integrantes</div>
+        <ul>
+          <li>Director/a Salud</li>
+          <li>Director/a DIDECO</li>
+          <li>Enc. SENDA comunal</li>
+          <li>Enc. Adulto Mayor / PcD</li>
+          <li>Representante COSAM</li>
+        </ul>
+        <div class="tags" style="margin-top:10px;">
+          <span class="tag" style="background:#e0f2fe;color:var(--eje1);">Salud</span>
+        </div>
+      </div>
+      <!-- Sub 1C -->
+      <div class="sub-card">
+        <div class="sub-card-date">15 Mayo</div>
+        <h4>Deportes, Turismo y Cultura</h4>
+        <p>Desarrollo y experiencia comunitaria</p>
+        <div class="section-label">Asuntos a tratar</div>
+        <ul>
+          <li>Plan Turismo Rural y Enológico</li>
+          <li>Catastro patrimonio cultural</li>
+          <li>Rescate memoria histórica (toqui Rengo)</li>
+          <li>Infraestructura deportiva rural</li>
+          <li>Mejoramiento 10-25 multicanchas</li>
+          <li>Programas inclusivos (AM, PcD, mujeres)</li>
+        </ul>
+        <div class="section-label">Integrantes</div>
+        <ul>
+          <li>Director/a DIDECO</li>
+          <li>Enc. Turismo / Cultura</li>
+          <li>Enc. Deportes</li>
+          <li>Enc. Desarrollo Económico</li>
+          <li>Representante DOM / SECPLAC</li>
+        </ul>
+        <div class="tags" style="margin-top:10px;">
+          <span class="tag" style="background:#e0f2fe;color:var(--eje1);">Deporte</span>
+          <span class="tag" style="background:#e0f2fe;color:var(--eje1);">Turismo</span>
+          <span class="tag" style="background:#e0f2fe;color:var(--eje1);">Cultura</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline ejes 2-6 -->
+  <div class="timeline" style="margin-left: 80px;">
+
+    <!-- Eje 2 -->
+    <div class="card eje2">
+      <div class="card-date">19<br>Mayo</div>
+      <div class="card-header">
+        <div class="card-icon">2</div>
+        <div>
+          <div class="card-title" style="color:var(--eje2);">Eje 2: Desarrollo Económico Comunal</div>
+          <div class="card-subtitle" style="color:var(--eje2);">17 acciones &nbsp;|&nbsp; 5 objetivos estratégicos</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos a tratar</div>
+          <ul>
+            <li>Elevar Depto. a Dirección Municipal (OE 2.1)</li>
+            <li>Fortalecer OMIL: reconversión laboral 200-400 personas/año (OE 2.2)</li>
+            <li>Polo emprendimiento: formalización MIPYMES, incubadora agrotech (OE 2.3)</li>
+            <li>Turismo rural Valle de Apalta, marca "Rengo Origen" (OE 2.4)</li>
+            <li>Transición agricultura sustentable: 50-200 productores (OE 2.5)</li>
+          </ul>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Integrantes</div>
+          <div class="tags">
+            <span class="tag">Dir. SECPLAC</span>
+            <span class="tag">Enc. Des. Económico</span>
+            <span class="tag">Enc. OMIL</span>
+            <span class="tag">Dir. DAF</span>
+            <span class="tag">Dir. Inspección</span>
+            <span class="tag">Enc. Fomento Productivo</span>
+            <span class="tag">Dir. Jurídica</span>
+            <span class="tag">RR.HH.</span>
+          </div>
+        </div>
+        <div class="oe-list">
+          <span class="oe">OE 2.1</span><span class="oe">OE 2.2</span><span class="oe">OE 2.3</span><span class="oe">OE 2.4</span><span class="oe">OE 2.5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eje 3 -->
+    <div class="card eje3">
+      <div class="card-date">22<br>Mayo</div>
+      <div class="card-header">
+        <div class="card-icon">3</div>
+        <div>
+          <div class="card-title" style="color:var(--eje3);">Eje 3: Educación y Capacitación para el Desarrollo Humano</div>
+          <div class="card-subtitle" style="color:var(--eje3);">14 acciones &nbsp;|&nbsp; 5 objetivos estratégicos</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos a tratar</div>
+          <ul>
+            <li>Universalizar parvularia al 70% (base: 50,9% BRECHA CRITICA) (OE 3.1)</li>
+            <li>Reducir deserción media &lt;6% (base: 11,6%) (OE 3.2)</li>
+            <li>Aumentar ed. superior al 50% (base: 39%) (OE 3.3)</li>
+            <li>Alcanzar 12,1 años escolaridad (base: 11,1) (OE 3.4)</li>
+            <li>Ampliar oferta SENCE/OTEC, modernizar 9 escuelas rurales (OE 3.5)</li>
+          </ul>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Integrantes</div>
+          <div class="tags">
+            <span class="tag">Dir. DAEM</span>
+            <span class="tag">Dir. DIDECO</span>
+            <span class="tag">Enc. Fomento Productivo</span>
+            <span class="tag">Enc. OMIL</span>
+            <span class="tag">Rep. JUNAEB</span>
+            <span class="tag">Rep. SECPLAC</span>
+            <span class="tag">Jefe UTP DAEM</span>
+          </div>
+        </div>
+        <div class="oe-list">
+          <span class="oe">OE 3.1</span><span class="oe">OE 3.2</span><span class="oe">OE 3.3</span><span class="oe">OE 3.4</span><span class="oe">OE 3.5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eje 4 -->
+    <div class="card eje4">
+      <div class="card-date">26<br>Mayo</div>
+      <div class="card-header">
+        <div class="card-icon">4</div>
+        <div>
+          <div class="card-title" style="color:var(--eje4);">Eje 4: Desarrollo Urbano, Vivienda, Infraestructura y Medio Ambiente</div>
+          <div class="card-subtitle" style="color:var(--eje4);">43 acciones &nbsp;|&nbsp; 6 objetivos estratégicos</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos a tratar</div>
+          <ul>
+            <li>Nuevo PRC (16 años sin actualizar, 678 ha clase I amenazadas) (OE 4.1)</li>
+            <li>Regeneración 5 barrios vulnerables, déficit vivienda 28,8% (OE 4.2)</li>
+            <li>Red ciclovías 15-20 km (base: 0 km) (OE 4.3)</li>
+            <li>Alcantarillado 77% a 90% (23% sin cobertura) (OE 4.4)</li>
+            <li>Plan riesgo hídrico Río Claro, alerta temprana (OE 4.5)</li>
+            <li>Áreas verdes 1,96 a 9 m²/hab, reciclaje 30% (OE 4.6)</li>
+          </ul>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Integrantes</div>
+          <div class="tags">
+            <span class="tag">Dir. SECPLAC</span>
+            <span class="tag">Dir. DIDECO</span>
+            <span class="tag">Dir. DOM</span>
+            <span class="tag">Dir. Tránsito</span>
+            <span class="tag">Dir. DAO</span>
+            <span class="tag">Enc. Gestión Riesgo</span>
+            <span class="tag">Enc. Medio Ambiente</span>
+          </div>
+        </div>
+        <div class="oe-list">
+          <span class="oe">OE 4.1</span><span class="oe">OE 4.2</span><span class="oe">OE 4.3</span><span class="oe">OE 4.4</span><span class="oe">OE 4.5</span><span class="oe">OE 4.6</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eje 5 -->
+    <div class="card eje5">
+      <div class="card-date">27<br>Mayo</div>
+      <div class="card-header">
+        <div class="card-icon">5</div>
+        <div>
+          <div class="card-title" style="color:var(--eje5);">Eje 5: Seguridad Pública y Gestión de Riesgos y Emergencias</div>
+          <div class="card-subtitle" style="color:var(--eje5);">28 acciones &nbsp;|&nbsp; 5 objetivos estratégicos</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos a tratar</div>
+          <ul>
+            <li>NNA inseguros: 54,41% a &lt;25%, espacios seguros (OE 5.1)</li>
+            <li>VIF mujer: 426 casos a &lt;200, casa acogida (OE 5.2)</li>
+            <li>Robos violentos: 166 a &lt;80, videovigilancia (OE 5.3)</li>
+            <li>Convivencia escolar 100%, anti-bullying (OE 5.4)</li>
+            <li>Plan Gestión Riesgo Desastres Ley 21.364 (OE 5.5)</li>
+          </ul>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Integrantes</div>
+          <div class="tags">
+            <span class="tag">Dir. DAEM</span>
+            <span class="tag">Dir. Seguridad Pública</span>
+            <span class="tag">Enc. SENDA</span>
+            <span class="tag">Dir. DIDECO</span>
+            <span class="tag">Enc. Gestión Riesgo</span>
+            <span class="tag">Enc. OPD</span>
+            <span class="tag">Rep. SERNAMEG</span>
+            <span class="tag">Rep. Carabineros</span>
+          </div>
+        </div>
+        <div class="oe-list">
+          <span class="oe">OE 5.1</span><span class="oe">OE 5.2</span><span class="oe">OE 5.3</span><span class="oe">OE 5.4</span><span class="oe">OE 5.5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eje 6 -->
+    <div class="card eje6">
+      <div class="card-date">14<br>Mayo</div>
+      <div class="card-header">
+        <div class="card-icon">6</div>
+        <div>
+          <div class="card-title" style="color:var(--eje6);">Eje 6: Innovación, Modernización y Optimización Municipal</div>
+          <div class="card-subtitle" style="color:var(--eje6);">44 acciones &nbsp;|&nbsp; 6 objetivos estratégicos</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos a tratar</div>
+          <ul>
+            <li>Crear Unidad M&E PLADECO, KPIs, tablero digital (OE 6.1)</li>
+            <li>Actualizar Política RR.HH. (7 años sin actualizar) (OE 6.2)</li>
+            <li>Sistema ERP Municipal, trámites en línea (OE 6.3)</li>
+            <li>Crear Unidad Medio Ambiente (OE 6.4)</li>
+            <li>Dirección Desarrollo Económico (OE 6.5)</li>
+            <li>Rendición cuentas semestral con COSOC (OE 6.6)</li>
+          </ul>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Integrantes</div>
+          <div class="tags">
+            <span class="tag">Dir. DIG</span>
+            <span class="tag">Administrador/a Municipal</span>
+            <span class="tag">Dir. SECPLAC</span>
+            <span class="tag">Dir. DAF</span>
+            <span class="tag">Dir. Jurídica</span>
+            <span class="tag">Jefe RR.HH.</span>
+            <span class="tag">Enc. TIC</span>
+            <span class="tag">Rep. Alcaldía</span>
+          </div>
+        </div>
+        <div class="oe-list">
+          <span class="oe">OE 6.1</span><span class="oe">OE 6.2</span><span class="oe">OE 6.3</span><span class="oe">OE 6.4</span><span class="oe">OE 6.5</span><span class="oe">OE 6.6</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- ═══════════════ CONVERGENCE ═══════════════ -->
+  <div class="convergence">
+    <div class="convergence-arrow">
+      <div class="big-arrow">&#9660;</div>
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="convergence-label">Convergencia de resultados de comisiones</div>
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="big-arrow">&#9660;</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FASE 2 ═══════════════ -->
+  <div class="phase">
+    <div class="phase-number" style="background: linear-gradient(135deg, var(--tema-extra), #4a7a9e);">2</div>
+    <div>
+      <div class="phase-label">Asuntos Relevantes Transversales</div>
+      <div class="phase-sub">Posterior a las Comisiones — Junio 2026</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- T1 -->
+    <div class="card extra">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-title" style="color:var(--tema-extra);">Proyección Rengo 2035</div>
+          <div class="card-subtitle" style="color:var(--tema-extra);">ICVU — Zona Metropolitana</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos</div>
+          <ul>
+            <li>Posicionamiento ICVU regional</li>
+            <li>Proyección 65.786 a ~72.000 hab.</li>
+            <li>Rengo como centro de comunas satélite</li>
+            <li>Brechas institucional (25%), urbana, seguridad</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">SECPLAC</span><span class="tag">Administración</span><span class="tag">Alcaldía</span>
+        </div>
+      </div>
+    </div>
+    <!-- T2 -->
+    <div class="card extra">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-title" style="color:var(--tema-extra);">Transformación Digital</div>
+          <div class="card-subtitle" style="color:var(--tema-extra);">Meta 2027</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos</div>
+          <ul>
+            <li>Ventanilla única digital</li>
+            <li>ChatBot atención ciudadana</li>
+            <li>Optimización procesos internos</li>
+            <li>Web Index: 0,846 (1°/33 comunas)</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">DIG</span><span class="tag">Administración</span><span class="tag">Alcaldía</span><span class="tag">TIC</span>
+        </div>
+      </div>
+    </div>
+    <!-- T3 -->
+    <div class="card extra">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-title" style="color:var(--tema-extra);">Desarrollo Comunal</div>
+          <div class="card-subtitle" style="color:var(--tema-extra);">Infraestructura, Movilidad, Vivienda</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos</div>
+          <ul>
+            <li>PRC, regeneración barrios</li>
+            <li>Movilidad y Metrotren</li>
+            <li>Déficit vivienda cualitativo 28,8%</li>
+            <li>Alcantarillado 77% a 90%</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">SECPLAC</span><span class="tag">Tránsito</span><span class="tag">DOM</span>
+        </div>
+      </div>
+    </div>
+    <!-- T4 -->
+    <div class="card extra">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-title" style="color:var(--tema-extra);">Desarrollo Comunitario</div>
+          <div class="card-subtitle" style="color:var(--tema-extra);">Brecha Urbano-Rural</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos</div>
+          <ul>
+            <li>21 UV (9 urbanas + 12 rurales)</li>
+            <li>82% funcionarios reconoce brecha</li>
+            <li>Servicio y desarrollo comunitario</li>
+            <li>Etnografía y cartografía territorial</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">DIDECO</span><span class="tag">SECPLAC</span>
+        </div>
+      </div>
+    </div>
+    <!-- T5 -->
+    <div class="card extra">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-title" style="color:var(--tema-extra);">Desarrollo Humano</div>
+          <div class="card-subtitle" style="color:var(--tema-extra);">Educación, Familia, Convivencia</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos</div>
+          <ul>
+            <li>Educación: parvularia 50,9%, deserción 11,6%</li>
+            <li>VIF: 608 casos (78% mujeres)</li>
+            <li>NNA inseguros 54,41%</li>
+            <li>Áreas verdes 1,96 m²/hab</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">DIDECO</span><span class="tag">DAEM</span><span class="tag">SENDA</span><span class="tag">OLN</span><span class="tag">M. Ambiente</span>
+        </div>
+      </div>
+    </div>
+    <!-- T6 -->
+    <div class="card extra">
+      <div class="card-header">
+        <div class="card-icon">&#9670;</div>
+        <div>
+          <div class="card-title" style="color:var(--tema-extra);">Desarrollo Interno</div>
+          <div class="card-subtitle" style="color:var(--tema-extra);">Procedimientos, RR.HH., Probidad</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos</div>
+          <ul>
+            <li>939 funcionarios, profesionalización 34,5%</li>
+            <li>Gasto personal 74% (> CGR 70%)</li>
+            <li>Ejecución inversiones cayó a 32,2%</li>
+            <li>Código ética, compliance probidad</li>
+          </ul>
+        </div>
+        <div class="tags">
+          <span class="tag">SECPLAC</span><span class="tag">Administración</span><span class="tag">DIG</span><span class="tag">DAF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CONVERGENCE 2 ═══════════════ -->
+  <div class="convergence">
+    <div class="convergence-arrow">
+      <div class="big-arrow">&#9660;</div>
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="convergence-label">Síntesis e integración estratégica</div>
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="big-arrow">&#9660;</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ FASE 3 ═══════════════ -->
+  <div class="phase">
+    <div class="phase-number" style="background: linear-gradient(135deg, var(--puzzle), #2a2a4e);">3</div>
+    <div>
+      <div class="phase-label">Puzzle de Planificación y Desarrollo Comunal</div>
+      <div class="phase-sub">Integración Final — SECPLAC Equipo</div>
+    </div>
+  </div>
+
+  <div style="max-width: 800px; margin: 0 auto;">
+    <div class="card puzzle-card" style="border-left-width: 6px; padding: 28px 32px;">
+      <div class="card-header">
+        <div class="card-icon" style="width:52px;height:52px;border-radius:14px;font-size:24px;">&#9881;</div>
+        <div>
+          <div class="card-title" style="color:var(--puzzle);font-size:18px;">Puzzle de Planificación y Desarrollo Comunal</div>
+          <div class="card-subtitle" style="color:var(--puzzle);">Articulación integral del PLADECO 2025-2035</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-section">
+          <div class="card-section-title">Asuntos a tratar</div>
+          <ul>
+            <li>Articulación integral 6 ejes, 32 objetivos, 200 políticas</li>
+            <li>Coherencia interna entre instrumentos (PRC, PADEM, Plan Salud, PACCC)</li>
+            <li>Diseño sistema M&E: KPIs, tablero de control, rendición cuentas</li>
+            <li>Priorización de inversiones y cronograma Gantt 2026-2035</li>
+            <li>Vinculación con 15 de 17 ODS Agenda 2030</li>
+            <li>Convergencia PLADECO con Programa de Gobierno Local</li>
+          </ul>
+        </div>
+        <div class="card-section">
+          <div class="card-section-title">Integrantes</div>
+          <div class="tags">
+            <span class="tag" style="background:#e0e7ff;color:var(--puzzle);">Dir. SECPLAC</span>
+            <span class="tag" style="background:#e0e7ff;color:var(--puzzle);">Enc. PLADECO</span>
+            <span class="tag" style="background:#e0e7ff;color:var(--puzzle);">Asesora PLADECO</span>
+            <span class="tag" style="background:#e0e7ff;color:var(--puzzle);">Equipo Técnico SECPLAC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    SECPLAC — Ilustre Municipalidad de Rengo &nbsp;|&nbsp; PLADECO 2025-2035 &nbsp;|&nbsp; Mayo 2026<br>
+    Director SECPLAC: Daniel Castillo Campos &nbsp;|&nbsp; Encargado PLADECO: Osvaldo Mañán Arce
+  </div>
+
+</div>
+</body>
+</html>
