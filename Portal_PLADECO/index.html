@@ -597,6 +597,32 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
       <canvas id="chartFinancial"></canvas>
     </div>
   </div>
+
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Metas 2035: L&#237;nea Base vs Objetivos</h3>
+      <div class="viz-sub">Distancia actual respecto a las metas escalonadas</div>
+      <canvas id="chartMetasBar"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Cobertura de Grupos Prioritarios</h3>
+      <div class="viz-sub">% de acciones que benefician a cada grupo vulnerable</div>
+      <canvas id="chartGrupos"></canvas>
+    </div>
+  </div>
+
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>&#205;ndice de Concentraci&#243;n Territorial</h3>
+      <div class="viz-sub">Distribuci&#243;n de la inversi&#243;n BIP entre 25 localidades</div>
+      <canvas id="chartLorenz"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Balance de Complejidad por Eje</h3>
+      <div class="viz-sub">Comparaci&#243;n: acciones, objetivos, ODS, grupos beneficiados</div>
+      <canvas id="chartRadarEje"></canvas>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ MAPA TERRITORIAL ═══ -->
@@ -1800,6 +1826,69 @@ function renderGauges(){
   }).join('');
 }
 
+// ── RENDER METAS BAR (Baseline vs Target) ──
+function renderMetasBar(){
+  const labels=METAS.slice(0,10).map(m=>m.n);
+  new Chart(document.getElementById('chartMetasBar'),{type:'bar',data:{
+    labels,
+    datasets:[
+      {label:'Línea Base 2024',data:METAS.slice(0,10).map(m=>m.lb),backgroundColor:'#ef444488',borderColor:'#ef4444',borderWidth:1,borderRadius:3},
+      {label:'Meta 2028',data:METAS.slice(0,10).map(m=>m.m28),backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
+      {label:'Meta 2035',data:METAS.slice(0,10).map(m=>m.m35),backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+
+// ── RENDER GRUPOS PRIORITARIOS ──
+function renderGrupos(){
+  const data=[{g:'NNA',n:50,pct:22.2},{g:'Adulto Mayor',n:32,pct:14.2},{g:'Mujeres',n:18,pct:8.0},{g:'Discapacidad',n:12,pct:5.3},{g:'Inclusivas Total',n:80,pct:35.6}];
+  new Chart(document.getElementById('chartGrupos'),{type:'polarArea',data:{
+    labels:data.map(d=>d.g),
+    datasets:[{data:data.map(d=>d.n),backgroundColor:['#e6394688','#f4a26188','#db277788','#7b2cbf88','#4361ee88'],borderColor:['#e63946','#f4a261','#db2777','#7b2cbf','#4361ee'],borderWidth:2}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${data[ctx.dataIndex].pct}%)`}}}}});
+}
+
+// ── RENDER LORENZ CURVE ──
+function renderLorenz(){
+  const sorted=[...UV_DATA].sort((a,b)=>a.inv-b.inv);
+  const totalInv=sorted.reduce((s,u)=>s+u.inv,0);
+  const n=sorted.length;
+  const cumPop=sorted.map((_,i)=>((i+1)/n*100).toFixed(1));
+  const cumInv=[];
+  let runInv=0;
+  sorted.forEach(u=>{runInv+=u.inv;cumInv.push((runInv/totalInv*100).toFixed(1));});
+  new Chart(document.getElementById('chartLorenz'),{type:'line',data:{
+    labels:cumPop,
+    datasets:[
+      {label:'Distribución real',data:cumInv,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:'#ef4444'},
+      {label:'Igualdad perfecta',data:cumPop,borderColor:'#22c55e',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'% acumulado de localidades',font:{size:10}},ticks:{callback:(v,i)=>i%5===0?v+'%':''},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'% acumulado de inversión',font:{size:10}},ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{title:ctx=>`Top ${ctx[0].label}% localidades`,label:ctx=>`${ctx.dataset.label}: ${ctx.raw}% inversión`}},annotation:{annotations:{giniBox:{type:'label',xValue:12,yValue:70,content:['Gini: 0,741','Desigualdad alta'],font:{size:11,weight:'700'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.8)',padding:8,borderRadius:6}}}}}});
+}
+
+// ── RENDER RADAR POR EJE ──
+function renderRadarEje(){
+  const ejeMetrics=[
+    {name:'Social',acc:58,oe:8,ods:3.2,incl:31,nna:15},
+    {name:'Económico',acc:18,oe:5,ods:2.1,incl:7,nna:7},
+    {name:'Educación',acc:14,oe:4,ods:2.5,incl:12,nna:11},
+    {name:'Urbano/MA',acc:53,oe:7,ods:2.8,incl:10,nna:6},
+    {name:'Seguridad',acc:32,oe:4,ods:2.4,incl:15,nna:9},
+    {name:'Gestión',acc:50,oe:4,ods:2.3,incl:5,nna:2}
+  ];
+  const norm=(arr,max)=>arr.map(v=>v/max*100);
+  const maxA=58,maxO=8,maxOds=4,maxI=31,maxN=15;
+  new Chart(document.getElementById('chartRadarEje'),{type:'radar',data:{
+    labels:ejeMetrics.map(e=>e.name),
+    datasets:[
+      {label:'Acciones',data:norm(ejeMetrics.map(e=>e.acc),maxA),borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#4361ee'},
+      {label:'Objetivos',data:norm(ejeMetrics.map(e=>e.oe),maxO),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#22c55e'},
+      {label:'Inclusión',data:norm(ejeMetrics.map(e=>e.incl),maxI),borderColor:'#db2777',backgroundColor:'rgba(219,39,119,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#db2777'},
+      {label:'Enfoque NNA',data:norm(ejeMetrics.map(e=>e.nna),maxN),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#f59e0b'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'700'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+
 // ── RENDER POPULATION PYRAMID ──
 function renderPyramid(){
   const el=document.getElementById('pyramid');
@@ -2258,6 +2347,10 @@ renderInequality();
 renderBIPSector();
 renderIdentityChart();
 renderFinancial();
+renderMetasBar();
+renderGrupos();
+renderLorenz();
+renderRadarEje();
 renderURCompare();
 renderScatter();
 renderInvCap();
