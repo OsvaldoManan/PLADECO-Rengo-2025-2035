@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PLADECO Rengo 2025-2035 | Portal Estratégico</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<meta property="og:title" content="PLADECO Rengo 2025-2035">
+<meta property="og:description" content="Plan de Desarrollo Comunal — 6 ejes, 225 políticas, 65.786 habitantes">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -219,6 +228,44 @@ body.dark .eje-tab{border-color:#334155}
 body.dark .gallery-item img{opacity:.92}
 body.dark .foda-controls input{background:var(--card);color:var(--text);border-color:#334155}
 
+/* ── Leaflet Map ── */
+.map-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);height:500px;position:relative;z-index:1}
+.map-wrap .leaflet-container{height:100%;width:100%;border-radius:var(--radius)}
+.map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8}
+.map-legend .legend-item{display:flex;align-items:center;gap:6px}
+.map-legend .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.map-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.map-ctrl-btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
+.map-ctrl-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ── NNA Dashboard ── */
+.nna-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.nna-card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);text-align:center;border-top:4px solid var(--accent)}
+.nna-card .nna-val{font-size:28px;font-weight:800;margin:4px 0}
+.nna-card .nna-lbl{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.nna-card .nna-sub{font-size:10px;color:var(--text2);margin-top:2px}
+.nna-card.alert{border-top-color:#ef4444}
+.nna-card.warn{border-top-color:#f59e0b}
+.nna-card.good{border-top-color:#22c55e}
+
+/* ── Survey Charts ── */
+.survey-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:900px){.survey-grid{grid-template-columns:1fr}}
+
+/* ── Inequality Cards ── */
+.ineq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ineq-card{background:var(--card);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;border-left:5px solid}
+.ineq-card .ineq-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0}
+.ineq-card .ineq-val{font-size:22px;font-weight:800}
+.ineq-card .ineq-name{font-size:12px;font-weight:600}
+.ineq-card .ineq-desc{font-size:10px;color:var(--text2)}
+.ineq-card.danger{border-left-color:#ef4444}
+.ineq-card.danger .ineq-icon{background:#fee2e2;color:#ef4444}
+.ineq-card.warning{border-left-color:#f59e0b}
+.ineq-card.warning .ineq-icon{background:#fef3c7;color:#f59e0b}
+.ineq-card.ok{border-left-color:#22c55e}
+.ineq-card.ok .ineq-icon{background:#d1fae5;color:#22c55e}
+
 /* ── UV Sort ── */
 .uv-table th.sortable{cursor:pointer;user-select:none;transition:background .2s}
 .uv-table th.sortable:hover{background:#2a3a5e}
@@ -286,6 +333,9 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
     <a href="#dashboard"><span class="ico">&#9632;</span> Dashboard</a>
     <a href="#viz"><span class="ico">&#9881;</span> Visualizaciones</a>
     <div class="sep"></div>
+    <a href="#mapa"><span class="ico">&#9650;</span> Mapa Territorial</a>
+    <a href="#nna"><span class="ico">&#9829;</span> Diagn&#243;stico NNA</a>
+    <a href="#desigualdad"><span class="ico">&#9888;</span> Desigualdad</a>
     <a href="#ejes"><span class="ico">&#9654;</span> 6 Ejes Estratégicos</a>
     <a href="#foda"><span class="ico">&#9670;</span> Análisis FODA</a>
     <a href="#territorio"><span class="ico">&#9650;</span> Diagnóstico Territorial</a>
@@ -467,6 +517,65 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
       <h3>Evoluci&#243;n Financiera Municipal</h3>
       <div class="viz-sub">Ingresos, gastos y patrimonio 2018-2024 (millones $)</div>
       <canvas id="chartFinancial"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAPA TERRITORIAL ═══ -->
+<section id="mapa">
+  <div class="sec-header">
+    <div class="badge" style="background:#dbeafe;color:#2563eb">Georreferenciado</div>
+    <h2>Mapa Territorial Interactivo</h2>
+    <p>25 localidades con datos de poblaci&#243;n, inversi&#243;n BIP y participaci&#243;n ciudadana</p>
+  </div>
+  <div class="map-controls">
+    <button class="map-ctrl-btn active" onclick="setMapLayer(this,'pop')">Poblaci&#243;n</button>
+    <button class="map-ctrl-btn" onclick="setMapLayer(this,'inv')">Inversi&#243;n BIP</button>
+    <button class="map-ctrl-btn" onclick="setMapLayer(this,'bip')">Proyectos BIP</button>
+  </div>
+  <div class="map-wrap" id="mapContainer"></div>
+</section>
+
+<!-- ═══ DIAGNÓSTICO NNA ═══ -->
+<section id="nna">
+  <div class="sec-header">
+    <div class="badge" style="background:#fce7f3;color:#db2777">Infancia y Adolescencia</div>
+    <h2>Diagn&#243;stico NNA</h2>
+    <p>4.036 ni&#241;os, ni&#241;as y adolescentes encuestados en 27 establecimientos educativos</p>
+  </div>
+  <div class="nna-grid" id="nnaGrid"></div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Salud Mental y Violencia NNA</h3>
+      <div class="viz-sub">Indicadores cr&#237;ticos del diagn&#243;stico infantil</div>
+      <canvas id="chartNNA"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Voz de la Ciudadan&#237;a</h3>
+      <div class="viz-sub">119 encuestas ciudadanas + 21 encuestas NNA</div>
+      <canvas id="chartSurvey"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DESIGUALDAD TERRITORIAL ═══ -->
+<section id="desigualdad">
+  <div class="sec-header">
+    <div class="badge" style="background:#fee2e2;color:#dc2626">Brechas</div>
+    <h2>Desigualdad Territorial</h2>
+    <p>12 indicadores de concentraci&#243;n, brechas y cobertura con umbrales de alerta</p>
+  </div>
+  <div class="ineq-grid" id="ineqGrid"></div>
+  <div class="viz-row" style="margin-top:20px">
+    <div class="viz-card">
+      <h3>Inversi&#243;n BIP por Sector</h3>
+      <div class="viz-sub">1.182 proyectos hist&#243;ricos (1997-2025) por sector de inversi&#243;n</div>
+      <canvas id="chartBIPSector"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Identidad Local Percibida</h3>
+      <div class="viz-sub">Distribuci&#243;n seg&#250;n encuesta ciudadana (n=119) y NNA (n=21)</div>
+      <canvas id="chartIdentity"></canvas>
     </div>
   </div>
 </section>
@@ -760,31 +869,31 @@ const EJES = [
 ];
 
 const UV_DATA = [
-  {id:"U01",name:"Rengo Centro",tipo:"Urbano",uv:"UV-1",pob:12500,nna:3188,bip:0,inv:0},
-  {id:"U02",name:"Rengo Norte",tipo:"Urbano",uv:"UV-2",pob:6500,nna:1658,bip:0,inv:0},
-  {id:"U03",name:"Rengo Sur",tipo:"Urbano",uv:"UV-3",pob:4500,nna:1148,bip:0,inv:0},
-  {id:"U04",name:"Rengo Oriente",tipo:"Urbano",uv:"UV-4",pob:3000,nna:765,bip:0,inv:0},
-  {id:"U05",name:"Rengo Poniente",tipo:"Urbano",uv:"UV-5",pob:2000,nna:510,bip:0,inv:0},
-  {id:"U06",name:"Rosario Centro",tipo:"Urbano",uv:"UV-6",pob:4500,nna:1148,bip:3,inv:638990},
-  {id:"U07",name:"Rosario Poniente",tipo:"Urbano",uv:"UV-7",pob:3700,nna:944,bip:0,inv:0},
-  {id:"U08",name:"Rienci Valencia",tipo:"Urbano",uv:"UV-8",pob:3200,nna:816,bip:1,inv:20000},
-  {id:"U09",name:"El Rodeo",tipo:"Urbano",uv:"UV-9",pob:2861,nna:730,bip:0,inv:0},
-  {id:"R01",name:"Apalta",tipo:"Rural",uv:"UV-10",pob:1850,nna:472,bip:9,inv:4755063},
-  {id:"R02",name:"Chanqueahue",tipo:"Rural",uv:"UV-11",pob:1420,nna:362,bip:12,inv:1625771},
-  {id:"R03",name:"Cobil",tipo:"Rural",uv:"UV-12",pob:1180,nna:301,bip:6,inv:772579},
-  {id:"R04",name:"Esmeralda",tipo:"Rural",uv:"UV-13",pob:2650,nna:676,bip:37,inv:54689470},
-  {id:"R05",name:"La Chimba",tipo:"Rural",uv:"UV-14",pob:1340,nna:342,bip:15,inv:7135875},
-  {id:"R06",name:"Las Pataguas",tipo:"Rural",uv:"UV-15",pob:1110,nna:283,bip:3,inv:66175},
-  {id:"R07",name:"Lo Cartagena",tipo:"Rural",uv:"UV-16",pob:1580,nna:403,bip:20,inv:3567339},
-  {id:"R08",name:"Lo de Lobo",tipo:"Rural",uv:"UV-17",pob:980,nna:250,bip:33,inv:12893712},
-  {id:"R09",name:"Los Choapinos",tipo:"Rural",uv:"UV-18",pob:2100,nna:536,bip:10,inv:1280750},
-  {id:"R10",name:"Los Gomeros",tipo:"Rural",uv:"UV-19",pob:1540,nna:393,bip:2,inv:14104},
-  {id:"R11",name:"Malambo",tipo:"Rural",uv:"UV-20",pob:1390,nna:354,bip:7,inv:1180331},
-  {id:"R12",name:"Naicura",tipo:"Rural",uv:"UV-21",pob:2050,nna:523,bip:0,inv:0},
-  {id:"R13",name:"Popeta",tipo:"Rural",uv:"—",pob:1320,nna:337,bip:35,inv:8362374},
-  {id:"R14",name:"Pueblo Hundido",tipo:"Rural",uv:"—",pob:830,nna:212,bip:2,inv:11199},
-  {id:"R15",name:"San Jorge",tipo:"Rural",uv:"—",pob:920,nna:235,bip:0,inv:0},
-  {id:"R16",name:"Santa Isabel",tipo:"Rural",uv:"—",pob:765,nna:195,bip:0,inv:0}
+  {id:"U01",name:"Rengo Centro",tipo:"Urbano",uv:"UV-1",pob:12500,nna:3188,bip:0,inv:0,lat:-34.40518,lng:-70.86324},
+  {id:"U02",name:"Rengo Norte",tipo:"Urbano",uv:"UV-2",pob:6500,nna:1658,bip:0,inv:0,lat:-34.395,lng:-70.86},
+  {id:"U03",name:"Rengo Sur",tipo:"Urbano",uv:"UV-3",pob:4500,nna:1148,bip:0,inv:0,lat:-34.415,lng:-70.866},
+  {id:"U04",name:"Rengo Oriente",tipo:"Urbano",uv:"UV-4",pob:3000,nna:765,bip:0,inv:0,lat:-34.404,lng:-70.852},
+  {id:"U05",name:"Rengo Poniente",tipo:"Urbano",uv:"UV-5",pob:2000,nna:510,bip:0,inv:0,lat:-34.406,lng:-70.874},
+  {id:"U06",name:"Rosario Centro",tipo:"Urbano",uv:"UV-6",pob:4500,nna:1148,bip:3,inv:638990,lat:-34.34788,lng:-70.84245},
+  {id:"U07",name:"Rosario Poniente",tipo:"Urbano",uv:"UV-7",pob:3700,nna:944,bip:0,inv:0,lat:-34.35,lng:-70.851},
+  {id:"U08",name:"Rienci Valencia",tipo:"Urbano",uv:"UV-8",pob:3200,nna:816,bip:1,inv:20000,lat:-34.41,lng:-70.87},
+  {id:"U09",name:"El Rodeo",tipo:"Urbano",uv:"UV-9",pob:2861,nna:730,bip:0,inv:0,lat:-34.403,lng:-70.848},
+  {id:"R01",name:"Apalta",tipo:"Rural",uv:"UV-10",pob:1850,nna:472,bip:9,inv:4755063,lat:-34.33885,lng:-70.86644},
+  {id:"R02",name:"Chanqueahue",tipo:"Rural",uv:"UV-11",pob:1420,nna:362,bip:12,inv:1625771,lat:-34.4335,lng:-70.78779},
+  {id:"R03",name:"Cobil",tipo:"Rural",uv:"UV-12",pob:1180,nna:301,bip:6,inv:772579,lat:-34.39994,lng:-70.89498},
+  {id:"R04",name:"Esmeralda",tipo:"Rural",uv:"UV-13",pob:2650,nna:676,bip:37,inv:54689470,lat:-34.34281,lng:-70.9049},
+  {id:"R05",name:"La Chimba",tipo:"Rural",uv:"UV-14",pob:1340,nna:342,bip:15,inv:7135875,lat:-34.40804,lng:-70.81718},
+  {id:"R06",name:"Las Pataguas",tipo:"Rural",uv:"UV-15",pob:1110,nna:283,bip:3,inv:66175,lat:-34.3905,lng:-70.95144},
+  {id:"R07",name:"Lo Cartagena",tipo:"Rural",uv:"UV-16",pob:1580,nna:403,bip:20,inv:3567339,lat:-34.39026,lng:-70.8737},
+  {id:"R08",name:"Lo de Lobo",tipo:"Rural",uv:"UV-17",pob:980,nna:250,bip:33,inv:12893712,lat:-34.37523,lng:-70.82941},
+  {id:"R09",name:"Los Choapinos",tipo:"Rural",uv:"UV-18",pob:2100,nna:536,bip:10,inv:1280750,lat:-34.3192,lng:-70.83674},
+  {id:"R10",name:"Los Gomeros",tipo:"Rural",uv:"UV-19",pob:1540,nna:393,bip:2,inv:14104,lat:-34.35213,lng:-70.87866},
+  {id:"R11",name:"Malambo",tipo:"Rural",uv:"UV-20",pob:1390,nna:354,bip:7,inv:1180331,lat:-34.42437,lng:-70.83827},
+  {id:"R12",name:"Naicura",tipo:"Rural",uv:"UV-21",pob:2050,nna:523,bip:0,inv:0,lat:-34.32727,lng:-70.91833},
+  {id:"R13",name:"Popeta",tipo:"Rural",uv:"—",pob:1320,nna:337,bip:35,inv:8362374,lat:-34.42,lng:-70.88},
+  {id:"R14",name:"Pueblo Hundido",tipo:"Rural",uv:"—",pob:830,nna:212,bip:2,inv:11199,lat:-34.37959,lng:-70.88094},
+  {id:"R15",name:"San Jorge",tipo:"Rural",uv:"—",pob:920,nna:235,bip:0,inv:0,lat:-34.31297,lng:-70.87804},
+  {id:"R16",name:"Santa Isabel",tipo:"Rural",uv:"—",pob:765,nna:195,bip:0,inv:0,lat:-34.30677,lng:-70.90131}
 ];
 
 const GRAFICOS = [
@@ -849,6 +958,152 @@ const DOCS = [
   {name:"Ficha Resumen Visual",desc:"Ficha ejecutiva PLADECO",type:"html"},
   {name:"Redes Sociales PLADECO",desc:"17 posts + 6 stories para difusión",type:"pptx"}
 ];
+
+// ── NNA DIAGNOSTIC DATA ──
+const NNA_DIAG = [
+  {cat:'Salud Mental',items:[{n:'Ansiedad/Depresión',v:42,u:'%',alert:'red'},{n:'Acceso Apoyo Psic.',v:28,u:'%',alert:'red'},{n:'Sin Atención SM',v:72,u:'%',alert:'red'}]},
+  {cat:'Violencia',items:[{n:'Violencia Escolar',v:76,u:'%',alert:'red'},{n:'Bullying Habitual',v:31.5,u:'%',alert:'amber'},{n:'Ciberacoso',v:18.2,u:'%',alert:'amber'},{n:'VIF Reportada',v:12.4,u:'%',alert:'amber'}]},
+  {cat:'Educación',items:[{n:'Asistencia Regular',v:92.5,u:'%',alert:'green'},{n:'Deserción',v:4.1,u:'%',alert:'amber'},{n:'Cob. Preescolar',v:47,u:'%',alert:'red'},{n:'Satisfacción Colegio',v:68.3,u:'%',alert:'green'}]},
+  {cat:'Participación',items:[{n:'Participa Agrup.',v:52.4,u:'%',alert:'green'},{n:'Quiere Participar',v:100,u:'%',alert:'green'},{n:'Se Siente Escuchado',v:24,u:'%',alert:'red'}]},
+  {cat:'Territorio',items:[{n:'Usa Plazas/Parques',v:61.9,u:'%',alert:'green'},{n:'Espacios Públicos',v:2.9,u:'/5',alert:'red'},{n:'Identidad Local',v:47.6,u:'%',alert:'amber'}]},
+  {cat:'Vulnerabilidad',items:[{n:'Hacinamiento',v:14.2,u:'%',alert:'amber'},{n:'Sin Internet',v:11.6,u:'%',alert:'amber'},{n:'Conoce Derechos',v:41.3,u:'%',alert:'red'},{n:'Vulneración Detect.',v:18.9,u:'%',alert:'red'}]}
+];
+const INEQ_DATA = [
+  {n:'Gini Proyectos BIP',v:0.541,u:'',desc:'Desigualdad moderada-alta',th:0.4,type:'danger'},
+  {n:'Gini Inversión BIP',v:0.718,u:'',desc:'Desigualdad alta',th:0.4,type:'danger'},
+  {n:'Gini Inv. Per Cápita',v:0.741,u:'',desc:'Desigualdad muy alta',th:0.4,type:'danger'},
+  {n:'CR3 Proyectos',v:49.2,u:'%',desc:'Top 3 localidades concentran mitad',th:50,type:'warning'},
+  {n:'CR5 Proyectos',v:67.1,u:'%',desc:'2/3 en 5 localidades',th:60,type:'danger'},
+  {n:'HHI Concentración',v:1195,u:'',desc:'Concentración moderada',th:1500,type:'ok'},
+  {n:'Ratio Rural/Urbano Proy.',v:22.38,u:'x',desc:'Atomización rural',th:1.5,type:'warning'},
+  {n:'Ratio Rural/Urbano Inv.',v:9.41,u:'x',desc:'Brecha alta a favor rural',th:1.5,type:'warning'},
+  {n:'Concentración Eje 1+4',v:46.7,u:'%',desc:'Concentración aceptable',th:50,type:'ok'},
+  {n:'Acciones NNA',v:26.2,u:'%',desc:'Por encima del umbral',th:20,type:'ok'},
+  {n:'Dependencia FNDR',v:54.4,u:'%',desc:'Vulnerabilidad financiera',th:50,type:'danger'},
+  {n:'Pipeline Programas',v:0.3,u:'%',desc:'Subdesarrollo programático',th:5,type:'danger'}
+];
+const SURVEY_CIU = {
+  identity:{labels:['Muy fuerte','Fuerte','Débil','Muy débil','No lo sé'],vals:[3,31,67,12,6],colors:['#22c55e','#4ade80','#f59e0b','#ef4444','#94a3b8']},
+  gender:{labels:['Mujeres','Hombres'],vals:[82,37],colors:['#db2777','#4361ee']},
+  ages:{labels:['< 18','18-29','30-44','45-59','60+'],vals:[2,9,48,36,24],colors:['#8b5cf6','#4361ee','#22c55e','#f59e0b','#ef4444']},
+  ratings:{presencial:3.35,digital:3.00}
+};
+const BIP_SECTORS = [
+  {s:'Transporte y Vialidad',n:380,c:'#27AE60'},
+  {s:'Educación y Cultura',n:210,c:'#2980B9'},
+  {s:'Recursos Hídricos',n:165,c:'#1B3A6B'},
+  {s:'Salud',n:130,c:'#E74C3C'},
+  {s:'Multisectorial',n:85,c:'#8E44AD'},
+  {s:'Deporte',n:62,c:'#16A085'},
+  {s:'Vivienda y Urbanismo',n:55,c:'#F39C12'},
+  {s:'Justicia y Seguridad',n:38,c:'#E67E22'},
+  {s:'Energía',n:27,c:'#27AE60'},
+  {s:'Seguridad Pública',n:15,c:'#C0392B'},
+  {s:'Medioambiente',n:10,c:'#2ECC71'},
+  {s:'Turismo y Comercio',n:5,c:'#F1C40F'}
+];
+
+// ── RENDER MAP ──
+let mapInstance, mapMarkers = [], currentMapLayer = 'pop';
+function renderMap(){
+  if(!document.getElementById('mapContainer')) return;
+  mapInstance = L.map('mapContainer').setView([-34.38, -70.865], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; OpenStreetMap',maxZoom:18
+  }).addTo(mapInstance);
+  // Add legend
+  const legend = L.control({position:'bottomright'});
+  legend.onAdd = function(){
+    const div = L.DomUtil.create('div','map-legend');
+    div.innerHTML = '<strong>Localidades</strong><br><div class="legend-item"><span class="legend-dot" style="background:#4361ee"></span> Urbano</div><div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span> Rural</div>';
+    return div;
+  };
+  legend.addTo(mapInstance);
+  updateMapMarkers('pop');
+}
+function updateMapMarkers(mode){
+  mapMarkers.forEach(m=>mapInstance.removeLayer(m));
+  mapMarkers = [];
+  const maxPop = Math.max(...UV_DATA.map(u=>u.pob));
+  const maxInv = Math.max(...UV_DATA.filter(u=>u.inv>0).map(u=>u.inv));
+  const maxBip = Math.max(...UV_DATA.filter(u=>u.bip>0).map(u=>u.bip));
+  UV_DATA.forEach(u=>{
+    const lat = parseFloat(u.lat), lng = parseFloat(u.lng);
+    if(!lat || !lng) return;
+    let radius, color;
+    if(mode==='pop'){radius=Math.max(6,u.pob/maxPop*25);color=u.tipo==='Urbano'?'#4361ee':'#22c55e';}
+    else if(mode==='inv'){radius=u.inv>0?Math.max(5,u.inv/maxInv*30):4;color=u.inv>0?'#f59e0b':'#94a3b8';}
+    else{radius=u.bip>0?Math.max(5,u.bip/maxBip*25):4;color=u.bip>0?'#8b5cf6':'#94a3b8';}
+    const marker = L.circleMarker([lat,lng],{radius,fillColor:color,color:'#fff',weight:2,fillOpacity:.8}).addTo(mapInstance);
+    const invStr = u.inv>0 ? '$'+(u.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})+' M' : 'Sin registro';
+    marker.bindPopup(`<div style="font-family:system-ui;min-width:180px"><strong style="font-size:14px">${u.name}</strong><br><span style="font-size:11px;color:${u.tipo==='Urbano'?'#4361ee':'#22c55e'};font-weight:600">${u.tipo} — ${u.uv}</span><hr style="margin:6px 0;border-color:#e2e8f0"><table style="font-size:11px;width:100%"><tr><td>Población</td><td style="text-align:right;font-weight:700">${u.pob.toLocaleString('es-CL')}</td></tr><tr><td>NNA</td><td style="text-align:right;font-weight:700">${u.nna.toLocaleString('es-CL')}</td></tr><tr><td>Proyectos BIP</td><td style="text-align:right;font-weight:700">${u.bip}</td></tr><tr><td>Inversión</td><td style="text-align:right;font-weight:700">${invStr}</td></tr></table></div>`);
+    mapMarkers.push(marker);
+  });
+}
+function setMapLayer(btn,mode){
+  currentMapLayer=mode;
+  document.querySelectorAll('.map-ctrl-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateMapMarkers(mode);
+}
+
+// ── RENDER NNA DASHBOARD ──
+function renderNNA(){
+  const grid = document.getElementById('nnaGrid');
+  let html = '';
+  NNA_DIAG.forEach(cat=>{
+    cat.items.forEach(item=>{
+      const cls = item.alert==='red'?'alert':item.alert==='amber'?'warn':'good';
+      html+=`<div class="nna-card ${cls}"><div class="nna-val">${item.v}${item.u}</div><div class="nna-lbl">${item.n}</div><div class="nna-sub">${cat.cat}</div></div>`;
+    });
+  });
+  grid.innerHTML = html;
+  // NNA chart
+  new Chart(document.getElementById('chartNNA'),{type:'bar',data:{
+    labels:['Ansiedad','Sin Atención SM','Violencia Esc.','Bullying','Ciberacoso','VIF','Deserción','Hacinamiento','Vulneración'],
+    datasets:[{label:'% NNA afectados',data:[42,72,76,31.5,18.2,12.4,4.1,14.2,18.9],
+      backgroundColor:['#ef4444','#ef4444','#ef4444','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#ef4444'],
+      borderRadius:6,hoverBackgroundColor:'#1e293b'}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
+}
+
+// ── RENDER SURVEY CHART ──
+function renderSurveyChart(){
+  new Chart(document.getElementById('chartSurvey'),{type:'bar',data:{
+    labels:SURVEY_CIU.identity.labels,
+    datasets:[
+      {label:'Ciudadanos (n=119)',data:SURVEY_CIU.identity.vals,backgroundColor:'#4361ee99',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'Nº Respuestas',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+
+// ── RENDER INEQUALITY ──
+function renderInequality(){
+  const grid = document.getElementById('ineqGrid');
+  grid.innerHTML = INEQ_DATA.map(d=>{
+    const icon = d.type==='danger'?'!':d.type==='warning'?'~':'✓';
+    return `<div class="ineq-card ${d.type}"><div class="ineq-icon">${icon}</div><div><div class="ineq-val">${d.v}${d.u}</div><div class="ineq-name">${d.n}</div><div class="ineq-desc">${d.desc} (umbral: ${d.th})</div></div></div>`;
+  }).join('');
+}
+
+// ── RENDER BIP SECTOR CHART ──
+function renderBIPSector(){
+  new Chart(document.getElementById('chartBIPSector'),{type:'doughnut',data:{
+    labels:BIP_SECTORS.map(s=>s.s),
+    datasets:[{data:BIP_SECTORS.map(s=>s.n),backgroundColor:BIP_SECTORS.map(s=>s.c),borderWidth:2,borderColor:'var(--card,#fff)',hoverOffset:8}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} proyectos (${(ctx.raw/1182*100).toFixed(1)}%)`}}}},plugins:[{id:'centerTextBIP',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 24px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('1.182',left+width/2,top+height/2-6);c.font='600 10px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Proyectos',left+width/2,top+height/2+10);c.restore();}}]});
+}
+
+// ── RENDER IDENTITY CHART ──
+function renderIdentityChart(){
+  new Chart(document.getElementById('chartIdentity'),{type:'bar',data:{
+    labels:['Muy fuerte','Fuerte','Débil','Muy débil','No lo sé'],
+    datasets:[
+      {label:'Ciudadanos (n=119)',data:[3,31,67,12,6],backgroundColor:'#4361ee88',borderRadius:4},
+      {label:'NNA (n=21)',data:[2,8,4,0,7],backgroundColor:'#db277788',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'Respuestas'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
 
 // ── RENDER EJES ── (improved with action count badges + scroll-to from donut)
 const ejeColors = EJES.map(e=>e.color);
@@ -1384,10 +1639,19 @@ renderODS();
 renderTreemap();
 renderGauges();
 renderPyramid();
+renderMap();
+renderNNA();
+renderSurveyChart();
+renderInequality();
+renderBIPSector();
+renderIdentityChart();
 renderFinancial();
 animateCounters();
 initScrollProgress();
 initScrollReveal();
+
+// ── SERVICE WORKER ──
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
 </script>
 </body>
 </html>
