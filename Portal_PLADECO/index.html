@@ -525,6 +525,18 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
       <div class="kpi-bar"><div class="kpi-bar-fill" style="width:85%;background:var(--eje6)"></div></div>
     </div>
   </div>
+  <div class="viz-row" style="margin-top:20px">
+    <div class="viz-card">
+      <h3>Rengo vs Promedios Nacionales</h3>
+      <div class="viz-sub">Indicadores clave comparados con el promedio del pa&#237;s</div>
+      <canvas id="chartRengoVsNac"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Evoluci&#243;n de Transparencia Municipal</h3>
+      <div class="viz-sub">Ranking CPLT 2012-2024 — De 16% a 97,89%</div>
+      <canvas id="chartTransp"></canvas>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ VISUALIZACIONES INTERACTIVAS ═══ -->
@@ -782,6 +794,18 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
       <h3>Salud: Principales Problemas</h3>
       <div class="viz-sub">Aspectos del sistema de salud con mayores deficiencias (n=119)</div>
       <canvas id="chartSalud"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Perfil Demogr&#225;fico de Participantes</h3>
+      <div class="viz-sub">Distribuci&#243;n etaria y situaci&#243;n laboral de los 119 encuestados</div>
+      <canvas id="chartParticDemo"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Embudo de Participaci&#243;n Ciudadana</h3>
+      <div class="viz-sub">Desde el conocimiento hasta el compromiso activo</div>
+      <canvas id="chartFunnel"></canvas>
     </div>
   </div>
 </section>
@@ -1934,6 +1958,50 @@ function renderFinancial(){
     ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
 }
 
+// ── RENGO VS NACIONAL ──
+function renderRengoVsNac(){
+  const indicators=['Escolaridad (años)','Áreas verdes (m²/hab)','Transparencia (%)','Cobertura preescolar (%)','Deserción media (%)','Alcantarillado (%)'];
+  const rengo=[11.1,1.96,97.89,50.9,11.6,77];
+  const nacional=[12.1,4.5,81.76,55.0,5.3,92];
+  new Chart(document.getElementById('chartRengoVsNac'),{type:'bar',data:{
+    labels:indicators,
+    datasets:[
+      {label:'Rengo',data:rengo,backgroundColor:'#4361eeaa',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
+      {label:'Nacional',data:nacional,backgroundColor:'#94a3b888',borderColor:'#94a3b8',borderWidth:1,borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
+  }});
+}
+function renderTransparencia(){
+  new Chart(document.getElementById('chartTransp'),{type:'line',data:{
+    labels:['2012','2014','2016','2018','2020','2022','2024'],
+    datasets:[{label:'CPLT Rengo (%)',data:[16.4,45.2,62.8,78.5,88.3,94.6,97.89],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,borderWidth:3,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:'#22c55e'},
+    {label:'Promedio Nacional (%)',data:[35,42,52,60,68,75,81.76],borderColor:'#94a3b8',borderDash:[5,3],borderWidth:2,pointRadius:3,pointBackgroundColor:'#94a3b8',fill:false}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false}},y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},annotation:{annotations:{milestone:{type:'label',xValue:'2024',yValue:97.89,content:'97,89%',font:{size:12,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:6,borderRadius:6}}}}}});
+}
+
+// ── PARTICIPATION CHARTS ──
+function renderParticDemo(){
+  new Chart(document.getElementById('chartParticDemo'),{type:'doughnut',data:{
+    labels:['30-44 años (40%)','45-59 años (30%)','60+ años (20%)','18-29 años (8%)','< 18 años (2%)'],
+    datasets:[{data:[48,36,24,9,2],backgroundColor:['#4361ee88','#22c55e88','#f59e0b88','#8b5cf688','#ef444488'],borderColor:['#4361ee','#22c55e','#f59e0b','#8b5cf6','#ef4444'],borderWidth:2,hoverOffset:8}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}},plugins:[{id:'demoCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('119',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle='#64748b';c.fillText('encuestados',left+width/2,top+height/2+10);c.restore();}}]});
+}
+function renderFunnel(){
+  const stages=[
+    {name:'Conocen PLADECO',val:100,pct:'100%'},
+    {name:'Quieren participar',val:92,pct:'92%'},
+    {name:'Participan agrupaciones',val:57,pct:'57%'},
+    {name:'Desean talleres',val:49,pct:'49%'},
+    {name:'Conocen Plan Emergencias',val:6,pct:'6%'}
+  ];
+  new Chart(document.getElementById('chartFunnel'),{type:'bar',data:{
+    labels:stages.map(s=>s.name),
+    datasets:[{label:'% participantes',data:stages.map(s=>s.val),
+      backgroundColor:['#22c55ecc','#4ade80cc','#f59e0bcc','#fb923ccc','#ef4444cc'],borderRadius:6,barPercentage:.7}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw}% de los encuestados`}}}}});
+}
+
 // ── TERRITORIAL ADVANCED DATA ──
 const ODS_HEAT=[
   [8,3,28,10,3,0,0,2,0,1,1,0,2],
@@ -2347,6 +2415,8 @@ renderInequality();
 renderBIPSector();
 renderIdentityChart();
 renderFinancial();
+renderRengoVsNac();
+renderTransparencia();
 renderMetasBar();
 renderGrupos();
 renderLorenz();
@@ -2369,6 +2439,8 @@ renderInfraChart();
 renderPriorComp();
 renderEmergencia();
 renderSaludChart();
+renderParticDemo();
+renderFunnel();
 renderGestionKPIs();
 renderPlazoEje();
 renderFinanc();
