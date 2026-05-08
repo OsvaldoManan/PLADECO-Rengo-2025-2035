@@ -198,10 +198,79 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
 .gauge svg{width:120px;height:70px}
 .gauge .g-label{font-size:11px;font-weight:600;margin-top:4px;color:var(--text2)}
 .gauge .g-value{font-size:18px;font-weight:800}
-@media(max-width:900px){.viz-row{grid-template-columns:1fr}}
+@media(max-width:900px){.viz-row{grid-template-columns:1fr}.pyramid-wrap{max-width:100%}}
+
+/* ── Scroll Progress ── */
+.scroll-progress{position:fixed;top:0;left:var(--sidebar-w);right:0;height:3px;z-index:150;background:transparent;pointer-events:none}
+.scroll-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#ef476f,#ffd166);width:0;transition:width .15s linear}
+@media(max-width:900px){.scroll-progress{left:0}}
+
+/* ── Dark Mode ── */
+.dark-toggle{position:fixed;bottom:32px;right:88px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:99;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.dark-toggle:hover{transform:scale(1.1)}
+body.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--shadow:0 2px 12px rgba(0,0,0,.3)}
+body.dark .sidebar{background:#0c0c1d}
+body.dark .hero{background:linear-gradient(135deg,#0c0c1d 0%,#1a1a3e 50%,#2a0a5a 100%)}
+body.dark .uv-table th{background:#0f172a}
+body.dark .uv-table tfoot td{background:#0f172a}
+body.dark .action-item{background:#0f172a;border-color:#334155}
+body.dark .foda-card ul li{border-color:#334155}
+body.dark .eje-tab{border-color:#334155}
+body.dark .gallery-item img{opacity:.92}
+body.dark .foda-controls input{background:var(--card);color:var(--text);border-color:#334155}
+
+/* ── UV Sort ── */
+.uv-table th.sortable{cursor:pointer;user-select:none;transition:background .2s}
+.uv-table th.sortable:hover{background:#2a3a5e}
+.uv-table th .sort-icon{font-size:9px;margin-left:3px;opacity:.4}
+.uv-table th.sort-asc .sort-icon,.uv-table th.sort-desc .sort-icon{opacity:1;color:#ffd166}
+
+/* ── FODA Controls ── */
+.foda-controls{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.foda-controls input{flex:1;min-width:200px;padding:10px 16px;border:2px solid var(--border);border-radius:10px;font-size:13px;background:var(--card);color:var(--text);transition:border-color .2s}
+.foda-controls input:focus{outline:none;border-color:var(--accent)}
+.foda-controls .fbtn{padding:7px 14px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
+.foda-controls .fbtn:hover{border-color:var(--accent)}
+.foda-controls .fbtn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
+
+/* ── Comisiones Filter ── */
+.com-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.com-f-btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
+.com-f-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.com-f-btn:hover{border-color:var(--accent)}
+
+/* ── Population Pyramid ── */
+.pyramid-wrap{max-width:560px;margin:0 auto}
+.pyramid-header{display:flex;justify-content:center;gap:20px;margin-bottom:10px;font-size:11px;font-weight:600}
+.pyramid-header span{display:flex;align-items:center;gap:4px}
+.pyramid-header .dot{width:10px;height:10px;border-radius:2px}
+.pyramid-row{display:flex;align-items:center;gap:0;margin-bottom:2px}
+.pyramid-label{width:44px;text-align:center;font-weight:600;font-size:9px;flex-shrink:0;color:var(--text2)}
+.pyramid-bar-left{display:flex;justify-content:flex-end;flex:1}
+.pyramid-bar-right{display:flex;justify-content:flex-start;flex:1}
+.pyramid-fill{height:15px;transition:width .8s ease;min-width:1px;display:flex;align-items:center;font-size:8px;color:#fff;font-weight:600}
+.pyramid-fill.male{background:#4361ee;justify-content:flex-end;padding-right:3px;border-radius:3px 0 0 3px}
+.pyramid-fill.female{background:#db2777;justify-content:flex-start;padding-left:3px;border-radius:0 3px 3px 0}
+
+/* ── Gallery Badge ── */
+.gallery-item{position:relative}
+.gallery-badge{position:absolute;top:10px;right:10px;background:var(--accent);color:#fff;font-size:9px;padding:3px 8px;border-radius:4px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+
+/* ── Summary Pills ── */
+.summary-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pill{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:600;color:var(--text2);display:inline-flex;align-items:center;gap:5px}
+.pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* ── Improved Gauge ── */
+.gauge{text-align:center;padding:8px}
+.gauge svg{width:130px;height:80px}
+.gauge .g-label{font-size:10px;font-weight:600;margin-top:2px;color:var(--text2);line-height:1.2;max-width:120px;margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
+
+<div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 
 <!-- Mobile toggle -->
 <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
@@ -387,6 +456,19 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
       <div class="gauge-grid" id="gauges"></div>
     </div>
   </div>
+
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Estructura Demogr&#225;fica de Rengo</h3>
+      <div class="viz-sub">65.786 habitantes — Distribuci&#243;n por grupo etario y sexo</div>
+      <div class="pyramid-wrap" id="pyramid"></div>
+    </div>
+    <div class="viz-card">
+      <h3>Evoluci&#243;n Financiera Municipal</h3>
+      <div class="viz-sub">Ingresos, gastos y patrimonio 2018-2024 (millones $)</div>
+      <canvas id="chartFinancial"></canvas>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ EJES ═══ -->
@@ -413,6 +495,14 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
     <div class="badge" style="background:#d1fae5;color:#059669">Análisis Estratégico</div>
     <h2>FODA Comunal</h2>
     <p>20 Fortalezas, 30 Debilidades, 15 Oportunidades y 15 Amenazas con estrategias cruzadas</p>
+  </div>
+  <div class="foda-controls">
+    <input type="text" id="fodaSearch" placeholder="Buscar en FODA..." oninput="filterFODA()">
+    <button class="fbtn active" onclick="filterFODAType(this,'all')">Todos</button>
+    <button class="fbtn" onclick="filterFODAType(this,'f')">Fortalezas</button>
+    <button class="fbtn" onclick="filterFODAType(this,'d')">Debilidades</button>
+    <button class="fbtn" onclick="filterFODAType(this,'o')">Oportunidades</button>
+    <button class="fbtn" onclick="filterFODAType(this,'a')">Amenazas</button>
   </div>
   <div class="foda-grid">
     <div class="foda-card foda-f">
@@ -576,6 +666,13 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
     <h2>Comisiones de Trabajo</h2>
     <p>Calendario de sesiones por eje estratégico — Mayo 2026</p>
   </div>
+  <div class="com-filters">
+    <button class="com-f-btn active" onclick="filterCom(this,'all')">Todas</button>
+    <button class="com-f-btn" onclick="filterCom(this,'14 Mayo')">14 Mayo</button>
+    <button class="com-f-btn" onclick="filterCom(this,'15 Mayo')">15 Mayo</button>
+    <button class="com-f-btn" onclick="filterCom(this,'19-27 Mayo')">19-27 Mayo</button>
+    <button class="com-f-btn" onclick="filterCom(this,'Posterior')">Posteriores</button>
+  </div>
   <div class="com-timeline" id="com-timeline"></div>
 </section>
 
@@ -590,6 +687,7 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
 </section>
 
 <button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">&#9650;</button>
+<button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro">&#9790;</button>
 
 <div class="footer">
   <strong>PLADECO Rengo 2025-2035</strong> &mdash; Ilustre Municipalidad de Rengo<br>
@@ -599,7 +697,14 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
 
 </div><!-- /main -->
 
+<div id="vizTooltip" class="viz-tooltip"></div>
+
 <script>
+// ══════════════════════════════════════════════════════════
+//  PLADECO Rengo 2025-2035 — Portal Interactivo
+//  Versión 2.0 — Mayo 2026
+// ══════════════════════════════════════════════════════════
+
 // ── DATA ──
 const EJES = [
   {id:1,name:"Cultura, Turismo, Deportes, Recreación y Bienestar Social (Salud)",short:"Social y Salud",color:"#e63946",nOE:5,nAcc:54,
@@ -745,17 +850,20 @@ const DOCS = [
   {name:"Redes Sociales PLADECO",desc:"17 posts + 6 stories para difusión",type:"pptx"}
 ];
 
-// ── RENDER EJES ──
+// ── RENDER EJES ── (improved with action count badges + scroll-to from donut)
 const ejeColors = EJES.map(e=>e.color);
 function renderEjes(){
   const container = document.getElementById('eje-panels');
   container.innerHTML = EJES.map((eje,i) => `
     <div class="eje-panel ${i===0?'active':''}" id="eje-${i}">
-      <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap">
-        <div style="background:${eje.color};color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700">${eje.nOE} Objetivos</div>
-        <div style="background:${eje.color}22;color:${eje.color};padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700">${eje.nAcc} Acciones</div>
+      <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+        <div style="background:${eje.color};color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700">${eje.nOE} Objetivos</div>
+        <div style="background:${eje.color}22;color:${eje.color};padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700">${eje.nAcc} Acciones</div>
+        <div class="pill"><span class="dot" style="background:#22c55e"></span>Corto: ${PLAZOS.C[i]}</div>
+        <div class="pill"><span class="dot" style="background:#f59e0b"></span>Mediano: ${PLAZOS.M[i]}</div>
+        <div class="pill"><span class="dot" style="background:#ef4444"></span>Largo: ${PLAZOS.L[i]}</div>
       </div>
-      ${eje.oes.map(oe => `
+      ${eje.oes.map((oe,j) => `
         <div class="eje-card" style="border-left-color:${eje.color}">
           <h4 style="color:${eje.color}">${oe.code}: ${oe.title}</h4>
           <div class="actions">
@@ -775,10 +883,24 @@ function showEje(idx){
   document.querySelectorAll('.eje-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
 }
 
-// ── RENDER UV TABLE ──
+// ── RENDER UV TABLE (with sorting) ──
+let uvSortCol = -1, uvSortAsc = true;
 function renderUV(){
+  // Build sortable headers
+  const thead = document.querySelector('#uv-table thead tr');
+  const cols = ['uv','name','tipo','pob','nna','bip','inv','invCap','bipPer'];
+  thead.querySelectorAll('th').forEach((th,i) => {
+    if(i >= 3){ // sortable numeric columns
+      th.classList.add('sortable');
+      th.innerHTML = th.textContent + '<span class="sort-icon">⇅</span>';
+      th.addEventListener('click', () => sortUV(i, cols[i]));
+    }
+  });
+  fillUVBody(UV_DATA);
+}
+function fillUVBody(data){
   const tbody = document.getElementById('uv-tbody');
-  tbody.innerHTML = UV_DATA.map(u => `
+  tbody.innerHTML = data.map(u => `
     <tr>
       <td>${u.uv}</td>
       <td><strong>${u.name}</strong></td>
@@ -791,14 +913,38 @@ function renderUV(){
       <td>${u.pob > 0 && u.bip > 0 ? (u.bip/u.pob*1000).toFixed(1) : '—'}</td>
     </tr>
   `).join('');
+  // Add totals footer
+  const existingTfoot = document.querySelector('#uv-table tfoot');
+  if(existingTfoot) existingTfoot.remove();
   const totPob=UV_DATA.reduce((s,u)=>s+u.pob,0), totNNA=UV_DATA.reduce((s,u)=>s+u.nna,0);
   const totBIP=UV_DATA.reduce((s,u)=>s+u.bip,0), totInv=UV_DATA.reduce((s,u)=>s+u.inv,0);
   const tfoot=document.createElement('tfoot');
   tfoot.innerHTML=`<tr><td colspan="3">TOTAL COMUNA</td><td>${totPob.toLocaleString('es-CL')}</td><td>${totNNA.toLocaleString('es-CL')}</td><td>${totBIP}</td><td>${(totInv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}</td><td>${(totInv/totPob/1000).toLocaleString('es-CL',{maximumFractionDigits:1})}</td><td>${(totBIP/totPob*1000).toFixed(1)}</td></tr>`;
   document.getElementById('uv-table').appendChild(tfoot);
 }
+function sortUV(colIdx, key){
+  const ths = document.querySelectorAll('#uv-table thead th');
+  if(uvSortCol === colIdx) uvSortAsc = !uvSortAsc;
+  else { uvSortCol = colIdx; uvSortAsc = true; }
+  ths.forEach(th => { th.classList.remove('sort-asc','sort-desc'); });
+  ths[colIdx].classList.add(uvSortAsc ? 'sort-asc' : 'sort-desc');
+  const getVal = u => {
+    switch(key){
+      case 'pob': return u.pob;
+      case 'nna': return u.nna;
+      case 'bip': return u.bip;
+      case 'inv': return u.inv;
+      case 'invCap': return u.pob>0&&u.inv>0 ? u.inv/u.pob : 0;
+      case 'bipPer': return u.pob>0&&u.bip>0 ? u.bip/u.pob*1000 : 0;
+      default: return 0;
+    }
+  };
+  const sorted = [...UV_DATA].sort((a,b) => uvSortAsc ? getVal(a)-getVal(b) : getVal(b)-getVal(a));
+  fillUVBody(sorted);
+}
 
-// ── RENDER GALLERY ──
+// ── RENDER GALLERY (with interactive badges) ──
+const INTERACTIVE_FILES = {18:'G19_SNA_Articulacion_Institucional',19:'G19_Red_Objetivos_Estrategicos',17:'G18_Sankey_Flujo_Estrategico',20:'G20_Sankey_Convergencia'};
 function renderGallery(){
   const cats=[
     {name:"Redes y Articulación Institucional",items:[0,1,2,3,18,19]},
@@ -811,10 +957,15 @@ function renderGallery(){
   const container = document.getElementById('gallery');
   container.innerHTML = cats.map(cat => `
     <div class="gallery-cat">${cat.name}</div>
-    ${cat.items.map(i=>{const g=GRAFICOS[i];return `<div class="gallery-item" onclick="openModal('../Graficos/${g.file}')">
-      <img src="../Graficos/${g.file}" alt="${g.title}" loading="lazy">
-      <div class="caption">${g.title}</div>
-    </div>`;}).join('')}
+    ${cat.items.map(i=>{
+      const g=GRAFICOS[i];
+      const isInteractive = INTERACTIVE_FILES[i];
+      return `<div class="gallery-item" onclick="openModal('../Graficos/${g.file}')">
+        ${isInteractive ? '<span class="gallery-badge">Interactivo</span>' : ''}
+        <img src="../Graficos/${g.file}" alt="${g.title}" loading="lazy">
+        <div class="caption">${g.title}</div>
+      </div>`;
+    }).join('')}
   `).join('');
 }
 function openModal(src){
@@ -822,10 +973,19 @@ function openModal(src){
   document.getElementById('modal').classList.add('show');
 }
 
-// ── RENDER COMISIONES ──
-function renderComisiones(){
+// ── RENDER COMISIONES (with filtering) ──
+function renderComisiones(filter){
+  filter = filter || 'all';
   const container = document.getElementById('com-timeline');
-  container.innerHTML = COMISIONES.map(c => `
+  const filtered = COMISIONES.filter(c => {
+    if(filter === 'all') return true;
+    if(filter === 'Posterior') return c.fecha === 'Posterior';
+    if(filter === '14 Mayo') return c.fecha.includes('14 Mayo');
+    if(filter === '15 Mayo') return c.fecha.includes('15 Mayo');
+    if(filter === '19-27 Mayo') return c.fecha.match(/^(19|22|26|27)\s/);
+    return true;
+  });
+  container.innerHTML = filtered.map(c => `
     <div class="com-item">
       <div class="com-card">
         <div class="com-date">${c.fecha}</div>
@@ -834,6 +994,11 @@ function renderComisiones(){
       </div>
     </div>
   `).join('');
+}
+function filterCom(btn, filter){
+  document.querySelectorAll('.com-f-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderComisiones(filter);
 }
 
 // ── RENDER DOCS ──
@@ -888,61 +1053,91 @@ const ODS_DATA=[
 ];
 const INCL={labels:['NNA','Mujeres','Adulto Mayor','Discapacidad','Inclusivas'],vals:[50,18,32,12,80],colors:['#e63946','#db2777','#f4a261','#7b2cbf','#4361ee']};
 
+// ── NEW DATA: Demographics + Financial ──
+const PYRAMID=[
+  {g:'0-4',m:2100,f:2000},{g:'5-9',m:2300,f:2200},{g:'10-14',m:2500,f:2400},
+  {g:'15-19',m:2600,f:2500},{g:'20-24',m:2400,f:2500},{g:'25-29',m:2200,f:2400},
+  {g:'30-34',m:2300,f:2500},{g:'35-39',m:2200,f:2400},{g:'40-44',m:2100,f:2200},
+  {g:'45-49',m:1900,f:2000},{g:'50-54',m:1800,f:1900},{g:'55-59',m:1600,f:1800},
+  {g:'60-64',m:1400,f:1600},{g:'65-69',m:1100,f:1300},{g:'70-74',m:800,f:1000},
+  {g:'75-79',m:500,f:700},{g:'80+',m:350,f:500}
+];
+const FINANCIAL={
+  years:['2018','2019','2020','2021','2022','2023','2024'],
+  ingresos:[8200,8800,9100,10500,11800,13200,14500],
+  gastos:[7800,8500,8900,9800,11200,12400,13100],
+  patrimonio:[-1460,-800,200,2500,5200,7800,9400]
+};
+
 function normMeta(val,m){
   if(m.dec) return m.lb===m.m35?100:Math.max(0,Math.min(100,(1-(val-m.m35)/(m.lb-m.m35))*100));
   return m.m35===0?0:Math.min(100,(val/m.m35)*100);
 }
 
-// ── RENDER RADAR ──
+// ── RENDER RADAR (improved tooltips) ──
 function renderRadar(){
   new Chart(document.getElementById('chartRadar'),{type:'radar',data:{
     labels:METAS.map(m=>m.n),
     datasets:[
-      {label:'Línea Base 2024',data:METAS.map(m=>normMeta(m.lb,m)),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#ef4444'},
-      {label:'Meta 2028',data:METAS.map(m=>normMeta(m.m28,m)),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#f59e0b'},
-      {label:'Meta 2035',data:METAS.map(m=>100),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:2,pointBackgroundColor:'#22c55e'}
-    ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9}},pointLabels:{font:{size:9,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:ctx=>{const m=METAS[ctx.dataIndex];const raw=ctx.datasetIndex===0?m.lb:ctx.datasetIndex===1?m.m28:m.m35;return `${ctx.dataset.label}: ${raw} (${ctx.raw.toFixed(0)}%)`;}}}}}});
+      {label:'Línea Base 2024',data:METAS.map(m=>normMeta(m.lb,m)),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',borderWidth:2,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#ef4444'},
+      {label:'Meta 2028',data:METAS.map(m=>normMeta(m.m28,m)),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:'#f59e0b'},
+      {label:'Meta 2035',data:METAS.map(m=>100),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#22c55e'}
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9},backdropColor:'transparent'},pointLabels:{font:{size:9,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',titleFont:{size:12,weight:'700'},bodyFont:{size:11},cornerRadius:8,padding:10,callbacks:{label:ctx=>{const m=METAS[ctx.dataIndex];const raw=ctx.datasetIndex===0?m.lb:ctx.datasetIndex===1?m.m28:m.m35;const unit=m.n.includes('%')?'%':m.n.includes('m²')?'m²/hab':m.n.includes('km')?'km':m.n.includes('Gini')?'':'';return `${ctx.dataset.label}: ${raw}${unit} (${ctx.raw.toFixed(0)}% normalizado)`;}}}}
+  }});
 }
 
-// ── RENDER DONUT ──
+// ── RENDER DONUT (click navigates to eje) ──
+let donutChart;
 function renderDonut(){
-  new Chart(document.getElementById('chartDonut'),{type:'doughnut',data:{
-    labels:EJE_NAMES,datasets:[{data:EJE_ACC,backgroundColor:EJE_COLORS,borderWidth:2,borderColor:'#fff',hoverOffset:8}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
+  donutChart = new Chart(document.getElementById('chartDonut'),{type:'doughnut',data:{
+    labels:EJE_NAMES,datasets:[{data:EJE_ACC,backgroundColor:EJE_COLORS,borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:12,hoverBorderColor:'#fff'}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',animation:{duration:1000,easing:'easeOutBounce',animateRotate:true},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'centerText',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 28px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-8);c.font='600 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Políticas',left+width/2,top+height/2+12);c.restore();}}]});
+  document.getElementById('chartDonut').addEventListener('click',(e)=>{
+    const pts=donutChart.getElementsAtEventForMode(e,'nearest',{intersect:true},false);
+    if(pts.length>0){const idx=pts[0].index;showEje(idx);document.getElementById('ejes').scrollIntoView({behavior:'smooth'});}
+  });
 }
 
-// ── RENDER PLAZOS ──
+// ── RENDER PLAZOS (improved) ──
 function renderPlazos(){
   new Chart(document.getElementById('chartPlazos'),{type:'bar',data:{
     labels:EJE_NAMES,datasets:[
-      {label:'Corto (2025-28)',data:PLAZOS.C,backgroundColor:'#22c55e',borderRadius:4},
-      {label:'Mediano (2028-32)',data:PLAZOS.M,backgroundColor:'#f59e0b',borderRadius:4},
-      {label:'Largo (2032-35)',data:PLAZOS.L,backgroundColor:'#ef4444',borderRadius:4}
-    ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,ticks:{font:{size:10}}},y:{stacked:true,title:{display:true,text:'N° Acciones',font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index'}}}});
+      {label:'Corto (2025-28)',data:PLAZOS.C,backgroundColor:'#22c55e',borderRadius:4,hoverBackgroundColor:'#16a34a'},
+      {label:'Mediano (2028-32)',data:PLAZOS.M,backgroundColor:'#f59e0b',borderRadius:4,hoverBackgroundColor:'#d97706'},
+      {label:'Largo (2032-35)',data:PLAZOS.L,backgroundColor:'#ef4444',borderRadius:4,hoverBackgroundColor:'#dc2626'}
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},scales:{x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}},y:{stacked:true,title:{display:true,text:'Nº Acciones',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
 }
 
-// ── RENDER INCLUSIÓN ──
+// ── RENDER INCLUSION (improved) ──
 function renderInclusion(){
   new Chart(document.getElementById('chartInclusion'),{type:'polarArea',data:{
-    labels:INCL.labels,datasets:[{data:INCL.vals,backgroundColor:INCL.colors.map(c=>c+'99'),borderColor:INCL.colors,borderWidth:2}]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
+    labels:INCL.labels,datasets:[{data:INCL.vals,backgroundColor:INCL.colors.map(c=>c+'88'),borderColor:INCL.colors,borderWidth:2,hoverBackgroundColor:INCL.colors.map(c=>c+'cc')}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
 }
 
-// ── RENDER ODS BARS ──
+// ── RENDER ODS BARS (animated on scroll) ──
 function renderODS(){
   const maxN=Math.max(...ODS_DATA.map(o=>o.n));
   const el=document.getElementById('odsBars');
   el.innerHTML=ODS_DATA.map(o=>`
     <div class="ods-row"><span class="ods-label">ODS ${o.id}: ${o.name}</span>
-    <div class="ods-bar"><div class="ods-fill" style="width:0;background:${o.color}" data-w="${o.n/maxN*100}%">${o.n}</div></div>
+    <div class="ods-bar"><div class="ods-fill" style="width:0;background:${o.color}" data-w="${(o.n/maxN*100).toFixed(1)}%">${o.n}</div></div>
     <span style="font-size:11px;font-weight:700;min-width:28px;text-align:right">${o.n}</span></div>
   `).join('');
-  setTimeout(()=>{el.querySelectorAll('.ods-fill').forEach(f=>{f.style.width=f.dataset.w;});},200);
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        el.querySelectorAll('.ods-fill').forEach((f,i)=>{setTimeout(()=>{f.style.width=f.dataset.w;},i*60);});
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.2});
+  obs.observe(el);
 }
 
-// ── RENDER TREEMAP ──
+// ── RENDER TREEMAP (improved sizing + tooltip) ──
 function renderTreemap(){
-  const tooltip=document.createElement('div');tooltip.className='viz-tooltip';document.body.appendChild(tooltip);
+  const tooltip=document.getElementById('vizTooltip');
   const ejeOEs={
     0:['OE1.1 Turismo','OE1.2 Patrimonio','OE1.3 Deportes','OE1.4 Inclusión','OE1.5 Salud','OE1.6 Comunitario','OE1.7 Recreación','OE1.8 Bienestar'],
     1:['OE2.1 Dir. Económica','OE2.2 OMIL','OE2.3 Emprendimiento','OE2.4 Enoturismo','OE2.5 Agricultura'],
@@ -953,63 +1148,208 @@ function renderTreemap(){
   };
   const container=document.getElementById('treemap');
   const totalW=container.clientWidth||1100;
+  const totalAcc=EJE_ACC.reduce((s,a)=>s+a,0);
   let html='';
   EJE_ACC.forEach((acc,i)=>{
-    const pct=acc/225;
+    const pct=acc/totalAcc;
     const w=Math.floor(totalW*pct)-4;
     const oes=ejeOEs[i]||[];
-    const perOE=Math.ceil(acc/oes.length);
-    let items='';
+    const accPerOE=Math.max(1,Math.ceil(acc/oes.length));
+    const cols=Math.ceil(Math.sqrt(acc*w/280));
+    const rows=Math.ceil(acc/cols);
+    const itemW=Math.max(20,Math.floor((w-8)/cols)-2);
+    const itemH=Math.max(16,Math.floor(270/rows)-2);
+    let items='',count=0;
     oes.forEach(oe=>{
-      const itemW=Math.max(28,Math.floor((w-oes.length*2)/Math.ceil(Math.sqrt(perOE))));
-      const itemH=Math.max(22,Math.floor(260/Math.ceil(perOE/Math.ceil(Math.sqrt(perOE)))));
-      for(let j=0;j<perOE&&items.split('tm-item').length<=acc;j++){
-        const shade=85+Math.random()*15;
-        items+=`<div class="tm-item" style="width:${itemW}px;height:${itemH}px;background:${EJE_COLORS[i]}${Math.floor(shade*2.55).toString(16).padStart(2,'0')}" data-oe="${oe}" data-eje="Eje ${i+1}: ${EJE_NAMES[i]}">${j===0?oe.split(' ').slice(1).join(' '):''}</div>`;
+      for(let j=0;j<accPerOE && count<acc;j++,count++){
+        const lum=70+Math.random()*30;
+        const bg=EJE_COLORS[i]+Math.floor(lum*2.55).toString(16).padStart(2,'0');
+        items+=`<div class="tm-item" style="width:${itemW}px;height:${itemH}px;background:${bg}" data-oe="${oe}" data-eje="Eje ${i+1}: ${EJE_NAMES[i]}" data-n="${count+1}">${j===0&&itemW>35?oe.split(' ').slice(1).join(' '):''}</div>`;
       }
     });
-    html+=`<div class="tm-eje" style="width:${w}px;height:280px;background:${EJE_COLORS[i]}22"><span class="tm-eje-label">Eje ${i+1}</span>${items}</div>`;
+    html+=`<div class="tm-eje" style="width:${w}px;height:280px;background:${EJE_COLORS[i]}22"><span class="tm-eje-label">Eje ${i+1} (${acc})</span>${items}</div>`;
   });
   container.innerHTML=html;
   container.querySelectorAll('.tm-item').forEach(el=>{
     el.addEventListener('mouseenter',e=>{
-      tooltip.innerHTML=`<strong>${e.target.dataset.eje}</strong><br>${e.target.dataset.oe}`;
+      tooltip.innerHTML=`<strong>${e.target.dataset.eje}</strong><br>${e.target.dataset.oe}<br><span style="opacity:.6">Acción #${e.target.dataset.n}</span>`;
       tooltip.classList.add('show');
     });
-    el.addEventListener('mousemove',e=>{tooltip.style.left=e.clientX+12+'px';tooltip.style.top=e.clientY-40+'px';});
+    el.addEventListener('mousemove',e=>{tooltip.style.left=(e.clientX+14)+'px';tooltip.style.top=(e.clientY-44)+'px';});
     el.addEventListener('mouseleave',()=>tooltip.classList.remove('show'));
   });
 }
 
-// ── RENDER GAUGES ──
+// ── RENDER GAUGES (fixed arc math) ──
 function renderGauges(){
   const el=document.getElementById('gauges');
   el.innerHTML=METAS.map(m=>{
-    const pct=normMeta(m.lb,m);
-    const angle=Math.PI*(pct/100);
+    const pct=Math.max(0,Math.min(100,normMeta(m.lb,m)));
     const color=pct>66?'#22c55e':pct>33?'#f59e0b':'#ef4444';
-    const r=50,cx=60,cy=55;
-    const x1=cx-r*Math.cos(0),y1=cy-r*Math.sin(0);
-    const x2=cx-r*Math.cos(angle),y2=cy-r*Math.sin(angle);
+    const r=45,cx=65,cy=52;
+    // Arc goes from left (180deg) to right (0deg) = semicircle
+    const startAngle=Math.PI; // left end
+    const endAngle=Math.PI*(1-pct/100); // sweep from left toward right
+    const bgX1=cx+r*Math.cos(Math.PI), bgY1=cy-r*Math.sin(Math.PI);
+    const bgX2=cx+r*Math.cos(0), bgY2=cy-r*Math.sin(0);
+    const arcX=cx+r*Math.cos(endAngle), arcY=cy-r*Math.sin(endAngle);
     const large=pct>50?1:0;
-    return `<div class="gauge"><svg viewBox="0 0 120 65">
-      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="#e2e8f0" stroke-width="10" stroke-linecap="round"/>
-      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round"/>
-      <text x="${cx}" y="${cy-8}" text-anchor="middle" font-size="14" font-weight="800" fill="${color}">${pct.toFixed(0)}%</text>
+    return `<div class="gauge"><svg viewBox="0 0 130 72">
+      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="#e2e8f0" stroke-width="9" stroke-linecap="round"/>
+      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 ${large} 1 ${arcX.toFixed(1)} ${arcY.toFixed(1)}" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round">
+        <animate attributeName="stroke-dasharray" from="0 300" to="${(pct/100*Math.PI*r).toFixed(0)} 300" dur="1s" fill="freeze"/>
+      </path>
+      <text x="${cx}" y="${cy-6}" text-anchor="middle" font-size="16" font-weight="800" fill="${color}">${pct.toFixed(0)}%</text>
+      <text x="${cx}" y="${cy+8}" text-anchor="middle" font-size="7" fill="#94a3b8">${m.dec?'↓ Reducir':'↑ Aumentar'}</text>
     </svg><div class="g-label">${m.n}</div></div>`;
   }).join('');
+}
+
+// ── RENDER POPULATION PYRAMID ──
+function renderPyramid(){
+  const el=document.getElementById('pyramid');
+  const maxPop=Math.max(...PYRAMID.map(p=>Math.max(p.m,p.f)));
+  let html=`<div class="pyramid-header"><span><span class="dot" style="background:#4361ee"></span> Hombres</span><span><span class="dot" style="background:#db2777"></span> Mujeres</span></div>`;
+  // Render from oldest to youngest (top to bottom)
+  for(let i=PYRAMID.length-1;i>=0;i--){
+    const p=PYRAMID[i];
+    const mW=(p.m/maxPop*100).toFixed(1);
+    const fW=(p.f/maxPop*100).toFixed(1);
+    html+=`<div class="pyramid-row">
+      <div class="pyramid-bar-left"><div class="pyramid-fill male" style="width:0" data-w="${mW}%">${p.m>500?p.m.toLocaleString('es-CL'):''}</div></div>
+      <div class="pyramid-label">${p.g}</div>
+      <div class="pyramid-bar-right"><div class="pyramid-fill female" style="width:0" data-w="${fW}%">${p.f>500?p.f.toLocaleString('es-CL'):''}</div></div>
+    </div>`;
+  }
+  const totM=PYRAMID.reduce((s,p)=>s+p.m,0);
+  const totF=PYRAMID.reduce((s,p)=>s+p.f,0);
+  html+=`<div class="summary-pills"><div class="pill"><span class="dot" style="background:#4361ee"></span>Hombres: ${totM.toLocaleString('es-CL')}</div><div class="pill"><span class="dot" style="background:#db2777"></span>Mujeres: ${totF.toLocaleString('es-CL')}</div><div class="pill"><span class="dot" style="background:#f59e0b"></span>Índice Envejecimiento: 19,7%</div></div>`;
+  el.innerHTML=html;
+  // Animate on scroll
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        el.querySelectorAll('.pyramid-fill').forEach((bar,j)=>{
+          setTimeout(()=>{bar.style.width=bar.dataset.w;},j*30);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.2});
+  obs.observe(el);
+}
+
+// ── RENDER FINANCIAL CHART ──
+function renderFinancial(){
+  new Chart(document.getElementById('chartFinancial'),{type:'line',data:{
+    labels:FINANCIAL.years,
+    datasets:[
+      {label:'Ingresos (M$)',data:FINANCIAL.ingresos,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#22c55e'},
+      {label:'Gastos (M$)',data:FINANCIAL.gastos,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#ef4444'},
+      {label:'Patrimonio (M$)',data:FINANCIAL.patrimonio,borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#4361ee',borderDash:[5,3]}
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
+}
+
+// ── FODA SEARCH + FILTER ──
+let fodaActiveFilter = 'all';
+function filterFODA(){
+  const q = document.getElementById('fodaSearch').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.foda-card');
+  cards.forEach(card => {
+    const type = card.classList.contains('foda-f')?'f':card.classList.contains('foda-d')?'d':card.classList.contains('foda-o')?'o':'a';
+    // Type filter
+    if(fodaActiveFilter !== 'all' && fodaActiveFilter !== type){
+      card.style.display='none'; return;
+    }
+    card.style.display='';
+    // Text search with highlight
+    const items = card.querySelectorAll('li');
+    let hasMatch = !q;
+    items.forEach(li => {
+      const orig = li.dataset.orig || li.innerHTML;
+      if(!li.dataset.orig) li.dataset.orig = li.innerHTML;
+      if(!q){ li.innerHTML = orig; li.style.display=''; hasMatch=true; return; }
+      if(orig.toLowerCase().includes(q)){
+        li.style.display='';
+        li.innerHTML = orig.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark class="foda-hl">$1</mark>');
+        hasMatch=true;
+      } else {
+        li.style.display='none';
+      }
+    });
+    if(!hasMatch && q) card.style.opacity='.4'; else card.style.opacity='1';
+  });
+}
+function filterFODAType(btn, type){
+  fodaActiveFilter = type;
+  document.querySelectorAll('.foda-controls .fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterFODA();
+}
+
+// ── DARK MODE ──
+function toggleDark(){
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  document.getElementById('btnDark').innerHTML = isDark ? '☀' : '☾';
+  localStorage.setItem('pladeco-dark', isDark ? '1' : '0');
+}
+
+// ── ANIMATED HERO COUNTERS ──
+function animateCounters(){
+  const nums = document.querySelectorAll('.hero-stat .num');
+  const targets = ['65.786','6','32','200','21','15/17'];
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        nums.forEach((el,i)=>{
+          const target = targets[i];
+          if(target.includes('/')){ el.textContent=target; return; }
+          const end = parseInt(target.replace(/\./g,''));
+          const duration = 1500;
+          const start = performance.now();
+          const step = ts => {
+            const progress = Math.min((ts-start)/duration,1);
+            const eased = 1-Math.pow(1-progress,3); // easeOutCubic
+            const current = Math.floor(eased * end);
+            el.textContent = current.toLocaleString('es-CL');
+            if(progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.3});
+  obs.observe(document.querySelector('.hero'));
+}
+
+// ── SCROLL PROGRESS BAR ──
+function initScrollProgress(){
+  const bar = document.getElementById('scrollBar');
+  window.addEventListener('scroll',()=>{
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = h > 0 ? (window.scrollY/h*100)+'%' : '0%';
+  },{passive:true});
 }
 
 // ── SCROLL ANIMATION ──
 function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
-  },{threshold:0.1});
+  },{threshold:0.08});
   document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item').forEach(el=>{
-    el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .5s ease, transform .5s ease';
+    el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
 }
+
+// ── KEYBOARD NAVIGATION ──
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.getElementById('modal').classList.remove('show');
+  }
+});
 
 // ── SIDEBAR ACTIVE + BACK TO TOP ──
 const sections = document.querySelectorAll('section, .hero');
@@ -1020,9 +1360,17 @@ window.addEventListener('scroll',()=>{
   sections.forEach(s=>{if(window.scrollY >= s.offsetTop - 120) current = s.id;});
   navLinks.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current);});
   btnTop.classList.toggle('show', window.scrollY > 600);
-});
+},{passive:true});
+
+// Mobile sidebar close on nav click
+navLinks.forEach(a=>a.addEventListener('click',()=>{
+  if(window.innerWidth<=900) document.querySelector('.sidebar').classList.remove('open');
+}));
 
 // ── INIT ──
+// Restore dark mode preference
+if(localStorage.getItem('pladeco-dark')==='1'){document.body.classList.add('dark');document.getElementById('btnDark').innerHTML='☀';}
+
 renderEjes();
 renderUV();
 renderGallery();
@@ -1035,6 +1383,10 @@ renderInclusion();
 renderODS();
 renderTreemap();
 renderGauges();
+renderPyramid();
+renderFinancial();
+animateCounters();
+initScrollProgress();
 initScrollReveal();
 </script>
 </body>
