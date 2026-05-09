@@ -353,6 +353,41 @@ body.dark .foda-controls input{background:var(--card);color:var(--text);border-c
 .foda-controls .fbtn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
 
+/* ── FODA Entrevistas ── */
+.foda-entrev{margin-top:36px}
+.foda-entrev-header{text-align:center;margin-bottom:28px}
+.foda-entrev-header h3{font-size:clamp(18px,2.2vw,22px);font-weight:800;margin:0 0 8px}
+.foda-entrev-header p{font-size:13px;color:var(--text2);max-width:680px;margin:0 auto;line-height:1.5}
+.foda-stats-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.foda-stat{text-align:center;padding:12px 20px;background:var(--card);border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);min-width:110px}
+.foda-stat .fs-val{font-size:26px;font-weight:800;color:var(--accent)}
+.foda-stat .fs-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.foda-q-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+@media(max-width:900px){.foda-q-grid{grid-template-columns:1fr}}
+.foda-q-card{border-radius:var(--radius);padding:24px;position:relative;overflow:hidden;border:1px solid;transition:transform .2s,box-shadow .2s}
+.foda-q-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.12)}
+.foda-q-card .fq-icon{font-size:28px;margin-bottom:8px}
+.foda-q-card .fq-title{font-size:16px;font-weight:800;margin-bottom:12px}
+.foda-q-card .fq-items{list-style:none;padding:0;margin:0}
+.foda-q-card .fq-items li{padding:8px 0;border-bottom:1px solid rgba(128,128,128,.15);font-size:13px;line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+.foda-q-card .fq-items li:last-child{border:none}
+.foda-q-card .fq-items li .fq-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.foda-q-card .fq-items li strong{font-weight:700}
+.foda-q-f{background:#ecfdf5;border-color:#bbf7d0;color:#065f46}
+.foda-q-o{background:#eff6ff;border-color:#bfdbfe;color:#1e40af}
+.foda-q-d{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.foda-q-a{background:#fffbeb;border-color:#fde68a;color:#92400e}
+body.dark .foda-q-f{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25);color:#86efac}
+body.dark .foda-q-o{background:rgba(59,130,246,.08);border-color:rgba(59,130,246,.25);color:#93c5fd}
+body.dark .foda-q-d{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.25);color:#fca5a5}
+body.dark .foda-q-a{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);color:#fcd34d}
+.foda-quotes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+@media(max-width:900px){.foda-quotes{grid-template-columns:1fr}}
+.foda-quote{background:var(--card);border-radius:12px;padding:20px 24px;box-shadow:var(--shadow);border-left:4px solid var(--accent);position:relative}
+.foda-quote::before{content:'\201C';position:absolute;top:8px;left:12px;font-size:36px;color:var(--accent);opacity:.2;font-family:Georgia,serif}
+.foda-quote p{font-size:13px;line-height:1.6;font-style:italic;color:var(--text);margin:0 0 8px;padding-left:8px}
+.foda-quote .fq-src{font-size:11px;color:var(--text2);font-weight:600;padding-left:8px}
+
 /* ── Comisiones Filter ── */
 .com-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .com-f-btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
@@ -1064,6 +1099,29 @@ body{padding-top:60px}
       <div class="viz-sub">Desde el conocimiento hasta el compromiso activo</div>
       <canvas id="chartFunnel"></canvas>
     </div>
+  </div>
+
+  <!-- FODA Cualitativo Entrevistas -->
+  <div class="foda-entrev" id="fodaEntrev">
+    <div class="foda-entrev-header">
+      <h3>&#128269; An&#225;lisis FODA — Entrevistas Cualitativas</h3>
+      <p>S&#237;ntesis estrat&#233;gica construida a partir de m&#225;s de 120 entrevistas a 14 tipos de actores comunales: dirigentes vecinales, concejales, directores municipales, actores culturales, COSOC, adultos mayores, entre otros.</p>
+    </div>
+    <div class="foda-stats-row" id="fodaStats"></div>
+    <div class="foda-q-grid" id="fodaGrid"></div>
+    <div class="viz-row">
+      <div class="viz-card">
+        <h3>Cobertura Tem&#225;tica de Entrevistas</h3>
+        <div class="viz-sub">Dimensiones abordadas en los 30 instrumentos cualitativos</div>
+        <canvas id="chartFodaRadar"></canvas>
+      </div>
+      <div class="viz-card">
+        <h3>Frecuencia de Menciones por Categor&#237;a FODA</h3>
+        <div class="viz-sub">N&#250;mero de menciones emergentes en entrevistas por tipo FODA</div>
+        <canvas id="chartFodaBar"></canvas>
+      </div>
+    </div>
+    <div class="foda-quotes" id="fodaQuotes"></div>
   </div>
 </section>
 
@@ -2009,6 +2067,57 @@ const INCL_ACC={nna:50,mujeres:18,am:32,pcd:12,inclusivas:80};
 const ODS_ACC=[{ods:3,n:43},{ods:11,n:38},{ods:16,n:33},{ods:4,n:24},{ods:9,n:23},{ods:8,n:19},{ods:6,n:12},{ods:1,n:12}];
 const EJE_ACC_N=[58,18,14,53,32,50];
 
+// ── FODA ENTREVISTAS DATA ──
+const FODA_DATA={
+  fortalezas:[
+    {t:'Espacios públicos renovados',d:'Plazas, parques y sedes comunitarias mejoradas en el casco urbano, reconocidas por dirigentes y vecinos.'},
+    {t:'Cambio positivo en gestión municipal',d:'Percepción transversal de mejora en la atención y transparencia del municipio en el último período.'},
+    {t:'Tejido organizacional activo',d:'Más de 400 organizaciones registradas: juntas de vecinos, clubes deportivos, agrupaciones culturales y COSOC operativo.'},
+    {t:'Infraestructura de salud territorial',d:'Red de CESFAM y postas rurales con cobertura en las 21 unidades vecinales de la comuna.'},
+    {t:'Identidad territorial fuerte',d:'Arraigo campesino, tradiciones huasas y sentido de pertenencia expresado por actores culturales y rurales.'}
+  ],
+  oportunidades:[
+    {t:'Turismo sustentable',d:'Potencial turístico en la zona de Rapel, rutas rurales y patrimonio agrícola aún sin explotar.'},
+    {t:'Reciclaje y educación ambiental',d:'Demanda ciudadana creciente por programas de reciclaje y puntos limpios funcionales.'},
+    {t:'Diversificación económica local',d:'Ferias libres, emprendimientos locales y economía circular como motores de desarrollo.'},
+    {t:'Mejora en infraestructura educativa',d:'Proyectos BIP en liceos y escuelas con potencial de impacto en retención escolar.'},
+    {t:'Ciclovías y movilidad sustentable',d:'Demanda por conectividad no motorizada entre localidades urbanas y periurbanas.'}
+  ],
+  debilidades:[
+    {t:'Coordinación municipal interna débil',d:'Falta de articulación entre direcciones municipales, duplicidad de funciones y silos de información.'},
+    {t:'Centros de reciclaje fallidos',d:'Puntos limpios cerrados o sin mantención, generando desconfianza en políticas ambientales.'},
+    {t:'Burocracia y atención deficiente',d:'Trámites lentos, falta de respuesta oportuna y percepción de desinterés en ventanilla.'},
+    {t:'Brecha urbano-rural',d:'Localidades rurales con déficit en agua potable, conectividad vial, transporte y acceso a servicios.'},
+    {t:'Falta de planificación territorial',d:'Crecimiento urbano sin instrumentos de ordenamiento actualizados ni visión de largo plazo.'}
+  ],
+  amenazas:[
+    {t:'Inseguridad y narcotráfico',d:'Principal preocupación transversal: aumento de delitos, tráfico de drogas y percepción de inseguridad.'},
+    {t:'Escasez hídrica',d:'Crisis del agua que afecta especialmente a localidades rurales con APR y agricultura de secano.'},
+    {t:'Sitios eriazos e informalidad',d:'Terrenos abandonados que facilitan microbasurales, ocupaciones irregulares y focos de inseguridad.'},
+    {t:'Crecimiento urbano sin planificación',d:'Expansión de loteos y viviendas sin infraestructura vial, sanitaria ni equipamiento comunitario.'},
+    {t:'Fuga de capital humano joven',d:'Jóvenes que migran por falta de oportunidades laborales, educación superior y recreación.'}
+  ]
+};
+const FODA_STATS=[
+  {val:'120+',lbl:'Entrevistados'},
+  {val:'14',lbl:'Tipos de Actores'},
+  {val:'30',lbl:'Instrumentos'},
+  {val:'21',lbl:'Unid. Vecinales'},
+  {val:'6',lbl:'Ejes Abordados'}
+];
+const FODA_QUOTES=[
+  {txt:'La plaza quedó hermosa, pero las localidades rurales no tienen ni una sede decente.',src:'Dirigente JJVV Rural'},
+  {txt:'El municipio cambió, antes era imposible hacer trámites, ahora se nota el esfuerzo.',src:'Vecino Sector Centro'},
+  {txt:'El problema más grave es la droga, los jóvenes no tienen alternativas reales.',src:'Concejal'},
+  {txt:'Tenemos una identidad campesina fuerte, pero nadie la valora ni la promueve.',src:'Actor Cultural'},
+  {txt:'El agua es el tema del futuro, si no planificamos ahora será tarde.',src:'Director Municipal'},
+  {txt:'Las organizaciones están vivas, pero falta que el municipio las escuche de verdad.',src:'Consejero COSOC'}
+];
+const FODA_RADAR_DATA={
+  labels:['Seguridad','Salud','Educación','Medio Ambiente','Economía','Gestión','Infraestructura','Participación'],
+  data:[92,85,72,68,65,78,74,80]
+};
+
 // ── RESUMEN DATA ──
 const RESUMEN_ITEMS=[
   {icon:'&#128101;',val:'65.786',lbl:'Habitantes'},
@@ -2694,6 +2803,74 @@ function renderFunnel(){
     datasets:[{label:'% participantes',data:stages.map(s=>s.val),
       backgroundColor:['#22c55ecc','#4ade80cc','#f59e0bcc','#fb923ccc','#ef4444cc'],borderRadius:6,barPercentage:.7}]
   },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw}% de los encuestados`}}}}});
+}
+
+// ── FODA ENTREVISTAS RENDER ──
+function renderFODAEntrev(){
+  // Stats row
+  const stR=document.getElementById('fodaStats');
+  if(stR) stR.innerHTML=FODA_STATS.map(s=>`<div class="foda-stat"><div class="fs-val">${s.val}</div><div class="fs-lbl">${s.lbl}</div></div>`).join('');
+
+  // FODA Grid
+  const grid=document.getElementById('fodaGrid');
+  if(grid){
+    const cats=[
+      {key:'fortalezas',cls:'foda-q-f',icon:'✅',title:'Fortalezas',dot:'#22c55e'},
+      {key:'oportunidades',cls:'foda-q-o',icon:'🚀',title:'Oportunidades',dot:'#3b82f6'},
+      {key:'debilidades',cls:'foda-q-d',icon:'⚠️',title:'Debilidades',dot:'#ef4444'},
+      {key:'amenazas',cls:'foda-q-a',icon:'🚨',title:'Amenazas',dot:'#f59e0b'}
+    ];
+    grid.innerHTML=cats.map(c=>{
+      const items=FODA_DATA[c.key].map(it=>`<li><span class="fq-dot" style="background:${c.dot}"></span><span><strong>${it.t}:</strong> ${it.d}</span></li>`).join('');
+      return `<div class="foda-q-card ${c.cls}"><div class="fq-icon">${c.icon}</div><div class="fq-title">${c.title}</div><ul class="fq-items">${items}</ul></div>`;
+    }).join('');
+  }
+
+  // Quotes
+  const qW=document.getElementById('fodaQuotes');
+  if(qW) qW.innerHTML=FODA_QUOTES.map(q=>`<div class="foda-quote"><p>“${q.txt}”</p><div class="fq-src">— ${q.src}</div></div>`).join('');
+
+  // Radar chart
+  const radarCtx=document.getElementById('chartFodaRadar');
+  if(radarCtx){
+    new Chart(radarCtx,{type:'radar',data:{
+      labels:FODA_RADAR_DATA.labels,
+      datasets:[{label:'Cobertura (%)',data:FODA_RADAR_DATA.data,
+        backgroundColor:'rgba(67,97,238,.15)',borderColor:'#4361ee',borderWidth:2.5,
+        pointBackgroundColor:'#4361ee',pointRadius:4,pointHoverRadius:7,fill:true}]
+    },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},
+      scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:20,font:{size:9},backdropColor:'transparent'},
+        grid:{color:'rgba(0,0,0,.08)'},angleLines:{color:'rgba(0,0,0,.08)'},
+        pointLabels:{font:{size:11,weight:'600'},color:getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b'}}},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}% cobertura`}}}}});
+  }
+
+  // Bar chart — menciones FODA
+  const barCtx=document.getElementById('chartFodaBar');
+  if(barCtx){
+    const menciones=[
+      {cat:'Inseguridad',v:89,c:'#f59e0b'},{cat:'Salud',v:76,c:'#22c55e'},
+      {cat:'Gestión Municipal',v:72,c:'#22c55e'},{cat:'Agua / Sequía',v:68,c:'#f59e0b'},
+      {cat:'Brecha Rural',v:64,c:'#ef4444'},{cat:'Espacios Públicos',v:61,c:'#22c55e'},
+      {cat:'Org. Sociales',v:58,c:'#22c55e'},{cat:'Narcotráfico',v:55,c:'#f59e0b'},
+      {cat:'Reciclaje',v:52,c:'#3b82f6'},{cat:'Burocracia',v:48,c:'#ef4444'},
+      {cat:'Economía Local',v:45,c:'#3b82f6'},{cat:'Identidad',v:42,c:'#22c55e'}
+    ];
+    new Chart(barCtx,{type:'bar',data:{
+      labels:menciones.map(m=>m.cat),
+      datasets:[{label:'Menciones',data:menciones.map(m=>m.v),
+        backgroundColor:menciones.map(m=>m.c+'cc'),borderColor:menciones.map(m=>m.c),
+        borderWidth:1.5,borderRadius:6,barPercentage:.75}]
+    },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},
+      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:10}}},
+        y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,
+        callbacks:{label:ctx=>{
+          const colors={'#22c55e':'Fortaleza','#3b82f6':'Oportunidad','#ef4444':'Debilidad','#f59e0b':'Amenaza'};
+          return `${ctx.raw} menciones (${colors[menciones[ctx.dataIndex].c]||''})`;}
+        }}}
+    }});
+  }
 }
 
 // ── TERRITORIAL ADVANCED DATA ──
@@ -3664,6 +3841,7 @@ renderEmergencia();
 renderSaludChart();
 renderParticDemo();
 renderFunnel();
+renderFODAEntrev();
 renderGestionKPIs();
 renderPlazoEje();
 renderFinanc();
