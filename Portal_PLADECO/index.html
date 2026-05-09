@@ -391,19 +391,47 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
 .tag-cloud .tag{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;transition:all .3s;cursor:default;border:2px solid transparent;line-height:1}
 .tag-cloud .tag:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(0,0,0,.15);border-color:currentColor}
 
-/* ── Timeline Horizontal ── */
+/* ── Timeline Horizontal (Hoja de Ruta) ── */
 .timeline-h{position:relative;padding:20px 0 40px;overflow-x:auto}
 .timeline-track{display:flex;align-items:flex-start;gap:0;position:relative;min-width:max-content;padding:0 20px}
-.timeline-track::before{content:'';position:absolute;top:28px;left:20px;right:20px;height:4px;background:linear-gradient(90deg,var(--accent),#22c55e,#f59e0b,#ef4444);border-radius:2px}
-.tl-item{position:relative;width:110px;flex-shrink:0;text-align:center;padding-top:44px}
-.tl-item .tl-dot{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;border:4px solid var(--card);box-shadow:0 0 0 3px var(--accent);background:var(--accent);z-index:2;transition:all .3s}
-.tl-item:hover .tl-dot{transform:translateX(-50%) scale(1.3);box-shadow:0 0 0 3px var(--accent),0 4px 12px rgba(67,97,238,.4)}
-.tl-item .tl-year{font-size:13px;font-weight:800;color:var(--accent);margin-bottom:2px}
-.tl-item .tl-label{font-size:9px;color:var(--text2);line-height:1.3;font-weight:600}
-.tl-item.active .tl-dot{background:#22c55e;box-shadow:0 0 0 3px #22c55e}
-.tl-item.active .tl-year{color:#22c55e}
-.tl-item.future .tl-dot{background:var(--card);border-color:#94a3b8;box-shadow:0 0 0 3px #94a3b8}
+.timeline-track::before{content:'';position:absolute;top:38px;left:20px;right:20px;height:5px;background:linear-gradient(90deg,#22c55e 0%,#22c55e 18%,#4361ee 25%,#f59e0b 40%,#94a3b8 60%,#94a3b8 100%);border-radius:3px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tl-item{position:relative;width:130px;flex-shrink:0;text-align:center;padding-top:60px;cursor:default}
+.tl-item .tl-emoji{position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:22px;z-index:3;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));transition:transform .3s}
+.tl-item:hover .tl-emoji{transform:translateX(-50%) scale(1.3)}
+.tl-item .tl-dot{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;border:4px solid var(--card);z-index:2;transition:all .3s}
+.tl-item:hover .tl-dot{transform:translateX(-50%) scale(1.25)}
+.tl-item .tl-year{font-size:14px;font-weight:900;margin-bottom:3px;letter-spacing:.5px}
+.tl-item .tl-label{font-size:10px;line-height:1.4;font-weight:700;padding:0 4px}
+.tl-item .tl-status{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;padding:2px 8px;border-radius:6px;display:inline-block}
+/* done */
+.tl-item.done .tl-dot{background:#22c55e;box-shadow:0 0 0 3px #22c55e,0 0 16px rgba(34,197,94,.5)}
+.tl-item.done .tl-year{color:#22c55e}
+.tl-item.done .tl-label{color:#15803d}
+.tl-item.done .tl-status{background:#d1fae5;color:#15803d}
+/* current */
+.tl-item.current .tl-dot{background:#4361ee;box-shadow:0 0 0 3px #4361ee,0 0 20px rgba(67,97,238,.55);animation:tlPulse 2s infinite}
+.tl-item.current .tl-year{color:#4361ee}
+.tl-item.current .tl-label{color:#4361ee}
+.tl-item.current .tl-status{background:#e0e7ff;color:#4338ca}
+@keyframes tlPulse{0%,100%{box-shadow:0 0 0 3px #4361ee,0 0 16px rgba(67,97,238,.4)}50%{box-shadow:0 0 0 5px #4361ee,0 0 28px rgba(67,97,238,.6)}}
+/* pending */
+.tl-item.pending .tl-dot{background:#f59e0b;border-color:var(--card);box-shadow:0 0 0 3px #f59e0b,0 0 12px rgba(245,158,11,.35)}
+.tl-item.pending .tl-year{color:#f59e0b}
+.tl-item.pending .tl-label{color:#b45309}
+.tl-item.pending .tl-status{background:#fef3c7;color:#b45309}
+/* future */
+.tl-item.future .tl-dot{background:var(--card);border-color:#cbd5e1;box-shadow:0 0 0 3px #cbd5e1}
 .tl-item.future .tl-year{color:#94a3b8}
+.tl-item.future .tl-label{color:var(--text2)}
+.tl-item.future .tl-status{background:#f1f5f9;color:#94a3b8}
+body.dark .tl-item.done .tl-label{color:#4ade80}
+body.dark .tl-item.current .tl-label{color:#818cf8}
+body.dark .tl-item.pending .tl-label{color:#fbbf24}
+body.dark .tl-item.done .tl-status{background:#052e16;color:#4ade80}
+body.dark .tl-item.current .tl-status{background:#1e1b4b;color:#818cf8}
+body.dark .tl-item.pending .tl-status{background:#451a03;color:#fbbf24}
+body.dark .tl-item.future .tl-status{background:#1e293b;color:#64748b}
+body.dark .tl-item.future .tl-dot{background:#1e293b;border-color:#475569;box-shadow:0 0 0 3px #475569}
 
 /* ── Urban vs Rural Cards ── */
 .ur-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
@@ -1155,8 +1183,8 @@ body{padding-top:46px}
   </div>
   <div class="viz-row">
     <div class="viz-card viz-full">
-      <h3>Hoja de Ruta PLADECO 2025-2035</h3>
-      <div class="viz-sub">Cronograma de hitos y plazos de implementaci&#243;n</div>
+      <h3>&#128197; Hoja de Ruta PLADECO 2025-2035</h3>
+      <div class="viz-sub">Cronograma de hitos estrat&#233;gicos &mdash; desde la Etnograf&#237;a Social e Institucional hasta la Meta Final 2035</div>
       <div class="timeline-h"><div class="timeline-track" id="timeline"></div></div>
     </div>
   </div>
@@ -2614,16 +2642,16 @@ const SUENOS=[
   {t:'Con viviendas',w:7,c:'#ea580c'},{t:'Turística',w:6,c:'#0d9488'}
 ];
 const TIMELINE=[
-  {year:'2024',label:'Diagnóstico Participativo',status:'active'},
-  {year:'2025',label:'Aprobación PLADECO',status:'active'},
-  {year:'2026',label:'Comisiones Validación',status:'active'},
-  {year:'2026',label:'Plan Inversión Corto Plazo',status:'current'},
-  {year:'2027',label:'Transformación Digital',status:'future'},
-  {year:'2028',label:'Evaluación 1ª Fase (112 acc.)',status:'future'},
-  {year:'2029',label:'Ajuste Mediano Plazo',status:'future'},
-  {year:'2030',label:'Agenda 2030 / ODS',status:'future'},
-  {year:'2032',label:'Evaluación 2ª Fase (91 acc.)',status:'future'},
-  {year:'2035',label:'Meta Final PLADECO',status:'future'}
+  {year:'2025',label:'Etnografía Social e Institucional',status:'done',emoji:'🔬',statusTxt:'Completado'},
+  {year:'2026',label:'Revisión por Comisiones y Actores de Interés',status:'current',emoji:'🤝',statusTxt:'En Curso'},
+  {year:'2026',label:'Aprobación PLADECO por Concejo Pleno',status:'pending',emoji:'🏛️',statusTxt:'Pendiente'},
+  {year:'2026',label:'Plan Inversión Corto Plazo',status:'pending',emoji:'💰',statusTxt:'Pendiente'},
+  {year:'2027',label:'Transformación Digital Municipal',status:'future',emoji:'💻',statusTxt:'Pendiente'},
+  {year:'2028',label:'Evaluación 1ª Fase (112 acciones)',status:'future',emoji:'📊',statusTxt:'Pendiente'},
+  {year:'2029',label:'Ajuste Mediano Plazo',status:'future',emoji:'🔄',statusTxt:'Pendiente'},
+  {year:'2030',label:'Agenda 2030 / ODS',status:'future',emoji:'🌍',statusTxt:'Pendiente'},
+  {year:'2032',label:'Evaluación 2ª Fase (91 acciones)',status:'future',emoji:'📈',statusTxt:'Pendiente'},
+  {year:'2035',label:'Meta Final PLADECO',status:'future',emoji:'🏆',statusTxt:'Pendiente'}
 ];
 
 // ── RENDER URBAN VS RURAL ──
@@ -2744,9 +2772,11 @@ function renderTimeline(){
   const el=document.getElementById('timeline');
   el.innerHTML=TIMELINE.map(t=>`
     <div class="tl-item ${t.status}">
+      <div class="tl-emoji">${t.emoji}</div>
       <div class="tl-dot"></div>
       <div class="tl-year">${t.year}</div>
       <div class="tl-label">${t.label}</div>
+      <div class="tl-status">${t.statusTxt}</div>
     </div>
   `).join('');
 }
