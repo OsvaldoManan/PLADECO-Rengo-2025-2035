@@ -470,6 +470,66 @@ mark.foda-hl{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
 body.dark .quote-block{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 body.dark .crosslink-card:hover{background:linear-gradient(135deg,rgba(67,97,238,.05),rgba(67,97,238,.12))}
 
+/* ── Semáforo de Metas ── */
+.semaforo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+.meta-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.meta-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.meta-card .mc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.meta-card .mc-light{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
+.meta-card .mc-light.green{background:#22c55e;color:#22c55e}
+.meta-card .mc-light.amber{background:#f59e0b;color:#f59e0b}
+.meta-card .mc-light.red{background:#ef4444;color:#ef4444}
+.meta-card .mc-eje{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;margin-left:auto}
+.meta-card .mc-title{font-size:13px;font-weight:700;line-height:1.3}
+.meta-card .mc-values{display:flex;gap:8px;margin:12px 0 8px;font-size:11px}
+.meta-card .mc-val{flex:1;text-align:center;padding:6px 4px;border-radius:8px;background:#f8fafc}
+.meta-card .mc-val .v-num{font-size:18px;font-weight:800;display:block}
+.meta-card .mc-val .v-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.meta-card .mc-val.current{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.meta-card .mc-val.current .v-lbl{color:rgba(255,255,255,.7)}
+.meta-card .mc-track{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;position:relative}
+.meta-card .mc-track-fill{height:100%;border-radius:4px;transition:width 1.2s ease;position:relative}
+.meta-card .mc-track-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:rgba(255,255,255,.5);border-radius:2px}
+body.dark .meta-card .mc-val{background:#0f172a}
+body.dark .meta-card .mc-track{background:#334155}
+
+/* ── Resumen Ejecutivo ── */
+.resumen-hero{background:linear-gradient(135deg,var(--primary) 0%,var(--accent2) 100%);border-radius:var(--radius);padding:36px 32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+.resumen-hero::before{content:'';position:absolute;top:-30%;right:-10%;width:300px;height:300px;border-radius:50%;background:rgba(67,97,238,.15)}
+.resumen-hero .rh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px;position:relative;z-index:1}
+.resumen-hero .rh-item{text-align:center;padding:16px 8px;background:rgba(255,255,255,.08);border-radius:12px;backdrop-filter:blur(6px)}
+.resumen-hero .rh-icon{font-size:28px;margin-bottom:6px}
+.resumen-hero .rh-val{font-size:24px;font-weight:800}
+.resumen-hero .rh-lbl{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── Financiamiento ── */
+.fin-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:900px){.fin-cards{grid-template-columns:1fr}}
+.fin-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+.fin-card .fc-icon{font-size:36px;margin-bottom:8px}
+.fin-card .fc-val{font-size:32px;font-weight:800}
+.fin-card .fc-pct{font-size:14px;color:var(--text2);font-weight:600}
+.fin-card .fc-lbl{font-size:11px;color:var(--text2);margin-top:4px}
+.fin-card .fc-bar{height:6px;background:#e2e8f0;border-radius:3px;margin-top:12px;overflow:hidden}
+.fin-card .fc-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+
+/* ── Inclusión Chips ── */
+.incl-chips{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.incl-chip{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;background:var(--card);box-shadow:var(--shadow);font-size:13px;font-weight:600;transition:transform .2s}
+.incl-chip:hover{transform:scale(1.05)}
+.incl-chip .ic-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.incl-chip .ic-val{font-size:22px;font-weight:800}
+.incl-chip .ic-lbl{font-size:10px;color:var(--text2)}
+
+/* ── Plazo Pills ── */
+.plazo-pills{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.plazo-pill{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;background:var(--card);box-shadow:var(--shadow);flex:1;min-width:180px;transition:transform .2s}
+.plazo-pill:hover{transform:translateY(-2px)}
+.plazo-pill .pp-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.plazo-pill .pp-val{font-size:28px;font-weight:800}
+.plazo-pill .pp-info{font-size:11px;color:var(--text2)}
+.plazo-pill .pp-name{font-size:13px;font-weight:700}
+
 /* ── Banner En Construcción ── */
 .construction-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:repeating-linear-gradient(45deg,#fbbf24,#fbbf24 18px,#1e293b 18px,#1e293b 36px);padding:5px 0;box-shadow:0 4px 20px rgba(0,0,0,.5)}
 .construction-banner .cb-inner{background:#fbbf24;color:#1e293b;padding:10px 32px;text-align:center;font-size:16px;font-weight:900;letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:12px}
@@ -508,6 +568,9 @@ body{padding-top:46px}
     <a href="#foda"><span class="ico">&#9670;</span> Análisis FODA</a>
     <a href="#territorio"><span class="ico">&#9650;</span> Diagnóstico Territorial</a>
     <div class="sep"></div>
+    <a href="#resumen"><span class="ico">&#9679;</span> Resumen Ejecutivo</a>
+    <a href="#semaforo"><span class="ico">&#9888;</span> Semáforo de Metas</a>
+    <a href="#financiamiento"><span class="ico">&#9632;</span> Financiamiento</a>
     <a href="#graficos"><span class="ico">&#9733;</span> Gráficos Analíticos</a>
     <a href="#argumentario"><span class="ico">&#9998;</span> Argumentario</a>
     <a href="#comisiones"><span class="ico">&#9201;</span> Comisiones</a>
@@ -531,7 +594,7 @@ body{padding-top:46px}
       <div class="hero-stat"><div class="num">65.786</div><div class="lbl">Habitantes</div></div>
       <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes</div></div>
       <div class="hero-stat"><div class="num">32</div><div class="lbl">Objetivos</div></div>
-      <div class="hero-stat"><div class="num">200</div><div class="lbl">Políticas</div></div>
+      <div class="hero-stat"><div class="num">225</div><div class="lbl">Políticas</div></div>
       <div class="hero-stat"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></div>
       <div class="hero-stat"><div class="num">15/17</div><div class="lbl">ODS Vinculados</div></div>
     </div>
@@ -1353,6 +1416,58 @@ body{padding-top:46px}
   </div>
 </section>
 
+<!-- ═══ RESUMEN EJECUTIVO ═══ -->
+<section id="resumen">
+  <div class="sec-header">
+    <div class="badge" style="background:#fef3c7;color:#d97706">Infograf&#237;a</div>
+    <h2>Resumen Ejecutivo PLADECO</h2>
+    <p>Cifras clave del Plan de Desarrollo Comunal en una mirada</p>
+  </div>
+  <div class="resumen-hero">
+    <div class="rh-grid" id="resumenGrid"></div>
+  </div>
+  <div style="margin-top:20px">
+    <h3 style="font-size:16px;font-weight:800;margin-bottom:12px">&#128200; Distribución por Plazo de Ejecución</h3>
+    <div class="plazo-pills" id="plazoPills"></div>
+  </div>
+  <div style="margin-top:24px">
+    <h3 style="font-size:16px;font-weight:800;margin-bottom:12px">&#9829; Pol&#237;ticas con Enfoque Inclusivo</h3>
+    <div class="incl-chips" id="inclChips"></div>
+  </div>
+  <div class="viz-row" style="margin-top:24px">
+    <div class="viz-card"><h3>Acciones por Eje Estrat&#233;gico</h3><div class="viz-sub">225 pol&#237;ticas distribuidas en 6 ejes</div><canvas id="chartAccEje"></canvas></div>
+    <div class="viz-card"><h3>ODS M&#225;s Vinculados</h3><div class="viz-sub">Top 8 Objetivos de Desarrollo Sostenible presentes en las acciones</div><canvas id="chartODSAcc"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ SEMÁFORO DE METAS ═══ -->
+<section id="semaforo">
+  <div class="sec-header">
+    <div class="badge" style="background:#d1fae5;color:#059669">Seguimiento</div>
+    <h2>&#128678; Semáforo de Metas 2024 &#8594; 2035</h2>
+    <p>16 indicadores con línea base, metas intermedias y estado semafórico de avance</p>
+  </div>
+  <div class="semaforo-grid" id="semaforoGrid"></div>
+  <div class="viz-row">
+    <div class="viz-card"><h3>Brecha al 2035 por Meta</h3><div class="viz-sub">Distancia porcentual entre l&#237;nea base 2024 y meta 2035</div><canvas id="chartBrechasMetas"></canvas></div>
+    <div class="viz-card"><h3>Progreso Promedio por Eje</h3><div class="viz-sub">Avance estimado seg&#250;n l&#237;nea base respecto a metas</div><canvas id="chartProgresoEje"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ FINANCIAMIENTO ═══ -->
+<section id="financiamiento">
+  <div class="sec-header">
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Financiero</div>
+    <h2>&#128176; Estructura de Financiamiento</h2>
+    <p>An&#225;lisis de fuentes de financiamiento de las 225 pol&#237;ticas del PLADECO</p>
+  </div>
+  <div class="fin-cards" id="finCards"></div>
+  <div class="viz-row">
+    <div class="viz-card"><h3>Fuente de Financiamiento por Eje</h3><div class="viz-sub">Distribución Municipal / FNDR / Sectorial para cada eje estratégico</div><canvas id="chartFinEje"></canvas></div>
+    <div class="viz-card"><h3>Plazo vs Financiamiento</h3><div class="viz-sub">Relación entre horizonte temporal y fuente de recursos</div><canvas id="chartPlazoFin"></canvas></div>
+  </div>
+</section>
+
 <!-- Modal -->
 <div class="modal-overlay" id="modal" onclick="this.classList.remove('show')">
   <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">&times;</button>
@@ -1780,6 +1895,45 @@ const ARG_QUOTES=[
   {text:'No podemos planificar una comuna del siglo XXI con un instrumento regulador del 2011. El desfase no es técnico, es de justicia territorial.',source:'Director SECPLAC, Daniel Castillo — Comisión Eje 4'},
   {text:'Cuando le preguntas a un niño si se siente seguro en la calle y más de la mitad dice que no, eso no es una estadística: es una emergencia.',source:'Coordinadora Diagnóstico Infancia 2025'},
   {text:'Esta comuna demostró que puede salir de la quiebra. Ahora tiene que demostrar que puede planificar su futuro sin depender de un solo liderazgo.',source:'Concejal, sesión deliberativa 2025'}
+];
+
+// ── METAS SEGUIMIENTO (16 KPIs) ──
+const METAS_SEG=[
+  {id:1,eje:1,ind:'Cobertura preescolar',u:'%',lb:47.0,m28:65.0,m35:75.0,tipo:'up',color:'#e63946'},
+  {id:2,eje:1,ind:'Acceso salud mental NNA',u:'%',lb:28.0,m28:55.0,m35:80.0,tipo:'up',color:'#e63946'},
+  {id:3,eje:1,ind:'Bullying habitual',u:'%',lb:31.5,m28:18.0,m35:10.0,tipo:'down',color:'#e63946'},
+  {id:4,eje:1,ind:'Espacios deportivos/1000 hab',u:'',lb:0.9,m28:1.5,m35:2.2,tipo:'up',color:'#e63946'},
+  {id:5,eje:2,ind:'Empleo formal juvenil',u:'%',lb:42.0,m28:55.0,m35:68.0,tipo:'up',color:'#f4a261'},
+  {id:6,eje:2,ind:'Microempresas formalizadas',u:'',lb:320,m28:600,m35:1000,tipo:'up',color:'#f4a261'},
+  {id:7,eje:3,ind:'Áreas verdes m²/hab',u:'',lb:3.2,m28:6.0,m35:9.0,tipo:'up',color:'#2a9d8f'},
+  {id:8,eje:3,ind:'Reciclaje domiciliario',u:'%',lb:4.5,m28:18.0,m35:35.0,tipo:'up',color:'#2a9d8f'},
+  {id:9,eje:4,ind:'Cobertura APR rural',u:'%',lb:82.0,m28:92.0,m35:98.0,tipo:'up',color:'#7b2cbf'},
+  {id:10,eje:4,ind:'Caminos rurales pavimentados',u:'km',lb:45,m28:75,m35:120,tipo:'up',color:'#7b2cbf'},
+  {id:11,eje:5,ind:'Identidad local fuerte NNA',u:'%',lb:47.6,m28:62.0,m35:78.0,tipo:'up',color:'#d62828'},
+  {id:12,eje:5,ind:'Denuncias/1000 hab',u:'',lb:28.4,m28:22.0,m35:16.0,tipo:'down',color:'#d62828'},
+  {id:13,eje:6,ind:'Acciones PLADECO ejecutadas',u:'%',lb:0,m28:40.0,m35:100.0,tipo:'up',color:'#457b9d'},
+  {id:14,eje:6,ind:'Trámites digitales',u:'%',lb:22.0,m28:55.0,m35:85.0,tipo:'up',color:'#457b9d'},
+  {id:15,eje:6,ind:'Gini territorial',u:'',lb:0.741,m28:0.6,m35:0.5,tipo:'down',color:'#457b9d'},
+  {id:16,eje:6,ind:'Dependencia FNDR',u:'%',lb:54.4,m28:45.0,m35:35.0,tipo:'down',color:'#457b9d'}
+];
+const FINANC_ACC={Municipal:144,FNDR:80,Sectorial:1};
+const PLAZO_ACC={C:112,M:91,L:22};
+const INCL_ACC={nna:50,mujeres:18,am:32,pcd:12,inclusivas:80};
+const ODS_ACC=[{ods:3,n:43},{ods:11,n:38},{ods:16,n:33},{ods:4,n:24},{ods:9,n:23},{ods:8,n:19},{ods:6,n:12},{ods:1,n:12}];
+const EJE_ACC_N=[54,17,14,43,28,44];
+
+// ── RESUMEN DATA ──
+const RESUMEN_ITEMS=[
+  {icon:'&#128101;',val:'65.786',lbl:'Habitantes'},
+  {icon:'&#127970;',val:'21',lbl:'Unidades Vecinales'},
+  {icon:'&#127919;',val:'6',lbl:'Ejes Estratégicos'},
+  {icon:'&#9878;',val:'32',lbl:'Objetivos (OE)'},
+  {icon:'&#128196;',val:'225',lbl:'Políticas'},
+  {icon:'&#127760;',val:'15/17',lbl:'ODS Vinculados'},
+  {icon:'&#128176;',val:'$97.000M',lbl:'Inversión BIP Total'},
+  {icon:'&#128200;',val:'16',lbl:'KPIs de Seguimiento'},
+  {icon:'&#9829;',val:'80',lbl:'Acciones Inclusivas'},
+  {icon:'&#128205;',val:'1.182',lbl:'Proyectos BIP Históricos'}
 ];
 
 // ── RENDER MAP ──
@@ -3117,6 +3271,141 @@ function filterFODAType(btn, type){
   filterFODA();
 }
 
+// ── RENDER RESUMEN EJECUTIVO ──
+function renderResumen(){
+  const grid=document.getElementById('resumenGrid');
+  if(!grid)return;
+  grid.innerHTML=RESUMEN_ITEMS.map(r=>`<div class="rh-item"><div class="rh-icon">${r.icon}</div><div class="rh-val">${r.val}</div><div class="rh-lbl">${r.lbl}</div></div>`).join('');
+}
+function renderPlazoPills(){
+  const el=document.getElementById('plazoPills');
+  if(!el)return;
+  const data=[
+    {name:'Corto Plazo',sub:'2025-2028',n:PLAZO_ACC.C,color:'#22c55e',pct:((PLAZO_ACC.C/225)*100).toFixed(0)},
+    {name:'Mediano Plazo',sub:'2028-2032',n:PLAZO_ACC.M,color:'#f59e0b',pct:((PLAZO_ACC.M/225)*100).toFixed(0)},
+    {name:'Largo Plazo',sub:'2032-2035',n:PLAZO_ACC.L,color:'#ef4444',pct:((PLAZO_ACC.L/225)*100).toFixed(0)}
+  ];
+  el.innerHTML=data.map(d=>`<div class="plazo-pill"><div class="pp-dot" style="background:${d.color}"></div><div><div class="pp-val" style="color:${d.color}">${d.n}</div><div class="pp-name">${d.name}</div><div class="pp-info">${d.sub} · ${d.pct}%</div></div></div>`).join('');
+}
+function renderInclChips(){
+  const el=document.getElementById('inclChips');
+  if(!el)return;
+  const data=[
+    {icon:'&#128118;',val:INCL_ACC.nna,lbl:'Benefician NNA',bg:'#ede9fe',color:'#7c3aed'},
+    {icon:'&#9792;',val:INCL_ACC.mujeres,lbl:'Enfoque Género',bg:'#fce7f3',color:'#db2777'},
+    {icon:'&#128116;',val:INCL_ACC.am,lbl:'Adultos Mayores',bg:'#d1fae5',color:'#059669'},
+    {icon:'&#9855;',val:INCL_ACC.pcd,lbl:'Discapacidad',bg:'#dbeafe',color:'#2563eb'},
+    {icon:'&#9829;',val:INCL_ACC.inclusivas,lbl:'Total Inclusivas',bg:'#fef3c7',color:'#d97706'}
+  ];
+  el.innerHTML=data.map(d=>`<div class="incl-chip"><div class="ic-icon" style="background:${d.bg};color:${d.color}">${d.icon}</div><div><div class="ic-val" style="color:${d.color}">${d.val}</div><div class="ic-lbl">${d.lbl}</div></div></div>`).join('');
+}
+function renderAccEje(){
+  const ejeNames=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
+  const ejeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
+  new Chart(document.getElementById('chartAccEje'),{type:'bar',data:{
+    labels:ejeNames,
+    datasets:[{label:'Acciones',data:EJE_ACC_N,backgroundColor:ejeColors.map(c=>c+'cc'),borderColor:ejeColors,borderWidth:2,borderRadius:8,hoverBackgroundColor:ejeColors}]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
+}
+function renderODSAcc(){
+  const odsNames=['ODS 1: Fin Pobreza','ODS 3: Salud','ODS 4: Educación','ODS 6: Agua','ODS 8: Trabajo','ODS 9: Innovación','ODS 11: Ciudades','ODS 16: Paz'];
+  const odsColors=['#E5243B','#4C9F38','#C5192D','#26BDE2','#A21942','#FD6925','#FD9D24','#00689D'];
+  const sorted=[{n:'ODS 3',v:43},{n:'ODS 11',v:38},{n:'ODS 16',v:33},{n:'ODS 4',v:24},{n:'ODS 9',v:23},{n:'ODS 8',v:19},{n:'ODS 6',v:12},{n:'ODS 1',v:12}];
+  new Chart(document.getElementById('chartODSAcc'),{type:'bar',data:{
+    labels:odsNames,
+    datasets:[{label:'Acciones',data:sorted.map(s=>s.v),backgroundColor:odsColors.map(c=>c+'cc'),borderColor:odsColors,borderWidth:2,borderRadius:8}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones vinculadas`}}}}});
+}
+
+// ── RENDER SEMÁFORO DE METAS ──
+function renderSemaforo(){
+  const grid=document.getElementById('semaforoGrid');
+  if(!grid)return;
+  const ejeNames=['','Social','Económico','Educación','Urbano','Seguridad','Gestión'];
+  grid.innerHTML=METAS_SEG.map(m=>{
+    let progress,color,lightCls;
+    if(m.tipo==='up'){
+      progress=m.m35>m.lb?((m.lb-0)/(m.m35-0))*100:0;
+      const gap=m.m35-m.lb;
+      lightCls=gap>40?'red':gap>20?'amber':'green';
+    }else{
+      progress=m.lb>0?((m.lb-m.m35)/(m.lb))*100:0;
+      progress=100-progress;
+      const ratio=m.lb/m.m35;
+      lightCls=ratio>2?'red':ratio>1.3?'amber':'green';
+    }
+    progress=Math.min(100,Math.max(0,progress));
+    const barColor=lightCls==='green'?'#22c55e':lightCls==='amber'?'#f59e0b':'#ef4444';
+    const arrow=m.tipo==='up'?'&#9650;':'&#9660;';
+    return `<div class="meta-card">
+      <div class="mc-header"><span class="mc-light ${lightCls}"></span><span class="mc-title">${m.ind}</span><span class="mc-eje" style="background:${m.color}22;color:${m.color}">Eje ${m.eje}</span></div>
+      <div class="mc-values">
+        <div class="mc-val current"><span class="v-num">${m.lb}${m.u}</span><span class="v-lbl">Base 2024</span></div>
+        <div class="mc-val"><span class="v-num">${m.m28}${m.u}</span><span class="v-lbl">Meta 2028</span></div>
+        <div class="mc-val"><span class="v-num">${m.m35}${m.u}</span><span class="v-lbl">Meta 2035</span></div>
+      </div>
+      <div class="mc-track"><div class="mc-track-fill" style="width:${progress.toFixed(0)}%;background:linear-gradient(90deg,${barColor},${barColor}99)"></div></div>
+    </div>`;
+  }).join('');
+}
+function renderBrechasMetas(){
+  new Chart(document.getElementById('chartBrechasMetas'),{type:'bar',data:{
+    labels:METAS_SEG.map(m=>m.ind),
+    datasets:[{label:'Brecha al 2035 (%)',data:METAS_SEG.map(m=>{
+      if(m.tipo==='up')return((m.m35-m.lb)/m.m35*100).toFixed(1);
+      return((m.lb-m.m35)/m.lb*100).toFixed(1);
+    }),backgroundColor:METAS_SEG.map(m=>m.color+'99'),borderColor:METAS_SEG.map(m=>m.color),borderWidth:1,borderRadius:6}]
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
+}
+function renderProgresoEje(){
+  const ejeNames=['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
+  const ejeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
+  const byEje=[1,2,3,4,5,6].map(eId=>{
+    const metas=METAS_SEG.filter(m=>m.eje===eId);
+    const progresses=metas.map(m=>{
+      if(m.tipo==='up')return m.m35>0?(m.lb/m.m35*100):0;
+      return m.lb>0?((m.m35/m.lb)*100):0;
+    });
+    return progresses.length>0?progresses.reduce((a,b)=>a+b,0)/progresses.length:0;
+  });
+  new Chart(document.getElementById('chartProgresoEje'),{type:'radar',data:{
+    labels:ejeNames,
+    datasets:[{label:'Progreso (%)',data:byEje.map(v=>Math.min(100,v).toFixed(1)),backgroundColor:'rgba(67,97,238,.15)',borderColor:'#4361ee',borderWidth:2,pointBackgroundColor:ejeColors,pointRadius:5,pointHoverRadius:8}]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20,font:{size:9}},grid:{color:'rgba(0,0,0,.08)'},pointLabels:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Progreso: '+ctx.raw+'%'}}}}});
+}
+
+// ── RENDER FINANCIAMIENTO ──
+function renderFinCards(){
+  const el=document.getElementById('finCards');
+  if(!el)return;
+  const total=225;
+  const data=[
+    {name:'Municipal',n:FINANC_ACC.Municipal,icon:'&#127970;',color:'#4361ee',desc:'Recursos propios'},
+    {name:'FNDR',n:FINANC_ACC.FNDR,icon:'&#127747;',color:'#f59e0b',desc:'Fondo Nacional Desarrollo Regional'},
+    {name:'Sectorial',n:FINANC_ACC.Sectorial,icon:'&#127745;',color:'#22c55e',desc:'Ministerios y servicios'}
+  ];
+  el.innerHTML=data.map(d=>`<div class="fin-card"><div class="fc-icon">${d.icon}</div><div class="fc-val" style="color:${d.color}">${d.n}</div><div class="fc-pct">${(d.n/total*100).toFixed(1)}%</div><div class="fc-lbl">${d.name} — ${d.desc}</div><div class="fc-bar"><div class="fc-bar-fill" style="width:${(d.n/total*100).toFixed(0)}%;background:${d.color}"></div></div></div>`).join('');
+}
+function renderFinEje(){
+  const ejeNames=['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
+  const ejeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
+  const finByEje={Municipal:[34,11,9,25,17,28],FNDR:[20,6,5,18,11,16],Sectorial:[0,0,0,0,0,0]};
+  new Chart(document.getElementById('chartFinEje'),{type:'bar',data:{
+    labels:ejeNames,
+    datasets:[
+      {label:'Municipal',data:finByEje.Municipal,backgroundColor:'#4361ee99',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
+      {label:'FNDR',data:finByEje.FNDR,backgroundColor:'#f59e0b99',borderColor:'#f59e0b',borderWidth:1,borderRadius:4},
+      {label:'Sectorial',data:finByEje.Sectorial,backgroundColor:'#22c55e99',borderColor:'#22c55e',borderWidth:1,borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10,weight:'600'}}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#1e293b',cornerRadius:8}}}});
+}
+function renderPlazoFin(){
+  new Chart(document.getElementById('chartPlazoFin'),{type:'doughnut',data:{
+    labels:['Corto Municipal','Corto FNDR','Mediano Municipal','Mediano FNDR','Largo Municipal','Largo FNDR'],
+    datasets:[{data:[72,40,58,33,14,7],backgroundColor:['#22c55e','#22c55e66','#f59e0b','#f59e0b66','#ef4444','#ef444466'],borderWidth:2,borderColor:'var(--card,#fff)',hoverOffset:6}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1200},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones`}}}},plugins:[{id:'finCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Acciones',left+width/2,top+height/2+10);c.restore();}}]});
+}
+
 // ── DARK MODE ──
 function toggleDark(){
   document.body.classList.toggle('dark');
@@ -3128,7 +3417,7 @@ function toggleDark(){
 // ── ANIMATED HERO COUNTERS ──
 function animateCounters(){
   const nums = document.querySelectorAll('.hero-stat .num');
-  const targets = ['65.786','6','32','200','21','15/17'];
+  const targets = ['65.786','6','32','225','21','15/17'];
   const obs = new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
@@ -3168,7 +3457,7 @@ function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
   },{threshold:0.08});
-  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote').forEach(el=>{
+  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card').forEach(el=>{
     el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
@@ -3286,6 +3575,17 @@ renderFreqAcc();
 renderArgumentario();
 renderArgPeso();
 renderArgDim();
+renderResumen();
+renderPlazoPills();
+renderInclChips();
+renderAccEje();
+renderODSAcc();
+renderSemaforo();
+renderBrechasMetas();
+renderProgresoEje();
+renderFinCards();
+renderFinEje();
+renderPlazoFin();
 animateCounters();
 initScrollProgress();
 initScrollReveal();
