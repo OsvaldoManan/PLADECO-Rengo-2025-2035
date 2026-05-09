@@ -41,7 +41,7 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 
 /* ── Main ── */
 .main{margin-left:var(--sidebar-w);min-height:100vh}
-section{padding:48px 40px;max-width:1200px;margin:0 auto}
+section{padding:48px 40px;max-width:1440px;margin:0 auto}
 
 /* ── Hero ── */
 .hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 50%,var(--accent2) 100%);color:#fff;padding:80px 40px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
@@ -57,17 +57,18 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
 .hero-stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.7;margin-top:2px}
 
 /* ── Section headers ── */
-.sec-header{margin-bottom:32px}
-.sec-header .badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:10px}
-.sec-header h2{font-size:26px;font-weight:800}
-.sec-header p{font-size:14px;color:var(--text2);margin-top:4px;max-width:700px}
+.sec-header{margin-bottom:36px}
+.sec-header .badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:12px}
+.sec-header h2{font-size:clamp(22px,2.8vw,30px);font-weight:800}
+.sec-header p{font-size:14px;color:var(--text2);margin-top:6px;max-width:750px;line-height:1.5}
 
 /* ── KPI Cards ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:32px}
-.kpi{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--accent);position:relative;overflow:hidden}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-bottom:32px}
+.kpi{background:var(--card);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);border-top:4px solid var(--accent);border:1px solid var(--border);border-top:4px solid var(--accent);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
 .kpi .kpi-label{font-size:12px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.kpi .kpi-value{font-size:28px;font-weight:800;margin:6px 0 4px}
-.kpi .kpi-detail{font-size:11px;color:var(--text2)}
+.kpi .kpi-value{font-size:30px;font-weight:800;margin:8px 0 6px}
+.kpi .kpi-detail{font-size:12px;color:var(--text2)}
 .kpi .kpi-bar{height:6px;background:#e2e8f0;border-radius:3px;margin-top:10px;overflow:hidden}
 .kpi .kpi-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
 
@@ -121,10 +122,10 @@ section{padding:48px 40px;max-width:1200px;margin:0 auto}
 .gallery-item .caption{padding:12px 16px;font-size:13px;font-weight:600}
 
 /* ── Analytic Category Tabs ── */
-.ana-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
-.ana-tab{padding:8px 14px;border-radius:10px;font-size:11px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
-.ana-tab:hover{border-color:var(--accent);color:var(--text)}
-.ana-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ana-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.ana-tab{padding:10px 18px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2);box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ana-tab:hover{border-color:var(--accent);color:var(--text);box-shadow:0 3px 12px rgba(67,97,238,.12)}
+.ana-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(67,97,238,.3)}
 .ana-panel{display:none;animation:fadeIn .4s}
 .ana-panel.active{display:block}
 
@@ -211,11 +212,14 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .kpi-alert.amber{background:#fef3c7;color:#d97706}
 
 /* ── Viz Interactive ── */
-.viz-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
-.viz-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
-.viz-card h3{font-size:15px;font-weight:700;margin-bottom:4px}.viz-card .viz-sub{font-size:11px;color:var(--text2);margin-bottom:16px}
-.viz-card canvas{width:100%!important;max-height:340px}
+.viz-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+.viz-card{background:var(--card);border-radius:var(--radius);padding:28px 28px 22px;box-shadow:var(--shadow);border:1px solid var(--border);transition:box-shadow .25s}
+.viz-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1)}
+.viz-card h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.viz-card .viz-sub{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.4}
+.viz-card canvas{width:100%!important;max-height:420px}
 .viz-full{grid-column:1/-1}
+.viz-full canvas{max-height:360px}
 .treemap-wrap{display:flex;flex-wrap:wrap;gap:2px;min-height:280px}
 .tm-eje{border-radius:8px;overflow:hidden;display:flex;flex-wrap:wrap;gap:2px;padding:3px;position:relative}
 .tm-eje-label{position:absolute;top:4px;left:6px;font-size:10px;font-weight:800;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.4);z-index:2;pointer-events:none}
@@ -316,11 +320,12 @@ body.dark .foda-controls input{background:var(--card);color:var(--text);border-c
 .prior-row .pr-bar{flex:1;height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden;position:relative}
 .prior-row .pr-fill{height:100%;border-radius:6px;transition:width 1s ease;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff}
 .prior-row .pr-count{min-width:30px;text-align:right;font-weight:700;font-size:13px}
-.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
-.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow)}
-.stat-chip .sc-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.stat-chip .sc-val{font-size:18px;font-weight:800}
-.stat-chip .sc-lbl{font-size:10px;color:var(--text2)}
+.stat-row{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
+.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 20px;font-size:13px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.stat-chip:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.stat-chip .sc-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.stat-chip .sc-val{font-size:20px;font-weight:800}
+.stat-chip .sc-lbl{font-size:11px;color:var(--text2);font-weight:500}
 
 /* ── Gestión Section ── */
 .gestion-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
@@ -508,20 +513,20 @@ body.dark .quote-block{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 body.dark .crosslink-card:hover{background:linear-gradient(135deg,rgba(67,97,238,.05),rgba(67,97,238,.12))}
 
 /* ── Semáforo de Metas ── */
-.semaforo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
-.meta-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.semaforo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;margin-bottom:28px}
+.meta-card{background:var(--card);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
 .meta-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.meta-card .mc-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.meta-card .mc-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .meta-card .mc-light{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
 .meta-card .mc-light.green{background:#22c55e;color:#22c55e}
 .meta-card .mc-light.amber{background:#f59e0b;color:#f59e0b}
 .meta-card .mc-light.red{background:#ef4444;color:#ef4444}
 .meta-card .mc-eje{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;margin-left:auto}
-.meta-card .mc-title{font-size:13px;font-weight:700;line-height:1.3}
-.meta-card .mc-values{display:flex;gap:8px;margin:12px 0 8px;font-size:11px}
-.meta-card .mc-val{flex:1;text-align:center;padding:6px 4px;border-radius:8px;background:#f8fafc}
-.meta-card .mc-val .v-num{font-size:18px;font-weight:800;display:block}
-.meta-card .mc-val .v-lbl{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.meta-card .mc-title{font-size:14px;font-weight:700;line-height:1.3}
+.meta-card .mc-values{display:flex;gap:10px;margin:14px 0 10px;font-size:12px}
+.meta-card .mc-val{flex:1;text-align:center;padding:8px 6px;border-radius:10px;background:#f8fafc}
+.meta-card .mc-val .v-num{font-size:20px;font-weight:800;display:block}
+.meta-card .mc-val .v-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
 .meta-card .mc-val.current{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
 .meta-card .mc-val.current .v-lbl{color:rgba(255,255,255,.7)}
 .meta-card .mc-track{height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;position:relative}
@@ -540,15 +545,16 @@ body.dark .meta-card .mc-track{background:#334155}
 .resumen-hero .rh-lbl{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:.5px}
 
 /* ── Financiamiento ── */
-.fin-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.fin-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:24px}
 @media(max-width:900px){.fin-cards{grid-template-columns:1fr}}
-.fin-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
-.fin-card .fc-icon{font-size:36px;margin-bottom:8px}
-.fin-card .fc-val{font-size:32px;font-weight:800}
-.fin-card .fc-pct{font-size:14px;color:var(--text2);font-weight:600}
-.fin-card .fc-lbl{font-size:11px;color:var(--text2);margin-top:4px}
-.fin-card .fc-bar{height:6px;background:#e2e8f0;border-radius:3px;margin-top:12px;overflow:hidden}
-.fin-card .fc-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.fin-card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.fin-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.fin-card .fc-icon{font-size:40px;margin-bottom:10px}
+.fin-card .fc-val{font-size:36px;font-weight:800}
+.fin-card .fc-pct{font-size:15px;color:var(--text2);font-weight:600}
+.fin-card .fc-lbl{font-size:12px;color:var(--text2);margin-top:6px}
+.fin-card .fc-bar{height:8px;background:#e2e8f0;border-radius:4px;margin-top:14px;overflow:hidden}
+.fin-card .fc-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
 
 /* ── Inclusión Chips ── */
 .incl-chips{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
@@ -2358,6 +2364,19 @@ function normMeta(val,m){
   return m.m35===0?0:Math.min(100,(val/m.m35)*100);
 }
 
+// ── CHART.JS GLOBAL DEFAULTS ──
+Chart.defaults.font.size=12;
+Chart.defaults.font.family="system-ui,-apple-system,'Segoe UI',sans-serif";
+Chart.defaults.plugins.legend.labels.font={size:11,weight:'600'};
+Chart.defaults.plugins.legend.labels.boxWidth=12;
+Chart.defaults.plugins.legend.labels.padding=14;
+Chart.defaults.plugins.tooltip.titleFont={size:12,weight:'700'};
+Chart.defaults.plugins.tooltip.bodyFont={size:11};
+Chart.defaults.plugins.tooltip.padding=10;
+Chart.defaults.plugins.tooltip.cornerRadius=10;
+Chart.defaults.plugins.tooltip.backgroundColor='#1e293b';
+Chart.defaults.animation.duration=1000;
+
 // ── RENDER RADAR (improved tooltips) ──
 function renderRadar(){
   new Chart(document.getElementById('chartRadar'),{type:'radar',data:{
@@ -2366,7 +2385,7 @@ function renderRadar(){
       {label:'Línea Base 2024',data:METAS.map(m=>normMeta(m.lb,m)),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',borderWidth:2,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#ef4444'},
       {label:'Meta 2028',data:METAS.map(m=>normMeta(m.m28,m)),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:'#f59e0b'},
       {label:'Meta 2035',data:METAS.map(m=>100),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#22c55e'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9},backdropColor:'transparent'},pointLabels:{font:{size:9,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',titleFont:{size:12,weight:'700'},bodyFont:{size:11},cornerRadius:8,padding:10,callbacks:{label:ctx=>{const m=METAS[ctx.dataIndex];const raw=ctx.datasetIndex===0?m.lb:ctx.datasetIndex===1?m.m28:m.m35;const unit=m.n.includes('%')?'%':m.n.includes('m²')?'m²/hab':m.n.includes('km')?'km':m.n.includes('Gini')?'':'';return `${ctx.dataset.label}: ${raw}${unit} (${ctx.raw.toFixed(0)}% normalizado)`;}}}}
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',titleFont:{size:12,weight:'700'},bodyFont:{size:11},cornerRadius:8,padding:10,callbacks:{label:ctx=>{const m=METAS[ctx.dataIndex];const raw=ctx.datasetIndex===0?m.lb:ctx.datasetIndex===1?m.m28:m.m35;const unit=m.n.includes('%')?'%':m.n.includes('m²')?'m²/hab':m.n.includes('km')?'km':m.n.includes('Gini')?'':'';return `${ctx.dataset.label}: ${raw}${unit} (${ctx.raw.toFixed(0)}% normalizado)`;}}}}
   }});
 }
 
@@ -2505,7 +2524,7 @@ function renderMetasBar(){
       {label:'Meta 2028',data:METAS.slice(0,10).map(m=>m.m28),backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
       {label:'Meta 2035',data:METAS.slice(0,10).map(m=>m.m35),backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ── RENDER GRUPOS PRIORITARIOS ──
@@ -2555,7 +2574,7 @@ function renderRadarEje(){
       {label:'Inclusión',data:norm(ejeMetrics.map(e=>e.incl),maxI),borderColor:'#db2777',backgroundColor:'rgba(219,39,119,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#db2777'},
       {label:'Enfoque NNA',data:norm(ejeMetrics.map(e=>e.nna),maxN),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#f59e0b'}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'700'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'700'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ── RENDER POPULATION PYRAMID ──
@@ -2629,7 +2648,7 @@ function renderSeguridad(){
       {label:'Meta 2028',data:meta28,backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
       {label:'Meta 2035',data:meta35,backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{title:{display:true,text:'Casos anuales'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{footer:items=>{const a=items[0].raw,m=items[2].raw;return `Reducción: -${((1-m/a)*100).toFixed(0)}%`;}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Casos anuales'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{footer:items=>{const a=items[0].raw,m=items[2].raw;return `Reducción: -${((1-m/a)*100).toFixed(0)}%`;}}}}
   }});
 }
 
@@ -2644,7 +2663,7 @@ function renderRengoVsNac(){
       {label:'Rengo',data:rengo,backgroundColor:'#4361eeaa',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'Nacional',data:nacional,backgroundColor:'#94a3b888',borderColor:'#94a3b8',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11},maxRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
   }});
 }
 function renderTransparencia(){
@@ -2750,21 +2769,21 @@ function renderInvCap(){
   new Chart(document.getElementById('chartInvCap'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Inv. per cápita (M$/hab)',data:sorted.map(u=>(u.inv/u.pob/1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 function renderBipDens(){
   const sorted=[...UV_DATA].filter(u=>u.bip>0).sort((a,b)=>(b.bip/b.pob)-(a.bip/a.pob));
   new Chart(document.getElementById('chartBipDens'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Proyectos/1000hab',data:sorted.map(u=>(u.bip/u.pob*1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 function renderPobLocal(){
   const sorted=[...UV_DATA].sort((a,b)=>b.pob-a.pob);
   new Chart(document.getElementById('chartPobLocal'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Población',data:sorted.map(u=>u.pob),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee88':'#22c55e88'),borderColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee':'#22c55e'),borderWidth:1,borderRadius:3}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
 }
 
 // ── RENDER ODS HEATMAP ──
@@ -2800,7 +2819,7 @@ function renderODSMulti(){
   new Chart(document.getElementById('chartODSMulti'),{type:'bar',data:{
     labels:ODS_IDS.map(id=>'ODS '+id),
     datasets:[{label:'Acciones vinculadas',data:ODS_IDS.map((id,j)=>ODS_HEAT.reduce((s,row)=>s+row[j],0)),backgroundColor:ODS_IDS.map(id=>(ODS_COLORS_MAP[id]||'#999')+'cc'),borderColor:ODS_IDS.map(id=>ODS_COLORS_MAP[id]||'#999'),borderWidth:1,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 function renderODSGap(){
   const covered=new Set(ODS_IDS);
@@ -2875,7 +2894,7 @@ function renderServicios(){
   new Chart(document.getElementById('chartServicios'),{type:'radar',data:{
     labels:EVAL_SERV.map(s=>s.name),
     datasets:[{label:'Promedio (1-5)',data:EVAL_SERV.map(s=>s.avg),borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.15)',borderWidth:2.5,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:EVAL_SERV.map(s=>s.avg>=3.2?'#22c55e':s.avg>=2.8?'#f59e0b':'#ef4444')}]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:9},backdropColor:'transparent'},pointLabels:{font:{size:10,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}/5`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:10,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}/5`}}}}});
 }
 function renderInfraChart(){
   new Chart(document.getElementById('chartInfra'),{type:'bar',data:{
@@ -2891,7 +2910,7 @@ function renderPriorComp(){
       {label:'Ciudadanos (n=119)',data:PRIOR_CIU.map(p=>(p.count/119*100).toFixed(1)),backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'NNA (n=21)',data:PRIOR_NNA.map(p=>(p.count/21*100).toFixed(1)),backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,mode:'index'}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:11},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,mode:'index'}}}});
 }
 function renderEmergencia(){
   new Chart(document.getElementById('chartEmergencia'),{type:'doughnut',data:{
@@ -2975,7 +2994,7 @@ function renderBrechas(){
   new Chart(document.getElementById('chartBrechas'),{type:'bar',data:{labels:dims,datasets:[
     {label:'Avance actual (%)',data:actual,backgroundColor:actual.map(v=>v<50?'#ef444488':v<70?'#f59e0b88':'#22c55e88'),borderColor:actual.map(v=>v<50?'#ef4444':v<70?'#f59e0b':'#22c55e'),borderWidth:1,borderRadius:6},
     {label:'Meta 2035 (100%)',data:meta,backgroundColor:'rgba(67,97,238,.08)',borderColor:'#4361ee44',borderWidth:1,borderDash:[4,4],borderRadius:6}
-  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Avance: ${ctx.raw}% — Brecha: ${100-ctx.raw}%`:'Meta 2035: 100%'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Avance: ${ctx.raw}% — Brecha: ${100-ctx.raw}%`:'Meta 2035: 100%'}}}}});
 }
 
 // ── RIESGOS BUBBLE CHART ──
@@ -2989,7 +3008,7 @@ function renderRiesgos(){
   new Chart(document.getElementById('chartRiesgos'),{type:'bubble',data:{datasets:riesgos.map((r,i)=>({
     label:r.name,data:[{x:r.prob,y:r.imp,r:r.acc+3}],
     backgroundColor:`hsla(${360-i*45},70%,55%,0.5)`,borderColor:`hsla(${360-i*45},70%,45%,1)`,borderWidth:2
-  }))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{min:20,max:100,title:{display:true,text:'Probabilidad (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y:{min:40,max:100,title:{display:true,text:'Impacto (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: Prob ${riesgos[ctx.datasetIndex].prob}% · Imp ${riesgos[ctx.datasetIndex].imp}% · ${riesgos[ctx.datasetIndex].acc} acciones`}}}}});
+  }))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{min:20,max:100,title:{display:true,text:'Probabilidad (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y:{min:40,max:100,title:{display:true,text:'Impacto (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: Prob ${riesgos[ctx.datasetIndex].prob}% · Imp ${riesgos[ctx.datasetIndex].imp}% · ${riesgos[ctx.datasetIndex].acc} acciones`}}}}});
 }
 
 // ── VULNERABILIDAD CHART ──
@@ -3000,7 +3019,7 @@ function renderVulner(){
   new Chart(document.getElementById('chartVulner'),{type:'bar',data:{labels:dims,datasets:[
     {label:'Índice de vulnerabilidad',data:brecha,backgroundColor:'#ef444477',borderColor:'#ef4444',borderWidth:1,borderRadius:4},
     {label:'Capacidad de respuesta',data:capacidad,backgroundColor:'#22c55e77',borderColor:'#22c55e',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ── BENCHMARKING CHART ──
@@ -3009,7 +3028,7 @@ function renderBench(){
     {label:'Rengo',data:[98,92,68,22,72,65,91,85],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee'},
     {label:'Promedio Regional',data:[75,88,72,45,68,70,78,60],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#f59e0b'},
     {label:'Promedio Nacional',data:[70,100,80,60,75,72,85,65],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.05)',borderWidth:1,borderDash:[4,4],pointRadius:3,pointBackgroundColor:'#22c55e'}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent'},pointLabels:{font:{size:9,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ── RANKING CHART ──
@@ -3047,7 +3066,7 @@ function renderCoher(){
   const coherencia=[20,45,40,25,30,55,50,35,30,60,15,40];
   const colors=coherencia.map(v=>v<30?'#ef4444cc':v<50?'#f59e0bcc':'#22c55ecc');
   new Chart(document.getElementById('chartCoher'),{type:'bar',data:{labels:instrs,datasets:[{label:'Coherencia (%)',data:coherencia,backgroundColor:colors,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Coherencia: ${ctx.raw}% — ${ctx.raw<30?'Crítico':ctx.raw<50?'Bajo':'Aceptable'}`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Coherencia: ${ctx.raw}% — ${ctx.raw<30?'Crítico':ctx.raw<50?'Bajo':'Aceptable'}`}}}}});
 }
 
 // ── COBERTURA TEMÁTICA ──
@@ -3057,7 +3076,7 @@ function renderCobertura(){
   const eColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
   const data=[[1,0,0,5,0,1],[2,0,5,0,0,1],[5,5,5,5,5,5],[0,0,0,4,0,2],[4,0,1,0,1,1],[1,0,0,0,5,0]];
   new Chart(document.getElementById('chartCobertura'),{type:'bar',data:{labels:instrs,datasets:eNames.map((n,i)=>({label:n,data:data.map(d=>d[i]),backgroundColor:eColors[i]+'88',borderColor:eColors[i],borderWidth:1,borderRadius:2}))},
-    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Cobertura',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Cobertura',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ── GÉNERO BRECHAS ──
@@ -3065,7 +3084,7 @@ function renderGenero(){
   new Chart(document.getElementById('chartGenero'),{type:'bar',data:{labels:['Empleo','Ed. Superior','Jefatura Hogar','Participación','Ingresos','Violencia (VIF)'],datasets:[
     {label:'Mujeres',data:[38,42,35,69,72,85],backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4},
     {label:'Hombres',data:[62,58,65,31,100,15],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── GÉNERO POR EJE ──
@@ -3094,7 +3113,7 @@ function renderTablero(){
   new Chart(document.getElementById('chartTablero'),{type:'bar',data:{labels:kpis,datasets:[
     {label:'Progreso a Meta 2028 (%)',data:pctM28.map(v=>+v.toFixed(1)),backgroundColor:pctM28.map(v=>v<40?'#ef444488':v<65?'#f59e0b88':'#22c55e88'),borderColor:pctM28.map(v=>v<40?'#ef4444':v<65?'#f59e0b':'#22c55e'),borderWidth:1,borderRadius:6},
     {label:'Meta 2035 (100%)',data:m35.map(()=>100),backgroundColor:'#22c55e18',borderColor:'#22c55e66',borderWidth:1,borderDash:[4,4],borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'},title:{display:true,text:'% hacia meta 2035',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Progreso: ${ctx.raw}%`:'Meta 2035'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'},title:{display:true,text:'% hacia meta 2035',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Progreso: ${ctx.raw}%`:'Meta 2035'}}}}});
 }
 
 // ── FRECUENCIA ACCIONES ──
@@ -3136,7 +3155,7 @@ function renderArgDim(){
   new Chart(document.getElementById('chartArgDim'),{type:'radar',data:{labels:['Territorial','Social','Institucional','Económica','Ambiental','Seguridad','Educativa','Salud'],datasets:[
     {label:'Profundidad diagnóstico',data:[85,90,88,65,72,92,78,80],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee'},
     {label:'Cobertura de argumentos',data:[80,85,90,70,68,88,75,82],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[4,4],pointRadius:3,pointBackgroundColor:'#22c55e'}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent'},pointLabels:{font:{size:9,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ══════════════════════════════════════════════════════════
@@ -3176,7 +3195,7 @@ function renderCentral(){
     labels:sorted.map(a=>a.name),
     datasets:[{label:'Centralidad',data:sorted.map(a=>a.central),
       backgroundColor:sorted.map(a=>a.color+'cc'),borderColor:sorted.map(a=>a.color),borderWidth:1,borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:1,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>(v*100).toFixed(0)+'%'},title:{display:true,text:'Grado de centralidad normalizado',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Centralidad: ${(ctx.raw*100).toFixed(0)}% — ${sorted[ctx.dataIndex].desc}`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:1,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>(v*100).toFixed(0)+'%'},title:{display:true,text:'Grado de centralidad normalizado',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Centralidad: ${(ctx.raw*100).toFixed(0)}% — ${sorted[ctx.dataIndex].desc}`}}}}});
 }
 
 // ── SNA: CONVERGENCE CHART ──
@@ -3189,7 +3208,7 @@ function renderConverg(){
     backgroundColor:eColors[i]+'99',borderColor:eColors[i],borderWidth:1,borderRadius:3
   }));
   new Chart(document.getElementById('chartConverg'),{type:'bar',data:{labels:areas,datasets},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9},maxRotation:45}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Acciones',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9},padding:6}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},maxRotation:45}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Acciones',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:6}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
 }
 
 // ── SNA: MATURITY RADAR ──
@@ -3200,7 +3219,7 @@ function renderMaturity(){
       {label:'Nivel actual',data:SNA_MATURITY.map(m=>m.level),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.15)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#ef4444',pointHoverRadius:8},
       {label:'Nivel óptimo',data:SNA_MATURITY.map(()=>5),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:3,pointBackgroundColor:'#22c55e'},
       {label:'Nivel mínimo aceptable',data:SNA_MATURITY.map(()=>3),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.05)',borderWidth:1,borderDash:[3,3],pointRadius:2,pointBackgroundColor:'#f59e0b'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:9},backdropColor:'transparent'},pointLabels:{font:{size:9,weight:'600'}},grid:{color:'rgba(0,0,0,.08)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterLabel:ctx=>{const m=SNA_MATURITY[ctx.dataIndex];return ctx.datasetIndex===0?`⚠ ${m.note}`:'';
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.08)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterLabel:ctx=>{const m=SNA_MATURITY[ctx.dataIndex];return ctx.datasetIndex===0?`⚠ ${m.note}`:'';
   }}}}}});
 }
 
@@ -3298,7 +3317,7 @@ function renderCGRChart(){
     datasets:[{label:'Intervenciones CGR',data:CGR_DATA.map(d=>d.n),
       backgroundColor:CGR_DATA.map(d=>d.n>=2?'#ef4444cc':'#f59e0bcc'),
       borderColor:CGR_DATA.map(d=>d.n>=2?'#ef4444':'#f59e0b'),borderWidth:1,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{y:{beginAtZero:true,max:maxN+1,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° fiscalizaciones',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} intervención${ctx.raw>1?'es':''} de Contraloría`,afterLabel:ctx=>ctx.raw>=2?'⚠ Año con actividad elevada':'Nivel normal'}},annotation:{annotations:{line1:{type:'line',yMin:1.5,yMax:1.5,borderColor:'#f59e0b',borderWidth:1,borderDash:[4,4],label:{content:'Promedio: 1,6/año',enabled:true,position:'end',font:{size:9}}}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{y:{beginAtZero:true,max:maxN+1,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° fiscalizaciones',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} intervención${ctx.raw>1?'es':''} de Contraloría`,afterLabel:ctx=>ctx.raw>=2?'⚠ Año con actividad elevada':'Nivel normal'}},annotation:{annotations:{line1:{type:'line',yMin:1.5,yMax:1.5,borderColor:'#f59e0b',borderWidth:1,borderDash:[4,4],label:{content:'Promedio: 1,6/año',enabled:true,position:'end',font:{size:11}}}}}}}});
 }
 
 // ── ETHNOGRAPHY: CAPACITY RADAR ──
@@ -3308,7 +3327,7 @@ function renderCapacity(){
     datasets:[
       {label:'Estado actual',data:[95,85,35,40,50,38,30,45],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee',pointHoverRadius:8},
       {label:'Meta 2035',data:[98,90,70,80,80,75,80,85],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:3,pointBackgroundColor:'#22c55e'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8},backdropColor:'transparent',callback:v=>v+'%'},pointLabels:{font:{size:9,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent',callback:v=>v+'%'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── ETHNOGRAPHY: SOCIAL CAPITAL ──
@@ -3318,7 +3337,7 @@ function renderSocCap(){
     datasets:[
       {label:'Nivel actual',data:[72,38,32,28,65,80],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'Potencial estimado',data:[90,75,70,65,85,90],backgroundColor:'#22c55e44',borderColor:'#22c55e',borderWidth:1,borderRadius:4,borderDash:[4,4]}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:9,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── ETHNOGRAPHY: TENSIONS CHART ──
@@ -3330,7 +3349,7 @@ function renderTensions(){
     labels,datasets:[
       {label:'Fuerzas impulsoras',data:impulsor,backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:4},
       {label:'Fuerzas restrictivas',data:restrictor,backgroundColor:'#ef444488',borderColor:'#ef4444',borderWidth:1,borderRadius:4}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:9,weight:'600'},maxRotation:0,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v)+'%'},title:{display:true,text:'Intensidad (%)',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.abs(ctx.raw)}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:0,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v)+'%'},title:{display:true,text:'Intensidad (%)',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.abs(ctx.raw)}%`}}}}});
 }
 
 // ── FODA SEARCH + FILTER ──
@@ -3461,7 +3480,7 @@ function renderBrechasMetas(){
       if(m.tipo==='up')return((m.m35-m.lb)/m.m35*100).toFixed(1);
       return((m.lb-m.m35)/m.lb*100).toFixed(1);
     }),backgroundColor:METAS_SEG.map(m=>m.color+'99'),borderColor:METAS_SEG.map(m=>m.color),borderWidth:1,borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
 }
 function renderProgresoEje(){
   const ejeNames=['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
@@ -3477,7 +3496,7 @@ function renderProgresoEje(){
   new Chart(document.getElementById('chartProgresoEje'),{type:'radar',data:{
     labels:ejeNames,
     datasets:[{label:'Progreso (%)',data:byEje.map(v=>Math.min(100,v).toFixed(1)),backgroundColor:'rgba(67,97,238,.15)',borderColor:'#4361ee',borderWidth:2,pointBackgroundColor:ejeColors,pointRadius:5,pointHoverRadius:8}]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20,font:{size:9}},grid:{color:'rgba(0,0,0,.08)'},pointLabels:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Progreso: '+ctx.raw+'%'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20,font:{size:11}},grid:{color:'rgba(0,0,0,.08)'},pointLabels:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Progreso: '+ctx.raw+'%'}}}}});
 }
 
 // ── RENDER FINANCIAMIENTO ──
