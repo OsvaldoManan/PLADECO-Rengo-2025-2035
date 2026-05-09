@@ -28,16 +28,28 @@ html{scroll-behavior:smooth}
 body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
 
 /* ── Sidebar ── */
-.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--primary);color:#fff;z-index:100;display:flex;flex-direction:column;transition:transform .3s}
-.sidebar-brand{padding:28px 24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
-.sidebar-brand h2{font-size:15px;font-weight:700;letter-spacing:.5px}
-.sidebar-brand p{font-size:11px;opacity:.5;margin-top:2px}
-.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
-.sidebar-nav a{display:flex;align-items:center;gap:12px;padding:10px 24px;font-size:13px;color:rgba(255,255,255,.65);text-decoration:none;transition:all .2s;border-left:3px solid transparent}
-.sidebar-nav a:hover,.sidebar-nav a.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--accent)}
-.sidebar-nav a .ico{width:20px;text-align:center;font-size:14px;flex-shrink:0}
-.sidebar-nav .sep{height:1px;background:rgba(255,255,255,.06);margin:8px 24px}
-.sidebar-footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.08);font-size:10px;opacity:.4;text-align:center}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,#0a1f33 0%,var(--primary) 100%);color:#fff;z-index:100;display:flex;flex-direction:column;transition:transform .3s}
+.sidebar-brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px}
+.sidebar-brand img{height:40px;width:auto;flex-shrink:0;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3))}
+.sidebar-brand-text h2{font-size:13px;font-weight:700;letter-spacing:.3px;line-height:1.2;color:var(--gold-light)}
+.sidebar-brand-text p{font-size:10px;opacity:.45;margin-top:1px;letter-spacing:.5px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px 0;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+.sidebar-nav::-webkit-scrollbar{width:4px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
+.sidebar-group{padding:0}
+.sidebar-group-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);opacity:.7;padding:16px 20px 6px;display:flex;align-items:center;gap:6px}
+.sidebar-group-title::after{content:'';flex:1;height:1px;background:rgba(214,148,15,.15)}
+.sidebar-nav a{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:12.5px;color:rgba(255,255,255,.55);text-decoration:none;transition:all .2s;border-left:3px solid transparent;border-radius:0 6px 6px 0;margin-right:8px}
+.sidebar-nav a:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.05);border-left-color:rgba(214,148,15,.4)}
+.sidebar-nav a.active{color:#fff;background:linear-gradient(90deg,rgba(214,148,15,.15),transparent);border-left-color:var(--gold);font-weight:600}
+.sidebar-nav a .ico{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);transition:all .2s}
+.sidebar-nav a:hover .ico,.sidebar-nav a.active .ico{background:rgba(214,148,15,.2);color:var(--gold-light)}
+.sidebar-progress{padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)}
+.sidebar-progress-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:6px}
+.sidebar-progress-bar{height:4px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.sidebar-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;width:8%;transition:width 1.5s ease}
+.sidebar-progress-text{font-size:9px;opacity:.35;margin-top:4px;text-align:right}
+.sidebar-footer{padding:12px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:9px;opacity:.35;text-align:center;line-height:1.4}
 .menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer}
 
 /* ── Main ── */
@@ -647,37 +659,62 @@ body{padding-top:60px}
 <!-- Sidebar -->
 <nav class="sidebar">
   <div class="sidebar-brand">
-    <h2>PLADECO Rengo</h2>
-    <p>2025 — 2035</p>
+    <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" width="23" height="40">
+    <div class="sidebar-brand-text">
+      <h2>PLADECO Rengo</h2>
+      <p>2025 &#8212; 2035</p>
+    </div>
   </div>
   <div class="sidebar-nav">
-    <a href="#hero" class="active"><span class="ico">&#9679;</span> Inicio</a>
-    <a href="#dashboard"><span class="ico">&#9632;</span> Dashboard</a>
-    <a href="#viz"><span class="ico">&#9881;</span> Visualizaciones</a>
-    <div class="sep"></div>
-    <a href="#mapa"><span class="ico">&#9650;</span> Mapa Territorial</a>
-    <a href="#nna"><span class="ico">&#9829;</span> Diagn&#243;stico NNA</a>
-    <a href="#desigualdad"><span class="ico">&#9888;</span> Desigualdad</a>
-    <a href="#territorial-adv"><span class="ico">&#9632;</span> Urbano vs Rural</a>
-    <a href="#voz"><span class="ico">&#9998;</span> Voz Ciudadana</a>
-    <a href="#gestion"><span class="ico">&#9881;</span> Gestión PLADECO</a>
-    <a href="#sna"><span class="ico">&#9733;</span> Red Institucional SNA</a>
-    <a href="#etnografia"><span class="ico">&#9998;</span> Etnografía Institucional</a>
-    <a href="#ods-sec"><span class="ico">&#9733;</span> Alineación ODS</a>
-    <a href="#suenos"><span class="ico">&#9829;</span> Sueños 2035</a>
-    <a href="#ejes"><span class="ico">&#9654;</span> 6 Ejes Estratégicos</a>
-    <a href="#foda"><span class="ico">&#9670;</span> Análisis FODA</a>
-    <a href="#territorio"><span class="ico">&#9650;</span> Diagnóstico Territorial</a>
-    <div class="sep"></div>
-    <a href="#resumen"><span class="ico">&#9679;</span> Resumen Ejecutivo</a>
-    <a href="#semaforo"><span class="ico">&#9888;</span> Semáforo de Metas</a>
-    <a href="#financiamiento"><span class="ico">&#9632;</span> Financiamiento</a>
-    <a href="#graficos"><span class="ico">&#9733;</span> Gráficos Analíticos</a>
-    <a href="#argumentario"><span class="ico">&#9998;</span> Argumentario</a>
-    <a href="#comisiones"><span class="ico">&#9201;</span> Comisiones</a>
-    <a href="#documentos"><span class="ico">&#9776;</span> Documentos</a>
+    <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
+    <a href="#dashboard"><span class="ico">&#128202;</span> Dashboard</a>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title">Diagn&#243;stico</div>
+      <a href="#mapa"><span class="ico">&#128506;</span> Mapa Territorial</a>
+      <a href="#territorio"><span class="ico">&#127963;</span> Diagn&#243;stico Territorial</a>
+      <a href="#territorial-adv"><span class="ico">&#128296;</span> Brechas Urbano-Rural</a>
+      <a href="#desigualdad"><span class="ico">&#9878;</span> Desigualdad</a>
+      <a href="#nna"><span class="ico">&#128118;</span> Infancia y Adolescencia</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title">Participaci&#243;n</div>
+      <a href="#voz"><span class="ico">&#128227;</span> Voz Ciudadana</a>
+      <a href="#suenos"><span class="ico">&#127775;</span> Visi&#243;n 2035</a>
+      <a href="#foda"><span class="ico">&#128269;</span> FODA Entrevistas</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title">Planificaci&#243;n</div>
+      <a href="#ejes"><span class="ico">&#127919;</span> 6 Ejes Estrat&#233;gicos</a>
+      <a href="#ods-sec"><span class="ico">&#127760;</span> Alineaci&#243;n ODS</a>
+      <a href="#gestion"><span class="ico">&#128736;</span> Gesti&#243;n PLADECO</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title">Institucional</div>
+      <a href="#sna"><span class="ico">&#128279;</span> Red Actores SNA</a>
+      <a href="#etnografia"><span class="ico">&#128209;</span> Etnograf&#237;a Institucional</a>
+      <a href="#comisiones"><span class="ico">&#129309;</span> Comisiones</a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-group-title">Resultados</div>
+      <a href="#resumen"><span class="ico">&#128203;</span> Resumen Ejecutivo</a>
+      <a href="#semaforo"><span class="ico">&#128678;</span> Sem&#225;foro de Metas</a>
+      <a href="#financiamiento"><span class="ico">&#128176;</span> Financiamiento</a>
+      <a href="#graficos"><span class="ico">&#128200;</span> Gr&#225;ficos Anal&#237;ticos</a>
+      <a href="#argumentario"><span class="ico">&#128221;</span> Argumentario</a>
+      <a href="#documentos"><span class="ico">&#128193;</span> Documentos</a>
+    </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br>Mayo 2026</div>
+  <div class="sidebar-progress">
+    <div class="sidebar-progress-label">Avance PLADECO</div>
+    <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
+    <div class="sidebar-progress-text">8% &#8212; Fase Diagn&#243;stica</div>
+  </div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br>Versi&#243;n Mayo 2026</div>
 </nav>
 
 <!-- ═══ BANNER INSTITUCIONAL ═══ -->
