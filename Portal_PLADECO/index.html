@@ -30,8 +30,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background
 
 /* ── Sidebar ── */
 .sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,#0a1f33 0%,var(--primary) 100%);color:#fff;z-index:100;display:flex;flex-direction:column;transition:transform .3s}
-.sidebar-brand{padding:16px 20px 10px;border-bottom:none;display:flex;align-items:center;justify-content:center}
-.sidebar-logo-contigo{width:auto;height:68px;border-radius:10px;background:#fff;padding:6px 8px;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.sidebar-brand{padding:16px 18px 10px;border-bottom:none;display:flex;align-items:center;justify-content:center}
+.sidebar-logo-contigo{width:auto;height:64px;border-radius:12px;background:rgba(255,255,255,.95);padding:6px 10px;box-shadow:0 2px 14px rgba(0,0,0,.25),0 0 0 1px rgba(255,255,255,.08);transition:transform .2s,box-shadow .2s}
+.sidebar-logo-contigo:hover{transform:scale(1.03);box-shadow:0 4px 20px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.12)}
 .sidebar-brand-sub{display:flex;align-items:center;gap:10px;padding:0 20px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
 .sidebar-brand-sub img{flex-shrink:0;opacity:.6}
 .sidebar-brand-text h2{font-size:11.5px;font-weight:700;letter-spacing:.3px;line-height:1.2;color:rgba(255,255,255,.65)}
@@ -221,11 +222,9 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .uv-table tfoot td{background:var(--primary-light);color:#fff;font-weight:700;padding:10px 12px;border:none}
 .gallery-cat{grid-column:1/-1;font-size:14px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1.5px;padding:20px 0 8px;border-bottom:2px solid var(--border)}
 .gallery-cat:first-child{padding-top:0}
-.hero-logo-contigo{height:60px;width:auto;border-radius:12px;background:#fff;padding:8px 18px;box-shadow:0 4px 24px rgba(0,0,0,.2);margin-bottom:20px;animation:heroLogoIn .8s ease-out}
+.hero-logo-contigo{height:56px;width:auto;border-radius:14px;background:rgba(255,255,255,.95);padding:8px 20px;box-shadow:0 4px 28px rgba(0,0,0,.2),0 0 0 1px rgba(255,255,255,.1);margin-bottom:20px;animation:heroLogoIn .8s ease-out;backdrop-filter:blur(4px)}
 @keyframes heroLogoIn{from{opacity:0;transform:translateY(-15px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
 .hero-brand{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:8px;font-weight:400}
-.cb-contigo-logo{height:30px;width:auto;border-radius:6px;background:rgba(255,255,255,.95);padding:4px 10px;box-shadow:0 1px 6px rgba(0,0,0,.15);transition:transform .2s}
-.cb-contigo-logo:hover{transform:scale(1.03)}
 .kpi-alert{display:inline-block;font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:6px;vertical-align:middle}
 .kpi-alert.red{background:#fee2e2;color:#dc2626}
 .kpi-alert.green{background:#d1fae5;color:#059669}
@@ -631,12 +630,31 @@ body.dark .meta-card .mc-track{background:#334155}
 .plazo-pill .pp-name{font-size:13px;font-weight:700}
 
 /* ── Banner Institucional + En Construcción ── */
-.construction-banner{display:none}
-body{padding-top:0}
+.construction-banner{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25)}
+.construction-banner .cb-row{display:flex;align-items:center;justify-content:space-between;padding:6px 20px;gap:14px}
+.construction-banner .cb-logo-left{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.construction-banner .cb-logo-left .cb-escudo-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px 12px 4px 6px}
+.construction-banner .cb-logo-left .cb-escudo-pill img{height:30px;width:auto}
+.construction-banner .cb-logo-left .cb-escudo-pill span{color:rgba(255,255,255,.8);font-size:9px;font-weight:700;line-height:1.2;text-transform:uppercase;letter-spacing:.4px}
+.construction-banner .cb-contigo-pill{background:rgba(255,255,255,.95);border-radius:8px;padding:3px 10px;box-shadow:0 1px 6px rgba(0,0,0,.15);display:flex;align-items:center}
+.construction-banner .cb-contigo-pill img{height:28px;width:auto;display:block}
+.construction-banner .cb-center{flex:1;text-align:center}
+.construction-banner .cb-construction{background:repeating-linear-gradient(45deg,#f5921d,#f5921d 10px,#0c1f36 10px,#0c1f36 20px);display:inline-flex;align-items:center;gap:6px;padding:5px 16px;border-radius:6px;font-size:11px;font-weight:900;color:#0c1f36;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 2px 10px rgba(245,146,29,.25)}
+.construction-banner .cb-construction .cb-txt{background:#f5921d;padding:2px 6px;border-radius:3px;color:#fff;font-size:10px}
+.construction-banner .cb-logo-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.construction-banner .cb-pladeco-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:5px 12px}
+.construction-banner .cb-pladeco-pill .cb-pt-name{font-size:13px;font-weight:900;letter-spacing:.5px;color:#fff}
+.construction-banner .cb-pladeco-pill .cb-pt-year{font-size:9px;color:var(--orange);font-weight:700;letter-spacing:1.5px}
+.construction-banner .cb-pladeco-pill .cb-pt-line{width:1px;height:22px;background:rgba(255,255,255,.15)}
+body{padding-top:44px}
 @media(max-width:900px){
-  .construction-banner .cb-pladeco-text .cb-pt-name{font-size:11px}
-  .construction-banner .cb-pladeco-text .cb-pt-year{font-size:8px}
-  body{padding-top:50px}
+  .construction-banner{left:0}
+  .construction-banner .cb-row{padding:5px 10px;gap:6px}
+  .construction-banner .cb-escudo-pill span{display:none}
+  .construction-banner .cb-contigo-pill img{height:22px}
+  .construction-banner .cb-construction{font-size:9px;padding:4px 10px}
+  .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:10px}
+  body{padding-top:40px}
 }
 </style>
 </head>
@@ -715,18 +733,24 @@ body{padding-top:0}
 <div class="construction-banner">
   <div class="cb-row">
     <div class="cb-logo-left">
-      <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" title="Ilustre Municipalidad de Rengo">
-      <img src="logo-contigo-rengo-h.png" alt="Contigo Rengo Mejor Comuna" class="cb-contigo-logo" title="Contigo Rengo Mejor Comuna">
+      <div class="cb-escudo-pill">
+        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo">
+        <span>Ilustre<br>Municipalidad<br>de Rengo</span>
+      </div>
+      <div class="cb-contigo-pill">
+        <img src="logo-contigo-rengo-h.png" alt="Contigo Rengo Mejor Comuna">
+      </div>
     </div>
     <div class="cb-center">
-      <div class="cb-construction">🔧 <span class="cb-txt">En Construcci&#243;n</span> 🚧</div>
+      <div class="cb-construction">&#128295; <span class="cb-txt">En Construcci&#243;n</span> &#128679;</div>
     </div>
     <div class="cb-logo-right">
-      <div class="cb-pladeco-text">
-        <div class="cb-pt-name">PLADECO</div>
-        <div class="cb-pt-year">2025 — 2035</div>
+      <div class="cb-pladeco-pill">
+        <div>
+          <div class="cb-pt-name">PLADECO</div>
+          <div class="cb-pt-year">2025 &#8212; 2035</div>
+        </div>
       </div>
-      <img src="logo-pladeco.png" alt="PLADECO 2025-2035" onerror="this.style.display='none'" title="PLADECO Rengo 2025-2035">
     </div>
   </div>
 </div>
