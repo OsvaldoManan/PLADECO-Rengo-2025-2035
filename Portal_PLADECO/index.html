@@ -17,14 +17,15 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --primary:#1a1a2e;--primary-light:#16213e;--accent:#4361ee;--accent2:#3a0ca3;
-  --eje1:#e63946;--eje2:#f4a261;--eje3:#2a9d8f;--eje4:#7b2cbf;--eje5:#d62828;--eje6:#457b9d;
-  --bg:#f0f2f5;--card:#fff;--text:#1e293b;--text2:#64748b;--border:#e2e8f0;
-  --shadow:0 2px 12px rgba(0,0,0,.06);--radius:14px;
+  --primary:#0f2940;--primary-light:#17497C;--accent:#D6940F;--accent2:#AD2910;
+  --eje1:#AD2910;--eje2:#D6940F;--eje3:#2a7d6f;--eje4:#17497C;--eje5:#8B1A1A;--eje6:#3a6d8c;
+  --bg:#f4f2ef;--card:#fff;--text:#1e293b;--text2:#5a6a7a;--border:#ddd8d0;
+  --shadow:0 2px 16px rgba(15,41,64,.07);--radius:10px;
   --sidebar-w:260px;
+  --gold:#D6940F;--gold-light:#F2CB7E;--blue-deep:#17497C;--red-inst:#AD2910;
 }
 html{scroll-behavior:smooth}
-body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
 
 /* ── Sidebar ── */
 .sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--primary);color:#fff;z-index:100;display:flex;flex-direction:column;transition:transform .3s}
@@ -44,12 +45,12 @@ body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--
 section{padding:48px 40px;max-width:1440px;margin:0 auto}
 
 /* ── Hero ── */
-.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 50%,var(--accent2) 100%);color:#fff;padding:80px 40px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;background:rgba(67,97,238,.15)}
-.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;border-radius:50%;background:rgba(58,12,163,.12)}
+.hero{background:linear-gradient(135deg,#0a1f33 0%,var(--primary) 40%,var(--primary-light) 100%);color:#fff;padding:80px 40px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;background:rgba(214,148,15,.08)}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;border-radius:50%;background:rgba(173,41,16,.06)}
 .hero-content{position:relative;z-index:1;max-width:900px;margin:0 auto}
 .hero h1{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px}
-.hero h1 span{background:linear-gradient(90deg,#ffd166,#ef476f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 span{background:linear-gradient(90deg,#F2CB7E,#D6940F);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero .sub{font-size:18px;opacity:.7;margin-bottom:36px;font-weight:300}
 .hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
 .hero-stat{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border-radius:16px;padding:20px 28px;min-width:140px;border:1px solid rgba(255,255,255,.12)}
@@ -59,7 +60,7 @@ section{padding:48px 40px;max-width:1440px;margin:0 auto}
 /* ── Section headers ── */
 .sec-header{margin-bottom:36px}
 .sec-header .badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 16px;border-radius:20px;margin-bottom:12px}
-.sec-header h2{font-size:clamp(22px,2.8vw,30px);font-weight:800}
+.sec-header h2{font-size:clamp(22px,2.8vw,30px);font-weight:800;letter-spacing:-.3px}
 .sec-header p{font-size:14px;color:var(--text2);margin-top:6px;max-width:750px;line-height:1.5}
 
 /* ── KPI Cards ── */
@@ -125,7 +126,7 @@ section{padding:48px 40px;max-width:1440px;margin:0 auto}
 .ana-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .ana-tab{padding:10px 18px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2);box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .ana-tab:hover{border-color:var(--accent);color:var(--text);box-shadow:0 3px 12px rgba(67,97,238,.12)}
-.ana-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(67,97,238,.3)}
+.ana-tab.active{background:var(--primary-light);color:#fff;border-color:var(--primary-light);box-shadow:0 4px 14px rgba(23,73,124,.3)}
 .ana-panel{display:none;animation:fadeIn .4s}
 .ana-panel.active{display:block}
 
@@ -213,8 +214,10 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 
 /* ── Viz Interactive ── */
 .viz-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
-.viz-card{background:var(--card);border-radius:var(--radius);padding:28px 28px 22px;box-shadow:var(--shadow);border:1px solid var(--border);transition:box-shadow .25s}
-.viz-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1)}
+.viz-card{background:var(--card);border-radius:var(--radius);padding:28px 28px 22px;box-shadow:var(--shadow);border:1px solid var(--border);transition:box-shadow .25s,transform .2s;position:relative}
+.viz-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue-deep));border-radius:var(--radius) var(--radius) 0 0;opacity:0;transition:opacity .25s}
+.viz-card:hover{box-shadow:0 6px 24px rgba(15,41,64,.12);transform:translateY(-2px)}
+.viz-card:hover::before{opacity:1}
 .viz-card h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text)}
 .viz-card .viz-sub{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.4}
 .viz-card canvas{width:100%!important;max-height:420px}
@@ -257,7 +260,7 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 /* ── Dark Mode ── */
 .dark-toggle{position:fixed;bottom:32px;right:88px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.2);z-index:99;display:flex;align-items:center;justify-content:center;transition:all .3s}
 .dark-toggle:hover{transform:scale(1.1)}
-body.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--border:#334155;--shadow:0 2px 12px rgba(0,0,0,.3)}
+body.dark{--bg:#0c1a2b;--card:#152338;--text:#e2e8f0;--text2:#94a3b8;--border:#2a3f55;--shadow:0 2px 16px rgba(0,0,0,.35);--accent:#e8a820;--gold:#e8a820;--gold-light:#f5d98a}
 body.dark .sidebar{background:#0c0c1d}
 body.dark .hero{background:linear-gradient(135deg,#0c0c1d 0%,#1a1a3e 50%,#2a0a5a 100%)}
 body.dark .uv-table th{background:#0f172a}
@@ -1299,6 +1302,18 @@ body{padding-top:60px}
     </div>
   </div>
   <div class="viz-row">
+    <div class="viz-card">
+      <h3>&#9729;&#65039; Nube de Palabras — Frecuencias Ciudadanas</h3>
+      <div class="viz-sub">30 conceptos m&#225;s mencionados en encuestas y entrevistas (n=140). Tama&#241;o = frecuencia relativa</div>
+      <canvas id="canvasWordCloud" style="width:100%;height:420px"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>&#128279; Red de Relaciones Tem&#225;ticas (SNA)</h3>
+      <div class="viz-sub">Conexiones entre prioridades ciudadanas seg&#250;n co-ocurrencia en respuestas. Grosor = intensidad del v&#237;nculo</div>
+      <canvas id="canvasSNA" style="width:100%;height:420px"></canvas>
+    </div>
+  </div>
+  <div class="viz-row">
     <div class="viz-card viz-full">
       <h3>&#128197; Hoja de Ruta PLADECO 2025-2035</h3>
       <div class="viz-sub">Cronograma de hitos estrat&#233;gicos &mdash; desde la Etnograf&#237;a Social e Institucional hasta la Meta Final 2035</div>
@@ -2193,7 +2208,7 @@ function renderNNA(){
     datasets:[{label:'% NNA afectados',data:[42,72,76,31.5,18.2,12.4,4.1,14.2,18.9],
       backgroundColor:['#ef4444','#ef4444','#ef4444','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#ef4444'],
       borderRadius:6,hoverBackgroundColor:'#1e293b'}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
 }
 
 // ── RENDER NNA AGE + PARTICIPATION ──
@@ -2201,14 +2216,14 @@ function renderNNAAge(){
   new Chart(document.getElementById('chartNNAAge'),{type:'doughnut',data:{
     labels:['6-12 años (35%)','12-15 años (32%)','15-18 años (33%)'],
     datasets:[{data:[35,32,33],backgroundColor:['#4361ee88','#22c55e88','#f59e0b88'],borderColor:['#4361ee','#22c55e','#f59e0b'],borderWidth:2,hoverOffset:8}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}},plugins:[{id:'nnaAgeCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('4.036',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('NNA',left+width/2,top+height/2+10);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}},plugins:[{id:'nnaAgeCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('4.036',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('NNA',left+width/2,top+height/2+10);c.restore();}}]});
 }
 function renderNNAPartic(){
   new Chart(document.getElementById('chartNNAPartic'),{type:'bar',data:{
     labels:['Participa agrupaciones','Quiere participar','Se siente escuchado','Conoce derechos','Identidad local','Usa plazas/parques'],
     datasets:[{label:'% NNA',data:[52.4,100,24,41.3,47.6,61.9],
       backgroundColor:['#22c55ecc','#22c55ecc','#ef4444cc','#f59e0bcc','#f59e0bcc','#22c55ecc'],borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
 }
 
 // ── RENDER SURVEY CHART ──
@@ -2218,7 +2233,7 @@ function renderSurveyChart(){
     datasets:[
       {label:'Ciudadanos (n=119)',data:SURVEY_CIU.identity.vals,backgroundColor:'#4361ee99',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'Nº Respuestas',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'Nº Respuestas',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER INEQUALITY ──
@@ -2235,7 +2250,7 @@ function renderBIPSector(){
   new Chart(document.getElementById('chartBIPSector'),{type:'doughnut',data:{
     labels:BIP_SECTORS.map(s=>s.s),
     datasets:[{data:BIP_SECTORS.map(s=>s.n),backgroundColor:BIP_SECTORS.map(s=>s.c),borderWidth:2,borderColor:'var(--card,#fff)',hoverOffset:8}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} proyectos (${(ctx.raw/1182*100).toFixed(1)}%)`}}}},plugins:[{id:'centerTextBIP',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 24px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('1.182',left+width/2,top+height/2-6);c.font='600 10px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Proyectos',left+width/2,top+height/2+10);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} proyectos (${(ctx.raw/1182*100).toFixed(1)}%)`}}}},plugins:[{id:'centerTextBIP',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 24px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('1.182',left+width/2,top+height/2-6);c.font='600 10px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Proyectos',left+width/2,top+height/2+10);c.restore();}}]});
 }
 
 // ── RENDER IDENTITY CHART ──
@@ -2246,7 +2261,7 @@ function renderIdentityChart(){
       {label:'Ciudadanos (n=119)',data:[3,31,67,12,6],backgroundColor:'#4361ee88',borderRadius:4},
       {label:'NNA (n=21)',data:[2,8,4,0,7],backgroundColor:'#db277788',borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'Respuestas'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'Respuestas'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER EJES ── (improved with action count badges + scroll-to from donut)
@@ -2431,7 +2446,7 @@ const METAS=[
   {n:"Gini Territorial",lb:0.741,m28:0.6,m35:0.5,dec:true},
   {n:"Dep. FNDR %",lb:54.4,m28:45,m35:35,dec:true}
 ];
-const EJE_COLORS=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
+const EJE_COLORS=['#AD2910','#D6940F','#2a7d6f','#17497C','#8B1A1A','#3a6d8c'];
 const EJE_NAMES=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
 const EJE_ACC=[58,18,14,53,32,50];
 const PLAZOS={C:[35,8,7,12,18,32],M:[19,8,7,27,13,17],L:[4,2,0,14,1,1]};
@@ -2483,7 +2498,7 @@ Chart.defaults.plugins.tooltip.titleFont={size:12,weight:'700'};
 Chart.defaults.plugins.tooltip.bodyFont={size:11};
 Chart.defaults.plugins.tooltip.padding=10;
 Chart.defaults.plugins.tooltip.cornerRadius=10;
-Chart.defaults.plugins.tooltip.backgroundColor='#1e293b';
+Chart.defaults.plugins.tooltip.backgroundColor='#0f2940';
 Chart.defaults.animation.duration=1000;
 
 // ── RENDER RADAR (improved tooltips) ──
@@ -2494,7 +2509,7 @@ function renderRadar(){
       {label:'Línea Base 2024',data:METAS.map(m=>normMeta(m.lb,m)),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.12)',borderWidth:2,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#ef4444'},
       {label:'Meta 2028',data:METAS.map(m=>normMeta(m.m28,m)),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:'#f59e0b'},
       {label:'Meta 2035',data:METAS.map(m=>100),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#22c55e'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',titleFont:{size:12,weight:'700'},bodyFont:{size:11},cornerRadius:8,padding:10,callbacks:{label:ctx=>{const m=METAS[ctx.dataIndex];const raw=ctx.datasetIndex===0?m.lb:ctx.datasetIndex===1?m.m28:m.m35;const unit=m.n.includes('%')?'%':m.n.includes('m²')?'m²/hab':m.n.includes('km')?'km':m.n.includes('Gini')?'':'';return `${ctx.dataset.label}: ${raw}${unit} (${ctx.raw.toFixed(0)}% normalizado)`;}}}}
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',titleFont:{size:12,weight:'700'},bodyFont:{size:11},cornerRadius:8,padding:10,callbacks:{label:ctx=>{const m=METAS[ctx.dataIndex];const raw=ctx.datasetIndex===0?m.lb:ctx.datasetIndex===1?m.m28:m.m35;const unit=m.n.includes('%')?'%':m.n.includes('m²')?'m²/hab':m.n.includes('km')?'km':m.n.includes('Gini')?'':'';return `${ctx.dataset.label}: ${raw}${unit} (${ctx.raw.toFixed(0)}% normalizado)`;}}}}
   }});
 }
 
@@ -2503,7 +2518,7 @@ let donutChart;
 function renderDonut(){
   donutChart = new Chart(document.getElementById('chartDonut'),{type:'doughnut',data:{
     labels:EJE_NAMES,datasets:[{data:EJE_ACC,backgroundColor:EJE_COLORS,borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:12,hoverBorderColor:'#fff'}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',animation:{duration:1000,easing:'easeOutBounce',animateRotate:true},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'centerText',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 28px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-8);c.font='600 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Políticas',left+width/2,top+height/2+12);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',animation:{duration:1000,easing:'easeOutBounce',animateRotate:true},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'centerText',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 28px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-8);c.font='600 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Políticas',left+width/2,top+height/2+12);c.restore();}}]});
   document.getElementById('chartDonut').addEventListener('click',(e)=>{
     const pts=donutChart.getElementsAtEventForMode(e,'nearest',{intersect:true},false);
     if(pts.length>0){const idx=pts[0].index;showEje(idx);document.getElementById('ejes').scrollIntoView({behavior:'smooth'});}
@@ -2517,14 +2532,14 @@ function renderPlazos(){
       {label:'Corto (2025-28)',data:PLAZOS.C,backgroundColor:'#22c55e',borderRadius:4,hoverBackgroundColor:'#16a34a'},
       {label:'Mediano (2028-32)',data:PLAZOS.M,backgroundColor:'#f59e0b',borderRadius:4,hoverBackgroundColor:'#d97706'},
       {label:'Largo (2032-35)',data:PLAZOS.L,backgroundColor:'#ef4444',borderRadius:4,hoverBackgroundColor:'#dc2626'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},scales:{x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}},y:{stacked:true,title:{display:true,text:'Nº Acciones',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},scales:{x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}},y:{stacked:true,title:{display:true,text:'Nº Acciones',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
 }
 
 // ── RENDER INCLUSION (improved) ──
 function renderInclusion(){
   new Chart(document.getElementById('chartInclusion'),{type:'polarArea',data:{
     labels:INCL.labels,datasets:[{data:INCL.vals,backgroundColor:INCL.colors.map(c=>c+'88'),borderColor:INCL.colors,borderWidth:2,hoverBackgroundColor:INCL.colors.map(c=>c+'cc')}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
 }
 
 // ── RENDER ODS BARS (animated on scroll) ──
@@ -2597,7 +2612,7 @@ function renderGauges(){
   const el=document.getElementById('gauges');
   const ejeMap=[1,1,1,1,2,2,3,3,4,4,5,5,6,6,6,6];
   const ejeNm=['','Social','Económico','M. Ambiente','Territorial','Seguridad','Gestión'];
-  const ejeCl=['','#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
+  const ejeCl=['','#AD2910','#D6940F','#2a7d6f','#17497C','#8B1A1A','#3a6d8c'];
   el.innerHTML=METAS.map((m,idx)=>{
     const pct=Math.max(0,Math.min(100,normMeta(m.lb,m)));
     const color=pct>66?'#22c55e':pct>33?'#f59e0b':'#ef4444';
@@ -2633,7 +2648,7 @@ function renderMetasBar(){
       {label:'Meta 2028',data:METAS.slice(0,10).map(m=>m.m28),backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
       {label:'Meta 2035',data:METAS.slice(0,10).map(m=>m.m35),backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER GRUPOS PRIORITARIOS ──
@@ -2642,7 +2657,7 @@ function renderGrupos(){
   new Chart(document.getElementById('chartGrupos'),{type:'polarArea',data:{
     labels:data.map(d=>d.g),
     datasets:[{data:data.map(d=>d.n),backgroundColor:['#e6394688','#f4a26188','#db277788','#7b2cbf88','#4361ee88'],borderColor:['#e63946','#f4a261','#db2777','#7b2cbf','#4361ee'],borderWidth:2}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${data[ctx.dataIndex].pct}%)`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${data[ctx.dataIndex].pct}%)`}}}}});
 }
 
 // ── RENDER LORENZ CURVE ──
@@ -2660,7 +2675,7 @@ function renderLorenz(){
       {label:'Distribución real',data:cumInv,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:'#ef4444'},
       {label:'Igualdad perfecta',data:cumPop,borderColor:'#22c55e',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'% acumulado de localidades',font:{size:10}},ticks:{callback:(v,i)=>i%5===0?v+'%':''},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'% acumulado de inversión',font:{size:10}},ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{title:ctx=>`Top ${ctx[0].label}% localidades`,label:ctx=>`${ctx.dataset.label}: ${ctx.raw}% inversión`}},annotation:{annotations:{giniBox:{type:'label',xValue:12,yValue:70,content:['Gini: 0,741','Desigualdad alta'],font:{size:11,weight:'700'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.8)',padding:8,borderRadius:6}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'% acumulado de localidades',font:{size:10}},ticks:{callback:(v,i)=>i%5===0?v+'%':''},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'% acumulado de inversión',font:{size:10}},ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{title:ctx=>`Top ${ctx[0].label}% localidades`,label:ctx=>`${ctx.dataset.label}: ${ctx.raw}% inversión`}},annotation:{annotations:{giniBox:{type:'label',xValue:12,yValue:70,content:['Gini: 0,741','Desigualdad alta'],font:{size:11,weight:'700'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.8)',padding:8,borderRadius:6}}}}}});
 }
 
 // ── RENDER RADAR POR EJE ──
@@ -2683,7 +2698,7 @@ function renderRadarEje(){
       {label:'Inclusión',data:norm(ejeMetrics.map(e=>e.incl),maxI),borderColor:'#db2777',backgroundColor:'rgba(219,39,119,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#db2777'},
       {label:'Enfoque NNA',data:norm(ejeMetrics.map(e=>e.nna),maxN),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#f59e0b'}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'700'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'700'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER POPULATION PYRAMID ──
@@ -2728,7 +2743,7 @@ function renderFinancial(){
       {label:'Ingresos (M$)',data:FINANCIAL.ingresos,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#22c55e'},
       {label:'Gastos (M$)',data:FINANCIAL.gastos,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#ef4444'},
       {label:'Patrimonio (M$)',data:FINANCIAL.patrimonio,borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#4361ee',borderDash:[5,3]}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
 }
 
 // ── WATERFALL PATRIMONIAL ──
@@ -2741,7 +2756,7 @@ function renderWaterfall(){
       backgroundColor:pat.map(v=>v<0?'#ef444499':v<3000?'#f59e0b99':'#22c55e99'),
       borderColor:pat.map(v=>v<0?'#ef4444':v<3000?'#f59e0b':'#22c55e'),
       borderWidth:2,borderRadius:6,barPercentage:.65}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>'$'+v.toLocaleString('es-CL')+'M'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>{const v=ctx.raw;return `Patrimonio: $${v.toLocaleString('es-CL')}M ${v<0?'(déficit)':'(superávit)'}`;}}},annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'#94a3b8',borderWidth:1,borderDash:[4,4]},label1:{type:'label',xValue:'2018',yValue:-1460,content:'-$1.460M',font:{size:11,weight:'800'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.9)',padding:4,borderRadius:4},label2:{type:'label',xValue:'2024',yValue:9400,content:'+$9.400M',font:{size:11,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:4,borderRadius:4}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>'$'+v.toLocaleString('es-CL')+'M'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const v=ctx.raw;return `Patrimonio: $${v.toLocaleString('es-CL')}M ${v<0?'(déficit)':'(superávit)'}`;}}},annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'#94a3b8',borderWidth:1,borderDash:[4,4]},label1:{type:'label',xValue:'2018',yValue:-1460,content:'-$1.460M',font:{size:11,weight:'800'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.9)',padding:4,borderRadius:4},label2:{type:'label',xValue:'2024',yValue:9400,content:'+$9.400M',font:{size:11,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:4,borderRadius:4}}}}}});
 }
 
 // ── SEGURIDAD PÚBLICA ──
@@ -2757,7 +2772,7 @@ function renderSeguridad(){
       {label:'Meta 2028',data:meta28,backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
       {label:'Meta 2035',data:meta35,backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Casos anuales'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{footer:items=>{const a=items[0].raw,m=items[2].raw;return `Reducción: -${((1-m/a)*100).toFixed(0)}%`;}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Casos anuales'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{footer:items=>{const a=items[0].raw,m=items[2].raw;return `Reducción: -${((1-m/a)*100).toFixed(0)}%`;}}}}
   }});
 }
 
@@ -2772,7 +2787,7 @@ function renderRengoVsNac(){
       {label:'Rengo',data:rengo,backgroundColor:'#4361eeaa',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'Nacional',data:nacional,backgroundColor:'#94a3b888',borderColor:'#94a3b8',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11},maxRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11},maxRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
   }});
 }
 function renderTransparencia(){
@@ -2780,7 +2795,7 @@ function renderTransparencia(){
     labels:['2012','2014','2016','2018','2020','2022','2024'],
     datasets:[{label:'CPLT Rengo (%)',data:[16.4,45.2,62.8,78.5,88.3,94.6,97.89],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,borderWidth:3,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:'#22c55e'},
     {label:'Promedio Nacional (%)',data:[35,42,52,60,68,75,81.76],borderColor:'#94a3b8',borderDash:[5,3],borderWidth:2,pointRadius:3,pointBackgroundColor:'#94a3b8',fill:false}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false}},y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},annotation:{annotations:{milestone:{type:'label',xValue:'2024',yValue:97.89,content:'97,89%',font:{size:12,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:6,borderRadius:6}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false}},y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},annotation:{annotations:{milestone:{type:'label',xValue:'2024',yValue:97.89,content:'97,89%',font:{size:12,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:6,borderRadius:6}}}}}});
 }
 
 // ── PARTICIPATION CHARTS ──
@@ -2788,7 +2803,7 @@ function renderParticDemo(){
   new Chart(document.getElementById('chartParticDemo'),{type:'doughnut',data:{
     labels:['30-44 años (40%)','45-59 años (30%)','60+ años (20%)','18-29 años (8%)','< 18 años (2%)'],
     datasets:[{data:[48,36,24,9,2],backgroundColor:['#4361ee88','#22c55e88','#f59e0b88','#8b5cf688','#ef444488'],borderColor:['#4361ee','#22c55e','#f59e0b','#8b5cf6','#ef4444'],borderWidth:2,hoverOffset:8}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}},plugins:[{id:'demoCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('119',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle='#64748b';c.fillText('encuestados',left+width/2,top+height/2+10);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}},plugins:[{id:'demoCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('119',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle='#64748b';c.fillText('encuestados',left+width/2,top+height/2+10);c.restore();}}]});
 }
 function renderFunnel(){
   const stages=[
@@ -2802,7 +2817,7 @@ function renderFunnel(){
     labels:stages.map(s=>s.name),
     datasets:[{label:'% participantes',data:stages.map(s=>s.val),
       backgroundColor:['#22c55ecc','#4ade80cc','#f59e0bcc','#fb923ccc','#ef4444cc'],borderRadius:6,barPercentage:.7}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw}% de los encuestados`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw}% de los encuestados`}}}}});
 }
 
 // ── FODA ENTREVISTAS RENDER ──
@@ -2842,7 +2857,7 @@ function renderFODAEntrev(){
       scales:{r:{beginAtZero:true,max:100,ticks:{stepSize:20,font:{size:9},backdropColor:'transparent'},
         grid:{color:'rgba(0,0,0,.08)'},angleLines:{color:'rgba(0,0,0,.08)'},
         pointLabels:{font:{size:11,weight:'600'},color:getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b'}}},
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}% cobertura`}}}}});
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}% cobertura`}}}}});
   }
 
   // Bar chart — menciones FODA
@@ -2864,7 +2879,7 @@ function renderFODAEntrev(){
     },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},
       scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:10}}},
         y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,
         callbacks:{label:ctx=>{
           const colors={'#22c55e':'Fortaleza','#3b82f6':'Oportunidad','#ef4444':'Debilidad','#f59e0b':'Amenaza'};
           return `${ctx.raw} menciones (${colors[menciones[ctx.dataIndex].c]||''})`;}
@@ -2895,6 +2910,38 @@ const SUENOS=[
   {t:'Más justa',w:12,c:'#dc2626'},{t:'Participativa',w:10,c:'#0891b2'},
   {t:'Con cultura',w:9,c:'#9333ea'},{t:'Deportiva',w:8,c:'#16a34a'},
   {t:'Con viviendas',w:7,c:'#ea580c'},{t:'Turística',w:6,c:'#0d9488'}
+];
+const WORDCLOUD_WORDS=[
+  {t:'Seguridad',w:92,c:'#d62828'},{t:'Salud',w:85,c:'#e63946'},{t:'Áreas Verdes',w:78,c:'#2a9d8f'},
+  {t:'Empleo',w:72,c:'#f4a261'},{t:'Limpieza',w:68,c:'#059669'},{t:'Educación',w:65,c:'#db2777'},
+  {t:'Drogas',w:60,c:'#ef4444'},{t:'Transporte',w:55,c:'#457b9d'},{t:'Pavimentación',w:52,c:'#7b2cbf'},
+  {t:'Iluminación',w:50,c:'#f59e0b'},{t:'Infraestructura',w:48,c:'#7b2cbf'},{t:'Deporte',w:46,c:'#16a34a'},
+  {t:'Reciclaje',w:44,c:'#059669'},{t:'Juventud',w:42,c:'#8b5cf6'},{t:'Agua',w:40,c:'#26bde2'},
+  {t:'Plazas',w:38,c:'#2a9d8f'},{t:'Cultura',w:36,c:'#9333ea'},{t:'Adulto Mayor',w:35,c:'#f4a261'},
+  {t:'Vivienda',w:33,c:'#ea580c'},{t:'Conectividad',w:30,c:'#0d9488'},{t:'Participación',w:28,c:'#0891b2'},
+  {t:'Alumbrado',w:27,c:'#f59e0b'},{t:'Inclusión',w:25,c:'#06b6d4'},{t:'Turismo',w:24,c:'#d97706'},
+  {t:'Identidad',w:22,c:'#d62828'},{t:'Dignidad',w:20,c:'#4338ca'},{t:'Ciclovías',w:19,c:'#22c55e'},
+  {t:'Innovación',w:17,c:'#fd6925'},{t:'Bienestar',w:16,c:'#4361ee'},{t:'Modernización',w:15,c:'#a21942'}
+];
+const SNA_NODES=[
+  {id:0,name:'Seguridad',w:42,c:'#d62828'},
+  {id:1,name:'Salud',w:35,c:'#e63946'},
+  {id:2,name:'M. Ambiente',w:33,c:'#2a9d8f'},
+  {id:3,name:'Empleo',w:30,c:'#f4a261'},
+  {id:4,name:'Educación',w:24,c:'#db2777'},
+  {id:5,name:'Infraestructura',w:28,c:'#7b2cbf'},
+  {id:6,name:'Participación',w:18,c:'#457b9d'},
+  {id:7,name:'Identidad',w:13,c:'#d97706'},
+  {id:8,name:'Gestión',w:25,c:'#457b9d'},
+  {id:9,name:'Transporte',w:15,c:'#7b2cbf'},
+  {id:10,name:'Deporte',w:20,c:'#16a34a'},
+  {id:11,name:'Economía',w:22,c:'#f4a261'}
+];
+const SNA_EDGES=[
+  [0,1,2],[0,3,2],[0,7,3],[0,4,1],[1,4,3],[1,10,2],[1,8,2],
+  [2,5,2],[2,8,1],[2,11,1],[3,11,4],[3,8,2],[3,5,1],
+  [4,10,2],[4,6,1],[5,9,3],[5,2,2],[6,8,3],[6,7,2],
+  [7,10,1],[8,11,2],[9,5,2],[0,6,1],[10,2,1]
 ];
 const TIMELINE=[
   {year:'2025',label:'Etnografía Social e Institucional',status:'done',emoji:'🔬',statusTxt:'Completado'},
@@ -2938,7 +2985,7 @@ function renderScatter(){
       {label:'Urbano',data:data.filter(d=>d.tipo==='Urbano'),backgroundColor:'#4361ee55',borderColor:'#4361ee',borderWidth:2},
       {label:'Rural',data:data.filter(d=>d.tipo==='Rural'),backgroundColor:'#22c55e55',borderColor:'#22c55e',borderWidth:2}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'Proyectos / 1.000 hab',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'Inversión per cápita (M$)',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>{const d=ctx.raw;return [`${d.label} (${d.tipo})`,`Pob: ${d.pob.toLocaleString('es-CL')}`,`BIP: ${d.bip} proy.`,`Inv: $${(d.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}M`];}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'Proyectos / 1.000 hab',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'Inversión per cápita (M$)',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const d=ctx.raw;return [`${d.label} (${d.tipo})`,`Pob: ${d.pob.toLocaleString('es-CL')}`,`BIP: ${d.bip} proy.`,`Inv: $${(d.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}M`];}}}}
   }});
 }
 function renderInvCap(){
@@ -2946,21 +2993,21 @@ function renderInvCap(){
   new Chart(document.getElementById('chartInvCap'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Inv. per cápita (M$/hab)',data:sorted.map(u=>(u.inv/u.pob/1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderBipDens(){
   const sorted=[...UV_DATA].filter(u=>u.bip>0).sort((a,b)=>(b.bip/b.pob)-(a.bip/a.pob));
   new Chart(document.getElementById('chartBipDens'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Proyectos/1000hab',data:sorted.map(u=>(u.bip/u.pob*1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderPobLocal(){
   const sorted=[...UV_DATA].sort((a,b)=>b.pob-a.pob);
   new Chart(document.getElementById('chartPobLocal'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Población',data:sorted.map(u=>u.pob),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee88':'#22c55e88'),borderColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee':'#22c55e'),borderWidth:1,borderRadius:3}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
 }
 
 // ── RENDER ODS HEATMAP ──
@@ -2996,7 +3043,7 @@ function renderODSMulti(){
   new Chart(document.getElementById('chartODSMulti'),{type:'bar',data:{
     labels:ODS_IDS.map(id=>'ODS '+id),
     datasets:[{label:'Acciones vinculadas',data:ODS_IDS.map((id,j)=>ODS_HEAT.reduce((s,row)=>s+row[j],0)),backgroundColor:ODS_IDS.map(id=>(ODS_COLORS_MAP[id]||'#999')+'cc'),borderColor:ODS_IDS.map(id=>ODS_COLORS_MAP[id]||'#999'),borderWidth:1,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderODSGap(){
   const covered=new Set(ODS_IDS);
@@ -3008,7 +3055,7 @@ function renderODSGap(){
   const colors=[...gaps.map(()=>'#ef444466'),...low.map(d=>(ODS_COLORS_MAP[d.id]||'#999')+'cc')];
   new Chart(document.getElementById('chartODSGap'),{type:'bar',data:{
     labels,datasets:[{label:'Acciones',data,backgroundColor:colors,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.raw===0?'Sin cobertura':`${ctx.raw} acciones`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw===0?'Sin cobertura':`${ctx.raw} acciones`}}}}});
 }
 
 // ── RENDER TAG CLOUD ──
@@ -3020,6 +3067,105 @@ function renderTagCloud(){
     const opacity=0.6+(s.w/maxW)*0.4;
     return `<span class="tag" style="font-size:${size}px;color:${s.c};opacity:${opacity};background:${s.c}11">${s.t}</span>`;
   }).join('');
+}
+
+// ── RENDER WORDCLOUD (Canvas) ──
+function renderWordCloud(){
+  const canvas=document.getElementById('canvasWordCloud');
+  if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=420*dpr;
+  canvas.style.width=rect.width+'px';canvas.style.height='420px';
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=rect.width,H=420,cX=W/2,cY=H/2;
+  const isDark=document.body.classList.contains('dark');
+  const words=WORDCLOUD_WORDS.slice().sort((a,b)=>b.w-a.w);
+  const maxW=words[0].w;
+  const placed=[];
+  words.forEach(word=>{
+    const fz=Math.max(12,Math.round(14+(word.w/maxW)*32));
+    const bold=fz>24?'800':'600';
+    ctx.font=`${bold} ${fz}px system-ui,-apple-system,sans-serif`;
+    const m=ctx.measureText(word.t);
+    const bw=m.width+10,bh=fz+6;
+    let angle=Math.random()*Math.PI*2,radius=0,x,y,ok;
+    const step=0.6,rStep=0.8;
+    for(let tries=0;tries<600;tries++){
+      x=cX+radius*Math.cos(angle)-bw/2;
+      y=cY+radius*Math.sin(angle)-bh/2;
+      ok=x>2&&y>2&&x+bw<W-2&&y+bh<H-2;
+      if(ok) ok=!placed.some(p=>x<p.x+p.w&&x+bw>p.x&&y<p.y+p.h&&y+bh>p.y);
+      if(ok)break;
+      angle+=step;radius+=rStep;
+    }
+    if(!ok)return;
+    placed.push({x,y,w:bw,h:bh});
+    const alpha=0.6+(word.w/maxW)*0.4;
+    ctx.globalAlpha=alpha;
+    ctx.fillStyle=word.c;
+    ctx.font=`${bold} ${fz}px system-ui,-apple-system,sans-serif`;
+    ctx.textBaseline='top';
+    ctx.fillText(word.t,x+5,y+3);
+    ctx.globalAlpha=1;
+  });
+}
+
+// ── RENDER SNA NETWORK ──
+function renderSNA(){
+  const canvas=document.getElementById('canvasSNA');
+  if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=420*dpr;
+  canvas.style.width=rect.width+'px';canvas.style.height='420px';
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const W=rect.width,H=420,cX=W/2,cY=H/2;
+  const isDark=document.body.classList.contains('dark');
+  const txtC=isDark?'#e2e8f0':'#1e293b';
+  const N=SNA_NODES.length;
+  const R=Math.min(cX,cY)-55;
+  const maxW=Math.max(...SNA_NODES.map(n=>n.w));
+  // Position nodes in circle
+  const nodes=SNA_NODES.map((n,i)=>{
+    const a=(2*Math.PI*i/N)-Math.PI/2;
+    return {...n,x:cX+R*Math.cos(a),y:cY+R*Math.sin(a),r:10+(n.w/maxW)*18};
+  });
+  // Draw edges
+  SNA_EDGES.forEach(([fi,ti,ew])=>{
+    const f=nodes[fi],t=nodes[ti];
+    ctx.beginPath();
+    // Curved edges for visual appeal
+    const mx=(f.x+t.x)/2+((f.y-t.y)*0.15);
+    const my=(f.y+t.y)/2+((t.x-f.x)*0.15);
+    ctx.moveTo(f.x,f.y);ctx.quadraticCurveTo(mx,my,t.x,t.y);
+    ctx.strokeStyle=isDark?`rgba(148,163,184,${0.08+ew*0.1})`:`rgba(100,116,139,${0.1+ew*0.12})`;
+    ctx.lineWidth=0.8+ew*1.2;ctx.stroke();
+  });
+  // Draw nodes
+  nodes.forEach(n=>{
+    // Glow
+    const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*1.8);
+    grd.addColorStop(0,n.c+'40');grd.addColorStop(1,n.c+'00');
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(n.x,n.y,n.r*1.8,0,Math.PI*2);ctx.fill();
+    // Circle fill
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+    ctx.fillStyle=n.c+'dd';ctx.fill();
+    ctx.strokeStyle=n.c;ctx.lineWidth=2.5;ctx.stroke();
+    // Inner highlight
+    ctx.beginPath();ctx.arc(n.x-n.r*0.2,n.y-n.r*0.25,n.r*0.35,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.25)';ctx.fill();
+    // Label
+    ctx.fillStyle=txtC;ctx.font='600 11px system-ui';ctx.textAlign='center';ctx.textBaseline='top';
+    ctx.fillText(n.name,n.x,n.y+n.r+6);
+    // Weight badge
+    ctx.fillStyle=n.c;ctx.font='700 9px system-ui';ctx.textBaseline='middle';ctx.textAlign='center';
+    ctx.fillText(n.w,n.x,n.y);
+    ctx.fillStyle='#fff';ctx.globalAlpha=.9;ctx.fillText(n.w,n.x,n.y);ctx.globalAlpha=1;
+  });
+  // Legend
+  ctx.fillStyle=txtC;ctx.font='600 10px system-ui';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('Nodo = prioridad · Tamaño = frecuencia · Línea = co-ocurrencia',8,H-18);
 }
 
 // ── RENDER TIMELINE ──
@@ -3071,13 +3217,13 @@ function renderServicios(){
   new Chart(document.getElementById('chartServicios'),{type:'radar',data:{
     labels:EVAL_SERV.map(s=>s.name),
     datasets:[{label:'Promedio (1-5)',data:EVAL_SERV.map(s=>s.avg),borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.15)',borderWidth:2.5,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:EVAL_SERV.map(s=>s.avg>=3.2?'#22c55e':s.avg>=2.8?'#f59e0b':'#ef4444')}]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:10,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}/5`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:10,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}/5`}}}}});
 }
 function renderInfraChart(){
   new Chart(document.getElementById('chartInfra'),{type:'bar',data:{
     labels:INFRA_DEF.map(d=>d.name),
     datasets:[{label:'Menciones',data:INFRA_DEF.map(d=>d.count),backgroundColor:INFRA_DEF.map(d=>d.color+'cc'),borderRadius:6,hoverBackgroundColor:INFRA_DEF.map(d=>d.color)}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones (${(ctx.raw/119*100).toFixed(0)}%)`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones (${(ctx.raw/119*100).toFixed(0)}%)`}}}}});
 }
 function renderPriorComp(){
   const labels=['Seguridad','Salud','Cultura/deporte','Empleo','Educación','M. Ambiente','Infraestruc.','Participación','Inclusión','Innovación'];
@@ -3087,20 +3233,20 @@ function renderPriorComp(){
       {label:'Ciudadanos (n=119)',data:PRIOR_CIU.map(p=>(p.count/119*100).toFixed(1)),backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'NNA (n=21)',data:PRIOR_NNA.map(p=>(p.count/21*100).toFixed(1)),backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:11},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,mode:'index'}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:11},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,mode:'index'}}}});
 }
 function renderEmergencia(){
   new Chart(document.getElementById('chartEmergencia'),{type:'doughnut',data:{
     labels:['No conoce Plan','Ha escuchado','Sí, participa'],
     datasets:[{data:[EMERGENCIA.conoce.no,EMERGENCIA.conoce.escuchado,EMERGENCIA.conoce.si],
       backgroundColor:['#ef444488','#f59e0b88','#22c55e88'],borderColor:['#ef4444','#f59e0b','#22c55e'],borderWidth:2,hoverOffset:8}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} personas (${(ctx.raw/119*100).toFixed(0)}%)`}}}},plugins:[{id:'emergCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('60%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle='#ef4444';c.fillText('No conoce',left+width/2,top+height/2+10);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} personas (${(ctx.raw/119*100).toFixed(0)}%)`}}}},plugins:[{id:'emergCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('60%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle='#ef4444';c.fillText('No conoce',left+width/2,top+height/2+10);c.restore();}}]});
 }
 function renderSaludChart(){
   new Chart(document.getElementById('chartSalud'),{type:'bar',data:{
     labels:SALUD_DEF.map(d=>d.name),
     datasets:[{label:'Menciones',data:SALUD_DEF.map(d=>d.count),backgroundColor:SALUD_DEF.map(d=>d.color+'cc'),borderRadius:6,hoverBackgroundColor:SALUD_DEF.map(d=>d.color)}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Menciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Menciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones`}}}}});
 }
 
 // ── RENDER GESTIÓN PLADECO ──
@@ -3118,13 +3264,13 @@ function renderPlazoEje(){
       {label:'Mediano',data:[19,8,7,27,13,17],backgroundColor:'#f59e0bcc',borderRadius:4},
       {label:'Largo',data:[4,2,0,14,1,1],backgroundColor:'#ef4444cc',borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
 }
 function renderFinanc(){
   new Chart(document.getElementById('chartFinanc'),{type:'doughnut',data:{
     labels:['Municipal','FNDR','Sectorial'],
     datasets:[{data:[FINANC_ACC.Municipal,FINANC_ACC.FNDR,FINANC_ACC.Sectorial],backgroundColor:['#4361ee','#f59e0b','#22c55e'],borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:10}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'financCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('64.0%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Municipal',left+width/2,top+height/2+10);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'financCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('64.0%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Municipal',left+width/2,top+height/2+10);c.restore();}}]});
 }
 function renderInclusion2(){
   new Chart(document.getElementById('chartInclusion2'),{type:'bar',data:{
@@ -3135,14 +3281,14 @@ function renderInclusion2(){
       {label:'Discapacidad',data:INCL_EJES.map(e=>e.disc),backgroundColor:'#7b2cbf99',borderRadius:3},
       {label:'Adulto Mayor',data:INCL_EJES.map(e=>e.am),backgroundColor:'#f4a26199',borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:false,grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:false,grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderDeptos(){
   const top10=DEPTOS.slice(0,10);
   new Chart(document.getElementById('chartDeptos'),{type:'bar',data:{
     labels:top10.map(d=>d.name),
     datasets:[{label:'Acciones a cargo',data:top10.map(d=>d.n),backgroundColor:['#4361ee','#22c55e','#f59e0b','#ef4444','#8b5cf6','#db2777','#06b6d4','#2a9d8f','#7b2cbf','#457b9d'].map(c=>c+'cc'),borderRadius:6,hoverBackgroundColor:['#4361ee','#22c55e','#f59e0b','#ef4444','#8b5cf6','#db2777','#06b6d4','#2a9d8f','#7b2cbf','#457b9d']}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones responsables`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones responsables`}}}}});
 }
 
 // ══════════════════════════════════════════════════════════
@@ -3171,7 +3317,7 @@ function renderBrechas(){
   new Chart(document.getElementById('chartBrechas'),{type:'bar',data:{labels:dims,datasets:[
     {label:'Avance actual (%)',data:actual,backgroundColor:actual.map(v=>v<50?'#ef444488':v<70?'#f59e0b88':'#22c55e88'),borderColor:actual.map(v=>v<50?'#ef4444':v<70?'#f59e0b':'#22c55e'),borderWidth:1,borderRadius:6},
     {label:'Meta 2035 (100%)',data:meta,backgroundColor:'rgba(67,97,238,.08)',borderColor:'#4361ee44',borderWidth:1,borderDash:[4,4],borderRadius:6}
-  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Avance: ${ctx.raw}% — Brecha: ${100-ctx.raw}%`:'Meta 2035: 100%'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Avance: ${ctx.raw}% — Brecha: ${100-ctx.raw}%`:'Meta 2035: 100%'}}}}});
 }
 
 // ── RIESGOS BUBBLE CHART ──
@@ -3185,7 +3331,7 @@ function renderRiesgos(){
   new Chart(document.getElementById('chartRiesgos'),{type:'bubble',data:{datasets:riesgos.map((r,i)=>({
     label:r.name,data:[{x:r.prob,y:r.imp,r:r.acc+3}],
     backgroundColor:`hsla(${360-i*45},70%,55%,0.5)`,borderColor:`hsla(${360-i*45},70%,45%,1)`,borderWidth:2
-  }))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{min:20,max:100,title:{display:true,text:'Probabilidad (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y:{min:40,max:100,title:{display:true,text:'Impacto (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: Prob ${riesgos[ctx.datasetIndex].prob}% · Imp ${riesgos[ctx.datasetIndex].imp}% · ${riesgos[ctx.datasetIndex].acc} acciones`}}}}});
+  }))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{min:20,max:100,title:{display:true,text:'Probabilidad (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y:{min:40,max:100,title:{display:true,text:'Impacto (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: Prob ${riesgos[ctx.datasetIndex].prob}% · Imp ${riesgos[ctx.datasetIndex].imp}% · ${riesgos[ctx.datasetIndex].acc} acciones`}}}}});
 }
 
 // ── VULNERABILIDAD CHART ──
@@ -3196,7 +3342,7 @@ function renderVulner(){
   new Chart(document.getElementById('chartVulner'),{type:'bar',data:{labels:dims,datasets:[
     {label:'Índice de vulnerabilidad',data:brecha,backgroundColor:'#ef444477',borderColor:'#ef4444',borderWidth:1,borderRadius:4},
     {label:'Capacidad de respuesta',data:capacidad,backgroundColor:'#22c55e77',borderColor:'#22c55e',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── BENCHMARKING CHART ──
@@ -3205,7 +3351,7 @@ function renderBench(){
     {label:'Rengo',data:[98,92,68,22,72,65,91,85],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee'},
     {label:'Promedio Regional',data:[75,88,72,45,68,70,78,60],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#f59e0b'},
     {label:'Promedio Nacional',data:[70,100,80,60,75,72,85,65],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.05)',borderWidth:1,borderDash:[4,4],pointRadius:3,pointBackgroundColor:'#22c55e'}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RANKING CHART ──
@@ -3215,7 +3361,7 @@ function renderRanking(){
   const total=[346,33,345,33,33];
   const colors=positions.map(p=>p<=3?'#22c55ecc':p<=10?'#4361eecc':'#f59e0bcc');
   new Chart(document.getElementById('chartRanking'),{type:'bar',data:{labels:items,datasets:[{label:'Posición',data:positions,backgroundColor:colors,borderRadius:6}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{reverse:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Posición (menor = mejor)',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Posición ${ctx.raw}° de ${total[ctx.dataIndex]} comunas`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{reverse:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Posición (menor = mejor)',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Posición ${ctx.raw}° de ${total[ctx.dataIndex]} comunas`}}}}});
 }
 
 // ── DEMOGRAFÍA PROYECCIÓN ──
@@ -3226,7 +3372,7 @@ function renderDemoProy(){
   new Chart(document.getElementById('chartDemoProy'),{type:'line',data:{labels:years,datasets:[
     {label:'Población',data:pob,borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.1)',fill:true,borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee',tension:.3,yAxisID:'y'},
     {label:'% Adulto Mayor',data:envej,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,borderWidth:2,pointRadius:5,pointBackgroundColor:'#ef4444',borderDash:[5,5],tension:.3,yAxisID:'y1'}
-  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{position:'left',title:{display:true,text:'Población',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y1:{position:'right',title:{display:true,text:'% AM',font:{size:10}},grid:{display:false},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,mode:'index'}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{position:'left',title:{display:true,text:'Población',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y1:{position:'right',title:{display:true,text:'% AM',font:{size:10}},grid:{display:false},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,mode:'index'}}}});
 }
 
 // ── COMPOSICIÓN ETARIA ──
@@ -3234,7 +3380,7 @@ function renderEtaria(){
   new Chart(document.getElementById('chartEtaria'),{type:'bar',data:{labels:['0-14','15-29','30-44','45-59','60-74','75+'],datasets:[
     {label:'Urbano',data:[23,21,22,19,11,4],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
     {label:'Rural',data:[26,18,20,17,13,6],backgroundColor:'#2a9d8f88',borderColor:'#2a9d8f',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── COHERENCIA INSTRUMENTOS ──
@@ -3243,7 +3389,7 @@ function renderCoher(){
   const coherencia=[20,45,40,25,30,55,50,35,30,60,15,40];
   const colors=coherencia.map(v=>v<30?'#ef4444cc':v<50?'#f59e0bcc':'#22c55ecc');
   new Chart(document.getElementById('chartCoher'),{type:'bar',data:{labels:instrs,datasets:[{label:'Coherencia (%)',data:coherencia,backgroundColor:colors,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Coherencia: ${ctx.raw}% — ${ctx.raw<30?'Crítico':ctx.raw<50?'Bajo':'Aceptable'}`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Coherencia: ${ctx.raw}% — ${ctx.raw<30?'Crítico':ctx.raw<50?'Bajo':'Aceptable'}`}}}}});
 }
 
 // ── COBERTURA TEMÁTICA ──
@@ -3253,7 +3399,7 @@ function renderCobertura(){
   const eColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
   const data=[[1,0,0,5,0,1],[2,0,5,0,0,1],[5,5,5,5,5,5],[0,0,0,4,0,2],[4,0,1,0,1,1],[1,0,0,0,5,0]];
   new Chart(document.getElementById('chartCobertura'),{type:'bar',data:{labels:instrs,datasets:eNames.map((n,i)=>({label:n,data:data.map(d=>d[i]),backgroundColor:eColors[i]+'88',borderColor:eColors[i],borderWidth:1,borderRadius:2}))},
-    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Cobertura',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Cobertura',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── GÉNERO BRECHAS ──
@@ -3261,7 +3407,7 @@ function renderGenero(){
   new Chart(document.getElementById('chartGenero'),{type:'bar',data:{labels:['Empleo','Ed. Superior','Jefatura Hogar','Participación','Ingresos','Violencia (VIF)'],datasets:[
     {label:'Mujeres',data:[38,42,35,69,72,85],backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4},
     {label:'Hombres',data:[62,58,65,31,100,15],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── GÉNERO POR EJE ──
@@ -3272,7 +3418,7 @@ function renderGenEje(){
   new Chart(document.getElementById('chartGenEje'),{type:'bar',data:{labels:ejes,datasets:[
     {label:'Con enfoque género',data:conGen,backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4},
     {label:'Sin enfoque género',data:sinGen,backgroundColor:'#e2e8f088',borderColor:'#e2e8f0',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── TABLERO SEGUIMIENTO ──
@@ -3290,13 +3436,13 @@ function renderTablero(){
   new Chart(document.getElementById('chartTablero'),{type:'bar',data:{labels:kpis,datasets:[
     {label:'Progreso a Meta 2028 (%)',data:pctM28.map(v=>+v.toFixed(1)),backgroundColor:pctM28.map(v=>v<40?'#ef444488':v<65?'#f59e0b88':'#22c55e88'),borderColor:pctM28.map(v=>v<40?'#ef4444':v<65?'#f59e0b':'#22c55e'),borderWidth:1,borderRadius:6},
     {label:'Meta 2035 (100%)',data:m35.map(()=>100),backgroundColor:'#22c55e18',borderColor:'#22c55e66',borderWidth:1,borderDash:[4,4],borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'},title:{display:true,text:'% hacia meta 2035',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Progreso: ${ctx.raw}%`:'Meta 2035'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'},title:{display:true,text:'% hacia meta 2035',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Progreso: ${ctx.raw}%`:'Meta 2035'}}}}});
 }
 
 // ── FRECUENCIA ACCIONES ──
 function renderFreqAcc(){
   new Chart(document.getElementById('chartFreqAcc'),{type:'doughnut',data:{labels:['Corto plazo (2025-2028): 112','Mediano plazo (2028-2032): 91','Largo plazo (2032-2035): 22'],datasets:[{data:[112,91,22],backgroundColor:['#22c55ecc','#f59e0bcc','#ef4444cc'],borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:10}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},
     plugins:[{id:'freqCenter',afterDraw(c){const{ctx,chartArea:{width,height,top,left}}=c;ctx.save();ctx.font='800 22px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('225',left+width/2,top+height/2-6);ctx.font='600 9px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';ctx.fillText('Acciones',left+width/2,top+height/2+10);ctx.restore();}}]});
 }
 
@@ -3324,7 +3470,7 @@ function renderArgPeso(){
   const pesos=[95,93,88,85,78,75,82,90,80,72,70,83,77,87,84];
   const colors=pesos.map(v=>v>=85?'#ef4444cc':v>=75?'#f59e0bcc':'#22c55ecc');
   new Chart(document.getElementById('chartArgPeso'),{type:'bar',data:{labels:names,datasets:[{label:'Peso relativo',data:pesos,backgroundColor:colors,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:8,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Peso: ${ctx.raw}% — ${ctx.raw>=85?'Prioridad alta':ctx.raw>=75?'Prioridad media':'Relevante'}`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:8,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Peso: ${ctx.raw}% — ${ctx.raw>=85?'Prioridad alta':ctx.raw>=75?'Prioridad media':'Relevante'}`}}}}});
 }
 
 // ── ARG DIMENSIONES RADAR ──
@@ -3332,7 +3478,7 @@ function renderArgDim(){
   new Chart(document.getElementById('chartArgDim'),{type:'radar',data:{labels:['Territorial','Social','Institucional','Económica','Ambiental','Seguridad','Educativa','Salud'],datasets:[
     {label:'Profundidad diagnóstico',data:[85,90,88,65,72,92,78,80],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee'},
     {label:'Cobertura de argumentos',data:[80,85,90,70,68,88,75,82],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[4,4],pointRadius:3,pointBackgroundColor:'#22c55e'}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ══════════════════════════════════════════════════════════
@@ -3362,7 +3508,7 @@ function renderCoresp(){
   const colors=SNA_PAIRS.map((_,i)=>{const h=240-i*20;return `hsla(${h},70%,55%,0.8)`;});
   new Chart(document.getElementById('chartCoresp'),{type:'bar',data:{
     labels,datasets:[{label:'Co-participaciones',data,backgroundColor:colors,borderRadius:6,hoverBackgroundColor:colors.map(c=>c.replace('0.8','1'))}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200,easing:'easeOutQuart'},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° acciones compartidas',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones en co-responsabilidad`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200,easing:'easeOutQuart'},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° acciones compartidas',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones en co-responsabilidad`}}}}});
 }
 
 // ── SNA: CENTRALITY CHART ──
@@ -3372,7 +3518,7 @@ function renderCentral(){
     labels:sorted.map(a=>a.name),
     datasets:[{label:'Centralidad',data:sorted.map(a=>a.central),
       backgroundColor:sorted.map(a=>a.color+'cc'),borderColor:sorted.map(a=>a.color),borderWidth:1,borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:1,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>(v*100).toFixed(0)+'%'},title:{display:true,text:'Grado de centralidad normalizado',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`Centralidad: ${(ctx.raw*100).toFixed(0)}% — ${sorted[ctx.dataIndex].desc}`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:1,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>(v*100).toFixed(0)+'%'},title:{display:true,text:'Grado de centralidad normalizado',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Centralidad: ${(ctx.raw*100).toFixed(0)}% — ${sorted[ctx.dataIndex].desc}`}}}}});
 }
 
 // ── SNA: CONVERGENCE CHART ──
@@ -3385,7 +3531,7 @@ function renderConverg(){
     backgroundColor:eColors[i]+'99',borderColor:eColors[i],borderWidth:1,borderRadius:3
   }));
   new Chart(document.getElementById('chartConverg'),{type:'bar',data:{labels:areas,datasets},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},maxRotation:45}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Acciones',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:6}},tooltip:{mode:'index',backgroundColor:'#1e293b',cornerRadius:8}}}});
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},maxRotation:45}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Acciones',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:6}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── SNA: MATURITY RADAR ──
@@ -3396,7 +3542,7 @@ function renderMaturity(){
       {label:'Nivel actual',data:SNA_MATURITY.map(m=>m.level),borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.15)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#ef4444',pointHoverRadius:8},
       {label:'Nivel óptimo',data:SNA_MATURITY.map(()=>5),borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:3,pointBackgroundColor:'#22c55e'},
       {label:'Nivel mínimo aceptable',data:SNA_MATURITY.map(()=>3),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.05)',borderWidth:1,borderDash:[3,3],pointRadius:2,pointBackgroundColor:'#f59e0b'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.08)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{afterLabel:ctx=>{const m=SNA_MATURITY[ctx.dataIndex];return ctx.datasetIndex===0?`⚠ ${m.note}`:'';
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:11},backdropColor:'transparent'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.08)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{afterLabel:ctx=>{const m=SNA_MATURITY[ctx.dataIndex];return ctx.datasetIndex===0?`⚠ ${m.note}`:'';
   }}}}}});
 }
 
@@ -3421,7 +3567,7 @@ function renderERD(){
   const erdColors=['#4361ee','#22c55e','#2a9d8f','#7b2cbf','#457b9d','#d62828','#f4a261'];
   new Chart(document.getElementById('chartERD'),{type:'doughnut',data:{
     labels:erdNames,datasets:[{data:erdVals,backgroundColor:erdColors.map(c=>c+'cc'),borderColor:erdColors,borderWidth:2,hoverOffset:8}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1000},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones vinculadas`}}}},plugins:[{id:'erdCenter',afterDraw(c){const{ctx,chartArea:{width,height,top,left}}=c;ctx.save();ctx.font='800 18px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('7 ERD',left+width/2,top+height/2-6);ctx.font='600 9px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';ctx.fillText('Regionales',left+width/2,top+height/2+10);ctx.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1000},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones vinculadas`}}}},plugins:[{id:'erdCenter',afterDraw(c){const{ctx,chartArea:{width,height,top,left}}=c;ctx.save();ctx.font='800 18px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('7 ERD',left+width/2,top+height/2-6);ctx.font='600 9px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';ctx.fillText('Regionales',left+width/2,top+height/2+10);ctx.restore();}}]});
 }
 
 // ── SNA: OE NETWORK BUBBLE ──
@@ -3433,7 +3579,7 @@ function renderOENet(){
     backgroundColor:eColors[i]+'66',borderColor:eColors[i],borderWidth:2,hoverBackgroundColor:eColors[i]+'aa'
   }));
   new Chart(document.getElementById('chartOENet'),{type:'bubble',data:{datasets},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{display:false},y:{title:{display:true,text:'N° acciones',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>{const ei=EJES.findIndex(e=>e.short===ctx.dataset.label);const oe=EJES[ei]?.oes[ctx.dataIndex];return oe?`${oe.code}: ${oe.title} (${oe.actions.length} acciones)`:ctx.dataset.label;}}}}}});
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{display:false},y:{title:{display:true,text:'N° acciones',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const ei=EJES.findIndex(e=>e.short===ctx.dataset.label);const oe=EJES[ei]?.oes[ctx.dataIndex];return oe?`${oe.code}: ${oe.title} (${oe.actions.length} acciones)`:ctx.dataset.label;}}}}}});
 }
 
 // ── ETHNOGRAPHY: DOMAIN STATS ──
@@ -3483,7 +3629,7 @@ function renderDomainChart(){
   new Chart(document.getElementById('chartDomains'),{type:'polarArea',data:{
     labels:ETHNO_DOMAINS.map(d=>d.name),
     datasets:[{data:ETHNO_DOMAINS.map(d=>d.n),backgroundColor:ETHNO_DOMAINS.map(d=>d.color+'88'),borderColor:ETHNO_DOMAINS.map(d=>d.color),borderWidth:2,hoverBackgroundColor:ETHNO_DOMAINS.map(d=>d.color+'cc')}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,animateRotate:true},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} hallazgos`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,animateRotate:true},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} hallazgos`}}}}});
 }
 
 // ── ETHNOGRAPHY: CGR CHART ──
@@ -3494,7 +3640,7 @@ function renderCGRChart(){
     datasets:[{label:'Intervenciones CGR',data:CGR_DATA.map(d=>d.n),
       backgroundColor:CGR_DATA.map(d=>d.n>=2?'#ef4444cc':'#f59e0bcc'),
       borderColor:CGR_DATA.map(d=>d.n>=2?'#ef4444':'#f59e0b'),borderWidth:1,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{y:{beginAtZero:true,max:maxN+1,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° fiscalizaciones',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} intervención${ctx.raw>1?'es':''} de Contraloría`,afterLabel:ctx=>ctx.raw>=2?'⚠ Año con actividad elevada':'Nivel normal'}},annotation:{annotations:{line1:{type:'line',yMin:1.5,yMax:1.5,borderColor:'#f59e0b',borderWidth:1,borderDash:[4,4],label:{content:'Promedio: 1,6/año',enabled:true,position:'end',font:{size:11}}}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{y:{beginAtZero:true,max:maxN+1,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° fiscalizaciones',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} intervención${ctx.raw>1?'es':''} de Contraloría`,afterLabel:ctx=>ctx.raw>=2?'⚠ Año con actividad elevada':'Nivel normal'}},annotation:{annotations:{line1:{type:'line',yMin:1.5,yMax:1.5,borderColor:'#f59e0b',borderWidth:1,borderDash:[4,4],label:{content:'Promedio: 1,6/año',enabled:true,position:'end',font:{size:11}}}}}}}});
 }
 
 // ── ETHNOGRAPHY: CAPACITY RADAR ──
@@ -3504,7 +3650,7 @@ function renderCapacity(){
     datasets:[
       {label:'Estado actual',data:[95,85,35,40,50,38,30,45],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee',pointHoverRadius:8},
       {label:'Meta 2035',data:[98,90,70,80,80,75,80,85],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:3,pointBackgroundColor:'#22c55e'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent',callback:v=>v+'%'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent',callback:v=>v+'%'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── ETHNOGRAPHY: SOCIAL CAPITAL ──
@@ -3514,7 +3660,7 @@ function renderSocCap(){
     datasets:[
       {label:'Nivel actual',data:[72,38,32,28,65,80],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'Potencial estimado',data:[90,75,70,65,85,90],backgroundColor:'#22c55e44',borderColor:'#22c55e',borderWidth:1,borderRadius:4,borderDash:[4,4]}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── ETHNOGRAPHY: TENSIONS CHART ──
@@ -3526,7 +3672,7 @@ function renderTensions(){
     labels,datasets:[
       {label:'Fuerzas impulsoras',data:impulsor,backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:4},
       {label:'Fuerzas restrictivas',data:restrictor,backgroundColor:'#ef444488',borderColor:'#ef4444',borderWidth:1,borderRadius:4}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:0,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v)+'%'},title:{display:true,text:'Intensidad (%)',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.abs(ctx.raw)}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:0,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v)+'%'},title:{display:true,text:'Intensidad (%)',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.abs(ctx.raw)}%`}}}}});
 }
 
 // ── FODA SEARCH + FILTER ──
@@ -3600,7 +3746,7 @@ function renderAccEje(){
   new Chart(document.getElementById('chartAccEje'),{type:'bar',data:{
     labels:ejeNames,
     datasets:[{label:'Acciones',data:EJE_ACC_N,backgroundColor:ejeColors.map(c=>c+'cc'),borderColor:ejeColors,borderWidth:2,borderRadius:8,hoverBackgroundColor:ejeColors}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
 }
 function renderODSAcc(){
   const sorted=[
@@ -3616,7 +3762,7 @@ function renderODSAcc(){
   new Chart(document.getElementById('chartODSAcc'),{type:'bar',data:{
     labels:sorted.map(s=>s.n),
     datasets:[{label:'Acciones',data:sorted.map(s=>s.v),backgroundColor:sorted.map(s=>s.c+'cc'),borderColor:sorted.map(s=>s.c),borderWidth:2,borderRadius:8}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones vinculadas`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones vinculadas`}}}}});
 }
 
 // ── RENDER SEMÁFORO DE METAS ──
@@ -3657,7 +3803,7 @@ function renderBrechasMetas(){
       if(m.tipo==='up')return((m.m35-m.lb)/m.m35*100).toFixed(1);
       return((m.lb-m.m35)/m.lb*100).toFixed(1);
     }),backgroundColor:METAS_SEG.map(m=>m.color+'99'),borderColor:METAS_SEG.map(m=>m.color),borderWidth:1,borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
 }
 function renderProgresoEje(){
   const ejeNames=['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
@@ -3673,7 +3819,7 @@ function renderProgresoEje(){
   new Chart(document.getElementById('chartProgresoEje'),{type:'radar',data:{
     labels:ejeNames,
     datasets:[{label:'Progreso (%)',data:byEje.map(v=>Math.min(100,v).toFixed(1)),backgroundColor:'rgba(67,97,238,.15)',borderColor:'#4361ee',borderWidth:2,pointBackgroundColor:ejeColors,pointRadius:5,pointHoverRadius:8}]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20,font:{size:11}},grid:{color:'rgba(0,0,0,.08)'},pointLabels:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>'Progreso: '+ctx.raw+'%'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20,font:{size:11}},grid:{color:'rgba(0,0,0,.08)'},pointLabels:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>'Progreso: '+ctx.raw+'%'}}}}});
 }
 
 // ── RENDER FINANCIAMIENTO ──
@@ -3699,13 +3845,13 @@ function renderFinEje(){
       {label:'FNDR',data:finByEje.FNDR,backgroundColor:'#f59e0b99',borderColor:'#f59e0b',borderWidth:1,borderRadius:4},
       {label:'Sectorial',data:finByEje.Sectorial,backgroundColor:'#22c55e99',borderColor:'#22c55e',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10,weight:'600'}}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#1e293b',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10,weight:'600'}}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderPlazoFin(){
   new Chart(document.getElementById('chartPlazoFin'),{type:'doughnut',data:{
     labels:['Corto Municipal','Corto FNDR','Mediano Municipal','Mediano FNDR','Mediano Sectorial','Largo Municipal','Largo FNDR'],
     datasets:[{data:[96,16,45,45,1,3,19],backgroundColor:['#22c55e','#22c55e66','#f59e0b','#f59e0b66','#f59e0b33','#ef4444','#ef444466'],borderWidth:2,borderColor:'var(--card,#fff)',hoverOffset:6}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1200},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#1e293b',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones`}}}},plugins:[{id:'finCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Acciones',left+width/2,top+height/2+10);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1200},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones`}}}},plugins:[{id:'finCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Acciones',left+width/2,top+height/2+10);c.restore();}}]});
 }
 
 // ── DARK MODE ──
@@ -3830,6 +3976,8 @@ renderODSHeatmap();
 renderODSMulti();
 renderODSGap();
 renderTagCloud();
+renderWordCloud();
+renderSNA();
 renderTimeline();
 renderParticipStats();
 renderRatingGrid();
