@@ -665,6 +665,69 @@ body{padding-top:44px}
   .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:10px}
   body{padding-top:40px}
 }
+/* ── KPI Count-Up Animation ── */
+.kpi-value{transition:color .3s}
+.kpi-value.counting{color:var(--accent)}
+
+/* ── Scroll Reveal for Sections ── */
+section.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+section.reveal.revealed{opacity:1;transform:translateY(0)}
+
+/* ── Timeline PLADECO ── */
+.tl-pladeco{position:relative;padding:30px 0 20px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tl-pladeco-track{display:flex;align-items:flex-start;position:relative;min-width:max-content;padding:0 40px 20px}
+.tl-pladeco-track::before{content:'';position:absolute;top:44px;left:40px;right:40px;height:4px;background:linear-gradient(90deg,var(--green) 0%,var(--green) 15%,var(--blue) 30%,var(--orange) 50%,#94a3b8 70%,#94a3b8 100%);border-radius:2px;box-shadow:0 1px 6px rgba(0,0,0,.1)}
+.tl-pladeco-item{position:relative;width:150px;flex-shrink:0;text-align:center;padding-top:70px;cursor:default}
+.tl-pladeco-item .tl-p-dot{position:absolute;top:34px;left:50%;transform:translateX(-50%);width:24px;height:24px;border-radius:50%;border:4px solid var(--card);z-index:2;transition:all .3s;box-shadow:0 0 0 3px #94a3b8}
+.tl-pladeco-item:hover .tl-p-dot{transform:translateX(-50%) scale(1.3)}
+.tl-pladeco-item.tl-done .tl-p-dot{background:var(--green);box-shadow:0 0 0 3px var(--green),0 0 14px rgba(45,154,77,.4)}
+.tl-pladeco-item.tl-active .tl-p-dot{background:var(--blue);box-shadow:0 0 0 3px var(--blue),0 0 18px rgba(26,61,143,.5);animation:tlpPulse 2s infinite}
+.tl-pladeco-item.tl-pending .tl-p-dot{background:var(--orange);box-shadow:0 0 0 3px var(--orange),0 0 12px rgba(245,146,29,.35)}
+.tl-pladeco-item.tl-future .tl-p-dot{background:var(--card);border-color:#cbd5e1;box-shadow:0 0 0 3px #cbd5e1}
+@keyframes tlpPulse{0%,100%{box-shadow:0 0 0 3px var(--blue),0 0 14px rgba(26,61,143,.4)}50%{box-shadow:0 0 0 5px var(--blue),0 0 24px rgba(26,61,143,.6)}}
+.tl-pladeco-item .tl-p-year{font-size:15px;font-weight:900;margin-bottom:4px}
+.tl-pladeco-item.tl-done .tl-p-year{color:var(--green)}
+.tl-pladeco-item.tl-active .tl-p-year{color:var(--blue)}
+.tl-pladeco-item.tl-pending .tl-p-year{color:var(--orange)}
+.tl-pladeco-item.tl-future .tl-p-year{color:#94a3b8}
+.tl-pladeco-item .tl-p-label{font-size:11px;font-weight:700;line-height:1.35;padding:0 6px;color:var(--text)}
+.tl-pladeco-item .tl-p-desc{font-size:9px;color:var(--text2);margin-top:4px;padding:0 4px;line-height:1.3}
+.tl-pladeco-item .tl-p-badge{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-top:6px;padding:2px 8px;border-radius:6px;display:inline-block}
+.tl-pladeco-item.tl-done .tl-p-badge{background:#d1fae5;color:#15803d}
+.tl-pladeco-item.tl-active .tl-p-badge{background:#e0e7ff;color:#4338ca}
+.tl-pladeco-item.tl-pending .tl-p-badge{background:#fef3c7;color:#b45309}
+.tl-pladeco-item.tl-future .tl-p-badge{background:#f1f5f9;color:#94a3b8}
+body.dark .tl-pladeco-item.tl-done .tl-p-badge{background:#052e16;color:#4ade80}
+body.dark .tl-pladeco-item.tl-active .tl-p-badge{background:#1e1b4b;color:#818cf8}
+body.dark .tl-pladeco-item.tl-pending .tl-p-badge{background:#451a03;color:#f5921d}
+body.dark .tl-pladeco-item.tl-future .tl-p-badge{background:#1e293b;color:#64748b}
+body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#475569;box-shadow:0 0 0 3px #475569}
+
+/* ── Galería Fotográfica ── */
+.galeria-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.galeria-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.galeria-grid{grid-template-columns:1fr}}
+.galeria-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s;cursor:pointer;position:relative}
+.galeria-card:hover{transform:scale(1.03);box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.galeria-card .galeria-placeholder{width:100%;height:220px;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+.galeria-card .galeria-overlay{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.7));color:#fff}
+.galeria-card .galeria-overlay h4{font-size:13px;font-weight:700;margin-bottom:2px}
+.galeria-card .galeria-overlay span{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
+
+/* ── Enhanced Doc Cards ── */
+.doc-card-enhanced{background:var(--card);border-radius:var(--radius);padding:0;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.doc-card-enhanced:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.doc-card-enhanced .doc-accent{height:4px;width:100%}
+.doc-card-enhanced .doc-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.doc-card-enhanced .doc-icon-big{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px;flex-shrink:0}
+.doc-card-enhanced .doc-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.doc-card-enhanced .doc-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:12px;flex:1}
+.doc-card-enhanced .doc-meta{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text2);margin-bottom:12px}
+.doc-card-enhanced .doc-meta .dm-tag{padding:2px 8px;border-radius:4px;font-weight:700;font-size:9px}
+.doc-card-enhanced .doc-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:8px;background:#f1f5f9;color:var(--text);font-size:11px;font-weight:700;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+.doc-card-enhanced .doc-btn:hover{background:var(--accent);color:#fff}
+body.dark .doc-card-enhanced .doc-btn{background:#1e293b}
+body.dark .doc-card-enhanced .doc-btn:hover{background:var(--accent)}
 </style>
 </head>
 <body>
@@ -727,6 +790,8 @@ body{padding-top:44px}
       <a href="#financiamiento"><span class="ico">&#128176;</span> Financiamiento</a>
       <a href="#graficos"><span class="ico">&#128200;</span> Gr&#225;ficos Anal&#237;ticos</a>
       <a href="#argumentario"><span class="ico">&#128221;</span> Argumentario</a>
+      <a href="#cronograma"><span class="ico">&#128197;</span> Hoja de Ruta</a>
+      <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Documentos</a>
     </div>
   </div>
@@ -881,6 +946,16 @@ body{padding-top:44px}
       <canvas id="chartTransp"></canvas>
     </div>
   </div>
+</section>
+
+<!-- ═══ TIMELINE PLADECO ═══ -->
+<section id="cronograma" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Cronograma</div>
+    <h2>&#128197; Hoja de Ruta PLADECO 2024-2035</h2>
+    <p>Hitos clave del proceso de formulaci&#243;n, aprobaci&#243;n e implementaci&#243;n del Plan de Desarrollo Comunal</p>
+  </div>
+  <div class="tl-pladeco" id="tlPladeco"></div>
 </section>
 
 <!-- ═══ VISUALIZACIONES INTERACTIVAS ═══ -->
@@ -1601,6 +1676,9 @@ body{padding-top:44px}
       <div class="viz-card"><h3>Proyecci&#243;n Demogr&#225;fica 2024-2035</h3><div class="viz-sub">Poblaci&#243;n total e &#237;ndice de envejecimiento proyectado</div><canvas id="chartDemoProy"></canvas></div>
       <div class="viz-card"><h3>Composici&#243;n Etaria por Zona</h3><div class="viz-sub">Distribuci&#243;n de grupos etarios: urbano vs rural</div><canvas id="chartEtaria"></canvas></div>
     </div>
+    <div class="viz-row">
+      <div class="viz-card viz-full"><h3>&#128101; Pir&#225;mide Demogr&#225;fica de Rengo</h3><div class="viz-sub">Distribuci&#243;n de poblaci&#243;n por grupo etario y sexo — Hombres (azul) a la izquierda, Mujeres (rosa) a la derecha</div><canvas id="chartPiramide" height="400"></canvas></div>
+    </div>
   </div>
   <!-- Panel 3: Coherencia -->
   <div class="ana-panel" data-ana="3">
@@ -1681,6 +1759,9 @@ body{padding-top:44px}
     <div class="viz-card"><h3>Brecha al 2035 por Meta</h3><div class="viz-sub">Distancia porcentual entre l&#237;nea base 2024 y meta 2035</div><canvas id="chartBrechasMetas"></canvas></div>
     <div class="viz-card"><h3>Progreso Promedio por Eje</h3><div class="viz-sub">Avance estimado seg&#250;n l&#237;nea base respecto a metas</div><canvas id="chartProgresoEje"></canvas></div>
   </div>
+  <div class="viz-row">
+    <div class="viz-card viz-full"><h3>&#128202; Comparador: L&#237;nea Base 2024 vs Meta 2028 vs Meta 2035</h3><div class="viz-sub">Los 16 indicadores del sem&#225;foro comparados en sus tres horizontes temporales</div><canvas id="chartComparador"></canvas></div>
+  </div>
 </section>
 
 <!-- ═══ FINANCIAMIENTO ═══ -->
@@ -1694,6 +1775,9 @@ body{padding-top:44px}
   <div class="viz-row">
     <div class="viz-card"><h3>Fuente de Financiamiento por Eje</h3><div class="viz-sub">Distribución Municipal / FNDR / Sectorial para cada eje estratégico</div><canvas id="chartFinEje"></canvas></div>
     <div class="viz-card"><h3>Plazo vs Financiamiento</h3><div class="viz-sub">Relación entre horizonte temporal y fuente de recursos</div><canvas id="chartPlazoFin"></canvas></div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card viz-full"><h3>&#127912; Treemap Presupuestario por Eje</h3><div class="viz-sub">Distribuci&#243;n visual del presupuesto estimado (MM$) — &#225;rea proporcional al monto asignado</div><canvas id="chartTreemapFin" height="320"></canvas></div>
   </div>
 </section>
 
@@ -1718,6 +1802,16 @@ body{padding-top:44px}
     <button class="com-f-btn" onclick="filterCom(this,'Posterior')">Posteriores</button>
   </div>
   <div class="com-timeline" id="com-timeline"></div>
+</section>
+
+<!-- ═══ GALERÍA FOTOGRÁFICA ═══ -->
+<section id="galeria" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:#fce7f3;color:#db2777">Registro Visual</div>
+    <h2>&#128247; Galer&#237;a del Proceso PLADECO</h2>
+    <p>Registro fotogr&#225;fico de talleres participativos, diagn&#243;sticos territoriales y sesiones de trabajo</p>
+  </div>
+  <div class="galeria-grid" id="galeriaGrid"></div>
 </section>
 
 <!-- ═══ DOCUMENTOS ═══ -->
@@ -3923,6 +4017,266 @@ function renderPlazoFin(){
   },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1200},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones`}}}},plugins:[{id:'finCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Acciones',left+width/2,top+height/2+10);c.restore();}}]});
 }
 
+// ── TIMELINE PLADECO ──
+function renderTimelinePladeco(){
+  const el=document.getElementById('tlPladeco');
+  if(!el)return;
+  const milestones=[
+    {year:'2024 Q4',label:'Diagnóstico Territorial',desc:'Levantamiento 21 UV, cartografía, encuestas NNA',status:'tl-done',badge:'Completado'},
+    {year:'2025 Q1',label:'Participación Ciudadana',desc:'Talleres, entrevistas, COSOC, voz ciudadana',status:'tl-done',badge:'Completado'},
+    {year:'2025 Q2',label:'Formulación Estratégica',desc:'6 ejes, 32 OE, 225 políticas, FODA cruzado',status:'tl-done',badge:'Completado'},
+    {year:'2025 Q3',label:'Aprobación CONCEJO',desc:'Votación Concejo Municipal y promulgación',status:'tl-active',badge:'En proceso'},
+    {year:'2026',label:'Implementación Fase 1',desc:'Comisiones de trabajo, primeros proyectos BIP',status:'tl-pending',badge:'Próximo'},
+    {year:'2028',label:'Evaluación Intermedia',desc:'Medición de metas intermedias (16 KPI)',status:'tl-future',badge:'Futuro'},
+    {year:'2030',label:'Ajuste Medio Término',desc:'Revisión estratégica y recalibración',status:'tl-future',badge:'Futuro'},
+    {year:'2035',label:'Evaluación Final',desc:'Cierre del ciclo PLADECO, informe final',status:'tl-future',badge:'Futuro'}
+  ];
+  el.innerHTML='<div class="tl-pladeco-track">'+milestones.map(m=>`
+    <div class="tl-pladeco-item ${m.status}">
+      <div class="tl-p-dot"></div>
+      <div class="tl-p-year">${m.year}</div>
+      <div class="tl-p-label">${m.label}</div>
+      <div class="tl-p-desc">${m.desc}</div>
+      <div class="tl-p-badge">${m.badge}</div>
+    </div>`).join('')+'</div>';
+}
+
+// ── COMPARADOR METAS (Grouped Bar) ──
+function renderComparador(){
+  const ctx=document.getElementById('chartComparador');
+  if(!ctx)return;
+  new Chart(ctx,{type:'bar',data:{
+    labels:METAS_SEG.map(m=>m.ind),
+    datasets:[
+      {label:'Línea Base 2024',data:METAS_SEG.map(m=>m.lb),backgroundColor:'#94a3b899',borderColor:'#94a3b8',borderWidth:1,borderRadius:4},
+      {label:'Meta 2028',data:METAS_SEG.map(m=>m.m28),backgroundColor:'#f5921d99',borderColor:'#f5921d',borderWidth:1,borderRadius:4},
+      {label:'Meta 2035',data:METAS_SEG.map(m=>m.m35),backgroundColor:'#2d9a4d99',borderColor:'#2d9a4d',borderWidth:1,borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:9,weight:'600'},maxRotation:45,minRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0f2940',cornerRadius:8}}}});
+}
+
+// ── PIRAMIDE DEMOGRAFICA ──
+function renderPiramideDem(){
+  const ctx=document.getElementById('chartPiramide');
+  if(!ctx)return;
+  const PIRAMIDE_DATA={
+    labels:['0-4','5-14','15-24','25-34','35-44','45-54','55-64','65-74','75+'],
+    hombres:[2150,3820,4690,5210,4870,4320,3580,2410,1180],
+    mujeres:[2050,3640,4520,5380,5040,4580,3890,2780,1520]
+  };
+  new Chart(ctx,{type:'bar',data:{
+    labels:PIRAMIDE_DATA.labels,
+    datasets:[
+      {label:'Hombres',data:PIRAMIDE_DATA.hombres.map(v=>-v),backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4,borderSkipped:false},
+      {label:'Mujeres',data:PIRAMIDE_DATA.mujeres,backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4,borderSkipped:false}
+    ]
+  },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v).toLocaleString('es-CL')},title:{display:true,text:'Población',font:{size:11}}},y:{grid:{display:false},position:'center',ticks:{font:{size:11,weight:'700'},z:1}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label+': '+Math.abs(ctx.raw).toLocaleString('es-CL')}}}}});
+}
+
+// ── TREEMAP PRESUPUESTARIO ──
+function renderTreemapFin(){
+  const canvas=document.getElementById('chartTreemapFin');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  // Polyfill roundRect for older browsers
+  if(!ctx.roundRect){ctx.roundRect=function(x,y,w,h,r){r=Math.min(r,w/2,h/2);this.beginPath();this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();};}
+  const TREEMAP_FIN=[
+    {eje:'Social y Salud',monto:4200,pct:18.7,color:'#c0392b'},
+    {eje:'Económico',monto:3100,pct:13.8,color:'#f5921d'},
+    {eje:'Educación',monto:2800,pct:12.4,color:'#2d9a4d'},
+    {eje:'Urbano y M.A.',monto:7500,pct:33.4,color:'#1a3d8f'},
+    {eje:'Seguridad',monto:2900,pct:12.9,color:'#8B1A1A'},
+    {eje:'Gestión Municipal',monto:2000,pct:8.9,color:'#2980b9'}
+  ];
+  const totalMonto=TREEMAP_FIN.reduce((s,d)=>s+d.monto,0);
+  function drawTreemap(){
+    const dpr=window.devicePixelRatio||1;
+    const rect=canvas.getBoundingClientRect();
+    canvas.width=rect.width*dpr;
+    canvas.height=rect.height*dpr;
+    ctx.scale(dpr,dpr);
+    const W=rect.width,H=rect.height;
+    ctx.clearRect(0,0,W,H);
+    let x=0;
+    const sorted=TREEMAP_FIN.slice().sort((a,b)=>b.pct-a.pct);
+    // Simple squarified layout: first row horizontal, second row vertical
+    const row1=sorted.slice(0,3);
+    const row2=sorted.slice(3);
+    const row1Pct=row1.reduce((s,d)=>s+d.pct,0);
+    const row2Pct=row2.reduce((s,d)=>s+d.pct,0);
+    const splitY=H*(row1Pct/100)*1.0;
+    const topH=H*0.55, botH=H*0.45;
+    // Draw top row
+    let cx=0;
+    row1.forEach(d=>{
+      const w=W*(d.pct/row1Pct);
+      ctx.fillStyle=d.color;
+      ctx.beginPath();
+      ctx.roundRect(cx+1,1,w-2,topH-2,6);
+      ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.92)';
+      ctx.font='bold '+Math.max(11,Math.min(16,w/8))+'px system-ui';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.fillText(d.eje,cx+w/2,topH/2-12);
+      ctx.font='800 '+Math.max(14,Math.min(22,w/6))+'px system-ui';
+      ctx.fillText('$'+d.monto.toLocaleString('es-CL')+' MM',cx+w/2,topH/2+8);
+      ctx.font='600 '+Math.max(10,Math.min(13,w/9))+'px system-ui';
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.fillText(d.pct+'%',cx+w/2,topH/2+26);
+      cx+=w;
+    });
+    // Draw bottom row
+    cx=0;
+    row2.forEach(d=>{
+      const w=W*(d.pct/row2Pct);
+      ctx.fillStyle=d.color;
+      ctx.beginPath();
+      ctx.roundRect(cx+1,topH+1,w-2,botH-2,6);
+      ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.92)';
+      ctx.font='bold '+Math.max(10,Math.min(14,w/8))+'px system-ui';
+      ctx.textAlign='center';
+      ctx.textBaseline='middle';
+      ctx.fillText(d.eje,cx+w/2,topH+botH/2-12);
+      ctx.font='800 '+Math.max(12,Math.min(18,w/6))+'px system-ui';
+      ctx.fillText('$'+d.monto.toLocaleString('es-CL')+' MM',cx+w/2,topH+botH/2+6);
+      ctx.font='600 '+Math.max(9,Math.min(12,w/9))+'px system-ui';
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.fillText(d.pct+'%',cx+w/2,topH+botH/2+22);
+      cx+=w;
+    });
+  }
+  drawTreemap();
+  window.addEventListener('resize',drawTreemap);
+}
+
+// ── GALERIA FOTOGRAFICA ──
+function renderGaleria(){
+  const el=document.getElementById('galeriaGrid');
+  if(!el)return;
+  const fotos=[
+    {titulo:'Taller Participativo UV Centro',cat:'Participación',grad:'linear-gradient(135deg,#4361ee,#2d9a4d)',icon:'🏛️'},
+    {titulo:'Diagnóstico Territorial Apalta',cat:'Diagnóstico',grad:'linear-gradient(135deg,#f5921d,#e63946)',icon:'🌾'},
+    {titulo:'Sesión COSOC Mayo 2026',cat:'Institucional',grad:'linear-gradient(135deg,#7b2cbf,#4361ee)',icon:'🏢'},
+    {titulo:'Cartografía Social La Chimba',cat:'Territorial',grad:'linear-gradient(135deg,#2a9d8f,#059669)',icon:'🗺️'},
+    {titulo:'Encuesta NNA Rosario',cat:'Infancia',grad:'linear-gradient(135deg,#db2777,#f4a261)',icon:'👧'},
+    {titulo:'Terreno Rural Chanqueahue',cat:'Rural',grad:'linear-gradient(135deg,#0c1f36,#1a3d8f)',icon:'🌳'}
+  ];
+  el.innerHTML=fotos.map(f=>`
+    <div class="galeria-card">
+      <div class="galeria-placeholder" style="background:${f.grad}">${f.icon}</div>
+      <div class="galeria-overlay">
+        <span>${f.cat}</span>
+        <h4>${f.titulo}</h4>
+      </div>
+    </div>`).join('');
+}
+
+// ── ENHANCED DOCS ──
+function renderDocsEnhanced(){
+  const el=document.getElementById('docs-grid');
+  if(!el)return;
+  const docs=[
+    {titulo:'Diagnóstico Comunal',desc:'Levantamiento territorial completo: 21 unidades vecinales, encuestas, entrevistas y análisis estadístico.',tipo:'PDF',paginas:'245 págs',size:'12.8 MB',icon:'📄',color:'#ef4444',bg:'#fee2e2'},
+    {titulo:'Plan de Acción 2025-2035',desc:'Documento estratégico con 6 ejes, 32 objetivos y 225 políticas priorizadas para la década.',tipo:'PDF',paginas:'180 págs',size:'9.4 MB',icon:'📑',color:'#4361ee',bg:'#dbeafe'},
+    {titulo:'Argumentario Estratégico',desc:'Presentación ejecutiva con datos clave, brechas y propuestas por eje estratégico.',tipo:'PPTX',paginas:'85 slides',size:'18.2 MB',icon:'📊',color:'#f5921d',bg:'#fef3c7'},
+    {titulo:'Matriz de Indicadores',desc:'16 metas con línea base 2024, hitos intermedios 2028 y metas finales 2035.',tipo:'XLSX',paginas:'16 metas',size:'2.1 MB',icon:'📈',color:'#059669',bg:'#d1fae5'},
+    {titulo:'Informe Participación Ciudadana',desc:'Sistematización de talleres, encuestas y entrevistas con actores clave de la comuna.',tipo:'PDF',paginas:'120 págs',size:'7.6 MB',icon:'📋',color:'#7c3aed',bg:'#ede9fe'},
+    {titulo:'Atlas Cartográfico UV',desc:'Mapas temáticos de las 21 unidades vecinales con capas de infraestructura, riesgos y equipamiento.',tipo:'PDF',paginas:'42 mapas',size:'34.5 MB',icon:'🗺️',color:'#0891b2',bg:'#cffafe'}
+  ];
+  el.innerHTML=docs.map(d=>`
+    <div class="doc-card-enhanced">
+      <div class="doc-accent" style="background:linear-gradient(90deg,${d.color},${d.color}88)"></div>
+      <div class="doc-body">
+        <div class="doc-icon-big" style="background:${d.bg};color:${d.color}">${d.icon}</div>
+        <div class="doc-title">${d.titulo}</div>
+        <div class="doc-desc">${d.desc}</div>
+        <div class="doc-meta">
+          <span class="dm-tag" style="background:${d.bg};color:${d.color}">${d.tipo}</span>
+          <span>${d.paginas}</span>
+          <span>·</span>
+          <span>${d.size}</span>
+        </div>
+        <button class="doc-btn" onclick="event.preventDefault()">
+          ⬇ Descargar ${d.tipo}
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+// ── KPI COUNT-UP ANIMATION ──
+function animateKPIs(){
+  const kpis=document.querySelectorAll('#dashboard .kpi-value');
+  if(!kpis.length)return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        kpis.forEach(el=>{
+          const text=el.textContent.trim();
+          // Extract numeric part
+          const match=text.match(/^([\d.,]+)/);
+          if(!match)return;
+          const numStr=match[1];
+          const suffix=text.slice(numStr.length);
+          // Parse: commas as decimal separators, dots as thousands
+          const cleaned=numStr.replace(/\./g,'').replace(',','.');
+          const target=parseFloat(cleaned);
+          if(isNaN(target))return;
+          // Determine formatting
+          const hasDecimal=numStr.includes(',');
+          const decimalPart=hasDecimal?numStr.split(',')[1]:'';
+          const decimals=decimalPart.length;
+          const hasThousandsDot=numStr.indexOf('.')!==-1&&numStr.indexOf('.')<numStr.length-3;
+          el.classList.add('counting');
+          const duration=1400;
+          const start=performance.now();
+          const step=ts=>{
+            const progress=Math.min((ts-start)/duration,1);
+            const eased=1-Math.pow(1-progress,3);
+            const current=eased*target;
+            let formatted;
+            if(decimals>0){
+              formatted=current.toFixed(decimals).replace('.',',');
+            }else{
+              formatted=Math.floor(current).toString();
+            }
+            // Add thousand dots if original had them
+            if(hasThousandsDot){
+              const parts=formatted.split(',');
+              parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+              formatted=parts.join(',');
+            }
+            el.textContent=formatted+suffix;
+            if(progress<1){requestAnimationFrame(step);}
+            else{el.textContent=text;el.classList.remove('counting');}
+          };
+          requestAnimationFrame(step);
+        });
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.2});
+  obs.observe(document.getElementById('dashboard'));
+}
+
+// ── SECTION SCROLL REVEAL ──
+function initSectionReveal(){
+  document.querySelectorAll('section:not(.reveal)').forEach(s=>s.classList.add('reveal'));
+  const allSections=document.querySelectorAll('section.reveal');
+  // Immediately reveal sections already in viewport
+  allSections.forEach(s=>{
+    const rect=s.getBoundingClientRect();
+    if(rect.top<window.innerHeight+100){s.classList.add('revealed');}
+  });
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('revealed');obs.unobserve(e.target);}
+    });
+  },{threshold:0.05});
+  allSections.forEach(s=>{if(!s.classList.contains('revealed'))obs.observe(s);});
+}
+
 // ── DARK MODE ──
 function toggleDark(){
   document.body.classList.toggle('dark');
@@ -4103,12 +4457,20 @@ renderODSAcc();
 renderSemaforo();
 renderBrechasMetas();
 renderProgresoEje();
+renderComparador();
 renderFinCards();
 renderFinEje();
 renderPlazoFin();
+renderTreemapFin();
+renderTimelinePladeco();
+renderPiramideDem();
+renderGaleria();
+renderDocsEnhanced();
 animateCounters();
+animateKPIs();
 initScrollProgress();
 initScrollReveal();
+initSectionReveal();
 
 // ── SERVICE WORKER ──
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
