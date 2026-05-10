@@ -158,7 +158,7 @@ canvas{display:block;background:var(--card);border-radius:6px}
 .eje-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px;border-left:5px solid}
 .eje-card h4{font-size:15px;font-weight:700;margin-bottom:8px}
 .eje-card .actions{display:grid;gap:8px;margin-top:12px}
-.action-item{background:#f8fafc;border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start;font-size:13px;border:1px solid var(--border)}
+.action-item{background:var(--bg);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start;font-size:13px;border:1px solid var(--border)}
 .action-item .a-code{font-weight:700;color:var(--accent);white-space:nowrap;font-size:11px}
 .action-item .a-meta{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
 .action-item .a-tag{font-size:10px;padding:2px 8px;border-radius:4px;background:#e0e7ff;color:#4338ca;font-weight:600}
@@ -177,7 +177,7 @@ canvas{display:block;background:var(--card);border-radius:6px}
 .foda-strats{margin-top:24px}
 .foda-strats .strat-card{background:var(--card);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--accent)}
 .foda-strats .strat-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
-.foda-strats .strat-card p{font-size:12px;color:#475569}
+.foda-strats .strat-card p{font-size:12px;color:var(--text2)}
 
 /* ── UV Table ── */
 .uv-table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);background:var(--card)}
@@ -641,7 +641,7 @@ body.dark .crosslink-card:hover{background:linear-gradient(135deg,rgba(67,97,238
 .meta-card .mc-eje{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;margin-left:auto}
 .meta-card .mc-title{font-size:14px;font-weight:700;line-height:1.3}
 .meta-card .mc-values{display:flex;gap:10px;margin:14px 0 10px;font-size:12px}
-.meta-card .mc-val{flex:1;text-align:center;padding:8px 6px;border-radius:10px;background:#f8fafc}
+.meta-card .mc-val{flex:1;text-align:center;padding:8px 6px;border-radius:10px;background:var(--bg)}
 .meta-card .mc-val .v-num{font-size:20px;font-weight:800;display:block}
 .meta-card .mc-val .v-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
 .meta-card .mc-val.current{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
@@ -717,7 +717,6 @@ body{padding-top:62px}
   .construction-banner .cb-contigo-pill img{height:28px}
   .construction-banner .cb-construction{font-size:10px;padding:5px 12px}
   .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:12px}
-  body{padding-top:52px}
   body{padding-top:40px}
 }
 /* ── KPI Count-Up Animation ── */
@@ -3270,7 +3269,7 @@ function renderNNA(){
     datasets:[{label:'% NNA afectados',data:[42,72,76,31.5,18.2,12.4,4.1,14.2,18.9],
       backgroundColor:['#ef4444','#ef4444','#ef4444','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#f59e0b','#ef4444'],
       borderRadius:6,hoverBackgroundColor:'#1e293b'}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
 }
 
 // ── RENDER NNA AGE + PARTICIPATION ──
@@ -3285,7 +3284,7 @@ function renderNNAPartic(){
     labels:['Participa agrupaciones','Quiere participar','Se siente escuchado','Conoce derechos','Identidad local','Usa plazas/parques'],
     datasets:[{label:'% NNA',data:[52.4,100,24,41.3,47.6,61.9],
       backgroundColor:['#22c55ecc','#22c55ecc','#ef4444cc','#f59e0bcc','#f59e0bcc','#22c55ecc'],borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de NNA'}}}}});
 }
 
 // ── RENDER SURVEY CHART ──
@@ -3295,7 +3294,7 @@ function renderSurveyChart(){
     datasets:[
       {label:'Ciudadanos (n=119)',data:SURVEY_CIU.identity.vals,backgroundColor:'#4361ee99',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'Nº Respuestas',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'Nº Respuestas',font:{size:11}},grid:{color:getChartGridColor()}},x:{grid:{display:false},ticks:{font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER INEQUALITY ──
@@ -3311,7 +3310,7 @@ function renderInequality(){
 function renderBIPSector(){
   new Chart(document.getElementById('chartBIPSector'),{type:'doughnut',data:{
     labels:BIP_SECTORS.map(s=>s.s),
-    datasets:[{data:BIP_SECTORS.map(s=>s.n),backgroundColor:BIP_SECTORS.map(s=>s.c),borderWidth:2,borderColor:'var(--card,#fff)',hoverOffset:8}]
+    datasets:[{data:BIP_SECTORS.map(s=>s.n),backgroundColor:BIP_SECTORS.map(s=>s.c),borderWidth:2,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',hoverOffset:8}]
   },options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'right',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} proyectos (${(ctx.raw/1182*100).toFixed(1)}%)`}}}},plugins:[{id:'centerTextBIP',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 24px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('1.182',left+width/2,top+height/2-6);c.font='600 10px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Proyectos',left+width/2,top+height/2+10);c.restore();}}]});
 }
 
@@ -3323,7 +3322,7 @@ function renderIdentityChart(){
       {label:'Ciudadanos (n=119)',data:[3,31,67,12,6],backgroundColor:'#4361ee88',borderRadius:4},
       {label:'NNA (n=21)',data:[2,8,4,0,7],backgroundColor:'#db277788',borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'Respuestas'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'Respuestas'},grid:{color:getChartGridColor()}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER EJES ── (improved with action count badges + scroll-to from donut)
@@ -3436,7 +3435,7 @@ function renderGallery(){
     ${cat.items.map(i=>{
       const g=GRAFICOS[i];
       const isInteractive = INTERACTIVE_FILES[i];
-      return `<div class="gallery-item" onclick="openModal('../Graficos/${g.file}')">
+      return `<div class="gallery-item" onclick="openModal('../Graficos/${g.file}','${g.title}')">
         ${isInteractive ? '<span class="gallery-badge">Interactivo</span>' : ''}
         <img src="../Graficos/${g.file}" alt="${g.title}" loading="lazy">
         <div class="caption">${g.title}</div>
@@ -3444,8 +3443,9 @@ function renderGallery(){
     }).join('')}
   `).join('');
 }
-function openModal(src){
+function openModal(src,alt){
   document.getElementById('modal-img').src = src;
+  document.getElementById('modal-img').alt = alt||'Imagen ampliada del proceso PLADECO';
   document.getElementById('modal').classList.add('show');
 }
 
@@ -3584,7 +3584,7 @@ function renderRadar(){
 let donutChart;
 function renderDonut(){
   donutChart = new Chart(document.getElementById('chartDonut'),{type:'doughnut',data:{
-    labels:EJE_NAMES,datasets:[{data:EJE_ACC,backgroundColor:EJE_COLORS,borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:12,hoverBorderColor:'#fff'}]
+    labels:EJE_NAMES,datasets:[{data:EJE_ACC,backgroundColor:EJE_COLORS,borderWidth:3,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',hoverOffset:12,hoverBorderColor:'#fff'}]
   },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',animation:{duration:1000,easing:'easeOutBounce',animateRotate:true},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'centerText',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 28px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-8);c.font='600 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Políticas',left+width/2,top+height/2+12);c.restore();}}]});
   document.getElementById('chartDonut').addEventListener('click',(e)=>{
     const pts=donutChart.getElementsAtEventForMode(e,'nearest',{intersect:true},false);
@@ -3599,7 +3599,7 @@ function renderPlazos(){
       {label:'Corto (2025-28)',data:PLAZOS.C,backgroundColor:'#22c55e',borderRadius:4,hoverBackgroundColor:'#16a34a'},
       {label:'Mediano (2028-32)',data:PLAZOS.M,backgroundColor:'#f59e0b',borderRadius:4,hoverBackgroundColor:'#d97706'},
       {label:'Largo (2032-35)',data:PLAZOS.L,backgroundColor:'#ef4444',borderRadius:4,hoverBackgroundColor:'#dc2626'}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},scales:{x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}},y:{stacked:true,title:{display:true,text:'Nº Acciones',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},scales:{x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}},y:{stacked:true,title:{display:true,text:'Nº Acciones',font:{size:11}},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
 }
 
 // ── RENDER INCLUSION (improved) ──
@@ -3692,7 +3692,7 @@ function renderGauges(){
     const nx=cx+32*Math.cos(needle), ny=cy-32*Math.sin(needle);
     return `<div class="gauge"><svg viewBox="0 0 130 78">
       <defs><linearGradient id="gg${idx}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${color}" stop-opacity=".2"/><stop offset="100%" stop-color="${color}"/></linearGradient></defs>
-      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="var(--bg2,#e2e8f0)" stroke-width="10" stroke-linecap="round" opacity=".5"/>
+      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="var(--border,#e0e4ea)" stroke-width="10" stroke-linecap="round" opacity=".5"/>
       ${pct>0?`<path d="M ${cx-r} ${cy} A ${r} ${r} 0 ${large} 1 ${arcX.toFixed(1)} ${arcY.toFixed(1)}" fill="none" stroke="url(#gg${idx})" stroke-width="10" stroke-linecap="round">
         <animate attributeName="stroke-dasharray" from="0 300" to="${(pct/100*Math.PI*r).toFixed(0)} 300" dur="1.2s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1"/>
       </path>`:''}
@@ -3715,7 +3715,7 @@ function renderMetasBar(){
       {label:'Meta 2028',data:METAS.slice(0,10).map(m=>m.m28),backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
       {label:'Meta 2035',data:METAS.slice(0,10).map(m=>m.m35),backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── RENDER GRUPOS PRIORITARIOS ──
@@ -3742,7 +3742,7 @@ function renderLorenz(){
       {label:'Distribución real',data:cumInv,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:'#ef4444'},
       {label:'Igualdad perfecta',data:cumPop,borderColor:'#22c55e',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'% acumulado de localidades',font:{size:10}},ticks:{callback:(v,i)=>i%5===0?v+'%':''},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'% acumulado de inversión',font:{size:10}},ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{title:ctx=>`Top ${ctx[0].label}% localidades`,label:ctx=>`${ctx.dataset.label}: ${ctx.raw}% inversión`}},annotation:{annotations:{giniBox:{type:'label',xValue:12,yValue:70,content:['Gini: 0,741','Desigualdad alta'],font:{size:11,weight:'700'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.8)',padding:8,borderRadius:6}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'% acumulado de localidades',font:{size:10}},ticks:{callback:(v,i)=>i%5===0?v+'%':''},grid:{color:getChartGridColor()}},y:{title:{display:true,text:'% acumulado de inversión',font:{size:10}},ticks:{callback:v=>v+'%'},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{title:ctx=>`Top ${ctx[0].label}% localidades`,label:ctx=>`${ctx.dataset.label}: ${ctx.raw}% inversión`}},annotation:{annotations:{giniBox:{type:'label',xValue:12,yValue:70,content:['Gini: 0,741','Desigualdad alta'],font:{size:11,weight:'700'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.8)',padding:8,borderRadius:6}}}}}});
 }
 
 // ── RENDER RADAR POR EJE ──
@@ -3810,7 +3810,7 @@ function renderFinancial(){
       {label:'Ingresos (M$)',data:FINANCIAL.ingresos,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#22c55e'},
       {label:'Gastos (M$)',data:FINANCIAL.gastos,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#ef4444'},
       {label:'Patrimonio (M$)',data:FINANCIAL.patrimonio,borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#4361ee',borderDash:[5,3]}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Millones $',font:{size:11}},grid:{color:getChartGridColor()},ticks:{callback:v=>v>=0?v.toLocaleString('es-CL'):`-${Math.abs(v).toLocaleString('es-CL')}`}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.raw.toLocaleString('es-CL')}M`}}}}});
 }
 
 // ── WATERFALL PATRIMONIAL ──
@@ -3823,7 +3823,7 @@ function renderWaterfall(){
       backgroundColor:pat.map(v=>v<0?'#ef444499':v<3000?'#f59e0b99':'#22c55e99'),
       borderColor:pat.map(v=>v<0?'#ef4444':v<3000?'#f59e0b':'#22c55e'),
       borderWidth:2,borderRadius:6,barPercentage:.65}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>'$'+v.toLocaleString('es-CL')+'M'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const v=ctx.raw;return `Patrimonio: $${v.toLocaleString('es-CL')}M ${v<0?'(déficit)':'(superávit)'}`;}}},annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'#94a3b8',borderWidth:1,borderDash:[4,4]},label1:{type:'label',xValue:'2018',yValue:-1460,content:'-$1.460M',font:{size:11,weight:'800'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.9)',padding:4,borderRadius:4},label2:{type:'label',xValue:'2024',yValue:9400,content:'+$9.400M',font:{size:11,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:4,borderRadius:4}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false}},y:{grid:{color:getChartGridColor()},ticks:{callback:v=>'$'+v.toLocaleString('es-CL')+'M'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const v=ctx.raw;return `Patrimonio: $${v.toLocaleString('es-CL')}M ${v<0?'(déficit)':'(superávit)'}`;}}},annotation:{annotations:{zero:{type:'line',yMin:0,yMax:0,borderColor:'#94a3b8',borderWidth:1,borderDash:[4,4]},label1:{type:'label',xValue:'2018',yValue:-1460,content:'-$1.460M',font:{size:11,weight:'800'},color:'#ef4444',backgroundColor:'rgba(254,226,226,.9)',padding:4,borderRadius:4},label2:{type:'label',xValue:'2024',yValue:9400,content:'+$9.400M',font:{size:11,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:4,borderRadius:4}}}}}});
 }
 
 // ── SEGURIDAD PÚBLICA ──
@@ -3839,7 +3839,7 @@ function renderSeguridad(){
       {label:'Meta 2028',data:meta28,backgroundColor:'#f59e0b88',borderColor:'#f59e0b',borderWidth:1,borderRadius:3},
       {label:'Meta 2035',data:meta35,backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Casos anuales'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{footer:items=>{const a=items[0].raw,m=items[2].raw;return `Reducción: -${((1-m/a)*100).toFixed(0)}%`;}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Casos anuales'},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{footer:items=>{const a=items[0].raw,m=items[2].raw;return `Reducción: -${((1-m/a)*100).toFixed(0)}%`;}}}}
   }});
 }
 
@@ -3854,7 +3854,7 @@ function renderRengoVsNac(){
       {label:'Rengo',data:rengo,backgroundColor:'#4361eeaa',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'Nacional',data:nacional,backgroundColor:'#94a3b888',borderColor:'#94a3b8',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11},maxRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11},maxRotation:30}},y:{grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{afterBody:(items)=>{const r=items[0].raw,n=items[1].raw;const diff=r-n;return `Brecha: ${diff>0?'+':''}${diff.toFixed(1)}`;}}}}
   }});
 }
 function renderTransparencia(){
@@ -3862,7 +3862,7 @@ function renderTransparencia(){
     labels:['2012','2014','2016','2018','2020','2022','2024'],
     datasets:[{label:'CPLT Rengo (%)',data:[16.4,45.2,62.8,78.5,88.3,94.6,97.89],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,borderWidth:3,pointRadius:5,pointHoverRadius:8,pointBackgroundColor:'#22c55e'},
     {label:'Promedio Nacional (%)',data:[35,42,52,60,68,75,81.76],borderColor:'#94a3b8',borderDash:[5,3],borderWidth:2,pointRadius:3,pointBackgroundColor:'#94a3b8',fill:false}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false}},y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},annotation:{annotations:{milestone:{type:'label',xValue:'2024',yValue:97.89,content:'97,89%',font:{size:12,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:6,borderRadius:6}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},interaction:{mode:'index',intersect:false},scales:{x:{grid:{display:false}},y:{min:0,max:100,ticks:{callback:v=>v+'%'},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},annotation:{annotations:{milestone:{type:'label',xValue:'2024',yValue:97.89,content:'97,89%',font:{size:12,weight:'800'},color:'#22c55e',backgroundColor:'rgba(209,250,229,.9)',padding:6,borderRadius:6}}}}}});
 }
 
 // ── PARTICIPATION CHARTS ──
@@ -3884,7 +3884,7 @@ function renderFunnel(){
     labels:stages.map(s=>s.name),
     datasets:[{label:'% participantes',data:stages.map(s=>s.val),
       backgroundColor:['#22c55ecc','#4ade80cc','#f59e0bcc','#fb923ccc','#ef4444cc'],borderRadius:6,barPercentage:.7}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw}% de los encuestados`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw}% de los encuestados`}}}}});
 }
 
 // ── FODA ENTREVISTAS RENDER ──
@@ -3944,7 +3944,7 @@ function renderFODAEntrev(){
         backgroundColor:menciones.map(m=>m.c+'cc'),borderColor:menciones.map(m=>m.c),
         borderWidth:1.5,borderRadius:6,barPercentage:.75}]
     },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},
-      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:10}}},
+      scales:{x:{grid:{color:getChartGridColor()},ticks:{font:{size:10}}},
         y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},
       plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,
         callbacks:{label:ctx=>{
@@ -4066,7 +4066,7 @@ function renderScatter(){
       {label:'Urbano',data:data.filter(d=>d.tipo==='Urbano'),backgroundColor:'#4361ee55',borderColor:'#4361ee',borderWidth:2},
       {label:'Rural',data:data.filter(d=>d.tipo==='Rural'),backgroundColor:'#22c55e55',borderColor:'#22c55e',borderWidth:2}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'Proyectos / 1.000 hab',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}},y:{title:{display:true,text:'Inversión per cápita (M$)',font:{size:11}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const d=ctx.raw;return [`${d.label} (${d.tipo})`,`Pob: ${d.pob.toLocaleString('es-CL')}`,`BIP: ${d.bip} proy.`,`Inv: $${(d.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}M`];}}}}
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{title:{display:true,text:'Proyectos / 1.000 hab',font:{size:11}},grid:{color:getChartGridColor()}},y:{title:{display:true,text:'Inversión per cápita (M$)',font:{size:11}},grid:{color:getChartGridColor()}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const d=ctx.raw;return [`${d.label} (${d.tipo})`,`Pob: ${d.pob.toLocaleString('es-CL')}`,`BIP: ${d.bip} proy.`,`Inv: $${(d.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})}M`];}}}}
   }});
 }
 function renderInvCap(){
@@ -4074,21 +4074,21 @@ function renderInvCap(){
   new Chart(document.getElementById('chartInvCap'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Inv. per cápita (M$/hab)',data:sorted.map(u=>(u.inv/u.pob/1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'M$ por habitante'},grid:{color:getChartGridColor()}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderBipDens(){
   const sorted=[...UV_DATA].filter(u=>u.bip>0).sort((a,b)=>(b.bip/b.pob)-(a.bip/a.pob));
   new Chart(document.getElementById('chartBipDens'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Proyectos/1000hab',data:sorted.map(u=>(u.bip/u.pob*1000).toFixed(1)),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361eecc':'#22c55ecc'),borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{title:{display:true,text:'Proyectos por 1.000 hab'},grid:{color:getChartGridColor()}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderPobLocal(){
   const sorted=[...UV_DATA].sort((a,b)=>b.pob-a.pob);
   new Chart(document.getElementById('chartPobLocal'),{type:'bar',data:{
     labels:sorted.map(u=>u.name),
     datasets:[{label:'Población',data:sorted.map(u=>u.pob),backgroundColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee88':'#22c55e88'),borderColor:sorted.map(u=>u.tipo==='Urbano'?'#4361ee':'#22c55e'),borderWidth:1,borderRadius:3}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10},maxRotation:60}},y:{title:{display:true,text:'Habitantes'},grid:{color:getChartGridColor()}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw.toLocaleString('es-CL')} hab.`}}}}});
 }
 
 // ── RENDER ODS HEATMAP ──
@@ -4124,7 +4124,7 @@ function renderODSMulti(){
   new Chart(document.getElementById('chartODSMulti'),{type:'bar',data:{
     labels:ODS_IDS.map(id=>'ODS '+id),
     datasets:[{label:'Acciones vinculadas',data:ODS_IDS.map((id,j)=>ODS_HEAT.reduce((s,row)=>s+row[j],0)),backgroundColor:ODS_IDS.map(id=>(ODS_COLORS_MAP[id]||'#999')+'cc'),borderColor:ODS_IDS.map(id=>ODS_COLORS_MAP[id]||'#999'),borderWidth:1,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:getChartGridColor()}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderODSGap(){
   const covered=new Set(ODS_IDS);
@@ -4136,7 +4136,7 @@ function renderODSGap(){
   const colors=[...gaps.map(()=>'#ef444466'),...low.map(d=>(ODS_COLORS_MAP[d.id]||'#999')+'cc')];
   new Chart(document.getElementById('chartODSGap'),{type:'bar',data:{
     labels,datasets:[{label:'Acciones',data,backgroundColor:colors,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw===0?'Sin cobertura':`${ctx.raw} acciones`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:getChartGridColor()}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.raw===0?'Sin cobertura':`${ctx.raw} acciones`}}}}});
 }
 
 // ── RENDER TAG CLOUD ──
@@ -4387,7 +4387,7 @@ function renderInfraChart(){
   new Chart(document.getElementById('chartInfra'),{type:'bar',data:{
     labels:INFRA_DEF.map(d=>d.name),
     datasets:[{label:'Menciones',data:INFRA_DEF.map(d=>d.count),backgroundColor:INFRA_DEF.map(d=>d.color+'cc'),borderRadius:6,hoverBackgroundColor:INFRA_DEF.map(d=>d.color)}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones (${(ctx.raw/119*100).toFixed(0)}%)`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:getChartGridColor()},ticks:{callback:v=>v}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones (${(ctx.raw/119*100).toFixed(0)}%)`}}}}});
 }
 function renderPriorComp(){
   const labels=['Seguridad','Salud','Cultura/deporte','Empleo','Educación','M. Ambiente','Infraestruc.','Participación','Inclusión','Innovación'];
@@ -4397,7 +4397,7 @@ function renderPriorComp(){
       {label:'Ciudadanos (n=119)',data:PRIOR_CIU.map(p=>(p.count/119*100).toFixed(1)),backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'NNA (n=21)',data:PRIOR_NNA.map(p=>(p.count/21*100).toFixed(1)),backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false},ticks:{font:{size:11},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,mode:'index'}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{title:{display:true,text:'% menciones'},grid:{color:getChartGridColor()}},x:{grid:{display:false},ticks:{font:{size:11},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,mode:'index'}}}});
 }
 function renderEmergencia(){
   new Chart(document.getElementById('chartEmergencia'),{type:'doughnut',data:{
@@ -4410,7 +4410,7 @@ function renderSaludChart(){
   new Chart(document.getElementById('chartSalud'),{type:'bar',data:{
     labels:SALUD_DEF.map(d=>d.name),
     datasets:[{label:'Menciones',data:SALUD_DEF.map(d=>d.count),backgroundColor:SALUD_DEF.map(d=>d.color+'cc'),borderRadius:6,hoverBackgroundColor:SALUD_DEF.map(d=>d.color)}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Menciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Menciones'},grid:{color:getChartGridColor()}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} menciones`}}}}});
 }
 
 // ── RENDER GESTIÓN PLADECO ──
@@ -4428,12 +4428,12 @@ function renderPlazoEje(){
       {label:'Mediano',data:[19,8,7,27,13,17],backgroundColor:'#f59e0bcc',borderRadius:4},
       {label:'Largo',data:[4,2,0,14,1,1],backgroundColor:'#ef4444cc',borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,title:{display:true,text:'Nº acciones'},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8,callbacks:{footer:items=>`Total: ${items.reduce((s,i)=>s+i.raw,0)} acciones`}}}}});
 }
 function renderFinanc(){
   new Chart(document.getElementById('chartFinanc'),{type:'doughnut',data:{
     labels:['Municipal','FNDR','Sectorial'],
-    datasets:[{data:[FINANC_ACC.Municipal,FINANC_ACC.FNDR,FINANC_ACC.Sectorial],backgroundColor:['#4361ee','#f59e0b','#22c55e'],borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:10}]
+    datasets:[{data:[FINANC_ACC.Municipal,FINANC_ACC.FNDR,FINANC_ACC.Sectorial],backgroundColor:['#4361ee','#f59e0b','#22c55e'],borderWidth:3,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',hoverOffset:10}]
   },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'financCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 20px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('64.0%',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Municipal',left+width/2,top+height/2+10);c.restore();}}]});
 }
 function renderInclusion2(){
@@ -4445,14 +4445,14 @@ function renderInclusion2(){
       {label:'Discapacidad',data:INCL_EJES.map(e=>e.disc),backgroundColor:'#7b2cbf99',borderRadius:3},
       {label:'Adulto Mayor',data:INCL_EJES.map(e=>e.am),backgroundColor:'#f4a26199',borderRadius:3}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:false,grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:false,grid:{display:false},ticks:{font:{size:10}}},y:{title:{display:true,text:'Nº acciones'},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderDeptos(){
   const top10=DEPTOS.slice(0,10);
   new Chart(document.getElementById('chartDeptos'),{type:'bar',data:{
     labels:top10.map(d=>d.name),
     datasets:[{label:'Acciones a cargo',data:top10.map(d=>d.n),backgroundColor:['#4361ee','#22c55e','#f59e0b','#ef4444','#8b5cf6','#db2777','#06b6d4','#2a9d8f','#7b2cbf','#457b9d'].map(c=>c+'cc'),borderRadius:6,hoverBackgroundColor:['#4361ee','#22c55e','#f59e0b','#ef4444','#8b5cf6','#db2777','#06b6d4','#2a9d8f','#7b2cbf','#457b9d']}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones responsables`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1000},scales:{x:{grid:{color:getChartGridColor()}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones responsables`}}}}});
 }
 
 // ══════════════════════════════════════════════════════════
@@ -4481,7 +4481,7 @@ function renderBrechas(){
   new Chart(document.getElementById('chartBrechas'),{type:'bar',data:{labels:dims,datasets:[
     {label:'Avance actual (%)',data:actual,backgroundColor:actual.map(v=>v<50?'#ef444488':v<70?'#f59e0b88':'#22c55e88'),borderColor:actual.map(v=>v<50?'#ef4444':v<70?'#f59e0b':'#22c55e'),borderWidth:1,borderRadius:6},
     {label:'Meta 2035 (100%)',data:meta,backgroundColor:'rgba(67,97,238,.08)',borderColor:'#4361ee44',borderWidth:1,borderDash:[4,4],borderRadius:6}
-  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Avance: ${ctx.raw}% — Brecha: ${100-ctx.raw}%`:'Meta 2035: 100%'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Avance: ${ctx.raw}% — Brecha: ${100-ctx.raw}%`:'Meta 2035: 100%'}}}}});
 }
 
 // ── RIESGOS BUBBLE CHART ──
@@ -4495,7 +4495,7 @@ function renderRiesgos(){
   new Chart(document.getElementById('chartRiesgos'),{type:'bubble',data:{datasets:riesgos.map((r,i)=>({
     label:r.name,data:[{x:r.prob,y:r.imp,r:r.acc+3}],
     backgroundColor:`hsla(${360-i*45},70%,55%,0.5)`,borderColor:`hsla(${360-i*45},70%,45%,1)`,borderWidth:2
-  }))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{min:20,max:100,title:{display:true,text:'Probabilidad (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y:{min:40,max:100,title:{display:true,text:'Impacto (%)',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: Prob ${riesgos[ctx.datasetIndex].prob}% · Imp ${riesgos[ctx.datasetIndex].imp}% · ${riesgos[ctx.datasetIndex].acc} acciones`}}}}});
+  }))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{min:20,max:100,title:{display:true,text:'Probabilidad (%)',font:{size:10}},grid:{color:getChartGridColor()}},y:{min:40,max:100,title:{display:true,text:'Impacto (%)',font:{size:10}},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: Prob ${riesgos[ctx.datasetIndex].prob}% · Imp ${riesgos[ctx.datasetIndex].imp}% · ${riesgos[ctx.datasetIndex].acc} acciones`}}}}});
 }
 
 // ── VULNERABILIDAD CHART ──
@@ -4506,7 +4506,7 @@ function renderVulner(){
   new Chart(document.getElementById('chartVulner'),{type:'bar',data:{labels:dims,datasets:[
     {label:'Índice de vulnerabilidad',data:brecha,backgroundColor:'#ef444477',borderColor:'#ef4444',borderWidth:1,borderRadius:4},
     {label:'Capacidad de respuesta',data:capacidad,backgroundColor:'#22c55e77',borderColor:'#22c55e',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── BENCHMARKING CHART ──
@@ -4525,7 +4525,7 @@ function renderRanking(){
   const total=[346,33,345,33,33];
   const colors=positions.map(p=>p<=3?'#22c55ecc':p<=10?'#4361eecc':'#f59e0bcc');
   new Chart(document.getElementById('chartRanking'),{type:'bar',data:{labels:items,datasets:[{label:'Posición',data:positions,backgroundColor:colors,borderRadius:6}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{reverse:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Posición (menor = mejor)',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Posición ${ctx.raw}° de ${total[ctx.dataIndex]} comunas`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{reverse:true,grid:{color:getChartGridColor()},title:{display:true,text:'Posición (menor = mejor)',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Posición ${ctx.raw}° de ${total[ctx.dataIndex]} comunas`}}}}});
 }
 
 // ── DEMOGRAFÍA PROYECCIÓN ──
@@ -4536,7 +4536,7 @@ function renderDemoProy(){
   new Chart(document.getElementById('chartDemoProy'),{type:'line',data:{labels:years,datasets:[
     {label:'Población',data:pob,borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.1)',fill:true,borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee',tension:.3,yAxisID:'y'},
     {label:'% Adulto Mayor',data:envej,borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.08)',fill:true,borderWidth:2,pointRadius:5,pointBackgroundColor:'#ef4444',borderDash:[5,5],tension:.3,yAxisID:'y1'}
-  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{position:'left',title:{display:true,text:'Población',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y1:{position:'right',title:{display:true,text:'% AM',font:{size:10}},grid:{display:false},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,mode:'index'}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{position:'left',title:{display:true,text:'Población',font:{size:10}},grid:{color:getChartGridColor()}},y1:{position:'right',title:{display:true,text:'% AM',font:{size:10}},grid:{display:false},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,mode:'index'}}}});
 }
 
 // ── COMPOSICIÓN ETARIA ──
@@ -4544,7 +4544,7 @@ function renderEtaria(){
   new Chart(document.getElementById('chartEtaria'),{type:'bar',data:{labels:['0-14','15-29','30-44','45-59','60-74','75+'],datasets:[
     {label:'Urbano',data:[23,21,22,19,11,4],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
     {label:'Rural',data:[26,18,20,17,13,6],backgroundColor:'#2a9d8f88',borderColor:'#2a9d8f',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── COHERENCIA INSTRUMENTOS ──
@@ -4553,7 +4553,7 @@ function renderCoher(){
   const coherencia=[20,45,40,25,30,55,50,35,30,60,15,40];
   const colors=coherencia.map(v=>v<30?'#ef4444cc':v<50?'#f59e0bcc':'#22c55ecc');
   new Chart(document.getElementById('chartCoher'),{type:'bar',data:{labels:instrs,datasets:[{label:'Coherencia (%)',data:coherencia,backgroundColor:colors,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Coherencia: ${ctx.raw}% — ${ctx.raw<30?'Crítico':ctx.raw<50?'Bajo':'Aceptable'}`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Coherencia: ${ctx.raw}% — ${ctx.raw<30?'Crítico':ctx.raw<50?'Bajo':'Aceptable'}`}}}}});
 }
 
 // ── COBERTURA TEMÁTICA ──
@@ -4563,7 +4563,7 @@ function renderCobertura(){
   const eColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
   const data=[[1,0,0,5,0,1],[2,0,5,0,0,1],[5,5,5,5,5,5],[0,0,0,4,0,2],[4,0,1,0,1,1],[1,0,0,0,5,0]];
   new Chart(document.getElementById('chartCobertura'),{type:'bar',data:{labels:instrs,datasets:eNames.map((n,i)=>({label:n,data:data.map(d=>d[i]),backgroundColor:eColors[i]+'88',borderColor:eColors[i],borderWidth:1,borderRadius:2}))},
-    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Cobertura',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
+    options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:getChartGridColor()},title:{display:true,text:'Cobertura',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── GÉNERO BRECHAS ──
@@ -4571,7 +4571,7 @@ function renderGenero(){
   new Chart(document.getElementById('chartGenero'),{type:'bar',data:{labels:['Empleo','Ed. Superior','Jefatura Hogar','Participación','Ingresos','Violencia (VIF)'],datasets:[
     {label:'Mujeres',data:[38,42,35,69,72,85],backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4},
     {label:'Hombres',data:[62,58,65,31,100,15],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── GÉNERO POR EJE ──
@@ -4582,7 +4582,7 @@ function renderGenEje(){
   new Chart(document.getElementById('chartGenEje'),{type:'bar',data:{labels:ejes,datasets:[
     {label:'Con enfoque género',data:conGen,backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4},
     {label:'Sin enfoque género',data:sinGen,backgroundColor:'#e2e8f088',borderColor:'#e2e8f0',borderWidth:1,borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── TABLERO SEGUIMIENTO ──
@@ -4600,12 +4600,12 @@ function renderTablero(){
   new Chart(document.getElementById('chartTablero'),{type:'bar',data:{labels:kpis,datasets:[
     {label:'Progreso a Meta 2028 (%)',data:pctM28.map(v=>+v.toFixed(1)),backgroundColor:pctM28.map(v=>v<40?'#ef444488':v<65?'#f59e0b88':'#22c55e88'),borderColor:pctM28.map(v=>v<40?'#ef4444':v<65?'#f59e0b':'#22c55e'),borderWidth:1,borderRadius:6},
     {label:'Meta 2035 (100%)',data:m35.map(()=>100),backgroundColor:'#22c55e18',borderColor:'#22c55e66',borderWidth:1,borderDash:[4,4],borderRadius:4}
-  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'},title:{display:true,text:'% hacia meta 2035',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Progreso: ${ctx.raw}%`:'Meta 2035'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'},title:{display:true,text:'% hacia meta 2035',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.datasetIndex===0?`Progreso: ${ctx.raw}%`:'Meta 2035'}}}}});
 }
 
 // ── FRECUENCIA ACCIONES ──
 function renderFreqAcc(){
-  new Chart(document.getElementById('chartFreqAcc'),{type:'doughnut',data:{labels:['Corto plazo (2025-2028): 112','Mediano plazo (2028-2032): 91','Largo plazo (2032-2035): 22'],datasets:[{data:[112,91,22],backgroundColor:['#22c55ecc','#f59e0bcc','#ef4444cc'],borderWidth:3,borderColor:'var(--card,#fff)',hoverOffset:10}]},
+  new Chart(document.getElementById('chartFreqAcc'),{type:'doughnut',data:{labels:['Corto plazo (2025-2028): 112','Mediano plazo (2028-2032): 91','Largo plazo (2032-2035): 22'],datasets:[{data:[112,91,22],backgroundColor:['#22c55ecc','#f59e0bcc','#ef4444cc'],borderWidth:3,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',hoverOffset:10}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'50%',animation:{duration:1000},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},
     plugins:[{id:'freqCenter',afterDraw(c){const{ctx,chartArea:{width,height,top,left}}=c;ctx.save();ctx.font='800 22px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('225',left+width/2,top+height/2-6);ctx.font='600 9px system-ui';ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';ctx.fillText('Acciones',left+width/2,top+height/2+10);ctx.restore();}}]});
 }
@@ -4634,7 +4634,7 @@ function renderArgPeso(){
   const pesos=[95,93,88,85,78,75,82,90,80,72,70,83,77,87,84];
   const colors=pesos.map(v=>v>=85?'#ef4444cc':v>=75?'#f59e0bcc':'#22c55ecc');
   new Chart(document.getElementById('chartArgPeso'),{type:'bar',data:{labels:names,datasets:[{label:'Peso relativo',data:pesos,backgroundColor:colors,borderRadius:4}]},
-    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:8,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Peso: ${ctx.raw}% — ${ctx.raw>=85?'Prioridad alta':ctx.raw>=75?'Prioridad media':'Relevante'}`}}}}});
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:8,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Peso: ${ctx.raw}% — ${ctx.raw>=85?'Prioridad alta':ctx.raw>=75?'Prioridad media':'Relevante'}`}}}}});
 }
 
 // ── ARG DIMENSIONES RADAR ──
@@ -4672,7 +4672,7 @@ function renderCoresp(){
   const colors=SNA_PAIRS.map((_,i)=>{const h=240-i*20;return `hsla(${h},70%,55%,0.8)`;});
   new Chart(document.getElementById('chartCoresp'),{type:'bar',data:{
     labels,datasets:[{label:'Co-participaciones',data,backgroundColor:colors,borderRadius:6,hoverBackgroundColor:colors.map(c=>c.replace('0.8','1'))}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200,easing:'easeOutQuart'},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° acciones compartidas',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones en co-responsabilidad`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200,easing:'easeOutQuart'},scales:{x:{grid:{color:getChartGridColor()},title:{display:true,text:'N° acciones compartidas',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones en co-responsabilidad`}}}}});
 }
 
 // ── SNA: CENTRALITY CHART ──
@@ -4682,7 +4682,7 @@ function renderCentral(){
     labels:sorted.map(a=>a.name),
     datasets:[{label:'Centralidad',data:sorted.map(a=>a.central),
       backgroundColor:sorted.map(a=>a.color+'cc'),borderColor:sorted.map(a=>a.color),borderWidth:1,borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:1,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>(v*100).toFixed(0)+'%'},title:{display:true,text:'Grado de centralidad normalizado',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Centralidad: ${(ctx.raw*100).toFixed(0)}% — ${sorted[ctx.dataIndex].desc}`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:1,grid:{color:getChartGridColor()},ticks:{callback:v=>(v*100).toFixed(0)+'%'},title:{display:true,text:'Grado de centralidad normalizado',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`Centralidad: ${(ctx.raw*100).toFixed(0)}% — ${sorted[ctx.dataIndex].desc}`}}}}});
 }
 
 // ── SNA: CONVERGENCE CHART ──
@@ -4695,7 +4695,7 @@ function renderConverg(){
     backgroundColor:eColors[i]+'99',borderColor:eColors[i],borderWidth:1,borderRadius:3
   }));
   new Chart(document.getElementById('chartConverg'),{type:'bar',data:{labels:areas,datasets},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},maxRotation:45}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'Acciones',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:6}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:11},maxRotation:45}},y:{stacked:true,grid:{color:getChartGridColor()},title:{display:true,text:'Acciones',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11},padding:6}},tooltip:{mode:'index',backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── SNA: MATURITY RADAR ──
@@ -4743,7 +4743,7 @@ function renderOENet(){
     backgroundColor:eColors[i]+'66',borderColor:eColors[i],borderWidth:2,hoverBackgroundColor:eColors[i]+'aa'
   }));
   new Chart(document.getElementById('chartOENet'),{type:'bubble',data:{datasets},
-    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{display:false},y:{title:{display:true,text:'N° acciones',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const ei=EJES.findIndex(e=>e.short===ctx.dataset.label);const oe=EJES[ei]?.oes[ctx.dataIndex];return oe?`${oe.code}: ${oe.title} (${oe.actions.length} acciones)`:ctx.dataset.label;}}}}}});
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{display:false},y:{title:{display:true,text:'N° acciones',font:{size:10}},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>{const ei=EJES.findIndex(e=>e.short===ctx.dataset.label);const oe=EJES[ei]?.oes[ctx.dataIndex];return oe?`${oe.code}: ${oe.title} (${oe.actions.length} acciones)`:ctx.dataset.label;}}}}}});
 }
 
 // ── ETHNOGRAPHY: DOMAIN STATS ──
@@ -4793,7 +4793,7 @@ function renderDomainChart(){
   new Chart(document.getElementById('chartDomains'),{type:'polarArea',data:{
     labels:ETHNO_DOMAINS.map(d=>d.name),
     datasets:[{data:ETHNO_DOMAINS.map(d=>d.n),backgroundColor:ETHNO_DOMAINS.map(d=>d.color+'88'),borderColor:ETHNO_DOMAINS.map(d=>d.color),borderWidth:2,hoverBackgroundColor:ETHNO_DOMAINS.map(d=>d.color+'cc')}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,animateRotate:true},scales:{r:{ticks:{display:false},grid:{color:'rgba(0,0,0,.05)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} hallazgos`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,animateRotate:true},scales:{r:{ticks:{display:false},grid:{color:getChartGridColor()}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11},padding:8,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} hallazgos`}}}}});
 }
 
 // ── ETHNOGRAPHY: CGR CHART ──
@@ -4804,7 +4804,7 @@ function renderCGRChart(){
     datasets:[{label:'Intervenciones CGR',data:CGR_DATA.map(d=>d.n),
       backgroundColor:CGR_DATA.map(d=>d.n>=2?'#ef4444cc':'#f59e0bcc'),
       borderColor:CGR_DATA.map(d=>d.n>=2?'#ef4444':'#f59e0b'),borderWidth:1,borderRadius:4}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{y:{beginAtZero:true,max:maxN+1,ticks:{stepSize:1,font:{size:10}},grid:{color:'rgba(0,0,0,.05)'},title:{display:true,text:'N° fiscalizaciones',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} intervención${ctx.raw>1?'es':''} de Contraloría`,afterLabel:ctx=>ctx.raw>=2?'⚠ Año con actividad elevada':'Nivel normal'}},annotation:{annotations:{line1:{type:'line',yMin:1.5,yMax:1.5,borderColor:'#f59e0b',borderWidth:1,borderDash:[4,4],label:{content:'Promedio: 1,6/año',enabled:true,position:'end',font:{size:11}}}}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200,easing:'easeOutQuart'},scales:{y:{beginAtZero:true,max:maxN+1,ticks:{stepSize:1,font:{size:10}},grid:{color:getChartGridColor()},title:{display:true,text:'N° fiscalizaciones',font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} intervención${ctx.raw>1?'es':''} de Contraloría`,afterLabel:ctx=>ctx.raw>=2?'⚠ Año con actividad elevada':'Nivel normal'}},annotation:{annotations:{line1:{type:'line',yMin:1.5,yMax:1.5,borderColor:'#f59e0b',borderWidth:1,borderDash:[4,4],label:{content:'Promedio: 1,6/año',enabled:true,position:'end',font:{size:11}}}}}}}});
 }
 
 // ── ETHNOGRAPHY: CAPACITY RADAR ──
@@ -4824,7 +4824,7 @@ function renderSocCap(){
     datasets:[
       {label:'Nivel actual',data:[72,38,32,28,65,80],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
       {label:'Potencial estimado',data:[90,75,70,65,85,90],backgroundColor:'#22c55e44',borderColor:'#22c55e',borderWidth:1,borderRadius:4,borderDash:[4,4]}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── ETHNOGRAPHY: TENSIONS CHART ──
@@ -4836,7 +4836,7 @@ function renderTensions(){
     labels,datasets:[
       {label:'Fuerzas impulsoras',data:impulsor,backgroundColor:'#22c55e88',borderColor:'#22c55e',borderWidth:1,borderRadius:4},
       {label:'Fuerzas restrictivas',data:restrictor,backgroundColor:'#ef444488',borderColor:'#ef4444',borderWidth:1,borderRadius:4}
-    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:0,autoSkip:false}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v)+'%'},title:{display:true,text:'Intensidad (%)',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.abs(ctx.raw)}%`}}}}});
+    ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:0,autoSkip:false}},y:{grid:{color:getChartGridColor()},ticks:{callback:v=>Math.abs(v)+'%'},title:{display:true,text:'Intensidad (%)',font:{size:10}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${Math.abs(ctx.raw)}%`}}}}});
 }
 
 // ── FODA SEARCH + FILTER ──
@@ -4910,7 +4910,7 @@ function renderAccEje(){
   new Chart(document.getElementById('chartAccEje'),{type:'bar',data:{
     labels:ejeNames,
     datasets:[{label:'Acciones',data:EJE_ACC_N,backgroundColor:ejeColors.map(c=>c+'cc'),borderColor:ejeColors,borderWidth:2,borderRadius:8,hoverBackgroundColor:ejeColors}]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{y:{beginAtZero:true,grid:{color:getChartGridColor()},ticks:{font:{size:11}}},x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}}});
 }
 function renderODSAcc(){
   const sorted=[
@@ -4926,7 +4926,7 @@ function renderODSAcc(){
   new Chart(document.getElementById('chartODSAcc'),{type:'bar',data:{
     labels:sorted.map(s=>s.n),
     datasets:[{label:'Acciones',data:sorted.map(s=>s.v),backgroundColor:sorted.map(s=>s.c+'cc'),borderColor:sorted.map(s=>s.c),borderWidth:2,borderRadius:8}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones vinculadas`}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{beginAtZero:true,grid:{color:getChartGridColor()}},y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.raw} acciones vinculadas`}}}}});
 }
 
 // ── RENDER SEMÁFORO DE METAS ──
@@ -4967,7 +4967,7 @@ function renderBrechasMetas(){
       if(m.tipo==='up')return((m.m35-m.lb)/m.m35*100).toFixed(1);
       return((m.lb-m.m35)/m.lb*100).toFixed(1);
     }),backgroundColor:METAS_SEG.map(m=>m.color+'99'),borderColor:METAS_SEG.map(m=>m.color),borderWidth:1,borderRadius:6}]
-  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
+  },options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',animation:{duration:1200},scales:{x:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:11,weight:'600'}}}},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>'Brecha: '+ctx.raw+'%'}}}}});
 }
 function renderProgresoEje(){
   const ejeNames=['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
@@ -5009,12 +5009,12 @@ function renderFinEje(){
       {label:'FNDR',data:finByEje.FNDR,backgroundColor:'#f59e0b99',borderColor:'#f59e0b',borderWidth:1,borderRadius:4},
       {label:'Sectorial',data:finByEje.Sectorial,backgroundColor:'#22c55e99',borderColor:'#22c55e',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10,weight:'600'}}},y:{stacked:true,grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10,weight:'600'}}},y:{stacked:true,grid:{color:getChartGridColor()},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 function renderPlazoFin(){
   new Chart(document.getElementById('chartPlazoFin'),{type:'doughnut',data:{
     labels:['Corto Municipal','Corto FNDR','Mediano Municipal','Mediano FNDR','Mediano Sectorial','Largo Municipal','Largo FNDR'],
-    datasets:[{data:[96,16,45,45,1,3,19],backgroundColor:['#22c55e','#22c55e66','#f59e0b','#f59e0b66','#f59e0b33','#ef4444','#ef444466'],borderWidth:2,borderColor:'var(--card,#fff)',hoverOffset:6}]
+    datasets:[{data:[96,16,45,45,1,3,19],backgroundColor:['#22c55e','#22c55e66','#f59e0b','#f59e0b66','#f59e0b33','#ef4444','#ef444466'],borderWidth:2,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',hoverOffset:6}]
   },options:{responsive:true,maintainAspectRatio:false,cutout:'45%',animation:{duration:1200},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},padding:6}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones`}}}},plugins:[{id:'finCenter',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 22px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-6);c.font='600 9px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Acciones',left+width/2,top+height/2+10);c.restore();}}]});
 }
 
@@ -5053,7 +5053,7 @@ function renderComparador(){
       {label:'Meta 2028',data:METAS_SEG.map(m=>m.m28),backgroundColor:'#f5921d99',borderColor:'#f5921d',borderWidth:1,borderRadius:4},
       {label:'Meta 2035',data:METAS_SEG.map(m=>m.m35),backgroundColor:'#2d9a4d99',borderColor:'#2d9a4d',borderWidth:1,borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:9,weight:'600'},maxRotation:45,minRotation:30}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0f2940',cornerRadius:8}}}});
+  },options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{display:false},ticks:{font:{size:9,weight:'600'},maxRotation:45,minRotation:30}},y:{grid:{color:getChartGridColor()},ticks:{font:{size:11}}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
 // ── PIRAMIDE DEMOGRAFICA ──
@@ -5071,7 +5071,7 @@ function renderPiramideDem(){
       {label:'Hombres',data:PIRAMIDE_DATA.hombres.map(v=>-v),backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4,borderSkipped:false},
       {label:'Mujeres',data:PIRAMIDE_DATA.mujeres,backgroundColor:'#db277788',borderColor:'#db2777',borderWidth:1,borderRadius:4,borderSkipped:false}
     ]
-  },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>Math.abs(v).toLocaleString('es-CL')},title:{display:true,text:'Población',font:{size:11}}},y:{grid:{display:false},position:'center',ticks:{font:{size:11,weight:'700'},z:1}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label+': '+Math.abs(ctx.raw).toLocaleString('es-CL')}}}}});
+  },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{x:{grid:{color:getChartGridColor()},ticks:{callback:v=>Math.abs(v).toLocaleString('es-CL')},title:{display:true,text:'Población',font:{size:11}}},y:{grid:{display:false},position:'center',ticks:{font:{size:11,weight:'700'},z:1}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>ctx.dataset.label+': '+Math.abs(ctx.raw).toLocaleString('es-CL')}}}}});
 }
 
 // ── TREEMAP PRESUPUESTARIO ──
@@ -5534,6 +5534,11 @@ function toggleDark(){
     if(chart.options.plugins&&chart.options.plugins.legend&&chart.options.plugins.legend.labels){
       chart.options.plugins.legend.labels.color=getChartTextColor();
     }
+    // Update donut/pie borderColor for theme
+    const cardColor=getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff';
+    if(chart.config.type==='doughnut'||chart.config.type==='pie'){
+      chart.data.datasets.forEach(ds=>{if(ds.borderColor)ds.borderColor=cardColor;});
+    }
     chart.update('none');
   });
 }
@@ -5547,7 +5552,7 @@ function animateCounters(){
       if(e.isIntersecting){
         nums.forEach((el,i)=>{
           const target = targets[i];
-          if(target.includes('/')){ el.textContent=target; return; }
+          if(target.includes('/')||target.includes('%')){ el.textContent=target; return; }
           const end = parseInt(target.replace(/\./g,''));
           const duration = 1500;
           const start = performance.now();
@@ -5557,6 +5562,7 @@ function animateCounters(){
             const current = Math.floor(eased * end);
             el.textContent = current.toLocaleString('es-CL');
             if(progress < 1) requestAnimationFrame(step);
+            else el.textContent = target; // restaurar formato original
           };
           requestAnimationFrame(step);
         });
@@ -5664,7 +5670,7 @@ function renderCensoKPI(){
 }
 
 function renderCensoUR(){
-  new Chart(document.getElementById('chartCensoUR'),{type:'doughnut',data:{labels:['Urbano ('+CENSO_2024.pct_urbano+'%)','Rural ('+CENSO_2024.pct_rural+'%)'],datasets:[{data:[CENSO_2024.urbano,CENSO_2024.rural],backgroundColor:['#1a3d8f','#2d9a4d'],borderWidth:2,borderColor:'var(--card)'}]},options:{responsive:true,maintainAspectRatio:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:12,weight:'bold'},padding:16}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toLocaleString('es-CL')+' hab'}}}}});
+  new Chart(document.getElementById('chartCensoUR'),{type:'doughnut',data:{labels:['Urbano ('+CENSO_2024.pct_urbano+'%)','Rural ('+CENSO_2024.pct_rural+'%)'],datasets:[{data:[CENSO_2024.urbano,CENSO_2024.rural],backgroundColor:['#1a3d8f','#2d9a4d'],borderWidth:2,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff'}]},options:{responsive:true,maintainAspectRatio:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:12,weight:'bold'},padding:16}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toLocaleString('es-CL')+' hab'}}}}});
 }
 
 function renderCensoPiramide(){
@@ -5691,7 +5697,7 @@ function renderCensoMigra(){
 
 function renderCensoViv(){
   const cv=CENSO_VIVIENDA;
-  new Chart(document.getElementById('chartCensoViv'),{type:'doughnut',data:{labels:cv.map(v=>v.tipo+' ('+v.pct+'%)'),datasets:[{data:cv.map(v=>v.n),backgroundColor:['#1a3d8f','#2d9a4d','#f59e0b','#94a3b8'],borderWidth:2,borderColor:'var(--card)'}]},options:{responsive:true,maintainAspectRatio:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'bold'},padding:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toLocaleString('es-CL')+' viviendas'}}}}});
+  new Chart(document.getElementById('chartCensoViv'),{type:'doughnut',data:{labels:cv.map(v=>v.tipo+' ('+v.pct+'%)'),datasets:[{data:cv.map(v=>v.n),backgroundColor:['#1a3d8f','#2d9a4d','#f59e0b','#94a3b8'],borderWidth:2,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff'}]},options:{responsive:true,maintainAspectRatio:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'bold'},padding:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toLocaleString('es-CL')+' viviendas'}}}}});
 }
 
 function renderCensoVivKPI(){
@@ -5894,6 +5900,9 @@ navLinks.forEach(a=>a.addEventListener('click',()=>{
 // ── INIT ──
 // Restore dark mode preference
 if(localStorage.getItem('pladeco-dark')==='1'){document.body.classList.add('dark');document.getElementById('btnDark').innerHTML='☀';}
+// Re-sync Chart.js defaults after dark mode restore
+Chart.defaults.color=getChartTextColor();
+Chart.defaults.borderColor=getChartGridColor();
 
 renderEjes();
 renderUV();
