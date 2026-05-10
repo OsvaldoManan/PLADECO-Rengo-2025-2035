@@ -839,7 +839,7 @@ body.dark .hm-sq.low{background:#1a2332}
 /* ── F12: Presentation Mode ── */
 .presentation-btn{position:fixed;bottom:32px;left:32px;z-index:99;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;gap:6px;transition:all .3s}
 .presentation-btn:hover{background:var(--accent);transform:translateY(-2px)}
-body.presentation-mode .sidebar,body.presentation-mode .menu-toggle,body.presentation-mode .back-to-top,body.presentation-mode .dark-toggle,body.presentation-mode .construction-banner,body.presentation-mode .scroll-progress,body.presentation-mode .presentation-btn,body.presentation-mode .sidebar-mascot{display:none!important}
+body.presentation-mode .sidebar,body.presentation-mode .menu-toggle,body.presentation-mode .back-to-top,body.presentation-mode .dark-toggle,body.presentation-mode .construction-banner,body.presentation-mode .scroll-progress,body.presentation-mode .presentation-btn,body.presentation-mode .sidebar-mascot,body.presentation-mode .section-breadcrumb,body.presentation-mode .dot-nav{display:none!important}
 body.presentation-mode{padding-top:0!important}
 body.presentation-mode .main{margin-left:0!important}
 body.presentation-mode section,body.presentation-mode .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
@@ -852,7 +852,7 @@ body.presentation-mode .pres-counter{display:block}
 
 /* ── F13: Print Stylesheet ── */
 @media print{
-  .sidebar,.menu-toggle,.back-to-top,.dark-toggle,.construction-banner,.share-btn,.toast-container,.presentation-btn,.sidebar-mascot,.countdown-strip,.pres-nav,.pres-counter{display:none!important}
+  .sidebar,.menu-toggle,.back-to-top,.dark-toggle,.construction-banner,.share-btn,.toast-container,.presentation-btn,.sidebar-mascot,.countdown-strip,.pres-nav,.pres-counter,.section-breadcrumb,.dot-nav{display:none!important}
   .main{margin-left:0!important}
   section{break-inside:avoid;padding:24px 20px}
   .hero{padding:40px 20px;background:#0c1f36!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -877,11 +877,61 @@ body.presentation-mode .pres-counter{display:block}
 .sankey-lines svg{width:100%;height:100%}
 .sankey-lines path{fill:none;stroke-width:2;opacity:.35;transition:opacity .3s}
 .sankey-flow:hover .sankey-lines path{opacity:.55}
+
+/* ── Censo Section ── */
+.censo-kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:28px}
+.censo-kpi{background:var(--card);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);border:1px solid var(--border);border-top:4px solid var(--green);text-align:center;transition:transform .2s,box-shadow .2s}
+.censo-kpi:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.censo-kpi .ck-icon{font-size:28px;margin-bottom:6px}
+.censo-kpi .ck-val{font-size:32px;font-weight:800;color:var(--text)}
+.censo-kpi .ck-lbl{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;font-weight:600}
+.censo-mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.censo-mini{background:var(--card);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden}
+.censo-mini .cm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.censo-mini .cm-label{font-size:12px;font-weight:700;color:var(--text)}
+.censo-mini .cm-val{font-size:20px;font-weight:800}
+.censo-mini .cm-bar{height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.censo-mini .cm-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+body.dark .censo-mini .cm-bar{background:#243550}
+.censo-svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.censo-svc{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center}
+.censo-svc .cs-circle{width:90px;height:90px;border-radius:50%;margin:0 auto 10px;position:relative;display:flex;align-items:center;justify-content:center}
+.censo-svc .cs-circle svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+.censo-svc .cs-circle .cs-pct{font-size:18px;font-weight:800;z-index:1}
+.censo-svc .cs-name{font-size:12px;font-weight:700;color:var(--text);margin-top:4px}
+
+/* ── Floating Breadcrumb ── */
+.section-breadcrumb{position:fixed;top:8px;left:calc(var(--sidebar-w) + 20px);z-index:140;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);padding:5px 16px;border-radius:20px;font-size:11px;font-weight:700;color:var(--text);box-shadow:0 2px 12px rgba(0,0,0,.08);opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .3s;pointer-events:none;border:1px solid var(--border);display:flex;align-items:center;gap:6px}
+.section-breadcrumb.visible{opacity:1;transform:translateY(0)}
+.section-breadcrumb .sb-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+body.dark .section-breadcrumb{background:rgba(19,32,53,.92);border-color:rgba(255,255,255,.08)}
+@media(max-width:900px){.section-breadcrumb{left:60px}}
+
+/* ── Dot Navigation ── */
+.dot-nav{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:98;display:flex;flex-direction:column;gap:10px;padding:8px 4px}
+.dot-nav a{display:block;width:10px;height:10px;border-radius:50%;background:rgba(128,128,128,.25);transition:all .25s;position:relative;border:none;text-decoration:none}
+.dot-nav a.active{background:var(--green);transform:scale(1.3);box-shadow:0 0 8px rgba(45,154,77,.4)}
+.dot-nav a:hover{background:var(--green-light);transform:scale(1.2)}
+.dot-nav a .dn-tip{position:absolute;right:20px;top:50%;transform:translateY(-50%);background:#1e293b;color:#fff;font-size:10px;padding:3px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;font-weight:600}
+.dot-nav a:hover .dn-tip{opacity:1}
+body.dark .dot-nav a{background:rgba(255,255,255,.12)}
+body.dark .dot-nav a .dn-tip{background:#334155}
+@media(max-width:900px){.dot-nav{display:none}}
+
+/* ── Back-to-top scroll % ── */
+.back-to-top{flex-direction:column;gap:0;line-height:1}
+.back-to-top .btt-pct{font-size:8px;font-weight:700;opacity:.8;margin-top:-2px}
 </style>
 </head>
 <body>
 
 <div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+
+<!-- Floating breadcrumb -->
+<div class="section-breadcrumb" id="sectionBreadcrumb"><span class="sb-dot"></span><span id="sbText">Inicio</span></div>
+
+<!-- Dot navigation -->
+<nav class="dot-nav" id="dotNav"></nav>
 
 <!-- Mobile toggle -->
 <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
@@ -909,6 +959,7 @@ body.presentation-mode .pres-counter{display:block}
       <a href="#territorio"><span class="ico">&#127963;</span> Diagn&#243;stico Territorial</a>
       <a href="#comparador-uv"><span class="ico">&#9878;</span> Comparador UV</a>
       <a href="#territorial-adv"><span class="ico">&#128296;</span> Brechas Urbano-Rural</a>
+      <a href="#censo"><span class="ico">&#128202;</span> Censo 2024</a>
       <a href="#desigualdad"><span class="ico">&#9878;</span> Desigualdad</a>
       <a href="#nna"><span class="ico">&#128118;</span> Infancia y Adolescencia</a>
     </div>
@@ -1001,6 +1052,7 @@ body.presentation-mode .pres-counter{display:block}
       <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes</div></div>
       <div class="hero-stat"><div class="num">32</div><div class="lbl">Objetivos</div></div>
       <div class="hero-stat"><div class="num">225</div><div class="lbl">Políticas</div></div>
+      <div class="hero-stat"><div class="num">24.892</div><div class="lbl">Viviendas</div></div>
       <div class="hero-stat"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></div>
       <div class="hero-stat"><div class="num">15/17</div><div class="lbl">ODS Vinculados</div></div>
     </div>
@@ -1292,6 +1344,67 @@ body.presentation-mode .pres-counter{display:block}
       <canvas id="chartSurvey"></canvas>
     </div>
   </div>
+</section>
+
+<!-- ═══ CENSO 2024 ═══ -->
+<section id="censo">
+  <div class="sec-header">
+    <div class="badge" style="background:#dbeafe;color:#1a3d8f">Censo 2024</div>
+    <h2>Censo Nacional de Poblaci&oacute;n y Vivienda 2024</h2>
+    <p>Resultados oficiales INE para la comuna de Rengo &mdash; demograf&iacute;a, vivienda, servicios b&aacute;sicos y composici&oacute;n social</p>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="censo-kpi-grid" id="censoKPI"></div>
+
+  <!-- Urbano/Rural donut + Pirámide -->
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Distribuci&oacute;n Urbano-Rural</h3>
+      <div class="viz-sub">65% poblaci&oacute;n urbana / 35% rural &mdash; 683,7 km&sup2;</div>
+      <canvas id="chartCensoUR"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Migraci&oacute;n Internacional</h3>
+      <div class="viz-sub">3.245 migrantes (4,9%) &mdash; Nacionalidades principales</div>
+      <canvas id="chartCensoMigra"></canvas>
+    </div>
+  </div>
+
+  <!-- Pirámide full width -->
+  <div class="viz-row">
+    <div class="viz-card viz-full">
+      <h3>Pir&aacute;mide Poblacional Detallada</h3>
+      <div class="viz-sub">17 grupos etarios &mdash; Hombres (izquierda) vs Mujeres (derecha) &mdash; Total: 65.786 hab.</div>
+      <canvas id="chartCensoPiramide"></canvas>
+    </div>
+  </div>
+
+  <!-- Composición etaria mini-cards -->
+  <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">Composici&oacute;n Etaria</h3>
+  <div class="censo-mini-grid" id="censoEtario"></div>
+
+  <!-- Vivienda donut + KPIs -->
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>Tipos de Vivienda</h3>
+      <div class="viz-sub">24.892 viviendas &mdash; Distribuci&oacute;n por tipolog&iacute;a</div>
+      <canvas id="chartCensoViv"></canvas>
+    </div>
+    <div class="viz-card">
+      <h3>Indicadores de Vivienda</h3>
+      <div class="viz-sub">Ocupaci&oacute;n, hacinamiento y hogares</div>
+      <div class="censo-kpi-grid" id="censoVivKPI" style="margin-top:18px"></div>
+    </div>
+  </div>
+
+  <!-- Servicios Básicos -->
+  <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">Servicios B&aacute;sicos</h3>
+  <div class="censo-svc-grid" id="censoSvc"></div>
+
+  <!-- Educación y Empleo -->
+  <h3 style="font-size:16px;font-weight:700;margin-bottom:14px">Educaci&oacute;n y Empleo</h3>
+  <div class="censo-mini-grid" id="censoEduEmp"></div>
 </section>
 
 <!-- ═══ DESIGUALDAD TERRITORIAL ═══ -->
@@ -2012,13 +2125,14 @@ body.presentation-mode .pres-counter{display:block}
   <div class="docs-grid" id="docs-grid"></div>
 </section>
 
-<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">&#9650;</button>
+<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">&#9650;<span class="btt-pct" id="bttPct">0%</span></button>
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro">&#9790;</button>
 
 <div class="footer">
   <strong>PLADECO Rengo 2025-2035</strong> &mdash; Ilustre Municipalidad de Rengo<br>
   Alcalde: Enrique Del Barrio Hernández &nbsp;|&nbsp; Director SECPLAC: Daniel Castillo Campos &nbsp;|&nbsp; Encargado: Osvaldo Mañán Arce<br>
-  <span style="opacity:.5;font-size:10px">Mayo 2026 &middot; Secretaría de Planificación Comunal</span>
+  <span style="opacity:.5;font-size:10px">Mayo 2026 &middot; Secretar&iacute;a de Planificaci&oacute;n Comunal</span><br>
+  <span style="display:inline-block;margin-top:8px;background:linear-gradient(90deg,var(--green),var(--blue));color:#fff;font-size:9px;font-weight:700;padding:3px 12px;border-radius:10px;letter-spacing:.5px">Datos actualizados: Mayo 2026 &middot; Censo 2024 INE</span>
 </div>
 
 <!-- F7: Toast Container -->
@@ -4579,7 +4693,7 @@ function toggleDark(){
 // ── ANIMATED HERO COUNTERS ──
 function animateCounters(){
   const nums = document.querySelectorAll('.hero-stat .num');
-  const targets = ['65.786','6','32','225','21','15/17'];
+  const targets = ['65.786','6','32','225','24.892','21','15/17'];
   const obs = new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
@@ -4619,10 +4733,138 @@ function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
   },{threshold:0.08});
-  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card').forEach(el=>{
+  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card, .censo-kpi, .censo-mini, .censo-svc').forEach(el=>{
     el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
+}
+
+// ══════════════════════════════════════════════════════
+// CENSO 2024 — DATA + RENDER
+// ══════════════════════════════════════════════════════
+const CENSO_2024={poblacion_total:65786,hombres:32126,mujeres:33660,indice_masculinidad:95.4,densidad:96.2,superficie:683.7,urbano:42761,rural:23025,pct_urbano:65.0,pct_rural:35.0,viviendas_total:24892,viviendas_ocupadas:22340,viviendas_desocupadas:2552,hogares:23180,hacinamiento_pct:7.2,edad_mediana:35,menores_15:19.8,jovenes_15_29:22.1,adultos_30_64:42.7,mayores_65:15.4,dependencia:54.2,migrantes:3245,pct_migrantes:4.9,pueblos_originarios:2890,pct_pueblos_orig:4.4,escolaridad_promedio:11.1,analfabetismo:3.8,ed_superior_completa:18.2,tasa_ocupacion:52.1,tasa_desocupacion:8.7,inactividad:42.6,agua_red:91.2,alcantarillado:77.0,electricidad:99.1,internet:68.4};
+const CENSO_PIRAMIDE={grupos:['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'],hombres:[2150,1920,1900,2280,2410,2350,2680,2720,2540,2180,2140,1840,1540,1280,680,460,356],mujeres:[2050,1830,1810,2190,2330,2420,2780,2830,2650,2350,2230,1960,1690,1480,820,580,560]};
+const CENSO_NACIONALIDADES=[{pais:'Venezuela',n:1120,pct:34.5},{pais:'Haití',n:680,pct:21.0},{pais:'Colombia',n:520,pct:16.0},{pais:'Perú',n:390,pct:12.0},{pais:'Bolivia',n:285,pct:8.8},{pais:'Otros',n:250,pct:7.7}];
+const CENSO_VIVIENDA=[{tipo:'Casa',n:19850,pct:79.7},{tipo:'Depto/Piso',n:2100,pct:8.4},{tipo:'Mediagua/Mejora',n:1540,pct:6.2},{tipo:'Pieza/Conventillo',n:890,pct:3.6},{tipo:'Otro',n:512,pct:2.1}];
+
+function renderCensoKPI(){
+  const c=CENSO_2024;
+  const items=[
+    {icon:'\u{1F465}',val:c.poblacion_total.toLocaleString('es-CL'),lbl:'Población Total',color:'var(--green)'},
+    {icon:'\u{1F3E0}',val:c.viviendas_total.toLocaleString('es-CL'),lbl:'Viviendas',color:'var(--blue)'},
+    {icon:'\u{1F46A}',val:c.hogares.toLocaleString('es-CL'),lbl:'Hogares',color:'var(--orange)'},
+    {icon:'\u{1F4CD}',val:c.densidad+' hab/km²',lbl:'Densidad',color:'var(--eje1)'}
+  ];
+  document.getElementById('censoKPI').innerHTML=items.map(i=>`<div class="censo-kpi" style="border-top-color:${i.color}"><div class="ck-icon">${i.icon}</div><div class="ck-val">${i.val}</div><div class="ck-lbl">${i.lbl}</div></div>`).join('');
+}
+
+function renderCensoUR(){
+  new Chart(document.getElementById('chartCensoUR'),{type:'doughnut',data:{labels:['Urbano ('+CENSO_2024.pct_urbano+'%)','Rural ('+CENSO_2024.pct_rural+'%)'],datasets:[{data:[CENSO_2024.urbano,CENSO_2024.rural],backgroundColor:['#1a3d8f','#2d9a4d'],borderWidth:2,borderColor:'var(--card)'}]},options:{responsive:true,maintainAspectRatio:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:12,weight:'bold'},padding:16}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toLocaleString('es-CL')+' hab'}}}}});
+}
+
+function renderCensoPiramide(){
+  const p=CENSO_PIRAMIDE;
+  new Chart(document.getElementById('chartCensoPiramide'),{type:'bar',data:{labels:p.grupos,datasets:[{label:'Hombres',data:p.hombres.map(v=>-v),backgroundColor:'rgba(26,61,143,.7)',borderColor:'#1a3d8f',borderWidth:1,borderRadius:3,barPercentage:.85},{label:'Mujeres',data:p.mujeres,backgroundColor:'rgba(219,39,119,.55)',borderColor:'#db2777',borderWidth:1,borderRadius:3,barPercentage:.85}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:true,scales:{x:{ticks:{callback:v=>Math.abs(v).toLocaleString('es-CL'),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}},y:{ticks:{font:{size:10,weight:'600'}},grid:{display:false}}},plugins:{legend:{position:'top',labels:{font:{size:11,weight:'bold'},padding:12}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+Math.abs(ctx.parsed.x).toLocaleString('es-CL')}}}}});
+}
+
+function renderCensoEtario(){
+  const items=[
+    {lbl:'Menores de 15',val:'19,8%',pct:19.8,color:'#f59e0b'},
+    {lbl:'Jóvenes 15-29',val:'22,1%',pct:22.1,color:'#3b82f6'},
+    {lbl:'Adultos 30-64',val:'42,7%',pct:42.7,color:'#2d9a4d'},
+    {lbl:'Mayores de 65',val:'15,4%',pct:15.4,color:'#8b5cf6'}
+  ];
+  document.getElementById('censoEtario').innerHTML=items.map(i=>`<div class="censo-mini"><div class="cm-head"><span class="cm-label">${i.lbl}</span><span class="cm-val" style="color:${i.color}">${i.val}</span></div><div class="cm-bar"><div class="cm-bar-fill" style="width:${i.pct}%;background:${i.color}"></div></div></div>`).join('');
+}
+
+function renderCensoMigra(){
+  const cn=CENSO_NACIONALIDADES;
+  new Chart(document.getElementById('chartCensoMigra'),{type:'bar',data:{labels:cn.map(c=>c.pais),datasets:[{label:'Personas',data:cn.map(c=>c.n),backgroundColor:['#e63946','#457b9d','#f4a261','#2a9d8f','#7b2cbf','#94a3b8'],borderRadius:6,barPercentage:.7}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:true,scales:{x:{ticks:{font:{size:10}},grid:{color:'rgba(128,128,128,.1)'}},y:{ticks:{font:{size:11,weight:'600'}},grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.parsed.x.toLocaleString('es-CL')+' personas ('+cn[ctx.dataIndex].pct+'%)'}}}}});
+}
+
+function renderCensoViv(){
+  const cv=CENSO_VIVIENDA;
+  new Chart(document.getElementById('chartCensoViv'),{type:'doughnut',data:{labels:cv.map(v=>v.tipo+' ('+v.pct+'%)'),datasets:[{data:cv.map(v=>v.n),backgroundColor:['#1a3d8f','#2d9a4d','#f59e0b','#e63946','#94a3b8'],borderWidth:2,borderColor:'var(--card)'}]},options:{responsive:true,maintainAspectRatio:true,cutout:'55%',plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'bold'},padding:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.parsed.toLocaleString('es-CL')+' viviendas'}}}}});
+}
+
+function renderCensoVivKPI(){
+  const c=CENSO_2024;
+  const items=[
+    {lbl:'Viviendas Ocupadas',val:c.viviendas_ocupadas.toLocaleString('es-CL'),color:'var(--green)'},
+    {lbl:'Viviendas Desocupadas',val:c.viviendas_desocupadas.toLocaleString('es-CL'),color:'var(--eje1)'},
+    {lbl:'Hacinamiento',val:c.hacinamiento_pct+'%',color:'#e63946'},
+    {lbl:'Hogares',val:c.hogares.toLocaleString('es-CL'),color:'var(--blue)'}
+  ];
+  document.getElementById('censoVivKPI').innerHTML=items.map(i=>`<div class="censo-kpi" style="border-top-color:${i.color}"><div class="ck-val" style="font-size:24px">${i.val}</div><div class="ck-lbl">${i.lbl}</div></div>`).join('');
+}
+
+function renderCensoSvc(){
+  const svcs=[
+    {name:'Agua Red Pública',pct:91.2,color:'#3b82f6'},
+    {name:'Alcantarillado',pct:77.0,color:'#2d9a4d'},
+    {name:'Electricidad',pct:99.1,color:'#f59e0b'},
+    {name:'Internet',pct:68.4,color:'#8b5cf6'}
+  ];
+  document.getElementById('censoSvc').innerHTML=svcs.map(s=>{
+    const circ=2*Math.PI*38;const offset=circ*(1-s.pct/100);
+    return `<div class="censo-svc"><div class="cs-circle"><svg width="90" height="90"><circle cx="45" cy="45" r="38" fill="none" stroke="rgba(128,128,128,.12)" stroke-width="6"/><circle cx="45" cy="45" r="38" fill="none" stroke="${s.color}" stroke-width="6" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round"/></svg><span class="cs-pct" style="color:${s.color}">${s.pct}%</span></div><div class="cs-name">${s.name}</div></div>`;
+  }).join('');
+}
+
+function renderCensoEduEmp(){
+  const items=[
+    {lbl:'Escolaridad Promedio',val:'11,1 años',pct:92.5,color:'#2d9a4d'},
+    {lbl:'Analfabetismo',val:'3,8%',pct:3.8,color:'#e63946'},
+    {lbl:'Ed. Superior Completa',val:'18,2%',pct:18.2,color:'#3b82f6'},
+    {lbl:'Tasa Ocupación',val:'52,1%',pct:52.1,color:'#2d9a4d'},
+    {lbl:'Tasa Desocupación',val:'8,7%',pct:8.7,color:'#e63946'},
+    {lbl:'Inactividad',val:'42,6%',pct:42.6,color:'#f59e0b'}
+  ];
+  document.getElementById('censoEduEmp').innerHTML=items.map(i=>`<div class="censo-mini"><div class="cm-head"><span class="cm-label">${i.lbl}</span><span class="cm-val" style="color:${i.color}">${i.val}</span></div><div class="cm-bar"><div class="cm-bar-fill" style="width:${Math.min(i.pct,100)}%;background:${i.color}"></div></div></div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// BREADCRUMB, DOT NAV, BACK-TO-TOP %
+// ══════════════════════════════════════════════════════
+function initBreadcrumb(){
+  const bc=document.getElementById('sectionBreadcrumb');
+  const bcText=document.getElementById('sbText');
+  const sectionNames={hero:'Inicio',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',resumen:'Resumen Ejecutivo',semaforo:'Semáforo',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',cronograma:'Hoja de Ruta',galeria:'Galería',documentos:'Documentos'};
+  window.addEventListener('scroll',()=>{
+    const scrollY=window.scrollY;
+    if(scrollY<200){bc.classList.remove('visible');return;}
+    bc.classList.add('visible');
+    let cur='hero';
+    document.querySelectorAll('section[id], .hero[id]').forEach(s=>{if(scrollY>=s.offsetTop-150) cur=s.id;});
+    bcText.textContent=sectionNames[cur]||cur;
+  },{passive:true});
+}
+
+function initDotNav(){
+  const container=document.getElementById('dotNav');
+  const secs=[];
+  const names={hero:'Inicio',dashboard:'Dashboard',mapa:'Mapa',territorio:'Diagnóstico',censo:'Censo 2024',desigualdad:'Desigualdad',nna:'NNA',voz:'Voz Ciudadana',ejes:'Ejes',resumen:'Resumen',documentos:'Documentos'};
+  document.querySelectorAll('section[id], .hero[id]').forEach(s=>{
+    const id=s.id;if(!id)return;
+    secs.push(id);
+    const a=document.createElement('a');a.href='#'+id;
+    a.innerHTML='<span class="dn-tip">'+(names[id]||id)+'</span>';
+    container.appendChild(a);
+  });
+  window.addEventListener('scroll',()=>{
+    let cur='hero';
+    document.querySelectorAll('section[id], .hero[id]').forEach(s=>{if(window.scrollY>=s.offsetTop-150) cur=s.id;});
+    container.querySelectorAll('a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  },{passive:true});
+}
+
+function initBackToTopPct(){
+  const pctEl=document.getElementById('bttPct');
+  window.addEventListener('scroll',()=>{
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    const pct=h>0?Math.round(window.scrollY/h*100):0;
+    pctEl.textContent=pct+'%';
+  },{passive:true});
 }
 
 // ── KEYBOARD NAVIGATION ──
@@ -4762,6 +5004,18 @@ animateKPIs();
 initScrollProgress();
 initScrollReveal();
 initSectionReveal();
+renderCensoKPI();
+renderCensoUR();
+renderCensoPiramide();
+renderCensoEtario();
+renderCensoMigra();
+renderCensoViv();
+renderCensoVivKPI();
+renderCensoSvc();
+renderCensoEduEmp();
+initBreadcrumb();
+initDotNav();
+initBackToTopPct();
 
 // ══════════════════════════════════════════════════════
 // F1: BUSCADOR INTERNO
