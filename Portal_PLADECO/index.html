@@ -7,11 +7,14 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1a1a2e">
+<meta name="theme-color" content="#0c1f36">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <meta property="og:title" content="PLADECO Rengo 2025-2035">
 <meta property="og:description" content="Plan de Desarrollo Comunal — 6 ejes, 225 políticas, 65.786 habitantes">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/">
+<meta property="og:image" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/Portal_PLADECO/propuesta_4_banner_contigo_rengo_transparente.png">
+<link rel="icon" type="image/svg+xml" href="escudo-rengo.svg">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
@@ -25,7 +28,7 @@
   --green:#2d9a4d;--green-light:#48c76e;--orange:#f5921d;--orange-light:#fdb94d;
   --blue:#1a3d8f;--blue-light:#2d5dcc;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
 
 /* ── Sidebar ── */
@@ -921,34 +924,76 @@ body.dark .dot-nav a .dn-tip{background:#334155}
 /* ── Back-to-top scroll % ── */
 .back-to-top{flex-direction:column;gap:0;line-height:1}
 .back-to-top .btt-pct{font-size:8px;font-weight:700;opacity:.8;margin-top:-2px}
+
+/* ── Skip Link (Accessibility) ── */
+.skip-link{position:absolute;top:-40px;left:0;background:var(--accent);color:#fff;padding:10px 20px;z-index:9999;font-size:14px;font-weight:700;border-radius:0 0 8px 0;transition:top .3s}
+.skip-link:focus{top:0}
+
+/* ── Skeleton Loading ── */
+.viz-card.loading{min-height:300px;position:relative}
+.viz-card.loading::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,0,0,.04),transparent);animation:shimmer 1.5s infinite;border-radius:var(--radius)}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+/* ── Custom Scrollbar Main ── */
+.main{scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.main::-webkit-scrollbar-thumb:hover{background:var(--text2)}
+
+/* ── Focus Styles (Accessibility) ── */
+:focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+
+/* ── Prefers Reduced Motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* ── Mobile Touch Targets ── */
+@media(max-width:900px){
+  .eje-tab,.ana-tab,.map-ctrl-btn,.com-f-btn,.foda-controls .fbtn,.ethno-tab{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hero-stat{min-width:unset;padding:14px 16px}
+  .section-breadcrumb{font-size:10px;padding:4px 12px}
+}
+
+/* ── Table of Contents (Resumen) ── */
+.toc-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;counter-reset:toc}
+@media(max-width:900px){.toc-list{grid-template-columns:1fr}}
+.toc-list li{counter-increment:toc}
+.toc-list li a{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text);font-size:13px;font-weight:600;transition:all .2s;box-shadow:var(--shadow)}
+.toc-list li a:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.toc-list li a::before{content:counter(toc);display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;flex-shrink:0}
+.toc-list li a .toc-desc{font-size:10px;color:var(--text2);font-weight:400;margin-top:2px}
 </style>
 </head>
 <body>
+<a href="#dashboard" class="skip-link" tabindex="0">Saltar al contenido</a>
 
-<div class="scroll-progress"><div class="scroll-progress-bar" id="scrollBar"></div></div>
+<div class="scroll-progress" role="progressbar" aria-label="Progreso de lectura"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 
 <!-- Floating breadcrumb -->
 <div class="section-breadcrumb" id="sectionBreadcrumb"><span class="sb-dot"></span><span id="sbText">Inicio</span></div>
 
 <!-- Dot navigation -->
-<nav class="dot-nav" id="dotNav"></nav>
+<nav class="dot-nav" id="dotNav" aria-label="Navegación rápida por secciones"></nav>
 
 <!-- Mobile toggle -->
-<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
+<button class="menu-toggle" aria-label="Abrir menú de navegación" onclick="document.querySelector('.sidebar').classList.toggle('open')">&#9776;</button>
 
 <!-- Sidebar -->
-<nav class="sidebar">
+<nav class="sidebar" role="navigation" aria-label="Navegación principal">
   <div class="sidebar-brand">
-    <img src="propuesta_1_logo_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna" class="sidebar-logo-contigo">
+    <img src="propuesta_1_logo_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna" class="sidebar-logo-contigo" decoding="async">
   </div>
   <div class="sidebar-brand-sub">
-    <img src="escudo-rengo-blanco.svg" alt="Escudo" width="18" height="30">
+    <img src="escudo-rengo-blanco.svg" alt="Escudo" width="18" height="30" decoding="async">
     <div class="sidebar-brand-text">
       <h2>PLADECO Rengo</h2>
       <p>2025 &#8212; 2035</p>
     </div>
   </div>
-  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)"></div>
+  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal"></div>
   <div class="sidebar-nav">
     <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
     <a href="#dashboard"><span class="ico">&#128202;</span> Dashboard</a>
@@ -998,7 +1043,7 @@ body.dark .dot-nav a .dn-tip{background:#334155}
     </div>
   </div>
   <div class="sidebar-mascot">
-    <img src="propuesta_1_logo_contigo_rengo_transparente.png" alt="Robot Contigo Rengo" class="mascot-img">
+    <img src="propuesta_1_logo_contigo_rengo_transparente.png" alt="Robot Contigo Rengo" class="mascot-img" decoding="async">
     <div class="mascot-bubble">&#161;Exploremos juntos!</div>
   </div>
   <div class="sidebar-progress">
@@ -1014,11 +1059,11 @@ body.dark .dot-nav a .dn-tip{background:#334155}
   <div class="cb-row">
     <div class="cb-logo-left">
       <div class="cb-escudo-pill">
-        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo">
+        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" decoding="async">
         <span>Ilustre<br>Municipalidad<br>de Rengo</span>
       </div>
       <div class="cb-contigo-pill">
-        <img src="propuesta_4_banner_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna">
+        <img src="propuesta_4_banner_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna" decoding="async">
       </div>
     </div>
     <div class="cb-center">
@@ -1035,15 +1080,15 @@ body.dark .dot-nav a .dn-tip{background:#334155}
   </div>
 </div>
 
-<div class="main">
+<div class="main" role="main">
 
 <!-- ═══ HERO ═══ -->
-<div class="hero" id="hero">
+<div class="hero" id="hero" role="banner">
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-content">
-    <img src="propuesta_4_banner_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo">
+    <img src="propuesta_4_banner_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo" decoding="async">
     <div class="hero-brand">&#127963;&#65039; Ilustre Municipalidad de Rengo</div>
     <h1>Plan de Desarrollo Comunal<br><span>Rengo 2025 — 2035</span></h1>
     <p class="sub">Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes.</p>
@@ -2029,6 +2074,24 @@ body.dark .dot-nav a .dn-tip{background:#334155}
     <h2>Resumen Ejecutivo PLADECO</h2>
     <p>Cifras clave del Plan de Desarrollo Comunal en una mirada</p>
   </div>
+  <!-- Table of Contents -->
+  <div style="margin-bottom:28px">
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:14px">&#128204; Índice de Secciones</h3>
+    <ol class="toc-list">
+      <li><a href="#dashboard"><span>Dashboard</span><span class="toc-desc">Indicadores clave y KPIs</span></a></li>
+      <li><a href="#mapa"><span>Mapa Territorial</span><span class="toc-desc">Georreferenciación comunal</span></a></li>
+      <li><a href="#territorio"><span>Diagnóstico Territorial</span><span class="toc-desc">21 unidades vecinales</span></a></li>
+      <li><a href="#censo"><span>Censo 2024</span><span class="toc-desc">Datos demográficos actualizados</span></a></li>
+      <li><a href="#voz"><span>Voz Ciudadana</span><span class="toc-desc">Encuestas y participación</span></a></li>
+      <li><a href="#foda"><span>FODA</span><span class="toc-desc">Análisis estratégico institucional</span></a></li>
+      <li><a href="#ejes"><span>6 Ejes Estratégicos</span><span class="toc-desc">225 políticas públicas</span></a></li>
+      <li><a href="#gestion"><span>Gestión PLADECO</span><span class="toc-desc">Modernización municipal</span></a></li>
+      <li><a href="#semaforo"><span>Semáforo de Metas</span><span class="toc-desc">Seguimiento indicadores</span></a></li>
+      <li><a href="#financiamiento"><span>Financiamiento</span><span class="toc-desc">Presupuesto y fuentes</span></a></li>
+      <li><a href="#cronograma"><span>Hoja de Ruta</span><span class="toc-desc">Timeline 2025-2035</span></a></li>
+      <li><a href="#documentos"><span>Documentos</span><span class="toc-desc">Descargas y reportes</span></a></li>
+    </ol>
+  </div>
   <div class="resumen-hero">
     <div class="rh-grid" id="resumenGrid"></div>
   </div>
@@ -2125,8 +2188,8 @@ body.dark .dot-nav a .dn-tip{background:#334155}
   <div class="docs-grid" id="docs-grid"></div>
 </section>
 
-<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba">&#9650;<span class="btt-pct" id="bttPct">0%</span></button>
-<button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro">&#9790;</button>
+<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver al inicio de la página">&#9650;<span class="btt-pct" id="bttPct">0%</span></button>
+<button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 
 <div class="footer">
   <strong>PLADECO Rengo 2025-2035</strong> &mdash; Ilustre Municipalidad de Rengo<br>
@@ -2138,8 +2201,8 @@ body.dark .dot-nav a .dn-tip{background:#334155}
 <!-- F7: Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 <!-- F12: Presentation Mode -->
-<button class="presentation-btn" id="presBtn" onclick="togglePresentation()">&#9654; Presentar</button>
-<div class="pres-nav"><button onclick="presNav(-1)">&#9664;</button><button onclick="presNav(1)">&#9654;</button><button onclick="togglePresentation()">ESC</button></div>
+<button class="presentation-btn" id="presBtn" onclick="togglePresentation()" aria-label="Activar modo presentación">&#9654; Presentar</button>
+<div class="pres-nav"><button onclick="presNav(-1)" aria-label="Diapositiva anterior">&#9664;</button><button onclick="presNav(1)" aria-label="Diapositiva siguiente">&#9654;</button><button onclick="togglePresentation()" aria-label="Salir de presentación">ESC</button></div>
 <div class="pres-counter" id="presCounter"></div>
 
 </div><!-- /main -->
@@ -5376,6 +5439,135 @@ renderHeatmapCal();
 initParallax();
 initFiltrosCruzados();
 renderSankeyFlow();
+
+// ══════════════════════════════════════════════════════
+// SAFE CHART WRAPPER (Error Boundary)
+// ══════════════════════════════════════════════════════
+function safeChart(id, config) {
+  try {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    return new Chart(el, config);
+  } catch(e) {
+    console.warn('Chart error ['+id+']:', e.message);
+    return null;
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// LAZY LOADING CHARTS (IntersectionObserver)
+// ══════════════════════════════════════════════════════
+const lazyChartObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const canvas = entry.target;
+      const renderFn = canvas._lazyRender;
+      if (renderFn) {
+        try { renderFn(); } catch(e) { console.warn('Lazy chart error:', e.message); }
+        delete canvas._lazyRender;
+      }
+      // Remove skeleton loading class from parent viz-card
+      const vizCard = canvas.closest('.viz-card');
+      if (vizCard) vizCard.classList.remove('loading');
+      observer.unobserve(canvas);
+    }
+  });
+}, { rootMargin: '200px' });
+
+function lazyChart(canvasId, renderFn) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const vizCard = canvas.closest('.viz-card');
+  if (vizCard) vizCard.classList.add('loading');
+  canvas._lazyRender = renderFn;
+  lazyChartObserver.observe(canvas);
+}
+
+// ══════════════════════════════════════════════════════
+// DEBOUNCED SCROLL (Performance)
+// ══════════════════════════════════════════════════════
+(function initDebouncedScroll(){
+  let scrollTicking = false;
+  const scrollHandlers = [];
+  window._addScrollHandler = function(fn){ scrollHandlers.push(fn); };
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      requestAnimationFrame(() => {
+        scrollHandlers.forEach(fn => { try { fn(); } catch(e){} });
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, {passive: true});
+})();
+
+// ══════════════════════════════════════════════════════
+// SWIPE GESTURE (Presentation Mode - Mobile)
+// ══════════════════════════════════════════════════════
+(function initSwipeGestures(){
+  let touchStartX = 0, touchStartY = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, {passive: true});
+  document.addEventListener('touchend', e => {
+    if (!presActive) return;
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    const dy = e.changedTouches[0].screenY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0) presNav(1);
+      else presNav(-1);
+    }
+  }, {passive: true});
+})();
+
+// ══════════════════════════════════════════════════════
+// ACCESSIBILITY: aria-current on active sidebar link
+// ══════════════════════════════════════════════════════
+(function initAriaCurrent(){
+  const obs = new MutationObserver(() => {
+    document.querySelectorAll('.sidebar-nav a').forEach(a => {
+      if (a.classList.contains('active')) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  });
+  const nav = document.querySelector('.sidebar-nav');
+  if (nav) obs.observe(nav, {subtree: true, attributes: true, attributeFilter: ['class']});
+  // Initial set
+  document.querySelectorAll('.sidebar-nav a.active').forEach(a => a.setAttribute('aria-current', 'page'));
+})();
+
+// ══════════════════════════════════════════════════════
+// IMAGE LAZY LOADING (programmatic for dynamic images)
+// ══════════════════════════════════════════════════════
+(function initImageLazyLoad(){
+  document.querySelectorAll('img').forEach(img => {
+    if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+    // Don't lazy-load sidebar/hero images (above fold)
+    const inSidebar = img.closest('.sidebar');
+    const inHero = img.closest('.hero');
+    const inBanner = img.closest('.construction-banner');
+    if (!inSidebar && !inHero && !inBanner && !img.hasAttribute('loading')) {
+      img.setAttribute('loading', 'lazy');
+    }
+  });
+})();
+
+// ══════════════════════════════════════════════════════
+// CANVAS ARIA LABELS
+// ══════════════════════════════════════════════════════
+(function initCanvasAria(){
+  document.querySelectorAll('canvas').forEach(canvas => {
+    if (!canvas.getAttribute('aria-label')) {
+      const vizCard = canvas.closest('.viz-card');
+      if (vizCard) {
+        const h3 = vizCard.querySelector('h3');
+        if (h3) canvas.setAttribute('aria-label', 'Gráfico: ' + h3.textContent);
+      }
+      canvas.setAttribute('role', 'img');
+    }
+  });
+})();
 
 // ── SERVICE WORKER ──
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
