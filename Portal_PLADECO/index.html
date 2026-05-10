@@ -52,13 +52,16 @@ body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background
 .sidebar-nav a .ico{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;border-radius:5px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);transition:all .2s}
 .sidebar-nav a:hover .ico,.sidebar-nav a.active .ico{background:rgba(45,154,77,.2);color:var(--green-light)}
 /* ── Mascota sidebar ── */
-.sidebar-mascot{display:flex;flex-direction:column;align-items:center;padding:12px 16px 4px;position:relative}
+.sidebar-mascot{display:flex;flex-direction:column;align-items:center;padding:12px 16px 4px;position:relative;cursor:pointer}
+.sidebar-mascot:hover .mascot-cta{background:var(--green);color:#fff;border-color:var(--green)}
 .mascot-img{width:56px;height:56px;border-radius:0;background:none;padding:0;box-shadow:none;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.25));animation:mascotFloat 3s ease-in-out infinite;cursor:pointer;transition:transform .2s}
 .mascot-img:hover{transform:scale(1.15);animation-play-state:paused}
 @keyframes mascotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.mascot-bubble{background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;margin-top:6px;position:relative;letter-spacing:.3px;opacity:.85;white-space:nowrap;animation:mascotBubble 4s ease-in-out infinite;cursor:pointer}
+.mascot-bubble{background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;margin-top:6px;position:relative;letter-spacing:.3px;opacity:.85;white-space:nowrap;cursor:pointer}
 .mascot-bubble::before{content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid var(--green)}
-@keyframes mascotBubble{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
+.mascot-cta{display:block;width:100%;margin-top:8px;padding:6px 12px;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:8px;color:rgba(255,255,255,.5);font-size:10px;font-weight:600;text-align:center;cursor:pointer;transition:all .3s;letter-spacing:.3px}
+.mascot-cta:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.mascot-cta .cta-icon{margin-right:4px;font-size:11px}
 /* ── Chatbot ── */
 .chatbot-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;opacity:0;pointer-events:none;transition:opacity .3s}
 .chatbot-overlay.open{opacity:1;pointer-events:auto}
@@ -700,8 +703,8 @@ body.dark .meta-card .mc-track{background:#334155}
 .plazo-pill .pp-name{font-size:13px;font-weight:700}
 
 /* ── Banner Institucional + En Construcción ── */
-.construction-banner{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25)}
-.construction-banner .cb-row{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px}
+.construction-banner{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden}
+.construction-banner .cb-row{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;position:relative}
 .construction-banner .cb-logo-left{display:flex;align-items:center;gap:14px;flex-shrink:0}
 .construction-banner .cb-logo-left .cb-escudo-pill{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:6px 14px 6px 8px}
 .construction-banner .cb-logo-left .cb-escudo-pill img{height:38px;width:auto}
@@ -709,9 +712,11 @@ body.dark .meta-card .mc-track{background:#334155}
 .construction-banner .cb-contigo-pill{background:none;border-radius:0;padding:0;box-shadow:none;display:flex;align-items:center}
 .construction-banner .cb-contigo-pill img{height:46px;width:auto;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25))}
 .construction-banner .cb-center{flex:1;text-align:center}
-.construction-banner .cb-construction{background:repeating-linear-gradient(45deg,#f5921d,#f5921d 12px,#0c1f36 12px,#0c1f36 24px);display:inline-flex;align-items:center;gap:8px;padding:8px 22px;border-radius:8px;font-size:14px;font-weight:900;color:#0c1f36;letter-spacing:2px;text-transform:uppercase;box-shadow:0 3px 14px rgba(245,146,29,.3);animation:constructPulse 3s ease-in-out infinite}
-.construction-banner .cb-construction .cb-txt{background:#f5921d;padding:3px 10px;border-radius:4px;color:#fff;font-size:12px;font-weight:800}
-@keyframes constructPulse{0%,100%{box-shadow:0 3px 14px rgba(245,146,29,.3)}50%{box-shadow:0 3px 22px rgba(245,146,29,.5)}}
+/* ── Cinta diagonal profesional ── */
+.cb-ribbon{position:absolute;top:-4px;right:-40px;background:var(--orange);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:6px 50px;transform:rotate(25deg);box-shadow:0 3px 12px rgba(245,146,29,.35);z-index:2;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.2)}
+.cb-ribbon::before,.cb-ribbon::after{content:'';position:absolute;top:100%;border:4px solid transparent}
+.cb-ribbon::before{left:0;border-top-color:#b36a10;border-right-color:#b36a10}
+.cb-ribbon::after{right:0;border-top-color:#b36a10;border-left-color:#b36a10}
 .construction-banner .cb-logo-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .construction-banner .cb-pladeco-pill{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 16px}
 .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:16px;font-weight:900;letter-spacing:.5px;color:#fff}
@@ -724,7 +729,7 @@ body{padding-top:62px}
   .construction-banner .cb-escudo-pill span{display:none}
   .construction-banner .cb-escudo-pill img{height:28px}
   .construction-banner .cb-contigo-pill img{height:28px}
-  .construction-banner .cb-construction{font-size:10px;padding:5px 12px}
+  .cb-ribbon{font-size:8px;padding:4px 40px;right:-44px;top:-6px}
   .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:12px}
   body{padding-top:40px}
 }
@@ -1442,7 +1447,8 @@ section{position:relative}
   </div>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente">
     <img src="propuesta_1_logo_contigo_rengo_transparente.png" alt="Robot Contigo Rengo" class="mascot-img" decoding="async">
-    <div class="mascot-bubble">&#128172; Datos clave de Rengo</div>
+    <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
+    <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
   </div>
 
 <!-- ═══ CHATBOT PANEL ═══ -->
@@ -1484,9 +1490,7 @@ section{position:relative}
         <img src="propuesta_4_banner_contigo_rengo_transparente.png" alt="Contigo Rengo Mejor Comuna" decoding="async">
       </div>
     </div>
-    <div class="cb-center">
-      <div class="cb-construction">&#128295; <span class="cb-txt">En Construcci&#243;n</span> &#128679;</div>
-    </div>
+    <div class="cb-ribbon">&#9881; En Construcci&#243;n</div>
     <div class="cb-logo-right">
       <div class="cb-pladeco-pill">
         <div>
