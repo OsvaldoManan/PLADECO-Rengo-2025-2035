@@ -1,4 +1,4 @@
-const CACHE='pladeco-v9.2';
+const CACHE='pladeco-v9.3';
 const ASSETS=[
   './',
   './index.html',
