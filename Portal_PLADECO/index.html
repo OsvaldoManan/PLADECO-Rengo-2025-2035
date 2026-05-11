@@ -122,15 +122,15 @@ section{padding:48px 40px;max-width:1440px;margin:0 auto}
 canvas{display:block;background:var(--card);border-radius:6px}
 
 /* ── Hero ── */
-.hero{background:linear-gradient(135deg,#081626 0%,var(--primary) 30%,#142d5a 60%,var(--primary-light) 100%);color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-30%;right:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(45,154,77,.1) 0%,transparent 70%);animation:heroPulse 6s ease-in-out infinite}
-.hero::after{content:'';position:absolute;bottom:-20%;left:-5%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(245,146,29,.08) 0%,transparent 70%);animation:heroPulse 8s ease-in-out 2s infinite}
-@keyframes heroPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:.7}}
-.hero-orb{position:absolute;border-radius:50%;pointer-events:none}
-.hero-orb-1{width:180px;height:180px;top:15%;left:8%;background:radial-gradient(circle,rgba(45,154,77,.07),transparent 70%);animation:heroFloat 7s ease-in-out infinite}
-.hero-orb-2{width:120px;height:120px;bottom:20%;right:12%;background:radial-gradient(circle,rgba(245,146,29,.06),transparent 70%);animation:heroFloat 5s ease-in-out 1s infinite}
-.hero-orb-3{width:80px;height:80px;top:60%;left:25%;background:radial-gradient(circle,rgba(41,128,185,.08),transparent 70%);animation:heroFloat 9s ease-in-out 3s infinite}
-.hero-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
+.hero{background:var(--primary);color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:url('Fondo.png') center/cover no-repeat;filter:blur(6px) saturate(.7);opacity:.18;transform:scale(1.08);pointer-events:none;z-index:0}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,22,38,.85) 0%,rgba(12,31,54,.7) 40%,rgba(20,45,90,.65) 70%,rgba(26,61,143,.8) 100%);z-index:0;pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--primary),transparent);z-index:0;pointer-events:none}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:0}
+.hero-orb-1{width:180px;height:180px;top:15%;left:8%;background:radial-gradient(circle,rgba(45,154,77,.1),transparent 70%);animation:heroFloat 7s ease-in-out infinite}
+.hero-orb-2{width:120px;height:120px;bottom:20%;right:12%;background:radial-gradient(circle,rgba(245,146,29,.08),transparent 70%);animation:heroFloat 5s ease-in-out 1s infinite}
+.hero-orb-3{width:80px;height:80px;top:60%;left:25%;background:radial-gradient(circle,rgba(41,128,185,.1),transparent 70%);animation:heroFloat 9s ease-in-out 3s infinite}
+.hero-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
 .hero-content{position:relative;z-index:1;max-width:900px;margin:0 auto}
 .hero h1{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px}
 .hero h1 span{background:linear-gradient(90deg,#48c76e,#f5921d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -984,6 +984,7 @@ body.presentation-mode .pres-counter{display:block}
   .main{margin-left:0!important}
   section{break-inside:avoid;padding:24px 20px}
   .hero{padding:40px 20px;background:#0c1f36!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .hero-bg{display:none!important}
   .kpi-grid{grid-template-columns:repeat(3,1fr)}
   .viz-row{grid-template-columns:1fr}
   canvas{max-height:300px!important}
@@ -1535,6 +1536,7 @@ section{position:relative}
 
 <!-- ═══ HERO ═══ -->
 <div class="hero" id="hero" role="banner">
+  <div class="hero-bg"></div>
   <div class="hero-dots"></div>
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
