@@ -3617,7 +3617,13 @@ function renderMap(){
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution:'&copy; OpenStreetMap',maxZoom:18
   }).addTo(mapInstance);
-  // Add legend
+  /* Fit to all localidades */
+  const allBounds=UV_DATA.filter(u=>u.lat&&u.lng).map(u=>[parseFloat(u.lat),parseFloat(u.lng)]);
+  if(allBounds.length>0) mapInstance.fitBounds(allBounds,{padding:[25,25],maxZoom:13});
+  /* Labels for main locations */
+  UV_DATA.filter(u=>u.pob>=2500).forEach(u=>{
+    L.marker([parseFloat(u.lat),parseFloat(u.lng)],{icon:L.divIcon({className:'map-label',html:'<span style="font-size:9px;font-weight:700;color:#1a3d8f;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+u.name+'</span>',iconSize:[0,0],iconAnchor:[0,-14]})}).addTo(mapInstance);
+  });
   const legend = L.control({position:'bottomright'});
   legend.onAdd = function(){
     const div = L.DomUtil.create('div','map-legend');
@@ -6580,7 +6586,7 @@ function renderCensoHeatmap(){
 function renderCensoMapaVuln(){
   var el=document.getElementById('mapCensoVuln');
   if(!el||typeof L==='undefined') return;
-  var map=L.map('mapCensoVuln',{scrollWheelZoom:false}).setView([-34.39,-70.855],11);
+  var map=L.map('mapCensoVuln',{scrollWheelZoom:false}).setView([-34.39,-70.855],12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:18}).addTo(map);
   function icpColor(v){
     if(v<0.22) return '#22c55e';
@@ -6588,15 +6594,21 @@ function renderCensoMapaVuln(){
     if(v<0.32) return '#f97316';
     return '#dc2626';
   }
+  var bounds=[];
   CENSO_LOCALIDADES_GEO.forEach(function(d){
-    var r=Math.max(Math.sqrt(d.pob)*12,200);
-    L.circle([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:icpColor(d.icp),weight:1.5,opacity:.8,fillOpacity:.45}).addTo(map).bindPopup('<strong>'+d.loc+'</strong><br>Población: '+d.pob.toLocaleString('es-CL')+'<br>ICP: '+d.icp.toFixed(3)+'<br>Área: '+d.area);
+    var r=Math.max(Math.sqrt(d.pob)*3.5,180);
+    bounds.push([d.lat,d.lng]);
+    L.circle([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:2,opacity:.9,fillOpacity:.65}).addTo(map).bindPopup('<div style="min-width:160px"><strong style="font-size:13px">'+d.loc+'</strong><hr style="margin:4px 0;border-color:rgba(0,0,0,.1)"><table style="font-size:11px;width:100%"><tr><td>Poblaci&oacute;n</td><td style="text-align:right;font-weight:700">'+d.pob.toLocaleString('es-CL')+'</td></tr><tr><td>ICP</td><td style="text-align:right;font-weight:700;color:'+icpColor(d.icp)+'">'+d.icp.toFixed(3)+'</td></tr><tr><td>&Aacute;rea</td><td style="text-align:right">'+d.area+'</td></tr></table></div>');
+    if(d.pob>=500){
+      L.marker([d.lat,d.lng],{icon:L.divIcon({className:'map-label',html:'<span style="font-size:9px;font-weight:700;color:#1a3d8f;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+d.loc+'</span>',iconSize:[0,0],iconAnchor:[0,-12]})}).addTo(map);
+    }
   });
+  if(bounds.length>0) map.fitBounds(bounds,{padding:[30,30],maxZoom:13});
   var legend=L.control({position:'bottomright'});
   legend.onAdd=function(){
     var div=L.DomUtil.create('div','info legend');
-    div.style.cssText='background:rgba(255,255,255,.92);padding:8px 12px;border-radius:8px;font-size:11px;line-height:1.6;box-shadow:0 2px 8px rgba(0,0,0,.15)';
-    div.innerHTML='<strong>ICP Vulnerabilidad</strong><br><span style="display:inline-block;width:12px;height:12px;background:#22c55e;border-radius:50%;vertical-align:middle"></span> &lt;0.22 Bajo<br><span style="display:inline-block;width:12px;height:12px;background:#eab308;border-radius:50%;vertical-align:middle"></span> 0.22-0.28 Medio<br><span style="display:inline-block;width:12px;height:12px;background:#f97316;border-radius:50%;vertical-align:middle"></span> 0.28-0.32 Alto<br><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;vertical-align:middle"></span> &gt;0.32 Crítico';
+    div.style.cssText='background:rgba(255,255,255,.95);padding:10px 14px;border-radius:10px;font-size:11px;line-height:1.8;box-shadow:0 2px 12px rgba(0,0,0,.18);border:1px solid rgba(0,0,0,.08)';
+    div.innerHTML='<strong style="font-size:12px">ICP Vulnerabilidad</strong><br><span style="display:inline-block;width:12px;height:12px;background:#22c55e;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &lt;0.22 Bajo<br><span style="display:inline-block;width:12px;height:12px;background:#eab308;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.22-0.28 Medio<br><span style="display:inline-block;width:12px;height:12px;background:#f97316;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.28-0.32 Alto<br><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &gt;0.32 Cr&iacute;tico<br><hr style="margin:4px 0;border-color:rgba(0,0,0,.1)"><span style="font-size:9px;color:#666">Tama&ntilde;o = poblaci&oacute;n</span>';
     return div;
   };
   legend.addTo(map);
