@@ -89,8 +89,8 @@ body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 /* ── Chatbot ── */
 .chatbot-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;opacity:0;pointer-events:none;transition:opacity .3s}
 .chatbot-overlay.open{opacity:1;pointer-events:auto}
-.chatbot-panel{position:fixed;bottom:20px;right:20px;width:380px;max-width:calc(100vw - 40px);height:520px;max-height:calc(100vh - 80px);background:var(--card);border-radius:18px;box-shadow:0 12px 48px rgba(0,0,0,.25);z-index:9999;display:flex;flex-direction:column;transform:translateY(20px) scale(.95);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.4,0,.2,1);overflow:hidden;border:1px solid var(--border)}
-.chatbot-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
+.chatbot-panel{position:fixed;top:50%;left:50%;width:420px;max-width:calc(100vw - 40px);height:560px;max-height:calc(100vh - 80px);background:var(--card);border-radius:18px;box-shadow:0 16px 56px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.12);z-index:9999;display:flex;flex-direction:column;transform:translate(-50%,-50%) scale(.9);opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden;border:1px solid var(--border)}
+.chatbot-panel.open{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
 .chatbot-header{display:flex;align-items:center;gap:10px;padding:14px 18px;background:linear-gradient(135deg,var(--blue),#1a5c3a);color:#fff;flex-shrink:0}
 .chatbot-header img{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);padding:3px;object-fit:contain}
 .chatbot-header-info{flex:1}
@@ -124,7 +124,7 @@ body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 .typing-dots span:nth-child(2){animation-delay:.2s}
 .typing-dots span:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
-@media(max-width:900px){.chatbot-panel{bottom:0;right:0;width:100%;max-width:100%;height:100vh;max-height:100vh;border-radius:0}}
+@media(max-width:900px){.chatbot-panel{top:0;left:0;width:100%;max-width:100%;height:100vh;max-height:100vh;border-radius:0;transform:translate(0,0) scale(.95)}.chatbot-panel.open{transform:translate(0,0) scale(1)}}
 
 .sidebar-progress{padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)}
 .sidebar-progress-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:6px}
@@ -376,7 +376,7 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .gauge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
 .gauge{text-align:center;background:var(--card,#fff);border-radius:14px;padding:18px 10px 14px;border:1px solid rgba(128,128,128,.1);transition:transform .25s,box-shadow .25s}
 .gauge:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.gauge svg{width:130px;height:78px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.08))}
+.gauge svg{width:140px;height:82px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.08))}
 .gauge .g-label{font-size:11px;font-weight:700;margin-top:6px;color:var(--text);letter-spacing:.3px}
 .gauge .g-eje{font-size:9px;font-weight:600;margin-top:3px;padding:2px 8px;border-radius:20px;display:inline-block}
 .gauge .g-value{font-size:18px;font-weight:800}
@@ -4091,17 +4091,41 @@ function renderGauges(){
     const eId=ejeMap[idx]||6;
     const needle=endAngle;
     const nx=cx+32*Math.cos(needle), ny=cy-32*Math.sin(needle);
+    /* Build tick marks */
+    let ticks='';
+    for(let t=0;t<=100;t+=5){
+      const ta=Math.PI*(1-t/100);
+      const isMajor=t%25===0;
+      const isThresh=t===33||t===66;
+      const len=isMajor?7:isThresh?6:3.5;
+      const tColor=isThresh?'rgba(128,128,128,.5)':isMajor?'var(--text2,#94a3b8)':'rgba(128,128,128,.25)';
+      const tw=isThresh?1.2:isMajor?1:.6;
+      const ri=r-len, ro=r+len;
+      ticks+=`<line x1="${(cx+ri*Math.cos(ta)).toFixed(1)}" y1="${(cy-ri*Math.sin(ta)).toFixed(1)}" x2="${(cx+ro*Math.cos(ta)).toFixed(1)}" y2="${(cy-ro*Math.sin(ta)).toFixed(1)}" stroke="${tColor}" stroke-width="${tw}"/>`;
+    }
+    /* Labels at 0% and 100% */
+    ticks+=`<text x="${cx-r-9}" y="${cy+4}" text-anchor="middle" font-size="5.5" fill="var(--text2,#94a3b8)" opacity=".6">0</text>`;
+    ticks+=`<text x="${cx+r+9}" y="${cy+4}" text-anchor="middle" font-size="5.5" fill="var(--text2,#94a3b8)" opacity=".6">100</text>`;
+    /* Zone colors on track */
+    const z33=Math.PI*(1-33/100), z66=Math.PI*(1-66/100);
+    const z33x=cx+r*Math.cos(z33), z33y=cy-r*Math.sin(z33);
+    const z66x=cx+r*Math.cos(z66), z66y=cy-r*Math.sin(z66);
     return `<div class="gauge"><svg viewBox="0 0 130 78">
-      <defs><linearGradient id="gg${idx}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${color}" stop-opacity=".2"/><stop offset="100%" stop-color="${color}"/></linearGradient></defs>
-      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="var(--border,#e0e4ea)" stroke-width="10" stroke-linecap="round" opacity=".5"/>
+      <defs><linearGradient id="gg${idx}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${color}" stop-opacity=".25"/><stop offset="100%" stop-color="${color}"/></linearGradient></defs>
+      <path d="M ${cx-r} ${cy} A ${r} ${r} 0 0 1 ${z33x.toFixed(1)} ${z33y.toFixed(1)}" fill="none" stroke="#ef4444" stroke-width="10" stroke-linecap="round" opacity=".1"/>
+      <path d="M ${z33x.toFixed(1)} ${z33y.toFixed(1)} A ${r} ${r} 0 0 1 ${z66x.toFixed(1)} ${z66y.toFixed(1)}" fill="none" stroke="#f59e0b" stroke-width="10" opacity=".1"/>
+      <path d="M ${z66x.toFixed(1)} ${z66y.toFixed(1)} A ${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="#22c55e" stroke-width="10" stroke-linecap="round" opacity=".1"/>
+      ${ticks}
       ${pct>0?`<path d="M ${cx-r} ${cy} A ${r} ${r} 0 ${large} 1 ${arcX.toFixed(1)} ${arcY.toFixed(1)}" fill="none" stroke="url(#gg${idx})" stroke-width="10" stroke-linecap="round">
         <animate attributeName="stroke-dasharray" from="0 300" to="${(pct/100*Math.PI*r).toFixed(0)} 300" dur="1.2s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1"/>
       </path>`:''}
-      <circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="3.5" fill="${color}" opacity=".9">
+      <line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="${color}" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+      <circle cx="${cx}" cy="${cy}" r="3" fill="${color}" opacity=".8"/>
+      <circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="3" fill="${color}" opacity=".9">
         <animate attributeName="opacity" values="1;.5;1" dur="2s" repeatCount="indefinite"/>
       </circle>
-      <text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="17" font-weight="800" fill="${color}">${pct.toFixed(0)}%</text>
-      <text x="${cx}" y="${cy+9}" text-anchor="middle" font-size="7.5" font-weight="600" fill="var(--text2,#94a3b8)">${m.dec?'↓ Reducir':'↑ Aumentar'}</text>
+      <text x="${cx}" y="${cy-8}" text-anchor="middle" font-size="17" font-weight="800" fill="${color}">${pct.toFixed(0)}%</text>
+      <text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="7" font-weight="600" fill="var(--text2,#94a3b8)">${m.dec?'↓ Reducir':'↑ Aumentar'}</text>
     </svg><div class="g-label">${m.n}</div><div class="g-eje" style="background:${ejeCl[eId]}18;color:${ejeCl[eId]}">Eje ${eId}: ${ejeNm[eId]}</div></div>`;
   }).join('');
 }
