@@ -1155,6 +1155,23 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
   .compromisos-resumen .comp-stat{min-width:80px;padding:8px 10px;font-size:11px}
 }
 
+/* ── Encuesta Ciudadana CTA ── */
+.encuesta-cta{background:linear-gradient(135deg,#0a1929 0%,var(--primary) 40%,#1a3d8f 100%);border-radius:16px;padding:32px;color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;gap:32px}
+.encuesta-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 50%,rgba(45,154,77,.1),transparent 60%);pointer-events:none}
+.encuesta-cta-content{flex:1;position:relative;z-index:1}
+.encuesta-cta-badge{display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;background:rgba(45,154,77,.2);color:var(--green-light);margin-bottom:12px;border:1px solid rgba(45,154,77,.25)}
+.encuesta-cta-badge .pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--green-light);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+.encuesta-cta h3{font-size:20px;font-weight:800;margin-bottom:6px;line-height:1.3}
+.encuesta-cta h3 span{color:var(--green-light)}
+.encuesta-cta p{font-size:12.5px;opacity:.65;line-height:1.6;max-width:500px;margin-bottom:16px}
+.encuesta-cta-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:var(--green);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;box-shadow:0 4px 16px rgba(45,154,77,.35)}
+.encuesta-cta-btn:hover{background:var(--green-light);transform:translateY(-2px);box-shadow:0 6px 24px rgba(45,154,77,.45)}
+.encuesta-qr{position:relative;z-index:1;flex-shrink:0;text-align:center}
+.encuesta-qr img{width:140px;height:140px;border-radius:12px;background:#fff;padding:8px;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.encuesta-qr-label{font-size:9px;opacity:.4;margin-top:6px;letter-spacing:.5px}
+@media(max-width:700px){.encuesta-cta{flex-direction:column;text-align:center;gap:20px;padding:24px 20px}.encuesta-cta p{max-width:none}.encuesta-qr img{width:120px;height:120px}}
+
 /* ── Portal CTA final ── */
 .portal-cta{background:linear-gradient(135deg,var(--primary) 0%,#17376a 50%,var(--primary-light) 100%);border-radius:16px;padding:36px 32px;color:#fff;text-align:center;position:relative;overflow:hidden}
 .portal-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(45,154,77,.12),transparent 60%);pointer-events:none}
@@ -1423,6 +1440,7 @@ section{position:relative}
   <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal"></div>
   <div class="sidebar-nav">
     <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
+    <a href="#encuesta"><span class="ico">&#128203;</span> Encuesta Ciudadana</a>
     <a href="#contexto"><span class="ico">&#128218;</span> Contexto PLADECO</a>
     <a href="#dashboard"><span class="ico">&#128202;</span> Dashboard</a>
 
@@ -1581,6 +1599,22 @@ section{position:relative}
   <div class="countdown-card"><div class="cd-days" id="cd2">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Evaluaci&#243;n 1&#170; Fase</div><div class="cd-date">Dic 2028</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar2"></div></div></div>
   <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3"></div></div></div>
 </div>
+
+<!-- ═══ ENCUESTA CIUDADANA ═══ -->
+<section id="encuesta" style="padding-top:28px;padding-bottom:12px">
+  <div class="encuesta-cta">
+    <div class="encuesta-cta-content">
+      <div class="encuesta-cta-badge"><span class="pulse-dot"></span> Encuesta activa</div>
+      <h3>Tu opini&#243;n construye <span>el Rengo que queremos</span></h3>
+      <p>Participa en la Encuesta Ciudadana PLADECO 2025&#8211;2035. Tus respuestas alimentan directamente el diagn&#243;stico y las pol&#237;ticas p&#250;blicas de la comuna. Solo toma 5 minutos.</p>
+      <a href="https://forms.gle/kZWhPKhUbS7F1XzC8" target="_blank" rel="noopener" class="encuesta-cta-btn">&#128203; Responder encuesta</a>
+    </div>
+    <div class="encuesta-qr">
+      <img src="qr-encuesta.png" alt="QR Encuesta PLADECO Rengo" loading="lazy" decoding="async">
+      <div class="encuesta-qr-label">Escanea con tu celular</div>
+    </div>
+  </div>
+</section>
 
 <!-- ═══ CONTEXTO INSTITUCIONAL ═══ -->
 <section id="contexto" class="reveal">
