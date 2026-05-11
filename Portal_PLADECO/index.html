@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PLADECO Rengo 2025-2035 | Portal Estratégico</title>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+<link rel="dns-prefetch" href="https://unpkg.com">
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="manifest" href="manifest.json">
@@ -920,6 +925,7 @@ body.dark .crono-tab.active{background:var(--accent);color:#fff;border-color:var
 .galeria-card:hover img{transform:scale(1.06)}
 .galeria-card .galeria-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;opacity:0;transition:opacity .3s}
 .galeria-card:hover .galeria-overlay{opacity:1}
+@media(hover:none){.galeria-card .galeria-overlay{opacity:1;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}}
 .galeria-card .galeria-overlay h4{font-size:12px;font-weight:700;margin:0}
 .galeria-card .galeria-overlay span{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
 .galeria-counter{text-align:center;margin-top:12px;font-size:13px;color:var(--text-secondary);font-weight:600}
@@ -1483,8 +1489,8 @@ section{position:relative}
 
 /* ── Viz card loading skeleton ── */
 .viz-card.loading canvas{visibility:hidden}
-.viz-card.loading::after{content:'';position:absolute;inset:60px 28px 32px;border-radius:8px;background:linear-gradient(90deg,var(--border) 25%,var(--bg) 50%,var(--border) 75%);background-size:200% 100%;animation:shimmer 1.5s ease-in-out infinite}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.viz-card.loading::after{content:'';position:absolute;inset:60px 28px 32px;border-radius:8px;background:linear-gradient(90deg,var(--border) 25%,var(--bg) 50%,var(--border) 75%);background-size:200% 100%;animation:shimmerBg 1.5s ease-in-out infinite}
+@keyframes shimmerBg{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* ── Hero stat counter flash ── */
 .hero-stat .num{transition:text-shadow .3s}
@@ -1542,7 +1548,7 @@ section{position:relative}
 }
 
 /* ── Performance: GPU hints ── */
-.sidebar,.construction-banner,.scroll-progress,.hero-orb,.hero-stat,.kpi{will-change:transform}
+.sidebar,.hero-orb{will-change:transform}
 .hero-orb,.mascot-img,.chatbot-fab{animation-play-state:running}
 @media(prefers-reduced-motion:reduce){.hero-orb,.mascot-img,.chatbot-fab{animation:none!important}}
 
@@ -1658,7 +1664,7 @@ section{position:relative}
 
     <div class="sidebar-group">
       <div class="sidebar-group-title">Proceso y Recursos</div>
-      <a href="#cronograma"><span class="ico">&#128197;</span> Proceso PLADECO</a>
+      <a href="#cronograma" onclick="setTimeout(function(){var t=document.querySelectorAll('.crono-tab');if(t[1])switchCronoTab(t[1],1);},300)"><span class="ico">&#128221;</span> Proceso PLADECO</a>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Documentos</a>
       <a href="#graficos-proceso"><span class="ico">&#128202;</span> Gr&#225;ficos</a>
@@ -3120,10 +3126,11 @@ section{position:relative}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v12.3</span>
+  <span class="ub-ver">v13.0</span>
   &#218;ltima actualizaci&#243;n: 11 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v13.0</strong> <span class="ub-date">11 May 2026</span><br>Auditor&#237;a operativa: fix chatbot m&#243;vil, error handling mapas/charts, b&#250;squeda mejorada, 10 bugs corregidos</div>
     <div class="ub-entry"><strong>v12.3</strong> <span class="ub-date">11 May 2026</span><br>Cronograma unificado con pesta&#241;as (Hoja de Ruta + Proceso), tooltip de gu&#237;a interactiva</div>
     <div class="ub-entry"><strong>v12.2</strong> <span class="ub-date">11 May 2026</span><br>Fuentes de informaci&#243;n en 31 secciones, hero glassmorphism, banner transparente</div>
     <div class="ub-entry"><strong>v12.0</strong> <span class="ub-date">11 May 2026</span><br>Nuevas im&#225;genes de marca Contigo Rengo (logo circular, banner, robot mascota)</div>
@@ -3653,7 +3660,8 @@ const RESUMEN_ITEMS=[
 // ── RENDER MAP ──
 let mapInstance, mapMarkers = [], currentMapLayer = 'pop';
 function renderMap(){
-  if(!document.getElementById('mapContainer')) return;
+  if(!document.getElementById('mapContainer')||typeof L==='undefined') return;
+  try{
   mapInstance = L.map('mapContainer').setView([-34.385, -70.855], 12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     attribution:'&copy; OpenStreetMap',maxZoom:18
@@ -3673,6 +3681,7 @@ function renderMap(){
   };
   legend.addTo(mapInstance);
   updateMapMarkers('pop');
+  }catch(e){console.warn('[PLADECO] Mapa principal error:',e.message);document.getElementById('mapContainer').innerHTML='<p style="padding:20px;color:var(--text2);text-align:center">⚠️ No se pudo cargar el mapa. Recarga la página.</p>';}
 }
 function updateMapMarkers(mode){
   mapMarkers.forEach(m=>mapInstance.removeLayer(m));
@@ -6636,6 +6645,7 @@ function renderCensoHeatmap(){
 function renderCensoMapaVuln(){
   var el=document.getElementById('mapCensoVuln');
   if(!el||typeof L==='undefined') return;
+  try{
   var map=L.map('mapCensoVuln',{scrollWheelZoom:false}).setView([-34.39,-70.855],12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:18}).addTo(map);
   function icpColor(v){
@@ -6662,6 +6672,7 @@ function renderCensoMapaVuln(){
     return div;
   };
   legend.addTo(map);
+  }catch(e){console.warn('[PLADECO] Mapa vulnerabilidad error:',e.message);el.innerHTML='<p style="padding:20px;color:var(--text2);text-align:center">⚠️ No se pudo cargar el mapa. Recarga la página.</p>';}
 }
 
 function renderCensoComposicion(){
@@ -6819,32 +6830,35 @@ animateCounters();animateKPIs();
 initScrollProgress();initScrollReveal();initSectionReveal();
 
 // TIER 2: Deferred — charts + visualizations (after first paint)
+// Safe wrapper to prevent one broken chart from killing the rest
+function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',fn.name||'anon',e.message);}}
 setTimeout(function(){
-  renderRadar();renderDonut();renderPlazos();renderInclusion();renderODS();
-  renderTreemap();renderGauges();renderPyramid();renderMap();
-  renderNNA();renderNNAAge();renderNNAPartic();renderSurveyChart();
-  renderInequality();renderBIPSector();renderIdentityChart();
-  renderFinancial();renderWaterfall();renderSeguridad();
-  renderRengoVsNac();renderTransparencia();renderMetasBar();
-  renderGrupos();renderLorenz();renderRadarEje();renderURCompare();
-  renderScatter();renderInvCap();renderBipDens();renderPobLocal();
-  renderODSHeatmap();renderODSMulti();renderODSGap();
-  renderTagCloud();renderWordCloud();renderSNA();
-  renderParticipStats();renderRatingGrid();renderPriorBars();
-  renderServicios();renderInfraChart();renderPriorComp();
-  renderEmergencia();renderSaludChart();renderParticDemo();renderFunnel();
-  renderFODAEntrev();renderPlazoEje();renderFinanc();renderInclusion2();
-  renderDeptos();renderSNAActors();renderCoresp();renderCentral();
-  renderConverg();renderMaturity();renderCrossLinks();renderERD();
-  renderOENet();renderDomainStats();renderDomainChart();renderCGRChart();
-  renderCapacity();renderSocCap();renderTensions();renderBrechas();
-  renderRiesgos();renderVulner();renderBench();renderRanking();
-  renderDemoProy();renderEtaria();renderCoher();renderCobertura();
-  renderGenero();renderGenEje();renderTablero();renderFreqAcc();
-  renderArgPeso();renderArgDim();renderAccEje();renderODSAcc();
-  renderBrechasMetas();renderProgresoEje();renderFinCards();renderFinEje();
-  renderPlazoFin();renderTreemapFin();renderPiramideDem();
-},50);
+  var t2=[renderRadar,renderDonut,renderPlazos,renderInclusion,renderODS,
+  renderTreemap,renderGauges,renderPyramid,renderMap,
+  renderNNA,renderNNAAge,renderNNAPartic,renderSurveyChart,
+  renderInequality,renderBIPSector,renderIdentityChart,
+  renderFinancial,renderWaterfall,renderSeguridad,
+  renderRengoVsNac,renderTransparencia,renderMetasBar,
+  renderGrupos,renderLorenz,renderRadarEje,renderURCompare,
+  renderScatter,renderInvCap,renderBipDens,renderPobLocal,
+  renderODSHeatmap,renderODSMulti,renderODSGap,
+  renderTagCloud,renderWordCloud,renderSNA,
+  renderParticipStats,renderRatingGrid,renderPriorBars,
+  renderServicios,renderInfraChart,renderPriorComp,
+  renderEmergencia,renderSaludChart,renderParticDemo,renderFunnel,
+  renderFODAEntrev,renderPlazoEje,renderFinanc,renderInclusion2,
+  renderDeptos,renderSNAActors,renderCoresp,renderCentral,
+  renderConverg,renderMaturity,renderCrossLinks,renderERD,
+  renderOENet,renderDomainStats,renderDomainChart,renderCGRChart,
+  renderCapacity,renderSocCap,renderTensions,renderBrechas,
+  renderRiesgos,renderVulner,renderBench,renderRanking,
+  renderDemoProy,renderEtaria,renderCoher,renderCobertura,
+  renderGenero,renderGenEje,renderTablero,renderFreqAcc,
+  renderArgPeso,renderArgDim,renderAccEje,renderODSAcc,
+  renderBrechasMetas,renderProgresoEje,renderFinCards,renderFinEje,
+  renderPlazoFin,renderTreemapFin,renderPiramideDem];
+  t2.forEach(_safeRun);
+},200);
 
 // TIER 3: Heavy deferred — Censo 2024 analytics (idle time)
 const _censoRenders=function(){
@@ -6945,19 +6959,26 @@ setTimeout(()=>{
 // ══════════════════════════════════════════════════════
 function filterSidebar(q){
   q=q.toLowerCase().trim();
+  if(q) q=stripAccents(q);
   const links=document.querySelectorAll('.sidebar-nav a');
   const groups=document.querySelectorAll('.sidebar-group');
   if(!q){links.forEach(a=>a.classList.remove('search-hidden'));groups.forEach(g=>g.style.display='');return;}
   links.forEach(a=>{
-    const text=a.textContent.toLowerCase();
+    const text=stripAccents(a.textContent.toLowerCase());
     const href=a.getAttribute('href')||'';
     const secId=href.replace('#','');
     const sec=document.getElementById(secId);
     let match=text.includes(q);
     if(!match&&sec){
-      const h2=sec.querySelector('h2');const h3=sec.querySelector('h3');
-      if(h2&&h2.textContent.toLowerCase().includes(q))match=true;
-      if(h3&&h3.textContent.toLowerCase().includes(q))match=true;
+      /* Search headings, subheadings, and first 500 chars of body text */
+      var heads=sec.querySelectorAll('h2,h3,h4,.viz-sub,.kpi-label,.gauge-label');
+      for(var i=0;i<heads.length;i++){
+        if(stripAccents(heads[i].textContent.toLowerCase()).includes(q)){match=true;break;}
+      }
+      if(!match){
+        var bodyText=stripAccents(sec.textContent.toLowerCase().substring(0,2000));
+        match=bodyText.includes(q);
+      }
     }
     a.classList.toggle('search-hidden',!match);
   });
@@ -7130,14 +7151,20 @@ function sendChatMessage(){
   showTypingIndicator();
   setTimeout(()=>{removeTypingIndicator();answerChat(q);},600+Math.random()*500);
 }
+function stripAccents(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'');}
 function answerChat(q){
-  const ql=q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const ql=stripAccents(q.toLowerCase().trim());
+  if(!ql){showSuggestions();return;}
   let best=null,bestScore=0;
   for(const qa of CHATBOT_QA){
     let score=0;
     for(const k of qa.keys){
-      const kn=k.normalize('NFD').replace(/[̀-ͯ]/g,'');
-      if(ql.includes(kn)) score+=kn.length;
+      const kn=stripAccents(k.toLowerCase());
+      /* exact word match bonus */
+      if(ql===kn) score+=kn.length*3;
+      else if(ql.includes(kn)) score+=kn.length;
+      /* partial word matching for short queries */
+      else if(kn.length>=4&&ql.split(/\s+/).some(w=>w.length>=3&&kn.includes(w))) score+=Math.floor(kn.length*0.5);
     }
     if(score>bestScore){bestScore=score;best=qa;}
   }
@@ -7148,7 +7175,7 @@ function answerChat(q){
   }
   showSuggestions();
 }
-document.getElementById('chatInput').addEventListener('keydown',function(e){if(e.key==='Enter')sendChatMessage();});
+/* duplicate keydown removed — see line 6798 */
 
 // ══════════════════════════════════════════════════════
 // F4/F16: COUNTDOWN + FLIP ANIMATION
