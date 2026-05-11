@@ -105,7 +105,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background
 .sidebar-progress{padding:14px 20px;border-top:1px solid rgba(255,255,255,.06)}
 .sidebar-progress-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:6px}
 .sidebar-progress-bar{height:5px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
-.sidebar-progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light),var(--orange));border-radius:4px;width:8%;transition:width 1.5s cubic-bezier(.4,0,.2,1);position:relative}
+.sidebar-progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light),var(--orange));border-radius:4px;width:0%;transition:width 1.5s cubic-bezier(.4,0,.2,1);position:relative}
 .sidebar-progress-fill::after{content:'';position:absolute;right:0;top:0;width:20px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4));border-radius:4px;animation:progressShine 2s ease-in-out infinite}
 @keyframes progressShine{0%,100%{opacity:0}50%{opacity:1}}
 .sidebar-progress-text{font-size:9px;opacity:.4;margin-top:5px;text-align:right;letter-spacing:.3px}
@@ -720,7 +720,8 @@ body.dark .meta-card .mc-track{background:#334155}
 .plazo-pill .pp-name{font-size:13px;font-weight:700}
 
 /* ── Banner Institucional + En Construcción ── */
-.construction-banner{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden}
+.construction-banner{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease}
+.construction-banner.dismissed{transform:translateY(-100%);opacity:0;pointer-events:none}
 .construction-banner .cb-row{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;position:relative}
 .construction-banner .cb-logo-left{display:flex;align-items:center;gap:14px;flex-shrink:0}
 .construction-banner .cb-logo-left .cb-escudo-pill{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:6px 14px 6px 8px}
@@ -907,6 +908,9 @@ body.dark .doc-card-enhanced .doc-btn:hover{background:var(--accent)}
 .countdown-card .cd-days.flip{opacity:0}
 .countdown-card .cd-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-top:4px}
 .countdown-card .cd-name{font-size:12px;font-weight:700;margin-top:8px;color:var(--green-light);letter-spacing:.3px}
+.countdown-card .cd-date{font-size:9px;opacity:.4;margin-top:2px;letter-spacing:.5px}
+.countdown-card .cd-bar{height:3px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:10px;overflow:hidden}
+.countdown-card .cd-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light));border-radius:3px;width:0%;transition:width 1.5s ease}
 
 /* ── F6: Share Button ── */
 .sec-header{position:relative}
@@ -1083,21 +1087,26 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
 .timeline-item.hito .tl-badge{background:#d1fae5;color:#059669}
 
 /* ── Equipo Técnico ── */
-.equipo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.equipo-card{background:var(--card);border-radius:var(--radius);padding:24px 18px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.equipo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.equipo-card{background:var(--card);border-radius:var(--radius);padding:24px 18px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.equipo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:var(--radius) var(--radius) 0 0}
 .equipo-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.12)}
-.equipo-card .eq-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--green));display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#fff;font-weight:800;box-shadow:0 4px 12px rgba(67,97,238,.3)}
-.equipo-card .eq-nombre{font-size:14px;font-weight:800;color:var(--text);margin-bottom:2px}
-.equipo-card .eq-cargo{font-size:11px;color:var(--text-secondary);font-weight:600}
-.equipo-card .eq-area{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:8px;background:#ede9fe;color:#7c3aed}
+.equipo-card .eq-avatar{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px;color:#fff;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.equipo-card .eq-nombre{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px}
+.equipo-card .eq-cargo{font-size:10.5px;color:var(--text-secondary);font-weight:600;line-height:1.4}
+.equipo-card .eq-area{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;margin-top:8px}
 
 /* ── Testimonios ── */
-.testimonios-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.testimonio-card{background:var(--card);border-radius:var(--radius);padding:24px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden}
-.testimonio-card::before{content:'\201C';position:absolute;top:10px;left:16px;font-size:60px;color:var(--blue);opacity:.15;font-family:Georgia,serif;line-height:1}
-.testimonio-card .test-texto{font-size:13px;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:14px;padding-left:8px;border-left:3px solid var(--blue);margin-left:4px}
-.testimonio-card .test-autor{font-size:12px;font-weight:700;color:var(--text)}
-.testimonio-card .test-origen{font-size:10px;color:var(--text-secondary);font-weight:600}
+.testimonios-grid{columns:3;column-gap:16px}
+@media(max-width:1100px){.testimonios-grid{columns:2}}
+.testimonio-card{background:var(--card);border-radius:var(--radius);padding:22px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;break-inside:avoid;margin-bottom:16px;display:inline-block;width:100%}
+.testimonio-card::before{content:'\201C';position:absolute;top:8px;right:14px;font-size:48px;opacity:.08;font-family:Georgia,serif;line-height:1;pointer-events:none}
+.testimonio-card .test-texto{font-size:12.5px;color:var(--text);line-height:1.65;font-style:italic;margin-bottom:14px}
+.testimonio-card .test-footer{display:flex;align-items:center;gap:10px}
+.testimonio-card .test-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.testimonio-card .test-meta{flex:1;min-width:0}
+.testimonio-card .test-autor{font-size:11.5px;font-weight:700;color:var(--text)}
+.testimonio-card .test-origen{font-size:9.5px;color:var(--text-secondary);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* ── Compromisos ── */
 .compromisos-list{display:flex;flex-direction:column;gap:12px}
@@ -1139,7 +1148,7 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
   .equipo-grid{grid-template-columns:1fr 1fr;gap:10px}
   .equipo-card{padding:16px 12px}
   .equipo-card .eq-avatar{width:48px;height:48px;font-size:20px}
-  .testimonios-grid{grid-template-columns:1fr;gap:12px}
+  .testimonios-grid{columns:1}
   .testimonio-card{padding:18px 14px}
   .contexto-pilares{grid-template-columns:1fr 1fr;gap:10px}
   .compromisos-resumen{gap:6px}
@@ -1183,6 +1192,10 @@ body.dark .contexto-header{background:linear-gradient(135deg,#0c0c1d 0%,#1a1a3e 
 body.dark .contexto-legal{background:rgba(67,97,238,.06);border-left-color:var(--blue)}
 body.dark .contexto-metodo-item{background:rgba(67,97,238,.06);border-color:var(--border)}
 body.dark .contexto-pilar{border-color:var(--border)}
+body.dark .hero-bg{opacity:.08;filter:blur(2px) saturate(.3)}
+body.dark .footer-brand strong{color:var(--text)}
+body.dark .footer-col h5{color:var(--text)}
+body.dark .footer-col kbd{background:rgba(255,255,255,.08)!important;color:var(--text2)}
 @media(max-width:900px){.section-breadcrumb{left:60px}}
 
 /* ── Dot Navigation ── */
@@ -1503,7 +1516,7 @@ section{position:relative}
   <div class="sidebar-progress">
     <div class="sidebar-progress-label">Avance PLADECO</div>
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
-    <div class="sidebar-progress-text">8% &#8212; Fase Diagn&#243;stica</div>
+    <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
   <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br>Versi&#243;n Mayo 2026</div>
 </nav>
@@ -1550,11 +1563,8 @@ section{position:relative}
     <p class="sub">Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes.</p>
     <div class="hero-stats">
       <div class="hero-stat"><div class="num">63.620</div><div class="lbl">Habitantes (Censo 2024)</div></div>
-      <div class="hero-stat"><div class="num">79,9%</div><div class="lbl">Urbano (50.823 hab)</div></div>
-      <div class="hero-stat"><div class="num">20,1%</div><div class="lbl">Rural (12.797 hab)</div></div>
-      <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes</div></div>
-      <div class="hero-stat"><div class="num">225</div><div class="lbl">Pol&iacute;ticas</div></div>
-      <div class="hero-stat"><div class="num">25.124</div><div class="lbl">Viviendas</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes Estrat&#233;gicos</div></div>
+      <div class="hero-stat"><div class="num">225</div><div class="lbl">Pol&#237;ticas P&#250;blicas</div></div>
       <div class="hero-stat"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></div>
       <div class="hero-stat"><div class="num">15/17</div><div class="lbl">ODS Vinculados</div></div>
     </div>
@@ -1567,9 +1577,9 @@ section{position:relative}
 
 <!-- ═══ COUNTDOWN STRIP (F4) ═══ -->
 <div class="countdown-strip" id="countdownStrip">
-  <div class="countdown-card"><div class="cd-days" id="cd1">--</div><div class="cd-label">días restantes</div><div class="cd-name">Aprobación CONCEJO</div></div>
-  <div class="countdown-card"><div class="cd-days" id="cd2">--</div><div class="cd-label">días restantes</div><div class="cd-name">Evaluación 1ª Fase</div></div>
-  <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">días restantes</div><div class="cd-name">Meta Final 2035</div></div>
+  <div class="countdown-card"><div class="cd-days" id="cd1">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Aprobaci&#243;n CONCEJO</div><div class="cd-date">Jun 2026</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar1"></div></div></div>
+  <div class="countdown-card"><div class="cd-days" id="cd2">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Evaluaci&#243;n 1&#170; Fase</div><div class="cd-date">Dic 2028</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar2"></div></div></div>
+  <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3"></div></div></div>
 </div>
 
 <!-- ═══ CONTEXTO INSTITUCIONAL ═══ -->
@@ -5389,18 +5399,19 @@ function renderEquipo(){
   const el=document.getElementById('equipoGrid');
   if(!el)return;
   const equipo=[
-    {nombre:'Enrique Del Barrio H.',cargo:'Alcalde de Rengo',area:'Autoridad',iniciales:'ED'},
-    {nombre:'Daniel Castillo C.',cargo:'Director SECPLAC',area:'Dirección',iniciales:'DC'},
-    {nombre:'Osvaldo Mañán A.',cargo:'Encargado PLADECO',area:'Coordinación',iniciales:'OM'},
-    {nombre:'Paula Ramírez M.',cargo:'Consultora',area:'Consultoría',iniciales:'PR'},
-    {nombre:'Direcciones Municipales',cargo:'SECPLAC · DIDECO · DOM',area:'Entrega de información',iniciales:'DM'}
+    {nombre:'Enrique Del Barrio H.',cargo:'Alcalde de Rengo',area:'Autoridad',iniciales:'ED',color:'#c0392b',areaBg:'#fee2e2',areaColor:'#dc2626'},
+    {nombre:'Daniel Castillo C.',cargo:'Director SECPLAC',area:'Dirección',iniciales:'DC',color:'#1a3d8f',areaBg:'#dbeafe',areaColor:'#2563eb'},
+    {nombre:'Osvaldo Mañán A.',cargo:'Encargado PLADECO',area:'Coordinación',iniciales:'OM',color:'#2d9a4d',areaBg:'#d1fae5',areaColor:'#059669'},
+    {nombre:'Paula Ramírez M.',cargo:'Consultora',area:'Consultoría',iniciales:'PR',color:'#7c3aed',areaBg:'#ede9fe',areaColor:'#7c3aed'},
+    {nombre:'Direcciones Municipales',cargo:'SECPLAC · DIDECO · DOM',area:'Información',iniciales:'DM',color:'#f5921d',areaBg:'#fef3c7',areaColor:'#d97706'}
   ];
   el.innerHTML=equipo.map(e=>`
-    <div class="equipo-card">
-      <div class="eq-avatar">${e.iniciales}</div>
+    <div class="equipo-card" style="border-top:none">
+      <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${e.color};border-radius:var(--radius) var(--radius) 0 0"></div>
+      <div class="eq-avatar" style="background:${e.color}">${e.iniciales}</div>
       <div class="eq-nombre">${e.nombre}</div>
       <div class="eq-cargo">${e.cargo}</div>
-      <span class="eq-area">${e.area}</span>
+      <span class="eq-area" style="background:${e.areaBg};color:${e.areaColor}">${e.area}</span>
     </div>`).join('');
 }
 
@@ -5426,12 +5437,17 @@ function renderTestimonios(){
     {texto:'Como concejal valoro este proceso porque por primera vez se construye un plan con datos reales y participación genuina.',autor:'Concejal/a municipal',origen:'Entrevista Autoridades'},
     {texto:'El emprendimiento femenino necesita apoyo real: ferias, capacitación, créditos blandos. No solo discursos.',autor:'Emprendedora local',origen:'UV Rosario — Mesa Económica'}
   ];
-  el.innerHTML=testimonios.map(t=>`
-    <div class="testimonio-card">
+  const colors=['#2d9a4d','#1a3d8f','#c0392b','#f5921d','#7c3aed','#2980b9','#d97706','#059669','#dc2626','#8B1A1A','#457b9d','#e63946','#2a9d8f','#f4a261','#4338ca','#db2777'];
+  el.innerHTML=testimonios.map((t,i)=>{
+    const initials=t.autor.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const bg=colors[i%colors.length];
+    return `<div class="testimonio-card">
       <div class="test-texto">${t.texto}</div>
-      <div class="test-autor">${t.autor}</div>
-      <div class="test-origen">${t.origen}</div>
-    </div>`).join('');
+      <div class="test-footer">
+        <div class="test-avatar" style="background:${bg}">${initials}</div>
+        <div class="test-meta"><div class="test-autor">${t.autor}</div><div class="test-origen">${t.origen}</div></div>
+      </div>
+    </div>`;}).join('');
 }
 
 // ── COMPROMISOS PÚBLICOS ──
@@ -5650,7 +5666,7 @@ function toggleDark(){
 // ── ANIMATED HERO COUNTERS ──
 function animateCounters(){
   const nums = document.querySelectorAll('.hero-stat .num');
-  const targets = ['63.620','79,9%','20,1%','6','225','25.124','21','15/17'];
+  const targets = ['63.620','6','225','21','15/17'];
   const obs = new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
@@ -6187,6 +6203,12 @@ setTimeout(()=>{
   document.querySelectorAll('.hero-stat').forEach(el=>el.classList.add('revealed'));
 },600);
 
+// ── BANNER AUTO-DISMISS ──
+setTimeout(()=>{
+  const banner=document.querySelector('.construction-banner');
+  if(banner)banner.classList.add('dismissed');
+},6000);
+
 // ── CARDS & ELEMENTS ENTRANCE OBSERVER ──
 const entranceObs=new IntersectionObserver((entries)=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');entranceObs.unobserve(e.target);}});
@@ -6413,8 +6435,10 @@ document.getElementById('chatInput').addEventListener('keydown',function(e){if(e
 // F4/F16: COUNTDOWN + FLIP ANIMATION
 // ══════════════════════════════════════════════════════
 function updateCountdown(){
+  const start=new Date(2025,3,1); // Inicio PLADECO abril 2025
   const targets=[new Date(2026,5,30),new Date(2028,11,31),new Date(2035,11,31)];
   const ids=['cd1','cd2','cd3'];
+  const barIds=['cdBar1','cdBar2','cdBar3'];
   targets.forEach((t,i)=>{
     const days=Math.ceil((t-Date.now())/86400000);
     const el=document.getElementById(ids[i]);
@@ -6422,6 +6446,8 @@ function updateCountdown(){
     const cur=el.textContent;
     const nv=days>0?days.toLocaleString('es-CL'):'0';
     if(cur!==nv){el.classList.add('flip');setTimeout(()=>{el.textContent=nv;el.classList.remove('flip');},200);}
+    const bar=document.getElementById(barIds[i]);
+    if(bar){const total=t-start;const elapsed=Date.now()-start;bar.style.width=Math.min(100,Math.max(0,elapsed/total*100)).toFixed(1)+'%';}
   });
 }
 
