@@ -1173,20 +1173,43 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
 @media(max-width:700px){.encuesta-cta{flex-direction:column;text-align:center;gap:20px;padding:24px 20px}.encuesta-cta p{max-width:none}.encuesta-qr img{width:120px;height:120px}}
 
 /* ── Gráficos del Proceso ── */
-.graf-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
-.graf-filter-btn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
-.graf-filter-btn:hover{border-color:var(--accent);color:var(--accent)}
-.graf-filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.graf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.graf-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .25s,box-shadow .25s}
-.graf-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.12)}
-.graf-card:active{transform:scale(.98)!important;transition:transform .1s}
-.graf-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-bottom:1px solid var(--border);background:var(--bg)}
-.graf-card-body{padding:12px 14px}
-.graf-card-cat{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:6px}
-.graf-card-title{font-size:12px;font-weight:700;color:var(--text);line-height:1.4}
+.graf-packs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.graf-pack{background:var(--card);border-radius:var(--radius);padding:0;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column}
+.graf-pack:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.graf-pack .gp-accent{height:4px;width:100%}
+.graf-pack .gp-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.graf-pack .gp-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px;flex-shrink:0}
+.graf-pack .gp-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.graf-pack .gp-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:12px;flex:1}
+.graf-pack .gp-meta{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text2);margin-bottom:12px}
+.graf-pack .gp-meta .gp-tag{padding:2px 8px;border-radius:4px;font-weight:700;font-size:9px}
+.graf-pack .gp-actions{display:flex;gap:8px}
+.graf-pack .gp-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:8px;background:var(--bg);color:var(--text);font-size:11px;font-weight:700;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+.graf-pack .gp-btn:hover{background:var(--accent);color:#fff}
+.graf-pack .gp-btn.primary{background:var(--accent);color:#fff}
+.graf-pack .gp-btn.primary:hover{background:var(--primary);transform:translateY(-1px)}
+body.dark .graf-pack .gp-btn{background:#1e293b}
+body.dark .graf-pack .gp-btn:hover{background:var(--accent)}
+body.dark .graf-pack .gp-btn.primary{background:var(--accent)}
 .graf-counter{text-align:center;font-size:12px;color:var(--text2);margin-top:16px;font-weight:600}
-@media(max-width:700px){.graf-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.graf-card-body{padding:10px 12px}.graf-card-title{font-size:11px}}
+.graf-expand{margin-top:24px;padding:20px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.graf-expand-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.graf-expand-header h4{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.graf-expand-header .gex-close{background:none;border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s}
+.graf-expand-header .gex-close:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.graf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.graf-card{background:var(--bg);border-radius:10px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:transform .25s,box-shadow .25s;position:relative}
+.graf-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.graf-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.graf-card-info{padding:8px 10px;display:flex;align-items:center;justify-content:space-between}
+.graf-card-title{font-size:10px;font-weight:600;color:var(--text);line-height:1.3;flex:1}
+.graf-card-dl{width:28px;height:28px;border-radius:6px;border:none;background:var(--bg);color:var(--text2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.graf-card-dl:hover{background:var(--accent);color:#fff}
+.graf-interactive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.graf-int-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.graf-int-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.graf-int-src{font-size:10px;color:var(--text2);margin-bottom:14px;font-style:italic}
+@media(max-width:700px){.graf-packs{grid-template-columns:1fr}.graf-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}.graf-interactive-grid{grid-template-columns:1fr}}
 
 /* ── Portal CTA final ── */
 .portal-cta{background:linear-gradient(135deg,var(--primary) 0%,#17376a 50%,var(--primary-light) 100%);border-radius:16px;padding:36px 32px;color:#fff;text-align:center;position:relative;overflow:hidden}
@@ -2876,11 +2899,40 @@ section{position:relative}
   <div id="graficos-proceso" class="sec-header" style="margin-top:40px">
     <div class="badge" style="background:#ede9fe;color:#7c3aed">Visualizaciones</div>
     <h2>&#128202; Gr&#225;ficos del Proceso PLADECO</h2>
-    <p>73 visualizaciones de datos organizadas por &#225;rea tem&#225;tica</p>
+    <p>73 visualizaciones descargables organizadas en 7 &#225;reas tem&#225;ticas</p>
   </div>
-  <div class="graf-filters" id="grafFilters"></div>
-  <div class="graf-grid" id="grafGrid"></div>
+  <div class="graf-packs" id="grafPacks"></div>
   <div class="graf-counter" id="grafCounter"></div>
+
+  <!-- Galería expandible por categoría -->
+  <div class="graf-expand" id="grafExpand" style="display:none">
+    <div class="graf-expand-header" id="grafExpandHeader"></div>
+    <div class="graf-grid" id="grafGrid"></div>
+  </div>
+
+  <!-- Gráficos interactivos derivados -->
+  <div class="sec-header" style="margin-top:40px">
+    <div class="badge" style="background:#d1fae5;color:#059669">Interactivos</div>
+    <h2>&#128200; Datos Clave en Vivo</h2>
+    <p>Versiones interactivas de los gr&#225;ficos m&#225;s relevantes del proceso</p>
+  </div>
+  <div class="graf-interactive-grid">
+    <div class="graf-int-card">
+      <h4>&#127919; Prioridades Ciudadanas</h4>
+      <p class="graf-int-src">Fuente: Encuesta Ciudadana Online &middot; N=119</p>
+      <canvas id="chartPrioridadesInt" height="300"></canvas>
+    </div>
+    <div class="graf-int-card">
+      <h4>&#128200; Trayectoria ICVU Rengo 2015&#8211;2025</h4>
+      <p class="graf-int-src">Fuente: Instituto Estudios Urbanos PUC + CChC</p>
+      <canvas id="chartICVUInt" height="260"></canvas>
+    </div>
+    <div class="graf-int-card">
+      <h4>&#128680; Evoluci&#243;n Delictual 2005&#8211;2024</h4>
+      <p class="graf-int-src">Fuente: CEAD Fiscal&#237;a Nacional &middot; Sistematizaci&#243;n SECPLA</p>
+      <canvas id="chartDelictualInt" height="260"></canvas>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ CTA FINAL ═══ -->
@@ -5502,50 +5554,87 @@ const GRAFICOS_DATA=[
 {src:'Gráficos/RG07_Hallazgos_Criticos.png',titulo:'Hallazgos Críticos',cat:'RG'},
 {src:'Gráficos/RG08_Panel_Sintesis_Resultados.png',titulo:'Panel Síntesis Resultados',cat:'RG'}
 ];
-const GRAF_CATS={
-  ALL:{label:'Todas',bg:'#e2e8f0',color:'#475569'},
-  GEN:{label:'General',bg:'#dbeafe',color:'#2563eb'},
-  DC:{label:'Diagnóstico Comunal',bg:'#fce7f3',color:'#db2777'},
-  DG:{label:'Diagnóstico General',bg:'#ede9fe',color:'#7c3aed'},
-  G:{label:'Gráficos',bg:'#d1fae5',color:'#059669'},
-  MX:{label:'Matrices',bg:'#fef3c7',color:'#d97706'},
-  PO:{label:'Población y Social',bg:'#fee2e2',color:'#dc2626'},
-  RG:{label:'Resultados',bg:'#e0e7ff',color:'#4338ca'}
-};
-let grafFilterCat='ALL';
+const GRAF_PACKS=[
+  {cat:'GEN',label:'Visión General',desc:'Cobertura participativa, trayectoria ICVU, prioridades NNA vs adultos, FODA y brechas urbano-rural.',icon:'📊',color:'#2563eb',bg:'#dbeafe',tipo:'PNG',preview:'Gráficos/01_Cobertura_Proceso_Participativo.png'},
+  {cat:'DC',label:'Diagnóstico Comunal',desc:'Demografía, salud, seguridad, educación, finanzas, servicios, inversión BIP, transparencia y vulnerabilidad.',icon:'🏥',color:'#db2777',bg:'#fce7f3',tipo:'PNG',preview:'Gráficos/DC01_Evolucion_Demografica.png'},
+  {cat:'DG',label:'Diagnóstico General',desc:'Composición proceso, NNA, violencia escolar, estructura económica, espacio público y cumplimiento PLADECO anterior.',icon:'🔍',color:'#7c3aed',bg:'#ede9fe',tipo:'PNG',preview:'Gráficos/DG01_Composicion_Proceso.png'},
+  {cat:'G',label:'Gráficos de Síntesis',desc:'Proceso en cifras, pirámide NNA, cobertura territorial, prioridades, FODA, ICVU y top proyectos.',icon:'📈',color:'#059669',bg:'#d1fae5',tipo:'PNG',preview:'Gráficos/G01_Proceso_Cifras.png'},
+  {cat:'MX',label:'Matrices Estratégicas',desc:'Plazos, inclusividad, hoja de ruta, desigualdad territorial, financiamiento por eje y alineación ODS.',icon:'🧮',color:'#d97706',bg:'#fef3c7',tipo:'PNG',preview:'Gráficos/MX01_Plazos_Implementacion.png'},
+  {cat:'PO',label:'Población y Social',desc:'Grupos focalizados, natalidad, vulnerabilidad FONASA, empleo, brechas educativas, VIF e identidad comunitaria.',icon:'👥',color:'#dc2626',bg:'#fee2e2',tipo:'PNG',preview:'Gráficos/PO01_Grupos_Poblacion_Focalizada.png'},
+  {cat:'RG',label:'Resultados y Gobernanza',desc:'Triangulación metodológica, benchmarks, 200+ políticas por eje, semáforo institucional y hallazgos críticos.',icon:'🏛️',color:'#4338ca',bg:'#e0e7ff',tipo:'PNG',preview:'Gráficos/RG01_Triangulacion_Metodologica.png'}
+];
 function renderGraficos(){
-  const filtersEl=document.getElementById('grafFilters');
-  const gridEl=document.getElementById('grafGrid');
+  const packsEl=document.getElementById('grafPacks');
   const counterEl=document.getElementById('grafCounter');
-  if(!filtersEl||!gridEl)return;
-  filtersEl.innerHTML=Object.entries(GRAF_CATS).map(([k,v])=>{
-    const count=k==='ALL'?GRAFICOS_DATA.length:GRAFICOS_DATA.filter(g=>g.cat===k).length;
-    return '<button class="graf-filter-btn'+(grafFilterCat===k?' active':'')+'" onclick="filterGraficos(\''+k+'\')">'+v.label+' <span style="opacity:.5;font-weight:400">('+count+')</span></button>';
+  if(!packsEl)return;
+  packsEl.innerHTML=GRAF_PACKS.map(p=>{
+    const count=GRAFICOS_DATA.filter(g=>g.cat===p.cat).length;
+    return '<div class="graf-pack">'
+      +'<div class="gp-accent" style="background:linear-gradient(90deg,'+p.color+','+p.color+'88)"></div>'
+      +'<div class="gp-body">'
+      +'<div class="gp-icon" style="background:'+p.bg+';color:'+p.color+'">'+p.icon+'</div>'
+      +'<div class="gp-title">'+p.label+'</div>'
+      +'<div class="gp-desc">'+p.desc+'</div>'
+      +'<div class="gp-meta">'
+      +'<span class="gp-tag" style="background:'+p.bg+';color:'+p.color+'">'+p.tipo+'</span>'
+      +'<span>'+count+' gráficos</span>'
+      +'</div>'
+      +'<div class="gp-actions">'
+      +'<button class="gp-btn" onclick="expandGrafPack(\''+p.cat+'\')">📂 Ver galería</button>'
+      +'<button class="gp-btn primary" onclick="downloadGrafPack(\''+p.cat+'\')">⬇ Descargar</button>'
+      +'</div></div></div>';
   }).join('');
-  const filtered=grafFilterCat==='ALL'?GRAFICOS_DATA:GRAFICOS_DATA.filter(g=>g.cat===grafFilterCat);
-  gridEl.innerHTML=filtered.map((g,i)=>{
-    const c=GRAF_CATS[g.cat]||GRAF_CATS.GEN;
-    return '<div class="graf-card" onclick="openGrafLightbox('+GRAFICOS_DATA.indexOf(g)+')">'
-      +'<img src="'+g.src+'" alt="'+g.titulo+'" loading="lazy" decoding="async">'
-      +'<div class="graf-card-body">'
-      +'<div class="graf-card-cat" style="background:'+c.bg+';color:'+c.color+'">'+c.label+'</div>'
+  if(counterEl) counterEl.textContent='📊 '+GRAFICOS_DATA.length+' visualizaciones en '+GRAF_PACKS.length+' categorías descargables';
+  renderGrafInteractive();
+}
+function expandGrafPack(cat){
+  const expandEl=document.getElementById('grafExpand');
+  const headerEl=document.getElementById('grafExpandHeader');
+  const gridEl=document.getElementById('grafGrid');
+  if(!expandEl||!gridEl)return;
+  const pack=GRAF_PACKS.find(p=>p.cat===cat);
+  const items=GRAFICOS_DATA.filter(g=>g.cat===cat);
+  headerEl.innerHTML='<h4><span style="display:inline-flex;width:28px;height:28px;border-radius:6px;background:'+pack.bg+';color:'+pack.color+';align-items:center;justify-content:center;font-size:14px">'+pack.icon+'</span> '+pack.label+' <span style="font-weight:400;color:var(--text2);font-size:12px">('+items.length+' gráficos)</span></h4>'
+    +'<button class="gex-close" onclick="closeGrafExpand()">✕ Cerrar</button>';
+  gridEl.innerHTML=items.map((g,i)=>{
+    const globalIdx=GRAFICOS_DATA.indexOf(g);
+    return '<div class="graf-card">'
+      +'<img src="'+g.src+'" alt="'+g.titulo+'" loading="lazy" decoding="async" onclick="openGrafLightbox('+globalIdx+',\''+cat+'\')">'
+      +'<div class="graf-card-info">'
       +'<div class="graf-card-title">'+g.titulo+'</div>'
+      +'<button class="graf-card-dl" onclick="downloadSingleGraf(\''+g.src+'\',\''+g.titulo+'\')" title="Descargar">⬇</button>'
       +'</div></div>';
   }).join('');
-  if(counterEl) counterEl.textContent='📊 Mostrando '+filtered.length+' de '+GRAFICOS_DATA.length+' visualizaciones';
+  expandEl.style.display='block';
+  expandEl.scrollIntoView({behavior:'smooth',block:'start'});
 }
-function filterGraficos(cat){
-  grafFilterCat=cat;
-  renderGraficos();
-  document.getElementById('graficos-proceso')?.scrollIntoView({behavior:'smooth',block:'start'});
+function closeGrafExpand(){
+  const el=document.getElementById('grafExpand');
+  if(el) el.style.display='none';
 }
-function openGrafLightbox(idx){
-  lightboxIdx=idx;
+function downloadSingleGraf(src,titulo){
+  const a=document.createElement('a');
+  a.href=src;a.download=titulo.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'')+'.png';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+function downloadGrafPack(cat){
+  const items=GRAFICOS_DATA.filter(g=>g.cat===cat);
+  items.forEach((g,i)=>{
+    setTimeout(()=>{downloadSingleGraf(g.src,g.titulo);},i*300);
+  });
+  const pack=GRAF_PACKS.find(p=>p.cat===cat);
+  showToast('Descargando '+items.length+' gráficos de '+pack.label,'success');
+}
+let _grafLBItems=[];
+function openGrafLightbox(idx,cat){
+  _grafLBItems=cat?GRAFICOS_DATA.filter(g=>g.cat===cat):GRAFICOS_DATA;
+  const localIdx=cat?_grafLBItems.indexOf(GRAFICOS_DATA[idx]):idx;
+  lightboxIdx=localIdx;
   const lb=document.getElementById('lightbox');
   const img=document.getElementById('lightboxImg');
   const cap=document.getElementById('lightboxCaption');
-  img.src=GRAFICOS_DATA[idx].src;
-  cap.textContent=GRAFICOS_DATA[idx].titulo+' ('+(idx+1)+'/'+GRAFICOS_DATA.length+')';
+  img.src=_grafLBItems[localIdx].src;
+  cap.textContent=_grafLBItems[localIdx].titulo+' ('+(localIdx+1)+'/'+_grafLBItems.length+')';
   lb.classList.add('open');
   document.body.style.overflow='hidden';
   window._grafLightboxActive=true;
@@ -5555,17 +5644,58 @@ document.addEventListener('keydown',function(e){
   const lb=document.getElementById('lightbox');
   if(!lb||!lb.classList.contains('open')){window._grafLightboxActive=false;return;}
   if(e.key==='Escape'){closeLightbox();window._grafLightboxActive=false;}
-  if(e.key==='ArrowLeft'){
-    lightboxIdx=(lightboxIdx-1+GRAFICOS_DATA.length)%GRAFICOS_DATA.length;
-    document.getElementById('lightboxImg').src=GRAFICOS_DATA[lightboxIdx].src;
-    document.getElementById('lightboxCaption').textContent=GRAFICOS_DATA[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+GRAFICOS_DATA.length+')';
-  }
-  if(e.key==='ArrowRight'){
-    lightboxIdx=(lightboxIdx+1)%GRAFICOS_DATA.length;
-    document.getElementById('lightboxImg').src=GRAFICOS_DATA[lightboxIdx].src;
-    document.getElementById('lightboxCaption').textContent=GRAFICOS_DATA[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+GRAFICOS_DATA.length+')';
+  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
+    const dir=e.key==='ArrowLeft'?-1:1;
+    lightboxIdx=(lightboxIdx+dir+_grafLBItems.length)%_grafLBItems.length;
+    document.getElementById('lightboxImg').src=_grafLBItems[lightboxIdx].src;
+    document.getElementById('lightboxCaption').textContent=_grafLBItems[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+_grafLBItems.length+')';
   }
 });
+// ── GRÁFICOS INTERACTIVOS (datos de PNGs estáticos) ──
+function renderGrafInteractive(){
+  // 1) Prioridades Ciudadanas (G04)
+  const ctxPri=document.getElementById('chartPrioridadesInt');
+  if(ctxPri){
+    new Chart(ctxPri,{type:'bar',data:{
+      labels:['Salud y bienestar','Deporte y recreación','Cultura y patrimonio','Seguridad pública','Medio ambiente','Educación','Infraestructura','Empleo','Participación','Innovación','Inclusión social'],
+      datasets:[{label:'% respondientes',data:[57,52,52,48,38,24,19,19,14,9,9],
+        backgroundColor:['#a0522d','#a0522d','#a0522d','#a0522d','#2d9a4d','#999','#999','#999','#999','#999','#999'],
+        borderRadius:4,barThickness:22}]
+    },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+'% de encuestados'}}},
+      scales:{x:{max:65,grid:{color:getChartGridColor()},ticks:{color:getChartTextColor(),callback:v=>v+'%'}},
+        y:{grid:{display:false},ticks:{color:getChartTextColor(),font:{size:11}}}}}});
+  }
+  // 2) Trayectoria ICVU (G06)
+  const ctxICVU=document.getElementById('chartICVUInt');
+  if(ctxICVU){
+    new Chart(ctxICVU,{type:'line',data:{
+      labels:['2015','2017','2019','2021','2022','2023','2024','2025'],
+      datasets:[{label:'ICVU Rengo',data:[35,42,50,51,52,53,55,63],
+        borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.1)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:function(ctx){return ctx.dataIndex===7?'#a0522d':'#2d6a4f';},pointBorderWidth:2,borderWidth:3},
+        {label:'Umbral Medio Alto',data:[62,62,62,62,62,62,62,62],borderColor:'rgba(150,150,150,.4)',borderDash:[6,4],pointRadius:0,borderWidth:1,fill:false}]
+    },options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:getChartTextColor(),font:{size:10}}},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+' pts'}}},
+      scales:{y:{min:20,max:80,grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}},
+        x:{grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}}}}});
+  }
+  // 3) Evolución Delictual (DC04)
+  const ctxDel=document.getElementById('chartDelictualInt');
+  if(ctxDel){
+    new Chart(ctxDel,{type:'line',data:{
+      labels:['2005','2010','2015','2020','2024'],
+      datasets:[
+        {label:'Contra la vida (+126%)',data:[600,730,870,1050,1351],borderColor:'#a0522d',backgroundColor:'rgba(160,82,45,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4},
+        {label:'VIF (+27%)',data:[480,530,580,570,608],borderColor:'#6a0dad',backgroundColor:'transparent',tension:.3,borderWidth:2,pointRadius:4},
+        {label:'Drogas (+440%)',data:[15,28,42,60,81],borderColor:'#d97706',backgroundColor:'transparent',tension:.3,borderWidth:2,pointRadius:4},
+        {label:'Armas (+308%)',data:[13,22,32,42,53],borderColor:'#1a3d8f',backgroundColor:'transparent',tension:.3,borderWidth:2,pointRadius:4}]
+    },options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:getChartTextColor(),font:{size:10}}}},
+      scales:{y:{grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}},
+        x:{grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}}}}});
+  }
+}
 
 // ── LÍNEA DE TIEMPO ──
 function renderTimeline(){
@@ -5909,7 +6039,7 @@ function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
   },{threshold:0.08});
-  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card, .censo-kpi, .censo-mini, .censo-svc, .graf-card').forEach(el=>{
+  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card, .censo-kpi, .censo-mini, .censo-svc, .graf-pack, .graf-int-card').forEach(el=>{
     el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
