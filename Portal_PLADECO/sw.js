@@ -1,9 +1,9 @@
-const CACHE='pladeco-v10.7';
+const CACHE='pladeco-v10.8';
 const ASSETS=[
   './',
   './index.html',
   './manifest.json',
-  './Fondo.png',
+  './hero-bg.jpg',
   './propuesta_1_logo_contigo_rengo_transparente.png',
   './propuesta_4_banner_contigo_rengo_transparente.png',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
