@@ -1572,6 +1572,17 @@ section{position:relative}
 
 <a href="#dashboard" class="skip-link" tabindex="0">Saltar al contenido</a>
 
+<noscript>
+<div style="position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#0c1f36,#1a3d8f);display:flex;align-items:center;justify-content:center;padding:32px">
+  <div style="max-width:480px;text-align:center;color:#fff;font-family:system-ui,sans-serif">
+    <div style="font-size:64px;margin-bottom:16px">&#128679;</div>
+    <h1 style="font-size:24px;font-weight:800;margin-bottom:12px">JavaScript Requerido</h1>
+    <p style="font-size:14px;line-height:1.7;opacity:.85;margin-bottom:20px">El Portal PLADECO Rengo 2025-2035 necesita JavaScript para funcionar correctamente. Por favor, activa JavaScript en la configuraci&oacute;n de tu navegador y recarga la p&aacute;gina.</p>
+    <div style="font-size:11px;opacity:.5">SECPLAC &middot; Municipalidad de Rengo</div>
+  </div>
+</div>
+</noscript>
+
 <div class="scroll-progress" role="progressbar" aria-label="Progreso de lectura"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 
 <!-- Floating breadcrumb -->
@@ -3126,10 +3137,11 @@ section{position:relative}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v13.0</span>
+  <span class="ub-ver">v13.1</span>
   &#218;ltima actualizaci&#243;n: 11 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v13.1</strong> <span class="ub-date">11 May 2026</span><br>SW inteligente (cach&#233; im&#225;genes+tiles), descarga ZIP de gr&#225;ficos, fallback noscript</div>
     <div class="ub-entry"><strong>v13.0</strong> <span class="ub-date">11 May 2026</span><br>Auditor&#237;a operativa: fix chatbot m&#243;vil, error handling mapas/charts, b&#250;squeda mejorada, 10 bugs corregidos</div>
     <div class="ub-entry"><strong>v12.3</strong> <span class="ub-date">11 May 2026</span><br>Cronograma unificado con pesta&#241;as (Hoja de Ruta + Proceso), tooltip de gu&#237;a interactiva</div>
     <div class="ub-entry"><strong>v12.2</strong> <span class="ub-date">11 May 2026</span><br>Fuentes de informaci&#243;n en 31 secciones, hero glassmorphism, banner transparente</div>
@@ -5846,11 +5858,56 @@ function downloadSingleGraf(src,titulo){
 }
 function downloadGrafPack(cat){
   const items=GRAFICOS_DATA.filter(g=>g.cat===cat);
-  items.forEach((g,i)=>{
-    setTimeout(()=>{downloadSingleGraf(g.src,g.titulo);},i*300);
-  });
   const pack=GRAF_PACKS.find(p=>p.cat===cat);
-  showToast('Descargando '+items.length+' gráficos de '+pack.label,'success');
+  if(!items.length) return;
+  /* Load JSZip dynamically if not already loaded */
+  if(typeof JSZip==='undefined'){
+    showToast('Preparando ZIP de '+items.length+' gráficos...','info');
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+    s.onload=function(){_buildZip(items,pack);};
+    s.onerror=function(){
+      showToast('No se pudo cargar el empaquetador. Descargando individual...','warning');
+      items.forEach(function(g,i){setTimeout(function(){downloadSingleGraf(g.src,g.titulo);},i*400);});
+    };
+    document.head.appendChild(s);
+  }else{
+    showToast('Preparando ZIP de '+items.length+' gráficos...','info');
+    _buildZip(items,pack);
+  }
+}
+function _buildZip(items,pack){
+  var zip=new JSZip();
+  var folder=zip.folder(pack.label.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ _-]/g,''));
+  var loaded=0,failed=0;
+  var total=items.length;
+  items.forEach(function(g,i){
+    var fname=g.titulo.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ _()-]/g,'').substring(0,80)+'.png';
+    fetch(g.src).then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.blob();
+    }).then(function(blob){
+      folder.file(fname,blob);
+      loaded++;
+      if(loaded+failed===total) _finishZip(zip,pack,loaded,failed);
+    }).catch(function(){
+      failed++;
+      if(loaded+failed===total) _finishZip(zip,pack,loaded,failed);
+    });
+  });
+}
+function _finishZip(zip,pack,loaded,failed){
+  if(loaded===0){showToast('No se pudieron descargar los gráficos','error');return;}
+  zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}}).then(function(blob){
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='PLADECO_Graficos_'+pack.cat+'.zip';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    var msg='✅ ZIP descargado: '+loaded+' gráficos';
+    if(failed>0) msg+=' ('+failed+' no disponibles)';
+    showToast(msg,'success');
+  }).catch(function(){showToast('Error al generar ZIP','error');});
 }
 let _grafLBItems=[];
 function openGrafLightbox(idx,cat){
