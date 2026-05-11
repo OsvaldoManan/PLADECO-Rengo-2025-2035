@@ -1,4 +1,4 @@
-const CACHE='pladeco-v13.0';
+const CACHE='pladeco-v13.1';
 const ASSETS=[
   './',
   './index.html',
@@ -8,6 +8,7 @@ const ASSETS=[
   './1.png',
   './2.png',
   './3.png',
+  './hero-banner.png',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
