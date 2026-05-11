@@ -1,12 +1,13 @@
-const CACHE='pladeco-v12.1';
+const CACHE='pladeco-v13.0';
 const ASSETS=[
   './',
   './index.html',
   './manifest.json',
   './hero-bg.jpg',
   './qr-encuesta.png',
-  './propuesta_1_logo_contigo_rengo_transparente.png',
-  './propuesta_4_banner_contigo_rengo_transparente.png',
+  './1.png',
+  './2.png',
+  './3.png',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
