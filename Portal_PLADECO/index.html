@@ -63,9 +63,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background
 .mascot-cta:hover{background:var(--green);color:#fff;border-color:var(--green)}
 .mascot-cta .cta-icon{margin-right:4px;font-size:11px}
 /* ── Sidebar Collapse ── */
-.sidebar-collapse-btn{width:100%;padding:8px 0;background:rgba(255,255,255,.04);border:none;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.4);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;flex-shrink:0}
-.sidebar-collapse-btn:hover{background:rgba(45,154,77,.15);color:var(--green-light)}
-.sidebar-collapse-btn svg{transition:transform .3s ease}
+.sidebar-collapse-btn{width:100%;padding:6px 20px;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.35);font-size:10px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;flex-shrink:0;letter-spacing:.3px}
+.sidebar-collapse-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.7)}
+.sidebar-collapse-btn svg{transition:transform .3s ease;flex-shrink:0}
 body.sidebar-collapsed{--sidebar-w:64px}
 body.sidebar-collapsed .sidebar-brand{padding:10px 0;display:flex;justify-content:center}
 body.sidebar-collapsed .sidebar-logo-contigo{height:34px}
@@ -81,6 +81,7 @@ body.sidebar-collapsed .sidebar-mascot{padding:8px 0}
 body.sidebar-collapsed .sidebar-mascot .mascot-img{width:32px;height:32px}
 body.sidebar-collapsed .sidebar-progress,
 body.sidebar-collapsed .sidebar-footer{display:none}
+body.sidebar-collapsed .sidebar-collapse-btn{justify-content:center;padding:8px 0}
 body.sidebar-collapsed .sidebar-collapse-btn svg{transform:rotate(180deg)}
 body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 @media(max-width:900px){.sidebar-collapse-btn{display:none}}
@@ -141,7 +142,7 @@ body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 
 /* ── Main ── */
 .main{margin-left:var(--sidebar-w);min-height:100vh;transition:margin-left .3s ease}
-section{padding:48px 40px;max-width:1440px;margin:0 auto}
+section{padding:48px 40px;max-width:1440px;margin:0 auto;content-visibility:auto;contain-intrinsic-size:auto 600px}
 canvas{display:block;background:var(--card);border-radius:6px}
 
 /* ── Hero ── */
@@ -1494,6 +1495,11 @@ section{position:relative}
   .viz-card::before,.kpi::after{display:none}
 }
 
+/* ── Performance: GPU hints ── */
+.sidebar,.construction-banner,.scroll-progress,.hero-orb,.hero-stat,.kpi{will-change:transform}
+.hero-orb,.mascot-img,.chatbot-fab{animation-play-state:running}
+@media(prefers-reduced-motion:reduce){.hero-orb,.mascot-img,.chatbot-fab{animation:none!important}}
+
 /* ── Accessibility: Reduced Motion ── */
 @media(prefers-reduced-motion:reduce){
   .splash-logo,.mascot-img,.hero-logo-wrap,.chatbot-fab{animation:none!important}
@@ -1538,6 +1544,10 @@ section{position:relative}
       <p>2025 &#8212; 2035</p>
     </div>
   </div>
+  <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" title="Comprimir menú" aria-label="Comprimir menú lateral">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    <span>Comprimir</span>
+  </button>
   <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal"></div>
   <div class="sidebar-nav">
     <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
@@ -1609,10 +1619,6 @@ section{position:relative}
       <a href="#cartografias"><span class="ico">&#128506;</span> Cartograf&#237;as</a>
     </div>
   </div>
-  <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" title="Comprimir menú" aria-label="Comprimir menú lateral">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-    <span>Comprimir</span>
-  </button>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente">
     <img src="propuesta_1_logo_contigo_rengo_transparente.png" alt="Robot Contigo Rengo" class="mascot-img" decoding="async">
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
@@ -6675,137 +6681,55 @@ if(localStorage.getItem('pladeco-dark')==='1'){document.body.classList.add('dark
 Chart.defaults.color=getChartTextColor();
 Chart.defaults.borderColor=getChartGridColor();
 
-renderEjes();
-renderUV();
-renderComisiones();
-renderDocs();
-renderRadar();
-renderDonut();
-renderPlazos();
-renderInclusion();
-renderODS();
-renderTreemap();
-renderGauges();
-renderPyramid();
-renderMap();
-renderNNA();
-renderNNAAge();
-renderNNAPartic();
-renderSurveyChart();
-renderInequality();
-renderBIPSector();
-renderIdentityChart();
-renderFinancial();
-renderWaterfall();
-renderSeguridad();
-renderRengoVsNac();
-renderTransparencia();
-renderMetasBar();
-renderGrupos();
-renderLorenz();
-renderRadarEje();
-renderURCompare();
-renderScatter();
-renderInvCap();
-renderBipDens();
-renderPobLocal();
-renderODSHeatmap();
-renderODSMulti();
-renderODSGap();
-renderTagCloud();
-renderWordCloud();
-renderSNA();
-renderTimeline();
-renderParticipStats();
-renderRatingGrid();
-renderPriorBars();
-renderServicios();
-renderInfraChart();
-renderPriorComp();
-renderEmergencia();
-renderSaludChart();
-renderParticDemo();
-renderFunnel();
-renderFODAEntrev();
-renderGestionKPIs();
-renderPlazoEje();
-renderFinanc();
-renderInclusion2();
-renderDeptos();
-renderSNAActors();
-renderCoresp();
-renderCentral();
-renderConverg();
-renderMaturity();
-renderCrossLinks();
-renderERD();
-renderOENet();
-renderDomainStats();
-renderEthnoTabs();
-renderDomainChart();
-renderCGRChart();
-renderCapacity();
-renderSocCap();
-renderTensions();
-renderBrechas();
-renderRiesgos();
-renderVulner();
-renderBench();
-renderRanking();
-renderDemoProy();
-renderEtaria();
-renderCoher();
-renderCobertura();
-renderGenero();
-renderGenEje();
-renderTablero();
-renderFreqAcc();
-renderArgumentario();
-renderArgPeso();
-renderArgDim();
-renderResumen();
-renderPlazoPills();
-renderInclChips();
-renderAccEje();
-renderODSAcc();
-renderSemaforo();
-renderBrechasMetas();
-renderProgresoEje();
-renderComparador();
-renderFinCards();
-renderFinEje();
-renderPlazoFin();
-renderTreemapFin();
-renderTimelinePladeco();
-renderPiramideDem();
-renderGaleria();
-renderDocsEnhanced();
-renderGraficos();
-renderCartografias();
-renderHojaDeRuta();
-renderEquipo();
-renderTestimonios();
-renderCompromisos();
-renderAntesDespues();
-animateCounters();
-animateKPIs();
-initScrollProgress();
-initScrollReveal();
-initSectionReveal();
-renderCensoKPI();
-renderCensoUR();
-renderCensoPiramide();
-renderCensoEtario();
-renderCensoMigra();
-renderCensoViv();
-renderCensoVivKPI();
-renderCensoSvc();
-renderCensoEduEmp();
-renderCensoVulnRanking();
-renderCensoBrechaUR();
-renderCensoHeatmap();
-renderCensoMapaVuln();
-renderCensoComposicion();
+// ═══ RENDER PIPELINE (3-tier deferred loading) ═══
+
+// TIER 1: Immediate — structural HTML + navigation (above-fold)
+renderEjes();renderUV();renderComisiones();renderDocs();renderDocsEnhanced();
+renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
+renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
+renderTimelinePladeco();renderTimeline();renderEthnoTabs();
+renderSemaforo();renderComparador();renderResumen();renderPlazoPills();
+renderInclChips();renderArgumentario();renderGestionKPIs();
+animateCounters();animateKPIs();
+initScrollProgress();initScrollReveal();initSectionReveal();
+
+// TIER 2: Deferred — charts + visualizations (after first paint)
+setTimeout(function(){
+  renderRadar();renderDonut();renderPlazos();renderInclusion();renderODS();
+  renderTreemap();renderGauges();renderPyramid();renderMap();
+  renderNNA();renderNNAAge();renderNNAPartic();renderSurveyChart();
+  renderInequality();renderBIPSector();renderIdentityChart();
+  renderFinancial();renderWaterfall();renderSeguridad();
+  renderRengoVsNac();renderTransparencia();renderMetasBar();
+  renderGrupos();renderLorenz();renderRadarEje();renderURCompare();
+  renderScatter();renderInvCap();renderBipDens();renderPobLocal();
+  renderODSHeatmap();renderODSMulti();renderODSGap();
+  renderTagCloud();renderWordCloud();renderSNA();
+  renderParticipStats();renderRatingGrid();renderPriorBars();
+  renderServicios();renderInfraChart();renderPriorComp();
+  renderEmergencia();renderSaludChart();renderParticDemo();renderFunnel();
+  renderFODAEntrev();renderPlazoEje();renderFinanc();renderInclusion2();
+  renderDeptos();renderSNAActors();renderCoresp();renderCentral();
+  renderConverg();renderMaturity();renderCrossLinks();renderERD();
+  renderOENet();renderDomainStats();renderDomainChart();renderCGRChart();
+  renderCapacity();renderSocCap();renderTensions();renderBrechas();
+  renderRiesgos();renderVulner();renderBench();renderRanking();
+  renderDemoProy();renderEtaria();renderCoher();renderCobertura();
+  renderGenero();renderGenEje();renderTablero();renderFreqAcc();
+  renderArgPeso();renderArgDim();renderAccEje();renderODSAcc();
+  renderBrechasMetas();renderProgresoEje();renderFinCards();renderFinEje();
+  renderPlazoFin();renderTreemapFin();renderPiramideDem();
+},50);
+
+// TIER 3: Heavy deferred — Censo 2024 analytics (idle time)
+const _censoRenders=function(){
+  renderCensoKPI();renderCensoUR();renderCensoPiramide();renderCensoEtario();
+  renderCensoMigra();renderCensoViv();renderCensoVivKPI();renderCensoSvc();
+  renderCensoEduEmp();renderCensoVulnRanking();renderCensoBrechaUR();
+  renderCensoHeatmap();renderCensoMapaVuln();renderCensoComposicion();
+};
+if('requestIdleCallback' in window){requestIdleCallback(_censoRenders,{timeout:4000});}
+else{setTimeout(_censoRenders,2000);}
 initBreadcrumb();
 initDotNav();
 initBackToTopPct();
