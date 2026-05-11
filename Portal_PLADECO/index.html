@@ -1172,6 +1172,22 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
 .encuesta-qr-label{font-size:9px;opacity:.4;margin-top:6px;letter-spacing:.5px}
 @media(max-width:700px){.encuesta-cta{flex-direction:column;text-align:center;gap:20px;padding:24px 20px}.encuesta-cta p{max-width:none}.encuesta-qr img{width:120px;height:120px}}
 
+/* ── Gráficos del Proceso ── */
+.graf-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.graf-filter-btn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;border:1.5px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.graf-filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+.graf-filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.graf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.graf-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);cursor:pointer;transition:transform .25s,box-shadow .25s}
+.graf-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.12)}
+.graf-card:active{transform:scale(.98)!important;transition:transform .1s}
+.graf-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-bottom:1px solid var(--border);background:var(--bg)}
+.graf-card-body{padding:12px 14px}
+.graf-card-cat{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.graf-card-title{font-size:12px;font-weight:700;color:var(--text);line-height:1.4}
+.graf-counter{text-align:center;font-size:12px;color:var(--text2);margin-top:16px;font-weight:600}
+@media(max-width:700px){.graf-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.graf-card-body{padding:10px 12px}.graf-card-title{font-size:11px}}
+
 /* ── Portal CTA final ── */
 .portal-cta{background:linear-gradient(135deg,var(--primary) 0%,#17376a 50%,var(--primary-light) 100%);border-radius:16px;padding:36px 32px;color:#fff;text-align:center;position:relative;overflow:hidden}
 .portal-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(45,154,77,.12),transparent 60%);pointer-events:none}
@@ -1504,6 +1520,7 @@ section{position:relative}
       <a href="#timeline"><span class="ico">&#128197;</span> L&#237;nea de Tiempo</a>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Documentos</a>
+      <a href="#graficos-proceso"><span class="ico">&#128202;</span> Gr&#225;ficos</a>
     </div>
   </div>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente">
@@ -2854,6 +2871,16 @@ section{position:relative}
     <p>Documentos, presentaciones y bases de datos del proceso PLADECO</p>
   </div>
   <div class="docs-grid" id="docs-grid"></div>
+
+  <!-- Gráficos del proceso -->
+  <div id="graficos-proceso" class="sec-header" style="margin-top:40px">
+    <div class="badge" style="background:#ede9fe;color:#7c3aed">Visualizaciones</div>
+    <h2>&#128202; Gr&#225;ficos del Proceso PLADECO</h2>
+    <p>73 visualizaciones de datos organizadas por &#225;rea tem&#225;tica</p>
+  </div>
+  <div class="graf-filters" id="grafFilters"></div>
+  <div class="graf-grid" id="grafGrid"></div>
+  <div class="graf-counter" id="grafCounter"></div>
 </section>
 
 <!-- ═══ CTA FINAL ═══ -->
@@ -5399,6 +5426,147 @@ document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight')navLightbox(1);
 });
 
+// ── GRÁFICOS DEL PROCESO ──
+const GRAFICOS_DATA=[
+{src:'Gráficos/01_Cobertura_Proceso_Participativo.png',titulo:'Cobertura Proceso Participativo',cat:'GEN'},
+{src:'Gráficos/02_Trayectoria_ICVU_2011_2035.png',titulo:'Trayectoria ICVU 2011-2035',cat:'GEN'},
+{src:'Gráficos/03_Dimensiones_ICVU_Dumbbell.png',titulo:'Dimensiones ICVU Dumbbell',cat:'GEN'},
+{src:'Gráficos/04_Prioridades_NNA_vs_Adultos.png',titulo:'Prioridades NNA vs Adultos',cat:'GEN'},
+{src:'Gráficos/05_FODA_Cuanti_Cualitativo.png',titulo:'FODA Cuanti-Cualitativo',cat:'GEN'},
+{src:'Gráficos/06_Brecha_Urbano_Rural.png',titulo:'Brecha Urbano-Rural',cat:'GEN'},
+{src:'Gráficos/07_Voces_NNA_Mixto.png',titulo:'Voces NNA Mixto',cat:'GEN'},
+{src:'Gráficos/DC01_Evolucion_Demografica.png',titulo:'Evolución Demográfica',cat:'DC'},
+{src:'Gráficos/DC02_Piramide_Etaria.png',titulo:'Pirámide Etaria',cat:'DC'},
+{src:'Gráficos/DC03_Sistema_Salud.png',titulo:'Sistema de Salud',cat:'DC'},
+{src:'Gráficos/DC04_Evolucion_Delictual.png',titulo:'Evolución Delictual',cat:'DC'},
+{src:'Gráficos/DC05_Educacion_Matricula_Cobertura.png',titulo:'Educación: Matrícula y Cobertura',cat:'DC'},
+{src:'Gráficos/DC06_Finanzas_Municipales.png',titulo:'Finanzas Municipales',cat:'DC'},
+{src:'Gráficos/DC07_Evaluacion_Servicios.png',titulo:'Evaluación de Servicios',cat:'DC'},
+{src:'Gráficos/DC08_Inversion_BIP.png',titulo:'Inversión BIP',cat:'DC'},
+{src:'Gráficos/DC09_Participacion_Vinculo.png',titulo:'Participación y Vínculo',cat:'DC'},
+{src:'Gráficos/DC10_Transparencia.png',titulo:'Transparencia',cat:'DC'},
+{src:'Gráficos/DC11_Deficit_Habitacional.png',titulo:'Déficit Habitacional',cat:'DC'},
+{src:'Gráficos/DC12_Vulnerabilidad_MBHT.png',titulo:'Vulnerabilidad MBHT',cat:'DC'},
+{src:'Gráficos/DC13_Panel_Diagnostico_Comunal.png',titulo:'Panel Diagnóstico Comunal',cat:'DC'},
+{src:'Gráficos/DG01_Composicion_Proceso.png',titulo:'Composición del Proceso',cat:'DG'},
+{src:'Gráficos/DG02_NNA_Cuatro_Dimensiones.png',titulo:'NNA: Cuatro Dimensiones',cat:'DG'},
+{src:'Gráficos/DG03_Brecha_Urbano_Rural.png',titulo:'Brecha Urbano-Rural',cat:'DG'},
+{src:'Gráficos/DG04_Tipologia_Violencia_Escolar.png',titulo:'Tipología Violencia Escolar',cat:'DG'},
+{src:'Gráficos/DG05_Decenio_Transformacion.png',titulo:'Decenio de Transformación',cat:'DG'},
+{src:'Gráficos/DG06_Voces_NNA.png',titulo:'Voces NNA',cat:'DG'},
+{src:'Gráficos/DG07_Estructura_Economica.png',titulo:'Estructura Económica',cat:'DG'},
+{src:'Gráficos/DG08_Espacio_Publico_Cuadrante.png',titulo:'Espacio Público: Cuadrante',cat:'DG'},
+{src:'Gráficos/DG09_Cumplimiento_PLADECO_Anterior.png',titulo:'Cumplimiento PLADECO Anterior',cat:'DG'},
+{src:'Gráficos/DG10_Prioridades_NNA_vs_Adultos.png',titulo:'Prioridades NNA vs Adultos',cat:'DG'},
+{src:'Gráficos/DG11_Panel_Sintesis_Diagnostico.png',titulo:'Panel Síntesis Diagnóstico',cat:'DG'},
+{src:'Gráficos/G01_Proceso_Cifras.png',titulo:'Proceso en Cifras',cat:'G'},
+{src:'Gráficos/G02_Piramide_NNA.png',titulo:'Pirámide NNA',cat:'G'},
+{src:'Gráficos/G03_Cobertura_Territorial.png',titulo:'Cobertura Territorial',cat:'G'},
+{src:'Gráficos/G04_Prioridades_Ciudadanas.png',titulo:'Prioridades Ciudadanas',cat:'G'},
+{src:'Gráficos/G05_Matriz_FODA.png',titulo:'Matriz FODA',cat:'G'},
+{src:'Gráficos/G06_Trayectoria_ICVU.png',titulo:'Trayectoria ICVU',cat:'G'},
+{src:'Gráficos/G07_Heatmap_Edad_Prioridad.png',titulo:'Heatmap Edad-Prioridad',cat:'G'},
+{src:'Gráficos/G08_Voces_Ciudadanas.png',titulo:'Voces Ciudadanas',cat:'G'},
+{src:'Gráficos/G09_Top_Proyectos.png',titulo:'Top Proyectos',cat:'G'},
+{src:'Gráficos/G10_Panel_Resumen.png',titulo:'Panel Resumen',cat:'G'},
+{src:'Gráficos/MX01_Plazos_Implementacion.png',titulo:'Plazos de Implementación',cat:'MX'},
+{src:'Gráficos/MX02_Inclusividad_Politicas.png',titulo:'Inclusividad de Políticas',cat:'MX'},
+{src:'Gráficos/MX03_Heatmap_Inclusion_Eje.png',titulo:'Heatmap Inclusión por Eje',cat:'MX'},
+{src:'Gráficos/MX04_Hoja_Ruta_Metas.png',titulo:'Hoja de Ruta: Metas',cat:'MX'},
+{src:'Gráficos/MX05_Desigualdad_Territorial_UV.png',titulo:'Desigualdad Territorial UV',cat:'MX'},
+{src:'Gráficos/MX06_Radiografia_NNA.png',titulo:'Radiografía NNA',cat:'MX'},
+{src:'Gráficos/MX07_Financiamiento_por_Eje.png',titulo:'Financiamiento por Eje',cat:'MX'},
+{src:'Gráficos/MX08_Alineacion_ODS.png',titulo:'Alineación ODS',cat:'MX'},
+{src:'Gráficos/MX09_Brechas_NNA.png',titulo:'Brechas NNA',cat:'MX'},
+{src:'Gráficos/MX10_Responsables_Institucionales.png',titulo:'Responsables Institucionales',cat:'MX'},
+{src:'Gráficos/MX11_Panel_Profundidad_Estrategica.png',titulo:'Panel Profundidad Estratégica',cat:'MX'},
+{src:'Gráficos/PO01_Grupos_Poblacion_Focalizada.png',titulo:'Grupos de Población Focalizada',cat:'PO'},
+{src:'Gráficos/PO02_Natalidad_Mortalidad_Infantil.png',titulo:'Natalidad y Mortalidad Infantil',cat:'PO'},
+{src:'Gráficos/PO03_Vulnerabilidad_FONASA.png',titulo:'Vulnerabilidad FONASA',cat:'PO'},
+{src:'Gráficos/PO04_Estructura_Empresarial.png',titulo:'Estructura Empresarial',cat:'PO'},
+{src:'Gráficos/PO05_Empleo_por_Sector.png',titulo:'Empleo por Sector',cat:'PO'},
+{src:'Gráficos/PO06_Desigualdad_Inversion_BIP.png',titulo:'Desigualdad Inversión BIP',cat:'PO'},
+{src:'Gráficos/PO07_Brecha_Escolaridad.png',titulo:'Brecha de Escolaridad',cat:'PO'},
+{src:'Gráficos/PO08_Brecha_PAES.png',titulo:'Brecha PAES',cat:'PO'},
+{src:'Gráficos/PO09_Brecha_Digital.png',titulo:'Brecha Digital',cat:'PO'},
+{src:'Gráficos/PO10_Perfil_Victimas_VIF.png',titulo:'Perfil Víctimas VIF',cat:'PO'},
+{src:'Gráficos/PO11_Identidad_Vinculo_Comunitario.png',titulo:'Identidad y Vínculo Comunitario',cat:'PO'},
+{src:'Gráficos/PO12_Convivencia_NNA.png',titulo:'Convivencia NNA',cat:'PO'},
+{src:'Gráficos/PO13_Panel_Sintesis_Social.png',titulo:'Panel Síntesis Social',cat:'PO'},
+{src:'Gráficos/RG01_Triangulacion_Metodologica.png',titulo:'Triangulación Metodológica',cat:'RG'},
+{src:'Gráficos/RG02_Indicadores_vs_Benchmark.png',titulo:'Indicadores vs Benchmark',cat:'RG'},
+{src:'Gráficos/RG03_200_Politicas_por_Eje.png',titulo:'200+ Políticas por Eje',cat:'RG'},
+{src:'Gráficos/RG04_Convergencia_Cuali_Cuanti.png',titulo:'Convergencia Cuali-Cuanti',cat:'RG'},
+{src:'Gráficos/RG05_Semaforo_Institucional.png',titulo:'Semáforo Institucional',cat:'RG'},
+{src:'Gráficos/RG06_Participacion_Metodologia.png',titulo:'Participación y Metodología',cat:'RG'},
+{src:'Gráficos/RG07_Hallazgos_Criticos.png',titulo:'Hallazgos Críticos',cat:'RG'},
+{src:'Gráficos/RG08_Panel_Sintesis_Resultados.png',titulo:'Panel Síntesis Resultados',cat:'RG'}
+];
+const GRAF_CATS={
+  ALL:{label:'Todas',bg:'#e2e8f0',color:'#475569'},
+  GEN:{label:'General',bg:'#dbeafe',color:'#2563eb'},
+  DC:{label:'Diagnóstico Comunal',bg:'#fce7f3',color:'#db2777'},
+  DG:{label:'Diagnóstico General',bg:'#ede9fe',color:'#7c3aed'},
+  G:{label:'Gráficos',bg:'#d1fae5',color:'#059669'},
+  MX:{label:'Matrices',bg:'#fef3c7',color:'#d97706'},
+  PO:{label:'Población y Social',bg:'#fee2e2',color:'#dc2626'},
+  RG:{label:'Resultados',bg:'#e0e7ff',color:'#4338ca'}
+};
+let grafFilterCat='ALL';
+function renderGraficos(){
+  const filtersEl=document.getElementById('grafFilters');
+  const gridEl=document.getElementById('grafGrid');
+  const counterEl=document.getElementById('grafCounter');
+  if(!filtersEl||!gridEl)return;
+  filtersEl.innerHTML=Object.entries(GRAF_CATS).map(([k,v])=>{
+    const count=k==='ALL'?GRAFICOS_DATA.length:GRAFICOS_DATA.filter(g=>g.cat===k).length;
+    return '<button class="graf-filter-btn'+(grafFilterCat===k?' active':'')+'" onclick="filterGraficos(\''+k+'\')">'+v.label+' <span style="opacity:.5;font-weight:400">('+count+')</span></button>';
+  }).join('');
+  const filtered=grafFilterCat==='ALL'?GRAFICOS_DATA:GRAFICOS_DATA.filter(g=>g.cat===grafFilterCat);
+  gridEl.innerHTML=filtered.map((g,i)=>{
+    const c=GRAF_CATS[g.cat]||GRAF_CATS.GEN;
+    return '<div class="graf-card" onclick="openGrafLightbox('+GRAFICOS_DATA.indexOf(g)+')">'
+      +'<img src="'+g.src+'" alt="'+g.titulo+'" loading="lazy" decoding="async">'
+      +'<div class="graf-card-body">'
+      +'<div class="graf-card-cat" style="background:'+c.bg+';color:'+c.color+'">'+c.label+'</div>'
+      +'<div class="graf-card-title">'+g.titulo+'</div>'
+      +'</div></div>';
+  }).join('');
+  if(counterEl) counterEl.textContent='📊 Mostrando '+filtered.length+' de '+GRAFICOS_DATA.length+' visualizaciones';
+}
+function filterGraficos(cat){
+  grafFilterCat=cat;
+  renderGraficos();
+  document.getElementById('graficos-proceso')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function openGrafLightbox(idx){
+  lightboxIdx=idx;
+  const lb=document.getElementById('lightbox');
+  const img=document.getElementById('lightboxImg');
+  const cap=document.getElementById('lightboxCaption');
+  img.src=GRAFICOS_DATA[idx].src;
+  cap.textContent=GRAFICOS_DATA[idx].titulo+' ('+(idx+1)+'/'+GRAFICOS_DATA.length+')';
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+  window._grafLightboxActive=true;
+}
+document.addEventListener('keydown',function(e){
+  if(!window._grafLightboxActive)return;
+  const lb=document.getElementById('lightbox');
+  if(!lb||!lb.classList.contains('open')){window._grafLightboxActive=false;return;}
+  if(e.key==='Escape'){closeLightbox();window._grafLightboxActive=false;}
+  if(e.key==='ArrowLeft'){
+    lightboxIdx=(lightboxIdx-1+GRAFICOS_DATA.length)%GRAFICOS_DATA.length;
+    document.getElementById('lightboxImg').src=GRAFICOS_DATA[lightboxIdx].src;
+    document.getElementById('lightboxCaption').textContent=GRAFICOS_DATA[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+GRAFICOS_DATA.length+')';
+  }
+  if(e.key==='ArrowRight'){
+    lightboxIdx=(lightboxIdx+1)%GRAFICOS_DATA.length;
+    document.getElementById('lightboxImg').src=GRAFICOS_DATA[lightboxIdx].src;
+    document.getElementById('lightboxCaption').textContent=GRAFICOS_DATA[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+GRAFICOS_DATA.length+')';
+  }
+});
+
 // ── LÍNEA DE TIEMPO ──
 function renderTimeline(){
   const el=document.getElementById('timelineProceso');
@@ -5741,7 +5909,7 @@ function initScrollReveal(){
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';obs.unobserve(e.target);}});
   },{threshold:0.08});
-  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card, .censo-kpi, .censo-mini, .censo-svc').forEach(el=>{
+  document.querySelectorAll('.viz-card, .kpi, .eje-card, .foda-card, .strat-card, .com-item, .doc-card, .gallery-item, .nna-card, .ineq-card, .rating-card, .stat-chip, .gk-card, .ur-card, .tl-item, .tag, .sna-actor, .crosslink-card, .finding-card, .quote-block, .domain-stat, .maturity-card, .arg-card, .arg-quote, .meta-card, .rh-item, .plazo-pill, .incl-chip, .fin-card, .censo-kpi, .censo-mini, .censo-svc, .graf-card').forEach(el=>{
     el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
     obs.observe(el);
   });
@@ -6198,6 +6366,7 @@ renderTimelinePladeco();
 renderPiramideDem();
 renderGaleria();
 renderDocsEnhanced();
+renderGraficos();
 renderHojaDeRuta();
 renderEquipo();
 renderTestimonios();
