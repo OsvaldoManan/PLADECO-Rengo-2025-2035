@@ -262,7 +262,19 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .doc-info p{font-size:11px;color:var(--text2)}
 
 /* ── Footer ── */
-.footer{text-align:center;padding:40px;font-size:12px;color:var(--text2);border-top:1px solid var(--border);margin-top:40px}
+.footer{padding:0;font-size:12px;color:var(--text2);border-top:1px solid var(--border);margin-top:40px}
+.footer-inner{max-width:1100px;margin:0 auto;padding:40px 40px 20px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;align-items:start}
+.footer-brand{display:flex;flex-direction:column;gap:8px}
+.footer-brand strong{font-size:15px;color:var(--text);font-weight:800;letter-spacing:-.2px}
+.footer-brand p{font-size:11px;line-height:1.6;opacity:.7;max-width:280px}
+.footer-col h5{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text);margin-bottom:10px;opacity:.6}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.footer-col ul li{font-size:11px;line-height:1.5;display:flex;align-items:center;gap:6px}
+.footer-col ul li .fc-icon{font-size:13px;opacity:.5;width:16px;text-align:center;flex-shrink:0}
+.footer-bottom{border-top:1px solid var(--border);padding:16px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;max-width:1100px;margin:0 auto}
+.footer-bottom span{font-size:10px;opacity:.45}
+.footer-badge{background:linear-gradient(90deg,var(--green),var(--blue));color:#fff;font-size:9px;font-weight:700;padding:3px 12px;border-radius:10px;letter-spacing:.5px}
+@media(max-width:900px){.footer-inner{grid-template-columns:1fr;gap:24px;padding:32px 20px 16px}.footer-bottom{padding:12px 20px;flex-direction:column;text-align:center}}
 
 /* ── Responsive ── */
 @media(max-width:900px){
@@ -278,10 +290,15 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 }
 /* print: see enhanced @media print below */
 
-/* ── Back to top ── */
-.back-to-top{position:fixed;bottom:92px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(67,97,238,.35);z-index:99;opacity:0;transform:translateY(10px);transition:all .3s;display:flex;align-items:center;justify-content:center}
+/* ── Back to top (SVG ring) ── */
+.back-to-top{position:fixed;bottom:92px;right:28px;width:48px;height:48px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(12,31,54,.35);z-index:99;opacity:0;transform:translateY(10px);transition:all .3s;display:flex;align-items:center;justify-content:center;padding:0}
 .back-to-top.show{opacity:1;transform:translateY(0)}
-.back-to-top:hover{background:var(--accent2);transform:translateY(-2px)}
+.back-to-top:hover{transform:translateY(-3px);box-shadow:0 6px 28px rgba(12,31,54,.5)}
+.btt-svg{position:absolute;inset:0;width:48px;height:48px;transform:rotate(-90deg)}
+.btt-svg .btt-track{fill:none;stroke:rgba(255,255,255,.12);stroke-width:3}
+.btt-svg .btt-ring{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-dasharray:131.95;stroke-dashoffset:131.95;transition:stroke-dashoffset .15s ease}
+.btt-arrow{font-size:16px;position:relative;z-index:1;line-height:1;transition:transform .2s}
+.back-to-top:hover .btt-arrow{transform:translateY(-2px)}
 .uv-table tfoot td{background:var(--primary-light);color:#fff;font-weight:700;padding:10px 12px;border:none}
 .gallery-cat{grid-column:1/-1;font-size:14px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1.5px;padding:20px 0 8px;border-bottom:2px solid var(--border)}
 .gallery-cat:first-child{padding-top:0}
@@ -786,8 +803,7 @@ h1,h2,h3,h4,.kpi-value,.hero-stat .num{-webkit-font-smoothing:antialiased;-moz-o
 /* ── Eje tab active glow ── */
 .eje-tab.active{box-shadow:0 4px 16px rgba(0,0,0,.15)}
 
-/* ── Footer separator ── */
-.footer::before{content:'';display:block;width:80px;height:2px;background:var(--border);margin:0 auto 24px;border-radius:2px}
+/* ── Footer separator (now built into grid) ── */
 
 /* ── WordCloud Tooltip ── */
 #wcTooltip{position:fixed;background:#1e293b;color:#fff;padding:10px 14px;border-radius:8px;font-size:13px;pointer-events:none;z-index:500;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;transition:opacity .15s;line-height:1.4}
@@ -901,12 +917,21 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 
 /* ── F7: Toast Notifications ── */
 .toast-container{position:fixed;bottom:32px;right:32px;z-index:1000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{pointer-events:auto;padding:12px 20px;border-radius:10px;color:#fff;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.3);animation:toastIn .3s ease,toastOut .3s ease 2.7s forwards;max-width:340px}
-.toast.info{background:linear-gradient(135deg,#4361ee,#2563eb)}
-.toast.success{background:linear-gradient(135deg,#22c55e,#059669)}
-.toast.warning{background:linear-gradient(135deg,#f59e0b,#d97706)}
-@keyframes toastIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateY(10px)}}
+.toast{pointer-events:auto;padding:0;border-radius:12px;color:#fff;font-size:12px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,.25);animation:toastIn .35s cubic-bezier(.4,0,.2,1);max-width:340px;overflow:hidden;position:relative;backdrop-filter:blur(12px)}
+.toast-body{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.toast-icon{font-size:18px;flex-shrink:0;line-height:1}
+.toast-msg{flex:1;line-height:1.4}
+.toast-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:16px;cursor:pointer;padding:0 4px;flex-shrink:0;transition:color .2s;line-height:1}
+.toast-close:hover{color:#fff}
+.toast-progress{height:3px;background:rgba(255,255,255,.2);position:absolute;bottom:0;left:0;right:0}
+.toast-progress-bar{height:100%;border-radius:0 0 12px 12px;animation:toastTimer 3s linear forwards}
+.toast.info{background:rgba(37,99,235,.92)}.toast.info .toast-progress-bar{background:rgba(255,255,255,.5)}
+.toast.success{background:rgba(22,163,74,.92)}.toast.success .toast-progress-bar{background:rgba(255,255,255,.5)}
+.toast.warning{background:rgba(217,119,6,.92)}.toast.warning .toast-progress-bar{background:rgba(255,255,255,.5)}
+@keyframes toastIn{from{opacity:0;transform:translateX(40px) scale(.95)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes toastTimer{from{width:100%}to{width:0%}}
+.toast.toast-exit{animation:toastOut .3s ease forwards}
+@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(30px)}}
 
 /* ── F8: Mini-Encuesta ── */
 .mini-survey{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:2px solid var(--border);margin-top:32px;max-width:600px}
@@ -1183,9 +1208,9 @@ body.dark .ineq-card.ok .ineq-icon{background:rgba(34,197,94,.12);color:#6ee7b7}
 body.dark .sec-header .badge,body.dark .stat-chip .sc-icon{filter:brightness(.75) saturate(1.3)}
 @media(max-width:900px){.dot-nav{display:none}}
 
-/* ── Back-to-top scroll % ── */
-.back-to-top{flex-direction:column;gap:0;line-height:1}
-.back-to-top .btt-pct{font-size:8px;font-weight:700;opacity:.8;margin-top:-2px}
+/* ── Back-to-top pct label ── */
+.back-to-top .btt-pct{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(--text2);white-space:nowrap;opacity:0;transition:opacity .2s}
+.back-to-top:hover .btt-pct{opacity:1}
 
 /* ── Skip Link (Accessibility) ── */
 .skip-link{position:absolute;top:-40px;left:0;background:var(--accent);color:#fff;padding:10px 20px;z-index:9999;font-size:14px;font-weight:700;border-radius:0 0 8px 0;transition:top .3s}
@@ -1325,7 +1350,9 @@ section{position:relative}
   .ineq-grid{grid-template-columns:1fr}
   .nna-grid{grid-template-columns:1fr 1fr}
   .chatbot-fab{width:48px;height:48px;font-size:20px}
-  .back-to-top{width:38px;height:38px;font-size:16px;bottom:80px;right:16px}
+  .back-to-top{width:42px;height:42px;bottom:80px;right:16px}
+  .back-to-top .btt-svg{width:42px;height:42px}
+  .back-to-top .btt-arrow{font-size:14px}
   .dark-toggle{width:38px;height:38px;font-size:14px;right:68px}
 }
 
@@ -2796,20 +2823,42 @@ section{position:relative}
   </div>
 </section>
 
-<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver al inicio de la página">&#9650;<span class="btt-pct" id="bttPct">0%</span></button>
+<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver al inicio de la p&#225;gina">
+  <svg class="btt-svg" viewBox="0 0 48 48"><circle class="btt-track" cx="24" cy="24" r="21"/><circle class="btt-ring" id="bttRing" cx="24" cy="24" r="21"/></svg>
+  <span class="btt-arrow">&#9650;</span>
+  <span class="btt-pct" id="bttPct">0%</span>
+</button>
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge"><span class="ub-dot"></span>&#218;ltima actualizaci&#243;n: 10 Mayo 2026</div>
 
 <div class="footer">
-  <strong>PLADECO Rengo 2025-2035</strong> &mdash; Ilustre Municipalidad de Rengo<br>
-  Alcalde: Enrique Del Barrio Hernández &nbsp;|&nbsp; Director SECPLAC: Daniel Castillo Campos &nbsp;|&nbsp; Encargado: Osvaldo Mañán Arce<br>
-  <span style="opacity:.5;font-size:10px">Mayo 2026 &middot; Secretar&iacute;a de Planificaci&oacute;n Comunal</span><br>
-  <span style="display:inline-block;margin-top:8px;background:linear-gradient(90deg,var(--green),var(--blue));color:#fff;font-size:9px;font-weight:700;padding:3px 12px;border-radius:10px;letter-spacing:.5px">Datos actualizados: Mayo 2026 &middot; Censo 2024 INE</span>
-  <div class="footer-shortcuts" style="margin-top:12px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;opacity:.5;font-size:9px">
-    <span><kbd style="background:rgba(255,255,255,.15);padding:2px 6px;border-radius:4px;font-family:monospace">D</kbd> Tema oscuro</span>
-    <span><kbd style="background:rgba(255,255,255,.15);padding:2px 6px;border-radius:4px;font-family:monospace">/</kbd> Buscar</span>
-    <span><kbd style="background:rgba(255,255,255,.15);padding:2px 6px;border-radius:4px;font-family:monospace">T</kbd> Ir arriba</span>
-    <span><kbd style="background:rgba(255,255,255,.15);padding:2px 6px;border-radius:4px;font-family:monospace">Esc</kbd> Cerrar</span>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>PLADECO Rengo 2025 &#8211; 2035</strong>
+      <p>Plan de Desarrollo Comunal construido con la participaci&#243;n ciudadana de las 21 unidades vecinales de Rengo.</p>
+      <span class="footer-badge">Datos: Censo 2024 INE</span>
+    </div>
+    <div class="footer-col">
+      <h5>Autoridades</h5>
+      <ul>
+        <li><span class="fc-icon">&#127963;</span> Alcalde: Enrique Del Barrio H.</li>
+        <li><span class="fc-icon">&#128203;</span> Dir. SECPLAC: Daniel Castillo C.</li>
+        <li><span class="fc-icon">&#128100;</span> Encargado: Osvaldo Ma&#241;&#225;n A.</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Atajos de teclado</h5>
+      <ul>
+        <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">D</kbd> Tema oscuro</li>
+        <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">/</kbd> Buscar secciones</li>
+        <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">T</kbd> Ir al inicio</li>
+        <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">Esc</kbd> Cerrar modales</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 Secretar&#237;a de Planificaci&#243;n Comunal &middot; Municipalidad de Rengo</span>
+    <span>Actualizado: Mayo 2026</span>
   </div>
 </div>
 
@@ -5903,10 +5952,13 @@ function initDotNav(){
 
 function initBackToTopPct(){
   const pctEl=document.getElementById('bttPct');
+  const ring=document.getElementById('bttRing');
+  const circumference=2*Math.PI*21; // r=21 → ~131.95
   window.addEventListener('scroll',()=>{
     const h=document.documentElement.scrollHeight-window.innerHeight;
     const pct=h>0?Math.round(window.scrollY/h*100):0;
     pctEl.textContent=pct+'%';
+    if(ring){ring.style.strokeDashoffset=circumference-(pct/100*circumference);}
   },{passive:true});
 }
 
@@ -6419,10 +6471,12 @@ function initShareButtons(){
 function showToast(msg,type='info'){
   const c=document.getElementById('toastContainer');
   if(!c)return;
+  const icons={info:'&#128161;',success:'&#10004;',warning:'&#9888;'};
   const t=document.createElement('div');
-  t.className='toast '+type;t.textContent=msg;
+  t.className='toast '+type;
+  t.innerHTML='<div class="toast-body"><span class="toast-icon">'+(icons[type]||icons.info)+'</span><span class="toast-msg">'+msg+'</span><button class="toast-close" onclick="this.closest(\'.toast\').classList.add(\'toast-exit\');setTimeout(()=>this.closest(\'.toast\')?.remove(),300)">&times;</button></div><div class="toast-progress"><div class="toast-progress-bar"></div></div>';
   c.appendChild(t);
-  setTimeout(()=>t.remove(),3200);
+  setTimeout(()=>{if(t.parentNode){t.classList.add('toast-exit');setTimeout(()=>t.remove(),300);}},3200);
 }
 const toastShown=new Set();
 function initToastTriggers(){
