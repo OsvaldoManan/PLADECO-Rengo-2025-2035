@@ -1205,10 +1205,14 @@ body.dark .graf-pack .gp-btn.primary{background:var(--accent)}
 .graf-card-title{font-size:10px;font-weight:600;color:var(--text);line-height:1.3;flex:1}
 .graf-card-dl{width:28px;height:28px;border-radius:6px;border:none;background:var(--bg);color:var(--text2);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .graf-card-dl:hover{background:var(--accent);color:#fff}
-.graf-interactive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
-.graf-int-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
-.graf-int-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
-.graf-int-src{font-size:10px;color:var(--text2);margin-bottom:14px;font-style:italic}
+.graf-interactive-grid{display:grid;grid-template-columns:1fr;gap:20px}
+.graf-int-card{background:var(--card);border-radius:var(--radius);padding:24px 24px 20px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden}
+.graf-int-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--green))}
+.graf-int-card h4{font-size:15px;font-weight:800;margin-bottom:2px;color:var(--text)}
+.graf-int-src{font-size:10px;color:var(--text2);margin-bottom:16px;font-style:italic;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.graf-int-card .graf-int-wrap{position:relative;width:100%}
+.graf-int-card.gi-wide .graf-int-wrap{max-width:900px;margin:0 auto}
+@media(min-width:900px){.graf-interactive-grid{grid-template-columns:1fr 1fr}.graf-int-card.gi-full{grid-column:1/-1}}
 @media(max-width:700px){.graf-packs{grid-template-columns:1fr}.graf-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}.graf-interactive-grid{grid-template-columns:1fr}}
 
 /* ── Portal CTA final ── */
@@ -2917,20 +2921,20 @@ section{position:relative}
     <p>Versiones interactivas de los gr&#225;ficos m&#225;s relevantes del proceso</p>
   </div>
   <div class="graf-interactive-grid">
-    <div class="graf-int-card">
-      <h4>&#127919; Prioridades Ciudadanas</h4>
-      <p class="graf-int-src">Fuente: Encuesta Ciudadana Online &middot; N=119</p>
-      <canvas id="chartPrioridadesInt" height="300"></canvas>
+    <div class="graf-int-card gi-full">
+      <h4>&#127919; Prioridades Ciudadanas &#8212; &#191;Qu&#233; necesita Rengo?</h4>
+      <p class="graf-int-src">Fuente: Encuesta Ciudadana Online &middot; N=119 respondientes &middot; Pregunta de selecci&#243;n m&#250;ltiple</p>
+      <div class="graf-int-wrap" style="height:380px"><canvas id="chartPrioridadesInt"></canvas></div>
     </div>
     <div class="graf-int-card">
-      <h4>&#128200; Trayectoria ICVU Rengo 2015&#8211;2025</h4>
-      <p class="graf-int-src">Fuente: Instituto Estudios Urbanos PUC + CChC</p>
-      <canvas id="chartICVUInt" height="260"></canvas>
+      <h4>&#128200; Trayectoria ICVU 2015&#8211;2025</h4>
+      <p class="graf-int-src">&#205;ndice de Calidad de Vida Urbana &middot; PUC + CChC &middot; Rengo subi&#243; 2 niveles</p>
+      <div class="graf-int-wrap" style="height:280px"><canvas id="chartICVUInt"></canvas></div>
     </div>
     <div class="graf-int-card">
       <h4>&#128680; Evoluci&#243;n Delictual 2005&#8211;2024</h4>
-      <p class="graf-int-src">Fuente: CEAD Fiscal&#237;a Nacional &middot; Sistematizaci&#243;n SECPLA</p>
-      <canvas id="chartDelictualInt" height="260"></canvas>
+      <p class="graf-int-src">CEAD Fiscal&#237;a Nacional &middot; Sistematizaci&#243;n SECPLA Rengo &middot; Casos anuales</p>
+      <div class="graf-int-wrap" style="height:280px"><canvas id="chartDelictualInt"></canvas></div>
     </div>
   </div>
 </section>
@@ -5653,47 +5657,72 @@ document.addEventListener('keydown',function(e){
 });
 // ── GRÁFICOS INTERACTIVOS (datos de PNGs estáticos) ──
 function renderGrafInteractive(){
-  // 1) Prioridades Ciudadanas (G04)
+  const tc=getChartTextColor(),gc=getChartGridColor();
+  // 1) Prioridades Ciudadanas (G04) — horizontal bar con gradiente
   const ctxPri=document.getElementById('chartPrioridadesInt');
   if(ctxPri){
-    new Chart(ctxPri,{type:'bar',data:{
-      labels:['Salud y bienestar','Deporte y recreación','Cultura y patrimonio','Seguridad pública','Medio ambiente','Educación','Infraestructura','Empleo','Participación','Innovación','Inclusión social'],
-      datasets:[{label:'% respondientes',data:[57,52,52,48,38,24,19,19,14,9,9],
-        backgroundColor:['#a0522d','#a0522d','#a0522d','#a0522d','#2d9a4d','#999','#999','#999','#999','#999','#999'],
-        borderRadius:4,barThickness:22}]
-    },options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+'% de encuestados'}}},
-      scales:{x:{max:65,grid:{color:getChartGridColor()},ticks:{color:getChartTextColor(),callback:v=>v+'%'}},
-        y:{grid:{display:false},ticks:{color:getChartTextColor(),font:{size:11}}}}}});
+    const priLabels=['Salud y bienestar','Deporte y recreación','Cultura y patrimonio','Seguridad pública','Medio ambiente','Educación','Infraestructura','Empleo','Participación','Innovación','Inclusión social'];
+    const priData=[57,52,52,48,38,24,19,19,14,9,9];
+    const priColors=priData.map(v=>v>=50?'#c0392b':v>=40?'#d97706':v>=20?'#1a3d8f':'#64748b');
+    new Chart(ctxPri,{type:'bar',data:{labels:priLabels,datasets:[{
+      label:'% que prioriza este tema',data:priData,backgroundColor:priColors,
+      borderRadius:6,barThickness:24,borderSkipped:false}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,layout:{padding:{right:40}},
+      plugins:{legend:{display:false},
+        tooltip:{backgroundColor:'rgba(0,0,0,.85)',titleFont:{size:13,weight:'bold'},bodyFont:{size:12},
+          padding:12,cornerRadius:8,callbacks:{label:ctx=>ctx.raw+'% de los encuestados priorizan este tema'}}},
+      scales:{x:{max:65,grid:{color:gc,drawBorder:false},border:{display:false},
+          ticks:{color:tc,font:{size:11},callback:v=>v+'%'}},
+        y:{grid:{display:false},border:{display:false},
+          ticks:{color:tc,font:{size:12,weight:'600'},padding:8}}}}});
   }
-  // 2) Trayectoria ICVU (G06)
+  // 2) Trayectoria ICVU (G06) — línea con anotaciones de nivel
   const ctxICVU=document.getElementById('chartICVUInt');
   if(ctxICVU){
-    new Chart(ctxICVU,{type:'line',data:{
-      labels:['2015','2017','2019','2021','2022','2023','2024','2025'],
-      datasets:[{label:'ICVU Rengo',data:[35,42,50,51,52,53,55,63],
-        borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.1)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:function(ctx){return ctx.dataIndex===7?'#a0522d':'#2d6a4f';},pointBorderWidth:2,borderWidth:3},
-        {label:'Umbral Medio Alto',data:[62,62,62,62,62,62,62,62],borderColor:'rgba(150,150,150,.4)',borderDash:[6,4],pointRadius:0,borderWidth:1,fill:false}]
-    },options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:getChartTextColor(),font:{size:10}}},
-        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.raw+' pts'}}},
-      scales:{y:{min:20,max:80,grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}},
-        x:{grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}}}}});
+    const icvuData=[35,42,50,51,52,53,55,63];
+    const icvuLabels=['2015','2017','2019','2021','2022','2023','2024','2025'];
+    const pointColors=icvuData.map((v,i)=>i===0?'#c0392b':i===icvuData.length-1?'#c0392b':'#2d6a4f');
+    const pointSizes=icvuData.map((v,i)=>i===0||i===icvuData.length-1?7:5);
+    new Chart(ctxICVU,{type:'line',data:{labels:icvuLabels,datasets:[
+      {label:'ICVU Rengo',data:icvuData,borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,.08)',
+        fill:true,tension:.35,pointRadius:pointSizes,pointBackgroundColor:pointColors,
+        pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:3},
+      {label:'Umbral Medio Alto (62)',data:[62,62,62,62,62,62,62,62],
+        borderColor:'rgba(192,57,43,.35)',borderDash:[8,5],pointRadius:0,borderWidth:1.5,fill:false}]},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10}},
+      plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:11},usePointStyle:true,pointStyle:'circle',padding:16}},
+        tooltip:{backgroundColor:'rgba(0,0,0,.85)',padding:12,cornerRadius:8,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},
+          callbacks:{title:ctx=>'Año '+ctx[0].label,label:ctx=>{
+            if(ctx.datasetIndex===1)return 'Umbral: 62 pts';
+            const niveles={35:'Bajo',42:'Bajo',50:'Medio Bajo',51:'Medio Bajo',52:'Medio Bajo',53:'Medio Bajo',55:'Medio Bajo',63:'Medio Alto'};
+            return ctx.dataset.label+': '+ctx.raw+' pts ('+niveles[ctx.raw]+')';}}}},
+      scales:{y:{min:25,max:75,grid:{color:gc,drawBorder:false},border:{display:false},
+          ticks:{color:tc,font:{size:11},stepSize:10,callback:v=>v+' pts'}},
+        x:{grid:{display:false},border:{display:false},ticks:{color:tc,font:{size:11}}}}}});
   }
-  // 3) Evolución Delictual (DC04)
+  // 3) Evolución Delictual (DC04) — líneas con punto final destacado
   const ctxDel=document.getElementById('chartDelictualInt');
   if(ctxDel){
-    new Chart(ctxDel,{type:'line',data:{
-      labels:['2005','2010','2015','2020','2024'],
-      datasets:[
-        {label:'Contra la vida (+126%)',data:[600,730,870,1050,1351],borderColor:'#a0522d',backgroundColor:'rgba(160,82,45,.08)',fill:true,tension:.3,borderWidth:2.5,pointRadius:4},
-        {label:'VIF (+27%)',data:[480,530,580,570,608],borderColor:'#6a0dad',backgroundColor:'transparent',tension:.3,borderWidth:2,pointRadius:4},
-        {label:'Drogas (+440%)',data:[15,28,42,60,81],borderColor:'#d97706',backgroundColor:'transparent',tension:.3,borderWidth:2,pointRadius:4},
-        {label:'Armas (+308%)',data:[13,22,32,42,53],borderColor:'#1a3d8f',backgroundColor:'transparent',tension:.3,borderWidth:2,pointRadius:4}]
-    },options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:getChartTextColor(),font:{size:10}}}},
-      scales:{y:{grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}},
-        x:{grid:{color:getChartGridColor()},ticks:{color:getChartTextColor()}}}}});
+    const series=[
+      {label:'Contra la vida',data:[600,730,870,1050,1351],color:'#c0392b',delta:'+126%'},
+      {label:'VIF',data:[480,530,580,570,608],color:'#7c3aed',delta:'+27%'},
+      {label:'Drogas',data:[15,28,42,60,81],color:'#d97706',delta:'+440%'},
+      {label:'Armas',data:[13,22,32,42,53],color:'#1a3d8f',delta:'+308%'}
+    ];
+    new Chart(ctxDel,{type:'line',data:{labels:['2005','2010','2015','2020','2024'],
+      datasets:series.map(s=>({label:s.label+' ('+s.delta+')',data:s.data,borderColor:s.color,
+        backgroundColor:s===series[0]?s.color+'12':'transparent',fill:s===series[0],
+        tension:.3,borderWidth:2.5,pointRadius:[4,4,4,4,6],
+        pointBackgroundColor:s.data.map((v,i)=>i===4?s.color:'#fff'),
+        pointBorderColor:s.color,pointBorderWidth:2}))},
+    options:{responsive:true,maintainAspectRatio:false,layout:{padding:{top:10}},
+      plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:11},usePointStyle:true,pointStyle:'circle',padding:16}},
+        tooltip:{mode:'index',intersect:false,backgroundColor:'rgba(0,0,0,.85)',padding:12,cornerRadius:8,
+          titleFont:{size:13,weight:'bold'},bodyFont:{size:12},
+          callbacks:{title:ctx=>'Año '+ctx[0].label,label:ctx=>ctx.dataset.label.split(' (')[0]+': '+ctx.raw.toLocaleString('es-CL')+' casos'}}},
+      scales:{y:{grid:{color:gc,drawBorder:false},border:{display:false},
+          ticks:{color:tc,font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(0)+'K':v}},
+        x:{grid:{display:false},border:{display:false},ticks:{color:tc,font:{size:11}}}}}});
   }
 }
 
