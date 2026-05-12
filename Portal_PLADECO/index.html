@@ -1619,6 +1619,91 @@ section{position:relative}
   .kpi::after{animation:none!important}
   *{scroll-behavior:auto!important}
 }
+
+/* ══ MEJORA 1: Compromisos Filter + Progress Ring ══ */
+.comp-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.comp-f-btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
+.comp-f-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.comp-f-btn:hover{border-color:var(--accent)}
+.comp-f-btn .cf-count{display:inline-block;background:rgba(128,128,128,.15);padding:1px 6px;border-radius:8px;font-size:9px;margin-left:4px}
+.comp-f-btn.active .cf-count{background:rgba(255,255,255,.25)}
+.comp-progress-ring{position:relative;width:56px;height:56px;margin-left:auto;flex-shrink:0}
+.comp-progress-ring svg{width:56px;height:56px;transform:rotate(-90deg)}
+.comp-progress-ring .cpr-track{fill:none;stroke:var(--border);stroke-width:4}
+.comp-progress-ring .cpr-fill{fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-dasharray:150.8;stroke-dashoffset:150.8;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.comp-progress-ring .cpr-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--green)}
+.compromiso-item{transition:transform .15s,opacity .3s,max-height .4s}
+.compromiso-item.comp-hidden{opacity:0;max-height:0;padding:0;margin:0;border:none;overflow:hidden;pointer-events:none}
+
+/* ══ MEJORA 2: Scroll Flash Highlight ══ */
+@keyframes sectionFlash{0%{box-shadow:inset 4px 0 0 var(--green)}60%{box-shadow:inset 4px 0 0 var(--green)}100%{box-shadow:none}}
+section.scroll-flash{animation:sectionFlash 1.8s ease-out}
+
+/* ══ MEJORA 3: Keyboard Shortcut Hints ══ */
+.kbd-hint{display:inline-flex;align-items:center;gap:3px;font-size:9px;color:rgba(255,255,255,.3);margin-left:auto;padding-left:8px}
+.kbd-hint kbd{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-family:inherit;font-size:8px;border:1px solid rgba(255,255,255,.12);line-height:1.4}
+@media(max-width:900px){.kbd-hint{display:none}}
+.cmd-palette{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding-top:min(20vh,160px);opacity:0;pointer-events:none;transition:opacity .2s}
+.cmd-palette.open{opacity:1;pointer-events:auto}
+.cmd-box{width:520px;max-width:calc(100vw - 32px);background:var(--card);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid var(--border);overflow:hidden;transform:translateY(-12px) scale(.97);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.cmd-palette.open .cmd-box{transform:translateY(0) scale(1)}
+.cmd-input-wrap{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);gap:10px}
+.cmd-input-wrap .cmd-icon{font-size:18px;opacity:.4;flex-shrink:0}
+.cmd-input-wrap input{flex:1;border:none;background:none;color:var(--text);font-size:15px;outline:none;font-family:inherit}
+.cmd-input-wrap input::placeholder{color:var(--text2)}
+.cmd-input-wrap .cmd-esc{font-size:9px;background:var(--bg);color:var(--text2);padding:2px 6px;border-radius:4px;border:1px solid var(--border);font-weight:600}
+.cmd-results{max-height:320px;overflow-y:auto;padding:6px}
+.cmd-results:empty::after{content:'Escribe para buscar secciones...';display:block;padding:16px;text-align:center;font-size:12px;color:var(--text2)}
+.cmd-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:13px;color:var(--text)}
+.cmd-item:hover,.cmd-item.active{background:rgba(45,154,77,.08)}
+.cmd-item .cmd-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--bg);flex-shrink:0}
+.cmd-item .cmd-sec-name{font-weight:600}
+.cmd-item .cmd-sec-cat{font-size:10px;color:var(--text2);margin-left:auto}
+
+/* ══ MEJORA 4: Lightbox swipe indicator + counter ══ */
+.lightbox-counter{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);color:#fff;font-size:12px;font-weight:600;z-index:1002;background:rgba(0,0,0,.5);padding:4px 14px;border-radius:16px;letter-spacing:1px}
+.lightbox-progress{position:fixed;bottom:0;left:0;height:3px;background:var(--green);z-index:1002;transition:width .3s ease;border-radius:0 2px 2px 0}
+
+/* ══ MEJORA 5: Enhanced Print ══ */
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{font-size:11px;padding:0!important;margin:0!important}
+  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.update-badge,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox{display:none!important}
+  .main{margin-left:0!important}
+  section{page-break-inside:avoid;padding:20px 16px!important;max-width:100%!important}
+  section.reveal,.hero-stat,.kpi,.equipo-card,.testimonio-card,.compromiso-item,.galeria-card,.timeline-item{opacity:1!important;transform:none!important}
+  .hero{padding:32px 20px!important;background:#0c1f36!important;page-break-after:always}
+  .hero-bg,.hero-orb,.hero-dots,.hero-scroll-hint{display:none!important}
+  .kpi-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important}
+  .kpi{page-break-inside:avoid;border:1px solid #ccc!important}
+  .viz-row{grid-template-columns:1fr!important}
+  .viz-card{page-break-inside:avoid}
+  canvas{max-height:250px!important}
+  .foda-grid{grid-template-columns:1fr 1fr!important}
+  .foda-card{page-break-inside:avoid}
+  .arg-grid{grid-template-columns:1fr!important}
+  .footer{page-break-before:always;background:#0c1f36!important}
+  .test-track{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:8px!important;transform:none!important}
+  .test-slide{flex:none!important}
+  .testimonios-grid{overflow:visible!important}
+  .comparador-row .cmp-bar{width:var(--bar-w)!important}
+  a[href]::after{content:none!important}
+  .comp-progress-ring{display:none!important}
+}
+
+/* ══ MEJORA 6: Compromisos animation stagger ══ */
+.compromiso-item{opacity:0;transform:translateX(-10px)}
+.compromiso-item.revealed{opacity:1;transform:translateX(0);transition:opacity .4s ease,transform .4s ease}
+.compromiso-item:nth-child(1).revealed{transition-delay:0s}
+.compromiso-item:nth-child(2).revealed{transition-delay:.06s}
+.compromiso-item:nth-child(3).revealed{transition-delay:.12s}
+.compromiso-item:nth-child(4).revealed{transition-delay:.18s}
+.compromiso-item:nth-child(5).revealed{transition-delay:.24s}
+.compromiso-item:nth-child(6).revealed{transition-delay:.3s}
+.compromiso-item:nth-child(7).revealed{transition-delay:.36s}
+.compromiso-item:nth-child(8).revealed{transition-delay:.42s}
+.compromiso-item:nth-child(9).revealed{transition-delay:.48s}
+.compromiso-item:nth-child(10).revealed{transition-delay:.54s}
 </style>
 </head>
 <body>
@@ -1670,7 +1755,7 @@ section{position:relative}
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
     <span>Comprimir</span>
   </button>
-  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal"></div>
+  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal" onclick="openCmdPalette()"><span class="kbd-hint"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
   <div class="sidebar-nav">
     <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
     <a href="#encuesta"><span class="ico">&#128203;</span> Encuesta Ciudadana</a>
@@ -3109,6 +3194,16 @@ section{position:relative}
     <p>Compromisos asumidos por la autoridad comunal en el marco del PLADECO 2025-2035</p>
   </div>
   <div class="compromisos-resumen" id="compResumen"></div>
+  <div class="comp-filter-row" id="compFilterRow">
+    <button class="comp-f-btn active" onclick="filterCompromisos('all')">Todos <span class="cf-count" id="cfAll">10</span></button>
+    <button class="comp-f-btn" onclick="filterCompromisos('cumplido')">&#9989; Cumplidos <span class="cf-count" id="cfCumplido">4</span></button>
+    <button class="comp-f-btn" onclick="filterCompromisos('en-curso')">&#128260; En Curso <span class="cf-count" id="cfEnCurso">4</span></button>
+    <button class="comp-f-btn" onclick="filterCompromisos('pendiente')">&#9203; Pendientes <span class="cf-count" id="cfPendiente">2</span></button>
+    <div class="comp-progress-ring" id="compRing">
+      <svg viewBox="0 0 56 56"><circle class="cpr-track" cx="28" cy="28" r="24"/><circle class="cpr-fill" id="cprFill" cx="28" cy="28" r="24"/></svg>
+      <div class="cpr-text" id="cprText">0%</div>
+    </div>
+  </div>
   <div class="compromisos-list" id="compromisosList"></div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Compromisos p&uacute;blicos del PLADECO Rengo 2025-2035 &bull; Acuerdos del Concejo Municipal &bull; Municipalidad de Rengo</div>
 </section>
@@ -3142,6 +3237,8 @@ section{position:relative}
   <img id="lightboxImg" src="" alt="Foto galería">
   <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)" aria-label="Siguiente">&#10095;</button>
   <div class="lightbox-caption" id="lightboxCaption"></div>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+  <div class="lightbox-progress" id="lightboxProgress"></div>
 </div>
 
 <!-- ═══ DOCUMENTOS ═══ -->
@@ -3204,10 +3301,11 @@ section{position:relative}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v13.1</span>
+  <span class="ub-ver">v14.0</span>
   &#218;ltima actualizaci&#243;n: 11 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v14.0</strong> <span class="ub-date">11 May 2026</span><br>Command palette (Ctrl+K), filtro compromisos + progress ring, carrusel testimonios, barras animadas, b&#250;squeda UV, swipe lightbox, print mejorado</div>
     <div class="ub-entry"><strong>v13.1</strong> <span class="ub-date">11 May 2026</span><br>SW inteligente (cach&#233; im&#225;genes+tiles), descarga ZIP de gr&#225;ficos, fallback noscript</div>
     <div class="ub-entry"><strong>v13.0</strong> <span class="ub-date">11 May 2026</span><br>Auditor&#237;a operativa: fix chatbot m&#243;vil, error handling mapas/charts, b&#250;squeda mejorada, 10 bugs corregidos</div>
     <div class="ub-entry"><strong>v12.3</strong> <span class="ub-date">11 May 2026</span><br>Cronograma unificado con pesta&#241;as (Hoja de Ruta + Proceso), tooltip de gu&#237;a interactiva</div>
@@ -3260,6 +3358,18 @@ section{position:relative}
 <div class="pres-counter" id="presCounter"></div>
 
 </div><!-- /main -->
+
+<!-- ═══ COMMAND PALETTE (Ctrl+K) ═══ -->
+<div class="cmd-palette" id="cmdPalette" onclick="if(event.target===this)closeCmdPalette()">
+  <div class="cmd-box">
+    <div class="cmd-input-wrap">
+      <span class="cmd-icon">&#128269;</span>
+      <input type="text" id="cmdInput" placeholder="Buscar sección, dato o tema..." oninput="searchCmd(this.value)" autocomplete="off">
+      <span class="cmd-esc">ESC</span>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+  </div>
+</div>
 
 <div id="vizTooltip" class="viz-tooltip"></div>
 
@@ -6452,6 +6562,37 @@ function renderCompromisos(){
         <span class="comp-estado">${estados[c.estado]}</span>
       </div>
     </div>`).join('');
+  /* Animate progress ring */
+  const pct=Math.round(cumplidos/compromisos.length*100);
+  const fill=document.getElementById('cprFill');
+  const txt=document.getElementById('cprText');
+  if(fill){
+    const circumference=2*Math.PI*24;
+    setTimeout(()=>{fill.style.strokeDashoffset=circumference-(pct/100)*circumference;},300);
+  }
+  if(txt) txt.textContent=pct+'%';
+  /* Update filter counts */
+  const cfAll=document.getElementById('cfAll');
+  const cfC=document.getElementById('cfCumplido');
+  const cfE=document.getElementById('cfEnCurso');
+  const cfP=document.getElementById('cfPendiente');
+  if(cfAll) cfAll.textContent=compromisos.length;
+  if(cfC) cfC.textContent=cumplidos;
+  if(cfE) cfE.textContent=enCurso;
+  if(cfP) cfP.textContent=pendientes;
+}
+function filterCompromisos(estado){
+  const btns=document.querySelectorAll('.comp-f-btn');
+  btns.forEach(b=>b.classList.remove('active'));
+  event.target.closest('.comp-f-btn').classList.add('active');
+  const items=document.querySelectorAll('.compromiso-item');
+  items.forEach(item=>{
+    if(estado==='all'||item.classList.contains(estado)){
+      item.classList.remove('comp-hidden');
+    }else{
+      item.classList.add('comp-hidden');
+    }
+  });
 }
 
 // ── ANTES / DESPUÉS (2017 vs 2024) ──
@@ -7293,6 +7434,170 @@ function filterSidebar(q){
     const visibleLinks=g.querySelectorAll('a:not(.search-hidden)');
     g.style.display=visibleLinks.length?'':'none';
   });
+}
+
+// ══════════════════════════════════════════════════════
+// MEJORA: COMMAND PALETTE (Ctrl+K)
+// ══════════════════════════════════════════════════════
+const CMD_SECTIONS=[
+  {id:'dashboard',name:'Indicadores Clave',icon:'📊',cat:'Dashboard'},
+  {id:'cronograma',name:'Hoja de Ruta',icon:'📅',cat:'Cronograma'},
+  {id:'viz',name:'Visualizaciones Interactivas',icon:'📈',cat:'Interactivo'},
+  {id:'datos-vivo',name:'Datos en Vivo',icon:'⚡',cat:'Dashboard'},
+  {id:'mapa',name:'Mapa Interactivo',icon:'🗺️',cat:'Territorio'},
+  {id:'nna',name:'Diagnóstico NNA',icon:'👶',cat:'Social'},
+  {id:'censo',name:'Censo 2024',icon:'📋',cat:'Datos'},
+  {id:'desigualdad',name:'Brechas y Desigualdad',icon:'⚖️',cat:'Social'},
+  {id:'territorial-adv',name:'Análisis Territorial',icon:'🏘️',cat:'Territorio'},
+  {id:'voz',name:'Voz Ciudadana',icon:'🗣️',cat:'Participación'},
+  {id:'gestion',name:'Gestión Municipal',icon:'🏛️',cat:'Gestión'},
+  {id:'sna',name:'Red de Actores',icon:'🔗',cat:'Gestión'},
+  {id:'etnografia',name:'Etnografías UV',icon:'📝',cat:'Territorio'},
+  {id:'ods-sec',name:'ODS Vinculados',icon:'🌍',cat:'Estrategia'},
+  {id:'suenos',name:'Sueños para Rengo',icon:'💭',cat:'Participación'},
+  {id:'ejes',name:'Ejes Estratégicos',icon:'🎯',cat:'Estrategia'},
+  {id:'foda',name:'Análisis FODA',icon:'🔍',cat:'Diagnóstico'},
+  {id:'territorio',name:'Unidades Vecinales',icon:'📍',cat:'Territorio'},
+  {id:'comparador-uv',name:'Comparador UV',icon:'⚔️',cat:'Territorio'},
+  {id:'graficos',name:'Gráficos Analíticos',icon:'📉',cat:'Interactivo'},
+  {id:'argumentario',name:'Argumentario',icon:'💡',cat:'Estrategia'},
+  {id:'resumen',name:'Resumen Ejecutivo',icon:'📄',cat:'Resumen'},
+  {id:'semaforo',name:'Semáforo de Metas',icon:'🚦',cat:'Seguimiento'},
+  {id:'financiamiento',name:'Financiamiento',icon:'💰',cat:'Gestión'},
+  {id:'comisiones',name:'Comisiones de Trabajo',icon:'👥',cat:'Participación'},
+  {id:'equipo',name:'Equipo Técnico',icon:'👨‍💼',cat:'Institucional'},
+  {id:'testimonios',name:'Testimonios',icon:'💬',cat:'Voces'},
+  {id:'compromisos',name:'Compromisos Públicos',icon:'✅',cat:'Gobernanza'},
+  {id:'antes-despues',name:'Antes y Después',icon:'🔄',cat:'Evolución'},
+  {id:'galeria',name:'Galería Fotográfica',icon:'📷',cat:'Registro'},
+  {id:'documentos',name:'Documentos',icon:'📁',cat:'Documentación'},
+  {id:'encuesta',name:'Encuesta Ciudadana',icon:'📝',cat:'Participación'}
+];
+let cmdIdx=-1;
+function openCmdPalette(){
+  const pal=document.getElementById('cmdPalette');
+  pal.classList.add('open');
+  const inp=document.getElementById('cmdInput');
+  inp.value='';
+  inp.focus();
+  document.getElementById('cmdResults').innerHTML='';
+  cmdIdx=-1;
+}
+function closeCmdPalette(){
+  document.getElementById('cmdPalette').classList.remove('open');
+  cmdIdx=-1;
+}
+function searchCmd(q){
+  const res=document.getElementById('cmdResults');
+  if(!q.trim()){res.innerHTML='';cmdIdx=-1;return;}
+  const ql=stripAccents(q.toLowerCase());
+  const matches=CMD_SECTIONS.filter(s=>{
+    const name=stripAccents(s.name.toLowerCase());
+    const cat=stripAccents(s.cat.toLowerCase());
+    return name.includes(ql)||cat.includes(ql);
+  }).slice(0,8);
+  res.innerHTML=matches.map((s,i)=>
+    `<div class="cmd-item${i===0?' active':''}" onclick="goToSection('${s.id}');closeCmdPalette()" data-idx="${i}">
+      <div class="cmd-sec-icon">${s.icon}</div>
+      <span class="cmd-sec-name">${s.name}</span>
+      <span class="cmd-sec-cat">${s.cat}</span>
+    </div>`
+  ).join('');
+  cmdIdx=matches.length?0:-1;
+}
+function goToSection(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  /* Flash highlight */
+  el.classList.remove('scroll-flash');
+  void el.offsetWidth;
+  el.classList.add('scroll-flash');
+  setTimeout(()=>el.classList.remove('scroll-flash'),2000);
+}
+/* Keyboard handler for Ctrl+K and command palette navigation */
+document.addEventListener('keydown',function(e){
+  /* Ctrl+K or Cmd+K → open command palette */
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){
+    e.preventDefault();
+    const pal=document.getElementById('cmdPalette');
+    if(pal.classList.contains('open')) closeCmdPalette();
+    else openCmdPalette();
+    return;
+  }
+  /* Handle cmd palette navigation */
+  const pal=document.getElementById('cmdPalette');
+  if(!pal||!pal.classList.contains('open'))return;
+  if(e.key==='Escape'){closeCmdPalette();e.preventDefault();return;}
+  const items=pal.querySelectorAll('.cmd-item');
+  if(!items.length)return;
+  if(e.key==='ArrowDown'){
+    e.preventDefault();
+    cmdIdx=Math.min(cmdIdx+1,items.length-1);
+    items.forEach((it,i)=>it.classList.toggle('active',i===cmdIdx));
+  }else if(e.key==='ArrowUp'){
+    e.preventDefault();
+    cmdIdx=Math.max(cmdIdx-1,0);
+    items.forEach((it,i)=>it.classList.toggle('active',i===cmdIdx));
+  }else if(e.key==='Enter'&&cmdIdx>=0){
+    e.preventDefault();
+    items[cmdIdx].click();
+  }
+});
+
+// ══════════════════════════════════════════════════════
+// MEJORA: SIDEBAR CLICK → SECTION FLASH HIGHLIGHT
+// ══════════════════════════════════════════════════════
+document.querySelectorAll('.sidebar-nav a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(){
+    const id=this.getAttribute('href').replace('#','');
+    setTimeout(()=>{
+      const sec=document.getElementById(id);
+      if(sec){
+        sec.classList.remove('scroll-flash');
+        void sec.offsetWidth;
+        sec.classList.add('scroll-flash');
+        setTimeout(()=>sec.classList.remove('scroll-flash'),2000);
+      }
+    },500);
+  });
+});
+
+// ══════════════════════════════════════════════════════
+// MEJORA: LIGHTBOX SWIPE + ENHANCED COUNTER
+// ══════════════════════════════════════════════════════
+(function(){
+  const lb=document.getElementById('lightbox');
+  if(!lb)return;
+  let lbTouchX=0;
+  lb.addEventListener('touchstart',function(e){
+    lbTouchX=e.touches[0].clientX;
+  },{passive:true});
+  lb.addEventListener('touchend',function(e){
+    const dx=e.changedTouches[0].clientX-lbTouchX;
+    if(Math.abs(dx)>50){
+      if(dx<0) navLightbox(1);
+      else navLightbox(-1);
+    }
+  },{passive:true});
+})();
+/* Enhance openLightbox to update counter/progress */
+const _origOpenLightbox=openLightbox;
+openLightbox=function(idx){
+  _origOpenLightbox(idx);
+  updateLightboxUI();
+};
+const _origNavLightbox=navLightbox;
+navLightbox=function(dir){
+  _origNavLightbox(dir);
+  updateLightboxUI();
+};
+function updateLightboxUI(){
+  const counter=document.getElementById('lightboxCounter');
+  const progress=document.getElementById('lightboxProgress');
+  const total=GALERIA_FOTOS.length;
+  if(counter) counter.textContent=(lightboxIdx+1)+' / '+total;
+  if(progress) progress.style.width=((lightboxIdx+1)/total*100)+'%';
 }
 
 // ══════════════════════════════════════════════════════
