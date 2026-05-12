@@ -1022,7 +1022,7 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 @keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(30px)}}
 
 /* ── F8: Mini-Encuesta ── */
-.mini-survey{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:2px solid var(--border);margin-top:32px;max-width:600px}
+.mini-survey{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:2px solid var(--border);margin-top:32px;max-width:900px;transition:max-width .4s ease}
 .mini-survey h4{font-size:15px;font-weight:800;margin-bottom:14px}
 .survey-options{display:grid;gap:8px;margin-bottom:16px}
 .survey-opt{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:background .2s;font-size:13px}
@@ -1030,9 +1030,17 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 .survey-opt input[type=radio]{accent-color:var(--accent)}
 .survey-btn{padding:10px 24px;border-radius:10px;background:var(--accent);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
 .survey-btn:hover{background:var(--green-light);transform:translateY(-1px)}
+.survey-results-layout{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start}
+.survey-results-bars{min-width:0}
+.survey-results-chart{display:flex;flex-direction:column;align-items:center;gap:8px}
+.survey-results-chart canvas{max-width:260px;max-height:260px}
+.survey-results-total{text-align:center;font-size:11px;color:var(--text-secondary);font-weight:600;margin-top:4px}
+.survey-results-total strong{font-size:22px;display:block;color:var(--text);font-weight:800;line-height:1.2}
 .survey-result{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px}
 .survey-result .sr-bar{flex:1;height:20px;background:var(--border);border-radius:6px;overflow:hidden}
 .survey-result .sr-fill{height:100%;border-radius:6px;transition:width .8s ease;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:700;color:#fff}
+.survey-vote-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:16px;font-size:10px;font-weight:700;margin-top:12px;letter-spacing:.3px}
+@media(max-width:700px){.survey-results-layout{grid-template-columns:1fr}.survey-results-chart canvas{max-width:200px;max-height:200px}}
 /* sr-bar uses var(--border), auto-adapts to dark mode */
 
 /* ── F9: Radar Chart UV ── */
@@ -8598,10 +8606,12 @@ function renderMiniSurvey(){
 function submitSurvey(){
   const sel=document.querySelector('input[name=surveyEje]:checked');
   if(!sel){showToast('Selecciona un eje','warning');return;}
+  const idx=+sel.value;
   const votes=JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
-  votes[+sel.value]++;
+  votes[idx]++;
   localStorage.setItem('pladeco-survey-data',JSON.stringify(votes));
   localStorage.setItem('pladeco-survey','1');
+  localStorage.setItem('pladeco-survey-vote',String(idx));
   showToast('¡Gracias por votar!','success');
   const el=document.getElementById('miniSurvey');
   const ejeNames=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
@@ -8611,10 +8621,50 @@ function submitSurvey(){
 function showSurveyResults(el,names,colors){
   const votes=JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
   const total=votes.reduce((a,b)=>a+b,0)||1;
-  el.innerHTML=`<h4>🗳️ Resultados de la encuesta</h4>${names.map((n,i)=>{
+  const userVote=localStorage.getItem('pladeco-survey-vote');
+  const bars=names.map((n,i)=>{
     const pct=Math.round(votes[i]/total*100);
-    return`<div class="survey-result"><span style="min-width:120px;font-weight:600">${n}</span><div class="sr-bar"><div class="sr-fill" style="width:${pct}%;background:${colors[i]}">${pct}%</div></div><span>${votes[i]}</span></div>`;
-  }).join('')}`;
+    const isUserVote=userVote!==null&&+userVote===i;
+    return`<div class="survey-result"><span style="min-width:130px;font-weight:600${isUserVote?';color:var(--accent)':''}">${isUserVote?'&#10003; ':''}${n}</span><div class="sr-bar"><div class="sr-fill" style="width:${pct}%;background:${colors[i]}">${pct}%</div></div><span style="min-width:28px;text-align:right;font-weight:700">${votes[i]}</span></div>`;
+  }).join('');
+  el.innerHTML=`<h4>&#128483;&#65039; Resultados de la encuesta</h4>
+    <div class="survey-results-layout">
+      <div class="survey-results-bars">
+        ${bars}
+        <div class="survey-vote-badge" style="background:rgba(45,154,77,.1);color:var(--accent)">&#9989; Tu voto ha sido registrado — &#161;Gracias por participar!</div>
+      </div>
+      <div class="survey-results-chart">
+        <canvas id="surveyDonut" width="260" height="260"></canvas>
+        <div class="survey-results-total"><strong>${total}</strong>votos registrados</div>
+      </div>
+    </div>`;
+  /* Render donut chart */
+  setTimeout(function(){
+    var ctx=document.getElementById('surveyDonut');
+    if(!ctx||typeof Chart==='undefined')return;
+    new Chart(ctx,{type:'doughnut',data:{
+      labels:names,
+      datasets:[{data:votes,backgroundColor:colors,borderWidth:2,
+        borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',
+        hoverOffset:8,hoverBorderWidth:0}]
+    },options:{responsive:true,maintainAspectRatio:true,cutout:'52%',
+      animation:{duration:1200,easing:'easeOutQuart'},
+      plugins:{legend:{display:false},
+        tooltip:{backgroundColor:'rgba(0,0,0,.85)',cornerRadius:10,padding:12,
+          titleFont:{size:13,weight:'bold'},bodyFont:{size:12},
+          callbacks:{label:function(ctx){var p=total>0?Math.round(ctx.raw/total*100):0;return ctx.label+': '+ctx.raw+' votos ('+p+'%)';}}
+        }
+      }
+    },plugins:[{id:'surveyCenter',afterDraw:function(chart){
+      var c=chart.ctx,w=chart.chartArea.width,h=chart.chartArea.height,t=chart.chartArea.top,l=chart.chartArea.left;
+      c.save();
+      c.font='800 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text-secondary')||'#64748b';
+      c.textAlign='center';c.textBaseline='middle';
+      c.fillText('PRIORIDAD',l+w/2,t+h/2-6);
+      c.font='600 10px system-ui';c.fillText('CIUDADANA',l+w/2,t+h/2+8);
+      c.restore();
+    }}]});
+  },100);
 }
 
 // F10: HEATMAP CALENDARIO — REMOVED
