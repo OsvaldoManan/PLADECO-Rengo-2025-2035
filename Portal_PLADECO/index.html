@@ -1684,7 +1684,7 @@ section{position:relative}
     </div>
   </div>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente">
-    <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" decoding="async">
+    <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" loading="lazy" decoding="async">
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
     <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
   </div>
@@ -1700,7 +1700,7 @@ section{position:relative}
 <div class="chatbot-overlay" id="chatOverlay" onclick="toggleChatbot()"></div>
 <div class="chatbot-panel" id="chatPanel">
   <div class="chatbot-header">
-    <img src="3.png" alt="Bot">
+    <img src="3.png" alt="Bot" loading="lazy" decoding="async">
     <div class="chatbot-header-info">
       <h4>Asistente PLADECO Rengo</h4>
       <span>&#9679; En l&iacute;nea &mdash; Datos Censo 2024</span>
@@ -1725,7 +1725,7 @@ section{position:relative}
         <span>Ilustre<br>Municipalidad<br>de Rengo</span>
       </div>
       <div class="cb-contigo-pill">
-        <img src="2.png" alt="Contigo Rengo Mejor Comuna" decoding="async">
+        <img src="2.png" alt="Contigo Rengo Mejor Comuna" loading="lazy" decoding="async">
       </div>
     </div>
     <div class="cb-ribbon-wrap"><div class="cb-ribbon">En Obra</div></div>
@@ -6504,13 +6504,24 @@ function animateCounters(){
   obs.observe(document.querySelector('.hero'));
 }
 
+// ── UNIFIED SCROLL HANDLER (RAF-throttled, 7→1 listeners) ──
+var _scrollTicking=false,_scrollFns=[];
+function _onScroll(fn){_scrollFns.push(fn);}
+window.addEventListener('scroll',function(){
+  if(!_scrollTicking){requestAnimationFrame(function(){
+    var i=0,len=_scrollFns.length;
+    for(;i<len;i++){try{_scrollFns[i]();}catch(e){}}
+    _scrollTicking=false;
+  });_scrollTicking=true;}
+},{passive:true});
+
 // ── SCROLL PROGRESS BAR ──
 function initScrollProgress(){
   const bar = document.getElementById('scrollBar');
-  window.addEventListener('scroll',()=>{
+  _onScroll(function(){
     const h = document.documentElement.scrollHeight - window.innerHeight;
     bar.style.width = h > 0 ? (window.scrollY/h*100)+'%' : '0%';
-  },{passive:true});
+  });
 }
 
 // ── SCROLL ANIMATION ──
@@ -6759,14 +6770,14 @@ function initBreadcrumb(){
   const bc=document.getElementById('sectionBreadcrumb');
   const bcText=document.getElementById('sbText');
   const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',cronograma:'Hoja de Ruta',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
-  window.addEventListener('scroll',()=>{
+  _onScroll(function(){
     const scrollY=window.scrollY;
     if(scrollY<200){bc.classList.remove('visible');return;}
     bc.classList.add('visible');
     let cur='hero';
     document.querySelectorAll('section[id], .hero[id]').forEach(s=>{if(scrollY>=s.offsetTop-150) cur=s.id;});
     bcText.textContent=sectionNames[cur]||cur;
-  },{passive:true});
+  });
 }
 
 function initDotNav(){
@@ -6780,23 +6791,23 @@ function initDotNav(){
     a.innerHTML='<span class="dn-tip">'+(names[id]||id)+'</span>';
     container.appendChild(a);
   });
-  window.addEventListener('scroll',()=>{
+  _onScroll(function(){
     let cur='hero';
     document.querySelectorAll('section[id], .hero[id]').forEach(s=>{if(window.scrollY>=s.offsetTop-150) cur=s.id;});
     container.querySelectorAll('a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
-  },{passive:true});
+  });
 }
 
 function initBackToTopPct(){
   const pctEl=document.getElementById('bttPct');
   const ring=document.getElementById('bttRing');
   const circumference=2*Math.PI*21; // r=21 → ~131.95
-  window.addEventListener('scroll',()=>{
+  _onScroll(function(){
     const h=document.documentElement.scrollHeight-window.innerHeight;
     const pct=h>0?Math.round(window.scrollY/h*100):0;
     pctEl.textContent=pct+'%';
     if(ring){ring.style.strokeDashoffset=circumference-(pct/100*circumference);}
-  },{passive:true});
+  });
 }
 
 // ── KEYBOARD NAVIGATION ──
@@ -6836,7 +6847,7 @@ const sections = document.querySelectorAll('section, .hero');
 const navLinks = document.querySelectorAll('.sidebar-nav a');
 const btnTop = document.getElementById('btnTop');
 let lastActive='';
-window.addEventListener('scroll',()=>{
+_onScroll(function(){
   let current = '';
   sections.forEach(s=>{if(window.scrollY >= s.offsetTop - 120) current = s.id;});
   if(current!==lastActive){
@@ -6844,7 +6855,6 @@ window.addEventListener('scroll',()=>{
     navLinks.forEach(a=>{
       const isActive=a.getAttribute('href')==='#'+current;
       a.classList.toggle('active',isActive);
-      // Auto-scroll sidebar to show active link
       if(isActive&&window.innerWidth>900){
         const nav=document.querySelector('.sidebar-nav');
         const aRect=a.getBoundingClientRect();
@@ -6856,7 +6866,7 @@ window.addEventListener('scroll',()=>{
     });
   }
   btnTop.classList.toggle('show', window.scrollY > 600);
-},{passive:true});
+});
 
 // Mobile sidebar close on nav click
 navLinks.forEach(a=>a.addEventListener('click',()=>{
@@ -6890,10 +6900,9 @@ renderInclChips();renderArgumentario();renderGestionKPIs();
 animateCounters();animateKPIs();
 initScrollProgress();initScrollReveal();initSectionReveal();
 
-// TIER 2: Deferred — charts + visualizations (after first paint)
-// Safe wrapper to prevent one broken chart from killing the rest
+// TIER 2: Lazy-load charts — only render when section scrolls into view
 function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',fn.name||'anon',e.message);}}
-setTimeout(function(){
+(function initLazyCharts(){
   var t2=[renderRadar,renderDonut,renderPlazos,renderInclusion,renderODS,
   renderTreemap,renderGauges,renderPyramid,renderMap,
   renderNNA,renderNNAAge,renderNNAPartic,renderSurveyChart,
@@ -6918,8 +6927,47 @@ setTimeout(function(){
   renderArgPeso,renderArgDim,renderAccEje,renderODSAcc,
   renderBrechasMetas,renderProgresoEje,renderFinCards,renderFinEje,
   renderPlazoFin,renderTreemapFin,renderPiramideDem];
-  t2.forEach(_safeRun);
-},200);
+
+  /* Group chart renderers by their parent section */
+  var sectionMap=new Map();
+  t2.forEach(function(fn){
+    /* Find which section owns this chart's canvas/container */
+    var secEl=null;
+    /* Try common patterns: fn name often matches element id */
+    document.querySelectorAll('section').forEach(function(sec){
+      if(!secEl&&sec.querySelector('canvas,#gauges,#treemap,#mapContainer,#odsBars,.sankey-flow,.tag-cloud,.sna-network,.word-cloud'))
+        if(!sectionMap.has(sec)) secEl=sec;
+    });
+  });
+
+  /* Simpler approach: observe all sections, render charts in batches when visible */
+  var rendered=false;
+  var chartObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting&&!rendered){
+        rendered=true;
+        chartObs.disconnect();
+        /* Render charts in micro-batches to avoid blocking */
+        var idx=0;
+        function renderBatch(){
+          var end=Math.min(idx+8,t2.length);
+          for(;idx<end;idx++) _safeRun(t2[idx]);
+          if(idx<t2.length) requestAnimationFrame(renderBatch);
+        }
+        requestAnimationFrame(renderBatch);
+      }
+    });
+  },{rootMargin:'400px 0px'});
+
+  /* Observe first few content sections */
+  var secs=document.querySelectorAll('section');
+  if(secs.length>2) chartObs.observe(secs[2]);
+  if(secs.length>4) chartObs.observe(secs[4]);
+  /* Fallback: if user doesn't scroll, render after 3s */
+  setTimeout(function(){
+    if(!rendered){rendered=true;chartObs.disconnect();t2.forEach(_safeRun);}
+  },3000);
+})();
 
 // TIER 3: Heavy deferred — Censo 2024 analytics (idle time)
 const _censoRenders=function(){
@@ -7597,21 +7645,7 @@ function lazyChart(canvasId, renderFn) {
 
 // ══════════════════════════════════════════════════════
 // DEBOUNCED SCROLL (Performance)
-// ══════════════════════════════════════════════════════
-(function initDebouncedScroll(){
-  let scrollTicking = false;
-  const scrollHandlers = [];
-  window._addScrollHandler = function(fn){ scrollHandlers.push(fn); };
-  window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-      requestAnimationFrame(() => {
-        scrollHandlers.forEach(fn => { try { fn(); } catch(e){} });
-        scrollTicking = false;
-      });
-      scrollTicking = true;
-    }
-  }, {passive: true});
-})();
+/* debounced scroll framework consolidated into _onScroll above */
 
 // ══════════════════════════════════════════════════════
 // SWIPE GESTURE (Presentation Mode - Mobile)
