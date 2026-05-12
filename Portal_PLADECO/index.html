@@ -1704,6 +1704,36 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .compromiso-item:nth-child(8).revealed{transition-delay:.42s}
 .compromiso-item:nth-child(9).revealed{transition-delay:.48s}
 .compromiso-item:nth-child(10).revealed{transition-delay:.54s}
+
+/* ══ MEJORA 7: Semáforo Filter ══ */
+.sem-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.sem-f-btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2);display:flex;align-items:center;gap:5px}
+.sem-f-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sem-f-btn:hover{border-color:var(--accent)}
+.sem-f-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sem-f-btn .sf-count{font-size:9px;background:rgba(128,128,128,.15);padding:1px 6px;border-radius:8px;margin-left:2px}
+.sem-f-btn.active .sf-count{background:rgba(255,255,255,.25)}
+.meta-card.sem-hidden{display:none}
+.sem-summary{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sem-stat{padding:10px 16px;border-radius:var(--radius);font-size:12px;font-weight:700;text-align:center;min-width:100px;border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow)}
+.sem-stat .ss-val{font-size:22px;font-weight:800;display:block}
+.sem-stat .ss-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-top:2px}
+
+/* ══ MEJORA 8: TOC interactive ══ */
+.toc-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px;counter-reset:toc}
+@media(max-width:700px){.toc-list{grid-template-columns:1fr}}
+.toc-list li{counter-increment:toc}
+.toc-list li a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);text-decoration:none;color:var(--text);transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.toc-list li a:hover{border-color:var(--green);background:rgba(45,154,77,.04);transform:translateX(4px);box-shadow:0 3px 12px rgba(45,154,77,.1)}
+.toc-list li a::before{content:counter(toc);display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--bg);color:var(--green);font-size:12px;font-weight:800;flex-shrink:0;border:1px solid rgba(45,154,77,.15)}
+.toc-list li a:hover::before{background:var(--green);color:#fff}
+.toc-list li a span:first-of-type{font-size:13px;font-weight:600}
+.toc-list li a .toc-desc{font-size:10px;color:var(--text2);margin-left:auto;white-space:nowrap}
+
+/* ══ MEJORA 9: Reading time ══ */
+.sidebar-reading{padding:8px 20px;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.3px;display:flex;align-items:center;gap:5px}
+.sidebar-reading .sr-icon{font-size:12px;opacity:.5}
+body.sidebar-collapsed .sidebar-reading{display:none}
 </style>
 </head>
 <body>
@@ -1832,6 +1862,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
     <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
   </div>
+  <div class="sidebar-reading" id="sidebarReading"><span class="sr-icon">&#128214;</span> <span id="readingTime">~25 min lectura</span></div>
   <div class="sidebar-progress">
     <div class="sidebar-progress-label">Avance PLADECO</div>
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
@@ -3107,6 +3138,13 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
     <h2>&#128678; Semáforo de Metas 2024 &#8594; 2035</h2>
     <p>16 indicadores con línea base, metas intermedias y estado semafórico de avance</p>
   </div>
+  <div class="sem-summary" id="semSummary"></div>
+  <div class="sem-filter-row" id="semFilterRow">
+    <button class="sem-f-btn active" onclick="filterSemaforo('all',this)">Todos <span class="sf-count" id="sfAll">16</span></button>
+    <button class="sem-f-btn" onclick="filterSemaforo('green',this)"><span class="sem-f-dot" style="background:#22c55e"></span> En meta <span class="sf-count" id="sfGreen">0</span></button>
+    <button class="sem-f-btn" onclick="filterSemaforo('amber',this)"><span class="sem-f-dot" style="background:#f59e0b"></span> En riesgo <span class="sf-count" id="sfAmber">0</span></button>
+    <button class="sem-f-btn" onclick="filterSemaforo('red',this)"><span class="sem-f-dot" style="background:#ef4444"></span> Cr&#237;tico <span class="sf-count" id="sfRed">0</span></button>
+  </div>
   <div class="semaforo-grid" id="semaforoGrid"></div>
   <div class="viz-row">
     <div class="viz-card"><h3>Brecha al 2035 por Meta</h3><div class="viz-sub">Distancia porcentual entre l&#237;nea base 2024 y meta 2035</div><canvas id="chartBrechasMetas"></canvas></div>
@@ -3301,10 +3339,11 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v14.0</span>
+  <span class="ub-ver">v15.0</span>
   &#218;ltima actualizaci&#243;n: 11 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v15.0</strong> <span class="ub-date">11 May 2026</span><br>Filtro sem&#225;foro de metas (verde/amarillo/rojo), TOC interactiva, tiempo de lectura sidebar, footer Ctrl+K, summary cards sem&#225;foro</div>
     <div class="ub-entry"><strong>v14.0</strong> <span class="ub-date">11 May 2026</span><br>Command palette (Ctrl+K), filtro compromisos + progress ring, carrusel testimonios, barras animadas, b&#250;squeda UV, swipe lightbox, print mejorado</div>
     <div class="ub-entry"><strong>v13.1</strong> <span class="ub-date">11 May 2026</span><br>SW inteligente (cach&#233; im&#225;genes+tiles), descarga ZIP de gr&#225;ficos, fallback noscript</div>
     <div class="ub-entry"><strong>v13.0</strong> <span class="ub-date">11 May 2026</span><br>Auditor&#237;a operativa: fix chatbot m&#243;vil, error handling mapas/charts, b&#250;squeda mejorada, 10 bugs corregidos</div>
@@ -3337,6 +3376,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
     <div class="footer-col">
       <h5>Atajos de teclado</h5>
       <ul>
+        <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">Ctrl+K</kbd> B&#250;squeda global</li>
         <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">D</kbd> Tema oscuro</li>
         <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">/</kbd> Buscar secciones</li>
         <li><kbd style="background:var(--border);padding:2px 7px;border-radius:4px;font-family:monospace;font-size:10px">T</kbd> Ir al inicio</li>
@@ -5666,6 +5706,41 @@ function renderSemaforo(){
     </div>`;
   }).join('');
 }
+/* Semáforo filter + summary */
+function initSemaforoFilter(){
+  const cards=document.querySelectorAll('#semaforoGrid .meta-card');
+  let green=0,amber=0,red=0;
+  cards.forEach(c=>{
+    const light=c.querySelector('.mc-light');
+    if(light){
+      if(light.classList.contains('green')) green++;
+      else if(light.classList.contains('amber')) amber++;
+      else if(light.classList.contains('red')) red++;
+    }
+  });
+  const total=cards.length;
+  document.getElementById('sfAll').textContent=total;
+  document.getElementById('sfGreen').textContent=green;
+  document.getElementById('sfAmber').textContent=amber;
+  document.getElementById('sfRed').textContent=red;
+  /* Summary */
+  const sumEl=document.getElementById('semSummary');
+  if(sumEl) sumEl.innerHTML=`
+    <div class="sem-stat" style="border-top:3px solid #22c55e"><span class="ss-val" style="color:#22c55e">${green}</span><span class="ss-lbl">En meta</span></div>
+    <div class="sem-stat" style="border-top:3px solid #f59e0b"><span class="ss-val" style="color:#f59e0b">${amber}</span><span class="ss-lbl">En riesgo</span></div>
+    <div class="sem-stat" style="border-top:3px solid #ef4444"><span class="ss-val" style="color:#ef4444">${red}</span><span class="ss-lbl">Crítico</span></div>
+    <div class="sem-stat" style="border-top:3px solid var(--blue)"><span class="ss-val" style="color:var(--blue)">${Math.round(green/total*100)}%</span><span class="ss-lbl">Cumplimiento</span></div>`;
+}
+function filterSemaforo(status,btn){
+  document.querySelectorAll('.sem-f-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#semaforoGrid .meta-card').forEach(c=>{
+    if(status==='all'){c.classList.remove('sem-hidden');return;}
+    const light=c.querySelector('.mc-light');
+    if(light&&light.classList.contains(status)) c.classList.remove('sem-hidden');
+    else c.classList.add('sem-hidden');
+  });
+}
 function renderBrechasMetas(){
   new Chart(document.getElementById('chartBrechasMetas'),{type:'bar',data:{
     labels:METAS_SEG.map(m=>m.ind),
@@ -7234,12 +7309,21 @@ renderEjes();renderUV();renderComisiones();renderDocs();renderDocsEnhanced();
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
 renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
 renderTimelinePladeco();renderTimeline();renderEthnoTabs();
-renderSemaforo();renderComparador();renderResumen();renderPlazoPills();
+renderSemaforo();initSemaforoFilter();renderComparador();renderResumen();renderPlazoPills();
 renderInclChips();renderArgumentario();renderGestionKPIs();
 animateCounters();animateKPIs();
 initScrollProgress();initScrollReveal();initSectionReveal();
 
 // TIER 2: Lazy-load charts — only render when section scrolls into view
+/* Reading time estimate */
+(function(){
+  var text=document.querySelector('.main');
+  if(!text)return;
+  var words=text.textContent.split(/\s+/).length;
+  var mins=Math.ceil(words/200);
+  var el=document.getElementById('readingTime');
+  if(el) el.textContent='~'+mins+' min lectura · '+document.querySelectorAll('section').length+' secciones';
+})();
 function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',fn.name||'anon',e.message);}}
 (function initLazyCharts(){
   var t2=[renderRadar,renderDonut,renderPlazos,renderInclusion,renderODS,
