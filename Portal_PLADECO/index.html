@@ -1042,6 +1042,52 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 .survey-vote-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:16px;font-size:10px;font-weight:700;margin-top:12px;letter-spacing:.3px}
 @media(max-width:700px){.survey-results-layout{grid-template-columns:1fr}.survey-results-chart canvas{max-width:200px;max-height:200px}}
 /* sr-bar uses var(--border), auto-adapts to dark mode */
+/* ── Sync indicator ── */
+.survey-sync{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--text-secondary);margin-top:6px;opacity:.7}
+.survey-sync-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block}
+.survey-sync-dot.offline{background:#ef4444}
+
+/* ── Visitor Counter Section ── */
+.visit-section{padding:48px 0 40px}
+.visit-section .sec-header{text-align:center;margin-bottom:32px}
+.visit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto 28px;padding:0 20px}
+.visit-kpi{background:var(--card);border-radius:16px;padding:20px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);transition:all .35s cubic-bezier(.23,1,.32,1);position:relative;overflow:hidden}
+.visit-kpi:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(12,31,54,.1)}
+.visit-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0}
+.visit-kpi:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#22c55e)}
+.visit-kpi:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#60a5fa)}
+.visit-kpi:nth-child(3)::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.visit-kpi:nth-child(4)::before{background:linear-gradient(90deg,var(--accent2),#fbbf24)}
+.visit-kpi-icon{font-size:24px;margin-bottom:6px}
+.visit-kpi-num{font-size:28px;font-weight:800;color:var(--text);line-height:1.2}
+.visit-kpi:nth-child(1) .visit-kpi-num{color:var(--green)}
+.visit-kpi:nth-child(2) .visit-kpi-num{color:var(--blue)}
+.visit-kpi:nth-child(3) .visit-kpi-num{color:#7c3aed}
+.visit-kpi:nth-child(4) .visit-kpi-num{color:var(--accent2)}
+.visit-kpi-label{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+.visit-charts{display:grid;grid-template-columns:2fr 1fr;gap:20px;max-width:1100px;margin:0 auto;padding:0 20px}
+.visit-chart-card{background:var(--card);border-radius:16px;padding:20px 24px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.visit-chart-card h5{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.visit-chart-card canvas{width:100%!important;max-height:180px}
+.visit-recent{max-height:180px;overflow-y:auto;scrollbar-width:thin}
+.visit-recent-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;font-size:11px;color:var(--text2);transition:background .15s}
+.visit-recent-item:nth-child(odd){background:rgba(0,0,0,.015)}
+body.dark .visit-recent-item:nth-child(odd){background:rgba(255,255,255,.03)}
+.visit-recent-item .vr-date{font-weight:600;color:var(--text);min-width:80px}
+.visit-recent-item .vr-time{font-family:'SF Mono',monospace;font-size:10px;color:var(--text-secondary);background:var(--bg);padding:2px 8px;border-radius:4px}
+.visit-no-data{text-align:center;padding:24px;font-size:12px;color:var(--text-secondary);font-style:italic}
+.visit-setup-hint{max-width:1100px;margin:20px auto 0;padding:0 20px}
+.visit-setup-box{background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(45,154,77,.04));border:1px dashed var(--border);border-radius:12px;padding:16px 20px;font-size:12px;color:var(--text2);line-height:1.7}
+.visit-setup-box code{background:var(--border);padding:2px 6px;border-radius:4px;font-size:11px;font-family:'SF Mono',monospace}
+.visit-setup-box strong{color:var(--text)}
+@media(max-width:768px){
+  .visit-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .visit-charts{grid-template-columns:1fr}
+  .visit-kpi-num{font-size:22px}
+}
+@media(max-width:480px){
+  .visit-grid{grid-template-columns:1fr}
+}
 
 /* ── F9: Radar Chart UV ── */
 .comp-radar-wrap{margin-top:20px;overflow:hidden;border-radius:var(--radius)}
@@ -1832,6 +1878,34 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   .mvv-card-img{padding:16px 16px 0}
   .mvv-section{padding:36px 0 40px}
 }
+/* ── Imagen Objetivo card ── */
+.mvv-objetivo{margin-top:32px;background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);transition:all .45s cubic-bezier(.23,1,.32,1);position:relative}
+.mvv-objetivo:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(12,31,54,.12),0 8px 20px rgba(124,58,237,.08);border-color:rgba(124,58,237,.2)}
+.mvv-objetivo-accent{height:4px;background:linear-gradient(90deg,#7c3aed,var(--green),var(--blue),var(--accent2))}
+.mvv-objetivo-inner{display:grid;grid-template-columns:320px 1fr;gap:0;align-items:stretch}
+.mvv-objetivo-img{padding:24px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(45,154,77,.03));cursor:pointer;position:relative;overflow:hidden}
+.mvv-objetivo-img::after{content:'🔍 Ver en grande';position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(transparent,rgba(12,31,54,.75));color:#fff;font-size:11px;font-weight:600;text-align:center;letter-spacing:.5px;opacity:0;transform:translateY(8px);transition:all .35s cubic-bezier(.23,1,.32,1)}
+.mvv-objetivo:hover .mvv-objetivo-img::after{opacity:1;transform:translateY(0)}
+.mvv-objetivo-img img{max-width:280px;width:100%;height:auto;border-radius:14px;transition:transform .5s cubic-bezier(.23,1,.32,1);filter:drop-shadow(0 4px 12px rgba(0,0,0,.08))}
+.mvv-objetivo:hover .mvv-objetivo-img img{transform:scale(1.03)}
+.mvv-objetivo-body{padding:28px 32px;display:flex;flex-direction:column;justify-content:center}
+.mvv-objetivo-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding:4px 10px;border-radius:6px;width:fit-content;color:#7c3aed;background:rgba(124,58,237,.08)}
+.mvv-objetivo-title{font-size:21px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.3}
+.mvv-objetivo-text{font-size:13.5px;color:var(--text2);line-height:1.75;flex:1}
+.mvv-objetivo-text strong{color:var(--text);font-weight:600}
+.mvv-objetivo-icons{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.mvv-objetivo:hover .mvv-icon-pill{background:rgba(124,58,237,.05);border-color:rgba(124,58,237,.1)}
+.mvv-objetivo-year{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(45,154,77,.06));font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.5px;width:fit-content}
+@media(max-width:768px){
+  .mvv-objetivo-inner{grid-template-columns:1fr}
+  .mvv-objetivo-img{padding:20px 20px 0}
+  .mvv-objetivo-img img{max-width:240px}
+  .mvv-objetivo-body{padding:20px 20px 24px}
+}
+@media(max-width:600px){
+  .mvv-objetivo-title{font-size:18px}
+  .mvv-objetivo-body{padding:16px 18px 20px}
+}
 </style>
 </head>
 <body>
@@ -1952,6 +2026,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <a href="#cronograma" onclick="setTimeout(function(){var t=document.querySelectorAll('.crono-tab');if(t[1])switchCronoTab(t[1],1);},300)"><span class="ico">&#128221;</span> Proceso PLADECO</a>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Documentos</a>
+      <a href="#visitas"><span class="ico">&#128202;</span> Visitas</a>
       <a href="#graficos-proceso"><span class="ico">&#128202;</span> Gr&#225;ficos</a>
       <a href="#cartografias"><span class="ico">&#128506;</span> Cartograf&#237;as</a>
     </div>
@@ -2073,8 +2148,8 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div style="max-width:1100px;margin:0 auto;padding:0 20px">
     <div class="mvv-header">
       <div class="mvv-badge">&#127963;&#65039; Identidad Institucional</div>
-      <h2>Misión, Visión y <span>Principios</span></h2>
-      <p>Los pilares que orientan la gestión de la Ilustre Municipalidad de Rengo y el desarrollo del PLADECO 2025-2035.</p>
+      <h2>Misión, Visión, Principios y <span>Proyección</span></h2>
+      <p>Los pilares que orientan la gestión de la Ilustre Municipalidad de Rengo y la imagen objetivo del PLADECO 2025-2035.</p>
     </div>
     <div class="mvv-grid">
       <!-- MISIÓN -->
@@ -2132,6 +2207,28 @@ body.sidebar-collapsed .sidebar-reading{display:none}
         </div>
       </div>
     </div>
+    <!-- PROYECCIÓN 2035 — Imagen Objetivo -->
+    <div class="mvv-objetivo">
+      <div class="mvv-objetivo-accent"></div>
+      <div class="mvv-objetivo-inner">
+        <div class="mvv-objetivo-img" onclick="openMvvViewer(3)">
+          <img src="proyeccion-2035.png" alt="Imagen Objetivo Comunal — Proyección Rengo 2035" loading="lazy" decoding="async">
+        </div>
+        <div class="mvv-objetivo-body">
+          <div class="mvv-objetivo-tag">&#128302; Imagen Objetivo Comunal</div>
+          <h3 class="mvv-objetivo-title">Proyección Rengo 2035</h3>
+          <p class="mvv-objetivo-text">En el 2035, Rengo habrá consolidado un <strong>modelo de desarrollo territorial inclusivo y sostenible</strong>, que reduce las desigualdades entre sus localidades urbanas y rurales, aprovecha sus <strong>ventajas comparativas en agricultura, agroindustria y cultura</strong>, y posiciona a sus comunidades como <strong>protagonistas activas de la transformación local</strong> en la macrozona central de Chile.</p>
+          <div class="mvv-objetivo-icons">
+            <span class="mvv-icon-pill">&#127758; Sostenibilidad</span>
+            <span class="mvv-icon-pill">&#9878;&#65039; Equidad territorial</span>
+            <span class="mvv-icon-pill">&#127793; Agricultura</span>
+            <span class="mvv-icon-pill">&#127917; Cultura</span>
+            <span class="mvv-icon-pill">&#129309; Comunidades activas</span>
+          </div>
+          <div class="mvv-objetivo-year">&#128197; Horizonte 2025 — 2035</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2162,7 +2259,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
         </div>
       </div>
 
-      <div class="fuente-info-card" onclick="openMvvViewer(3)" role="button" tabindex="0" aria-label="Ver diagrama de Fuentes de Informaci&#243;n del PLADECO en pantalla completa" onkeydown="if(event.key==='Enter')openMvvViewer(3)">
+      <div class="fuente-info-card" onclick="openMvvViewer(4)" role="button" tabindex="0" aria-label="Ver diagrama de Fuentes de Informaci&#243;n del PLADECO en pantalla completa" onkeydown="if(event.key==='Enter')openMvvViewer(3)">
         <div class="fuente-info-card-accent"></div>
         <div class="fuente-info-card-header">
           <span class="fuente-info-badge">&#128202; Diagn&#243;stico</span>
@@ -3494,6 +3591,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <button class="mvv-viewer-dot" onclick="goMvvViewer(1)"></button>
     <button class="mvv-viewer-dot" onclick="goMvvViewer(2)"></button>
     <button class="mvv-viewer-dot" onclick="goMvvViewer(3)"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(4)"></button>
   </div>
   <div class="mvv-viewer-caption" id="mvvViewerCap"></div>
 </div>
@@ -3558,10 +3656,11 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v15.0</span>
-  &#218;ltima actualizaci&#243;n: 11 Mayo 2026
+  <span class="ub-ver">v16.0</span>
+  &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v16.0</strong> <span class="ub-date">12 May 2026</span><br>Imagen Objetivo Comunal (Proyecci&#243;n 2035), encuesta con backend sync, contador de visitas con anal&#237;tica, Google Apps Script backend</div>
     <div class="ub-entry"><strong>v15.0</strong> <span class="ub-date">11 May 2026</span><br>Filtro sem&#225;foro de metas (verde/amarillo/rojo), TOC interactiva, tiempo de lectura sidebar, footer Ctrl+K, summary cards sem&#225;foro</div>
     <div class="ub-entry"><strong>v14.0</strong> <span class="ub-date">11 May 2026</span><br>Command palette (Ctrl+K), filtro compromisos + progress ring, carrusel testimonios, barras animadas, b&#250;squeda UV, swipe lightbox, print mejorado</div>
     <div class="ub-entry"><strong>v13.1</strong> <span class="ub-date">11 May 2026</span><br>SW inteligente (cach&#233; im&#225;genes+tiles), descarga ZIP de gr&#225;ficos, fallback noscript</div>
@@ -3576,6 +3675,54 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <div class="ub-entry"><strong>v9.0</strong> <span class="ub-date">01 May 2026</span><br>Estructura base, 6 ejes estrat&#233;gicos, 225 pol&#237;ticas</div>
   </div>
 </div>
+
+<!-- ═══ CONTADOR DE VISITAS ═══ -->
+<section id="visitas" class="visit-section reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">&#128202; Analítica</div>
+    <h2>Visitas al Portal</h2>
+    <p>Estadísticas de participación ciudadana digital en el PLADECO</p>
+  </div>
+  <div class="visit-grid" id="visitGrid">
+    <div class="visit-kpi">
+      <div class="visit-kpi-icon">&#128101;</div>
+      <div class="visit-kpi-num" id="vkTotal">—</div>
+      <div class="visit-kpi-label">Visitas totales</div>
+    </div>
+    <div class="visit-kpi">
+      <div class="visit-kpi-icon">&#128197;</div>
+      <div class="visit-kpi-num" id="vkToday">—</div>
+      <div class="visit-kpi-label">Hoy</div>
+    </div>
+    <div class="visit-kpi">
+      <div class="visit-kpi-icon">&#128200;</div>
+      <div class="visit-kpi-num" id="vkWeek">—</div>
+      <div class="visit-kpi-label">Esta semana</div>
+    </div>
+    <div class="visit-kpi">
+      <div class="visit-kpi-icon">&#128197;</div>
+      <div class="visit-kpi-num" id="vkMonth">—</div>
+      <div class="visit-kpi-label">Este mes</div>
+    </div>
+  </div>
+  <div class="visit-charts" id="visitCharts">
+    <div class="visit-chart-card">
+      <h5>&#128200; Visitas diarias (últimos 30 días)</h5>
+      <canvas id="visitDailyChart" height="180"></canvas>
+    </div>
+    <div class="visit-chart-card">
+      <h5>&#128337; Actividad reciente</h5>
+      <div class="visit-recent" id="visitRecent">
+        <div class="visit-no-data" id="visitNoData">Conecta el backend para ver estadísticas en tiempo real</div>
+      </div>
+    </div>
+  </div>
+  <div class="visit-setup-hint" id="visitSetup">
+    <div class="visit-setup-box">
+      &#128736;&#65039; <strong>Configuración:</strong> Para activar el registro de visitas, despliega el <code>backend-appscript.js</code> en Google Apps Script y pega la URL en la variable <code>BACKEND_URL</code> del portal. Instrucciones en el archivo.
+    </div>
+  </div>
+</section>
 
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
@@ -6222,6 +6369,7 @@ const MVV_IMGS=[
   {src:'mision.png',titulo:'Misión — Municipalidad de Rengo'},
   {src:'vision.png',titulo:'Visión — Municipalidad de Rengo'},
   {src:'valores.png',titulo:'Principios Institucionales — Municipalidad de Rengo'},
+  {src:'proyeccion-2035.png',titulo:'Imagen Objetivo Comunal — Proyección Rengo 2035'},
   {src:'fuente-info.png',titulo:'Fuentes de Información — PLADECO Rengo 2025-2035'}
 ];
 let mvvIdx=0;
@@ -8591,54 +8739,90 @@ function initToastTriggers(){
 }
 
 // ══════════════════════════════════════════════════════
-// F8: MINI-ENCUESTA
+// BACKEND CONFIG — Pega aquí la URL de tu Google Apps Script
 // ══════════════════════════════════════════════════════
-function renderMiniSurvey(){
-  const el=document.getElementById('miniSurvey');if(!el)return;
-  const ejeNames=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
-  const ejeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
-  const voted=localStorage.getItem('pladeco-survey');
-  if(voted){showSurveyResults(el,ejeNames,ejeColors);return;}
-  el.innerHTML=`<h4>🗳️ ¿Qué eje priorizarías para tu comuna?</h4>
-    <div class="survey-options" role="radiogroup" aria-label="Seleccionar eje prioritario">${ejeNames.map((n,i)=>`<label class="survey-opt"><input type="radio" name="surveyEje" value="${i}" aria-label="Eje ${i+1}: ${n}"> Eje ${i+1}: ${n}</label>`).join('')}</div>
-    <button class="survey-btn" onclick="submitSurvey()">Votar</button>`;
+var BACKEND_URL=''; // ← Pegar URL de Apps Script aquí
+
+// Helper: fetch con timeout y fallback
+function backendFetch(action,method,body){
+  if(!BACKEND_URL)return Promise.resolve(null);
+  var url=method==='GET'?BACKEND_URL+'?action='+action:BACKEND_URL;
+  var opts={method:method,headers:{'Content-Type':'text/plain'}};
+  if(body)opts.body=JSON.stringify(body);
+  return fetch(url,opts).then(function(r){return r.json();}).catch(function(){return null;});
 }
+
+// ══════════════════════════════════════════════════════
+// F8: MINI-ENCUESTA (con backend sync)
+// ══════════════════════════════════════════════════════
+var _surveyEjeNames=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
+var _surveyEjeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
+
+function renderMiniSurvey(){
+  var el=document.getElementById('miniSurvey');if(!el)return;
+  var voted=localStorage.getItem('pladeco-survey');
+  if(voted){
+    // Mostrar resultados locales inmediatamente
+    showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,null);
+    // Luego sincronizar con backend para datos acumulados reales
+    backendFetch('votes','GET').then(function(data){
+      if(data&&data.ok&&data.votes){
+        localStorage.setItem('pladeco-survey-data',JSON.stringify(data.votes));
+        showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,data.votes);
+      }
+    });
+    return;
+  }
+  el.innerHTML='<h4>🗳️ ¿Qué eje priorizarías para tu comuna?</h4>'+
+    '<div class="survey-options" role="radiogroup" aria-label="Seleccionar eje prioritario">'+
+    _surveyEjeNames.map(function(n,i){return'<label class="survey-opt"><input type="radio" name="surveyEje" value="'+i+'" aria-label="Eje '+(i+1)+': '+n+'"> Eje '+(i+1)+': '+n+'</label>';}).join('')+
+    '</div><button class="survey-btn" onclick="submitSurvey()">Votar</button>';
+}
+
 function submitSurvey(){
-  const sel=document.querySelector('input[name=surveyEje]:checked');
+  var sel=document.querySelector('input[name=surveyEje]:checked');
   if(!sel){showToast('Selecciona un eje','warning');return;}
-  const idx=+sel.value;
-  const votes=JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
+  var idx=+sel.value;
+  // Guardar localmente
+  var votes=JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
   votes[idx]++;
   localStorage.setItem('pladeco-survey-data',JSON.stringify(votes));
   localStorage.setItem('pladeco-survey','1');
   localStorage.setItem('pladeco-survey-vote',String(idx));
   showToast('¡Gracias por votar!','success');
-  const el=document.getElementById('miniSurvey');
-  const ejeNames=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
-  const ejeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
-  showSurveyResults(el,ejeNames,ejeColors);
+  var el=document.getElementById('miniSurvey');
+  showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,null);
+  // Enviar al backend
+  backendFetch('vote','POST',{action:'vote',eje:idx}).then(function(data){
+    if(data&&data.ok&&data.votes){
+      localStorage.setItem('pladeco-survey-data',JSON.stringify(data.votes));
+      showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,data.votes);
+    }
+  });
 }
-function showSurveyResults(el,names,colors){
-  const votes=JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
-  const total=votes.reduce((a,b)=>a+b,0)||1;
-  const userVote=localStorage.getItem('pladeco-survey-vote');
-  const bars=names.map((n,i)=>{
-    const pct=Math.round(votes[i]/total*100);
-    const isUserVote=userVote!==null&&+userVote===i;
-    return`<div class="survey-result"><span style="min-width:130px;font-weight:600${isUserVote?';color:var(--accent)':''}">${isUserVote?'&#10003; ':''}${n}</span><div class="sr-bar"><div class="sr-fill" style="width:${pct}%;background:${colors[i]}">${pct}%</div></div><span style="min-width:28px;text-align:right;font-weight:700">${votes[i]}</span></div>`;
+
+function showSurveyResults(el,names,colors,remoteVotes){
+  var votes=remoteVotes||JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
+  var total=votes.reduce(function(a,b){return a+b;},0)||1;
+  var userVote=localStorage.getItem('pladeco-survey-vote');
+  var isOnline=!!BACKEND_URL;
+  var bars=names.map(function(n,i){
+    var pct=Math.round(votes[i]/total*100);
+    var isUserVote=userVote!==null&&+userVote===i;
+    return'<div class="survey-result"><span style="min-width:130px;font-weight:600'+(isUserVote?';color:var(--accent)':'')+'">'+(isUserVote?'&#10003; ':'')+n+'</span><div class="sr-bar"><div class="sr-fill" style="width:'+pct+'%;background:'+colors[i]+'">'+pct+'%</div></div><span style="min-width:28px;text-align:right;font-weight:700">'+votes[i]+'</span></div>';
   }).join('');
-  el.innerHTML=`<h4>&#128483;&#65039; Resultados de la encuesta</h4>
-    <div class="survey-results-layout">
-      <div class="survey-results-bars">
-        ${bars}
-        <div class="survey-vote-badge" style="background:rgba(45,154,77,.1);color:var(--accent)">&#9989; Tu voto ha sido registrado — &#161;Gracias por participar!</div>
-      </div>
-      <div class="survey-results-chart">
-        <canvas id="surveyDonut" width="260" height="260"></canvas>
-        <div class="survey-results-total"><strong>${total}</strong>votos registrados</div>
-      </div>
-    </div>`;
-  /* Render donut chart */
+  el.innerHTML='<h4>&#128483;&#65039; Resultados de la encuesta</h4>'+
+    '<div class="survey-results-layout">'+
+      '<div class="survey-results-bars">'+bars+
+        '<div class="survey-vote-badge" style="background:rgba(45,154,77,.1);color:var(--accent)">&#9989; Tu voto ha sido registrado &mdash; &iexcl;Gracias por participar!</div>'+
+        '<div class="survey-sync"><span class="survey-sync-dot '+(isOnline?'':'offline')+'"></span>'+(isOnline?'Datos sincronizados con el servidor':'Datos locales &mdash; configura backend para acumular')+'</div>'+
+      '</div>'+
+      '<div class="survey-results-chart">'+
+        '<canvas id="surveyDonut" width="260" height="260"></canvas>'+
+        '<div class="survey-results-total"><strong>'+total+'</strong> votos registrados</div>'+
+      '</div>'+
+    '</div>';
+  // Render donut chart
   setTimeout(function(){
     var ctx=document.getElementById('surveyDonut');
     if(!ctx||typeof Chart==='undefined')return;
@@ -8652,7 +8836,7 @@ function showSurveyResults(el,names,colors){
       plugins:{legend:{display:false},
         tooltip:{backgroundColor:'rgba(0,0,0,.85)',cornerRadius:10,padding:12,
           titleFont:{size:13,weight:'bold'},bodyFont:{size:12},
-          callbacks:{label:function(ctx){var p=total>0?Math.round(ctx.raw/total*100):0;return ctx.label+': '+ctx.raw+' votos ('+p+'%)';}}
+          callbacks:{label:function(c){var p=total>0?Math.round(c.raw/total*100):0;return c.label+': '+c.raw+' votos ('+p+'%)';}}
         }
       }
     },plugins:[{id:'surveyCenter',afterDraw:function(chart){
@@ -8665,6 +8849,186 @@ function showSurveyResults(el,names,colors){
       c.restore();
     }}]});
   },100);
+}
+
+// ══════════════════════════════════════════════════════
+// VISITOR COUNTER — Registro y visualización de visitas
+// ══════════════════════════════════════════════════════
+function registerVisit(){
+  // Evitar múltiples registros en la misma sesión
+  if(sessionStorage.getItem('pladeco-visit-registered'))return;
+  sessionStorage.setItem('pladeco-visit-registered','1');
+  // Registrar localmente
+  var visits=JSON.parse(localStorage.getItem('pladeco-visits')||'[]');
+  var now=new Date();
+  visits.push({ts:now.toISOString(),date:now.toLocaleDateString('es-CL'),time:now.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})});
+  // Mantener últimos 500 registros locales
+  if(visits.length>500)visits=visits.slice(-500);
+  localStorage.setItem('pladeco-visits',JSON.stringify(visits));
+  // Enviar al backend
+  backendFetch('visit','POST',{action:'visit',page:location.pathname,referrer:document.referrer||'',ua:navigator.userAgent||''});
+}
+
+function renderVisitCounter(){
+  var grid=document.getElementById('visitGrid');
+  if(!grid)return;
+  // Intentar cargar desde backend primero
+  backendFetch('visits','GET').then(function(data){
+    if(data&&data.ok&&data.visits){
+      displayVisitStats(data.visits);
+      var setup=document.getElementById('visitSetup');
+      if(setup)setup.style.display='none';
+    }else{
+      // Fallback: datos locales
+      displayVisitStatsLocal();
+    }
+  });
+}
+
+function displayVisitStats(stats){
+  // KPIs
+  animateNumber('vkTotal',stats.total);
+  animateNumber('vkToday',stats.today);
+  animateNumber('vkWeek',stats.week);
+  animateNumber('vkMonth',stats.month);
+  // Gráfico diario
+  if(stats.daily&&stats.daily.length>0&&typeof Chart!=='undefined'){
+    renderVisitChart(stats.daily);
+  }
+  // Actividad reciente: mostrar últimas horas con datos
+  if(stats.hourly){
+    renderRecentActivity(stats);
+  }
+}
+
+function displayVisitStatsLocal(){
+  var visits=JSON.parse(localStorage.getItem('pladeco-visits')||'[]');
+  var now=new Date();
+  var today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var weekAgo=new Date(today.getTime()-7*24*60*60*1000);
+  var monthAgo=new Date(today.getTime()-30*24*60*60*1000);
+  var todayCount=0,weekCount=0,monthCount=0;
+  var dailyCounts={};
+  // Inicializar últimos 30 días
+  for(var d=29;d>=0;d--){
+    var date=new Date(today.getTime()-d*24*60*60*1000);
+    var key=date.toISOString().split('T')[0];
+    dailyCounts[key]=0;
+  }
+  visits.forEach(function(v){
+    var ts=new Date(v.ts);
+    if(isNaN(ts.getTime()))return;
+    var key=ts.toISOString().split('T')[0];
+    if(dailyCounts.hasOwnProperty(key))dailyCounts[key]++;
+    if(ts>=today)todayCount++;
+    if(ts>=weekAgo)weekCount++;
+    if(ts>=monthAgo)monthCount++;
+  });
+  animateNumber('vkTotal',visits.length);
+  animateNumber('vkToday',todayCount);
+  animateNumber('vkWeek',weekCount);
+  animateNumber('vkMonth',monthCount);
+  // Gráfico
+  var daily=Object.keys(dailyCounts).sort().map(function(k){return{date:k,count:dailyCounts[k]};});
+  if(daily.length>0&&typeof Chart!=='undefined'){
+    renderVisitChart(daily);
+  }
+  // Recientes
+  var recent=visits.slice(-15).reverse();
+  var container=document.getElementById('visitRecent');
+  if(container&&recent.length>0){
+    container.innerHTML=recent.map(function(v){
+      return'<div class="visit-recent-item"><span class="vr-date">'+v.date+'</span><span class="vr-time">'+v.time+'</span></div>';
+    }).join('');
+  }
+}
+
+function animateNumber(id,target){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var start=0;
+  var duration=800;
+  var startTime=null;
+  target=target||0;
+  function step(ts){
+    if(!startTime)startTime=ts;
+    var progress=Math.min((ts-startTime)/duration,1);
+    var eased=1-Math.pow(1-progress,3);
+    el.textContent=Math.round(start+(target-start)*eased).toLocaleString('es-CL');
+    if(progress<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+var _visitChart=null;
+function renderVisitChart(daily){
+  var ctx=document.getElementById('visitDailyChart');
+  if(!ctx)return;
+  var labels=daily.map(function(d){
+    var parts=d.date.split('-');
+    return parts[2]+'/'+parts[1];
+  });
+  var data=daily.map(function(d){return d.count;});
+  var maxVal=Math.max.apply(null,data)||1;
+  if(_visitChart){_visitChart.destroy();}
+  _visitChart=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:labels,
+      datasets:[{
+        data:data,
+        backgroundColor:data.map(function(v){
+          var alpha=0.3+(v/maxVal)*0.7;
+          return'rgba(45,154,77,'+alpha+')';
+        }),
+        borderRadius:4,
+        borderSkipped:false
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      animation:{duration:800,easing:'easeOutQuart'},
+      scales:{
+        x:{
+          grid:{display:false},
+          ticks:{font:{size:8},maxRotation:45,color:getComputedStyle(document.body).getPropertyValue('--text-secondary')||'#94a3b8'}
+        },
+        y:{
+          beginAtZero:true,
+          grid:{color:'rgba(0,0,0,.04)'},
+          ticks:{font:{size:9},stepSize:1,color:getComputedStyle(document.body).getPropertyValue('--text-secondary')||'#94a3b8'}
+        }
+      },
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(0,0,0,.85)',cornerRadius:8,padding:10,
+          titleFont:{size:11,weight:'bold'},bodyFont:{size:11},
+          callbacks:{
+            title:function(items){return'Fecha: '+items[0].label;},
+            label:function(c){return c.raw+' visita'+(c.raw!==1?'s':'');}
+          }
+        }
+      }
+    }
+  });
+}
+
+function renderRecentActivity(stats){
+  var container=document.getElementById('visitRecent');
+  if(!container)return;
+  if(stats.hourly&&stats.hourly.length>0){
+    var items=stats.hourly.filter(function(h){return h.count>0;}).map(function(h){
+      var hora=h.hour<10?'0'+h.hour:h.hour;
+      return'<div class="visit-recent-item"><span class="vr-date">Hoy</span><span class="vr-time">'+hora+':00 — '+h.count+' visita'+(h.count>1?'s':'')+'</span></div>';
+    });
+    if(items.length>0){
+      container.innerHTML=items.join('');
+    }else{
+      container.innerHTML='<div class="visit-no-data">Sin visitas registradas hoy</div>';
+    }
+  }
 }
 
 // F10: HEATMAP CALENDARIO — REMOVED
@@ -8831,6 +9195,8 @@ initReadingProgress();
 initShareButtons();
 initToastTriggers();
 renderMiniSurvey();
+registerVisit();
+renderVisitCounter();
 // renderHeatmapCal removed
 initParallax();
 initFiltrosCruzados();
