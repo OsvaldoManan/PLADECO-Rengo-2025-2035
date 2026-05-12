@@ -282,15 +282,15 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .modal-close{position:fixed;top:20px;right:24px;color:#fff;font-size:32px;cursor:pointer;z-index:1001;background:none;border:none}
 
 /* ── Comisiones timeline ── */
-.com-timeline{position:relative;padding-left:40px}
-.com-timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--eje6),var(--eje1),var(--eje2),var(--eje3),var(--eje4),var(--eje5));border-radius:2px}
-.com-item{position:relative;margin-bottom:20px}
-.com-item::before{content:'';position:absolute;left:-34px;top:16px;width:12px;height:12px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 3px var(--accent)}
-.com-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
-.com-card .com-date{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px}
-.com-card h4{font-size:15px;font-weight:700;margin:4px 0 8px}
-.com-card .com-tags{display:flex;flex-wrap:wrap;gap:4px}
-.com-card .com-tag{font-size:10px;padding:3px 8px;border-radius:4px;background:var(--bg);color:var(--text2);font-weight:600}
+.com-timeline{display:grid;grid-template-columns:1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--card)}
+.com-item{display:grid;grid-template-columns:130px 1fr auto;align-items:center;padding:10px 16px;gap:12px;border-bottom:1px solid var(--border);transition:background .2s}
+.com-item:last-child{border-bottom:none}
+.com-item:hover{background:var(--bg)}
+.com-item .com-date{font-size:11px;font-weight:700;color:var(--accent);white-space:nowrap}
+.com-item .com-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+.com-item .com-tags{display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end}
+.com-item .com-tag{font-size:9px;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--text2);font-weight:600;white-space:nowrap}
+@media(max-width:700px){.com-item{grid-template-columns:1fr;gap:4px;padding:10px 12px}.com-item .com-tags{justify-content:flex-start}}
 
 /* ── Docs ── */
 .docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
@@ -397,6 +397,8 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .gauge:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
 .gauge svg{width:140px;height:82px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.08))}
 .gauge .g-label{font-size:11px;font-weight:700;margin-top:6px;color:var(--text);letter-spacing:.3px}
+.gauge .g-meta{font-size:9px;color:var(--text2);margin-top:4px;letter-spacing:.2px}
+.gauge .g-meta strong{color:var(--text);font-weight:700}
 .gauge .g-eje{font-size:9px;font-weight:600;margin-top:3px;padding:2px 8px;border-radius:20px;display:inline-block}
 .gauge .g-value{font-size:18px;font-weight:800}
 .dark .gauge{border-color:rgba(255,255,255,.06);background:rgba(255,255,255,.03)}
@@ -573,10 +575,7 @@ body.dark .foda-q-a{background:rgba(245,158,11,.08);border-color:rgba(245,158,11
 .pill{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:600;color:var(--text2);display:inline-flex;align-items:center;gap:5px}
 .pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
-/* ── Improved Gauge ── */
-.gauge{text-align:center;padding:8px}
-.gauge svg{width:130px;height:80px}
-.gauge .g-label{font-size:10px;font-weight:600;margin-top:2px;color:var(--text2);line-height:1.2;max-width:120px;margin-left:auto;margin-right:auto}
+/* ── Improved Gauge (see main gauge rules above) ── */
 
 /* ── ODS Heatmap ── */
 .heatmap-wrap{overflow-x:auto}
@@ -1030,18 +1029,7 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 .comp-radar-wrap{margin-top:20px;overflow:hidden;border-radius:var(--radius)}
 .comp-radar-wrap canvas{max-height:360px;background:var(--card)}
 
-/* ── F10: Heatmap Calendar ── */
-.heatmap-cal{margin-top:24px}
-.heatmap-cal h4{font-size:14px;font-weight:700;margin-bottom:10px}
-.heatmap-cal-grid{display:flex;gap:3px;flex-wrap:wrap}
-.hm-month{display:flex;flex-direction:column;align-items:center;gap:2px}
-.hm-month-label{font-size:8px;font-weight:700;color:var(--text2);text-transform:uppercase;margin-bottom:2px}
-.hm-month-squares{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
-.hm-sq{width:14px;height:14px;border-radius:3px;transition:transform .2s}
-.hm-sq:hover{transform:scale(1.4)}
-.hm-sq.low{background:#2d3748}.hm-sq.med{background:#48c76e66}.hm-sq.high{background:#48c76e}.hm-sq.vhigh{background:#22863a}
-.hm-sq.pending{background:transparent;border:1px solid #48c76e44}
-body.dark .hm-sq.low{background:#1a2332}
+/* ── F10: (Heatmap removed) ── */
 
 /* ── F12: Presentation Mode ── */
 .presentation-btn{position:fixed;bottom:32px;left:32px;z-index:99;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;gap:6px;transition:all .3s}
@@ -1507,6 +1495,45 @@ section{position:relative}
 /* ── Rating card star glow ── */
 .rating-card .rc-stars{text-shadow:0 0 6px rgba(245,146,29,.3)}
 
+/* ── Accessibility: reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
+  .hero-orb,.chatbot-fab,.mascot-img,.splash-logo{animation:none!important}
+  .hero-stat,.kpi,.com-item{opacity:1!important;transform:none!important}
+}
+
+/* ── Viz-card subtle hover lift ── */
+.viz-card{transition:transform .25s ease,box-shadow .25s ease}
+.viz-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(12,31,54,.10)}
+
+/* ── Compact stat-row on small screens ── */
+@media(max-width:600px){
+  .stat-row{gap:8px}
+  .stat-chip{padding:8px 12px;border-radius:10px}
+  .stat-chip .sc-icon{width:28px;height:28px;font-size:14px}
+  .stat-chip .sc-val{font-size:16px}
+  .stat-chip .sc-lbl{font-size:10px}
+}
+
+/* ── Compact filters (pill style) ── */
+.com-f-btn{border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:.3px}
+.com-f-btn.active{box-shadow:0 2px 8px rgba(12,31,54,.15)}
+
+/* ── Sec-fuente collapsible on mobile ── */
+@media(max-width:700px){
+  .sec-fuente{font-size:10px;padding:8px 12px;margin-top:18px;line-height:1.5}
+}
+
+/* ── Print optimization ── */
+@media print{
+  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters{display:none!important}
+  .main{margin-left:0!important}
+  section{page-break-inside:avoid;padding:24px 20px}
+  .hero{background:#0c1f36!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .com-timeline{border:1px solid #ccc}
+  .com-item{border-bottom:1px solid #eee}
+}
+
 /* ── Better sidebar search ── */
 .sidebar-search{padding:8px 16px 12px}
 .sidebar-search input{width:100%;padding:7px 12px 7px 8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);border-radius:8px;font-size:11px;transition:all .3s;outline:none}
@@ -1565,7 +1592,7 @@ section{position:relative}
 <body>
 <!-- Splash Screen -->
 <div class="splash-screen" id="splashScreen">
-  <img src="1.png" alt="Contigo Rengo" class="splash-logo">
+  <img src="1.png" alt="Contigo Rengo" class="splash-logo" width="130" height="130">
   <span class="splash-text">PLADECO 2025–2035</span>
   <div class="splash-bar"><div class="splash-bar-fill"></div></div>
 </div>
@@ -1598,7 +1625,7 @@ section{position:relative}
 <!-- Sidebar -->
 <nav class="sidebar" role="navigation" aria-label="Navegación principal">
   <div class="sidebar-brand">
-    <img src="1.png" alt="Contigo Rengo Mejor Comuna" class="sidebar-logo-contigo" decoding="async">
+    <img src="1.png" alt="Contigo Rengo Mejor Comuna" class="sidebar-logo-contigo" width="78" height="78" decoding="async">
   </div>
   <div class="sidebar-brand-sub">
     <img src="escudo-rengo-blanco.svg" alt="Escudo" width="18" height="30" decoding="async">
@@ -1684,7 +1711,7 @@ section{position:relative}
     </div>
   </div>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente">
-    <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" loading="lazy" decoding="async">
+    <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" width="60" height="60" loading="lazy" decoding="async">
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
     <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
   </div>
@@ -1700,7 +1727,7 @@ section{position:relative}
 <div class="chatbot-overlay" id="chatOverlay" onclick="toggleChatbot()"></div>
 <div class="chatbot-panel" id="chatPanel">
   <div class="chatbot-header">
-    <img src="3.png" alt="Bot" loading="lazy" decoding="async">
+    <img src="3.png" alt="Bot" width="36" height="36" loading="lazy" decoding="async">
     <div class="chatbot-header-info">
       <h4>Asistente PLADECO Rengo</h4>
       <span>&#9679; En l&iacute;nea &mdash; Datos Censo 2024</span>
@@ -1725,7 +1752,7 @@ section{position:relative}
         <span>Ilustre<br>Municipalidad<br>de Rengo</span>
       </div>
       <div class="cb-contigo-pill">
-        <img src="2.png" alt="Contigo Rengo Mejor Comuna" loading="lazy" decoding="async">
+        <img src="2.png" alt="Contigo Rengo Mejor Comuna" width="50" height="28" loading="lazy" decoding="async">
       </div>
     </div>
     <div class="cb-ribbon-wrap"><div class="cb-ribbon">En Obra</div></div>
@@ -1752,7 +1779,7 @@ section{position:relative}
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-content">
     <div class="hero-logo-wrap">
-      <img src="hero-banner.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo" decoding="async">
+      <img src="hero-banner.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo" width="333" height="188" decoding="async">
     </div>
     <div class="hero-brand">&#127963;&#65039; Ilustre Municipalidad de Rengo</div>
     <h1>Plan de Desarrollo Comunal<br><span>Rengo 2025 — 2035</span></h1>
@@ -1788,7 +1815,7 @@ section{position:relative}
       <a href="https://forms.gle/kZWhPKhUbS7F1XzC8" target="_blank" rel="noopener" class="encuesta-cta-btn">&#128203; Responder encuesta</a>
     </div>
     <div class="encuesta-qr">
-      <img src="qr-encuesta.png" alt="QR Encuesta PLADECO Rengo" loading="lazy" decoding="async">
+      <img src="qr-encuesta.png" alt="QR Encuesta PLADECO Rengo" width="104" height="104" loading="lazy" decoding="async">
       <div class="encuesta-qr-label">Escanea con tu celular</div>
     </div>
   </div>
@@ -2019,7 +2046,7 @@ section{position:relative}
     <div class="viz-card viz-full">
       <div class="gauge-section-header">
         <h3>🎯 Medidores de Progreso hacia Metas 2035</h3>
-        <div class="gs-sub">Cada medidor refleja la posición actual de la línea base 2024 respecto a la meta decenal 2035, permitiendo visualizar de forma rápida cuánto camino queda por recorrer en cada indicador estratégico del PLADECO.</div>
+        <div class="gs-sub">Posición actual de cada indicador respecto a su meta 2035. Indicadores crecientes: LB/Meta×100. Indicadores decrecientes: Meta/LB×100. Valores simétricos — ambos alcanzan 100% al cumplir la meta.</div>
         <div class="gauge-legend">
           <div class="gauge-legend-item"><div class="gl-dot" style="background:#22c55e"></div>Avance alto (&gt;66%)</div>
           <div class="gauge-legend-item"><div class="gl-dot" style="background:#f59e0b"></div>Avance medio (33-66%)</div>
@@ -2455,8 +2482,6 @@ section{position:relative}
       <canvas id="chartDeptos"></canvas>
     </div>
   </div>
-  <!-- F10: Heatmap Calendario -->
-  <div class="heatmap-cal" id="heatmapCal"></div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Matriz de Acciones PLADECO Rengo 2025-2035 — 225 acciones distribuidas en 6 ejes, 32 objetivos estrat&eacute;gicos &bull; Municipalidad de Rengo, Presupuesto Municipal 2025 &bull; SUBDERE, Fuentes de Financiamiento Municipal</div>
 </section>
 
@@ -2810,11 +2835,11 @@ section{position:relative}
   </div>
   <div class="comparador-wrap">
     <div>
-      <select class="comp-select" id="compUV1" onchange="renderComparadorUV()"></select>
+      <select class="comp-select" id="compUV1" aria-label="Seleccionar primera unidad vecinal" onchange="renderComparadorUV()"></select>
       <div class="comp-card" id="compCard1" style="margin-top:12px"></div>
     </div>
     <div>
-      <select class="comp-select" id="compUV2" onchange="renderComparadorUV()"></select>
+      <select class="comp-select" id="compUV2" aria-label="Seleccionar segunda unidad vecinal" onchange="renderComparadorUV()"></select>
       <div class="comp-card" id="compCard2" style="margin-top:12px"></div>
     </div>
   </div>
@@ -3158,7 +3183,7 @@ section{position:relative}
   </div>
 </div>
 
-<div class="footer">
+<footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <div class="footer-brand">
       <strong>PLADECO Rengo 2025 &#8211; 2035</strong>
@@ -3187,7 +3212,7 @@ section{position:relative}
     <span>&#169; 2026 Secretar&#237;a de Planificaci&#243;n Comunal &middot; Municipalidad de Rengo</span>
     <span>Actualizado: Mayo 2026</span>
   </div>
-</div>
+</footer>
 
 <!-- F7: Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
@@ -3922,7 +3947,7 @@ function openModal(src,alt){
   document.getElementById('modal').classList.add('show');
 }
 
-// ── RENDER COMISIONES (with filtering) ──
+// ── RENDER COMISIONES (compact table layout) ──
 function renderComisiones(filter){
   filter = filter || 'all';
   const container = document.getElementById('com-timeline');
@@ -3934,15 +3959,11 @@ function renderComisiones(filter){
     if(filter === '19-27 Mayo') return c.fecha.match(/^(19|22|26|27)\s/);
     return true;
   });
-  container.innerHTML = filtered.map(c => `
-    <div class="com-item">
-      <div class="com-card">
-        <div class="com-date">${c.fecha}</div>
-        <h4>${c.title}</h4>
-        <div class="com-tags">${c.tags.map(t=>`<span class="com-tag">${t}</span>`).join('')}</div>
-      </div>
-    </div>
-  `).join('');
+  container.innerHTML = filtered.map(c => `<div class="com-item">
+    <span class="com-date">${c.fecha}</span>
+    <span class="com-title">${c.title}</span>
+    <span class="com-tags">${c.tags.map(t=>`<span class="com-tag">${t}</span>`).join('')}</span>
+  </div>`).join('');
 }
 function filterCom(btn, filter){
   document.querySelectorAll('.com-f-btn').forEach(b => b.classList.remove('active'));
@@ -4019,7 +4040,12 @@ const FINANCIAL={
 };
 
 function normMeta(val,m){
-  if(m.dec) return m.lb===m.m35?100:Math.max(0,Math.min(100,(1-(val-m.m35)/(m.lb-m.m35))*100));
+  /* Symmetric position: increasing = val/m35, decreasing = m35/val
+     Both approach 100% as goal is reached */
+  if(m.dec){
+    if(val<=0) return 100;
+    return Math.max(0,Math.min(100,(m.m35/val)*100));
+  }
   return m.m35===0?0:Math.min(100,(val/m.m35)*100);
 }
 
@@ -4196,9 +4222,9 @@ function renderGauges(){
       <circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="3" fill="${color}" opacity=".9">
         <animate attributeName="opacity" values="1;.5;1" dur="2s" repeatCount="indefinite"/>
       </circle>
-      <text x="${cx}" y="${cy-8}" text-anchor="middle" font-size="17" font-weight="800" fill="${color}">${pct.toFixed(0)}%</text>
-      <text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="7" font-weight="600" fill="var(--text2,#94a3b8)">${m.dec?'↓ Reducir':'↑ Aumentar'}</text>
-    </svg><div class="g-label">${m.n}</div><div class="g-eje" style="background:${ejeCl[eId]}18;color:${ejeCl[eId]}">Eje ${eId}: ${ejeNm[eId]}</div></div>`;
+      <text x="${cx}" y="${cy-10}" text-anchor="middle" font-size="16" font-weight="800" fill="${color}">${pct>=10?pct.toFixed(0):pct.toFixed(1)}%</text>
+      <text x="${cx}" y="${cy+2}" text-anchor="middle" font-size="6.5" font-weight="600" fill="var(--text2,#94a3b8)">${m.dec?'↓ Reducir':'↑ Aumentar'}</text>
+    </svg><div class="g-label">${m.n}</div><div class="g-meta">LB: <strong>${m.lb}</strong> → Meta: <strong>${m.m35}</strong></div><div class="g-eje" style="background:${ejeCl[eId]}18;color:${ejeCl[eId]}">Eje ${eId}: ${ejeNm[eId]}</div></div>`;
   }).join('');
 }
 
@@ -7385,7 +7411,7 @@ function renderMiniSurvey(){
   const voted=localStorage.getItem('pladeco-survey');
   if(voted){showSurveyResults(el,ejeNames,ejeColors);return;}
   el.innerHTML=`<h4>🗳️ ¿Qué eje priorizarías para tu comuna?</h4>
-    <div class="survey-options">${ejeNames.map((n,i)=>`<label class="survey-opt"><input type="radio" name="surveyEje" value="${i}"> Eje ${i+1}: ${n}</label>`).join('')}</div>
+    <div class="survey-options" role="radiogroup" aria-label="Seleccionar eje prioritario">${ejeNames.map((n,i)=>`<label class="survey-opt"><input type="radio" name="surveyEje" value="${i}" aria-label="Eje ${i+1}: ${n}"> Eje ${i+1}: ${n}</label>`).join('')}</div>
     <button class="survey-btn" onclick="submitSurvey()">Votar</button>`;
 }
 function submitSurvey(){
@@ -7410,24 +7436,7 @@ function showSurveyResults(el,names,colors){
   }).join('')}`;
 }
 
-// ══════════════════════════════════════════════════════
-// F10: HEATMAP CALENDARIO
-// ══════════════════════════════════════════════════════
-function renderHeatmapCal(){
-  const el=document.getElementById('heatmapCal');if(!el)return;
-  const months=[
-    {y:2025,m:'Ene',lvl:'low'},{y:2025,m:'Feb',lvl:'low'},{y:2025,m:'Mar',lvl:'low'},{y:2025,m:'Abr',lvl:'low'},
-    {y:2025,m:'May',lvl:'med'},{y:2025,m:'Jun',lvl:'med'},{y:2025,m:'Jul',lvl:'med'},{y:2025,m:'Ago',lvl:'med'},
-    {y:2025,m:'Sep',lvl:'high'},{y:2025,m:'Oct',lvl:'high'},{y:2025,m:'Nov',lvl:'high'},{y:2025,m:'Dic',lvl:'high'},
-    {y:2026,m:'Ene',lvl:'vhigh'},{y:2026,m:'Feb',lvl:'vhigh'},{y:2026,m:'Mar',lvl:'vhigh'},{y:2026,m:'Abr',lvl:'vhigh'},{y:2026,m:'May',lvl:'vhigh'},
-    {y:2026,m:'Jun',lvl:'pending'},{y:2026,m:'Jul',lvl:'pending'},{y:2026,m:'Ago',lvl:'pending'},{y:2026,m:'Sep',lvl:'pending'},{y:2026,m:'Oct',lvl:'pending'},{y:2026,m:'Nov',lvl:'pending'},{y:2026,m:'Dic',lvl:'pending'}
-  ];
-  el.innerHTML=`<h4>📅 Actividad PLADECO 2025-2026</h4>
-    <div class="heatmap-cal-grid">${months.map(m=>`<div class="hm-month"><div class="hm-month-label">${m.m} ${m.y%100}</div><div class="hm-month-squares">${[1,2,3,4].map(()=>`<div class="hm-sq ${m.lvl}" title="${m.m} ${m.y}"></div>`).join('')}</div></div>`).join('')}</div>
-    <div style="display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--text2);align-items:center;flex-wrap:wrap">
-      <span>Menos</span><div class="hm-sq low" style="display:inline-block"></div><div class="hm-sq med" style="display:inline-block"></div><div class="hm-sq high" style="display:inline-block"></div><div class="hm-sq vhigh" style="display:inline-block"></div><span>Más</span><div class="hm-sq pending" style="display:inline-block"></div><span>Pendiente</span>
-    </div>`;
-}
+// F10: HEATMAP CALENDARIO — REMOVED
 
 // ══════════════════════════════════════════════════════
 // F11: PARALLAX HERO
@@ -7435,19 +7444,15 @@ function renderHeatmapCal(){
 function initParallax(){
   const hero=document.querySelector('.hero');if(!hero)return;
   const orbs=hero.querySelectorAll('.hero-orb');
-  let ticking=false;
-  window.addEventListener('scroll',()=>{
-    if(!ticking){requestAnimationFrame(()=>{
-      const y=window.scrollY;
-      if(y<window.innerHeight*1.5){
-        orbs.forEach((orb,i)=>{
-          const speed=i===0?0.3:i===1?-0.2:0.15;
-          orb.style.transform=`translateY(${y*speed}px)`;
-        });
-      }
-      ticking=false;
-    });ticking=true;}
-  },{passive:true});
+  _onScroll(function(){
+    var y=window.scrollY;
+    if(y<window.innerHeight*1.5){
+      orbs.forEach(function(orb,i){
+        var speed=i===0?0.3:i===1?-0.2:0.15;
+        orb.style.transform='translateY('+y*speed+'px)';
+      });
+    }
+  });
 }
 
 // ══════════════════════════════════════════════════════
@@ -7595,7 +7600,7 @@ initReadingProgress();
 initShareButtons();
 initToastTriggers();
 renderMiniSurvey();
-renderHeatmapCal();
+// renderHeatmapCal removed
 initParallax();
 initFiltrosCruzados();
 renderSankeyFlow();
