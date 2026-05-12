@@ -1168,16 +1168,26 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
 .equipo-card .eq-area{display:inline-block;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;margin-top:8px}
 
 /* ── Testimonios ── */
-.testimonios-grid{columns:3;column-gap:16px}
-@media(max-width:1100px){.testimonios-grid{columns:2}}
-.testimonio-card{background:var(--card);border-radius:var(--radius);padding:22px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;break-inside:avoid;margin-bottom:16px;display:inline-block;width:100%}
+.testimonios-grid{position:relative;overflow:hidden;border-radius:var(--radius)}
+.test-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);will-change:transform}
+.test-slide{flex:0 0 33.333%;padding:0 8px;box-sizing:border-box}
+@media(max-width:1100px){.test-slide{flex:0 0 50%}}
+@media(max-width:700px){.test-slide{flex:0 0 100%}}
+.testimonio-card{background:var(--card);border-radius:var(--radius);padding:22px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;height:100%;display:flex;flex-direction:column}
 .testimonio-card::before{content:'\201C';position:absolute;top:8px;right:14px;font-size:48px;opacity:.08;font-family:Georgia,serif;line-height:1;pointer-events:none}
-.testimonio-card .test-texto{font-size:12.5px;color:var(--text);line-height:1.65;font-style:italic;margin-bottom:14px}
-.testimonio-card .test-footer{display:flex;align-items:center;gap:10px}
+.testimonio-card .test-texto{font-size:12.5px;color:var(--text);line-height:1.65;font-style:italic;margin-bottom:14px;flex:1}
+.testimonio-card .test-footer{display:flex;align-items:center;gap:10px;margin-top:auto}
 .testimonio-card .test-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
 .testimonio-card .test-meta{flex:1;min-width:0}
 .testimonio-card .test-autor{font-size:11.5px;font-weight:700;color:var(--text)}
 .testimonio-card .test-origen{font-size:9.5px;color:var(--text-secondary);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.test-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px}
+.test-dots{display:flex;gap:6px;align-items:center}
+.test-dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(128,128,128,.25);cursor:pointer;padding:0;transition:all .25s}
+.test-dots button.active{background:var(--green);width:24px;border-radius:4px}
+.test-nav{background:var(--card);border:1px solid var(--border);width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text);transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.test-nav:hover{background:var(--green);color:#fff;border-color:var(--green);transform:scale(1.08)}
+.test-counter{font-size:11px;color:var(--text2);font-weight:600;min-width:40px;text-align:center}
 
 /* ── Compromisos ── */
 .compromisos-list{display:flex;flex-direction:column;gap:12px}
@@ -1233,7 +1243,6 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
   .equipo-grid{grid-template-columns:1fr 1fr;gap:10px}
   .equipo-card{padding:16px 12px}
   .equipo-card .eq-avatar{width:48px;height:48px;font-size:20px}
-  .testimonios-grid{columns:1}
   .testimonio-card{padding:18px 14px}
   .contexto-pilares{grid-template-columns:1fr 1fr;gap:10px}
   .compromisos-resumen{gap:6px}
@@ -6301,7 +6310,8 @@ function renderEquipo(){
     </div>`).join('');
 }
 
-// ── TESTIMONIOS CIUDADANOS ──
+// ── TESTIMONIOS CIUDADANOS — CAROUSEL ──
+let testIdx=0,testTimer=null,testPerPage=3;
 function renderTestimonios(){
   const el=document.getElementById('testimoniosGrid');
   if(!el)return;
@@ -6324,16 +6334,86 @@ function renderTestimonios(){
     {texto:'El emprendimiento femenino necesita apoyo real: ferias, capacitación, créditos blandos. No solo discursos.',autor:'Emprendedora local',origen:'UV Rosario — Mesa Económica'}
   ];
   const colors=['#2d9a4d','#1a3d8f','#c0392b','#f5921d','#7c3aed','#2980b9','#d97706','#059669','#dc2626','#8B1A1A','#457b9d','#e63946','#2a9d8f','#f4a261','#4338ca','#db2777'];
-  el.innerHTML=testimonios.map((t,i)=>{
+  const slides=testimonios.map((t,i)=>{
     const initials=t.autor.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
     const bg=colors[i%colors.length];
-    return `<div class="testimonio-card">
-      <div class="test-texto">${t.texto}</div>
+    return `<div class="test-slide"><div class="testimonio-card">
+      <div class="test-texto">"${t.texto}"</div>
       <div class="test-footer">
         <div class="test-avatar" style="background:${bg}">${initials}</div>
         <div class="test-meta"><div class="test-autor">${t.autor}</div><div class="test-origen">${t.origen}</div></div>
       </div>
-    </div>`;}).join('');
+    </div></div>`;
+  }).join('');
+  /* Calculate pages */
+  testPerPage=window.innerWidth<=700?1:window.innerWidth<=1100?2:3;
+  const pages=Math.ceil(testimonios.length/testPerPage);
+  const dots=Array.from({length:pages},(_,i)=>`<button class="${i===0?'active':''}" onclick="testGoTo(${i})" aria-label="Página ${i+1}"></button>`).join('');
+  el.innerHTML=`
+    <div class="test-track" id="testTrack">${slides}</div>
+    <div class="test-controls">
+      <button class="test-nav" onclick="testPrev()" aria-label="Anterior">&#10094;</button>
+      <div class="test-dots" id="testDots">${dots}</div>
+      <span class="test-counter" id="testCounter">1 / ${pages}</span>
+      <button class="test-nav" onclick="testNext()" aria-label="Siguiente">&#10095;</button>
+    </div>`;
+  /* Hover pause */
+  el.addEventListener('mouseenter',()=>clearInterval(testTimer));
+  el.addEventListener('mouseleave',()=>testAutoPlay());
+  /* Touch swipe */
+  let touchX=0;
+  el.addEventListener('touchstart',e=>{touchX=e.touches[0].clientX;clearInterval(testTimer);},{passive:true});
+  el.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-touchX;
+    if(Math.abs(dx)>40){dx<0?testNext():testPrev();}
+    testAutoPlay();
+  },{passive:true});
+  /* Resize handler */
+  window.addEventListener('resize',()=>{
+    const newPP=window.innerWidth<=700?1:window.innerWidth<=1100?2:3;
+    if(newPP!==testPerPage){testPerPage=newPP;testIdx=0;testUpdateDots();testSlide();}
+  });
+  /* Start auto-play */
+  testAutoPlay();
+}
+function testSlide(){
+  const track=document.getElementById('testTrack');
+  if(!track)return;
+  const pct=testIdx*(100/testPerPage);
+  track.style.transform='translateX(-'+pct+'%)';
+}
+function testUpdateDots(){
+  const pages=Math.ceil(16/testPerPage);
+  const dotsEl=document.getElementById('testDots');
+  const counter=document.getElementById('testCounter');
+  if(!dotsEl)return;
+  const page=Math.floor(testIdx/testPerPage);
+  /* Rebuild dots if page count changed */
+  if(dotsEl.children.length!==pages){
+    dotsEl.innerHTML=Array.from({length:pages},(_,i)=>`<button class="${i===page?'active':''}" onclick="testGoTo(${i})" aria-label="Página ${i+1}"></button>`).join('');
+  }else{
+    Array.from(dotsEl.children).forEach((d,i)=>d.classList.toggle('active',i===page));
+  }
+  if(counter) counter.textContent=(page+1)+' / '+pages;
+}
+function testGoTo(page){
+  testIdx=page*testPerPage;
+  if(testIdx>=16) testIdx=0;
+  testSlide();testUpdateDots();
+}
+function testNext(){
+  testIdx+=testPerPage;
+  if(testIdx>=16) testIdx=0;
+  testSlide();testUpdateDots();
+}
+function testPrev(){
+  testIdx-=testPerPage;
+  if(testIdx<0) testIdx=Math.max(0,(Math.ceil(16/testPerPage)-1)*testPerPage);
+  testSlide();testUpdateDots();
+}
+function testAutoPlay(){
+  clearInterval(testTimer);
+  testTimer=setInterval(testNext,5000);
 }
 
 // ── COMPROMISOS PÚBLICOS ──
