@@ -129,6 +129,15 @@ body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 .typing-dots span:nth-child(2){animation-delay:.2s}
 .typing-dots span:nth-child(3){animation-delay:.4s}
 @keyframes typingBounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+.chat-nav-btn{display:inline-flex;align-items:center;gap:4px;background:rgba(45,154,77,.08);border:1.5px solid rgba(45,154,77,.2);color:var(--green);font-size:10px;font-weight:700;padding:5px 12px;border-radius:16px;cursor:pointer;transition:all .2s;margin-top:6px;text-decoration:none}
+.chat-nav-btn:hover{background:var(--green);color:#fff;border-color:var(--green);transform:translateY(-1px);box-shadow:0 2px 8px rgba(45,154,77,.25)}
+.chat-data-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin:6px 0;font-size:11px}
+.chat-data-grid .cdl{color:var(--text2);font-weight:500}.chat-data-grid .cdv{font-weight:700;color:var(--text);text-align:right}
+.chat-cat-pill{display:inline-block;font-size:8px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:4px;letter-spacing:.3px;text-transform:uppercase}
+.chat-divider{height:1px;background:var(--border);margin:8px 0;opacity:.5}
+.chatbot-msg.bot .chat-list{margin:4px 0 2px;padding-left:4px;font-size:12px;line-height:1.7}
+.chatbot-suggestions.contextual button{border-color:rgba(26,61,143,.2);color:var(--blue);background:rgba(26,61,143,.05)}
+.chatbot-suggestions.contextual button:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
 @media(max-width:900px){
   .chatbot-panel{top:0;left:0;width:100%;max-width:100%;height:100dvh;max-height:100dvh;border-radius:0;transform:translate(0,0) translateY(100%);opacity:1;border:none}
   .chatbot-panel.open{transform:translate(0,0) translateY(0)}
@@ -7195,42 +7204,147 @@ function updateMascotBubble(sectionId){
 }
 
 const CHATBOT_QA=[
-  {keys:['poblacion','habitantes','cuanta gente','cuantas personas','poblaci'],ans:'La comuna de Rengo tiene **63.620 habitantes** según el Censo 2024 (INE).\n\n• Hombres: 30.925 (48,6%)\n• Mujeres: 32.695 (51,4%)\n• Urbano: 50.823 (79,9%)\n• Rural: 12.797 (20,1%)\n• Densidad: 93,1 hab/km²\n• Superficie: 683,7 km²'},
-  {keys:['edad','etario','jovenes','adultos','mayores','viejo','envejecimiento','tercera edad','60'],ans:'Composición etaria de Rengo (Censo 2024):\n\n• 0-17 años: 14.827 (23,3%)\n• 18-24 años: 5.557 (8,7%)\n• 25-44 años: 19.059 (30,0%)\n• 45-59 años: 11.654 (18,3%)\n• 60+ años: 12.523 (19,7%)\n• Edad mediana: 37 años\n\nEl envejecimiento es un desafío transversal: el índice IDDC (dependencia de cuidados) promedia 0,270.'},
-  {keys:['vivienda','casa','departamento','hogar','hacinamiento','donde viven'],ans:'Vivienda en Rengo (Censo 2024):\n\n• Total viviendas: 25.124\n• Ocupadas: 23.556 | Desocupadas: 1.568\n• Hogares: 22.338\n• Casas: 24.444 (97,3%)\n• Departamentos: 301 (1,2%)\n• Mediaguas: 179 (0,7%)\n• Hacinamiento: 5,3%\n• Déficit habitacional: 1.401 viviendas\n• Jefatura femenina: 51,2%'},
-  {keys:['agua','alcantarillado','luz','electricidad','servicio basico','servicios','saneamiento'],ans:'Servicios básicos en Rengo (Censo 2024):\n\n• Agua red pública: 90,3%\n• Alcantarillado: 72,5%\n• Electricidad: 99,7%\n• Internet: 91,4%\n\n⚠️ La brecha rural es crítica: el IPSB rural (0,370) es 2,74 veces el urbano (0,135). Localidades como El Baluarte (0,644) y Rosario Oriente (0,579) superan el umbral de riesgo alto.'},
-  {keys:['internet','digital','brecha digital','conectividad','computador','tecnologia'],ans:'Brecha digital en Rengo (Censo 2024):\n\n• Hogares con internet: 91,4%\n• Computadores: 10.761 hogares\n• Teléfono móvil: 21.918 hogares\n\nÍndice IBDT promedio: 0,204. Las localidades más desconectadas:\n• La Chimba: 0,416\n• Apalta: 0,395\n• El Placer: 0,387\n\nLa brecha sigue un patrón de accesibilidad vial: las más aisladas físicamente son las más desconectadas digitalmente.'},
-  {keys:['migrante','migracion','extranjero','inmigrante','venezolano','haitiano','colombiano'],ans:'Migración internacional en Rengo (Censo 2024):\n\n• Total migrantes: 2.796 (4,4% de la población)\n• Venezuela: ~950 (34,0%)\n• Haití: ~590 (21,1%)\n• Colombia: ~420 (15,0%)\n• Perú: ~350 (12,5%)\n• Bolivia: ~240 (8,6%)\n• Otros: ~246 (8,8%)\n\nEl 95,3% de los migrantes reside en el área urbana.'},
-  {keys:['indigena','pueblo originario','mapuche','etnia'],ans:'Pueblos originarios en Rengo (Censo 2024):\n\n• Total: 3.214 personas (5,1% de la población)\n• Afrodescendientes: 222 personas\n\nLa mayoría reside en el área urbana (2.878 vs 336 rural).'},
-  {keys:['empleo','trabajo','ocupacion','desempleo','desocupacion','cesantia'],ans:'Empleo en Rengo (Censo 2024):\n\n• Ocupados: 26.918\n• Desocupados: 2.674\n• Fuera fuerza de trabajo: 21.655\n• Tasa de ocupación: 52,5%\n• Tasa de desocupación: 9,0%\n\nEl déficit de capital humano (ICHT_VUL=0,438) es la vulnerabilidad más generalizada de la comuna.'},
-  {keys:['educacion','escolaridad','analfabetismo','colegio','escuela','estudi'],ans:'Educación en Rengo (Censo 2024):\n\n• Escolaridad promedio: 11,8 años\n• Analfabetismo: 2,6% (1.650 personas)\n• Educación primaria: 27.182\n• Educación secundaria: 19.321\n• Ed. terciaria/superior: 11.036\n\nEl ICHT_VUL promedio es 0,438, la dimensión de vulnerabilidad más extendida.'},
-  {keys:['discapacidad','dificultad','funcional'],ans:'Discapacidad en Rengo (Censo 2024):\n\n• Personas con discapacidad: 7.256 (11,4%)\n• Dificultad para ver: 3.139\n• Dificultad para moverse: 3.422\n• Dificultad cognitiva: 1.799\n• Dificultad auditiva: 1.381\n• Dificultad de cuidado personal: 1.131\n• Dificultad para comunicarse: 697\n\nEl IVFT es mayor en localidades rurales aisladas como La Ariana (0,229) y El Trebal Huilquío (0,214).'},
-  {keys:['vulnerabilidad','icp','indice','vulnerable','ranking','mas vulnerable'],ans:'Ranking de vulnerabilidad territorial (ICP - Censo 2024):\n\nTop 6 localidades más vulnerables:\n1. El Trebal Huilquío: ICP 0,348\n2. El Placer: ICP 0,347\n3. Apalta: ICP 0,335\n4. Las Nieves: ICP 0,323\n5. Chapetón: ICP 0,322\n6. La Chimba: ICP 0,305\n\nTodas son rurales. El ICP promedio comunal es 0,210 (riesgo moderado-bajo), pero con alta heterogeneidad interna (rango 0,073 a 0,493).'},
-  {keys:['urbano','rural','brecha','diferencia','desigualdad'],ans:'Brecha urbano-rural en Rengo (Censo 2024):\n\n• ICP urbano: 0,194 vs rural: 0,269 (+38,7%)\n\nBrechas por índice (factor rural/urbano):\n• Serv. básicos (IPSB): 2,74x\n• Vuln. socioeconómica (IVSH): 1,89x\n• Brecha digital (IBDT): 1,31x\n• Capital humano (ICHT): 1,14x\n• Vuln. funcional (IVFT): 1,18x\n• Dep. cuidados (IDDC): 1,05x\n\nLas 15 localidades más vulnerables son todas rurales.'},
-  {keys:['localidad','donde','lugar','sector','barrio','territorio'],ans:'Rengo tiene 42 localidades censales:\n\n🏙️ Urbanas (3):\n• Rengo: 42.283 hab (ICP 0,195)\n• Rosario: 4.696 hab (ICP 0,182)\n• Esmeralda: 3.579 hab (ICP 0,264)\n\n🌾 Rurales principales:\n• Lo de Lobo: 1.603 hab\n• Malambo: 941 hab\n• Los Gomeros: 833 hab\n• Cerrillos: 830 hab\n• Chanqueahue: 716 hab\n\nEl 79,9% de la población vive en las 3 localidades urbanas.'},
-  {keys:['pladeco','plan','que es','para que','objetivo'],ans:'El PLADECO 2025-2035 es el Plan de Desarrollo Comunal de Rengo.\n\n• 6 Ejes Estratégicos\n• 32 Objetivos\n• 225 Políticas Públicas\n• 15 de 17 ODS vinculados\n• Horizonte: 10 años\n\nVisión: "Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes."'},
-  {keys:['eje','estrateg'],ans:'Los 6 ejes estratégicos del PLADECO 2025-2035:\n\n1️⃣ Desarrollo Social y Calidad de Vida\n2️⃣ Desarrollo Económico Local\n3️⃣ Medioambiente y Sustentabilidad\n4️⃣ Desarrollo Urbano y Territorial\n5️⃣ Seguridad Ciudadana\n6️⃣ Gobernanza y Participación\n\nCada eje tiene objetivos específicos, políticas públicas y metas medibles.'},
-  {keys:['seguridad','delito','droga','crimen','insegur'],ans:'Seguridad ciudadana en Rengo:\n\n• Es la prioridad N°1: 63% de los encuestados\n• Delitos contra la vida: +126%\n• Drogas: +440%\n• 54,4% de los NNA se siente inseguro en la calle\n\nEl Eje 5 del PLADECO aborda esta temática con políticas de prevención, infraestructura de seguridad y participación comunitaria.'},
-  {keys:['salud','hospital','consultorio'],ans:'Salud en Rengo:\n\n• Hospital Alta Complejidad: $20.000M comprometidos\n• Red de CESFAM y postas rurales\n• 11,4% de la población tiene alguna discapacidad\n• El envejecimiento (19,7% mayores de 60) presiona el sistema de cuidados\n\nEl IDDC (dependencia de cuidados) promedia 0,270, requiriendo centros diurnos urbanos y servicios itinerantes rurales.'},
-  {keys:['censo','ine','2024'],ans:'El Censo de Población y Vivienda 2024 (INE) es la fuente oficial de datos del portal.\n\nDatos clave de Rengo:\n• 63.620 habitantes | 30.925 H / 32.695 M\n• 25.124 viviendas | 22.338 hogares\n• 42 localidades | 826 manzanas censales\n• 6 índices de vulnerabilidad territorial\n• ICP medio: 0,210 (riesgo moderado-bajo)\n\nLa sección Censo 2024 del portal tiene todos los gráficos interactivos.'},
-  {keys:['equipo','quien','responsable','tecnico','profesional','encargado','secplac','dideco'],ans:'Equipo Técnico PLADECO 2025-2035:\n\n👤 **Alcalde**: Conducción política del proceso\n👤 **Director SECPLAC**: Coordinación estratégica general\n👤 **Encargado PLADECO**: Gestión operativa y sistematización\n👤 **SECPLAC**: Planificación territorial y datos\n👤 **DIDECO**: Articulación comunitaria y participación\n👤 **DOM**: Desarrollo urbano y obras\n👤 **Consultores Externos**: Metodología y análisis técnico\n👤 **COSOC**: Representación ciudadana\n\nEl equipo trabaja de forma interdepartamental desde enero 2025.'},
-  {keys:['compromiso','cumplido','pendiente','avance','meta','logro'],ans:'Compromisos Públicos PLADECO 2025-2035:\n\n✅ **Cumplidos (4):**\n• Diagnóstico territorial completado\n• Consulta ciudadana masiva realizada\n• Cartografía social de 21 UV\n• Documento base aprobado por COSOC\n\n🔄 **En curso (4):**\n• Formulación de políticas públicas\n• Validación técnica interdepartamental\n• Integración ODS a nivel de acción\n• Mesa de trabajo intersectorial activa\n\n⏳ **Pendientes (2):**\n• Aprobación final por Concejo Municipal\n• Publicación del documento oficial'},
-  {keys:['timeline','linea de tiempo','proceso','etapa','fase','cronologia','hito'],ans:'Línea de Tiempo del proceso PLADECO:\n\n📌 **2025 (Ene-Mar)**: Constitución del equipo + diagnóstico territorial\n📌 **2025 (Abr-Jun)**: Encuestas masivas + talleres participativos\n📌 **2025 (Jul-Sep)**: Análisis FODA + etnografía territorial\n📌 **2025 (Oct-Dic)**: Formulación estratégica + validación COSOC\n📌 **2026 (Ene-Mar)**: Redacción final + metas e indicadores\n📌 **2026 (Abr-Jun)**: Aprobación Concejo Municipal + publicación\n\nEl proceso ha incluido +2.000 participantes directos.'},
-  {keys:['testimonio','ciudadano','opinion','dijo','vecino','vecina','particip'],ans:'El PLADECO incluye **16 testimonios ciudadanos** de diversos perfiles:\n\n• Dirigentes vecinales urbanos y rurales\n• Adultos mayores y jóvenes\n• Migrantes y personas con discapacidad\n• Emprendedores y agricultores\n• Funcionarios municipales\n• Madres y cuidadoras\n\nLos testimonios reflejan las prioridades reales: seguridad, salud, conectividad rural, empleo juvenil, medio ambiente y participación ciudadana. Puedes verlos en la sección "Testimonios Ciudadanos".'},
-  {keys:['antes','despues','comparacion','cambio','mejora','2017','anterior'],ans:'Comparación Antes / Después (2017 vs 2024):\n\n📈 **Mejoras significativas:**\n• Cobertura internet: 62% → 91,4%\n• Escolaridad promedio: 10,2 → 11,8 años\n• Hogares c/agua: 82% → 90,3%\n• Participación ciudadana: 800 → 2.000+ personas\n\n📊 **Desafíos persistentes:**\n• Brecha rural servicios básicos\n• Déficit habitacional\n• Seguridad ciudadana\n\nLa sección "Antes / Después" muestra 14 indicadores comparados.'},
-  {keys:['contexto','legal','ley','locm','18695','normativ','juridic','marco'],ans:'Marco Legal del PLADECO:\n\n📜 **Ley 18.695** (Orgánica Constitucional de Municipalidades):\n• Art. 5°: La gestión municipal incluye planificación y desarrollo comunal\n• Art. 7°: El PLADECO es instrumento rector de la gestión municipal\n• Art. 82°: Requisitos de participación ciudadana en su elaboración\n\n**Metodología**: Enfoque mixto (cuantitativo + cualitativo) con 4 pilares:\n1. Innovación aplicada\n2. Policy Networks\n3. Viabilidad y aplicabilidad\n4. Desarrollo comunal integral'},
-  {keys:['galeria','foto','imagen','fotografia','registro'],ans:'La Galería del Proceso PLADECO contiene **16 fotografías** documentando:\n\n📸 Talleres participativos en terreno\n📸 Jornadas de trabajo comunitario\n📸 Reuniones con organizaciones sociales\n📸 Recorridos territoriales\n📸 Actividades con vecinos y vecinas\n\nCada imagen tiene lightbox con navegación por teclado (←/→ para navegar, Esc para cerrar).'},
-  {keys:['metodologia','como se hizo','enfoque','tecnica','instrumento'],ans:'Metodología PLADECO Rengo 2025-2035:\n\n🔬 **Enfoque**: Mixto (cuantitativo + cualitativo)\n\n**Instrumentos utilizados:**\n• Encuesta masiva online y presencial (+2.000 respuestas)\n• Talleres participativos por UV (21 unidades vecinales)\n• Etnografía territorial (observación en terreno)\n• Entrevistas a actores clave\n• Análisis cartográfico SIG\n• Datos Censo 2024 (INE)\n\n**4 Pilares metodológicos:**\n1. Innovación aplicada\n2. Policy Networks (redes de política pública)\n3. Viabilidad y aplicabilidad\n4. Desarrollo comunal integral'},
-  {keys:['ods','objetivo sostenible','agenda 2030','sustentable','sostenible'],ans:'Vinculación con ODS (Agenda 2030):\n\nEl PLADECO 2025-2035 se vincula con **15 de los 17 ODS**:\n\n• ODS 1: Fin de la pobreza → Eje 1\n• ODS 3: Salud → Eje 1\n• ODS 4: Educación → Eje 1\n• ODS 8: Trabajo → Eje 2\n• ODS 9: Industria/Innovación → Eje 2\n• ODS 11: Ciudades sostenibles → Eje 4\n• ODS 13: Acción climática → Eje 3\n• ODS 16: Instituciones → Eje 6\n\nCada política pública tiene ODS asociados y metas verificables.'}
+  {keys:['poblacion','habitantes','cuanta gente','cuantas personas','poblaci','demograf'],sec:'censo',cat:'censo',
+   follow:['Composición etaria','Brecha urbano-rural','Migración','Localidades'],
+   ans:'La comuna de Rengo tiene **63.620 habitantes** según el Censo 2024 (INE).\n\n• Hombres: 30.925 (48,6%)\n• Mujeres: 32.695 (51,4%)\n• Urbano: 50.823 (79,9%)\n• Rural: 12.797 (20,1%)\n• Densidad: 93,1 hab/km²\n• Superficie: 683,7 km²'},
+  {keys:['edad','etario','jovenes','adultos','mayores','viejo','envejecimiento','tercera edad','60','piramide'],sec:'censo',cat:'censo',
+   follow:['Población total','Discapacidad','Salud','Vulnerabilidad'],
+   ans:'Composición etaria de Rengo (Censo 2024):\n\n• 0-17 años: 14.827 (23,3%)\n• 18-24 años: 5.557 (8,7%)\n• 25-44 años: 19.059 (30,0%)\n• 45-59 años: 11.654 (18,3%)\n• 60+ años: 12.523 (19,7%)\n• Edad mediana: 37 años\n\nEl envejecimiento es un desafío transversal: el índice IDDC (dependencia de cuidados) promedia 0,270.'},
+  {keys:['vivienda','casa','departamento','hogar','hacinamiento','donde viven','deficit habitacional'],sec:'censo',cat:'censo',
+   follow:['Servicios básicos','Brecha urbano-rural','Localidades','Población'],
+   ans:'Vivienda en Rengo (Censo 2024):\n\n• Total viviendas: 25.124\n• Ocupadas: 23.556 | Desocupadas: 1.568\n• Hogares: 22.338\n• Casas: 24.444 (97,3%)\n• Departamentos: 301 (1,2%)\n• Mediaguas: 179 (0,7%)\n• Hacinamiento: 5,3%\n• Déficit habitacional: 1.401 viviendas\n• Jefatura femenina: 51,2%'},
+  {keys:['agua','alcantarillado','luz','electricidad','servicio basico','servicios','saneamiento','apr'],sec:'censo',cat:'censo',
+   follow:['Brecha digital','Brecha urbano-rural','Metas 2035','Vulnerabilidad'],
+   ans:'Servicios básicos en Rengo (Censo 2024):\n\n• Agua red pública: 90,3%\n• Alcantarillado: 72,5%\n• Electricidad: 99,7%\n• Internet: 91,4%\n\n⚠️ La brecha rural es crítica: el IPSB rural (0,370) es 2,74 veces el urbano (0,135). Localidades como El Baluarte (0,644) y Rosario Oriente (0,579) superan el umbral de riesgo alto.'},
+  {keys:['internet','digital','brecha digital','conectividad','computador','tecnologia'],sec:'desigualdad',cat:'censo',
+   follow:['Servicios básicos','Brecha urbano-rural','Localidad más vulnerable','Metas 2035'],
+   ans:'Brecha digital en Rengo (Censo 2024):\n\n• Hogares con internet: 91,4%\n• Computadores: 10.761 hogares\n• Teléfono móvil: 21.918 hogares\n\nÍndice IBDT promedio: 0,204. Las localidades más desconectadas:\n• La Chimba: 0,416\n• Apalta: 0,395\n• El Placer: 0,387\n\nLa brecha sigue un patrón de accesibilidad vial: las más aisladas físicamente son las más desconectadas digitalmente.'},
+  {keys:['migrante','migracion','extranjero','inmigrante','venezolano','haitiano','colombiano'],sec:'censo',cat:'censo',
+   follow:['Pueblos originarios','Población total','Empleo','Vivienda'],
+   ans:'Migración internacional en Rengo (Censo 2024):\n\n• Total migrantes: 2.796 (4,4% de la población)\n• Venezuela: ~950 (34,0%)\n• Haití: ~590 (21,1%)\n• Colombia: ~420 (15,0%)\n• Perú: ~350 (12,5%)\n• Bolivia: ~240 (8,6%)\n• Otros: ~246 (8,8%)\n\nEl 95,3% de los migrantes reside en el área urbana.'},
+  {keys:['indigena','pueblo originario','mapuche','etnia'],sec:'censo',cat:'censo',
+   follow:['Migración','Población total','Brecha urbano-rural'],
+   ans:'Pueblos originarios en Rengo (Censo 2024):\n\n• Total: 3.214 personas (5,1% de la población)\n• Afrodescendientes: 222 personas\n\nLa mayoría reside en el área urbana (2.878 vs 336 rural).'},
+  {keys:['empleo','trabajo','ocupacion','desempleo','desocupacion','cesantia','laboral'],sec:'censo',cat:'censo',
+   follow:['Educación','Metas económicas','Brecha urbano-rural','FODA'],
+   ans:'Empleo en Rengo (Censo 2024):\n\n• Ocupados: 26.918\n• Desocupados: 2.674\n• Fuera fuerza de trabajo: 21.655\n• Tasa de ocupación: 52,5%\n• Tasa de desocupación: 9,0%\n\nEl déficit de capital humano (ICHT_VUL=0,438) es la vulnerabilidad más generalizada de la comuna.'},
+  {keys:['educacion','escolaridad','analfabetismo','colegio','escuela','estudi','liceo'],sec:'censo',cat:'censo',
+   follow:['Empleo','NNA','Metas 2035','Discapacidad'],
+   ans:'Educación en Rengo (Censo 2024):\n\n• Escolaridad promedio: 11,8 años\n• Analfabetismo: 2,6% (1.650 personas)\n• Educación primaria: 27.182\n• Educación secundaria: 19.321\n• Ed. terciaria/superior: 11.036\n\nEl ICHT_VUL promedio es 0,438, la dimensión de vulnerabilidad más extendida.'},
+  {keys:['discapacidad','dificultad','funcional','inclusion'],sec:'censo',cat:'censo',
+   follow:['Composición etaria','Salud','Vulnerabilidad','Servicios básicos'],
+   ans:'Discapacidad en Rengo (Censo 2024):\n\n• Personas con discapacidad: 7.256 (11,4%)\n• Dificultad para ver: 3.139\n• Dificultad para moverse: 3.422\n• Dificultad cognitiva: 1.799\n• Dificultad auditiva: 1.381\n• Dificultad de cuidado personal: 1.131\n• Dificultad para comunicarse: 697\n\nEl IVFT es mayor en localidades rurales aisladas como La Ariana (0,229) y El Trebal Huilquío (0,214).'},
+  {keys:['vulnerabilidad','icp','indice','vulnerable','ranking','mas vulnerable'],sec:'territorial-adv',cat:'territorial',
+   follow:['Brecha urbano-rural','Comparar localidades','Servicios básicos','Mapa territorial'],
+   ans:'Ranking de vulnerabilidad territorial (ICP - Censo 2024):\n\nTop 6 localidades más vulnerables:\n1. El Trebal Huilquío: ICP 0,348\n2. El Placer: ICP 0,347\n3. Apalta: ICP 0,335\n4. Las Nieves: ICP 0,323\n5. Chapetón: ICP 0,322\n6. La Chimba: ICP 0,305\n\nTodas son rurales. El ICP promedio comunal es 0,210 (riesgo moderado-bajo), pero con alta heterogeneidad interna (rango 0,073 a 0,493).'},
+  {keys:['urbano','rural','brecha','diferencia','desigualdad'],sec:'desigualdad',cat:'territorial',
+   follow:['Localidad más vulnerable','Servicios básicos','Brecha digital','Comparar localidades'],
+   ans:'Brecha urbano-rural en Rengo (Censo 2024):\n\n• ICP urbano: 0,194 vs rural: 0,269 (+38,7%)\n\nBrechas por índice (factor rural/urbano):\n• Serv. básicos (IPSB): 2,74x\n• Vuln. socioeconómica (IVSH): 1,89x\n• Brecha digital (IBDT): 1,31x\n• Capital humano (ICHT): 1,14x\n• Vuln. funcional (IVFT): 1,18x\n• Dep. cuidados (IDDC): 1,05x\n\nLas 15 localidades más vulnerables son todas rurales.'},
+  {keys:['localidad','donde','lugar','sector','barrio','territorio'],sec:'territorio',cat:'territorial',
+   follow:['Localidad más vulnerable','Mapa territorial','Comparar localidades','Brecha urbano-rural'],
+   ans:'Rengo tiene 42 localidades censales:\n\n🏙️ Urbanas (3):\n• Rengo: 42.283 hab (ICP 0,195)\n• Rosario: 4.696 hab (ICP 0,182)\n• Esmeralda: 3.579 hab (ICP 0,264)\n\n🌾 Rurales principales:\n• Lo de Lobo: 1.603 hab\n• Malambo: 941 hab\n• Los Gomeros: 833 hab\n• Cerrillos: 830 hab\n• Chanqueahue: 716 hab\n\nEl 79,9% de la población vive en las 3 localidades urbanas.'},
+  {keys:['pladeco','plan','que es','para que','objetivo'],sec:'contexto',cat:'pladeco',
+   follow:['Ejes estratégicos','Metas 2035','Línea de tiempo','Equipo técnico'],
+   ans:'El PLADECO 2025-2035 es el Plan de Desarrollo Comunal de Rengo.\n\n• 6 Ejes Estratégicos\n• 32 Objetivos\n• 225 Políticas Públicas\n• 15 de 17 ODS vinculados\n• Horizonte: 10 años\n\nVisión: "Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes."'},
+  {keys:['eje','estrateg','eje 1','eje 2','eje 3','eje 4','eje 5','eje 6'],sec:'ejes',cat:'pladeco',
+   follow:['Metas 2035','ODS','Financiamiento','Semáforo'],
+   ans:null},
+  {keys:['seguridad','delito','droga','crimen','insegur','narco','robo'],sec:'ejes',cat:'pladeco',
+   follow:['Ejes estratégicos','Metas 2035','Encuesta ciudadana','NNA'],
+   ans:'Seguridad ciudadana en Rengo:\n\n• Es la prioridad N°1: 63% de los encuestados\n• Delitos contra la vida: +126%\n• Drogas: +440%\n• 54,4% de los NNA se siente inseguro en la calle\n\nEl Eje 5 del PLADECO aborda esta temática con políticas de prevención, infraestructura de seguridad y participación comunitaria.'},
+  {keys:['salud','hospital','consultorio','cesfam','posta'],sec:'ejes',cat:'pladeco',
+   follow:['Composición etaria','Discapacidad','Metas 2035','Servicios básicos'],
+   ans:'Salud en Rengo:\n\n• Hospital Alta Complejidad: $20.000M comprometidos\n• Red de CESFAM y postas rurales\n• 11,4% de la población tiene alguna discapacidad\n• El envejecimiento (19,7% mayores de 60) presiona el sistema de cuidados\n\nEl IDDC (dependencia de cuidados) promedia 0,270, requiriendo centros diurnos urbanos y servicios itinerantes rurales.'},
+  {keys:['censo','ine','2024'],sec:'censo',cat:'censo',
+   follow:['Población total','Vivienda','Vulnerabilidad','Brecha urbano-rural'],
+   ans:'El Censo de Población y Vivienda 2024 (INE) es la fuente oficial de datos del portal.\n\nDatos clave de Rengo:\n• 63.620 habitantes | 30.925 H / 32.695 M\n• 25.124 viviendas | 22.338 hogares\n• 42 localidades | 826 manzanas censales\n• 6 índices de vulnerabilidad territorial\n• ICP medio: 0,210 (riesgo moderado-bajo)\n\nLa sección Censo 2024 del portal tiene todos los gráficos interactivos.'},
+  {keys:['equipo','quien','responsable','tecnico','profesional','encargado','secplac','dideco'],sec:'equipo',cat:'pladeco',
+   follow:['¿Qué es el PLADECO?','Compromisos','Línea de tiempo','Comisiones'],
+   ans:'Equipo Técnico PLADECO 2025-2035:\n\n👤 **Alcalde**: Conducción política del proceso\n👤 **Director SECPLAC**: Coordinación estratégica general\n👤 **Encargado PLADECO**: Gestión operativa y sistematización\n👤 **SECPLAC**: Planificación territorial y datos\n👤 **DIDECO**: Articulación comunitaria y participación\n👤 **DOM**: Desarrollo urbano y obras\n👤 **Consultores Externos**: Metodología y análisis técnico\n👤 **COSOC**: Representación ciudadana\n\nEl equipo trabaja de forma interdepartamental desde enero 2025.'},
+  {keys:['compromiso','cumplido','pendiente','avance','logro'],sec:'compromisos',cat:'pladeco',
+   follow:['Línea de tiempo','Metas 2035','Semáforo','Equipo técnico'],
+   ans:'Compromisos Públicos PLADECO 2025-2035:\n\n✅ **Cumplidos (4):**\n• Diagnóstico territorial completado\n• Consulta ciudadana masiva realizada\n• Cartografía social de 21 UV\n• Documento base aprobado por COSOC\n\n🔄 **En curso (4):**\n• Formulación de políticas públicas\n• Validación técnica interdepartamental\n• Integración ODS a nivel de acción\n• Mesa de trabajo intersectorial activa\n\n⏳ **Pendientes (2):**\n• Aprobación final por Concejo Municipal\n• Publicación del documento oficial'},
+  {keys:['timeline','linea de tiempo','proceso','etapa','fase','cronologia','hito'],sec:'cronograma',cat:'pladeco',
+   follow:['Compromisos','¿Qué es el PLADECO?','Equipo técnico','Comisiones'],
+   ans:'Línea de Tiempo del proceso PLADECO:\n\n📌 **2025 (Ene-Mar)**: Constitución del equipo + diagnóstico territorial\n📌 **2025 (Abr-Jun)**: Encuestas masivas + talleres participativos\n📌 **2025 (Jul-Sep)**: Análisis FODA + etnografía territorial\n📌 **2025 (Oct-Dic)**: Formulación estratégica + validación COSOC\n📌 **2026 (Ene-Mar)**: Redacción final + metas e indicadores\n📌 **2026 (Abr-Jun)**: Aprobación Concejo Municipal + publicación\n\nEl proceso ha incluido +2.000 participantes directos.'},
+  {keys:['testimonio','ciudadano','opinion','dijo','vecino','vecina'],sec:'testimonios',cat:'participacion',
+   follow:['Encuesta ciudadana','Metodología','Galería','Etnografía'],
+   ans:'El PLADECO incluye **16 testimonios ciudadanos** de diversos perfiles:\n\n• Dirigentes vecinales urbanos y rurales\n• Adultos mayores y jóvenes\n• Migrantes y personas con discapacidad\n• Emprendedores y agricultores\n• Funcionarios municipales\n• Madres y cuidadoras\n\nLos testimonios reflejan las prioridades reales: seguridad, salud, conectividad rural, empleo juvenil, medio ambiente y participación ciudadana.'},
+  {keys:['antes','despues','comparacion','cambio','mejora','2017','anterior'],sec:'antes-despues',cat:'territorial',
+   follow:['Metas 2035','Brecha urbano-rural','Servicios básicos','Censo 2024'],
+   ans:'Comparación Antes / Después (2017 vs 2024):\n\n📈 **Mejoras significativas:**\n• Cobertura internet: 62% → 91,4%\n• Escolaridad promedio: 10,2 → 11,8 años\n• Hogares c/agua: 82% → 90,3%\n• Participación ciudadana: 800 → 2.000+ personas\n\n📊 **Desafíos persistentes:**\n• Brecha rural servicios básicos\n• Déficit habitacional\n• Seguridad ciudadana\n\nLa sección "Antes / Después" muestra 14 indicadores comparados.'},
+  {keys:['contexto','legal','ley','locm','18695','normativ','juridic','marco'],sec:'contexto',cat:'pladeco',
+   follow:['Metodología','¿Qué es el PLADECO?','Ejes estratégicos'],
+   ans:'Marco Legal del PLADECO:\n\n📜 **Ley 18.695** (Orgánica Constitucional de Municipalidades):\n• Art. 5°: La gestión municipal incluye planificación y desarrollo comunal\n• Art. 7°: El PLADECO es instrumento rector de la gestión municipal\n• Art. 82°: Requisitos de participación ciudadana en su elaboración\n\n**Metodología**: Enfoque mixto (cuantitativo + cualitativo) con 4 pilares:\n1. Innovación aplicada\n2. Policy Networks\n3. Viabilidad y aplicabilidad\n4. Desarrollo comunal integral'},
+  {keys:['galeria','foto','imagen','fotografia','registro'],sec:'galeria',cat:'participacion',
+   follow:['Testimonios','Metodología','Etnografía','Línea de tiempo'],
+   ans:'La Galería del Proceso PLADECO contiene **16 fotografías** documentando:\n\n📸 Talleres participativos en terreno\n📸 Jornadas de trabajo comunitario\n📸 Reuniones con organizaciones sociales\n📸 Recorridos territoriales\n📸 Actividades con vecinos y vecinas\n\nCada imagen tiene lightbox con navegación por teclado (←/→ para navegar, Esc para cerrar).'},
+  {keys:['metodologia','como se hizo','enfoque','tecnica','instrumento'],sec:'contexto',cat:'pladeco',
+   follow:['Marco legal','Equipo técnico','Etnografía','Línea de tiempo'],
+   ans:'Metodología PLADECO Rengo 2025-2035:\n\n🔬 **Enfoque**: Mixto (cuantitativo + cualitativo)\n\n**Instrumentos utilizados:**\n• Encuesta masiva online y presencial (+2.000 respuestas)\n• Talleres participativos por UV (21 unidades vecinales)\n• Etnografía territorial (observación en terreno)\n• Entrevistas a actores clave\n• Análisis cartográfico SIG\n• Datos Censo 2024 (INE)\n\n**4 Pilares metodológicos:**\n1. Innovación aplicada\n2. Policy Networks (redes de política pública)\n3. Viabilidad y aplicabilidad\n4. Desarrollo comunal integral'},
+  {keys:['ods','objetivo sostenible','agenda 2030','sustentable','sostenible'],sec:'ods-sec',cat:'pladeco',
+   follow:['Ejes estratégicos','Metas 2035','Políticas públicas'],
+   ans:'Vinculación con ODS (Agenda 2030):\n\nEl PLADECO 2025-2035 se vincula con **15 de los 17 ODS**:\n\n• ODS 1: Fin de la pobreza → Eje 1\n• ODS 3: Salud → Eje 1\n• ODS 4: Educación → Eje 1\n• ODS 8: Trabajo → Eje 2\n• ODS 9: Industria/Innovación → Eje 2\n• ODS 11: Ciudades sostenibles → Eje 4\n• ODS 13: Acción climática → Eje 3\n• ODS 16: Instituciones → Eje 6\n\nCada política pública tiene ODS asociados y metas verificables.'},
+  {keys:['foda','fortaleza','oportunidad','debilidad','amenaza','diagnostico'],sec:'foda',cat:'pladeco',
+   follow:['Ejes estratégicos','Seguridad','Brecha urbano-rural','Metas 2035'],
+   ans:null},
+  {keys:['comision','comisiones','mesa de trabajo','validacion','sesion'],sec:'comisiones',cat:'pladeco',
+   follow:['Equipo técnico','Línea de tiempo','Compromisos','Ejes estratégicos'],
+   ans:null},
+  {keys:['financiamiento','presupuesto','recurso','dinero','plata','inversion','fndr','fondos'],sec:'financiamiento',cat:'pladeco',
+   follow:['Semáforo','Ejes estratégicos','Metas 2035','Comisiones'],
+   ans:null},
+  {keys:['semaforo','cumplimiento','indicador','transparencia','gestion'],sec:'semaforo',cat:'pladeco',
+   follow:['Financiamiento','Metas 2035','Compromisos','Ejes estratégicos'],
+   ans:'Semáforo de Gestión Municipal 2024:\n\n🟢 **Transparencia**: Rengo alcanzó **97,89%** en el ranking CPLT — N°1 a nivel nacional\n🟢 **Portal Municipal**: Información actualizada y accesible\n🟡 **Trámites Digitales**: 22% digitalizado (meta 2035: 85%)\n🔴 **Dependencia FNDR**: 54,4% de inversión depende de fondos externos\n\nEl Eje 6 busca mejorar la gestión integral del municipio.'},
+  {keys:['nna','nino','nina','adolescente','infancia','menor'],sec:'nna',cat:'censo',
+   follow:['Seguridad','Educación','Composición etaria','Metas 2035'],
+   ans:'Niñez y Adolescencia en Rengo (Censo 2024):\n\n• NNA (0-17 años): 14.827 (23,3%)\n• 54,4% se siente inseguro en la calle\n• Bullying habitual: 31,5%\n• Identidad territorial NNA: 47,6%\n\nLa sección NNA del portal tiene diagnóstico específico, demandas territoriales y propuestas ciudadanas para la infancia y adolescencia.'},
+  {keys:['mapa','cartografia','georeferencia','ubicacion','donde queda'],sec:'mapa',cat:'territorial',
+   follow:['Localidades','Vulnerabilidad','Comparar localidades','Brecha urbano-rural'],
+   ans:'El Mapa Interactivo muestra las 42 localidades de Rengo georeferenciadas con datos del Censo 2024.\n\n🗺️ Cada marcador incluye:\n• Nombre y población\n• Índice ICP de vulnerabilidad\n• Clasificación urbano/rural\n\nLas localidades se colorean por nivel de riesgo: verde (bajo), amarillo (moderado) y rojo (alto).'},
+  {keys:['comparar','comparador','versus','vs','diferencia entre'],sec:'comparador-uv',cat:'territorial',
+   follow:['Localidades','Vulnerabilidad','Brecha urbano-rural','Mapa territorial'],
+   ans:'El **Comparador de Unidades Vecinales** permite contrastar 2 UV de Rengo en 6 dimensiones de vulnerabilidad:\n\n• IVSH (Socioeconómica)\n• IDDC (Dependencia Cuidados)\n• IBDT (Brecha Digital)\n• IVFT (Vulnerabilidad Funcional)\n• ICHT (Capital Humano)\n• IPSB (Servicios Básicos)\n\nSelecciona dos UV para ver un radar comparativo con datos del Censo 2024.'},
+  {keys:['meta','meta 2035','indicador','medidor','gauge','progreso','avance'],sec:'semaforo',cat:'pladeco',
+   follow:['Ejes estratégicos','Financiamiento','Semáforo','Antes y después'],
+   ans:null},
+  {keys:['encuesta','participacion','consulta','opinion ciudadana','que piensa la gente'],sec:'voz',cat:'participacion',
+   follow:['Testimonios','Seguridad','Metodología','Ejes estratégicos'],
+   ans:'La consulta ciudadana del PLADECO alcanzó **+2.000 participantes**.\n\nPrioridades ciudadanas:\n1. 🔴 Seguridad ciudadana (63%)\n2. 🟠 Salud y bienestar (48%)\n3. 🟡 Empleo y desarrollo económico (41%)\n4. 🟢 Medio ambiente (35%)\n5. 🔵 Conectividad y transporte (29%)\n\nLa sección "Voz de Rengo" detalla resultados por UV y perfil demográfico.'},
+  {keys:['etnografia','terreno','recorrido','observacion','cualitativo'],sec:'etnografia',cat:'participacion',
+   follow:['Metodología','Testimonios','Galería','Localidades'],
+   ans:'La Etnografía Territorial cubrió las **21 unidades vecinales** de Rengo con trabajo de campo:\n\n🔍 **Método**: Observación participante + registros fotográficos\n📋 **Instrumentos**: Fichas de terreno, entrevistas semiestructuradas\n🗺️ **Cobertura**: 9 UV urbanas + 12 UV rurales\n👥 **Informantes clave**: Dirigentes, vecinos, funcionarios\n\nLa etnografía reveló dinámicas no capturadas por datos cuantitativos: inseguridad percibida, deterioro de espacios, y capital social comunitario.'},
+  {keys:['documento','descargar','pdf','informe','archivo'],sec:'documentos',cat:'pladeco',
+   follow:['¿Qué es el PLADECO?','Metodología','Marco legal'],
+   ans:'La sección **Documentos** del portal contiene todos los archivos descargables del proceso PLADECO:\n\n📄 Documento base PLADECO\n📊 Informe Censo 2024\n🗺️ Cartografía territorial\n📋 Fichas de unidades vecinales\n📈 Análisis estadísticos\n\nTodos los documentos están en formato PDF para descarga directa.'},
+  {keys:['grafico','visualizacion','chart','diagrama','red','sankey','sna'],sec:'graficos',cat:'pladeco',
+   follow:['Dashboard','Metas 2035','Ejes estratégicos','FODA'],
+   ans:'El portal incluye **22 gráficos avanzados** en la sección de Visualizaciones:\n\n📊 Redes SNA de actores institucionales\n📈 Flujos Sankey de convergencia estratégica\n🕸️ Radares de brechas por dimensión\n📋 Dashboard ejecutivo y panel KPI\n⚠️ Matriz de riesgos\n🔗 Coherencia interna de instrumentos\n\nCada gráfico tiene lightbox y puede ampliarse para ver detalles.'},
+  {keys:['unidad vecinal','uv','uv-','organizacion','junta de vecino'],sec:'territorio',cat:'territorial',
+   follow:['Comparar localidades','Mapa territorial','Vulnerabilidad','Etnografía'],
+   ans:null},
+  {keys:['sueno','aspiracion','vision','futuro','que quieren'],sec:'suenos',cat:'participacion',
+   follow:['Ejes estratégicos','Testimonios','Encuesta ciudadana','Metas 2035'],
+   ans:'La sección **"Sueños de Rengo"** recoge las aspiraciones ciudadanas organizadas por eje:\n\n🏥 Salud de calidad y hospital de alta complejidad\n💼 Empleo juvenil y emprendimiento local\n🌳 Más áreas verdes y reciclaje efectivo\n🏗️ Conectividad rural y caminos pavimentados\n🛡️ Barrios seguros y libres de drogas\n🏛️ Municipio transparente y cercano\n\nEstas aspiraciones se traducen en las 225 políticas del plan.'},
+  {keys:['politica publica','politicas','accion','medida','programa'],sec:'ejes',cat:'pladeco',
+   follow:['Ejes estratégicos','Financiamiento','Metas 2035','ODS'],
+   ans:null},
+  {keys:['dashboard','kpi','resumen','cifras','datos clave','estadistica'],sec:'dashboard',cat:'censo',
+   follow:['Población total','Censo 2024','Metas 2035','Gráficos'],
+   ans:'El **Dashboard Principal** presenta los KPI clave de Rengo en tiempo real:\n\n📊 Población, viviendas, hogares, densidad\n📈 Jefatura femenina, discapacidad\n🗺️ Cobertura territorial\n\nTodos los datos provienen del Censo 2024 (INE) y se actualizan dinámicamente.'},
+  {keys:['hola','buenos dias','buenas tardes','buenas noches','hey','hi','hello'],sec:null,cat:null,
+   follow:['¿Qué es el PLADECO?','Población de Rengo','Ejes estratégicos','Localidad más vulnerable'],
+   ans:null}
 ];
-const CHAT_SUGGESTIONS=['¿Cuántos habitantes tiene Rengo?','¿Cuál es la localidad más vulnerable?','Brecha urbano-rural','¿Qué es el PLADECO?','Equipo técnico','Compromisos públicos','Línea de tiempo','Metodología','Antes y después'];
+const CHAT_SUGGESTIONS=['¿Cuántos habitantes tiene Rengo?','Localidad más vulnerable','Brecha urbano-rural','¿Qué es el PLADECO?','Ejes estratégicos','Metas 2035','Comisiones de trabajo','FODA','Antes y después'];
+const chatHistory=new Set();
 let chatOpen=false;
 function toggleChatbot(){
   chatOpen=!chatOpen;
   document.getElementById('chatOverlay').classList.toggle('open',chatOpen);
   document.getElementById('chatPanel').classList.toggle('open',chatOpen);
   if(chatOpen){
-    /* On mobile, close sidebar to prevent overlap */
     if(window.innerWidth<=900){
       var sb=document.querySelector('.sidebar');
       if(sb) sb.classList.remove('open');
@@ -7238,17 +7352,25 @@ function toggleChatbot(){
     }
     const msgs=document.getElementById('chatMessages');
     if(!msgs.children.length){
-      addBotMsg('¡Hola! 👋 Soy el asistente del **PLADECO Rengo**. Pregúntame sobre población, vivienda, vulnerabilidad, servicios básicos, educación, empleo y más.\n\nToda la información proviene del **Censo 2024 (INE)**.');
+      const h=new Date().getHours();
+      const saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
+      addBotMsg(saludo+' Soy **Contigo Rengo**, tu asistente del PLADECO 2025-2035.\n\nPuedo ayudarte con:\n• 📊 **Datos del Censo 2024** (población, vivienda, empleo...)\n• 🗺️ **Análisis territorial** (localidades, vulnerabilidad, brechas)\n• 📋 **El plan PLADECO** (ejes, metas, ODS, FODA)\n• 🗣️ **Participación** (encuestas, testimonios, etnografía)\n\nEscribe tu pregunta o prueba los botones de abajo.\n\n💡 **Tip**: Escribe el nombre de una localidad para ver sus datos.');
       showSuggestions();
     }
     setTimeout(()=>document.getElementById('chatInput').focus(),350);
   }
 }
-function addBotMsg(text){
+function addBotMsg(text,secId){
   const msgs=document.getElementById('chatMessages');
   const d=document.createElement('div');
   d.className='chatbot-msg bot';
-  d.innerHTML='<strong>🤖 Contigo Rengo</strong>'+formatChat(text);
+  let html='<strong>🤖 Contigo Rengo</strong>'+formatChat(text);
+  if(secId){
+    const secEl=document.getElementById(secId);
+    const secTitle=secEl?secEl.querySelector('.sec-header')?.textContent?.trim()||secId:secId;
+    html+='<br><button class="chat-nav-btn" onclick="chatNavigate(\''+secId+'\')">📍 Ir a '+secTitle+'</button>';
+  }
+  d.innerHTML=html;
   msgs.appendChild(d);
   msgs.scrollTop=msgs.scrollHeight;
 }
@@ -7261,11 +7383,13 @@ function addUserMsg(text){
   msgs.scrollTop=msgs.scrollHeight;
 }
 function formatChat(t){
-  return t.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');
+  return t.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`(.+?)`/g,'<code style="background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px;font-size:11px">$1</code>').replace(/\n/g,'<br>');
 }
-function showSuggestions(){
+function showSuggestions(custom){
   const c=document.getElementById('chatSugg');
-  c.innerHTML=CHAT_SUGGESTIONS.map(s=>'<button onclick="askChat(this.textContent)">'+s+'</button>').join('');
+  const items=custom||CHAT_SUGGESTIONS;
+  c.className='chatbot-suggestions'+(custom?' contextual':'');
+  c.innerHTML=items.map(s=>'<button onclick="askChat(this.textContent)">'+s+'</button>').join('');
 }
 function showTypingIndicator(){
   const msgs=document.getElementById('chatMessages');
@@ -7296,28 +7420,227 @@ function sendChatMessage(){
   setTimeout(()=>{removeTypingIndicator();answerChat(q);},600+Math.random()*500);
 }
 function stripAccents(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'');}
+/* ── Navigation from chatbot ── */
+function chatNavigate(secId){
+  const el=document.getElementById(secId);
+  if(!el)return;
+  toggleChatbot();
+  setTimeout(()=>{el.scrollIntoView({behavior:'smooth',block:'start'});},400);
+}
+/* ── Trigram fuzzy similarity ── */
+function trigramSim(a,b){
+  if(a.length<3||b.length<3)return a.includes(b)||b.includes(a)?0.6:0;
+  const tg=s=>{const t=new Set();for(let i=0;i<=s.length-3;i++)t.add(s.substring(i,i+3));return t;};
+  const ta=tg(a),tb=tg(b);let inter=0;ta.forEach(t=>{if(tb.has(t))inter++;});
+  return inter/(ta.size+tb.size-inter);
+}
+/* ── Dynamic data generators ── */
+function chatDynEjes(){
+  const acc=typeof EJE_ACC!=='undefined'?EJE_ACC:[58,18,14,53,32,50];
+  const nm=typeof EJE_NAMES!=='undefined'?EJE_NAMES:['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
+  const total=acc.reduce((a,b)=>a+b,0);
+  let r='Los **6 ejes estratégicos** del PLADECO 2025-2035:\n\n';
+  nm.forEach((n,i)=>{r+=(i+1)+'️⃣ **'+n+'**: '+acc[i]+' acciones ('+(acc[i]/total*100).toFixed(0)+'%)\n';});
+  r+='\n**Total: '+total+' acciones** distribuidas en corto, mediano y largo plazo.';
+  return r;
+}
+function chatDynFODA(){
+  const f=FODA_DATA;
+  let r='**Análisis FODA** del diagnóstico territorial:\n\n';
+  r+='💪 **Fortalezas ('+f.fortalezas.length+'):**\n';
+  f.fortalezas.forEach(x=>{r+='• '+x.t+'\n';});
+  r+='\n🌟 **Oportunidades ('+f.oportunidades.length+'):**\n';
+  f.oportunidades.forEach(x=>{r+='• '+x.t+'\n';});
+  r+='\n⚠️ **Debilidades ('+f.debilidades.length+'):**\n';
+  f.debilidades.forEach(x=>{r+='• '+x.t+'\n';});
+  r+='\n🔴 **Amenazas ('+f.amenazas.length+'):**\n';
+  f.amenazas.forEach(x=>{r+='• '+x.t+'\n';});
+  return r;
+}
+function chatDynComisiones(){
+  const c=COMISIONES;
+  let r='**Comisiones de Trabajo PLADECO** — '+c.length+' sesiones programadas:\n\n';
+  c.forEach(s=>{r+='📅 **'+s.fecha+'**: '+s.title+'\n   👥 '+s.tags.join(', ')+'\n';});
+  return r;
+}
+function chatDynFinanciamiento(){
+  const acc=typeof EJE_ACC!=='undefined'?EJE_ACC:[58,18,14,53,32,50];
+  const nm=typeof EJE_NAMES!=='undefined'?EJE_NAMES:['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
+  const p=typeof PLAZOS!=='undefined'?PLAZOS:{C:[35,8,7,12,18,32],M:[19,8,7,27,13,17],L:[4,2,0,14,1,1]};
+  let r='**Financiamiento y distribución de acciones:**\n\n';
+  r+='📊 **Por plazo:**\n';
+  r+='• Corto plazo: '+p.C.reduce((a,b)=>a+b,0)+' acciones\n';
+  r+='• Mediano plazo: '+p.M.reduce((a,b)=>a+b,0)+' acciones\n';
+  r+='• Largo plazo: '+p.L.reduce((a,b)=>a+b,0)+' acciones\n\n';
+  r+='💰 El eje con más acciones es **'+nm[acc.indexOf(Math.max(...acc))]+'** con '+Math.max(...acc)+' acciones.\n';
+  r+='⚠️ Dependencia FNDR: **54,4%** de la inversión proviene de fondos externos (meta 2035: reducir a 35%).';
+  return r;
+}
+function chatDynMetas(){
+  let r='**Medidores de Progreso hacia Metas 2035:**\n\n';
+  METAS.forEach(m=>{
+    const pct=m.dec?(m.m35<=0?100:Math.max(0,Math.min(100,(m.m35/m.lb)*100))):(m.m35===0?0:Math.min(100,(m.lb/m.m35)*100));
+    const bar=pct>66?'🟢':pct>33?'🟡':'🔴';
+    r+=bar+' **'+m.n+'**: LB '+m.lb+' → Meta '+m.m35+' ('+pct.toFixed(0)+'% '+(m.dec?'↓':'↑')+')\n';
+  });
+  return r;
+}
+function chatDynPoliticas(){
+  const acc=typeof EJE_ACC!=='undefined'?EJE_ACC:[58,18,14,53,32,50];
+  const nm=typeof EJE_NAMES!=='undefined'?EJE_NAMES:['Social','Económico','Educación','Urbano','Seguridad','Gestión'];
+  const total=acc.reduce((a,b)=>a+b,0);
+  let r='**'+total+' Políticas Públicas** distribuidas en 6 ejes:\n\n';
+  nm.forEach((n,i)=>{
+    const pct=(acc[i]/total*100).toFixed(0);
+    r+='• **Eje '+(i+1)+' — '+n+'**: '+acc[i]+' acciones ('+pct+'%)\n';
+  });
+  r+='\nCada política tiene: responsable, plazo, indicador verificable, y ODS vinculado.';
+  return r;
+}
+function chatDynUV(){
+  const urb=UV_DATA.filter(u=>u.tipo==='Urbano');
+  const rur=UV_DATA.filter(u=>u.tipo==='Rural');
+  let r='**'+UV_DATA.length+' Unidades Vecinales** ('+urb.length+' urbanas + '+rur.length+' rurales):\n\n';
+  r+='🏙️ **Urbanas:**\n';
+  urb.forEach(u=>{r+='• '+u.name+' ('+u.uv+'): '+u.pob.toLocaleString('es-CL')+' hab'+(u.bip?' — '+u.bip+' proyectos BIP':'')+'\n';});
+  r+='\n🌾 **Rurales:**\n';
+  rur.forEach(u=>{r+='• '+u.name+' ('+u.uv+'): '+u.pob.toLocaleString('es-CL')+' hab'+(u.bip?' — '+u.bip+' proyectos BIP':'')+'\n';});
+  return r;
+}
+function chatDynGreeting(){
+  const h=new Date().getHours();
+  const saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
+  return saludo+' Soy **Contigo Rengo**, tu asistente del PLADECO. ¿En qué puedo ayudarte?\n\nPrueba preguntarme por población, localidades, ejes, metas, FODA o cualquier tema del plan.';
+}
+/* ── Localidad lookup (dynamic from CENSO_VULNERABILIDAD) ── */
+function chatLookupLocalidad(q){
+  const ql=stripAccents(q.toLowerCase());
+  const locs=typeof CENSO_VULNERABILIDAD!=='undefined'?CENSO_VULNERABILIDAD:[];
+  let bestLoc=null,bestSim=0;
+  /* Pass 1: exact name match (prefer shortest name = most specific) */
+  for(const loc of locs){
+    const ln=stripAccents(loc.loc.toLowerCase());
+    if(ql===ln){bestLoc=loc;bestSim=2;break;}
+  }
+  /* Pass 2: substring match — prefer exact name over partial */
+  if(!bestLoc){
+    for(const loc of locs){
+      const ln=stripAccents(loc.loc.toLowerCase());
+      if(ql.includes(ln)){
+        const sim=1+ln.length/100; /* longer name match = better */
+        if(sim>bestSim){bestSim=sim;bestLoc=loc;}
+      }else if(ln.includes(ql)&&ql.length>=4){
+        const sim=0.9+ql.length/100;
+        if(sim>bestSim){bestSim=sim;bestLoc=loc;}
+      }
+    }
+  }
+  /* Pass 3: fuzzy trigram */
+  if(!bestLoc){
+    for(const loc of locs){
+      const ln=stripAccents(loc.loc.toLowerCase());
+      const sim=trigramSim(ql,ln);
+      if(sim>bestSim&&sim>0.3){bestSim=sim;bestLoc=loc;}
+    }
+  }
+  if(!bestLoc)return null;
+  const l=bestLoc;
+  let r='📍 **'+l.loc+'** ('+l.area+') — '+l.pob.toLocaleString('es-CL')+' hab\n\n';
+  r+='**Índices de vulnerabilidad (Censo 2024):**\n';
+  r+='• ICP (Compuesto): **'+l.icp.toFixed(3)+'** '+(l.icp>0.3?'🔴 Alto':l.icp>0.25?'🟡 Moderado':'🟢 Bajo')+'\n';
+  r+='• IVSH (Socioeconómica): '+l.ivsh.toFixed(3)+'\n';
+  r+='• IDDC (Dep. Cuidados): '+l.iddc.toFixed(3)+'\n';
+  r+='• IBDT (Brecha Digital): '+l.ibdt.toFixed(3)+'\n';
+  r+='• IVFT (Vuln. Funcional): '+l.ivft.toFixed(3)+'\n';
+  r+='• ICHT (Capital Humano): '+l.icht_vul.toFixed(3)+'\n';
+  r+='• IPSB (Serv. Básicos): '+l.ipsb.toFixed(3)+'\n';
+  /* Rank */
+  const sorted=[...locs].sort((a,b)=>b.icp-a.icp);
+  const rank=sorted.findIndex(x=>x.loc===l.loc)+1;
+  r+='\n📊 Ranking: **#'+rank+' de '+locs.length+'** localidades (de más a menos vulnerable).';
+  return r;
+}
+/* ── Main answer engine ── */
 function answerChat(q){
   const ql=stripAccents(q.toLowerCase().trim());
   if(!ql){showSuggestions();return;}
+  chatHistory.add(ql);
+
+  /* 1. Quick commands */
+  if(ql.startsWith('!')){
+    const cmd=ql.substring(1).trim();
+    if(cmd==='stats'||cmd==='datos'){addBotMsg('📊 **Datos rápidos Rengo (Censo 2024):**\n\n• Población: **'+CENSO_2024.poblacion_total.toLocaleString('es-CL')+'**\n• Viviendas: '+CENSO_2024.viviendas_total.toLocaleString('es-CL')+'\n• Hogares: '+CENSO_2024.hogares.toLocaleString('es-CL')+'\n• Densidad: '+CENSO_2024.densidad+' hab/km²\n• Internet: '+CENSO_2024.internet+'%\n• Agua red: '+CENSO_2024.agua_red+'%\n• Desocupación: '+CENSO_2024.tasa_desocupacion+'%\n• Migrantes: '+CENSO_2024.pct_migrantes+'%\n• Discapacidad: '+CENSO_2024.pct_discapacidad+'%','censo');showSuggestions(['Población','Vivienda','Empleo','Vulnerabilidad']);return;}
+    if(cmd==='metas'){addBotMsg(chatDynMetas(),'semaforo');showSuggestions(['Ejes estratégicos','Financiamiento','Semáforo']);return;}
+    if(cmd==='ranking'){
+      const locs=typeof CENSO_VULNERABILIDAD!=='undefined'?CENSO_VULNERABILIDAD:[];
+      const top=[...locs].sort((a,b)=>b.icp-a.icp).slice(0,10);
+      let r='🏆 **Top 10 Localidades más Vulnerables (ICP):**\n\n';
+      top.forEach((l,i)=>{r+=(i+1)+'. **'+l.loc+'** ('+l.area+'): ICP '+l.icp.toFixed(3)+' — '+l.pob+' hab\n';});
+      addBotMsg(r,'territorial-adv');showSuggestions(['Brecha urbano-rural','Comparar localidades','Servicios básicos']);return;
+    }
+    if(cmd==='foda'){addBotMsg(chatDynFODA(),'foda');showSuggestions(['Ejes estratégicos','Seguridad','Brecha urbano-rural']);return;}
+    if(cmd==='help'||cmd==='ayuda'){addBotMsg('**Comandos rápidos disponibles:**\n\n• `!stats` — Datos clave del Censo 2024\n• `!metas` — Progreso hacia Metas 2035\n• `!ranking` — Top 10 localidades vulnerables\n• `!foda` — Análisis FODA completo\n• `!comisiones` — Sesiones de trabajo\n• `!uv` — Unidades vecinales\n\n💡 También puedes escribir el **nombre de cualquier localidad** para ver sus datos.');showSuggestions();return;}
+    if(cmd==='comisiones'){addBotMsg(chatDynComisiones(),'comisiones');showSuggestions(['Equipo técnico','Línea de tiempo','Ejes estratégicos']);return;}
+    if(cmd==='uv'){addBotMsg(chatDynUV(),'territorio');showSuggestions(['Comparar localidades','Mapa territorial','Vulnerabilidad']);return;}
+  }
+
+  /* 2. Localidad lookup — try to match a place name */
+  const locResult=chatLookupLocalidad(ql);
+  if(locResult&&ql.length>=4){
+    addBotMsg(locResult,'territorial-adv');
+    showSuggestions(['Brecha urbano-rural','Comparar localidades','Ranking vulnerabilidad','Mapa territorial']);
+    return;
+  }
+
+  /* 3. Keyword + fuzzy matching */
   let best=null,bestScore=0;
   for(const qa of CHATBOT_QA){
     let score=0;
     for(const k of qa.keys){
       const kn=stripAccents(k.toLowerCase());
-      /* exact word match bonus */
       if(ql===kn) score+=kn.length*3;
       else if(ql.includes(kn)) score+=kn.length;
-      /* partial word matching for short queries */
       else if(kn.length>=4&&ql.split(/\s+/).some(w=>w.length>=3&&kn.includes(w))) score+=Math.floor(kn.length*0.5);
+      /* Fuzzy trigram matching for typos */
+      else{
+        const words=ql.split(/\s+/);
+        for(const w of words){
+          if(w.length>=4){
+            const sim=trigramSim(w,kn);
+            if(sim>0.35) score+=Math.floor(kn.length*sim);
+          }
+        }
+      }
     }
     if(score>bestScore){bestScore=score;best=qa;}
   }
+
   if(best&&bestScore>=3){
-    addBotMsg(best.ans);
+    /* Dynamic answer generators for entries with ans:null */
+    let answer=best.ans;
+    if(!answer){
+      if(best.keys.includes('eje')) answer=chatDynEjes();
+      else if(best.keys.includes('foda')) answer=chatDynFODA();
+      else if(best.keys.includes('comision')) answer=chatDynComisiones();
+      else if(best.keys.includes('financiamiento')) answer=chatDynFinanciamiento();
+      else if(best.keys.includes('meta')) answer=chatDynMetas();
+      else if(best.keys.includes('politica publica')) answer=chatDynPoliticas();
+      else if(best.keys.includes('unidad vecinal')) answer=chatDynUV();
+      else if(best.keys.includes('hola')) answer=chatDynGreeting();
+      else answer='Información disponible en la sección correspondiente del portal.';
+    }
+    addBotMsg(answer,best.sec);
+    /* Show contextual follow-ups if available */
+    if(best.follow&&best.follow.length){
+      const filtered=best.follow.filter(f=>!chatHistory.has(stripAccents(f.toLowerCase())));
+      showSuggestions(filtered.length?filtered:best.follow);
+    }else{
+      showSuggestions();
+    }
   }else{
-    addBotMsg('No tengo una respuesta exacta para eso, pero puedo ayudarte con:\n\n• **Población** y demografía\n• **Vivienda** y hogares\n• **Servicios básicos** (agua, electricidad, internet)\n• **Vulnerabilidad territorial** e índices\n• **Educación y empleo**\n• **Migración** y pueblos originarios\n• **Seguridad** ciudadana\n• **PLADECO** y ejes estratégicos\n• **Equipo técnico** y responsables\n• **Compromisos** públicos y avances\n• **Metodología** y marco legal\n• **Línea de tiempo** del proceso\n• **ODS** vinculados\n\n¿Sobre qué te gustaría saber?');
+    addBotMsg('No encontré una respuesta exacta para "**'+q+'**", pero puedo ayudarte con:\n\n📊 **Datos**: población, vivienda, empleo, educación, servicios\n🗺️ **Territorial**: localidades, vulnerabilidad, brechas, mapa\n📋 **PLADECO**: ejes, metas, ODS, FODA, comisiones\n🗣️ **Participación**: encuestas, testimonios, etnografía\n\n💡 **Tips**:\n• Escribe el nombre de una **localidad** (ej: "Apalta", "Rosario")\n• Usa **comandos rápidos**: `!stats` `!metas` `!ranking` `!foda` `!ayuda`');
+    showSuggestions();
   }
-  showSuggestions();
 }
 /* duplicate keydown removed — see line 6798 */
 
