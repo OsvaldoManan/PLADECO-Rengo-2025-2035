@@ -1209,6 +1209,20 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
 .comparador-row .cmp-delta{font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px;margin-left:6px}
 .cmp-delta.up{background:#d1fae5;color:#059669}
 .cmp-delta.down{background:#fee2e2;color:#dc2626}
+.cmp-bar-wrap{width:100%;height:6px;background:rgba(128,128,128,.08);border-radius:3px;margin-top:5px;overflow:hidden}
+.cmp-bar{height:100%;border-radius:3px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.cmp-bar.up{background:linear-gradient(90deg,#059669,#34d399)}
+.cmp-bar.down{background:linear-gradient(90deg,#dc2626,#f87171)}
+.cmp-bar.neutral{background:linear-gradient(90deg,#6366f1,#a5b4fc)}
+.comparador-row.animated .cmp-bar{width:var(--bar-w)}
+.comparador-col .cmp-highlight{font-size:9px;font-weight:700;color:var(--text2);margin-top:2px;display:none}
+.comparador-row.animated .cmp-highlight{display:block}
+.comparador-col .cmp-big-delta{display:flex;flex-direction:column;align-items:flex-end;gap:2px;min-width:0}
+.cmp-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.cmp-summary-card{text-align:center;background:var(--card);border-radius:var(--radius);padding:14px 10px;border:1px solid var(--border);box-shadow:var(--shadow)}
+.cmp-summary-card .cmp-s-val{font-size:22px;font-weight:800}
+.cmp-summary-card .cmp-s-label{font-size:10px;color:var(--text2);font-weight:600;margin-top:2px}
+@media(max-width:500px){.cmp-summary{grid-template-columns:1fr}}
 
 /* ── Mobile: New sections ── */
 @media(max-width:600px){
@@ -2824,6 +2838,12 @@ section{position:relative}
     <h2>21 Unidades Vecinales</h2>
     <p>9 urbanas y 12 rurales con datos de población, inversión BIP y participación</p>
   </div>
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+    <input type="text" id="uvSearchInput" placeholder="🔍 Buscar localidad..." oninput="filterUVTable()" style="flex:1;min-width:180px;padding:8px 14px;border:1px solid var(--border);border-radius:20px;background:var(--card);color:var(--text);font-size:12px;outline:none">
+    <button onclick="filterUVTipo('all')" class="com-f-btn active" data-uvf="all">Todos</button>
+    <button onclick="filterUVTipo('Urbano')" class="com-f-btn" data-uvf="Urbano">Urbano</button>
+    <button onclick="filterUVTipo('Rural')" class="com-f-btn" data-uvf="Rural">Rural</button>
+  </div>
   <div class="uv-table-wrap">
     <table class="uv-table" id="uv-table">
       <thead>
@@ -3921,8 +3941,34 @@ function sortUV(colIdx, key){
       default: return 0;
     }
   };
-  const sorted = [...UV_DATA].sort((a,b) => uvSortAsc ? getVal(a)-getVal(b) : getVal(b)-getVal(a));
+  const filtered = UV_DATA.filter(uvFilterFn);
+  const sorted = [...filtered].sort((a,b) => uvSortAsc ? getVal(a)-getVal(b) : getVal(b)-getVal(a));
   fillUVBody(sorted);
+}
+let uvFilterTipo='all';
+function uvFilterFn(u){
+  if(uvFilterTipo!=='all'&&u.tipo!==uvFilterTipo) return false;
+  const q=document.getElementById('uvSearchInput')?.value?.toLowerCase()||'';
+  if(q&&!stripAccents(u.name.toLowerCase()).includes(stripAccents(q))) return false;
+  return true;
+}
+function filterUVTable(){
+  const data=uvSortCol>=0?getUVSorted():UV_DATA;
+  fillUVBody(data.filter(uvFilterFn));
+}
+function filterUVTipo(tipo){
+  uvFilterTipo=tipo;
+  document.querySelectorAll('[data-uvf]').forEach(b=>{b.classList.toggle('active',b.dataset.uvf===tipo);});
+  filterUVTable();
+}
+function getUVSorted(){
+  const cols=['uv','name','tipo','pob','nna','bip','inv','invCap','bipPer'];
+  const key=cols[uvSortCol];
+  const getVal=u=>{
+    switch(key){case 'pob':return u.pob;case 'nna':return u.nna;case 'bip':return u.bip;case 'inv':return u.inv;
+    case 'invCap':return u.pob>0&&u.inv>0?u.inv/u.pob:0;case 'bipPer':return u.pob>0&&u.bip>0?u.bip/u.pob*1000:0;default:return 0;}
+  };
+  return [...UV_DATA].sort((a,b)=>uvSortAsc?getVal(a)-getVal(b):getVal(b)-getVal(a));
 }
 
 // ── RENDER GALLERY (with interactive badges) ──
@@ -6333,34 +6379,62 @@ function renderAntesDespues(){
   const el=document.getElementById('comparadorGrid');
   if(!el)return;
   const demo=[
-    {label:'Población total',v2017:'62.707',v2024:'63.620',delta:'+1,5%',up:true},
-    {label:'Viviendas',v2017:'21.845',v2024:'25.124',delta:'+15,0%',up:true},
-    {label:'Hogares',v2017:'19.120',v2024:'22.338',delta:'+16,8%',up:true},
-    {label:'Migrantes internacionales',v2017:'486',v2024:'2.796',delta:'+475%',up:true},
-    {label:'Pueblos originarios',v2017:'2.410',v2024:'3.214',delta:'+33,4%',up:true},
-    {label:'Edad mediana',v2017:'33 años',v2024:'37 años',delta:'+4 años',up:false},
-    {label:'Adultos mayores (60+)',v2017:'14,8%',v2024:'19,7%',delta:'+4,9 pp',up:false}
+    {label:'Población total',v2017:'62.707',v2024:'63.620',delta:'+1,5%',pct:1.5,up:true,positive:true},
+    {label:'Viviendas',v2017:'21.845',v2024:'25.124',delta:'+15,0%',pct:15,up:true,positive:true},
+    {label:'Hogares',v2017:'19.120',v2024:'22.338',delta:'+16,8%',pct:16.8,up:true,positive:true},
+    {label:'Migrantes internacionales',v2017:'486',v2024:'2.796',delta:'+475%',pct:100,up:true,positive:null},
+    {label:'Pueblos originarios',v2017:'2.410',v2024:'3.214',delta:'+33,4%',pct:33.4,up:true,positive:null},
+    {label:'Edad mediana',v2017:'33 años',v2024:'37 años',delta:'+4 años',pct:12.1,up:false,positive:false},
+    {label:'Adultos mayores (60+)',v2017:'14,8%',v2024:'19,7%',delta:'+4,9 pp',pct:33.1,up:false,positive:false}
   ];
   const serv=[
-    {label:'Agua red pública',v2017:'85,1%',v2024:'90,3%',delta:'+5,2 pp',up:true},
-    {label:'Alcantarillado',v2017:'65,2%',v2024:'72,5%',delta:'+7,3 pp',up:true},
-    {label:'Electricidad',v2017:'99,2%',v2024:'99,7%',delta:'+0,5 pp',up:true},
-    {label:'Internet hogares',v2017:'52,8%',v2024:'91,4%',delta:'+38,6 pp',up:true},
-    {label:'Escolaridad promedio',v2017:'10,9 años',v2024:'11,8 años',delta:'+0,9',up:true},
-    {label:'Analfabetismo',v2017:'3,8%',v2024:'2,6%',delta:'-1,2 pp',up:true},
-    {label:'Hacinamiento',v2017:'7,1%',v2024:'5,3%',delta:'-1,8 pp',up:true}
+    {label:'Agua red pública',v2017:'85,1%',v2024:'90,3%',delta:'+5,2 pp',pct:6.1,up:true,positive:true},
+    {label:'Alcantarillado',v2017:'65,2%',v2024:'72,5%',delta:'+7,3 pp',pct:11.2,up:true,positive:true},
+    {label:'Electricidad',v2017:'99,2%',v2024:'99,7%',delta:'+0,5 pp',pct:0.5,up:true,positive:true},
+    {label:'Internet hogares',v2017:'52,8%',v2024:'91,4%',delta:'+38,6 pp',pct:73.1,up:true,positive:true},
+    {label:'Escolaridad promedio',v2017:'10,9 años',v2024:'11,8 años',delta:'+0,9 años',pct:8.3,up:true,positive:true},
+    {label:'Analfabetismo',v2017:'3,8%',v2024:'2,6%',delta:'-1,2 pp',pct:31.6,up:true,positive:true},
+    {label:'Hacinamiento',v2017:'7,1%',v2024:'5,3%',delta:'-1,8 pp',pct:25.4,up:true,positive:true}
   ];
+  /* Summary cards */
+  const allData=[...demo,...serv];
+  const mejoras=allData.filter(d=>d.positive===true).length;
+  const desafios=allData.filter(d=>d.positive===false).length;
+  const neutros=allData.filter(d=>d.positive===null).length;
+  let summaryHTML=`<div class="cmp-summary">
+    <div class="cmp-summary-card"><div class="cmp-s-val" style="color:#059669">📈 ${mejoras}</div><div class="cmp-s-label">Indicadores que mejoraron</div></div>
+    <div class="cmp-summary-card"><div class="cmp-s-val" style="color:#dc2626">📉 ${desafios}</div><div class="cmp-s-label">Desafíos emergentes</div></div>
+    <div class="cmp-summary-card"><div class="cmp-s-val" style="color:#6366f1">📊 ${neutros}</div><div class="cmp-s-label">Cambios estructurales</div></div>
+  </div>`;
   function renderCol(titulo,icono,datos){
-    return `<div class="comparador-col"><h4>${icono} ${titulo}</h4>${datos.map(d=>`
-      <div class="comparador-row">
-        <span class="cmp-label">${d.label}</span>
-        <span>
-          <span class="cmp-val">${d.v2017}</span> → <span class="cmp-val">${d.v2024}</span>
+    return `<div class="comparador-col"><h4>${icono} ${titulo}</h4>${datos.map(d=>{
+      const barClass=d.positive===true?'up':d.positive===false?'down':'neutral';
+      const barW=Math.max(4,Math.min(100,d.pct*1.2));
+      return `<div class="comparador-row" style="--bar-w:${barW}%">
+        <div style="flex:1;min-width:0">
+          <span class="cmp-label">${d.label}</span>
+          <div class="cmp-bar-wrap"><div class="cmp-bar ${barClass}"></div></div>
+        </div>
+        <div class="cmp-big-delta">
+          <span><span class="cmp-val">${d.v2017}</span> → <span class="cmp-val">${d.v2024}</span></span>
           <span class="cmp-delta ${d.up?'up':'down'}">${d.delta}</span>
-        </span>
-      </div>`).join('')}</div>`;
+        </div>
+      </div>`;}).join('')}</div>`;
   }
-  el.innerHTML=renderCol('Demografía','👥',demo)+renderCol('Servicios y Educación','🏗️',serv);
+  el.innerHTML=summaryHTML+renderCol('Demografía','👥',demo)+renderCol('Servicios y Educación','🏗️',serv);
+  /* Animate bars on scroll */
+  const adObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const rows=e.target.querySelectorAll('.comparador-row');
+        rows.forEach((row,i)=>{
+          setTimeout(()=>row.classList.add('animated'),i*80);
+        });
+        adObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.2});
+  adObs.observe(el);
 }
 
 // ── QR CODE (Canvas simple) ──
