@@ -1,4 +1,4 @@
-const CACHE_STATIC='pladeco-static-v25.0';
+const CACHE_STATIC='pladeco-static-v26.0';
 const CACHE_IMG='pladeco-img-v1';
 const CACHE_TILES='pladeco-tiles-v1';
 const MAX_IMG_CACHE=200;
@@ -14,6 +14,9 @@ const STATIC_ASSETS=[
   './2.png',
   './3.png',
   './hero-banner.png',
+  './mision.png',
+  './vision.png',
+  './valores.png',
   './escudo-rengo.svg',
   './escudo-rengo-blanco.svg',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',

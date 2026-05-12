@@ -1734,6 +1734,44 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .sidebar-reading{padding:8px 20px;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.3px;display:flex;align-items:center;gap:5px}
 .sidebar-reading .sr-icon{font-size:12px;opacity:.5}
 body.sidebar-collapsed .sidebar-reading{display:none}
+
+/* ══════════════════════════════════════════
+   MISIÓN, VISIÓN Y VALORES INSTITUCIONALES
+   ══════════════════════════════════════════ */
+.mvv-section{padding:48px 0 56px;position:relative;overflow:hidden}
+.mvv-section::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(12,31,54,.03) 0%,rgba(45,154,77,.04) 50%,rgba(26,61,143,.03) 100%);pointer-events:none}
+.mvv-header{text-align:center;margin-bottom:40px;position:relative;z-index:1}
+.mvv-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:20px;background:linear-gradient(135deg,rgba(45,154,77,.1),rgba(26,61,143,.1));color:var(--green);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;border:1px solid rgba(45,154,77,.15)}
+.mvv-header h2{font-size:28px;font-weight:800;color:var(--text);line-height:1.25;letter-spacing:-.5px}
+.mvv-header h2 span{background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mvv-header p{font-size:14px;color:var(--text2);max-width:600px;margin:12px auto 0;line-height:1.6}
+.mvv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative;z-index:1}
+.mvv-card{background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);transition:all .45s cubic-bezier(.23,1,.32,1);position:relative;display:flex;flex-direction:column}
+.mvv-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(12,31,54,.12),0 8px 20px rgba(45,154,77,.08);border-color:rgba(45,154,77,.25)}
+.mvv-card-accent{height:4px;width:100%;background:linear-gradient(90deg,var(--green),var(--blue))}
+.mvv-card:nth-child(2) .mvv-card-accent{background:linear-gradient(90deg,var(--blue),#7c3aed)}
+.mvv-card:nth-child(3) .mvv-card-accent{background:linear-gradient(90deg,var(--accent2),var(--green))}
+.mvv-card-img{position:relative;padding:20px 20px 0;display:flex;justify-content:center;align-items:center;background:linear-gradient(180deg,rgba(245,246,248,.5),transparent)}
+.mvv-card-img img{width:100%;max-width:300px;height:auto;border-radius:14px;transition:transform .5s cubic-bezier(.23,1,.32,1);filter:drop-shadow(0 4px 12px rgba(0,0,0,.08))}
+.mvv-card:hover .mvv-card-img img{transform:scale(1.03)}
+.mvv-card-body{padding:20px 24px 24px;flex:1;display:flex;flex-direction:column}
+.mvv-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding:4px 10px;border-radius:6px;width:fit-content}
+.mvv-card:nth-child(1) .mvv-card-tag{color:var(--green);background:rgba(45,154,77,.08)}
+.mvv-card:nth-child(2) .mvv-card-tag{color:var(--blue);background:rgba(26,61,143,.08)}
+.mvv-card:nth-child(3) .mvv-card-tag{color:var(--accent2);background:rgba(245,146,29,.08)}
+.mvv-card-title{font-size:19px;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.3}
+.mvv-card-text{font-size:13px;color:var(--text2);line-height:1.7;flex:1}
+.mvv-card-text strong{color:var(--text);font-weight:600}
+.mvv-card-icons{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.mvv-icon-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--bg);font-size:10px;font-weight:600;color:var(--text2);border:1px solid rgba(0,0,0,.04);transition:all .2s}
+.mvv-card:hover .mvv-icon-pill{background:rgba(45,154,77,.05);border-color:rgba(45,154,77,.1)}
+@media(max-width:1024px){.mvv-grid{grid-template-columns:1fr;max-width:480px;margin:0 auto;gap:24px}}
+@media(max-width:600px){
+  .mvv-header h2{font-size:22px}
+  .mvv-card-body{padding:16px 18px 20px}
+  .mvv-card-img{padding:16px 16px 0}
+  .mvv-section{padding:36px 0 40px}
+}
 </style>
 </head>
 <body>
@@ -1789,6 +1827,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="sidebar-nav">
     <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
     <a href="#encuesta"><span class="ico">&#128203;</span> Encuesta Ciudadana</a>
+    <a href="#mvv"><span class="ico">&#127963;</span> Misión, Visión y Valores</a>
     <a href="#contexto"><span class="ico">&#128218;</span> Contexto PLADECO</a>
     <a href="#dashboard"><span class="ico">&#128202;</span> Dashboard</a>
 
@@ -1965,6 +2004,73 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <div class="encuesta-qr">
       <img src="qr-encuesta.png" alt="QR Encuesta PLADECO Rengo" width="104" height="104" loading="lazy" decoding="async">
       <div class="encuesta-qr-label">Escanea con tu celular</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISIÓN, VISIÓN Y VALORES ═══ -->
+<section id="mvv" class="mvv-section reveal">
+  <div style="max-width:1100px;margin:0 auto;padding:0 20px">
+    <div class="mvv-header">
+      <div class="mvv-badge">&#127963;&#65039; Identidad Institucional</div>
+      <h2>Misión, Visión y <span>Principios</span></h2>
+      <p>Los pilares que orientan la gestión de la Ilustre Municipalidad de Rengo y el desarrollo del PLADECO 2025-2035.</p>
+    </div>
+    <div class="mvv-grid">
+      <!-- MISIÓN -->
+      <div class="mvv-card">
+        <div class="mvv-card-accent"></div>
+        <div class="mvv-card-img">
+          <img src="mision.png" alt="Misión Municipalidad de Rengo" loading="lazy" decoding="async">
+        </div>
+        <div class="mvv-card-body">
+          <div class="mvv-card-tag">&#127919; Misión</div>
+          <h3 class="mvv-card-title">Nuestro propósito</h3>
+          <p class="mvv-card-text">La Municipalidad de Rengo existe para <strong>mejorar la calidad de vida</strong> de sus habitantes, gestionando con <strong>eficiencia, transparencia y participación</strong> los servicios, el territorio y las oportunidades del desarrollo local, con especial atención a los grupos y localidades en mayor condición de vulnerabilidad.</p>
+          <div class="mvv-card-icons">
+            <span class="mvv-icon-pill">&#128154; Calidad de vida</span>
+            <span class="mvv-icon-pill">&#9989; Eficiencia</span>
+            <span class="mvv-icon-pill">&#128270; Transparencia</span>
+            <span class="mvv-icon-pill">&#129309; Participación</span>
+          </div>
+        </div>
+      </div>
+      <!-- VISIÓN -->
+      <div class="mvv-card">
+        <div class="mvv-card-accent"></div>
+        <div class="mvv-card-img">
+          <img src="vision.png" alt="Visión Municipalidad de Rengo" loading="lazy" decoding="async">
+        </div>
+        <div class="mvv-card-body">
+          <div class="mvv-card-tag">&#128302; Visión</div>
+          <h3 class="mvv-card-title">El Rengo que soñamos</h3>
+          <p class="mvv-card-text">Rengo será una comuna <strong>moderna, inclusiva y territorialmente equilibrada</strong>, reconocida por la calidad de sus servicios públicos, la <strong>participación activa</strong> de sus comunidades y su rol articulador del <strong>desarrollo económico local</strong> en la Región de O'Higgins.</p>
+          <div class="mvv-card-icons">
+            <span class="mvv-icon-pill">&#127758; Modernidad</span>
+            <span class="mvv-icon-pill">&#129734; Inclusión</span>
+            <span class="mvv-icon-pill">&#9878;&#65039; Equilibrio</span>
+            <span class="mvv-icon-pill">&#128200; Desarrollo</span>
+          </div>
+        </div>
+      </div>
+      <!-- PRINCIPIOS -->
+      <div class="mvv-card">
+        <div class="mvv-card-accent"></div>
+        <div class="mvv-card-img">
+          <img src="valores.png" alt="Principios Institucionales Municipalidad de Rengo" loading="lazy" decoding="async">
+        </div>
+        <div class="mvv-card-body">
+          <div class="mvv-card-tag">&#127942; Principios</div>
+          <h3 class="mvv-card-title">Cómo actuamos</h3>
+          <p class="mvv-card-text">Una institución que actúa con <strong>transparencia y probidad</strong>, que distribuye recursos con <strong>equidad territorial</strong>, que escucha a su ciudadanía, que innova sin perder su identidad, y que cuida el <strong>patrimonio natural, cultural y social</strong> como un bien que pertenece a las generaciones futuras.</p>
+          <div class="mvv-card-icons">
+            <span class="mvv-icon-pill">&#128737;&#65039; Probidad</span>
+            <span class="mvv-icon-pill">&#9878;&#65039; Equidad</span>
+            <span class="mvv-icon-pill">&#127981; Patrimonio</span>
+            <span class="mvv-icon-pill">&#128154; Futuro</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -7524,6 +7630,7 @@ function filterSidebar(q){
 // MEJORA: COMMAND PALETTE (Ctrl+K)
 // ══════════════════════════════════════════════════════
 const CMD_SECTIONS=[
+  {id:'mvv',name:'Misión, Visión y Valores',icon:'🏛️',cat:'Institucional'},
   {id:'dashboard',name:'Indicadores Clave',icon:'📊',cat:'Dashboard'},
   {id:'cronograma',name:'Hoja de Ruta',icon:'📅',cat:'Cronograma'},
   {id:'viz',name:'Visualizaciones Interactivas',icon:'📈',cat:'Interactivo'},
