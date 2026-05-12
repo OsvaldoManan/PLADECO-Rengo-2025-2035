@@ -10,12 +10,13 @@
 <link rel="dns-prefetch" href="https://unpkg.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0c1f36">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="Portal interactivo del Plan de Desarrollo Comunal de Rengo 2025-2035. 6 ejes estrat&#233;gicos, 225 pol&#237;ticas p&#250;blicas, 63.620 habitantes (Censo 2024). Diagn&#243;stico territorial, cartograf&#237;a, datos y participaci&#243;n ciudadana.">
 <meta property="og:title" content="PLADECO Rengo 2025-2035">
-<meta property="og:description" content="Plan de Desarrollo Comunal — 6 ejes, 225 políticas, 63.620 habitantes (Censo 2024)">
+<meta property="og:description" content="Plan de Desarrollo Comunal — 6 ejes, 225 pol&#237;ticas, 63.620 habitantes (Censo 2024)">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/">
 <meta property="og:image" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/Portal_PLADECO/2.png">
@@ -415,7 +416,7 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 
 /* ── Scroll Progress ── */
 .scroll-progress{position:fixed;top:62px;left:var(--sidebar-w);right:0;height:3px;z-index:150;background:transparent;pointer-events:none;transition:left .3s ease}
-.scroll-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#ef476f,#ffd166);width:0;transition:width .15s linear;border-radius:0 2px 2px 0}
+.scroll-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),#ef476f,#ffd166);width:0;transition:width .15s linear;border-radius:0 2px 2px 0;will-change:width}
 @media(max-width:900px){.scroll-progress{left:0;top:40px}}
 
 /* ── Dark Mode ── */
@@ -1143,6 +1144,32 @@ body.dark .censo-heatmap .hm-urbano{background:rgba(59,130,246,.2);color:#93c5fd
 .contexto-pilar .cp-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
 .contexto-pilar .cp-desc{font-size:11px;color:var(--text-secondary);line-height:1.5}
 
+/* ── Fuente de Información Card ── */
+.fuente-info-card{margin:28px 0 24px;background:linear-gradient(135deg,rgba(45,154,77,.03) 0%,rgba(67,97,238,.04) 50%,rgba(124,58,237,.03) 100%);border-radius:20px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all .45s cubic-bezier(.23,1,.32,1);position:relative}
+.fuente-info-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(12,31,54,.1),0 0 0 1px rgba(45,154,77,.15)}
+.fuente-info-card-accent{height:4px;background:linear-gradient(90deg,var(--green),var(--blue),#7c3aed,var(--accent2))}
+.fuente-info-card-header{display:flex;align-items:center;gap:12px;padding:20px 24px 0;flex-wrap:wrap}
+.fuente-info-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:linear-gradient(135deg,var(--green),#2563eb);color:#fff;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px}
+.fuente-info-title{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px}
+.fuente-info-subtitle{width:100%;font-size:11.5px;color:var(--text-secondary);line-height:1.55;margin-top:4px;padding:0 24px}
+.fuente-info-img-wrap{padding:20px 24px 16px;display:flex;justify-content:center;position:relative}
+.fuente-info-img-wrap img{max-width:100%;width:640px;border-radius:16px;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 24px rgba(12,31,54,.08);transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .4s}
+.fuente-info-card:hover .fuente-info-img-wrap img{transform:scale(1.015);box-shadow:0 8px 40px rgba(12,31,54,.12)}
+.fuente-info-img-wrap::after{content:'\1F50D  Clic para ampliar';position:absolute;bottom:28px;left:50%;transform:translateX(-50%) translateY(6px);background:rgba(0,0,0,.72);backdrop-filter:blur(8px);color:#fff;padding:6px 18px;border-radius:20px;font-size:10.5px;font-weight:700;letter-spacing:.4px;opacity:0;transition:all .35s cubic-bezier(.23,1,.32,1);pointer-events:none}
+.fuente-info-card:hover .fuente-info-img-wrap::after{opacity:1;transform:translateX(-50%) translateY(0)}
+.fuente-info-sources{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 24px 22px}
+.fuente-info-src{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:rgba(255,255,255,.7);border-radius:14px;border:1px solid var(--border);transition:all .3s cubic-bezier(.23,1,.32,1)}
+.fuente-info-src:hover{background:rgba(45,154,77,.06);border-color:rgba(45,154,77,.2);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.fuente-info-src-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;margin-top:1px}
+.fuente-info-src-text{font-size:11.5px;font-weight:700;color:var(--text);line-height:1.35}
+.fuente-info-src-desc{display:block;font-size:10px;font-weight:500;color:var(--text-secondary);line-height:1.5;margin-top:3px}
+@media(max-width:768px){.fuente-info-sources{grid-template-columns:1fr;gap:10px}.fuente-info-img-wrap img{width:100%}.fuente-info-card-header{padding:16px 18px 0}.fuente-info-subtitle,.fuente-info-sources,.fuente-info-img-wrap{padding-left:18px;padding-right:18px}}
+body.dark .fuente-info-card{background:linear-gradient(135deg,rgba(45,154,77,.06) 0%,rgba(67,97,238,.06) 50%,rgba(124,58,237,.05) 100%)}
+body.dark .fuente-info-src{background:rgba(255,255,255,.04);border-color:var(--border)}
+body.dark .fuente-info-src:hover{background:rgba(45,154,77,.1)}
+body.dark .fuente-info-src-desc{color:var(--text-secondary)}
+body.dark .fuente-info-img-wrap img{border-color:rgba(255,255,255,.08)}
+
 /* ── Timeline Proceso ── */
 .timeline-proceso{position:relative;padding:20px 0 20px 40px}
 .timeline-proceso::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--green),var(--blue));border-radius:3px}
@@ -1757,8 +1784,8 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 .mvv-card-img{cursor:pointer;position:relative;overflow:hidden;border-radius:14px 14px 0 0}
 .mvv-card-img::after{content:'🔍 Ver en grande';position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(transparent,rgba(12,31,54,.75));color:#fff;font-size:11px;font-weight:600;text-align:center;letter-spacing:.5px;opacity:0;transform:translateY(8px);transition:all .35s cubic-bezier(.23,1,.32,1)}
 .mvv-card:hover .mvv-card-img::after{opacity:1;transform:translateY(0)}
-.mvv-card-img img{transition:transform .5s cubic-bezier(.23,1,.32,1),filter .3s!important}
-.mvv-card:hover .mvv-card-img img{transform:scale(1.05)!important;filter:drop-shadow(0 6px 16px rgba(0,0,0,.12)) brightness(1.02)}
+.mvv-card-img img{transition:transform .5s cubic-bezier(.23,1,.32,1),filter .3s;will-change:transform}
+.mvv-card:hover .mvv-card-img img{transform:scale(1.05);filter:drop-shadow(0 6px 16px rgba(0,0,0,.12)) brightness(1.02)}
 
 /* ══════════════════════════════════════════
    MISIÓN, VISIÓN Y VALORES INSTITUCIONALES
@@ -2127,11 +2154,43 @@ body.sidebar-collapsed .sidebar-reading{display:none}
         </div>
       </div>
 
-      <div class="fuente-info-wrap" style="margin:20px 0;text-align:center;cursor:pointer;position:relative" onclick="openMvvViewer(3)">
-        <img src="fuente-info.png" alt="Fuentes de Información PLADECO Rengo 2025-2035" loading="lazy" decoding="async" style="max-width:100%;width:520px;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow);transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .3s">
-        <div style="margin-top:8px;font-size:11px;color:var(--text2);font-weight:600;letter-spacing:.3px">&#128269; Clic para ampliar — Fuentes de Información del PLADECO</div>
+      <div class="fuente-info-card" onclick="openMvvViewer(3)" role="button" tabindex="0" aria-label="Ver diagrama de Fuentes de Informaci&#243;n del PLADECO en pantalla completa" onkeydown="if(event.key==='Enter')openMvvViewer(3)">
+        <div class="fuente-info-card-accent"></div>
+        <div class="fuente-info-card-header">
+          <span class="fuente-info-badge">&#128202; Diagn&#243;stico</span>
+          <span class="fuente-info-title">Fuentes de Informaci&#243;n del PLADECO</span>
+        </div>
+        <p class="fuente-info-subtitle">El diagn&#243;stico comunal se construy&#243; integrando <strong>4 fuentes complementarias</strong> que garantizan una visi&#243;n integral del territorio y sus comunidades.</p>
+        <div class="fuente-info-img-wrap">
+          <img src="fuente-info.png" alt="Fuentes de Informaci&#243;n PLADECO Rengo 2025-2035" loading="lazy" decoding="async">
+        </div>
+        <div class="fuente-info-sources">
+          <div class="fuente-info-src">
+            <div class="fuente-info-src-icon" style="background:rgba(45,154,77,.12)">&#128202;</div>
+            <div class="fuente-info-src-text">Datos Secundarios
+              <span class="fuente-info-src-desc">Indicadores socioecon&#243;micos de INE (Censo 2024), CASEN, SINIM, ICVU y SUBDERE que conforman la l&#237;nea base cuantitativa del territorio.</span>
+            </div>
+          </div>
+          <div class="fuente-info-src">
+            <div class="fuente-info-src-icon" style="background:rgba(67,97,238,.12)">&#128483;</div>
+            <div class="fuente-info-src-text">Entrevistas Semiestructuradas
+              <span class="fuente-info-src-desc">Di&#225;logos con autoridades comunales (Alcalde, Concejales, COSOC), funcionarios municipales, dirigentes sociales y actores institucionales clave.</span>
+            </div>
+          </div>
+          <div class="fuente-info-src">
+            <div class="fuente-info-src-icon" style="background:rgba(124,58,237,.12)">&#128101;</div>
+            <div class="fuente-info-src-text">Participaci&#243;n Territorial
+              <span class="fuente-info-src-desc">Encuentros participativos en 21 unidades vecinales (9 urbanas + 12 rurales), trabajo etnogr&#225;fico de campo y cartograf&#237;a comunitaria.</span>
+            </div>
+          </div>
+          <div class="fuente-info-src">
+            <div class="fuente-info-src-icon" style="background:rgba(245,146,29,.12)">&#128221;</div>
+            <div class="fuente-info-src-text">Encuesta Ciudadana
+              <span class="fuente-info-src-desc">2.096 respuestas que capturan prioridades, satisfacci&#243;n, identidad y necesidades comunitarias en todas las unidades territoriales.</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <style>.fuente-info-wrap:hover img{transform:scale(1.02);box-shadow:0 8px 32px rgba(12,31,54,.12),0 0 0 2px rgba(45,154,77,.2)}</style>
 
       <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px">Este proceso de actualizaci&#243;n del PLADECO de la Ilustre Municipalidad de Rengo se plantea como una <strong style="color:var(--text)">legitimaci&#243;n de las orientaciones de la nueva administraci&#243;n</strong>, herramientas de Planificaci&#243;n Subnacional, Participaci&#243;n de Actores Locales y la consagraci&#243;n de redes de Pol&#237;ticas (<em>Policy Networks</em>).</p>
 
@@ -6091,7 +6150,8 @@ function renderTreemapFin(){
     });
   }
   drawTreemap();
-  window.addEventListener('resize',drawTreemap);
+  var _tmResizeTimer;
+  window.addEventListener('resize',function(){clearTimeout(_tmResizeTimer);_tmResizeTimer=setTimeout(drawTreemap,150);});
 }
 
 // ── GALERIA FOTOGRAFICA ──
@@ -6149,14 +6209,6 @@ function navLightbox(dir){
   img.src=GALERIA_FOTOS[lightboxIdx].src;
   cap.textContent=GALERIA_FOTOS[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+GALERIA_FOTOS.length+')';
 }
-document.addEventListener('keydown',function(e){
-  const lb=document.getElementById('lightbox');
-  if(!lb||!lb.classList.contains('open'))return;
-  if(e.key==='Escape')closeLightbox();
-  if(e.key==='ArrowLeft')navLightbox(-1);
-  if(e.key==='ArrowRight')navLightbox(1);
-});
-
 // ── MVV IMAGE VIEWER ──
 const MVV_IMGS=[
   {src:'mision.png',titulo:'Misión — Municipalidad de Rengo'},
@@ -6193,14 +6245,6 @@ function updateMvvDots(){
   var dots=document.querySelectorAll('.mvv-viewer-dot');
   dots.forEach(function(d,i){d.classList.toggle('active',i===mvvIdx);});
 }
-document.addEventListener('keydown',function(e){
-  var v=document.getElementById('mvvViewer');
-  if(!v||!v.classList.contains('open'))return;
-  if(e.key==='Escape')closeMvvViewer();
-  if(e.key==='ArrowLeft')navMvvViewer(-1);
-  if(e.key==='ArrowRight')navMvvViewer(1);
-});
-
 // ── GRÁFICOS DEL PROCESO ──
 const GRAFICOS_DATA=[
 {src:'Gráficos/01_Cobertura_Proceso_Participativo.png',titulo:'Cobertura Proceso Participativo',cat:'GEN'},
@@ -6407,18 +6451,6 @@ function openGrafLightbox(idx,cat){
   document.body.style.overflow='hidden';
   window._grafLightboxActive=true;
 }
-document.addEventListener('keydown',function(e){
-  if(!window._grafLightboxActive)return;
-  const lb=document.getElementById('lightbox');
-  if(!lb||!lb.classList.contains('open')){window._grafLightboxActive=false;return;}
-  if(e.key==='Escape'){closeLightbox();window._grafLightboxActive=false;}
-  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
-    const dir=e.key==='ArrowLeft'?-1:1;
-    lightboxIdx=(lightboxIdx+dir+_grafLBItems.length)%_grafLBItems.length;
-    document.getElementById('lightboxImg').src=_grafLBItems[lightboxIdx].src;
-    document.getElementById('lightboxCaption').textContent=_grafLBItems[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+_grafLBItems.length+')';
-  }
-});
 // ── GRÁFICOS INTERACTIVOS (datos de PNGs estáticos) ──
 function renderGrafInteractive(){
   const tc=getChartTextColor(),gc=getChartGridColor();
@@ -6628,17 +6660,26 @@ function openCartoLightbox(idx,cat){
   document.body.style.overflow='hidden';
   window._cartoLightboxActive=true;
 }
+// ── UNIFIED LIGHTBOX KEYBOARD HANDLER (replaces 4 separate keydown listeners) ──
 document.addEventListener('keydown',function(e){
-  if(!window._cartoLightboxActive)return;
-  const lb=document.getElementById('lightbox');
-  if(!lb||!lb.classList.contains('open')){window._cartoLightboxActive=false;return;}
-  if(e.key==='Escape'){closeLightbox();window._cartoLightboxActive=false;}
-  if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
-    const dir=e.key==='ArrowLeft'?-1:1;
-    lightboxIdx=(lightboxIdx+dir+_cartoLBItems.length)%_cartoLBItems.length;
-    document.getElementById('lightboxImg').src=_cartoLBItems[lightboxIdx].src;
-    document.getElementById('lightboxCaption').textContent=_cartoLBItems[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+_cartoLBItems.length+')';
+  if(e.key!=='Escape'&&e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+  var dir=e.key==='ArrowLeft'?-1:e.key==='ArrowRight'?1:0;
+  // MVV viewer takes priority
+  var mvv=document.getElementById('mvvViewer');
+  if(mvv&&mvv.classList.contains('open')){
+    if(e.key==='Escape')closeMvvViewer();
+    else navMvvViewer(dir);
+    return;
   }
+  // Lightbox (gallery, gráficos, cartografías)
+  var lb=document.getElementById('lightbox');
+  if(!lb||!lb.classList.contains('open'))return;
+  if(e.key==='Escape'){closeLightbox();window._grafLightboxActive=false;window._cartoLightboxActive=false;return;}
+  // Determine active dataset
+  var items=window._cartoLightboxActive?_cartoLBItems:window._grafLightboxActive?_grafLBItems:GALERIA_FOTOS;
+  lightboxIdx=(lightboxIdx+dir+items.length)%items.length;
+  document.getElementById('lightboxImg').src=items[lightboxIdx].src;
+  document.getElementById('lightboxCaption').textContent=items[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+items.length+')';
 });
 
 // ── LÍNEA DE TIEMPO ──
@@ -6692,7 +6733,7 @@ function renderEquipo(){
 }
 
 // ── TESTIMONIOS CIUDADANOS — CAROUSEL ──
-let testIdx=0,testTimer=null,testPerPage=3;
+let testIdx=0,testTimer=null,testPerPage=3,testTotal=0;
 function renderTestimonios(){
   const el=document.getElementById('testimoniosGrid');
   if(!el)return;
@@ -6727,8 +6768,9 @@ function renderTestimonios(){
     </div></div>`;
   }).join('');
   /* Calculate pages */
+  testTotal=testimonios.length;
   testPerPage=window.innerWidth<=700?1:window.innerWidth<=1100?2:3;
-  const pages=Math.ceil(testimonios.length/testPerPage);
+  const pages=Math.ceil(testTotal/testPerPage);
   const dots=Array.from({length:pages},(_,i)=>`<button class="${i===0?'active':''}" onclick="testGoTo(${i})" aria-label="Página ${i+1}"></button>`).join('');
   el.innerHTML=`
     <div class="test-track" id="testTrack">${slides}</div>
@@ -6764,7 +6806,7 @@ function testSlide(){
   track.style.transform='translateX(-'+pct+'%)';
 }
 function testUpdateDots(){
-  const pages=Math.ceil(16/testPerPage);
+  const pages=Math.ceil(testTotal/testPerPage);
   const dotsEl=document.getElementById('testDots');
   const counter=document.getElementById('testCounter');
   if(!dotsEl)return;
@@ -6779,17 +6821,17 @@ function testUpdateDots(){
 }
 function testGoTo(page){
   testIdx=page*testPerPage;
-  if(testIdx>=16) testIdx=0;
+  if(testIdx>=testTotal) testIdx=0;
   testSlide();testUpdateDots();
 }
 function testNext(){
   testIdx+=testPerPage;
-  if(testIdx>=16) testIdx=0;
+  if(testIdx>=testTotal) testIdx=0;
   testSlide();testUpdateDots();
 }
 function testPrev(){
   testIdx-=testPerPage;
-  if(testIdx<0) testIdx=Math.max(0,(Math.ceil(16/testPerPage)-1)*testPerPage);
+  if(testIdx<0) testIdx=Math.max(0,(Math.ceil(testTotal/testPerPage)-1)*testPerPage);
   testSlide();testUpdateDots();
 }
 function testAutoPlay(){
@@ -7447,9 +7489,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='t'&&!e.ctrlKey&&!e.metaKey){
     window.scrollTo({top:0,behavior:'smooth'});
   }
-  // Arrow keys for lightbox navigation
-  if(e.key==='ArrowRight'){const nb=document.querySelector('.lightbox-next');if(nb&&document.getElementById('lightbox')?.classList.contains('open'))nb.click();}
-  if(e.key==='ArrowLeft'){const pb=document.querySelector('.lightbox-prev');if(pb&&document.getElementById('lightbox')?.classList.contains('open'))pb.click();}
+  // Arrow keys + Escape for lightbox/MVV handled by unified handler above
 });
 
 // ── SIDEBAR ACTIVE + BACK TO TOP ──

@@ -1,4 +1,4 @@
-const CACHE_STATIC='pladeco-static-v28.0';
+const CACHE_STATIC='pladeco-static-v29.0';
 const CACHE_IMG='pladeco-img-v1';
 const CACHE_TILES='pladeco-tiles-v1';
 const MAX_IMG_CACHE=200;
@@ -55,9 +55,20 @@ function trimCache(name,max){
   });
 }
 
+/* ── Helper: safe to cache? (skip opaque error responses & non-GET) ── */
+function isCacheable(req,res){
+  if(req.method!=='GET') return false;
+  if(res.status===0) return false; // opaque error
+  if(res.type==='opaque') return true; // opaque OK (CORS images)
+  return res.ok;
+}
+
 /* ── Fetch: strategy per request type ── */
 self.addEventListener('fetch',e=>{
   const url=new URL(e.request.url);
+
+  // Skip non-GET requests (POST, etc)
+  if(e.request.method!=='GET') return;
 
   /* OSM map tiles → cache-first, runtime cache */
   if(url.hostname.includes('tile.openstreetmap.org')){
@@ -65,7 +76,7 @@ self.addEventListener('fetch',e=>{
       caches.match(e.request).then(r=>{
         if(r) return r;
         return fetch(e.request).then(res=>{
-          if(res.ok){
+          if(isCacheable(e.request,res)){
             const cl=res.clone();
             caches.open(CACHE_TILES).then(c=>{c.put(e.request,cl);trimCache(CACHE_TILES,MAX_TILE_CACHE);});
           }
@@ -83,7 +94,7 @@ self.addEventListener('fetch',e=>{
       caches.match(e.request).then(r=>{
         if(r) return r;
         return fetch(e.request).then(res=>{
-          if(res.ok){
+          if(isCacheable(e.request,res)){
             const cl=res.clone();
             caches.open(CACHE_IMG).then(c=>{c.put(e.request,cl);trimCache(CACHE_IMG,MAX_IMG_CACHE);});
           }
