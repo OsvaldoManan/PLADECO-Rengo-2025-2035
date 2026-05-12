@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/Portal_PLADECO/2.png">
 <link rel="icon" type="image/svg+xml" href="escudo-rengo.svg">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -1043,6 +1043,12 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 @media(max-width:700px){.survey-results-layout{grid-template-columns:1fr}.survey-results-chart canvas{max-width:200px;max-height:200px}}
 /* sr-bar uses var(--border), auto-adapts to dark mode */
 /* ── Sync indicator ── */
+.survey-subtitle{font-size:12px;color:var(--text-secondary);margin:-4px 0 12px;line-height:1.4}
+.survey-opt-text{display:flex;flex-direction:column;gap:1px}
+.survey-opt-text strong{font-size:13px}
+.survey-opt-text small{font-size:10px;color:var(--text-secondary);font-weight:400;line-height:1.3}
+.survey-results-desc{font-size:12px;color:var(--text2);margin:-2px 0 14px;line-height:1.5;padding:8px 12px;background:rgba(45,154,77,.04);border-radius:8px;border-left:3px solid rgba(45,154,77,.25)}
+.survey-chart-help{font-size:10px;color:var(--text-secondary);margin-top:6px;text-align:center;line-height:1.4;opacity:.7;max-width:220px;margin-left:auto;margin-right:auto}
 .survey-sync{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--text-secondary);margin-top:6px;opacity:.7}
 .survey-sync-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block}
 .survey-sync-dot.offline{background:#ef4444}
@@ -1067,7 +1073,8 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 .visit-kpi-label{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
 .visit-charts{display:grid;grid-template-columns:2fr 1fr;gap:20px;max-width:1100px;margin:0 auto;padding:0 20px}
 .visit-chart-card{background:var(--card);border-radius:16px;padding:20px 24px;border:1px solid var(--border);box-shadow:var(--shadow)}
-.visit-chart-card h5{font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.visit-chart-card h5{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.visit-chart-desc{font-size:11px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px;padding:6px 10px;background:rgba(124,58,237,.03);border-radius:8px;border-left:3px solid rgba(124,58,237,.2)}
 .visit-chart-card canvas{width:100%!important;max-height:180px}
 .visit-recent{max-height:180px;overflow-y:auto;scrollbar-width:thin}
 .visit-recent-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;font-size:11px;color:var(--text2);transition:background .15s}
@@ -1076,6 +1083,7 @@ body.dark .visit-recent-item:nth-child(odd){background:rgba(255,255,255,.03)}
 .visit-recent-item .vr-date{font-weight:600;color:var(--text);min-width:80px}
 .visit-recent-item .vr-time{font-family:'SF Mono',monospace;font-size:10px;color:var(--text-secondary);background:var(--bg);padding:2px 8px;border-radius:4px}
 .visit-no-data{text-align:center;padding:24px;font-size:12px;color:var(--text-secondary);font-style:italic}
+.visit-recent-summary{font-size:12px;font-weight:600;color:var(--text);padding:8px 10px 6px;border-bottom:1px solid var(--border);margin-bottom:4px}
 .visit-setup-hint{max-width:1100px;margin:20px auto 0;padding:0 20px}
 .visit-setup-box{background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(45,154,77,.04));border:1px dashed var(--border);border-radius:12px;padding:16px 20px;font-size:12px;color:var(--text2);line-height:1.7}
 .visit-setup-box code{background:var(--border);padding:2px 6px;border-radius:4px;font-size:11px;font-family:'SF Mono',monospace}
@@ -2111,7 +2119,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes Estrat&#233;gicos</div></div>
       <div class="hero-stat"><div class="num">225</div><div class="lbl">Pol&#237;ticas P&#250;blicas</div></div>
       <div class="hero-stat"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></div>
-      <div class="hero-stat"><div class="num">15/17</div><div class="lbl">ODS Vinculados</div></div>
+      <div class="hero-stat"><div class="num">15/17</div><div class="lbl">Objetivos de Desarrollo Sostenible (ONU)</div></div>
     </div>
     <a href="#dashboard" class="hero-scroll-hint" aria-label="Explorar contenido">
       <span>Explorar</span>
@@ -2122,9 +2130,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 
 <!-- ═══ COUNTDOWN STRIP (F4) ═══ -->
 <div class="countdown-strip" id="countdownStrip">
-  <div class="countdown-card"><div class="cd-days" id="cd1">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Aprobaci&#243;n CONCEJO</div><div class="cd-date">Jun 2026</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar1"></div></div></div>
-  <div class="countdown-card"><div class="cd-days" id="cd2">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Evaluaci&#243;n 1&#170; Fase</div><div class="cd-date">Dic 2028</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar2"></div></div></div>
-  <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">d&#237;as restantes</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3"></div></div></div>
+  <div class="countdown-card"><div class="cd-days" id="cd1">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Aprobaci&oacute;n del Plan</div><div class="cd-date">Jun 2026</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar1"></div></div></div>
+  <div class="countdown-card"><div class="cd-days" id="cd2">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Primera Evaluaci&oacute;n</div><div class="cd-date">Dic 2028</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar2"></div></div></div>
+  <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3"></div></div></div>
 </div>
 
 <!-- ═══ ENCUESTA CIUDADANA ═══ -->
@@ -2328,9 +2336,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ DASHBOARD ═══ -->
 <section id="dashboard">
   <div class="sec-header">
-    <div class="badge" style="background:#e0e7ff;color:#4338ca">Dashboard</div>
-    <h2>Indicadores Clave</h2>
-    <p>Línea base 2024 con metas escalonadas 2028 y 2035</p>
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">&#191;C&oacute;mo estamos hoy?</div>
+    <h2>Indicadores Clave de Rengo</h2>
+    <p>As&iacute; se ve la comuna hoy (2024) y las metas que queremos alcanzar en 2028 y 2035</p>
   </div>
   <div class="kpi-grid">
     <div class="kpi" style="border-top-color:var(--eje1)">
@@ -2444,9 +2452,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ VISUALIZACIONES INTERACTIVAS ═══ -->
 <section id="viz">
   <div class="sec-header">
-    <div class="badge" style="background:#fce7f3;color:#db2777">Interactivo</div>
-    <h2>Visualizaciones Interactivas</h2>
-    <p>Explora los datos del PLADECO: hover para detalles, click para filtrar</p>
+    <div class="badge" style="background:#fce7f3;color:#db2777">Datos de la Comuna</div>
+    <h2>Gr&aacute;ficos de Rengo</h2>
+    <p>Toca o haz clic en cualquier gr&aacute;fico para ver m&aacute;s detalles sobre los datos de la comuna</p>
   </div>
 
   <div class="viz-row">
@@ -2563,9 +2571,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ DATOS CLAVE EN VIVO ═══ -->
 <section id="datos-vivo" class="reveal">
   <div class="sec-header">
-    <div class="badge" style="background:#d1fae5;color:#059669">Interactivos</div>
-    <h2>&#128200; Datos Clave en Vivo</h2>
-    <p>Versiones interactivas de los gr&#225;ficos m&#225;s relevantes del proceso</p>
+    <div class="badge" style="background:#d1fae5;color:#059669">Cifras Importantes</div>
+    <h2>&#128200; Datos Clave de la Comuna</h2>
+    <p>Los n&uacute;meros m&aacute;s importantes del diagn&oacute;stico comunal. Toca cada gr&aacute;fico para conocer los detalles</p>
   </div>
   <div class="graf-interactive-grid">
     <div class="graf-int-card gi-full">
@@ -2607,8 +2615,8 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <section id="nna">
   <div class="sec-header">
     <div class="badge" style="background:#fce7f3;color:#db2777">Infancia y Adolescencia</div>
-    <h2>Diagn&#243;stico NNA</h2>
-    <p>4.036 ni&#241;os, ni&#241;as y adolescentes encuestados en 27 establecimientos educativos</p>
+    <h2>&#191;Qu&eacute; piensan los ni&ntilde;os y j&oacute;venes de Rengo?</h2>
+    <p>4.036 ni&ntilde;os, ni&ntilde;as y adolescentes encuestados en 27 colegios y escuelas de la comuna</p>
   </div>
   <div class="stat-row">
     <div class="stat-chip"><div class="sc-icon" style="background:#fce7f3;color:#db2777">&#9829;</div><div><div class="sc-val">4.036</div><div class="sc-lbl">NNA encuestados</div></div></div>
@@ -2708,9 +2716,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 
   <!-- ═══ VULNERABILIDAD TERRITORIAL ═══ -->
   <div class="sec-header" style="margin-top:48px">
-    <div class="badge" style="background:#fef3c7;color:#b45309">Índices INE</div>
-    <h2>An&aacute;lisis de Vulnerabilidad Territorial</h2>
-    <p>Índices compuestos INE por localidad: vulnerabilidad socioecon&oacute;mica, brecha digital, d&eacute;ficit de capital humano, precariedad de servicios b&aacute;sicos y m&aacute;s &mdash; 20 localidades analizadas</p>
+    <div class="badge" style="background:#fef3c7;color:#b45309">Datos oficiales INE</div>
+    <h2>&#191;D&oacute;nde hay m&aacute;s necesidades en Rengo?</h2>
+    <p>Mapa de necesidades por localidad seg&uacute;n datos del Instituto Nacional de Estad&iacute;sticas: acceso a internet, nivel educativo, servicios b&aacute;sicos y m&aacute;s en 20 localidades</p>
   </div>
 
   <!-- Ranking + Brecha U/R -->
@@ -2759,9 +2767,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ DESIGUALDAD TERRITORIAL ═══ -->
 <section id="desigualdad">
   <div class="sec-header">
-    <div class="badge" style="background:#fee2e2;color:#dc2626">Brechas</div>
-    <h2>Desigualdad Territorial</h2>
-    <p>12 indicadores de concentraci&#243;n, brechas y cobertura con umbrales de alerta</p>
+    <div class="badge" style="background:#fee2e2;color:#dc2626">Alertas</div>
+    <h2>Diferencias entre Localidades</h2>
+    <p>&#191;Todas las localidades tienen las mismas oportunidades? 12 indicadores muestran d&oacute;nde hay m&aacute;s diferencias</p>
   </div>
   <div class="ineq-grid" id="ineqGrid"></div>
   <div class="viz-row" style="margin-top:20px">
@@ -2782,9 +2790,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ ANÁLISIS TERRITORIAL AVANZADO ═══ -->
 <section id="territorial-adv">
   <div class="sec-header">
-    <div class="badge" style="background:#d1fae5;color:#059669">An&#225;lisis Avanzado</div>
-    <h2>Brechas Urbano-Rural</h2>
-    <p>Comparaci&#243;n de indicadores entre las 9 localidades urbanas y 16 localidades rurales</p>
+    <div class="badge" style="background:#d1fae5;color:#059669">Ciudad vs. Campo</div>
+    <h2>&#191;Viven igual en la ciudad y en el campo?</h2>
+    <p>Comparamos c&oacute;mo viven las personas en las 9 localidades urbanas versus las 16 localidades rurales de Rengo</p>
   </div>
   <div class="ur-compare" id="urCompare"></div>
   <div class="viz-row">
@@ -2818,9 +2826,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ VOZ CIUDADANA ═══ -->
 <section id="voz">
   <div class="sec-header">
-    <div class="badge" style="background:#e0e7ff;color:#4338ca">Participaci&#243;n</div>
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Lo que opinan los vecinos</div>
     <h2>Voz Ciudadana</h2>
-    <p>119 encuestas ciudadanas + 21 encuestas NNA — An&#225;lisis comparativo de prioridades y percepciones</p>
+    <p>119 vecinos adultos y 21 j&oacute;venes encuestados &mdash; &#191;Qu&eacute; temas les preocupan m&aacute;s y c&oacute;mo eval&uacute;an su comuna?</p>
   </div>
   <div class="stat-row" id="participStats"></div>
   <div class="rating-grid" id="ratingGrid"></div>
@@ -2901,9 +2909,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ GESTIÓN PLADECO ═══ -->
 <section id="gestion">
   <div class="sec-header">
-    <div class="badge" style="background:#fef3c7;color:#d97706">Implementaci&#243;n</div>
-    <h2>Gesti&#243;n del PLADECO</h2>
-    <p>225 acciones con responsables, financiamiento y enfoque de inclusi&#243;n</p>
+    <div class="badge" style="background:#fef3c7;color:#d97706">Puesta en Marcha</div>
+    <h2>&#191;C&oacute;mo se har&aacute; realidad el plan?</h2>
+    <p>Las 225 acciones con sus responsables, presupuesto estimado y c&oacute;mo se incluir&aacute; a todos los vecinos</p>
   </div>
   <div class="gestion-kpi" id="gestionKPIs"></div>
   <div class="viz-row">
@@ -2937,9 +2945,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ RED INSTITUCIONAL SNA ═══ -->
 <section id="sna">
   <div class="sec-header">
-    <div class="badge" style="background:#ede9fe;color:#7c3aed">An&#225;lisis de Redes</div>
-    <h2>Red Institucional SNA</h2>
-    <p>An&#225;lisis de Redes Sociales: 14 actores institucionales, 127 v&#237;nculos de co-responsabilidad y 32 OE interconectados</p>
+    <div class="badge" style="background:#ede9fe;color:#7c3aed">Trabajo en Equipo</div>
+    <h2>&#191;Qui&eacute;n trabaja con qui&eacute;n en Rengo?</h2>
+    <p>14 instituciones p&uacute;blicas conectadas entre s&iacute; para llevar adelante las 225 acciones del plan comunal</p>
   </div>
   <div class="stat-row">
     <div class="stat-chip"><div class="sc-icon" style="background:#ede9fe;color:#7c3aed">&#9733;</div><div><div class="sc-val">14</div><div class="sc-lbl">Actores clave</div></div></div>
@@ -2993,9 +3001,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ ETNOGRAFÍA SOCIAL E INSTITUCIONAL ═══ -->
 <section id="etnografia">
   <div class="sec-header">
-    <div class="badge" style="background:#fce7f3;color:#db2777">Investigaci&#243;n Cualitativa</div>
-    <h2>Etnograf&#237;a Social e Institucional</h2>
-    <p>26 hallazgos de campo en 5 dominios — 40+ entrevistas, 21 unidades vecinales, observaci&#243;n participante</p>
+    <div class="badge" style="background:#fce7f3;color:#db2777">Lo que escuchamos en terreno</div>
+    <h2>Voces desde los Barrios y las Instituciones</h2>
+    <p>26 descubrimientos clave recogidos en m&aacute;s de 40 entrevistas y visitas a las 21 unidades vecinales de Rengo</p>
   </div>
   <div class="domain-stats" id="domainStats"></div>
   <div class="ethno-tabs" id="ethnoTabs"></div>
@@ -3037,9 +3045,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ ALINEACIÓN ODS ═══ -->
 <section id="ods-sec">
   <div class="sec-header">
-    <div class="badge" style="background:#d1fae5;color:#059669">Agenda 2030</div>
-    <h2>Alineaci&#243;n con ODS</h2>
-    <p>225 acciones vinculadas a 13 de 17 Objetivos de Desarrollo Sostenible</p>
+    <div class="badge" style="background:#d1fae5;color:#059669">Compromisos Internacionales</div>
+    <h2>Rengo y los Objetivos Globales de la ONU</h2>
+    <p>Las 225 acciones del plan est&aacute;n conectadas con 13 de los 17 Objetivos de Desarrollo Sostenible que promueve Naciones Unidas</p>
   </div>
   <div class="viz-row">
     <div class="viz-card viz-full">
@@ -3101,9 +3109,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ EJES ═══ -->
 <section id="ejes">
   <div class="sec-header">
-    <div class="badge" style="background:#dbeafe;color:#2563eb">Planificación Estratégica</div>
-    <h2>6 Ejes Estratégicos</h2>
-    <p>32 Objetivos Estratégicos y 200 Políticas para el período 2025-2035</p>
+    <div class="badge" style="background:#dbeafe;color:#2563eb">&#191;Qu&eacute; haremos por Rengo?</div>
+    <h2>6 &Aacute;reas de Acci&oacute;n para Rengo</h2>
+    <p>El plan se organiza en 6 grandes temas que cubren las necesidades de la comuna, con 32 metas y m&aacute;s de 200 acciones concretas para los pr&oacute;ximos 10 a&ntilde;os</p>
   </div>
   <div class="eje-tabs">
     <div class="eje-tab active" style="background:var(--eje1)" onclick="showEje(0)">Eje 1: Social y Salud</div>
@@ -3122,9 +3130,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ FODA ═══ -->
 <section id="foda">
   <div class="sec-header">
-    <div class="badge" style="background:#d1fae5;color:#059669">Análisis Estratégico</div>
-    <h2>FODA Comunal</h2>
-    <p>20 Fortalezas, 30 Debilidades, 15 Oportunidades y 15 Amenazas con estrategias cruzadas</p>
+    <div class="badge" style="background:#d1fae5;color:#059669">Diagn&oacute;stico de la Comuna</div>
+    <h2>An&aacute;lisis FODA Comunal</h2>
+    <p>Identificamos lo que funciona bien (Fortalezas), lo que debemos mejorar (Debilidades), las oportunidades de crecimiento y los riesgos a prevenir en Rengo</p>
   </div>
   <div class="foda-controls">
     <input type="text" id="fodaSearch" placeholder="Buscar en FODA..." oninput="filterFODA()">
@@ -3305,9 +3313,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ GRAFICOS INTERACTIVOS ═══ -->
 <section id="graficos">
   <div class="sec-header">
-    <div class="badge" style="background:#ede9fe;color:#7c3aed">An&#225;lisis Visual Interactivo</div>
-    <h2>Gr&#225;ficos Anal&#237;ticos</h2>
-    <p>Visualizaciones interactivas por categor&#237;a — hover para detalles, click para explorar</p>
+    <div class="badge" style="background:#ede9fe;color:#7c3aed">Datos en Gr&aacute;ficos</div>
+    <h2>Rengo en N&uacute;meros</h2>
+    <p>Gr&aacute;ficos organizados por tema. Toca cualquier barra o secci&oacute;n para ver el detalle de cada dato</p>
   </div>
   <div class="ana-tabs">
     <div class="ana-tab active" onclick="showAna(0)">&#9733; Brechas y Riesgos</div>
@@ -3371,9 +3379,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ ARGUMENTARIO ESTRATÉGICO ═══ -->
 <section id="argumentario">
   <div class="sec-header">
-    <div class="badge" style="background:#fef3c7;color:#92400e">An&#225;lisis Cualitativo</div>
-    <h2>Argumentario Estrat&#233;gico</h2>
-    <p>Fundamentos cualitativos del PLADECO: 15 argumentos basados en evidencia de campo, datos territoriales y an&#225;lisis institucional</p>
+    <div class="badge" style="background:#fef3c7;color:#92400e">&#191;Por qu&eacute; este plan?</div>
+    <h2>Las Razones detr&aacute;s del PLADECO</h2>
+    <p>15 argumentos que explican por qu&eacute; Rengo necesita este plan, basados en datos reales y lo que nos contaron los vecinos</p>
   </div>
   <div class="stat-row">
     <div class="stat-chip"><div class="sc-icon" style="background:#fef3c7;color:#92400e">&#9998;</div><div><div class="sc-val">40+</div><div class="sc-lbl">Entrevistas</div></div></div>
@@ -3435,9 +3443,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ SEMÁFORO DE METAS ═══ -->
 <section id="semaforo">
   <div class="sec-header">
-    <div class="badge" style="background:#d1fae5;color:#059669">Seguimiento</div>
-    <h2>&#128678; Semáforo de Metas 2024 &#8594; 2035</h2>
-    <p>16 indicadores con línea base, metas intermedias y estado semafórico de avance</p>
+    <div class="badge" style="background:#d1fae5;color:#059669">&#191;Vamos bien?</div>
+    <h2>&#128678; Sem&aacute;foro de Avance</h2>
+    <p>16 indicadores con colores tipo sem&aacute;foro: verde = vamos bien, amarillo = hay que mejorar, rojo = requiere atenci&oacute;n urgente</p>
   </div>
   <div class="sem-summary" id="semSummary"></div>
   <div class="sem-filter-row" id="semFilterRow">
@@ -3460,9 +3468,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ FINANCIAMIENTO ═══ -->
 <section id="financiamiento">
   <div class="sec-header">
-    <div class="badge" style="background:#e0e7ff;color:#4338ca">Financiero</div>
-    <h2>&#128176; Estructura de Financiamiento</h2>
-    <p>An&#225;lisis de fuentes de financiamiento de las 225 pol&#237;ticas del PLADECO</p>
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Recursos</div>
+    <h2>&#128176; &#191;De d&oacute;nde salen los recursos?</h2>
+    <p>C&oacute;mo se financiar&aacute;n las 225 acciones del plan: fondos municipales, regionales, nacionales y otros</p>
   </div>
   <div class="fin-cards" id="finCards"></div>
   <div class="viz-row">
@@ -3656,10 +3664,11 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v16.0</span>
+  <span class="ub-ver">v17.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v17.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a UX: descripciones accesibles para p&uacute;blico general, gr&aacute;ficos con explicaciones en texto simple, encuesta con detalle por &aacute;rea, mejora tiempos de carga</div>
     <div class="ub-entry"><strong>v16.0</strong> <span class="ub-date">12 May 2026</span><br>Imagen Objetivo Comunal (Proyecci&#243;n 2035), encuesta con backend sync, contador de visitas con anal&#237;tica, Google Apps Script backend</div>
     <div class="ub-entry"><strong>v15.0</strong> <span class="ub-date">11 May 2026</span><br>Filtro sem&#225;foro de metas (verde/amarillo/rojo), TOC interactiva, tiempo de lectura sidebar, footer Ctrl+K, summary cards sem&#225;foro</div>
     <div class="ub-entry"><strong>v14.0</strong> <span class="ub-date">11 May 2026</span><br>Command palette (Ctrl+K), filtro compromisos + progress ring, carrusel testimonios, barras animadas, b&#250;squeda UV, swipe lightbox, print mejorado</div>
@@ -3679,47 +3688,48 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- ═══ CONTADOR DE VISITAS ═══ -->
 <section id="visitas" class="visit-section reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">&#128202; Analítica</div>
-    <h2>Visitas al Portal</h2>
-    <p>Estadísticas de participación ciudadana digital en el PLADECO</p>
+    <div class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">Participaci&oacute;n Ciudadana</div>
+    <h2>&#191;Cu&aacute;ntas personas han visitado este portal?</h2>
+    <p>Cada visita refleja el inter&eacute;s de los vecinos y vecinas de Rengo en conocer el plan de desarrollo de su comuna</p>
   </div>
   <div class="visit-grid" id="visitGrid">
     <div class="visit-kpi">
       <div class="visit-kpi-icon">&#128101;</div>
-      <div class="visit-kpi-num" id="vkTotal">—</div>
-      <div class="visit-kpi-label">Visitas totales</div>
+      <div class="visit-kpi-num" id="vkTotal">&mdash;</div>
+      <div class="visit-kpi-label">Personas han ingresado</div>
     </div>
     <div class="visit-kpi">
       <div class="visit-kpi-icon">&#128197;</div>
-      <div class="visit-kpi-num" id="vkToday">—</div>
-      <div class="visit-kpi-label">Hoy</div>
+      <div class="visit-kpi-num" id="vkToday">&mdash;</div>
+      <div class="visit-kpi-label">Visitas hoy</div>
     </div>
     <div class="visit-kpi">
       <div class="visit-kpi-icon">&#128200;</div>
-      <div class="visit-kpi-num" id="vkWeek">—</div>
-      <div class="visit-kpi-label">Esta semana</div>
+      <div class="visit-kpi-num" id="vkWeek">&mdash;</div>
+      <div class="visit-kpi-label">En los &uacute;ltimos 7 d&iacute;as</div>
     </div>
     <div class="visit-kpi">
       <div class="visit-kpi-icon">&#128197;</div>
-      <div class="visit-kpi-num" id="vkMonth">—</div>
-      <div class="visit-kpi-label">Este mes</div>
+      <div class="visit-kpi-num" id="vkMonth">&mdash;</div>
+      <div class="visit-kpi-label">En el &uacute;ltimo mes</div>
     </div>
   </div>
   <div class="visit-charts" id="visitCharts">
     <div class="visit-chart-card">
-      <h5>&#128200; Visitas diarias (últimos 30 días)</h5>
+      <h5>Visitas por d&iacute;a en el &uacute;ltimo mes</h5>
+      <p class="visit-chart-desc">Cada barra representa cu&aacute;ntas personas ingresaron al portal en un d&iacute;a. Las barras m&aacute;s altas indican los d&iacute;as con m&aacute;s inter&eacute;s ciudadano.</p>
       <canvas id="visitDailyChart" height="180"></canvas>
     </div>
     <div class="visit-chart-card">
-      <h5>&#128337; Actividad reciente</h5>
+      <h5>Actividad de hoy</h5>
       <div class="visit-recent" id="visitRecent">
-        <div class="visit-no-data" id="visitNoData">Conecta el backend para ver estadísticas en tiempo real</div>
+        <div class="visit-no-data" id="visitNoData">A&uacute;n no hay visitas registradas hoy</div>
       </div>
     </div>
   </div>
-  <div class="visit-setup-hint" id="visitSetup">
+  <div class="visit-setup-hint" id="visitSetup" style="display:none">
     <div class="visit-setup-box">
-      &#128736;&#65039; <strong>Configuración:</strong> Para activar el registro de visitas, despliega el <code>backend-appscript.js</code> en Google Apps Script y pega la URL en la variable <code>BACKEND_URL</code> del portal. Instrucciones en el archivo.
+      &#128736;&#65039; <strong>Configuraci&oacute;n:</strong> Para activar el registro de visitas, despliega el <code>backend-appscript.js</code> en Google Apps Script y pega la URL en la variable <code>BACKEND_URL</code> del portal.
     </div>
   </div>
 </section>
@@ -4664,7 +4674,7 @@ let donutChart;
 function renderDonut(){
   donutChart = new Chart(document.getElementById('chartDonut'),{type:'doughnut',data:{
     labels:EJE_NAMES,datasets:[{data:EJE_ACC,backgroundColor:EJE_COLORS,borderWidth:3,borderColor:getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff',hoverOffset:12,hoverBorderColor:'#fff'}]
-  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',animation:{duration:1000,easing:'easeOutBounce',animateRotate:true},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones (${(ctx.raw/225*100).toFixed(1)}%)`}}}},plugins:[{id:'centerText',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 28px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-8);c.font='600 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Políticas',left+width/2,top+height/2+12);c.restore();}}]});
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'55%',animation:{duration:1000,easing:'easeOutBounce',animateRotate:true},plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11},padding:10,usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,padding:10,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} acciones planificadas (${(ctx.raw/225*100).toFixed(0)}% del total)`}}}},plugins:[{id:'centerText',afterDraw(chart){const{ctx:c,chartArea:{width,height,top,left}}=chart;c.save();c.font='800 28px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text')||'#1e293b';c.textAlign='center';c.textBaseline='middle';c.fillText('225',left+width/2,top+height/2-8);c.font='600 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text2')||'#64748b';c.fillText('Acciones',left+width/2,top+height/2+12);c.restore();}}]});
   document.getElementById('chartDonut').addEventListener('click',(e)=>{
     const pts=donutChart.getElementsAtEventForMode(e,'nearest',{intersect:true},false);
     if(pts.length>0){const idx=pts[0].index;showEje(idx);document.getElementById('ejes').scrollIntoView({behavior:'smooth'});}
@@ -8773,10 +8783,19 @@ function renderMiniSurvey(){
     });
     return;
   }
-  el.innerHTML='<h4>🗳️ ¿Qué eje priorizarías para tu comuna?</h4>'+
-    '<div class="survey-options" role="radiogroup" aria-label="Seleccionar eje prioritario">'+
-    _surveyEjeNames.map(function(n,i){return'<label class="survey-opt"><input type="radio" name="surveyEje" value="'+i+'" aria-label="Eje '+(i+1)+': '+n+'"> Eje '+(i+1)+': '+n+'</label>';}).join('')+
-    '</div><button class="survey-btn" onclick="submitSurvey()">Votar</button>';
+  var _surveyDescriptions=[
+    'Salud, bienestar, adulto mayor, infancia y familia',
+    'Empleo, comercio, turismo y emprendimiento local',
+    'Colegios, jardines, becas y formación para el trabajo',
+    'Calles, plazas, reciclaje, agua y medioambiente',
+    'Prevención, iluminación y protección ciudadana',
+    'Atención al vecino, transparencia y tecnología'
+  ];
+  el.innerHTML='<h4>🗳️ ¿Qué tema es más importante para ti y tu familia?</h4>'+
+    '<p class="survey-subtitle">Selecciona el área que consideras prioritaria para mejorar en Rengo</p>'+
+    '<div class="survey-options" role="radiogroup" aria-label="Seleccionar área prioritaria">'+
+    _surveyEjeNames.map(function(n,i){return'<label class="survey-opt"><input type="radio" name="surveyEje" value="'+i+'" aria-label="'+n+'"><span class="survey-opt-text"><strong>'+n+'</strong><small>'+_surveyDescriptions[i]+'</small></span></label>';}).join('')+
+    '</div><button class="survey-btn" onclick="submitSurvey()">Enviar mi voto</button>';
 }
 
 function submitSurvey(){
@@ -8811,15 +8830,22 @@ function showSurveyResults(el,names,colors,remoteVotes){
     var isUserVote=userVote!==null&&+userVote===i;
     return'<div class="survey-result"><span style="min-width:130px;font-weight:600'+(isUserVote?';color:var(--accent)':'')+'">'+(isUserVote?'&#10003; ':'')+n+'</span><div class="sr-bar"><div class="sr-fill" style="width:'+pct+'%;background:'+colors[i]+'">'+pct+'%</div></div><span style="min-width:28px;text-align:right;font-weight:700">'+votes[i]+'</span></div>';
   }).join('');
-  el.innerHTML='<h4>&#128483;&#65039; Resultados de la encuesta</h4>'+
+  var topIdx=0;var topVal=votes[0];
+  for(var ti=1;ti<votes.length;ti++){if(votes[ti]>topVal){topVal=votes[ti];topIdx=ti;}}
+  var topName=names[topIdx];
+  var topPct=total>0?Math.round(votes[topIdx]/total*100):0;
+  var resultsDesc=total<=1?'Pronto veremos qué temas importan más a los vecinos de Rengo.':'El tema más votado hasta ahora es <strong>'+topName+'</strong> con el '+topPct+'% de las preferencias. Las barras muestran cuántos votos recibió cada área.';
+  el.innerHTML='<h4>&#128483;&#65039; Así opinan los vecinos de Rengo</h4>'+
+    '<p class="survey-results-desc">'+resultsDesc+'</p>'+
     '<div class="survey-results-layout">'+
       '<div class="survey-results-bars">'+bars+
         '<div class="survey-vote-badge" style="background:rgba(45,154,77,.1);color:var(--accent)">&#9989; Tu voto ha sido registrado &mdash; &iexcl;Gracias por participar!</div>'+
-        '<div class="survey-sync"><span class="survey-sync-dot '+(isOnline?'':'offline')+'"></span>'+(isOnline?'Datos sincronizados con el servidor':'Datos locales &mdash; configura backend para acumular')+'</div>'+
+        '<div class="survey-sync"><span class="survey-sync-dot '+(isOnline?'':'offline')+'"></span>'+(isOnline?'Resultados acumulados de todos los participantes':'Solo muestra tu voto — pronto se acumularán todos')+'</div>'+
       '</div>'+
       '<div class="survey-results-chart">'+
         '<canvas id="surveyDonut" width="260" height="260"></canvas>'+
-        '<div class="survey-results-total"><strong>'+total+'</strong> votos registrados</div>'+
+        '<div class="survey-results-total"><strong>'+total+'</strong> vecinos han votado</div>'+
+        '<div class="survey-chart-help">El círculo muestra la proporción de votos que recibió cada tema. Los colores coinciden con las barras de arriba.</div>'+
       '</div>'+
     '</div>';
   // Render donut chart
@@ -8836,7 +8862,7 @@ function showSurveyResults(el,names,colors,remoteVotes){
       plugins:{legend:{display:false},
         tooltip:{backgroundColor:'rgba(0,0,0,.85)',cornerRadius:10,padding:12,
           titleFont:{size:13,weight:'bold'},bodyFont:{size:12},
-          callbacks:{label:function(c){var p=total>0?Math.round(c.raw/total*100):0;return c.label+': '+c.raw+' votos ('+p+'%)';}}
+          callbacks:{label:function(c){var p=total>0?Math.round(c.raw/total*100):0;return c.label+': '+c.raw+(c.raw===1?' voto':' votos')+' ('+p+'% del total)';}}
         }
       }
     },plugins:[{id:'surveyCenter',afterDraw:function(chart){
@@ -8844,8 +8870,8 @@ function showSurveyResults(el,names,colors,remoteVotes){
       c.save();
       c.font='800 11px system-ui';c.fillStyle=getComputedStyle(document.body).getPropertyValue('--text-secondary')||'#64748b';
       c.textAlign='center';c.textBaseline='middle';
-      c.fillText('PRIORIDAD',l+w/2,t+h/2-6);
-      c.font='600 10px system-ui';c.fillText('CIUDADANA',l+w/2,t+h/2+8);
+      c.fillText('LO QUE',l+w/2,t+h/2-6);
+      c.font='600 10px system-ui';c.fillText('MÁS IMPORTA',l+w/2,t+h/2+8);
       c.restore();
     }}]});
   },100);
@@ -8937,7 +8963,7 @@ function displayVisitStatsLocal(){
   var recent=visits.slice(-15).reverse();
   var container=document.getElementById('visitRecent');
   if(container&&recent.length>0){
-    container.innerHTML=recent.map(function(v){
+    container.innerHTML='<div class="visit-recent-summary">Últimas visitas registradas</div>'+recent.map(function(v){
       return'<div class="visit-recent-item"><span class="vr-date">'+v.date+'</span><span class="vr-time">'+v.time+'</span></div>';
     }).join('');
   }
@@ -9006,8 +9032,8 @@ function renderVisitChart(daily){
           backgroundColor:'rgba(0,0,0,.85)',cornerRadius:8,padding:10,
           titleFont:{size:11,weight:'bold'},bodyFont:{size:11},
           callbacks:{
-            title:function(items){return'Fecha: '+items[0].label;},
-            label:function(c){return c.raw+' visita'+(c.raw!==1?'s':'');}
+            title:function(items){return items[0].label;},
+            label:function(c){return c.raw===0?'Sin visitas ese día':c.raw+' persona'+(c.raw!==1?'s ingresaron':' ingresó');}
           }
         }
       }
@@ -9019,14 +9045,16 @@ function renderRecentActivity(stats){
   var container=document.getElementById('visitRecent');
   if(!container)return;
   if(stats.hourly&&stats.hourly.length>0){
+    var totalHoy=stats.hourly.reduce(function(a,h){return a+h.count;},0);
     var items=stats.hourly.filter(function(h){return h.count>0;}).map(function(h){
       var hora=h.hour<10?'0'+h.hour:h.hour;
-      return'<div class="visit-recent-item"><span class="vr-date">Hoy</span><span class="vr-time">'+hora+':00 — '+h.count+' visita'+(h.count>1?'s':'')+'</span></div>';
+      var horaFin=h.hour+1<10?'0'+(h.hour+1):(h.hour+1);
+      return'<div class="visit-recent-item"><span class="vr-date">'+hora+':00 a '+horaFin+':00</span><span class="vr-time">'+h.count+' persona'+(h.count>1?'s':'')+'</span></div>';
     });
     if(items.length>0){
-      container.innerHTML=items.join('');
+      container.innerHTML='<div class="visit-recent-summary">Hoy han ingresado <strong>'+totalHoy+'</strong> persona'+(totalHoy>1?'s':'')+'</div>'+items.join('');
     }else{
-      container.innerHTML='<div class="visit-no-data">Sin visitas registradas hoy</div>';
+      container.innerHTML='<div class="visit-no-data">Aún no hay visitas hoy — ¡tú podrías ser el primero!</div>';
     }
   }
 }
