@@ -1736,6 +1736,31 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 body.sidebar-collapsed .sidebar-reading{display:none}
 
 /* ══════════════════════════════════════════
+   MVV IMAGE VIEWER (blur backdrop)
+   ══════════════════════════════════════════ */
+.mvv-viewer{position:fixed;inset:0;z-index:10001;background:rgba(8,16,32,.82);backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
+.mvv-viewer.open{opacity:1;pointer-events:auto}
+.mvv-viewer-img{max-width:min(85vw,720px);max-height:82vh;border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.08);object-fit:contain;transform:scale(.88) translateY(12px);transition:transform .5s cubic-bezier(.23,1,.32,1);user-select:none}
+.mvv-viewer.open .mvv-viewer-img{transform:scale(1) translateY(0)}
+.mvv-viewer .lightbox-close{position:fixed;top:18px;right:24px;font-size:28px;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);cursor:pointer;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:10002;backdrop-filter:blur(8px)}
+.mvv-viewer .lightbox-close:hover{background:rgba(255,255,255,.2);transform:scale(1.1)}
+.mvv-viewer .mvv-nav{position:fixed;top:50%;transform:translateY(-50%);font-size:28px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);cursor:pointer;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .25s;backdrop-filter:blur(8px)}
+.mvv-viewer .mvv-nav:hover{background:rgba(255,255,255,.18);transform:translateY(-50%) scale(1.1)}
+.mvv-viewer .mvv-nav-prev{left:20px}
+.mvv-viewer .mvv-nav-next{right:20px}
+.mvv-viewer-caption{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;font-weight:600;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);padding:10px 24px;border-radius:28px;white-space:nowrap;border:1px solid rgba(255,255,255,.08);letter-spacing:.3px}
+.mvv-viewer-dots{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.mvv-viewer-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);border:none;cursor:pointer;transition:all .3s;padding:0}
+.mvv-viewer-dot.active{background:#fff;transform:scale(1.3);box-shadow:0 0 10px rgba(255,255,255,.4)}
+
+/* ══ MVV card image hover (click-to-zoom) ══ */
+.mvv-card-img{cursor:pointer;position:relative;overflow:hidden;border-radius:14px 14px 0 0}
+.mvv-card-img::after{content:'🔍 Ver en grande';position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(transparent,rgba(12,31,54,.75));color:#fff;font-size:11px;font-weight:600;text-align:center;letter-spacing:.5px;opacity:0;transform:translateY(8px);transition:all .35s cubic-bezier(.23,1,.32,1)}
+.mvv-card:hover .mvv-card-img::after{opacity:1;transform:translateY(0)}
+.mvv-card-img img{transition:transform .5s cubic-bezier(.23,1,.32,1),filter .3s!important}
+.mvv-card:hover .mvv-card-img img{transform:scale(1.05)!important;filter:drop-shadow(0 6px 16px rgba(0,0,0,.12)) brightness(1.02)}
+
+/* ══════════════════════════════════════════
    MISIÓN, VISIÓN Y VALORES INSTITUCIONALES
    ══════════════════════════════════════════ */
 .mvv-section{padding:48px 0 56px;position:relative;overflow:hidden}
@@ -2021,7 +2046,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="mision.png" alt="Misión Municipalidad de Rengo" loading="lazy" decoding="async">
+          <img src="mision.png" alt="Misión Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(0)">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#127919; Misión</div>
@@ -2039,7 +2064,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="vision.png" alt="Visión Municipalidad de Rengo" loading="lazy" decoding="async">
+          <img src="vision.png" alt="Visión Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(1)">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#128302; Visión</div>
@@ -2057,7 +2082,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="valores.png" alt="Principios Institucionales Municipalidad de Rengo" loading="lazy" decoding="async">
+          <img src="valores.png" alt="Principios Institucionales Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(2)">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#127942; Principios</div>
@@ -3383,6 +3408,20 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="lightbox-caption" id="lightboxCaption"></div>
   <div class="lightbox-counter" id="lightboxCounter"></div>
   <div class="lightbox-progress" id="lightboxProgress"></div>
+</div>
+
+<!-- ═══ MVV IMAGE VIEWER ═══ -->
+<div class="mvv-viewer" id="mvvViewer" onclick="if(event.target===this)closeMvvViewer()">
+  <button class="lightbox-close" onclick="closeMvvViewer()" aria-label="Cerrar">&#10005;</button>
+  <button class="mvv-nav mvv-nav-prev" onclick="navMvvViewer(-1)" aria-label="Anterior">&#10094;</button>
+  <img class="mvv-viewer-img" id="mvvViewerImg" src="" alt="">
+  <button class="mvv-nav mvv-nav-next" onclick="navMvvViewer(1)" aria-label="Siguiente">&#10095;</button>
+  <div class="mvv-viewer-dots" id="mvvDots">
+    <button class="mvv-viewer-dot active" onclick="goMvvViewer(0)"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(1)"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(2)"></button>
+  </div>
+  <div class="mvv-viewer-caption" id="mvvViewerCap"></div>
 </div>
 
 <!-- ═══ DOCUMENTOS ═══ -->
@@ -6109,6 +6148,49 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape')closeLightbox();
   if(e.key==='ArrowLeft')navLightbox(-1);
   if(e.key==='ArrowRight')navLightbox(1);
+});
+
+// ── MVV IMAGE VIEWER ──
+const MVV_IMGS=[
+  {src:'mision.png',titulo:'Misión — Municipalidad de Rengo'},
+  {src:'vision.png',titulo:'Visión — Municipalidad de Rengo'},
+  {src:'valores.png',titulo:'Principios Institucionales — Municipalidad de Rengo'}
+];
+let mvvIdx=0;
+function openMvvViewer(idx){
+  mvvIdx=idx;
+  var v=document.getElementById('mvvViewer');
+  var img=document.getElementById('mvvViewerImg');
+  var cap=document.getElementById('mvvViewerCap');
+  img.src=MVV_IMGS[idx].src;
+  cap.textContent=MVV_IMGS[idx].titulo;
+  updateMvvDots();
+  v.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMvvViewer(){
+  document.getElementById('mvvViewer').classList.remove('open');
+  document.body.style.overflow='';
+}
+function navMvvViewer(dir){
+  mvvIdx=(mvvIdx+dir+MVV_IMGS.length)%MVV_IMGS.length;
+  var img=document.getElementById('mvvViewerImg');
+  var cap=document.getElementById('mvvViewerCap');
+  img.src=MVV_IMGS[mvvIdx].src;
+  cap.textContent=MVV_IMGS[mvvIdx].titulo;
+  updateMvvDots();
+}
+function goMvvViewer(idx){mvvIdx=idx;navMvvViewer(0);}
+function updateMvvDots(){
+  var dots=document.querySelectorAll('.mvv-viewer-dot');
+  dots.forEach(function(d,i){d.classList.toggle('active',i===mvvIdx);});
+}
+document.addEventListener('keydown',function(e){
+  var v=document.getElementById('mvvViewer');
+  if(!v||!v.classList.contains('open'))return;
+  if(e.key==='Escape')closeMvvViewer();
+  if(e.key==='ArrowLeft')navMvvViewer(-1);
+  if(e.key==='ArrowRight')navMvvViewer(1);
 });
 
 // ── GRÁFICOS DEL PROCESO ──
