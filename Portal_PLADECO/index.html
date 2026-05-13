@@ -18,6 +18,7 @@
 <meta property="og:title" content="PLADECO Rengo 2025-2035">
 <meta property="og:description" content="Plan de Desarrollo Comunal — 6 ejes, 225 pol&#237;ticas, 63.620 habitantes (Censo 2024)">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="es_CL">
 <meta property="og:url" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/">
 <meta property="og:image" content="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/Portal_PLADECO/2.png">
 <link rel="icon" type="image/svg+xml" href="escudo-rengo.svg">
@@ -1451,6 +1452,10 @@ body.dark .section-breadcrumb{background:rgba(19,32,53,.92);border-color:rgba(25
 body.dark .kpi{background:linear-gradient(135deg,var(--card) 0%,rgba(19,32,53,.95) 100%)}
 body.dark .kpi::after{background:radial-gradient(circle at top right,rgba(72,199,110,.06),transparent 70%)}
 body.dark .hero-stat:hover{box-shadow:0 12px 36px rgba(72,199,110,.2)}
+body.dark .countdown-strip{background:linear-gradient(135deg,#050d18 0%,#0a1628 40%,#0f1e3a 100%)}
+body.dark .countdown-card{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.06)}
+body.dark .encuesta-cta{background:linear-gradient(135deg,#050d18 0%,#0c0c1d 40%,#1a1a3e 100%)}
+body.dark .encuesta-cta-badge{background:rgba(72,199,110,.15);border-color:rgba(72,199,110,.25);color:#6ddb8e}
 body.dark .timeline-item{background:var(--card);border-color:var(--border)}
 body.dark .equipo-card{background:var(--card);border-color:var(--border)}
 body.dark .testimonio-card{background:var(--card);border-color:var(--border)}
@@ -1543,8 +1548,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offs
 @keyframes splashLoad{0%{width:0}60%{width:75%}100%{width:100%}}
 
 /* ── Hero Stats Animated Entrance ── */
-.hero-stat{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
-.hero-stat.revealed{opacity:1;transform:translateY(0)}
+.hero-stat{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease,box-shadow .25s,border-color .25s}
+.hero-stat.revealed{opacity:1;transform:translateY(0);transition:transform .25s,box-shadow .25s,border-color .25s,opacity .3s}
 .hero-stat:nth-child(1){transition-delay:.1s}
 .hero-stat:nth-child(2){transition-delay:.2s}
 .hero-stat:nth-child(3){transition-delay:.3s}
@@ -2138,7 +2143,7 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v23.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v24.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -2155,7 +2160,7 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
   <div class="chatbot-messages" id="chatMessages"></div>
   <div class="chatbot-suggestions" id="chatSugg"></div>
   <div class="chatbot-input-row">
-    <input type="text" id="chatInput" placeholder="Pregunta sobre Rengo..." autocomplete="off">
+    <input type="text" id="chatInput" placeholder="Pregunta sobre Rengo..." autocomplete="off" aria-label="Escribe tu pregunta sobre el PLADECO">
     <button onclick="sendChatMessage()" aria-label="Enviar">&#10148;</button>
   </div>
 </div>
@@ -2166,7 +2171,7 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
   <div class="cb-row">
     <div class="cb-logo-left">
       <div class="cb-escudo-pill">
-        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" decoding="async">
+        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" width="24" height="38" decoding="async">
         <span>Ilustre<br>Municipalidad<br>de Rengo</span>
       </div>
       <div class="cb-contigo-pill">
@@ -4248,10 +4253,11 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v23.0</span>
+  <span class="ub-ver">v24.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v24.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a v24: infograf&iacute;a 2026/2035 integrada en hero, +32 OE completa grilla 3×2, dark mode countdown+encuesta CTA, fix transici&oacute;n hero-stat hover, og:locale SEO, ARIA chatbot input, CLS escudo banner (width/height)</div>
     <div class="ub-entry"><strong>v23.0</strong> <span class="ub-date">12 May 2026</span><br>Dark mode Matriz Estrat&eacute;gica, heatmap legible en oscuro + ARIA, consolidar prefers-reduced-motion (x3→x1), eliminar @media print duplicados, limpieza CSS (~45 l&iacute;neas), hero fetchpriority LCP, eliminar renderDocs() redundante, auto-reload SW</div>
     <div class="ub-entry"><strong>v22.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a UX: fix --muted CSS, dark mode gradient text, eliminar backdrop-filter GPU, unificar focus-visible, pausar animaciones en m&oacute;vil, teclado Escape/flechas en lightbox, scroll-progress fix, datos complementarios en infograf&iacute;a, limpiar CSS duplicado</div>
     <div class="ub-entry"><strong>v21.0</strong> <span class="ub-date">12 May 2026</span><br>Infograf&iacute;a resumen KPI, mini-encuesta integrada en secci&oacute;n Encuesta, indicador de grupo activo en sidebar, exportar secciones a PDF, accesibilidad mejorada (alt text, teclado, ARIA), fix fuente-info keydown</div>
