@@ -986,10 +986,6 @@ body.dark .doc-card-enhanced .doc-btn{background:#1e293b}
 body.dark .doc-card-enhanced .doc-btn:hover{background:var(--accent)}
 
 /* ── F1: Buscador Sidebar ── */
-.sidebar-search{padding:8px 16px;position:relative}
-.sidebar-search input{width:100%;padding:8px 12px 8px 32px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.06);color:#fff;font-size:12px;outline:none;transition:border-color .2s}
-.sidebar-search input:focus{border-color:var(--green);background:rgba(45,154,77,.08);box-shadow:0 0 0 3px rgba(45,154,77,.15)}
-.sidebar-search .search-icon{position:absolute;left:24px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.4}
 .sidebar-nav a.search-hidden{display:none!important}
 
 /* ── F2: Comparador UV ── */
@@ -1519,9 +1515,13 @@ body.dark .sec-header .badge,body.dark .stat-chip .sc-icon{filter:brightness(.75
 :focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
 a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 
-/* ── Prefers Reduced Motion ── */
+/* ── Prefers Reduced Motion (consolidado) ── */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .hero-orb,.chatbot-fab,.mascot-img,.splash-logo,.hero-logo-wrap{animation:none!important}
+  .hero-stat,.kpi,.com-item,.equipo-card,.testimonio-card,.compromiso-item,.galeria-card,.timeline-item{opacity:1!important;transform:none!important;transition:none!important}
+  .splash-bar-fill{animation:none;width:100%}
+  .kpi::after{animation:none!important}
 }
 
 /* ── Mobile Touch Targets ── */
@@ -1531,15 +1531,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offs
   .hero-stat{min-width:unset;padding:14px 16px}
   .section-breadcrumb{font-size:10px;padding:4px 12px}
 }
-
-/* ── Table of Contents (Resumen) ── */
-.toc-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;counter-reset:toc}
-@media(max-width:900px){.toc-list{grid-template-columns:1fr}}
-.toc-list li{counter-increment:toc}
-.toc-list li a{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text);font-size:13px;font-weight:600;transition:all .2s;box-shadow:var(--shadow)}
-.toc-list li a:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.toc-list li a::before{content:counter(toc);display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:800;flex-shrink:0}
-.toc-list li a .toc-desc{font-size:10px;color:var(--text2);font-weight:400;margin-top:2px}
 
 /* ── Splash / Loading Screen ── */
 .splash-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0c1f36 0%,#1a3d8f 50%,#0c1f36 100%);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s ease,visibility .6s;gap:20px}
@@ -1633,13 +1624,6 @@ section{position:relative}
 /* ── Rating card star glow ── */
 .rating-card .rc-stars{text-shadow:0 0 6px rgba(245,146,29,.3)}
 
-/* ── Accessibility: reduced motion ── */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}
-  .hero-orb,.chatbot-fab,.mascot-img,.splash-logo{animation:none!important}
-  .hero-stat,.kpi,.com-item{opacity:1!important;transform:none!important}
-}
-
 /* ── Viz-card subtle hover lift ── */
 .viz-card{transition:transform .25s ease,box-shadow .25s ease}
 .viz-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(12,31,54,.10)}
@@ -1662,15 +1646,7 @@ section{position:relative}
   .sec-fuente{font-size:10px;padding:8px 12px;margin-top:18px;line-height:1.5}
 }
 
-/* ── Print optimization ── */
-@media print{
-  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters{display:none!important}
-  .main{margin-left:0!important}
-  section{page-break-inside:avoid;padding:24px 20px}
-  .hero{background:#0c1f36!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .com-timeline{border:1px solid #ccc}
-  .com-item{border-bottom:1px solid #eee}
-}
+/* Print optimization — see main @media print block (MEJORA 5) */
 
 /* ── Better sidebar search ── */
 .sidebar-search{padding:8px 16px 12px}
@@ -1707,25 +1683,9 @@ section{position:relative}
   .dark-toggle{width:38px;height:38px;font-size:14px;right:68px}
 }
 
-/* ── Print improvements ── */
-@media print{
-  section.reveal{opacity:1!important;transform:none!important}
-  .viz-card::before,.kpi::after{display:none}
-}
-
 /* ── Performance: GPU hints ── */
 .sidebar,.hero-orb{will-change:transform}
 .hero-orb,.mascot-img,.chatbot-fab{animation-play-state:running}
-@media(prefers-reduced-motion:reduce){.hero-orb,.mascot-img,.chatbot-fab{animation:none!important}}
-
-/* ── Accessibility: Reduced Motion ── */
-@media(prefers-reduced-motion:reduce){
-  .splash-logo,.mascot-img,.hero-logo-wrap,.chatbot-fab{animation:none!important}
-  .hero-stat,.kpi,.equipo-card,.testimonio-card,.compromiso-item,.galeria-card,.timeline-item{opacity:1;transform:none;transition:none}
-  .splash-bar-fill{animation:none;width:100%}
-  .kpi::after{animation:none!important}
-  *{scroll-behavior:auto!important}
-}
 
 /* ══ MEJORA 1: Compromisos Filter + Progress Ring ══ */
 .comp-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
@@ -1795,6 +1755,9 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
   .testimonios-grid{overflow:visible!important}
   .comparador-row .cmp-bar{width:var(--bar-w)!important}
   a[href]::after{content:none!important}
+  .com-timeline{border:1px solid #ccc}
+  .com-item{border-bottom:1px solid #eee}
+  .viz-card::before,.kpi::after{display:none}
   .comp-progress-ring{display:none!important}
 }
 
@@ -2027,6 +1990,17 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   .me-sna-metrics{grid-template-columns:1fr 1fr}
   .me-tab-btn{padding:8px 12px;font-size:11px;gap:4px}
 }
+/* ── Dark mode: Matriz Estratégica ── */
+body.dark .me-tab-panel{background:var(--card);border-color:#2d3748}
+body.dark .me-chip{background:#1e293b;border-color:#2d3748}
+body.dark .me-section .me-table-wrap{background:var(--card)}
+body.dark .me-section td{border-color:#2d3748}
+body.dark .me-sna-wrap{background:#1e293b;border-color:#2d3748}
+body.dark .me-sna-filter{background:#1e293b;border-color:#2d3748}
+body.dark .me-sna-metric{background:#1e293b;border-color:#2d3748}
+body.dark #me-sna-tip{background:var(--card);border-color:#2d3748;color:var(--text)}
+body.dark .me-note-box{background:rgba(255,255,255,.05)}
+body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
 </style>
 </head>
 <body>
@@ -2164,7 +2138,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v22.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v23.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -2223,7 +2197,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-content">
     <div class="hero-logo-wrap">
-      <img src="hero-banner.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo" width="333" height="188" decoding="async">
+      <img src="hero-banner.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo" width="333" height="188" decoding="async" fetchpriority="high">
     </div>
     <div class="hero-brand">&#127963;&#65039; Ilustre Municipalidad de Rengo</div>
     <h1>Plan de Desarrollo Comunal<br><span>Rengo 2025 — 2035</span></h1>
@@ -4284,10 +4258,11 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v22.0</span>
+  <span class="ub-ver">v23.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v23.0</strong> <span class="ub-date">12 May 2026</span><br>Dark mode Matriz Estrat&eacute;gica, heatmap legible en oscuro + ARIA, consolidar prefers-reduced-motion (x3→x1), eliminar @media print duplicados, limpieza CSS (~45 l&iacute;neas), hero fetchpriority LCP, eliminar renderDocs() redundante, auto-reload SW</div>
     <div class="ub-entry"><strong>v22.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a UX: fix --muted CSS, dark mode gradient text, eliminar backdrop-filter GPU, unificar focus-visible, pausar animaciones en m&oacute;vil, teclado Escape/flechas en lightbox, scroll-progress fix, datos complementarios en infograf&iacute;a, limpiar CSS duplicado</div>
     <div class="ub-entry"><strong>v21.0</strong> <span class="ub-date">12 May 2026</span><br>Infograf&iacute;a resumen KPI, mini-encuesta integrada en secci&oacute;n Encuesta, indicador de grupo activo en sidebar, exportar secciones a PDF, accesibilidad mejorada (alt text, teclado, ARIA), fix fuente-info keydown</div>
     <div class="ub-entry"><strong>v20.0</strong> <span class="ub-date">12 May 2026</span><br>Separadores visuales entre 8 grupos tem&aacute;ticos, tabla resumen de ejes estilo Matriz, 10 Direcciones Municipales en Equipo T&eacute;cnico, limpieza CSS muerto, fix donut chart + chatbot FAQ</div>
@@ -8145,20 +8120,22 @@ function renderCensoHeatmap(){
   var sorted=CENSO_VULNERABILIDAD.slice().sort(function(a,b){return b.icp-a.icp;}).slice(0,15);
   var dims=['ivsh','iddc','ibdt','ivft','icht_vul','ipsb'];
   var labels=['IVSH','IDDC','IBDT','IVFT','ICHT','IPSB'];
+  function heatLevel(v){return v<0.15?'bajo':v<0.25?'moderado':v<0.35?'medio':v<0.45?'alto':'crítico';}
   function heatColor(v){
-    if(v<0.15) return 'rgba(34,197,94,.25)';
-    if(v<0.25) return 'rgba(234,179,8,.25)';
-    if(v<0.35) return 'rgba(249,115,22,.3)';
-    if(v<0.45) return 'rgba(239,68,68,.3)';
-    return 'rgba(185,28,28,.4)';
+    var dk=document.body.classList.contains('dark');
+    if(v<0.15) return dk?'rgba(34,197,94,.35)':'rgba(34,197,94,.25)';
+    if(v<0.25) return dk?'rgba(234,179,8,.35)':'rgba(234,179,8,.25)';
+    if(v<0.35) return dk?'rgba(249,115,22,.4)':'rgba(249,115,22,.3)';
+    if(v<0.45) return dk?'rgba(239,68,68,.4)':'rgba(239,68,68,.3)';
+    return dk?'rgba(185,28,28,.5)':'rgba(185,28,28,.4)';
   }
-  var html='<div class="censo-heatmap-wrap"><table class="censo-heatmap"><thead><tr><th>Localidad</th><th>ICP</th>';
+  var html='<div class="censo-heatmap-wrap"><table class="censo-heatmap" role="grid" aria-label="Mapa de calor de vulnerabilidad territorial"><thead><tr><th scope="col">Localidad</th><th scope="col" title="Índice Compuesto de Priorización">ICP</th>';
   for(var i=0;i<labels.length;i++) html+='<th>'+labels[i]+'</th>';
   html+='</tr></thead><tbody>';
   for(var j=0;j<sorted.length;j++){
     var d=sorted[j];
-    html+='<tr><td class="hm-loc">'+d.loc+'<span class="hm-area hm-'+d.area.toLowerCase()+'">'+d.area+'</span></td><td class="hm-icp" style="background:'+heatColor(d.icp)+'">'+d.icp.toFixed(3)+'</td>';
-    for(var k=0;k<dims.length;k++) html+='<td style="background:'+heatColor(d[dims[k]])+'">'+d[dims[k]].toFixed(3)+'</td>';
+    html+='<tr><td class="hm-loc">'+d.loc+'<span class="hm-area hm-'+d.area.toLowerCase()+'">'+d.area+'</span></td><td class="hm-icp" style="background:'+heatColor(d.icp)+';color:var(--text)" title="Riesgo '+heatLevel(d.icp)+'">'+d.icp.toFixed(3)+'</td>';
+    for(var k=0;k<dims.length;k++) html+='<td style="background:'+heatColor(d[dims[k]])+';color:var(--text)" title="Riesgo '+heatLevel(d[dims[k]])+'">'+d[dims[k]].toFixed(3)+'</td>';
     html+='</tr>';
   }
   html+='</tbody></table></div>';
@@ -8340,7 +8317,7 @@ Chart.defaults.borderColor=getChartGridColor();
 // ═══ RENDER PIPELINE (3-tier deferred loading) ═══
 
 // TIER 1: Immediate — structural HTML + navigation (above-fold)
-renderUV();renderComisiones();renderDocs();renderDocsEnhanced();
+renderUV();renderComisiones();renderDocsEnhanced();
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
 renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
 renderTimelinePladeco();renderTimeline();renderEthnoTabs();
