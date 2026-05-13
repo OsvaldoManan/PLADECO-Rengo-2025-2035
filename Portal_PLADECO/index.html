@@ -1096,6 +1096,9 @@ body.dark .share-btn:hover{border-color:var(--green);color:var(--green)}
 .visit-recent-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:8px;font-size:11px;color:var(--text2);transition:background .15s}
 .visit-recent-item:nth-child(odd){background:rgba(0,0,0,.015)}
 body.dark .visit-recent-item:nth-child(odd){background:rgba(255,255,255,.03)}
+body.dark .visit-kpi{border-color:var(--border)}
+body.dark .visit-chart-card{border-color:var(--border)}
+body.dark .visit-chart-desc{background:rgba(124,58,237,.06);border-left-color:rgba(124,58,237,.3)}
 .visit-recent-item .vr-date{font-weight:600;color:var(--text);min-width:80px}
 .visit-recent-item .vr-time{font-family:'SF Mono',monospace;font-size:10px;color:var(--text-secondary);background:var(--bg);padding:2px 8px;border-radius:4px}
 .visit-no-data{text-align:center;padding:24px;font-size:12px;color:var(--text-secondary);font-style:italic}
@@ -1869,7 +1872,8 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 .mvv-card-icons{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
 .mvv-icon-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:var(--bg);font-size:10px;font-weight:600;color:var(--text2);border:1px solid rgba(0,0,0,.04);transition:all .2s}
 .mvv-card:hover .mvv-icon-pill{background:rgba(45,154,77,.05);border-color:rgba(45,154,77,.1)}
-@media(max-width:1024px){.mvv-grid{grid-template-columns:1fr;max-width:480px;margin:0 auto;gap:24px}}
+@media(max-width:1024px){.mvv-grid{grid-template-columns:repeat(2,1fr);gap:20px}}
+@media(max-width:640px){.mvv-grid{grid-template-columns:1fr;max-width:480px;margin:0 auto;gap:20px}}
 @media(max-width:600px){
   .mvv-header h2{font-size:22px}
   .mvv-card-body{padding:16px 18px 20px}
@@ -2003,7 +2007,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 body.dark .me-tab-panel{background:var(--card);border-color:#2d3748}
 body.dark .me-chip{background:#1e293b;border-color:#2d3748}
 body.dark .me-section .me-table-wrap{background:var(--card)}
+body.dark .me-section table{background:var(--card)}
 body.dark .me-section td{border-color:#2d3748}
+body.dark .me-section th{background:#1e3a5f}
 body.dark .me-sna-wrap{background:#1e293b;border-color:#2d3748}
 body.dark .me-sna-filter{background:#1e293b;border-color:#2d3748}
 body.dark .me-sna-metric{background:#1e293b;border-color:#2d3748}
@@ -2042,8 +2048,8 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
 <nav class="dot-nav" id="dotNav" aria-label="Navegación rápida por secciones"></nav>
 
 <!-- Mobile toggle -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open')"></div>
-<button class="menu-toggle" aria-label="Abrir menú de navegación" onclick="document.querySelector('.sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open')">&#9776;</button>
+<div class="sidebar-overlay" id="sidebarOverlay" role="button" tabindex="-1" aria-label="Cerrar menú" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open');document.querySelector('.menu-toggle').setAttribute('aria-expanded','false')"></div>
+<button class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" onclick="var s=document.querySelector('.sidebar'),o=document.getElementById('sidebarOverlay'),open=!s.classList.contains('open');s.classList.toggle('open');o.classList.toggle('open');this.setAttribute('aria-expanded',open)">&#9776;</button>
 
 <!-- Sidebar -->
 <nav class="sidebar" role="navigation" aria-label="Navegación principal">
@@ -2147,7 +2153,7 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v24.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v25.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4257,10 +4263,11 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v24.0</span>
+  <span class="ub-ver">v25.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v25.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a v25: heatmap sorting interactivo + columna Pob., D3 lazy load (perf), eliminar dead code sectionMap, aria-expanded menu m&oacute;vil, aria-sort heatmap, dark mode tablas ME + visitor, MVV responsive tablet, scroll handler debug logging</div>
     <div class="ub-entry"><strong>v24.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a v24: infograf&iacute;a 2026/2035 integrada en hero, +32 OE completa grilla 3×2, dark mode countdown+encuesta CTA, fix transici&oacute;n hero-stat hover, og:locale SEO, ARIA chatbot input, CLS escudo banner (width/height)</div>
     <div class="ub-entry"><strong>v23.0</strong> <span class="ub-date">12 May 2026</span><br>Dark mode Matriz Estrat&eacute;gica, heatmap legible en oscuro + ARIA, consolidar prefers-reduced-motion (x3→x1), eliminar @media print duplicados, limpieza CSS (~45 l&iacute;neas), hero fetchpriority LCP, eliminar renderDocs() redundante, auto-reload SW</div>
     <div class="ub-entry"><strong>v22.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a UX: fix --muted CSS, dark mode gradient text, eliminar backdrop-filter GPU, unificar focus-visible, pausar animaciones en m&oacute;vil, teclado Escape/flechas en lightbox, scroll-progress fix, datos complementarios en infograf&iacute;a, limpiar CSS duplicado</div>
@@ -7936,7 +7943,7 @@ function _onScroll(fn){_scrollFns.push(fn);}
 window.addEventListener('scroll',function(){
   if(!_scrollTicking){requestAnimationFrame(function(){
     var i=0,len=_scrollFns.length;
-    for(;i<len;i++){try{_scrollFns[i]();}catch(e){}}
+    for(;i<len;i++){try{_scrollFns[i]();}catch(e){console.warn('[PLADECO] scroll handler error:',e);}}
     _scrollTicking=false;
   });_scrollTicking=true;}
 },{passive:true});
@@ -8145,7 +8152,8 @@ function renderCensoHeatmap(){
   for(var h=0;h<colKeys.length;h++){
     var isActive=colKeys[h]===sc;
     var arrow=isActive?(sa?' ▲':' ▼'):' ⇅';
-    html+='<th scope="col" title="'+colTitles[h]+'" data-sort="'+colKeys[h]+'"'+(isActive?' class="sorted"':'')+'>'+colLabels[h]+'<span class="sort-arrow">'+arrow+'</span></th>';
+    var ariaSort=isActive?(sa?'ascending':'descending'):'none';
+    html+='<th scope="col" title="'+colTitles[h]+'" data-sort="'+colKeys[h]+'" aria-sort="'+ariaSort+'"'+(isActive?' class="sorted"':'')+'>'+colLabels[h]+'<span class="sort-arrow">'+arrow+'</span></th>';
   }
   html+='</tr></thead><tbody>';
   /* Rows */
@@ -8412,19 +8420,7 @@ function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',f
   renderBrechasMetas,renderProgresoEje,renderFinCards,renderFinEje,
   renderPlazoFin,renderTreemapFin,renderPiramideDem];
 
-  /* Group chart renderers by their parent section */
-  var sectionMap=new Map();
-  t2.forEach(function(fn){
-    /* Find which section owns this chart's canvas/container */
-    var secEl=null;
-    /* Try common patterns: fn name often matches element id */
-    document.querySelectorAll('section').forEach(function(sec){
-      if(!secEl&&sec.querySelector('canvas,#gauges,#treemap,#mapContainer,#odsBars,.sankey-flow,.tag-cloud,.sna-network,.word-cloud'))
-        if(!sectionMap.has(sec)) secEl=sec;
-    });
-  });
-
-  /* Simpler approach: observe all sections, render charts in batches when visible */
+  /* Observe sections, render charts in batches when visible */
   var rendered=false;
   var chartObs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
@@ -8447,10 +8443,10 @@ function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',f
   var secs=document.querySelectorAll('section');
   if(secs.length>2) chartObs.observe(secs[2]);
   if(secs.length>4) chartObs.observe(secs[4]);
-  /* Fallback: if user doesn't scroll, render after 3s */
+  /* Fallback: if user doesn't scroll, render after 5s */
   setTimeout(function(){
     if(!rendered){rendered=true;chartObs.disconnect();t2.forEach(_safeRun);}
-  },3000);
+  },5000);
 })();
 
 // TIER 3: Heavy deferred — Censo 2024 analytics (idle time)
@@ -10021,7 +10017,7 @@ function switchMeTab(id,btn){
   document.querySelectorAll('.me-tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('me-tab-'+id).classList.add('active');
   btn.classList.add('active');
-  if(id==='red'&&!window._meSnaInit){window._meSnaInit=true;initMeSNA();}
+  if(id==='red'){loadD3AndInit();if(!window._meSnaInit){window._meSnaInit=true;initMeSNA();}}
 }
 window._meSnaInit=false;
 window._meSnaActiveAxis=0;
@@ -10034,7 +10030,6 @@ function loadD3AndInit(){
   s.onload=function(){if(window._meSnaInit)initMeSNA();};
   document.head.appendChild(s);
 }
-loadD3AndInit();
 
 function initMeSNA(){
 if(!window.d3){setTimeout(initMeSNA,200);return;}
