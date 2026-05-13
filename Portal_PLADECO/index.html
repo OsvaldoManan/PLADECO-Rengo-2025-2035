@@ -429,6 +429,26 @@ body.dark .uv-table tfoot td{background:#0f172a}
 body.dark .action-item{background:#0f172a;border-color:#334155}
 body.dark .foda-card ul li{border-color:#334155}
 body.dark .group-divider-label{background:var(--card);border-color:#334155}
+
+/* ── Sidebar group active indicator ── */
+.sidebar-group.active-group>.sidebar-group-title{color:#fff;opacity:1;background:rgba(45,154,77,.12);border-radius:6px;margin:0 8px;padding:14px 12px 6px}
+.sidebar-group.active-group>.sidebar-group-title::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green-light);margin-right:0;box-shadow:0 0 6px rgba(45,154,77,.6);animation:pulseGrp 2s infinite}
+@keyframes pulseGrp{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── PDF Export button ── */
+.sec-export-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;background:var(--card);border:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;position:absolute;right:0;top:0}
+.sec-export-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.sec-export-btn svg{width:14px;height:14px}
+.sec-header{position:relative}
+@media print{.sec-export-btn{display:none!important}}
+
+/* ── Infographic summary card ── */
+.infographic-strip{background:linear-gradient(135deg,#0c1f36 0%,#1a3d8f 60%,#2d9a4d 100%);border-radius:16px;padding:28px 32px;margin:0 auto 32px;max-width:1200px;color:#fff;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;align-items:center;box-shadow:0 4px 24px rgba(12,31,54,.2)}
+.infographic-strip .ig-item{text-align:center;padding:8px}
+.infographic-strip .ig-value{font-size:28px;font-weight:800;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.2)}
+.infographic-strip .ig-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.7;margin-top:4px;font-weight:600}
+.infographic-strip .ig-divider{width:1px;height:40px;background:rgba(255,255,255,.15);justify-self:center}
+@media(max-width:700px){.infographic-strip{grid-template-columns:repeat(3,1fr);padding:20px 16px;gap:12px}.infographic-strip .ig-value{font-size:20px}.infographic-strip .ig-divider{display:none}}
 body.dark .gallery-item img{opacity:.92}
 body.dark .foda-controls input{background:var(--card);color:var(--text);border-color:#334155}
 body.dark .footer{background:linear-gradient(135deg,#050d18 0%,#0a1628 40%,#0f1e3a 100%)}
@@ -1754,7 +1774,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   body{font-size:11px;padding:0!important;margin:0!important}
-  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.update-badge,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox,.group-divider{display:none!important}
+  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.update-badge,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox,.group-divider,.infographic-strip,.sec-export-btn{display:none!important}
   .main{margin-left:0!important}
   section{page-break-inside:avoid;padding:20px 16px!important;max-width:100%!important}
   section.reveal,.hero-stat,.kpi,.equipo-card,.testimonio-card,.compromiso-item,.galeria-card,.timeline-item{opacity:1!important;transform:none!important}
@@ -2132,7 +2152,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <a href="#cartografias"><span class="ico">&#128506;</span> Cartograf&#237;as</a>
     </div>
   </div>
-  <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente">
+  <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente" tabindex="0" role="button" aria-label="Abrir asistente PLADECO" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleChatbot()}">
     <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" width="60" height="60" loading="lazy" decoding="async">
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
     <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
@@ -2228,6 +2248,23 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3"></div></div></div>
 </div>
 
+<!-- ═══ INFOGRAPHIC SUMMARY ═══ -->
+<div class="infographic-strip" id="infographic">
+  <div class="ig-item"><div class="ig-value">63.620</div><div class="ig-label">Habitantes Censo 2024</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">6</div><div class="ig-label">Ejes Estrat&#233;gicos</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">225</div><div class="ig-label">Pol&#237;ticas P&#250;blicas</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">27</div><div class="ig-label">Objetivos Estrat&#233;gicos</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">21</div><div class="ig-label">Unidades Vecinales</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">15/17</div><div class="ig-label">ODS Alineados</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">10</div><div class="ig-label">A&#241;os de Planificaci&#243;n</div></div>
+</div>
+
 <!-- ═══ ENCUESTA CIUDADANA ═══ -->
 <section id="encuesta" style="padding-top:28px;padding-bottom:12px">
   <div class="encuesta-cta">
@@ -2242,6 +2279,8 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="encuesta-qr-label">Escanea con tu celular</div>
     </div>
   </div>
+  <!-- Mini-encuesta integrada -->
+  <div id="miniSurvey" style="margin-top:20px"></div>
 </section>
 
 <!-- ═══ MISIÓN, VISIÓN Y VALORES ═══ -->
@@ -2257,7 +2296,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="mision.png" alt="Misión Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(0)">
+          <img src="mision.png" alt="Misión Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(0)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(0)}" style="cursor:pointer">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#127919; Misión</div>
@@ -2275,7 +2314,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="vision.png" alt="Visión Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(1)">
+          <img src="vision.png" alt="Visión Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(1)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(1)}" style="cursor:pointer">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#128302; Visión</div>
@@ -2293,7 +2332,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="valores.png" alt="Principios Institucionales Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(2)">
+          <img src="valores.png" alt="Principios Institucionales Municipalidad de Rengo" loading="lazy" decoding="async" onclick="openMvvViewer(2)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(2)}" style="cursor:pointer">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#127942; Principios</div>
@@ -2312,7 +2351,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <div class="mvv-objetivo">
       <div class="mvv-objetivo-accent"></div>
       <div class="mvv-objetivo-inner">
-        <div class="mvv-objetivo-img" onclick="openMvvViewer(3)">
+        <div class="mvv-objetivo-img" onclick="openMvvViewer(3)" tabindex="0" role="button" aria-label="Ver Proyecci&#243;n Rengo 2035 en pantalla completa" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(3)}" style="cursor:pointer">
           <img src="proyeccion-2035.png" alt="Imagen Objetivo Comunal — Proyección Rengo 2035" loading="lazy" decoding="async">
         </div>
         <div class="mvv-objetivo-body">
@@ -2360,7 +2399,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
         </div>
       </div>
 
-      <div class="fuente-info-card" onclick="openMvvViewer(4)" role="button" tabindex="0" aria-label="Ver diagrama de Fuentes de Informaci&#243;n del PLADECO en pantalla completa" onkeydown="if(event.key==='Enter')openMvvViewer(3)">
+      <div class="fuente-info-card" onclick="openMvvViewer(4)" role="button" tabindex="0" aria-label="Ver diagrama de Fuentes de Informaci&#243;n del PLADECO en pantalla completa" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(4)}">
         <div class="fuente-info-card-accent"></div>
         <div class="fuente-info-card-header">
           <span class="fuente-info-badge">&#128202; Diagn&#243;stico</span>
@@ -3836,7 +3875,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <!-- Modal -->
 <div class="modal-overlay" id="modal" onclick="this.classList.remove('show')">
   <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">&times;</button>
-  <img id="modal-img" src="" alt="">
+  <img id="modal-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" alt="Imagen ampliada del contenido seleccionado">
 </div>
 
 <!-- ═══ COMISIONES ═══ -->
@@ -4172,7 +4211,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <div class="mvv-viewer" id="mvvViewer" onclick="if(event.target===this)closeMvvViewer()">
   <button class="lightbox-close" onclick="closeMvvViewer()" aria-label="Cerrar">&#10005;</button>
   <button class="mvv-nav mvv-nav-prev" onclick="navMvvViewer(-1)" aria-label="Anterior">&#10094;</button>
-  <img class="mvv-viewer-img" id="mvvViewerImg" src="" alt="">
+  <img class="mvv-viewer-img" id="mvvViewerImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" alt="Visor de Misi&#243;n, Visi&#243;n y Valores">
   <button class="mvv-nav mvv-nav-next" onclick="navMvvViewer(1)" aria-label="Siguiente">&#10095;</button>
   <div class="mvv-viewer-dots" id="mvvDots">
     <button class="mvv-viewer-dot active" onclick="goMvvViewer(0)"></button>
@@ -4244,10 +4283,11 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v20.0</span>
+  <span class="ub-ver">v21.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v21.0</strong> <span class="ub-date">12 May 2026</span><br>Infograf&iacute;a resumen KPI, mini-encuesta integrada en secci&oacute;n Encuesta, indicador de grupo activo en sidebar, exportar secciones a PDF, accesibilidad mejorada (alt text, teclado, ARIA), fix fuente-info keydown</div>
     <div class="ub-entry"><strong>v20.0</strong> <span class="ub-date">12 May 2026</span><br>Separadores visuales entre 8 grupos tem&aacute;ticos, tabla resumen de ejes estilo Matriz, 10 Direcciones Municipales en Equipo T&eacute;cnico, limpieza CSS muerto, fix donut chart + chatbot FAQ</div>
     <div class="ub-entry"><strong>v19.0</strong> <span class="ub-date">12 May 2026</span><br>Reordenamiento l&oacute;gico de contenido: 37 secciones organizadas en 8 grupos tem&aacute;ticos alineados con la navegaci&oacute;n lateral (Introducci&oacute;n → Censo → Diagn&oacute;stico → Participaci&oacute;n → Planificaci&oacute;n → An&aacute;lisis → Seguimiento → Recursos)</div>
     <div class="ub-entry"><strong>v18.0</strong> <span class="ub-date">12 May 2026</span><br>Matriz Estrat&eacute;gica Integrada (6 ejes, 27 OE, 225 acciones) con Red SNA interactiva D3.js integrada al portal</div>
@@ -10088,6 +10128,106 @@ function onOut(){if(selId)return;tip.style.visibility='hidden';rst();}
 function onClk(e,d){if(selId===d.id){selId=null;tip.style.visibility='hidden';rst();return;}selId=d.id;posTip(d);hl(d.id);}
 window.meSnaFilter=function(ax){window._meSnaActiveAxis=ax;selId=null;for(var j=0;j<=6;j++){var b=document.getElementById('mef'+j);if(b){b.classList.toggle('active',ax===j);b.style.opacity=ax===j?'1':'0.5';b.style.fontWeight=ax===j?'600':'500';}}if(ax===0){rst();return;}var vis=new Set();nodes.filter(function(n){return n.axis===ax;}).forEach(function(n){vis.add(n.id);});links.forEach(function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b2=typeof l.target==='object'?l.target.id:l.target;if(vis.has(a2)||vis.has(b2)){vis.add(a2);vis.add(b2);}});nSel.attr('opacity',function(n){return vis.has(n.id)?1:0.08;});lSel.attr('opacity',function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b2=typeof l.target==='object'?l.target.id:l.target;var sn=nodes.find(function(n){return n.id===a2;}),tn=nodes.find(function(n){return n.id===b2;});if(!sn||!tn)return 0.04;if(sn.axis===ax||tn.axis===ax)return l.type==='transversal'&&window._meSnaShowT?0.75:l.type==='structural'?0.85:0;return 0.04;});};
 window.meSnaToggleT=function(show){window._meSnaShowT=show;lSel.filter(function(d){return d.type==='transversal';}).attr('opacity',show?(window._meSnaActiveAxis===0?0.5:0.75):0).attr('pointer-events',show?'auto':'none');};
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR GROUP ACTIVE INDICATOR (scroll-based)
+// ══════════════════════════════════════════════════════
+(function initSidebarGroupIndicator(){
+  const groupMap=[
+    {divider:'Datos Censales',sections:['censo','censoVuln','censoBrechas','censoHeat','censoMapa','censoCompos']},
+    {divider:'Diagnóstico Territorial',sections:['datos-vivo','mapa','territorio','comparador-uv','desigualdad','territorial-adv','nna']},
+    {divider:'Participación Ciudadana',sections:['voz','suenos','foda','testimonios']},
+    {divider:'Planificación Estratégica',sections:['ejes','ods-sec','gestion','argumentario','resumen']},
+    {divider:'Análisis Institucional',sections:['equipo','sna','etnografia','comisiones']},
+    {divider:'Seguimiento',sections:['cronograma','semaforo','compromisos','financiamiento','antes-despues','graficos']},
+    {divider:'Proceso y Recursos',sections:['galeria','documentos','visitas','graficos-proceso','cartografias']}
+  ];
+  const sidebarGroups=document.querySelectorAll('.sidebar-group');
+  const groupTitles=[];
+  sidebarGroups.forEach(g=>{
+    const t=g.querySelector('.sidebar-group-title');
+    if(t)groupTitles.push({el:g,text:t.textContent.trim()});
+  });
+  function findGroup(sectionId){
+    for(let i=0;i<groupMap.length;i++){
+      if(groupMap[i].sections.includes(sectionId))return groupMap[i].divider;
+    }
+    return null;
+  }
+  let lastActiveGroup='';
+  const grpObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const gName=findGroup(e.target.id);
+        if(gName&&gName!==lastActiveGroup){
+          lastActiveGroup=gName;
+          groupTitles.forEach(gt=>{
+            const match=gt.text.toLowerCase().includes(gName.toLowerCase().substring(0,10));
+            gt.el.classList.toggle('active-group',match);
+          });
+        }
+      }
+    });
+  },{threshold:0.15,rootMargin:'-80px 0px -50% 0px'});
+  groupMap.forEach(g=>{
+    g.sections.forEach(sid=>{
+      const el=document.getElementById(sid);
+      if(el)grpObs.observe(el);
+    });
+  });
+})();
+
+// ══════════════════════════════════════════════════════
+// PDF EXPORT: Print individual sections
+// ══════════════════════════════════════════════════════
+(function initPdfExport(){
+  // Add export buttons to sections with .sec-header
+  document.querySelectorAll('.sec-header').forEach(header=>{
+    const sec=header.closest('section');
+    if(!sec||!sec.id)return;
+    const btn=document.createElement('button');
+    btn.className='sec-export-btn';
+    btn.title='Exportar sección como PDF';
+    btn.setAttribute('aria-label','Exportar sección como PDF');
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> PDF';
+    btn.onclick=function(e){
+      e.preventDefault();
+      exportSectionPDF(sec.id);
+    };
+    header.appendChild(btn);
+  });
+})();
+
+function exportSectionPDF(sectionId){
+  const sec=document.getElementById(sectionId);
+  if(!sec)return;
+  const title=sec.querySelector('h2')?.textContent||sec.querySelector('h3')?.textContent||sectionId;
+  // Create a print-optimized clone
+  const printWin=window.open('','_blank','width=900,height=700');
+  if(!printWin){showToast('Permite ventanas emergentes para exportar','warning');return;}
+  const styles=document.querySelectorAll('style');
+  let css='';
+  styles.forEach(s=>{css+=s.textContent;});
+  // Get computed CSS variables
+  const root=getComputedStyle(document.documentElement);
+  const cssVars=['--primary','--accent','--bg','--card','--text','--text2','--border','--shadow','--radius',
+    '--me-e1','--me-e2','--me-e3','--me-e4','--me-e5','--me-e6','--me-navy'].map(v=>v+':'+root.getPropertyValue(v)).join(';');
+  printWin.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>PLADECO Rengo — '+title+'</title>');
+  printWin.document.write('<style>:root{'+cssVars+'}body{font-family:Segoe UI,system-ui,sans-serif;background:#fff;color:#1a2332;padding:40px;max-width:900px;margin:0 auto}');
+  printWin.document.write('.sec-export-btn,.group-divider{display:none!important}');
+  printWin.document.write('table{width:100%;border-collapse:collapse}th,td{padding:8px 10px;border:1px solid #ddd;font-size:12px}');
+  printWin.document.write('.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}');
+  printWin.document.write('.kpi{border:1px solid #ddd;border-radius:8px;padding:16px}');
+  printWin.document.write('img{max-width:100%;height:auto}canvas{max-width:100%}');
+  printWin.document.write('@media print{body{padding:20px}@page{margin:15mm}}</style></head><body>');
+  printWin.document.write('<div style="border-bottom:3px solid #0c1f36;padding-bottom:12px;margin-bottom:24px">');
+  printWin.document.write('<div style="font-size:10px;color:#5c6b7f;text-transform:uppercase;letter-spacing:1px">PLADECO Rengo 2025-2035</div>');
+  printWin.document.write('<h1 style="font-size:22px;margin:4px 0 0">'+title+'</h1></div>');
+  printWin.document.write(sec.innerHTML);
+  printWin.document.write('</body></html>');
+  printWin.document.close();
+  setTimeout(function(){printWin.print();},500);
 }
 
 // ── SERVICE WORKER ──
