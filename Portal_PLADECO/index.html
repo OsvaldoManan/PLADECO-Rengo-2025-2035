@@ -1185,7 +1185,7 @@ body.dark .censo-mini .cm-bar{background:#243550}
 .censo-svc .cs-circle .cs-pct{font-size:18px;font-weight:800;z-index:1}
 .censo-svc .cs-name{font-size:12px;font-weight:700;color:var(--text);margin-top:4px}
 .censo-heatmap-wrap{overflow-x:auto;margin:10px 0}
-.censo-heatmap{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+.censo-heatmap{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
 .censo-heatmap th{background:var(--blue);color:#fff;padding:8px 10px;text-align:center;font-weight:700;font-size:11px;position:sticky;top:0}
 .censo-heatmap td{padding:6px 8px;text-align:center;font-weight:600;border-bottom:1px solid var(--border);font-size:11px}
 .censo-heatmap .hm-loc{text-align:left;font-weight:700;white-space:nowrap;font-size:12px}
@@ -8125,16 +8125,35 @@ function renderCensoHeatmap(){
     if(v<0.45) return dk?'rgba(239,68,68,.4)':'rgba(239,68,68,.3)';
     return dk?'rgba(185,28,28,.5)':'rgba(185,28,28,.4)';
   }
-  var html='<div class="censo-heatmap-wrap"><table class="censo-heatmap" role="grid" aria-label="Mapa de calor de vulnerabilidad territorial"><thead><tr><th scope="col">Localidad</th><th scope="col" title="Índice Compuesto de Priorización">ICP</th>';
+  var html='<div class="censo-heatmap-wrap"><table class="censo-heatmap" role="grid" aria-label="Mapa de calor de vulnerabilidad territorial"><thead><tr><th scope="col">Localidad</th><th scope="col" title="Población Censo 2024">Pob.</th><th scope="col" title="Índice Compuesto de Priorización">ICP</th>';
   for(var i=0;i<labels.length;i++) html+='<th>'+labels[i]+'</th>';
   html+='</tr></thead><tbody>';
   for(var j=0;j<sorted.length;j++){
     var d=sorted[j];
-    html+='<tr><td class="hm-loc">'+d.loc+'<span class="hm-area hm-'+d.area.toLowerCase()+'">'+d.area+'</span></td><td class="hm-icp" style="background:'+heatColor(d.icp)+';color:var(--text)" title="Riesgo '+heatLevel(d.icp)+'">'+d.icp.toFixed(3)+'</td>';
+    html+='<tr><td class="hm-loc">'+d.loc+'<span class="hm-area hm-'+d.area.toLowerCase()+'">'+d.area+'</span></td><td style="text-align:right;font-weight:700;color:var(--text);background:var(--card)">'+d.pob.toLocaleString('es-CL')+'</td><td class="hm-icp" style="background:'+heatColor(d.icp)+';color:var(--text)" title="Riesgo '+heatLevel(d.icp)+'">'+d.icp.toFixed(3)+'</td>';
     for(var k=0;k<dims.length;k++) html+='<td style="background:'+heatColor(d[dims[k]])+';color:var(--text)" title="Riesgo '+heatLevel(d[dims[k]])+'">'+d[dims[k]].toFixed(3)+'</td>';
     html+='</tr>';
   }
   html+='</tbody></table></div>';
+  html+='<div class="heatmap-legend-box" style="margin-top:18px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);font-size:12px;line-height:1.7;color:var(--text2)">';
+  html+='<strong style="color:var(--text);font-size:13px;display:block;margin-bottom:8px">📊 Descripción de Variables</strong>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 24px">';
+  html+='<div><strong style="color:var(--text)">Pob.</strong> — Población total de la localidad (Censo 2024)</div>';
+  html+='<div><strong style="color:var(--text)">ICP</strong> — Índice Compuesto de Priorización (promedio ponderado de las 6 dimensiones)</div>';
+  html+='<div><strong style="color:var(--text)">IVSH</strong> — Índice de Vulnerabilidad Sociohabitacional</div>';
+  html+='<div><strong style="color:var(--text)">IDDC</strong> — Índice de Dependencia Demográfica Comunal</div>';
+  html+='<div><strong style="color:var(--text)">IBDT</strong> — Índice de Brecha Digital Territorial</div>';
+  html+='<div><strong style="color:var(--text)">IVFT</strong> — Índice de Vulnerabilidad Físico-Territorial</div>';
+  html+='<div><strong style="color:var(--text)">ICHT</strong> — Índice de Carencia Habitacional Territorial</div>';
+  html+='<div><strong style="color:var(--text)">IPSB</strong> — Índice de Precariedad en Servicios Básicos</div>';
+  html+='</div>';
+  html+='<div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center"><strong style="color:var(--text);margin-right:4px">Escala de riesgo:</strong>';
+  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(34,197,94,.3)"></span> Bajo (&lt;0.15)</span>';
+  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(234,179,8,.3)"></span> Moderado (0.15–0.25)</span>';
+  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(249,115,22,.35)"></span> Medio (0.25–0.35)</span>';
+  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(239,68,68,.35)"></span> Alto (0.35–0.45)</span>';
+  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(185,28,28,.45)"></span> Crítico (&gt;0.45)</span>';
+  html+='</div></div>';
   document.getElementById('censoHeatmap').innerHTML=html;
 }
 
