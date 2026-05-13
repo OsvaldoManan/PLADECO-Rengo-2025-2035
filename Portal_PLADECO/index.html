@@ -2100,7 +2100,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 
     <div class="sidebar-group">
       <div class="sidebar-group-title">Planificaci&#243;n Estrat&#233;gica</div>
-      <a href="#ejes"><span class="ico">&#127919;</span> 6 Ejes y 225 Pol&#237;ticas</a>
+      <a href="#ejes"><span class="ico">&#127919;</span> 6 Ejes Estrat&#233;gicos</a>
       <a href="#ods-sec"><span class="ico">&#127760;</span> Alineaci&#243;n ODS</a>
       <a href="#gestion"><span class="ico">&#128736;</span> Gesti&#243;n e Implementaci&#243;n</a>
       <a href="#argumentario"><span class="ico">&#128221;</span> Argumentario</a>
@@ -4953,37 +4953,17 @@ function renderIdentityChart(){
   },options:{responsive:true,maintainAspectRatio:false,scales:{y:{title:{display:true,text:'Respuestas'},grid:{color:getChartGridColor()}},x:{grid:{display:false}}},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8}}}});
 }
 
-// ── RENDER EJES ── (improved with action count badges + scroll-to from donut)
+// ── HIGHLIGHT EJE ROW (replaces old tab system) ──
 const ejeColors = EJES.map(e=>e.color);
-function renderEjes(){
-  const container = document.getElementById('eje-panels');
-  container.innerHTML = EJES.map((eje,i) => `
-    <div class="eje-panel ${i===0?'active':''}" id="eje-${i}">
-      <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
-        <div style="background:${eje.color};color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700">${eje.nOE} Objetivos</div>
-        <div style="background:${eje.color}22;color:${eje.color};padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700">${eje.nAcc} Acciones</div>
-        <div class="pill"><span class="dot" style="background:#22c55e"></span>Corto: ${PLAZOS.C[i]}</div>
-        <div class="pill"><span class="dot" style="background:#f59e0b"></span>Mediano: ${PLAZOS.M[i]}</div>
-        <div class="pill"><span class="dot" style="background:#ef4444"></span>Largo: ${PLAZOS.L[i]}</div>
-      </div>
-      ${eje.oes.map((oe,j) => `
-        <div class="eje-card" style="border-left-color:${eje.color}">
-          <h4 style="color:${eje.color}">${oe.code}: ${oe.title}</h4>
-          <div class="actions">
-            ${oe.actions.map(a => `<div class="action-item"><div>${a}</div></div>`).join('')}
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
-}
 function showEje(idx){
-  document.querySelectorAll('.eje-tab').forEach((t,i)=>{
-    t.classList.toggle('active',i===idx);
-    t.style.background = i===idx ? ejeColors[i] : '';
-    t.style.color = i===idx ? '#fff' : '';
+  /* Highlight the corresponding row in the ejes summary table */
+  const sec=document.getElementById('ejes');
+  if(!sec)return;
+  const rows=sec.querySelectorAll('tbody tr');
+  rows.forEach((r,i)=>{
+    if(i===idx){r.style.outline='3px solid '+ejeColors[i];r.style.outlineOffset='-1px';r.style.background=ejeColors[i]+'18';}
+    else{r.style.outline='';r.style.outlineOffset='';r.style.background='';}
   });
-  document.querySelectorAll('.eje-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
 }
 
 // ── RENDER UV TABLE (with sorting) ──
@@ -8289,7 +8269,7 @@ Chart.defaults.borderColor=getChartGridColor();
 // ═══ RENDER PIPELINE (3-tier deferred loading) ═══
 
 // TIER 1: Immediate — structural HTML + navigation (above-fold)
-renderEjes();renderUV();renderComisiones();renderDocs();renderDocsEnhanced();
+renderUV();renderComisiones();renderDocs();renderDocsEnhanced();
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
 renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
 renderTimelinePladeco();renderTimeline();renderEthnoTabs();
@@ -8777,13 +8757,13 @@ const CHATBOT_QA=[
   {keys:['matriz','estrategica','tabla','oe interno','oe imagen','acciones plan','red sna matriz'],sec:'matriz',cat:'pladeco',
    follow:['Ejes estratégicos','ODS','Red de Actores','Dashboard'],
    ans:'La **Matriz Estratégica Integrada** muestra toda la estructura del PLADECO en una tabla:\n\n📋 **Contenido:**\n• 6 Ejes Estratégicos\n• 27 OE Internos PLADECO (Matriz 2025-2035)\n• 32 OE Imagen Municipal (arquitectura institucional)\n• 225 Acciones con % de distribución\n• Alineación con 17 ODS\n\n🔗 **Red SNA:** visualización interactiva de las conexiones entre objetivos (27 vínculos estructurales + 21 transversales). Puedes filtrar por eje y arrastrar nodos.\n\nEncuéntrala justo debajo de "¿Qué es el PLADECO?"'},
-  {keys:['eje','estrateg','eje 1','eje 2','eje 3','eje 4','eje 5','eje 6'],sec:'ejes',cat:'pladeco',
+  {keys:['eje','estrateg','eje 1','eje 2','eje 3','eje 4','eje 5','eje 6'],sec:'matriz',cat:'pladeco',
    follow:['Metas 2035','ODS','Financiamiento','Semáforo'],
    ans:null},
-  {keys:['seguridad','delito','droga','crimen','insegur','narco','robo'],sec:'ejes',cat:'pladeco',
+  {keys:['seguridad','delito','droga','crimen','insegur','narco','robo'],sec:'matriz',cat:'pladeco',
    follow:['Ejes estratégicos','Metas 2035','Encuesta ciudadana','NNA'],
    ans:'**Seguridad ciudadana en Rengo:**\n\n🔴 **Prioridad N°1** para el 70% de los ciudadanos encuestados.\n\n📊 **Tendencias 20 años (2005-2024):**\n• Delitos contra la vida: +126% (599 → 1.351 casos)\n• Delitos de drogas: **+440%** (15 → 81 casos)\n• Armas: +308% (13 → 53 casos)\n• Robos: +107% (95 → 197 casos)\n\n👥 **Víctimas y victimarios:**\n• Mujeres: 55,4% de las víctimas totales\n• Adultos mayores víctimas: **+554%** (13 → 85)\n• Adolescentes infractores (14-17): +464% (14 → 79)\n• VIF: 608 casos anuales (+27%); 77,9% víctimas mujeres\n\n🎥 Cámaras: 80 instaladas (de 8 en 2012 = +900%)\n📌 Tasa delictual regional: 52/100.000 (2° más baja del país).'},
-  {keys:['salud','hospital','consultorio','cesfam','posta'],sec:'ejes',cat:'pladeco',
+  {keys:['salud','hospital','consultorio','cesfam','posta'],sec:'matriz',cat:'pladeco',
    follow:['Composición etaria','Discapacidad','Metas 2035','Servicios básicos'],
    ans:'**Salud en Rengo:**\n\n🏥 **Red de atención primaria:**\n• 3 CESFAM + 1 SAR + 1 SAPU + 5 postas rurales\n• Inscritos: **65.879** (87% de cobertura)\n• Consultas anuales: **91.606** (promedio regional: 43.894 = el doble)\n\n📊 **Indicadores destacados:**\n• ESPA preventivos: 4.535 (+152% sobre promedio regional)\n• Evaluaciones psicomotoras: 1.641 (+281% sobre promedio)\n• Mortalidad infantil: 11,4 por 1.000 nacidos vivos (sobre promedio nacional)\n• Discapacidad: 11,4% (7.256 personas)\n\n🏗️ **Hospital de Alta Complejidad:** $20.000M comprometidos por el Estado\n\n⚠️ **Brechas:**\n• 19,7% de la población es mayor de 60 años\n• Índice envejecimiento: 53,8 (2017) → 72,1 (2024) = **+34%**\n• Salud mental NNA: solo 28% con acceso a apoyo psicológico\n• ICVU Salud y Medioambiente: **Nivel Bajo** (dimensión más débil).'},
   {keys:['censo','ine','2024'],sec:'censo',cat:'censo',
@@ -8858,7 +8838,7 @@ const CHATBOT_QA=[
   {keys:['sueno','aspiracion','vision','futuro','que quieren'],sec:'suenos',cat:'participacion',
    follow:['Ejes estratégicos','Testimonios','Encuesta ciudadana','Metas 2035'],
    ans:'La sección **"Sueños de Rengo"** recoge las aspiraciones ciudadanas organizadas por eje:\n\n🏥 Salud de calidad y hospital de alta complejidad\n💼 Empleo juvenil y emprendimiento local\n🌳 Más áreas verdes y reciclaje efectivo\n🏗️ Conectividad rural y caminos pavimentados\n🛡️ Barrios seguros y libres de drogas\n🏛️ Municipio transparente y cercano\n\nEstas aspiraciones se traducen en las 225 políticas del plan.'},
-  {keys:['politica publica','politicas','accion','medida','programa'],sec:'ejes',cat:'pladeco',
+  {keys:['politica publica','politicas','accion','medida','programa'],sec:'matriz',cat:'pladeco',
    follow:['Ejes estratégicos','Financiamiento','Metas 2035','ODS'],
    ans:null},
   {keys:['dashboard','kpi','resumen','cifras','datos clave','estadistica'],sec:'dashboard',cat:'censo',
@@ -8867,16 +8847,16 @@ const CHATBOT_QA=[
   {keys:['icvu','calidad de vida','indice calidad','ranking urbano','calidad urbana'],sec:'graficos',cat:'territorial',
    follow:['Gestión financiera','Empresas','Salud','Brecha urbano-rural'],
    ans:'**Índice de Calidad de Vida Urbana (ICVU) — Rengo:**\n\nRengo mejoró de **Nivel Bajo (2015) a Medio Alto (2025)**, una de solo 2 ciudades intermedias en Chile que lograron este avance (de 29 ciudades).\n\n📊 **Dimensiones ICVU 2024:**\n• 🟢 Condiciones laborales: **Alto**\n• 🟢 Ambiente de negocios: **Alto**\n• 🟡 Conectividad y movilidad: **Medio Alto**\n• 🟡 Condiciones socioculturales: **Medio Alto**\n• 🟠 Vivienda y entorno: **Medio Bajo**\n• 🔴 Salud y medioambiente: **Bajo**\n\nRengo y Angol son las únicas ciudades intermedias con nivel Alto en laborales Y negocios simultáneamente.'},
-  {keys:['empresa','negocio','emprendimiento','pyme','microempresa','comercio','industria','manufactura','sii'],sec:'ejes',cat:'censo',
+  {keys:['empresa','negocio','emprendimiento','pyme','microempresa','comercio','industria','manufactura','sii'],sec:'matriz',cat:'censo',
    follow:['Empleo','ICVU','Metas 2035','FODA'],
    ans:'**Tejido empresarial de Rengo (SII 2023):**\n\n• Total empresas: **4.829** — 1° en Región de O\'Higgins\n• Supera a Rancagua (4.138 empresas)\n• Microempresas (0-9 trab.): 78,3%\n• Trabajadores dependientes: 26.625\n\n📊 **Sectores líderes regionales:**\n• Manufactura: 953 unidades (21%) — 1° regional (+256%)\n• Agricultura: 842 unidades (18,5%)\n• Comercio: 834 unidades (18,4%) — 1° regional (+337%)\n• Salud: 543 unidades — 1° regional (+510%)\n• Construcción: 1° regional (+303%)\n\n⚠️ Desafío: 57% del empleo es estacional y solo 5 proyectos de turismo en el BIP (0,4% del total).'},
-  {keys:['clima','cambio climatico','paccc','emisiones','carbono','calentamiento','sustentabilidad'],sec:'ejes',cat:'pladeco',
+  {keys:['clima','cambio climatico','paccc','emisiones','carbono','calentamiento','sustentabilidad'],sec:'matriz',cat:'pladeco',
    follow:['Parque solar','Agua y sequía','Áreas verdes','FODA'],
    ans:'**Plan de Acción Comunal de Cambio Climático (PACCC):**\n\nRengo está en el **top 6,4% nacional** (22 de 345 comunas con PACCC).\n\n🌡️ **6 amenazas climáticas:**\n1. Estrés hídrico (megasequía 20 años)\n2. Incendios forestales\n3. Olas de calor\n4. Precipitaciones extremas (10 inundaciones en 4 años)\n5. Pérdida de biodiversidad\n6. Erosión (36,41% de la superficie)\n\n📊 **Datos ambientales:**\n• Bosque nativo perdido: 145 ha (2001-2021)\n• Humedales: 439 ha\n• 35,3% hogares usa leña como calefacción\n• Emisiones estacionarias: 67,46 ktCO2e\n\n⚠️ Brecha crítica: PACCC sin presupuesto asignado ni articulación con PLADECO.'},
-  {keys:['vif','violencia intrafamiliar','violencia domestica','genero','femicidio','maltrato'],sec:'ejes',cat:'censo',
+  {keys:['vif','violencia intrafamiliar','violencia domestica','genero','femicidio','maltrato'],sec:'matriz',cat:'censo',
    follow:['Seguridad','NNA','Salud mental','FODA'],
    ans:'**Violencia Intrafamiliar en Rengo:**\n\n• Casos VIF: **608 anuales** (+27%)\n• Víctimas mujeres: 77,9%\n• Solo 18-28% de las víctimas denuncia\n• Víctimas adulto mayor: +223%\n• Menores afectados: 36 casos directos\n• Rengo: 12,7% de los casos provinciales\n• Agresores 18-29 años: 51,9%\n• Tasa VIF: 729,6 por 100.000 hab\n\n🔴 **Dato crítico:** 52,4% de educadoras identifica violencia psicológica **normalizada** entre cuidadores.\n\n• 58,7% de padres/madres carece de herramientas parentales adecuadas\n• 1.182 denuncias VIF en 2024 (total).'},
-  {keys:['deporte','club deportivo','futbol','natacion','esgrima','piscina','cancha','gimnasio'],sec:'ejes',cat:'participacion',
+  {keys:['deporte','club deportivo','futbol','natacion','esgrima','piscina','cancha','gimnasio'],sec:'matriz',cat:'participacion',
    follow:['NNA','Áreas verdes','Infraestructura','FODA'],
    ans:'**Diagnóstico Clubes Deportivos (2025):**\n\n⚽ **4 clubes diagnosticados:**\n• Club Natación (21 años, 60 atletas) — viaja a Rancagua por falta de piscina\n• Nacional de Rosario (114 años, ~500 activos) — sin sede propia\n• Real Juventud (fútbol) — déficit de iluminación y seguridad\n• Club de Esgrima (<1 año, 11 NNA) — Gimnasio Municipal\n\n🔴 **Brechas:**\n• 3 de 4 clubes sin sede propia\n• 0 piscinas temperadas comunales\n• Solo 1 de 4 tiene planificación anual\n• 0,9 espacios deportivos por 1.000 hab (meta: 2,2)\n\n📌 Demanda N°1: piscina temperada comunal.\n📌 Actividades preferidas NNA: deportes 53,8%.'},
   {keys:['finanza','gestion financiera','patrimonio','transparencia','cplt','sinim','autonomia','deuda'],sec:'semaforo',cat:'pladeco',
@@ -8885,19 +8865,19 @@ const CHATBOT_QA=[
   {keys:['desigualdad territorial','gini','bip','inversion territorial','equidad','concentracion'],sec:'desigualdad',cat:'territorial',
    follow:['Brecha urbano-rural','Localidad más vulnerable','Gestión financiera','Metas 2035'],
    ans:'**Desigualdad Territorial en Inversión (BIP 1997-2025):**\n\n📊 **Índices de concentración:**\n• Gini inversión per cápita: **0,741** (muy alta)\n• Gini proyectos/localidad: 0,541\n• Top 3 localidades: 49,2% de inversión\n• Top 5 localidades: 67,1%\n\n🔴 **10 localidades SIN proyectos BIP:**\nRengo Centro, Norte, Sur, Oriente, Poniente, Rosario Poniente, El Rodeo, Naicura, San Jorge, Santa Isabel\n\n📈 **Ejecución:**\n• 1.182 registros, 420 iniciativas, $1.101 MM\n• Materialización: 30,7% (vs 49,4% en 2006-2013)\n• Brecha: $349 MM no ejecutados\n• Solo 0,3% son programas (vs proyectos) = subdesarrollo programático\n\nMeta 2035: Gini de 0,741 → 0,5.'},
-  {keys:['area verde','parque','plaza','arbol','vegetacion','ciclovia','bicicleta','espacio publico'],sec:'ejes',cat:'territorial',
+  {keys:['area verde','parque','plaza','arbol','vegetacion','ciclovia','bicicleta','espacio publico'],sec:'matriz',cat:'territorial',
    follow:['Cambio climático','Deportes','Infraestructura','Metas 2035'],
    ans:'**Áreas Verdes y Espacios Públicos:**\n\n• Áreas verdes: **1,96 m²/hab** (vs 9-10 m²/hab OMS)\n• Superficie mantenida: 129.103 m² (4° regional)\n• Cobertura vegetal urbana: 13,1% (rural: 82%)\n• Ciclovías: **0 km** (brecha total)\n\n🔴 Brecha de **7 m²/hab** respecto al estándar OMS.\n\n📊 **NNA y espacios públicos:**\n• 61,9% de NNA usa plazas y parques\n• Calificación: 2,9/5\n• 61,9% se siente inseguro en calle/barrio\n\n📈 **Metas PLADECO 2035:**\n• Áreas verdes: 3,2 → 9,0 m²/hab\n• Reciclaje domiciliario: 4,5% → 35%'},
-  {keys:['sequia','recurso hidrico','riego','embalse','rio claro','crisis hidrica'],sec:'ejes',cat:'territorial',
+  {keys:['sequia','recurso hidrico','riego','embalse','rio claro','crisis hidrica'],sec:'matriz',cat:'territorial',
    follow:['Cambio climático','Servicios básicos','Brecha urbano-rural','FODA'],
    ans:'**Crisis Hídrica en Rengo:**\n\n💧 **Megasequía:**\n• 20 años de sequía declarada\n• 6 decretos de escasez hídrica desde 2006\n• Producción agrícola: **-30%**\n• 800 empresas agrícolas afectadas\n\n🚰 **Cobertura de agua:**\n• Red pública: 93,1%\n• 4.500 personas sin acceso formal\n• Alcantarillado rural: 51,4% (vs 82,3% urbano = 30,9 pp brecha)\n• 18,2% hogares rurales con pozo negro\n\n🏗️ **Infraestructura:**\n• Río Claro: fuente principal (nace a 1.553 msnm)\n• Junta de Vigilancia: 74 años, 1.200 regantes\n• Proyecto Embalse El Bollenar (oportunidad clave)\n\nMeta 2035: APR rural → 98% cobertura.'},
   {keys:['salud mental','psicolog','depresion','ansiedad','bienestar emocional','suicidio'],sec:'nna',cat:'censo',
    follow:['NNA','VIF','Educación','Metas 2035'],
    ans:'**Salud Mental NNA en Rengo (4.036 encuestados):**\n\n🔴 **Datos críticos:**\n• **42% reporta ansiedad o depresión**\n• Solo 28% tiene acceso a apoyo psicológico\n• **72% sin atención en salud mental**\n• Figura materna: primera opción de ayuda (39,8%)\n• 25,5% sin información sobre salud mental\n\n📊 **Violencia asociada:**\n• 76% vio o vivió violencia escolar\n• Bullying: 31,5% | Ciberacoso: 18,2%\n• VIF en NNA: 12,4%\n• Discriminación: 30% en escuela (causa: apariencia física 27,8%)\n\n⚠️ **Consumo de sustancias (NNA):**\n• 31,5% ha consumido alguna sustancia\n• Alcohol: 12,8% | Cannabis: 5,3% | Clonazepam: 1,9% | Cocaína: 1%\n\nMeta 2035: acceso salud mental NNA de 28% → 80%.'},
-  {keys:['solar','energia','renovable','panel','fotovoltaico','parque solar','huella carbono'],sec:'ejes',cat:'pladeco',
+  {keys:['solar','energia','renovable','panel','fotovoltaico','parque solar','huella carbono'],sec:'matriz',cat:'pladeco',
    follow:['Cambio climático','Gestión financiera','FODA','Metas 2035'],
    ans:'**Parque Solar de Rengo:**\n\n☀️ **Infraestructura:**\n• 9.000+ paneles bifaciales\n• Potencia pico: 8,09 MWp\n• Generación: **17 GWh/año**\n• Emisiones evitadas: **4.890 tCO2/año**\n\nRengo es pionero en energía renovable municipal y referente regional en transición energética.\n\n📊 **Contexto:**\n• Emisiones estacionarias comunales: 67,46 ktCO2e\n• Transporte: 2° sector emisor en Cachapoal\n• PACCC incluye lineamiento de eficiencia energética\n• Solo 6,4% de las comunas del país tiene PACCC aprobado.'},
-  {keys:['transporte','metrotren','ruta 5','bus','micro','movilidad','camino rural'],sec:'ejes',cat:'territorial',
+  {keys:['transporte','metrotren','ruta 5','bus','micro','movilidad','camino rural'],sec:'matriz',cat:'territorial',
    follow:['Infraestructura','Brecha urbano-rural','ICVU','Metas 2035'],
    ans:'**Transporte y Movilidad en Rengo:**\n\n🚂 **Conectividad estratégica:**\n• Metrotren: conexión con Rancagua y Santiago\n• Ruta 5 Sur: acceso directo\n• ICVU Conectividad: **Nivel Medio Alto**\n\n🔴 **Brechas:**\n• Transporte rural deficitario\n• 0 ciclovías en toda la comuna\n• Caminos rurales pavimentados: 45 km\n\n📊 **Inversión BIP en transporte:**\n• 20,7% de proyectos BIP = 1° sector\n• Sector rural ejecuta más rápido: 54,2% vs 38,3% urbano\n\n📈 **Metas 2035:**\n• Caminos rurales: 45 → 120 km\n• Trámites digitales: 22% → 85%\n• Electromovilidad en agenda PACCC.'},
   {keys:['institucional','ley karin','integridad','codigo etica','protocolo','cosoc','contraloria','cgr'],sec:'semaforo',cat:'pladeco',
