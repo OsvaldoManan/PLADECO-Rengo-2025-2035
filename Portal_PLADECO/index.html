@@ -209,13 +209,10 @@ canvas{display:block;background:var(--card);border-radius:6px}
 .kpi .kpi-bar{height:6px;background:var(--border);border-radius:3px;margin-top:10px;overflow:hidden}
 .kpi .kpi-bar-fill{height:100%;border-radius:3px;transition:width .8s ease}
 
-/* ── Ejes tabs ── */
-.eje-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
-.eje-tab{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
-.eje-tab:hover{border-color:currentColor;color:var(--text)}
-.eje-tab.active{color:#fff;border-color:transparent}
-.eje-panel{display:none;animation:fadeIn .3s}
-.eje-panel.active{display:block}
+/* ── Group dividers between thematic groups ── */
+.group-divider{display:flex;align-items:center;gap:14px;margin:48px 0 28px;padding:0 4px}
+.group-divider::before,.group-divider::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.group-divider-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);white-space:nowrap;padding:6px 16px;border-radius:20px;background:var(--card);border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 .eje-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px;border-left:5px solid}
@@ -431,7 +428,7 @@ body.dark .uv-table th{background:#0f172a}
 body.dark .uv-table tfoot td{background:#0f172a}
 body.dark .action-item{background:#0f172a;border-color:#334155}
 body.dark .foda-card ul li{border-color:#334155}
-body.dark .eje-tab{border-color:#334155}
+body.dark .group-divider-label{background:var(--card);border-color:#334155}
 body.dark .gallery-item img{opacity:.92}
 body.dark .foda-controls input{background:var(--card);color:var(--text);border-color:#334155}
 body.dark .footer{background:linear-gradient(135deg,#050d18 0%,#0a1628 40%,#0f1e3a 100%)}
@@ -859,7 +856,7 @@ h1,h2,h3,h4,.kpi-value,.hero-stat .num{-webkit-font-smoothing:antialiased;-moz-o
 /* ── Card Shine (removed) ── */
 
 /* ── Eje tab active glow ── */
-.eje-tab.active{box-shadow:0 4px 16px rgba(0,0,0,.15)}
+/* (removed: .eje-tab dead CSS) */
 
 /* ── Footer separator (now built into grid) ── */
 
@@ -1507,7 +1504,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offs
 
 /* ── Mobile Touch Targets ── */
 @media(max-width:900px){
-  .eje-tab,.ana-tab,.map-ctrl-btn,.com-f-btn,.foda-controls .fbtn,.ethno-tab{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+  .ana-tab,.map-ctrl-btn,.com-f-btn,.foda-controls .fbtn,.ethno-tab{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
   .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .hero-stat{min-width:unset;padding:14px 16px}
   .section-breadcrumb{font-size:10px;padding:4px 12px}
@@ -1757,7 +1754,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   body{font-size:11px;padding:0!important;margin:0!important}
-  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.update-badge,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox{display:none!important}
+  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.update-badge,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox,.group-divider{display:none!important}
   .main{margin-left:0!important}
   section{page-break-inside:avoid;padding:20px 16px!important;max-width:100%!important}
   section.reveal,.hero-stat,.kpi,.equipo-card,.testimonio-card,.compromiso-item,.galeria-card,.timeline-item{opacity:1!important;transform:none!important}
@@ -2927,6 +2924,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> INE, Censo Nacional de Poblaci&oacute;n y Vivienda 2024 &bull; CASEN 2022, Ministerio de Desarrollo Social &bull; CPLT, Ranking de Transparencia Municipal 2024 &bull; MINEDUC, Estad&iacute;sticas de Educaci&oacute;n 2023 &bull; SII, Registro de Empresas 2024 &bull; Encuesta Ciudadana PLADECO Rengo 2025 (n=119) &bull; Subsecretar&iacute;a de Prevenci&oacute;n del Delito, Estad&iacute;sticas 2023</div>
 </section>
 
+<!-- ═══ GROUP: DATOS CENSALES 2024 ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#128202; Datos Censales 2024</span></div>
+
 <!-- ═══ CENSO 2024 ═══ -->
 <section id="censo">
   <div class="sec-header">
@@ -3036,6 +3036,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   </div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> INE, Censo Nacional de Poblaci&oacute;n y Vivienda 2024 — Resultados oficiales comuna de Rengo &bull; &Iacute;ndices de vulnerabilidad: elaboraci&oacute;n propia con datos INE 2024 (servicios b&aacute;sicos, capital humano, brecha digital, precariedad habitacional) &bull; FONASA, Cobertura de Salud 2024</div>
 </section>
+
+<!-- ═══ GROUP: DIAGNÓSTICO TERRITORIAL ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#128506; Diagn&oacute;stico Territorial</span></div>
 
 <!-- ═══ DATOS CLAVE EN VIVO ═══ -->
 <section id="datos-vivo" class="reveal">
@@ -3226,6 +3229,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   </div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Encuesta NNA PLADECO Rengo 2025 (n=4.036) aplicada en 27 establecimientos educativos de la comuna &bull; Instrumento validado por equipo t&eacute;cnico PLADECO &bull; SENAME, Estad&iacute;sticas Regionales 2023</div>
 </section>
+
+<!-- ═══ GROUP: PARTICIPACIÓN CIUDADANA ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#128227; Participaci&oacute;n Ciudadana</span></div>
 
 <!-- ═══ VOZ CIUDADANA ═══ -->
 <section id="voz">
@@ -3494,6 +3500,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Testimonios recogidos durante el proceso participativo PLADECO 2025 — Talleres comunitarios y entrevistas en terreno</div>
 </section>
 
+<!-- ═══ GROUP: PLANIFICACIÓN ESTRATÉGICA ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#127919; Planificaci&oacute;n Estrat&eacute;gica</span></div>
+
 <!-- ═══ EJES ESTRATÉGICOS (tabla resumen) ═══ -->
 <section id="ejes" class="me-section">
   <div class="sec-header">
@@ -3706,7 +3715,8 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Resumen Ejecutivo PLADECO Rengo 2025-2035 &bull; S&iacute;ntesis del proceso participativo, diagn&oacute;stico y formulaci&oacute;n estrat&eacute;gica</div>
 </section>
 
-<!-- timeline section merged into #cronograma -->
+<!-- ═══ GROUP: ANÁLISIS INSTITUCIONAL ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#128101; An&aacute;lisis Institucional</span></div>
 
 <!-- ═══ EQUIPO TÉCNICO ═══ -->
 <section id="equipo" class="reveal">
@@ -3846,6 +3856,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="com-timeline" id="com-timeline"></div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Proceso participativo PLADECO 2025 — Comisiones t&eacute;cnicas de trabajo por eje estrat&eacute;gico &bull; Actas de sesiones municipales</div>
 </section>
+
+<!-- ═══ GROUP: SEGUIMIENTO ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#128200; Seguimiento y Evaluaci&oacute;n</span></div>
 
 <!-- ═══ TIMELINE PLADECO (unified) ═══ -->
 <section id="cronograma" class="reveal">
@@ -4130,6 +4143,9 @@ body.sidebar-collapsed .sidebar-reading{display:none}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Diagn&oacute;stico PLADECO Rengo 2025 &bull; INE, Censo 2024 &bull; CASEN 2022 &bull; MINEDUC &bull; SII &bull; BIP MIDESO &bull; Encuestas ciudadanas y NNA &bull; Elaboraci&oacute;n propia equipo PLADECO</div>
 </section>
 
+<!-- ═══ GROUP: PROCESO Y RECURSOS ═══ -->
+<div class="group-divider"><span class="group-divider-label">&#128193; Proceso y Recursos</span></div>
+
 <!-- ═══ GALERÍA FOTOGRÁFICA ═══ -->
 <section id="galeria" class="reveal">
   <div class="sec-header">
@@ -4228,10 +4244,11 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v19.0</span>
+  <span class="ub-ver">v20.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v20.0</strong> <span class="ub-date">12 May 2026</span><br>Separadores visuales entre 8 grupos tem&aacute;ticos, tabla resumen de ejes estilo Matriz, 10 Direcciones Municipales en Equipo T&eacute;cnico, limpieza CSS muerto, fix donut chart + chatbot FAQ</div>
     <div class="ub-entry"><strong>v19.0</strong> <span class="ub-date">12 May 2026</span><br>Reordenamiento l&oacute;gico de contenido: 37 secciones organizadas en 8 grupos tem&aacute;ticos alineados con la navegaci&oacute;n lateral (Introducci&oacute;n → Censo → Diagn&oacute;stico → Participaci&oacute;n → Planificaci&oacute;n → An&aacute;lisis → Seguimiento → Recursos)</div>
     <div class="ub-entry"><strong>v18.0</strong> <span class="ub-date">12 May 2026</span><br>Matriz Estrat&eacute;gica Integrada (6 ejes, 27 OE, 225 acciones) con Red SNA interactiva D3.js integrada al portal</div>
     <div class="ub-entry"><strong>v17.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a UX: descripciones accesibles para p&uacute;blico general, gr&aacute;ficos con explicaciones en texto simple, encuesta con detalle por &aacute;rea</div>
@@ -9685,9 +9702,13 @@ document.addEventListener('keydown',e=>{
 // ══════════════════════════════════════════════════════
 const ejeToKPI={0:[0,1,2,3],1:[4,5],2:[6,7],3:[8,9],4:[10,11],5:[12,13,14,15]};
 function initFiltrosCruzados(){
-  document.querySelectorAll('.eje-tab').forEach((tab,idx)=>{
-    const origClick=tab.getAttribute('onclick');
-    tab.addEventListener('click',()=>{
+  /* Ejes table rows → highlight dashboard KPIs */
+  const sec=document.getElementById('ejes');
+  if(!sec)return;
+  sec.querySelectorAll('tbody tr').forEach((row,idx)=>{
+    row.style.cursor='pointer';
+    row.addEventListener('click',()=>{
+      showEje(idx);
       const kpis=document.querySelectorAll('#dashboard .kpi');
       kpis.forEach(k=>k.classList.remove('pulse-highlight'));
       const indices=ejeToKPI[idx]||[];
