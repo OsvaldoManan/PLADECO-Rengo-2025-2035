@@ -33,6 +33,7 @@
   --sidebar-w:260px;
   --green:#2d9a4d;--green-light:#48c76e;--orange:#f5921d;--orange-light:#fdb94d;
   --blue:#1a3d8f;--blue-light:#2d5dcc;
+  --muted:#6b7c94;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease}
@@ -171,7 +172,7 @@ body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 
 /* ── Main ── */
 .main{margin-left:var(--sidebar-w);min-height:100vh;transition:margin-left .3s ease}
-section{padding:48px 40px;max-width:1440px;margin:0 auto;content-visibility:auto;contain-intrinsic-size:auto 600px}
+section{padding:48px 40px;max-width:1440px;margin:0 auto}
 canvas{display:block;background:var(--card);border-radius:6px}
 
 /* ── Hero ── */
@@ -421,10 +422,12 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .dark-toggle:hover{transform:scale(1.1)}
 .dark-toggle.spin{animation:darkSpin .5s ease}
 @keyframes darkSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
-body.dark{--bg:#0b1624;--card:#132035;--text:#e2e8f0;--text2:#94a3b8;--text-secondary:#8b9bb5;--border:#243550;--shadow:0 2px 16px rgba(0,0,0,.4);--accent:#48c76e;--green:#48c76e;--green-light:#6ddb8e;--orange:#fdb94d;--blue:#4d7de6}
+body.dark{--bg:#0b1624;--card:#132035;--text:#e2e8f0;--text2:#94a3b8;--text-secondary:#8b9bb5;--border:#243550;--shadow:0 2px 16px rgba(0,0,0,.4);--accent:#48c76e;--green:#48c76e;--green-light:#6ddb8e;--orange:#fdb94d;--blue:#4d7de6;--muted:#8b9bb5}
 body.dark .sidebar{background:#0c0c1d}
 body.dark .hero{background:linear-gradient(135deg,#0c0c1d 0%,#1a1a3e 50%,#2a0a5a 100%)}
 body.dark .uv-table th{background:#0f172a}
+body.dark .viz-card h3{background:linear-gradient(135deg,#e2e8f0,#94a3b8);-webkit-background-clip:text;background-clip:text}
+body.dark .mvv-header h2 span{background:linear-gradient(135deg,#6ddb8e,#4d7de6);-webkit-background-clip:text;background-clip:text}
 body.dark .uv-table tfoot td{background:#0f172a}
 body.dark .action-item{background:#0f172a;border-color:#334155}
 body.dark .foda-card ul li{border-color:#334155}
@@ -856,7 +859,7 @@ section.reveal.revealed{opacity:1;transform:translateY(0)}
 .viz-card h3{background:linear-gradient(135deg,var(--text),var(--primary-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
 /* ── Glassmorphism Cards ── */
-.kpi{background:linear-gradient(135deg,var(--card) 0%,rgba(255,255,255,.92) 100%);backdrop-filter:blur(4px)}
+.kpi{background:linear-gradient(135deg,var(--card) 0%,rgba(255,255,255,.92) 100%)}
 .kpi::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle at top right,rgba(45,154,77,.06),transparent 70%);pointer-events:none}
 .kpi:hover::after{background:radial-gradient(circle at top right,rgba(45,154,77,.12),transparent 70%)}
 
@@ -1014,7 +1017,6 @@ body.dark .doc-card-enhanced .doc-btn:hover{background:var(--accent)}
 .countdown-card .cd-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light));border-radius:3px;width:0%;transition:width 1.5s ease}
 
 /* ── F6: Share Button ── */
-.sec-header{position:relative}
 .share-btn{position:absolute;right:0;top:0;background:none;border:2px solid var(--border);border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer;color:var(--text2);transition:all .2s;line-height:1}
 .share-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(45,154,77,.08)}
 body.dark .share-btn{border-color:#334155;color:#94a3b8}
@@ -1566,7 +1568,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offs
 .kpi.revealed,.equipo-card.revealed,.testimonio-card.revealed,.compromiso-item.revealed,.galeria-card.revealed,.timeline-item.revealed{opacity:1;transform:translateY(0)}
 
 /* ── Focus visible (keyboard navigation) ── */
-*:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .sidebar-nav a:focus-visible{outline-color:var(--green-light);outline-offset:0}
 
 /* ── Source citations ── */
@@ -1600,7 +1601,6 @@ body.dark ::selection{background:rgba(72,199,110,.25)}
 
 /* ── Smooth section transitions ── */
 section{position:relative}
-.sec-header{position:relative}
 
 /* ── Card active/click feedback ── */
 .kpi:active,.viz-card:active,.stat-chip:active,.galeria-card:active,.doc-card-enhanced:active{transform:scale(.98)!important;transition:transform .1s}
@@ -1696,6 +1696,7 @@ section{position:relative}
   .kpi-grid{gap:10px}
   .kpi{padding:16px 18px}
   .kpi .kpi-value{font-size:24px}
+  .mascot-img,.hero-logo-wrap,.hero-orb,.hero-dots{animation:none!important}
   .arg-grid{grid-template-columns:1fr}
   .ineq-grid{grid-template-columns:1fr}
   .nna-grid{grid-template-columns:1fr 1fr}
@@ -2077,7 +2078,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
     <span>Comprimir</span>
   </button>
-  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="&#128269; Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal" onclick="openCmdPalette()"><span class="kbd-hint"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
+  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal" onclick="openCmdPalette()"><span class="kbd-hint"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
   <div class="sidebar-nav">
     <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
     <a href="#encuesta"><span class="ico">&#128203;</span> Encuesta Ciudadana</a>
@@ -2163,7 +2164,7 @@ body.sidebar-collapsed .sidebar-reading{display:none}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br>Versi&#243;n Mayo 2026</div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v22.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -2250,19 +2251,19 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 
 <!-- ═══ INFOGRAPHIC SUMMARY ═══ -->
 <div class="infographic-strip" id="infographic">
-  <div class="ig-item"><div class="ig-value">63.620</div><div class="ig-label">Habitantes Censo 2024</div></div>
+  <div class="ig-item"><div class="ig-value">9</div><div class="ig-label">Urbanas</div></div>
   <div class="ig-divider"></div>
-  <div class="ig-item"><div class="ig-value">6</div><div class="ig-label">Ejes Estrat&#233;gicos</div></div>
-  <div class="ig-divider"></div>
-  <div class="ig-item"><div class="ig-value">225</div><div class="ig-label">Pol&#237;ticas P&#250;blicas</div></div>
+  <div class="ig-item"><div class="ig-value">12</div><div class="ig-label">Rurales</div></div>
   <div class="ig-divider"></div>
   <div class="ig-item"><div class="ig-value">27</div><div class="ig-label">Objetivos Estrat&#233;gicos</div></div>
   <div class="ig-divider"></div>
-  <div class="ig-item"><div class="ig-value">21</div><div class="ig-label">Unidades Vecinales</div></div>
+  <div class="ig-item"><div class="ig-value">10</div><div class="ig-label">Direcciones Municipales</div></div>
   <div class="ig-divider"></div>
   <div class="ig-item"><div class="ig-value">15/17</div><div class="ig-label">ODS Alineados</div></div>
   <div class="ig-divider"></div>
-  <div class="ig-item"><div class="ig-value">10</div><div class="ig-label">A&#241;os de Planificaci&#243;n</div></div>
+  <div class="ig-item"><div class="ig-value">2025</div><div class="ig-label">Inicio del Plan</div></div>
+  <div class="ig-divider"></div>
+  <div class="ig-item"><div class="ig-value">2035</div><div class="ig-label">Horizonte Meta</div></div>
 </div>
 
 <!-- ═══ ENCUESTA CIUDADANA ═══ -->
@@ -4283,10 +4284,11 @@ body.sidebar-collapsed .sidebar-reading{display:none}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v21.0</span>
+  <span class="ub-ver">v22.0</span>
   &#218;ltima actualizaci&#243;n: 12 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v22.0</strong> <span class="ub-date">12 May 2026</span><br>Auditor&iacute;a UX: fix --muted CSS, dark mode gradient text, eliminar backdrop-filter GPU, unificar focus-visible, pausar animaciones en m&oacute;vil, teclado Escape/flechas en lightbox, scroll-progress fix, datos complementarios en infograf&iacute;a, limpiar CSS duplicado</div>
     <div class="ub-entry"><strong>v21.0</strong> <span class="ub-date">12 May 2026</span><br>Infograf&iacute;a resumen KPI, mini-encuesta integrada en secci&oacute;n Encuesta, indicador de grupo activo en sidebar, exportar secciones a PDF, accesibilidad mejorada (alt text, teclado, ARIA), fix fuente-info keydown</div>
     <div class="ub-entry"><strong>v20.0</strong> <span class="ub-date">12 May 2026</span><br>Separadores visuales entre 8 grupos tem&aacute;ticos, tabla resumen de ejes estilo Matriz, 10 Direcciones Municipales en Equipo T&eacute;cnico, limpieza CSS muerto, fix donut chart + chatbot FAQ</div>
     <div class="ub-entry"><strong>v19.0</strong> <span class="ub-date">12 May 2026</span><br>Reordenamiento l&oacute;gico de contenido: 37 secciones organizadas en 8 grupos tem&aacute;ticos alineados con la navegaci&oacute;n lateral (Introducci&oacute;n → Censo → Diagn&oacute;stico → Participaci&oacute;n → Planificaci&oacute;n → An&aacute;lisis → Seguimiento → Recursos)</div>
@@ -6970,6 +6972,18 @@ function closeLightbox(e){
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow='';
 }
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    var lb=document.getElementById('lightbox');
+    if(lb&&lb.classList.contains('open')){closeLightbox();return;}
+    var mv=document.getElementById('mvvViewer');
+    if(mv&&mv.classList.contains('open')){closeMvvViewer();return;}
+  }
+  if(document.getElementById('lightbox')?.classList.contains('open')){
+    if(e.key==='ArrowRight')navLightbox(1);
+    if(e.key==='ArrowLeft')navLightbox(-1);
+  }
+});
 function navLightbox(dir){
   lightboxIdx=(lightboxIdx+dir+GALERIA_FOTOS.length)%GALERIA_FOTOS.length;
   const img=document.getElementById('lightboxImg');
@@ -8444,6 +8458,8 @@ function dismissBanner(){
     banner.classList.add('dismissed');
     document.body.style.paddingTop='0';
     document.body.style.transition='padding-top .6s ease';
+    const sp=document.querySelector('.scroll-progress');
+    if(sp)sp.style.top='0';
   }
 }
 
