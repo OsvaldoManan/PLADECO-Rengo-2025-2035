@@ -1186,7 +1186,10 @@ body.dark .censo-mini .cm-bar{background:#243550}
 .censo-svc .cs-name{font-size:12px;font-weight:700;color:var(--text);margin-top:4px}
 .censo-heatmap-wrap{overflow-x:auto;margin:10px 0}
 .censo-heatmap{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
-.censo-heatmap th{background:var(--blue);color:#fff;padding:8px 10px;text-align:center;font-weight:700;font-size:11px;position:sticky;top:0}
+.censo-heatmap th{background:var(--blue);color:#fff;padding:8px 10px;text-align:center;font-weight:700;font-size:11px;position:sticky;top:0;cursor:pointer;user-select:none;white-space:nowrap;transition:background .2s}
+.censo-heatmap th:hover{background:#163a6e}
+.censo-heatmap th .sort-arrow{font-size:10px;margin-left:3px;opacity:.5;transition:opacity .2s}
+.censo-heatmap th.sorted .sort-arrow{opacity:1}
 .censo-heatmap td{padding:6px 8px;text-align:center;font-weight:600;border-bottom:1px solid var(--border);font-size:11px}
 .censo-heatmap .hm-loc{text-align:left;font-weight:700;white-space:nowrap;font-size:12px}
 .censo-heatmap .hm-area{display:inline-block;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:6px;vertical-align:middle}
@@ -1195,6 +1198,7 @@ body.dark .censo-mini .cm-bar{background:#243550}
 .censo-heatmap .hm-icp{font-weight:800}
 .censo-heatmap tbody tr:hover{background:rgba(59,130,246,.06)}
 body.dark .censo-heatmap th{background:#1e3a5f}
+body.dark .censo-heatmap th:hover{background:#264a73}
 body.dark .censo-heatmap td{border-bottom-color:#2d3748}
 body.dark .censo-heatmap tbody tr:hover{background:rgba(59,130,246,.12)}
 body.dark .censo-heatmap .hm-rural{background:rgba(220,38,38,.2);color:#fca5a5}
@@ -8112,10 +8116,13 @@ function renderCensoBrechaUR(){
   new Chart(document.getElementById('chartCensoBrechaUR'),{type:'bar',data:{labels:b.nombres,datasets:[{label:'Urbano',data:b.urbano,backgroundColor:'rgba(59,130,246,.7)',borderColor:'#3b82f6',borderWidth:1,borderRadius:4,barPercentage:.4},{label:'Rural',data:b.rural,backgroundColor:'rgba(220,38,38,.7)',borderColor:'#dc2626',borderWidth:1,borderRadius:4,barPercentage:.4}]},options:{responsive:true,maintainAspectRatio:true,scales:{x:{ticks:{font:{size:9},maxRotation:30},grid:{display:false}},y:{min:0,max:0.55,ticks:{callback:v=>v.toFixed(2),font:{size:10}},grid:{color:'rgba(128,128,128,.1)'},title:{display:true,text:'Valor Índice',font:{size:11,weight:'bold'}}}},plugins:{legend:{position:'top',labels:{font:{size:11,weight:'bold'},padding:14}},tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(3)+' | Factor brecha: '+b.brecha_factor[ctx.dataIndex]+'x'}}}}});
 }
 
+var _hmSort={col:'icp',asc:false};
 function renderCensoHeatmap(){
-  var sorted=CENSO_VULNERABILIDAD.slice().sort(function(a,b){return b.icp-a.icp;}).slice(0,15);
+  var allDims=['pob','icp','ivsh','iddc','ibdt','ivft','icht_vul','ipsb'];
+  var colKeys=['loc','pob','icp','ivsh','iddc','ibdt','ivft','icht_vul','ipsb'];
+  var colLabels=['Localidad','Pob.','ICP','IVSH','IDDC','IBDT','IVFT','ICHT','IPSB'];
+  var colTitles=['Ordenar por localidad','Población Censo 2024','Índice Compuesto de Priorización','Índice Vulnerabilidad Sociohabitacional','Índice Dependencia Demográfica Comunal','Índice Brecha Digital Territorial','Índice Vulnerabilidad Físico-Territorial','Índice Carencia Habitacional Territorial','Índice Precariedad Servicios Básicos'];
   var dims=['ivsh','iddc','ibdt','ivft','icht_vul','ipsb'];
-  var labels=['IVSH','IDDC','IBDT','IVFT','ICHT','IPSB'];
   function heatLevel(v){return v<0.15?'bajo':v<0.25?'moderado':v<0.35?'medio':v<0.45?'alto':'crítico';}
   function heatColor(v){
     var dk=document.body.classList.contains('dark');
@@ -8125,9 +8132,23 @@ function renderCensoHeatmap(){
     if(v<0.45) return dk?'rgba(239,68,68,.4)':'rgba(239,68,68,.3)';
     return dk?'rgba(185,28,28,.5)':'rgba(185,28,28,.4)';
   }
-  var html='<div class="censo-heatmap-wrap"><table class="censo-heatmap" role="grid" aria-label="Mapa de calor de vulnerabilidad territorial"><thead><tr><th scope="col">Localidad</th><th scope="col" title="Población Censo 2024">Pob.</th><th scope="col" title="Índice Compuesto de Priorización">ICP</th>';
-  for(var i=0;i<labels.length;i++) html+='<th>'+labels[i]+'</th>';
+  /* Sort data */
+  var base=CENSO_VULNERABILIDAD.slice().sort(function(a,b){return b.icp-a.icp;}).slice(0,15);
+  var sc=_hmSort.col,sa=_hmSort.asc;
+  var sorted=base.slice().sort(function(a,b){
+    var va=a[sc],vb=b[sc];
+    if(typeof va==='string'){var r=va.localeCompare(vb,'es');return sa?r:-r;}
+    return sa?va-vb:vb-va;
+  });
+  /* Header */
+  var html='<div class="censo-heatmap-wrap"><table class="censo-heatmap" role="grid" aria-label="Mapa de calor de vulnerabilidad territorial"><thead><tr>';
+  for(var h=0;h<colKeys.length;h++){
+    var isActive=colKeys[h]===sc;
+    var arrow=isActive?(sa?' ▲':' ▼'):' ⇅';
+    html+='<th scope="col" title="'+colTitles[h]+'" data-sort="'+colKeys[h]+'"'+(isActive?' class="sorted"':'')+'>'+colLabels[h]+'<span class="sort-arrow">'+arrow+'</span></th>';
+  }
   html+='</tr></thead><tbody>';
+  /* Rows */
   for(var j=0;j<sorted.length;j++){
     var d=sorted[j];
     html+='<tr><td class="hm-loc">'+d.loc+'<span class="hm-area hm-'+d.area.toLowerCase()+'">'+d.area+'</span></td><td style="text-align:right;font-weight:700;color:var(--text);background:var(--card)">'+d.pob.toLocaleString('es-CL')+'</td><td class="hm-icp" style="background:'+heatColor(d.icp)+';color:var(--text)" title="Riesgo '+heatLevel(d.icp)+'">'+d.icp.toFixed(3)+'</td>';
@@ -8135,6 +8156,7 @@ function renderCensoHeatmap(){
     html+='</tr>';
   }
   html+='</tbody></table></div>';
+  /* Legend */
   html+='<div class="heatmap-legend-box" style="margin-top:18px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);font-size:12px;line-height:1.7;color:var(--text2)">';
   html+='<strong style="color:var(--text);font-size:13px;display:block;margin-bottom:8px">📊 Descripción de Variables</strong>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 24px">';
@@ -8153,8 +8175,20 @@ function renderCensoHeatmap(){
   html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(249,115,22,.35)"></span> Medio (0.25–0.35)</span>';
   html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(239,68,68,.35)"></span> Alto (0.35–0.45)</span>';
   html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(185,28,28,.45)"></span> Crítico (&gt;0.45)</span>';
-  html+='</div></div>';
-  document.getElementById('censoHeatmap').innerHTML=html;
+  html+='</div>';
+  html+='<p style="margin-top:10px;font-size:11px;color:var(--text2);opacity:.7">💡 Haz clic en cualquier encabezado de columna para ordenar la tabla.</p>';
+  html+='</div>';
+  var container=document.getElementById('censoHeatmap');
+  container.innerHTML=html;
+  /* Attach sort listeners */
+  container.querySelectorAll('.censo-heatmap th[data-sort]').forEach(function(th){
+    th.addEventListener('click',function(){
+      var key=this.getAttribute('data-sort');
+      if(_hmSort.col===key){_hmSort.asc=!_hmSort.asc;}
+      else{_hmSort.col=key;_hmSort.asc=(key==='loc');}
+      renderCensoHeatmap();
+    });
+  });
 }
 
 function renderCensoMapaVuln(){
