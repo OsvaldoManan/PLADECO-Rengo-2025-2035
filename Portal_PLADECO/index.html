@@ -372,6 +372,20 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .kpi-alert.amber{background:#fef3c7;color:#d97706}
 
 /* ── Viz Interactive ── */
+/* ═══ Tabs nativos Sociedad Civil ═══ */
+.sc-native-tabs{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:28px}
+.sc-tab-nav{display:flex;background:linear-gradient(135deg,#071d36 0%,#0c2a4a 60%,#0d3a26 100%);padding:0 6px;overflow-x:auto;border-bottom:2px solid rgba(45,154,77,.25);scrollbar-width:thin}
+.sc-tab-nav::-webkit-scrollbar{height:3px}
+.sc-tab-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px}
+.sc-tab-btn{flex-shrink:0;padding:13px 18px;background:none;border:none;color:rgba(255,255,255,.6);font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap;letter-spacing:.1px;display:inline-flex;align-items:center;gap:6px}
+.sc-tab-btn:hover{color:rgba(255,255,255,.92);background:rgba(255,255,255,.05)}
+.sc-tab-btn.active{color:#fff;border-bottom-color:#48c76e;background:rgba(45,154,77,.1);font-weight:700}
+.sc-tab-panel{display:none;animation:scTabFade .28s ease}
+.sc-tab-panel.active{display:block}
+@keyframes scTabFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+body.dark .sc-tab-nav{background:linear-gradient(135deg,#04101e 0%,#071a31 60%,#082617 100%)}
+@media(max-width:700px){.sc-tab-btn{padding:11px 12px;font-size:11.5px}}
+
 .viz-row{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
 .viz-card{background:var(--card);border-radius:var(--radius);padding:28px 28px 32px;box-shadow:var(--shadow);border:1px solid var(--border);transition:box-shadow .25s,transform .2s;position:relative;overflow:hidden}
 .viz-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--orange));border-radius:var(--radius) var(--radius) 0 0;opacity:0;transition:opacity .25s}
@@ -2281,7 +2295,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v29.7</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3428,10 +3442,9 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <!-- ═══ DIAGNÓSTICO SOCIEDAD CIVIL ═══ -->
 <section id="sociedad-civil" class="reveal">
   <div class="sec-header">
-    <span class="badge" style="background:rgba(139,26,26,.1);color:#8B1A1A">&#127760; Sociedad Civil &middot; Plataforma Integrada</span>
-    <h2>Diagn&#243;stico Sociedad Civil &middot; Plataforma Interactiva Completa</h2>
-    <p>An&#225;lisis completo de <strong>95 organizaciones</strong> de la sociedad civil de Rengo con <strong>5 an&#225;lisis interactivos</strong> integrados: <strong>Mapa territorial &middot; An&#225;lisis Cuantitativo &middot; Diagn&#243;stico por Actor (FODA) &middot; Cruce de Datos &middot; Red SNA</strong>. Proceso desarrollado entre septiembre 2024 y abril 2025. &middot; 472 participantes registrados.</p>
-    <a href="http://localhost:8765/" target="_blank" rel="noopener" class="sec-export-btn" style="display:inline-flex;align-items:center;gap:5px">&#8599; Abrir en ventana nueva</a>
+    <span class="badge" style="background:rgba(139,26,26,.1);color:#8B1A1A">&#127760; Sociedad Civil</span>
+    <h2>Diagn&#243;stico de la Sociedad Civil Organizada</h2>
+    <p>An&#225;lisis participativo de <strong>95 organizaciones</strong> con <strong>472 participantes</strong> de Rengo, integrado nativamente con cinco vistas anal&#237;ticas: <strong>Mapa territorial &middot; An&#225;lisis Cuantitativo &middot; FODA por Actor &middot; Cruce de Datos &middot; Red SNA de Articulaciones</strong>. Levantamiento entre septiembre 2024 y abril 2025.</p>
   </div>
 
   <!-- 6 KPIs principales -->
@@ -3474,34 +3487,89 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     </div>
   </div>
 
-  <!-- ═══ PLATAFORMA INTEGRADA · IFRAME CON 5 PESTAÑAS (al inicio) ═══ -->
-  <div style="background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:28px">
-    <!-- Barra de cabecera con badges de las 5 pestañas -->
-    <div style="background:linear-gradient(135deg,#071d36 0%,#0c2a4a 60%,#0d3a26 100%);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">&#127963;</div>
+  <!-- ═══ 4 ANÁLISIS INTEGRADOS NATIVAMENTE · TABS ═══ -->
+  <div class="sc-native-tabs">
+    <div class="sc-tab-nav" role="tablist">
+      <button class="sc-tab-btn active" onclick="switchSCTab('mapa',this)" role="tab" aria-selected="true">&#128205; Mapa Territorial</button>
+      <button class="sc-tab-btn" onclick="switchSCTab('analisis',this)" role="tab" aria-selected="false">&#128200; An&#225;lisis Cuantitativo</button>
+      <button class="sc-tab-btn" onclick="switchSCTab('foda',this)" role="tab" aria-selected="false">&#128269; FODA por Actor</button>
+      <button class="sc-tab-btn" onclick="switchSCTab('cruce',this)" role="tab" aria-selected="false">&#128203; Cruce de Datos</button>
+    </div>
+
+    <!-- PANEL 1: MAPA -->
+    <div class="sc-tab-panel active" id="sc-panel-mapa" role="tabpanel">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
         <div>
-          <div style="font-size:12.5px;font-weight:700;color:#fff;line-height:1.2">Plataforma Sociedad Civil &middot; 5 An&#225;lisis Interactivos</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.55);margin-top:2px">95 organizaciones &middot; 472 participantes &middot; Rengo 2024&#8211;2025</div>
+          <h3 style="margin:0;font-size:15px">&#128205; Mapa de Participaci&#243;n Territorial</h3>
+          <div class="viz-sub" style="margin-top:4px">89 organizaciones georreferenciadas &middot; Tama&#241;o del punto = asistentes &middot; Click para ver detalle</div>
+        </div>
+        <div id="mapSCFilters" style="display:flex;gap:6px;flex-wrap:wrap;max-width:680px;justify-content:flex-end"></div>
+      </div>
+      <div id="mapSC" style="width:100%;height:500px;background:#e2e8f0;position:relative;z-index:1"></div>
+      <div id="mapSCLegend" style="padding:12px 20px;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;border-top:1px solid var(--border);background:rgba(0,0,0,.02);align-items:center"></div>
+    </div>
+
+    <!-- PANEL 2: ANÁLISIS CUANTITATIVO -->
+    <div class="sc-tab-panel" id="sc-panel-analisis" style="padding:22px">
+      <div class="viz-row">
+        <div class="viz-card">
+          <h3>Distribuci&#243;n por tipo de organizaci&#243;n</h3>
+          <div class="viz-sub">12 categor&#237;as de actores convocados</div>
+          <div class="ods-bar-wrap" style="margin-top:14px" id="scDistBars"></div>
+        </div>
+        <div class="viz-card">
+          <h3>Cronolog&#237;a del proceso participativo</h3>
+          <div class="viz-sub">Intensidad mes a mes &middot; Peak en enero 2025 (38 reuniones)</div>
+          <div class="ods-bar-wrap" style="margin-top:14px" id="scCronoBars"></div>
         </div>
       </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap">
-        <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(45,154,77,.15);color:#48c76e;font-weight:700;border:1px solid rgba(45,154,77,.25)">&#128205; Mapa</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(26,61,143,.15);color:#6d9fff;font-weight:700;border:1px solid rgba(26,61,143,.25)">&#128200; An&#225;lisis</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(142,68,173,.15);color:#c39bd3;font-weight:700;border:1px solid rgba(142,68,173,.25)">&#128269; FODA</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(245,146,29,.15);color:#fdb94d;font-weight:700;border:1px solid rgba(245,146,29,.25)">&#128203; Cruce</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:3px 9px;border-radius:10px;background:rgba(124,58,237,.15);color:#a78bfa;font-weight:700;border:1px solid rgba(124,58,237,.25)">&#128268; Red SNA</span>
+      <div class="summary-pills" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+        <span class="pill"><span class="dot" style="background:#16a34a"></span> Externas (terreno) 61%</span>
+        <span class="pill"><span class="dot" style="background:#d4a017"></span> Municipales 39%</span>
+        <span class="pill"><span class="dot" style="background:#dc2626"></span> 8 meses continuos (Sep 2024 &ndash; Abr 2025)</span>
       </div>
     </div>
-    <!-- Iframe integrado (lazy-load via IntersectionObserver) -->
-    <iframe id="scIframe" src="about:blank"
-      data-src="http://localhost:8765/"
-      style="width:100%;height:1100px;border:none;display:block;background:#f5f6f8;border-top:2px solid rgba(45,154,77,.2)"
-      title="Plataforma Diagn&#243;stico Sociedad Civil Rengo 2024&#8211;2025"
-      loading="lazy"
-      allowfullscreen>
-      <p>Tu navegador no admite iframes. <a href="http://localhost:8765/">Accede directamente al portal.</a></p>
-    </iframe>
+
+    <!-- PANEL 3: FODA POR ACTOR -->
+    <div class="sc-tab-panel" id="sc-panel-foda" style="padding:22px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <div>
+          <h3 style="font-size:15px;color:var(--text);margin:0">FODA por Actor Social</h3>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">8 grupos actor analizados con entrevistas en profundidad y grupos focales &middot; 472 participantes</div>
+        </div>
+        <span class="pill" style="background:rgba(220,38,38,.08);color:#dc2626;border:1px solid rgba(220,38,38,.2)">An&#225;lisis Cualitativo</span>
+      </div>
+      <div id="scFodaGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(370px,1fr));gap:14px"></div>
+    </div>
+
+    <!-- PANEL 4: CRUCE DE DATOS -->
+    <div class="sc-tab-panel" id="sc-panel-cruce" style="padding:22px">
+      <div style="margin-bottom:16px">
+        <h3 style="font-size:15px;color:var(--text);margin:0">Cruce de Datos &middot; Integraci&#243;n multi-fuente</h3>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Organizaciones con participaci&#243;n territorial <strong>y</strong> entrevista cualitativa registrada &middot; 20 registros cruzados</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:18px">
+        <div style="background:linear-gradient(135deg,rgba(45,154,77,.08),rgba(45,154,77,.02));border:1px solid rgba(45,154,77,.2);border-radius:12px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:22px">&#9989;</span><strong style="color:#16a34a;font-size:13px">Cobertura completa</strong></div>
+          <div style="font-size:11.5px;color:var(--text2);line-height:1.5"><strong>8 grupos actor</strong> con participaci&#243;n territorial y entrevista registrada.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(26,61,143,.08),rgba(26,61,143,.02));border:1px solid rgba(26,61,143,.2);border-radius:12px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:22px">&#127960;</span><strong style="color:#1a3d8f;font-size:13px">50 JJVV Urbanas</strong></div>
+          <div style="font-size:11.5px;color:var(--text2);line-height:1.5">Todas participaron en reuniones y respondieron cuestionario completo.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(212,160,23,.08),rgba(212,160,23,.02));border:1px solid rgba(212,160,23,.2);border-radius:12px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:22px">&#127807;</span><strong style="color:#d4a017;font-size:13px">24 JJVV Rurales</strong></div>
+          <div style="font-size:11.5px;color:var(--text2);line-height:1.5">Con diagn&#243;stico h&#237;drico JV R&#237;o Claro y levantamiento territorial.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(220,38,38,.08),rgba(220,38,38,.02));border:1px solid rgba(220,38,38,.2);border-radius:12px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:22px">&#9888;&#65039;</span><strong style="color:#dc2626;font-size:13px">Brechas detectadas</strong></div>
+          <div style="font-size:11.5px;color:var(--text2);line-height:1.5"><strong>7 organizaciones</strong> sin registro de asistencia. Requieren seguimiento.</div>
+        </div>
+      </div>
+      <div style="overflow-x:auto;border:1px solid var(--border);border-radius:10px">
+        <table id="scCruceTable" style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr style="background:var(--bg2,#f8fafc)"><th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-weight:700">Organizaci&#243;n / Grupo</th><th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-weight:700">Tipo</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Asistentes</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">GPS</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Entrev.</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">FODA</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Mes</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Sede</th></tr></thead><tbody id="scCruceBody"></tbody></table>
+      </div>
+    </div>
   </div>
 
   <!-- ═══ Red SNA · Trabajo en Conjunto a Desarrollar ═══ -->
@@ -4845,10 +4913,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v29.7</span>
+  <span class="ub-ver">v30.0</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v30.0</strong> <span class="ub-date">14 May 2026</span><br>&#127919; INTEGRACI&#211;N TOTAL: Eliminado el iframe que cargaba el sitio externo localhost:8765 (que se sent&#237;a como "plataforma dentro de plataforma"). Reemplazado por <strong>4 tabs nativos integrados</strong> directamente en el portal: (1) &#128205; Mapa Territorial con 89 organizaciones via Leaflet, (2) &#128200; An&#225;lisis Cuantitativo con barras de distribuci&#243;n y cronolog&#237;a, (3) &#128269; FODA por Actor con 8 fichas (UCAM, COSOC, Culturales, Huasos, Carabineros/Bomberos, Transporte, JJVV Urbanas y Rurales) renderizadas via JS desde SC_FODA_DATA, (4) &#128203; Cruce de Datos con 4 insight cards + tabla de 20 registros renderizada desde SC_CRUCE_DATA. Tab switching nativo con animaci&#243;n fadeIn 280ms. Header renombrado «Diagn&#243;stico de la Sociedad Civil Organizada» sin la palabra «Plataforma». Sin dependencia externa: todo el contenido es ahora parte del portal. Cache SW v48.7 → v48.8.</div>
     <div class="ub-entry"><strong>v29.7</strong> <span class="ub-date">14 May 2026</span><br>&#128640; Simplificaci&#243;n y reposicionamiento de Sociedad Civil: (1) **eliminado el mapa Leaflet nativo de 520px** que duplicaba el mapa del iframe (las 89 organizaciones ya se ven en la pesta&#241;a «Mapa de Participaci&#243;n» de la plataforma), reduciendo confusi&#243;n visual. (2) Secci&#243;n **#sociedad-civil movida 1.158 l&#237;neas hacia arriba** desde el final (l&#237;nea 4587) al inicio del grupo «3 · Participaci&#243;n Ciudadana» (l&#237;nea 3429). Ahora es la primera secci&#243;n del grupo, antes de Voz Ciudadana. (3) Sidebar reordenado: Sociedad Civil &middot; Plataforma → Voz de la Ciudadan&#237;a → Visi&#243;n &amp; Sue&#241;os → FODA → Testimonios → Etnograf&#237;a. (4) H2 de #voz renombrado «Voz Ciudadana» → «Voz de la Ciudadan&#237;a» para coherencia. Cache SW v48.6 → v48.7.</div>
     <div class="ub-entry"><strong>v29.6</strong> <span class="ub-date">14 May 2026</span><br>&#128119; Nueva secci&#243;n de bienvenida «Portal en Construcci&#243;n» al inicio del portal (justo despu&#233;s del countdown strip y antes del grupo «1 · Introducci&#243;n al PLADECO»). Incluye la mascota Contigo Rengo en versi&#243;n obrero (Obra.png), badge animado naranja, h3 con palabra «construyendo» destacada, p&#225;rrafo explicativo y 5 chips de meta (versi&#243;n, fecha, 38 secciones, 472 participantes, 95 organizaciones). Card con border dashed naranja, gradient triple naranja/verde, animaci&#243;n obraBounce 3.5s en la mascota, glow flotante 8s con floatGlow, responsive mobile (column layout). Cache SW v48.5 → v48.6, Obra.png agregada a STATIC_ASSETS.</div>
     <div class="ub-entry"><strong>v29.5</strong> <span class="ub-date">14 May 2026</span><br>&#127919; Banner «En construcci&#243;n &middot; sujeto a cambios» rediseñado: de cinta diagonal en la esquina superior derecha que se superpon&#237;a al pill «PLADECO 2025-2035», a una **p&#237;ldora horizontal centrada** en el medio del banner. Incluye &#237;cono ⚠️, padding c&#243;modo, border-radius 20px (pill style), animaci&#243;n cbPulse con sombra que late cada 3s, y versi&#243;n mobile responsive con tipograf&#237;a y padding reducidos. El layout ahora respeta el orden: Logos izquierda &middot; Píldora centrada &middot; PLADECO + Cerrar derecha. Cache SW v48.4 → v48.5.</div>
@@ -9181,6 +9250,130 @@ function initSocCivMap(){
   },{rootMargin:'200px'});
   obs.observe(target);
 })();
+
+/* ─── Tabs Sociedad Civil · Switching ─── */
+function switchSCTab(tabId,btn){
+  document.querySelectorAll('.sc-tab-btn').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false');});
+  document.querySelectorAll('.sc-tab-panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');btn.setAttribute('aria-selected','true');
+  var panel=document.getElementById('sc-panel-'+tabId);
+  if(panel) panel.classList.add('active');
+  if(tabId==='analisis') renderSCDistAndCrono();
+  if(tabId==='foda') renderSCFoda();
+  if(tabId==='cruce') renderSCCruce();
+  if(tabId==='mapa' && window.map && map.invalidateSize) setTimeout(function(){map.invalidateSize();},100);
+}
+
+/* ─── Datos: 8 FODA por Actor + 20 registros Cruce ─── */
+var SC_FODA_DATA=[
+  {id:'ucam',nombre:'UCAM &middot; Adultos Mayores',emoji:'&#128116;',color:'#8e44ad',desc:'Uni&#243;n Comunal &middot; 3 reuniones &middot; 55 asistentes',
+   f:['Plazas y plazuelas bien utilizadas','Atenci&#243;n en salud destacada (CESFAM)','Cambio positivo atenci&#243;n municipal'],
+   o:['Cl&#237;nica del Adulto Mayor como proyecto','Reciclaje comunitario','Jornadas exclusivas adulto mayor'],
+   d:['Filas largas en CESFAM','Cortes de luz frecuentes','Falta accesibilidad eventos'],
+   a:['Inseguridad y luminarias deficientes','Abandono &#225;reas verdes','Lentitud respuesta municipal']},
+  {id:'cosoc',nombre:'COSOC &middot; Consejo Sociedad Civil',emoji:'&#127963;',color:'#c0392b',desc:'Gobernanza local &middot; 1 reuni&#243;n &middot; 9 asistentes',
+   f:['Espacios participaci&#243;n activos','Autoridades receptivas','Coordinaci&#243;n sectorial inicial'],
+   o:['PRC como herramienta territorial','CESFAM Rosario integral','T&#243;tems informaci&#243;n ciudadana'],
+   d:['Respuesta lenta o nula','Descoordinaci&#243;n direcciones','Lenguaje t&#233;cnico excluyente'],
+   a:['Crecimiento sin servicios','Sectores al otro lado FFCC','PRC requiere actualizaci&#243;n urgente']},
+  {id:'cultural',nombre:'Actores Culturales',emoji:'&#127917;',color:'#f5921d',desc:'Agentes culturales &middot; 1 reuni&#243;n &middot; 12 asistentes',
+   f:['Iniciativas con proyecci&#243;n','Disposici&#243;n municipal redes','Programaci&#243;n anual establecida'],
+   o:['Red co-dise&#241;o pol&#237;ticas','Plataformas digitales difusi&#243;n','Recorridos patrimoniales'],
+   d:['Sin catastro formal artesanos','Poca difusi&#243;n comunitaria','Falta respuesta sistem&#225;tica'],
+   a:['P&#233;rdida archivos hist&#243;ricos','Falta financiamiento continuo','Baja participaci&#243;n local']},
+  {id:'huasos',nombre:'Clubes de Huasos',emoji:'&#128014;',color:'#92400e',desc:'Rinconada, Rosario, Cerrillos, Esmeralda &middot; 6 asistentes',
+   f:['4 clubes con d&#233;cadas trayectoria','Medias lunas Cerrillos y Esmeralda','Apoyo municipal en rodeo'],
+   o:['Cabalgatas zonas rurales','Talleres equinoterapia','Subvenci&#243;n emprendedores agr&#237;colas'],
+   d:['Sin local reuniones','Poco financiamiento','Baja presencia desfiles'],
+   a:['P&#233;rdida identidad campesina','Parcelaciones reducen espacios','Verg&#252;enza social actividades']},
+  {id:'seguridad',nombre:'Carabineros y Bomberos',emoji:'&#128658;',color:'#1e293b',desc:'4&#170; Comisar&#237;a + Bomberos Rengo &middot; 2 reuniones &middot; 7 asistentes',
+   f:['Trabajo preventivo cumplido','Patrullajes diarios y MICC','Bomberos cobertura rural'],
+   o:['C&#225;maras televigilancia y drones','Fotoradares avenidas','Educaci&#243;n c&#237;vica preventiva'],
+   d:['Baja dotaci&#243;n policial','Espacios eriazos abandonados','Poca coord. Direcci&#243;n Tr&#225;nsito'],
+   a:['Alcoholismo y drogadicci&#243;n','Luminaria deficiente perif&#233;ricos','Maleza atrae delincuencia']},
+  {id:'transporte',nombre:'Transporte P&#250;blico',emoji:'&#128652;',color:'#2563eb',desc:'GalBus, Servibus, Colectivos &middot; 2 reuniones &middot; 13 asistentes',
+   f:['Empresas formalizadas d&#233;cadas','Tecnolog&#237;a GPS y redes','Cobertura rural amplia'],
+   o:['Terminal de buses prioritario','Paraderos iluminados UV','Pago QR y tarjeta'],
+   d:['Sin terminal formal','Frecuencias reducidas','Veredas sin accesibilidad'],
+   a:['Menor demanda por auto','V&#237;as mal estado invierno','Sin redise&#241;o de recorridos']},
+  {id:'jjvv-u',nombre:'JJVV Urbanas (50)',emoji:'&#127960;',color:'#1a3d8f',desc:'50 Juntas de Vecinos &middot; Enero&ndash;Marzo 2025',
+   f:['50 JJVV activas todas las villas','Reuni&#243;n masiva Libertad (59)','Mayor&#237;a lideradas por mujeres'],
+   o:['Fondos FRIL y mejoramiento barrial','Articulaci&#243;n DIDECO','Mejora plazas y &#225;reas verdes'],
+   d:['Pocas JJVV con sede propia','Baja asistencia varias villas','Desconocimiento postular'],
+   a:['Inseguridad (Villa Espa&#241;a)','Falta equipamiento b&#225;sico','Luminaria pasajes interiores']},
+  {id:'jjvv-r',nombre:'JJVV Rurales y Junta Vigilancia',emoji:'&#127806;',color:'#2d9a4d',desc:'24 JJVV Rurales + JV R&#237;o Claro &middot; 25 reuniones &middot; 262 asistentes',
+   f:['Organizaciones con arraigo','JV R&#237;o Claro 74 a&#241;os, 1.200 regantes','Proyecto Embalse El Bollenar'],
+   o:['Embalse gesti&#243;n h&#237;drica','Riego tecnificado','Turismo rural y patrimonial'],
+   d:['20 a&#241;os de sequ&#237;a','Baja asistencia zonas alejadas','Acceso limitado salud/servicios'],
+   a:['Cambio clim&#225;tico hidr&#225;ulico','Parcelaciones fragmentan tierra','Migraci&#243;n campo-ciudad']}
+];
+var SC_CRUCE_DATA=[
+  {org:'UCAM',tipo:'Adulto Mayor',asist:25,gps:1,e:1,f:1,mes:'Oct-Nov',sede:'Externa'},
+  {org:'COSOC',tipo:'COSOC',asist:9,gps:1,e:1,f:1,mes:'Diciembre',sede:'Municipal'},
+  {org:'Actores Culturales',tipo:'Cultural',asist:12,gps:1,e:1,f:1,mes:'Noviembre',sede:'Municipal'},
+  {org:'Club de Huasos',tipo:'Cultural',asist:6,gps:1,e:1,f:1,mes:'Febrero',sede:'Municipal'},
+  {org:'Carabineros',tipo:'Seguridad',asist:2,gps:1,e:1,f:1,mes:'Febrero',sede:'Externa'},
+  {org:'Bomberos',tipo:'Seguridad',asist:5,gps:1,e:1,f:1,mes:'Abril',sede:'Externa'},
+  {org:'Buses Urbanos/Interurbanos',tipo:'Transporte',asist:3,gps:1,e:1,f:1,mes:'Febrero',sede:'Municipal'},
+  {org:'Colectivos',tipo:'Transporte',asist:10,gps:1,e:1,f:1,mes:'Febrero',sede:'Municipal'},
+  {org:'JJVV Urbanas (50 villas)',tipo:'JJVV Urbana',asist:59,gps:1,e:1,f:1,mes:'Ene-Mar',sede:'Municipal'},
+  {org:'JJVV Rurales (24 juntas)',tipo:'JJVV Rural',asist:262,gps:1,e:1,f:1,mes:'Oct-Ene',sede:'Externa'},
+  {org:'Junta Vigilancia R&#237;o Claro',tipo:'JV',asist:2,gps:1,e:1,f:1,mes:'Marzo',sede:'Externa'},
+  {org:'Club AM Villa Jard&#237;n',tipo:'Adulto Mayor',asist:17,gps:1,e:0,f:0,mes:'Marzo',sede:'Externa'},
+  {org:'Club AM Por Siempre Unidos',tipo:'Adulto Mayor',asist:13,gps:1,e:0,f:0,mes:'Marzo',sede:'Externa'},
+  {org:'Consultivo NNA',tipo:'NNA/Infancia',asist:21,gps:1,e:0,f:0,mes:'Abril',sede:'Externa'},
+  {org:'C&#225;mara de Comercio',tipo:'Comercio',asist:4,gps:1,e:0,f:0,mes:'Septiembre',sede:'Municipal'},
+  {org:'Ferias de Rengo',tipo:'Comercio',asist:2,gps:1,e:0,f:0,mes:'Diciembre',sede:'Municipal'},
+  {org:'Medio Ambiente',tipo:'Medio Ambiente',asist:4,gps:1,e:0,f:0,mes:'Septiembre',sede:'Municipal'},
+  {org:'Club Dep. Nacional Rosario',tipo:'Club Deportivo',asist:7,gps:1,e:0,f:0,mes:'Enero',sede:'Externa'},
+  {org:'Club Dep. Real Juventud',tipo:'Club Deportivo',asist:4,gps:1,e:0,f:0,mes:'Enero',sede:'Externa'},
+  {org:'Centro Cultural Rosario',tipo:'Cultural',asist:0,gps:1,e:0,f:0,mes:'Octubre',sede:'Externa'}
+];
+
+/* ─── Renderizadores Tabs SC ─── */
+function renderSCDistAndCrono(){
+  var dist=document.getElementById('scDistBars');
+  if(dist && !dist._rendered){
+    dist._rendered=true;
+    var rows=[
+      ['JJVV Urbana','#1a3d8f',50,52.6],['JJVV Rural','#2d9a4d',24,25.3],
+      ['Club Deportivo','#2980b9',4,4.2],['Cultural','#f5921d',4,4.2],
+      ['Adulto Mayor','#8e44ad',3,3.2],['Seguridad','#1e293b',2,2.1],
+      ['Transporte','#475569',3,3.2],['Comercio','#d97706',2,2.1],
+      ['COSOC, Vig., NNA, MA','#c0392b',3,3.2]];
+    dist.innerHTML=rows.map(function(r){return '<div class="ods-row"><span class="ods-label" style="min-width:160px;font-size:12px;font-weight:600">'+r[0]+'</span><div class="ods-bar"><div class="ods-fill" style="width:'+r[3]+'%;background:'+r[1]+';min-width:24px">'+r[2]+'</div></div></div>';}).join('');
+  }
+  var crono=document.getElementById('scCronoBars');
+  if(crono && !crono._rendered){
+    crono._rendered=true;
+    var months=[['Sep 2024','#94a3b8',2,5],['Oct 2024','#64748b',7,18],['Nov 2024','#475569',6,15],['Dic 2024','#3b82f6',11,28],['Ene 2025 ★','#1a3d8f',38,100],['Feb 2025','#7c3aed',7,18],['Mar 2025','#8e44ad',5,13],['Abr 2025','#a855f7',3,8]];
+    crono.innerHTML=months.map(function(m){return '<div class="ods-row"><span class="ods-label" style="min-width:110px;font-size:12px;font-weight:600">'+m[0]+'</span><div class="ods-bar"><div class="ods-fill" style="width:'+m[3]+'%;background:'+m[1]+';min-width:24px">'+m[2]+'</div></div></div>';}).join('');
+  }
+}
+function renderSCFoda(){
+  var grid=document.getElementById('scFodaGrid');
+  if(!grid||grid._rendered) return;grid._rendered=true;
+  grid.innerHTML=SC_FODA_DATA.map(function(a){
+    function lst(arr){return '<ul style="margin:4px 0 0 14px;padding:0;line-height:1.4">'+arr.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';}
+    return '<div class="viz-card" style="padding:16px;border-top:3px solid '+a.color+'">'+
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:36px;height:36px;border-radius:10px;background:'+a.color+'1c;display:flex;align-items:center;justify-content:center;font-size:18px">'+a.emoji+'</div><div style="flex:1"><h3 style="font-size:13.5px;margin:0;color:'+a.color+'">'+a.nombre+'</h3><div style="font-size:10px;color:var(--text2);margin-top:1px">'+a.desc+'</div></div></div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10.5px">'+
+      '<div style="background:rgba(45,154,77,.08);padding:7px;border-radius:6px;border-left:3px solid #16a34a"><strong style="color:#16a34a;font-size:9.5px">&#128170; FORTALEZAS</strong>'+lst(a.f)+'</div>'+
+      '<div style="background:rgba(245,146,29,.08);padding:7px;border-radius:6px;border-left:3px solid #f5921d"><strong style="color:#f5921d;font-size:9.5px">&#128640; OPORTUNIDADES</strong>'+lst(a.o)+'</div>'+
+      '<div style="background:rgba(220,38,38,.08);padding:7px;border-radius:6px;border-left:3px solid #dc2626"><strong style="color:#dc2626;font-size:9.5px">&#9889; DEBILIDADES</strong>'+lst(a.d)+'</div>'+
+      '<div style="background:rgba(30,41,59,.08);padding:7px;border-radius:6px;border-left:3px solid #1e293b"><strong style="color:#1e293b;font-size:9.5px">&#9888; AMENAZAS</strong>'+lst(a.a)+'</div>'+
+      '</div></div>';
+  }).join('');
+}
+function renderSCCruce(){
+  var tb=document.getElementById('scCruceBody');
+  if(!tb||tb._rendered) return;tb._rendered=true;
+  tb.innerHTML=SC_CRUCE_DATA.map(function(r){
+    var chk=function(v){return v?'<span style="color:#16a34a;font-weight:700">&#10003;</span>':'<span style="color:#cbd5e1">&ndash;</span>';};
+    var asistColor=r.asist>50?'#166534':r.asist>20?'#1d4ed8':'var(--text)';
+    return '<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-weight:600">'+r.org+'</td><td style="padding:8px 12px;color:var(--text2)">'+r.tipo+'</td><td style="padding:8px 12px;text-align:center;font-weight:700;color:'+asistColor+'">'+r.asist+'</td><td style="padding:8px 12px;text-align:center">'+chk(r.gps)+'</td><td style="padding:8px 12px;text-align:center">'+chk(r.e)+'</td><td style="padding:8px 12px;text-align:center">'+chk(r.f)+'</td><td style="padding:8px 12px;text-align:center;color:var(--text2);font-size:10.5px">'+r.mes+'</td><td style="padding:8px 12px;text-align:center;color:var(--text2);font-size:10.5px">'+r.sede+'</td></tr>';
+  }).join('');
+}
 
 // ── CARDS & ELEMENTS ENTRANCE OBSERVER ──
 const entranceObs=new IntersectionObserver((entries)=>{
