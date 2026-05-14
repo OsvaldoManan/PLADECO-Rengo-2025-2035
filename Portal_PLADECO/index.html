@@ -2295,7 +2295,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.1</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3494,6 +3494,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <button class="sc-tab-btn" onclick="switchSCTab('analisis',this)" role="tab" aria-selected="false">&#128200; An&#225;lisis Cuantitativo</button>
       <button class="sc-tab-btn" onclick="switchSCTab('foda',this)" role="tab" aria-selected="false">&#128269; FODA por Actor</button>
       <button class="sc-tab-btn" onclick="switchSCTab('cruce',this)" role="tab" aria-selected="false">&#128203; Cruce de Datos</button>
+      <button class="sc-tab-btn" onclick="switchSCTab('sna',this)" role="tab" aria-selected="false">&#128268; Red SNA &middot; Articulaciones</button>
     </div>
 
     <!-- PANEL 1: MAPA -->
@@ -3570,17 +3571,23 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
         <table id="scCruceTable" style="width:100%;border-collapse:collapse;font-size:11.5px"><thead><tr style="background:var(--bg2,#f8fafc)"><th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-weight:700">Organizaci&#243;n / Grupo</th><th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-weight:700">Tipo</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Asistentes</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">GPS</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Entrev.</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">FODA</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Mes</th><th style="padding:10px 12px;text-align:center;border-bottom:1px solid var(--border);font-weight:700">Sede</th></tr></thead><tbody id="scCruceBody"></tbody></table>
       </div>
     </div>
-  </div>
 
-  <!-- ═══ Red SNA · Trabajo en Conjunto a Desarrollar ═══ -->
-  <div style="margin-bottom:24px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <div>
-        <h3 style="font-size:16px;color:var(--text);margin:0">&#128268; Red SNA &middot; Articulaciones Estrat&#233;gicas</h3>
-        <div style="font-size:12px;color:var(--text2);margin-top:2px">13 actores conectados por 9 temas comunes &middot; Proyectos de trabajo conjunto derivados del cruce FODA</div>
+    <!-- ═══ PANEL 5: RED SNA · Mapeo de Relaciones (Grafo D3) + Articulaciones ═══ -->
+    <div class="sc-tab-panel" id="sc-panel-sna" style="padding:22px">
+      <div style="margin-bottom:14px">
+        <h3 style="font-size:15px;color:var(--text);margin:0">&#128268; Red SNA &middot; Mapeo de Relaciones entre Actores</h3>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Grafo interactivo de <strong>13 actores</strong> conectados por <strong>9 temas comunes</strong> &middot; Arrastra los nodos, haz clic en chips para filtrar la red, doble clic para fijar/liberar.</div>
       </div>
-      <a href="http://localhost:8765/#sna" target="_blank" rel="noopener" class="sec-export-btn" style="position:static;display:inline-flex;align-items:center;gap:5px;background:rgba(124,58,237,.1);color:#7c3aed;border-color:rgba(124,58,237,.3)">&#8599; Ver red SNA interactiva</a>
-    </div>
+      <!-- Network graph D3 force-directed -->
+      <div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px;border:1px solid var(--border);overflow:hidden;position:relative;margin-bottom:24px">
+        <div id="snaGraphContainer" style="width:100%;height:540px;cursor:grab"></div>
+        <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap">&#128161; Arrastra los nodos &middot; Hover para resaltar conexiones &middot; Doble clic para fijar</div>
+      </div>
+      <!-- Articulaciones Estratégicas: 9 proyectos colaborativos -->
+      <div style="margin-bottom:14px">
+        <h3 style="font-size:15px;color:var(--text);margin:0">&#128268; Articulaciones Estrat&#233;gicas &middot; 9 Proyectos de Trabajo Conjunto</h3>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Proyectos colaborativos derivados del cruce FODA &middot; Cada uno articula 3-6 actores</div>
+      </div>
 
     <!-- Theme chips horizontal scroll -->
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;padding:14px 16px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
@@ -3727,6 +3734,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;background:rgba(245,146,29,.08);font-size:9.5px;font-weight:700;color:#f5921d;border:1px solid var(--border)"><span style="width:6px;height:6px;border-radius:50%;background:#f5921d"></span>Culturales</span>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
@@ -4913,10 +4921,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v30.0</span>
+  <span class="ub-ver">v30.1</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v30.1</strong> <span class="ub-date">14 May 2026</span><br>&#128268; **Red SNA recuperada como 5ta pesta&#241;a con grafo D3 de relaciones**: agregada como tab nativo dentro de Sociedad Civil. Incluye: (1) Grafo force-directed D3.js con <strong>13 nodos</strong> (actores) coloreados por tipo, tama&#241;o proporcional a asistentes, <strong>~80 enlaces</strong> generados desde los 9 temas comunes, (2) hover interactivo que resalta conexiones del nodo (otros nodos se atenuan al 25%), (3) drag-and-drop para reorganizar, doble clic para fijar/liberar nodos, (4) zoom + pan, (5) Articulaciones Estrat&#233;gicas con 9 proyectos colaborativos abajo (Embalse Bollenar, Plan Seguridad, Terminal Buses, Cl&#237;nica AM, Red Cultural, Espacios P&#250;blicos, PRC Gobernanza, Programa C&#237;vico, Econom&#237;a Rural). Nueva data: SC_SNA_ACTORS (13 actores) + SC_SNA_THEMES (9 temas). Cache SW v48.8 → v48.9.</div>
     <div class="ub-entry"><strong>v30.0</strong> <span class="ub-date">14 May 2026</span><br>&#127919; INTEGRACI&#211;N TOTAL: Eliminado el iframe que cargaba el sitio externo localhost:8765 (que se sent&#237;a como "plataforma dentro de plataforma"). Reemplazado por <strong>4 tabs nativos integrados</strong> directamente en el portal: (1) &#128205; Mapa Territorial con 89 organizaciones via Leaflet, (2) &#128200; An&#225;lisis Cuantitativo con barras de distribuci&#243;n y cronolog&#237;a, (3) &#128269; FODA por Actor con 8 fichas (UCAM, COSOC, Culturales, Huasos, Carabineros/Bomberos, Transporte, JJVV Urbanas y Rurales) renderizadas via JS desde SC_FODA_DATA, (4) &#128203; Cruce de Datos con 4 insight cards + tabla de 20 registros renderizada desde SC_CRUCE_DATA. Tab switching nativo con animaci&#243;n fadeIn 280ms. Header renombrado «Diagn&#243;stico de la Sociedad Civil Organizada» sin la palabra «Plataforma». Sin dependencia externa: todo el contenido es ahora parte del portal. Cache SW v48.7 → v48.8.</div>
     <div class="ub-entry"><strong>v29.7</strong> <span class="ub-date">14 May 2026</span><br>&#128640; Simplificaci&#243;n y reposicionamiento de Sociedad Civil: (1) **eliminado el mapa Leaflet nativo de 520px** que duplicaba el mapa del iframe (las 89 organizaciones ya se ven en la pesta&#241;a «Mapa de Participaci&#243;n» de la plataforma), reduciendo confusi&#243;n visual. (2) Secci&#243;n **#sociedad-civil movida 1.158 l&#237;neas hacia arriba** desde el final (l&#237;nea 4587) al inicio del grupo «3 · Participaci&#243;n Ciudadana» (l&#237;nea 3429). Ahora es la primera secci&#243;n del grupo, antes de Voz Ciudadana. (3) Sidebar reordenado: Sociedad Civil &middot; Plataforma → Voz de la Ciudadan&#237;a → Visi&#243;n &amp; Sue&#241;os → FODA → Testimonios → Etnograf&#237;a. (4) H2 de #voz renombrado «Voz Ciudadana» → «Voz de la Ciudadan&#237;a» para coherencia. Cache SW v48.6 → v48.7.</div>
     <div class="ub-entry"><strong>v29.6</strong> <span class="ub-date">14 May 2026</span><br>&#128119; Nueva secci&#243;n de bienvenida «Portal en Construcci&#243;n» al inicio del portal (justo despu&#233;s del countdown strip y antes del grupo «1 · Introducci&#243;n al PLADECO»). Incluye la mascota Contigo Rengo en versi&#243;n obrero (Obra.png), badge animado naranja, h3 con palabra «construyendo» destacada, p&#225;rrafo explicativo y 5 chips de meta (versi&#243;n, fecha, 38 secciones, 472 participantes, 95 organizaciones). Card con border dashed naranja, gradient triple naranja/verde, animaci&#243;n obraBounce 3.5s en la mascota, glow flotante 8s con floatGlow, responsive mobile (column layout). Cache SW v48.5 → v48.6, Obra.png agregada a STATIC_ASSETS.</div>
@@ -9261,7 +9270,72 @@ function switchSCTab(tabId,btn){
   if(tabId==='analisis') renderSCDistAndCrono();
   if(tabId==='foda') renderSCFoda();
   if(tabId==='cruce') renderSCCruce();
+  if(tabId==='sna') renderSNAGraph();
   if(tabId==='mapa' && window.map && map.invalidateSize) setTimeout(function(){map.invalidateSize();},100);
+}
+
+/* ─── Datos SNA: 13 actores + 9 temas ─── */
+var SC_SNA_ACTORS=[
+  {id:'ucam',name:'UCAM',type:'Adulto Mayor',color:'#8e44ad',size:55},
+  {id:'cosoc',name:'COSOC',type:'Gobernanza',color:'#c0392b',size:9},
+  {id:'cultural',name:'Culturales',type:'Cultural',color:'#f5921d',size:12},
+  {id:'huasos',name:'Huasos',type:'Cultural Rural',color:'#92400e',size:6},
+  {id:'carab',name:'Carabineros',type:'Seguridad',color:'#1e293b',size:2},
+  {id:'bomb',name:'Bomberos',type:'Seguridad',color:'#0f172a',size:5},
+  {id:'transp',name:'Transporte',type:'Movilidad',color:'#2563eb',size:13},
+  {id:'jjvvu',name:'JJVV Urbanas',type:'Territorial',color:'#1a3d8f',size:59},
+  {id:'jjvvr',name:'JJVV Rurales',type:'Territorial',color:'#2d9a4d',size:80},
+  {id:'jv',name:'JV R&iacute;o Claro',type:'Hídrica',color:'#a16207',size:18},
+  {id:'nna',name:'NNA',type:'Infancia',color:'#059669',size:21},
+  {id:'comerc',name:'Comercio',type:'Económico',color:'#d97706',size:4},
+  {id:'mamb',name:'Medio Amb.',type:'Ambiental',color:'#0891b2',size:4}
+];
+var SC_SNA_THEMES=[
+  {id:'seguridad',name:'Seguridad',color:'#dc2626',actors:['carab','bomb','jjvvu','jjvvr','cosoc']},
+  {id:'salud',name:'Salud',color:'#16a34a',actors:['ucam','cosoc','jjvvu','jjvvr','nna']},
+  {id:'cultura',name:'Cultura',color:'#f5921d',actors:['cultural','huasos','jjvvr','cosoc']},
+  {id:'movilidad',name:'Movilidad',color:'#2563eb',actors:['transp','jjvvu','jjvvr','comerc','ucam']},
+  {id:'agua',name:'Gesti&oacute;n H&iacute;drica',color:'#0891b2',actors:['jv','jjvvr','mamb']},
+  {id:'espacios',name:'Espacios P&uacute;blicos',color:'#8b5cf6',actors:['ucam','jjvvu','cultural','carab','huasos']},
+  {id:'gobernanza',name:'Gobernanza',color:'#7c3aed',actors:['cosoc','jjvvu','jjvvr','comerc','cultural','huasos']},
+  {id:'educacion',name:'Educaci&oacute;n C&iacute;vica',color:'#0ea5e9',actors:['nna','carab','bomb','cosoc']},
+  {id:'economia',name:'Econom&iacute;a Local',color:'#d97706',actors:['comerc','jjvvr','huasos','transp','cultural']}
+];
+
+/* ─── Render Grafo D3 SNA Force-Directed ─── */
+function renderSNAGraph(){
+  var container=document.getElementById('snaGraphContainer');
+  if(!container||container._rendered) return;
+  if(typeof d3==='undefined'){setTimeout(renderSNAGraph,400);return;}
+  container._rendered=true;
+  var width=container.clientWidth||800,height=540;
+  /* Build links from shared themes */
+  var links=[];
+  SC_SNA_THEMES.forEach(function(t){
+    for(var i=0;i<t.actors.length;i++){
+      for(var j=i+1;j<t.actors.length;j++){
+        links.push({source:t.actors[i],target:t.actors[j],theme:t.id,color:t.color});
+      }
+    }
+  });
+  var nodes=SC_SNA_ACTORS.map(function(a){return Object.assign({},a);});
+  var svg=d3.select('#snaGraphContainer').append('svg').attr('width',width).attr('height',height).attr('viewBox','0 0 '+width+' '+height);
+  var g=svg.append('g');
+  svg.call(d3.zoom().scaleExtent([0.4,3]).on('zoom',function(ev){g.attr('transform',ev.transform);}));
+  var sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(function(d){return d.id;}).distance(130).strength(0.15)).force('charge',d3.forceManyBody().strength(-560)).force('center',d3.forceCenter(width/2,height/2)).force('collide',d3.forceCollide().radius(function(d){return Math.sqrt(d.size)*1.8+22;}));
+  var link=g.append('g').selectAll('line').data(links).enter().append('line').attr('stroke',function(d){return d.color;}).attr('stroke-width',2).attr('stroke-opacity',0.35);
+  var node=g.append('g').selectAll('g').data(sim.nodes()).enter().append('g').style('cursor','pointer').call(d3.drag().on('start',function(ev,d){if(!ev.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}).on('drag',function(ev,d){d.fx=ev.x;d.fy=ev.y;}).on('end',function(ev,d){if(!ev.active)sim.alphaTarget(0);})).on('dblclick',function(ev,d){d.fx=null;d.fy=null;}).on('mouseover',function(ev,d){
+    var connected=new Set([d.id]);links.forEach(function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;if(s===d.id)connected.add(t);if(t===d.id)connected.add(s);});
+    link.attr('stroke-opacity',function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;return s===d.id||t===d.id?0.9:0.06;}).attr('stroke-width',function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;return s===d.id||t===d.id?3:1.5;});
+    node.style('opacity',function(n){return connected.has(n.id)?1:0.25;});
+  }).on('mouseout',function(){link.attr('stroke-opacity',0.35).attr('stroke-width',2);node.style('opacity',1);});
+  node.append('circle').attr('r',function(d){return Math.sqrt(d.size)*1.7+10;}).attr('fill',function(d){return d.color;}).attr('stroke','#fff').attr('stroke-width',2.5);
+  node.append('text').attr('text-anchor','middle').attr('dy',4).attr('font-size','11px').attr('font-weight','700').attr('fill','#0f172a').attr('paint-order','stroke').attr('stroke','#fff').attr('stroke-width','3.5px').attr('stroke-linejoin','round').text(function(d){return d.name;});
+  node.append('text').attr('text-anchor','middle').attr('dy',function(d){return Math.sqrt(d.size)*1.7+22;}).attr('font-size','9px').attr('font-weight','500').attr('fill','#64748b').text(function(d){return d.type;});
+  sim.on('tick',function(){
+    link.attr('x1',function(d){return d.source.x;}).attr('y1',function(d){return d.source.y;}).attr('x2',function(d){return d.target.x;}).attr('y2',function(d){return d.target.y;});
+    node.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
+  });
 }
 
 /* ─── Datos: 8 FODA por Actor + 20 registros Cruce ─── */
