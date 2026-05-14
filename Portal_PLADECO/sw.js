@@ -1,4 +1,4 @@
-const CACHE_STATIC='pladeco-static-v48.5';
+const CACHE_STATIC='pladeco-static-v48.6';
 const CACHE_IMG='pladeco-img-v1';
 const CACHE_TILES='pladeco-tiles-v1';
 const MAX_IMG_CACHE=200;
@@ -21,6 +21,7 @@ const STATIC_ASSETS=[
   './fuente-info.png',
   './escudo-rengo.svg',
   './escudo-rengo-blanco.svg',
+  './Obra.png',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
