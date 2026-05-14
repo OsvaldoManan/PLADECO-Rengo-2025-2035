@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Diagnóstico Sociedad Civil · PLADECO Rengo 2025-2035</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script>
+<style>
+/* ════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════ */
+:root{
+  --navy:    #0f2d52;
+  --navy2:   #071d36;
+  --navy3:   #1a4a7a;
+  --gold:    #d4a017;
+  --gold2:   #f0bc2e;
+  --blue:    #2563eb;
+  --green:   #16a34a;
+  --red:     #dc2626;
+  --bg:      #f1f5f9;
+  --surface: #ffffff;
+  --border:  #e2e8f0;
+  --text:    #0f172a;
+  --muted:   #64748b;
+  --light:   #f8fafc;
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.06);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:14px}
+
+/* ════════════════════════════════════════
+   TOP ACCENT BAR
+════════════════════════════════════════ */
+.top-bar{height:4px;background:linear-gradient(90deg,var(--navy) 0%,var(--blue) 50%,var(--gold2) 100%)}
+
+/* ════════════════════════════════════════
+   HEADER
+════════════════════════════════════════ */
+.site-header{
+  background:var(--navy2);
+  color:#fff;
+  padding:0 24px;
+  position:sticky;top:4px;z-index:100;
+  box-shadow:0 2px 20px rgba(0,0,0,.25);
+}
+.header-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 0;gap:16px;flex-wrap:wrap;
+}
+.logo-wrap{display:flex;align-items:center;gap:14px}
+.logo-icon{
+  width:44px;height:44px;
+  background:linear-gradient(135deg,var(--blue),var(--navy3));
+  border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  box-shadow:0 2px 8px rgba(37,99,235,.3);
+  flex-shrink:0;
+}
+.logo-text h1{font-size:17px;font-weight:700;letter-spacing:-.3px;line-height:1.2}
+.logo-text p{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.1px}
+.header-pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{
+  padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;
+  letter-spacing:.2px;white-space:nowrap;
+}
+.pill-gold{background:rgba(240,188,46,.15);border:1px solid rgba(240,188,46,.3);color:#f0bc2e}
+.pill-blue{background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.3);color:#93c5fd}
+
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+.site-nav{
+  background:rgba(7,29,54,.95);
+  border-top:1px solid rgba(255,255,255,.07);
+  backdrop-filter:blur(8px);
+  position:sticky;top:125px;z-index:99;
+}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;overflow-x:auto;gap:0}
+.nav-inner::-webkit-scrollbar{height:2px}
+.nav-inner::-webkit-scrollbar-track{background:rgba(0,0,0,.15)}
+.nav-inner::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px}
+.nav-btn{
+  background:none;border:none;color:rgba(255,255,255,.5);
+  padding:13px 18px;font-size:12.5px;font-weight:500;
+  cursor:pointer;border-bottom:3px solid transparent;
+  transition:all .2s;white-space:nowrap;
+  font-family:inherit;letter-spacing:.1px;
+  display:flex;align-items:center;gap:7px;
+}
+.nav-btn svg{width:14px;height:14px;opacity:.7}
+.nav-btn:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-btn.active{color:#fff;border-bottom-color:var(--gold2);font-weight:600}
+.nav-btn.active svg{opacity:1}
+
+/* ════════════════════════════════════════
+   HERO
+════════════════════════════════════════ */
+.hero{
+  background:linear-gradient(150deg,var(--navy2) 0%,var(--navy) 55%,var(--navy3) 100%);
+  color:#fff;
+  padding:44px 24px 48px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(240,188,46,.12);border:1px solid rgba(240,188,46,.25);
+  color:#f0bc2e;padding:4px 12px;border-radius:20px;
+  font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.hero h2{
+  font-size:34px;font-weight:800;letter-spacing:-.8px;line-height:1.15;
+  margin-bottom:10px;
+}
+.hero h2 span{color:var(--gold2)}
+.hero-lead{
+  color:rgba(255,255,255,.7);font-size:14px;line-height:1.65;
+  max-width:620px;margin-bottom:36px;
+}
+
+/* Stats grid */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+
+.stat-card{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r-lg);
+  padding:18px 16px;
+  position:relative;overflow:hidden;
+  transition:background .2s;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--accent,rgba(255,255,255,.2));border-radius:var(--r-lg) var(--r-lg) 0 0;
+}
+.stat-card:hover{background:rgba(255,255,255,.12)}
+.stat-icon{font-size:18px;margin-bottom:8px;display:block;opacity:.85}
+.stat-num{display:block;font-size:38px;font-weight:800;line-height:1;letter-spacing:-1px}
+.stat-label{display:block;font-size:11px;font-weight:600;color:rgba(255,255,255,.65);
+  margin-top:6px;text-transform:uppercase;letter-spacing:.4px}
+.stat-sub{display:block;font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+
+/* ════════════════════════════════════════
+   CONTENT AREA
+════════════════════════════════════════ */
+.content{background:var(--bg);min-height:400px}
+
+.section{display:none;padding:36px 24px 48px;animation:fadeIn .25s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.section-inner{max-width:1200px;margin:0 auto}
+
+/* Section head */
+.sec-head{margin-bottom:28px}
+.sec-eyebrow{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--blue);margin-bottom:6px;
+}
+.sec-eyebrow::before{
+  content:'';display:inline-block;width:16px;height:2px;
+  background:currentColor;border-radius:2px;
+}
+.sec-head h2{
+  font-size:22px;font-weight:800;color:var(--navy);
+  letter-spacing:-.4px;line-height:1.2;
+}
+.sec-head p{
+  color:var(--muted);font-size:13px;margin-top:6px;max-width:680px;line-height:1.6;
+}
+
+/* ════════════════════════════════════════
+   MAP
+════════════════════════════════════════ */
+.map-toolbar{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;flex-wrap:nowrap;overflow-x:auto;
+  padding-bottom:4px;
+}
+.map-toolbar::-webkit-scrollbar{height:3px}
+.map-toolbar::-webkit-scrollbar-track{background:#e2e8f0;border-radius:10px}
+.map-toolbar::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:10px}
+
+.filter-all{
+  flex-shrink:0;
+  background:var(--navy);color:#fff;
+  border:none;border-radius:20px;
+  padding:7px 16px;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:inherit;
+  transition:all .2s;white-space:nowrap;
+}
+.filter-all:hover,.filter-all.active{background:var(--blue)}
+
+.map-chip{
+  flex-shrink:0;
+  background:#fff;border:1.5px solid;
+  border-radius:20px;padding:5px 13px;
+  font-size:11.5px;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:all .18s;white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+}
+.map-chip .dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.map-chip.active{color:#fff!important}
+.map-chip:hover{opacity:.85}
+
+#map{
+  height:500px;border-radius:var(--r-xl);
+  box-shadow:var(--shadow-lg);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+
+.map-footer{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:12px;margin-top:16px;
+}
+.map-kpi{
+  background:var(--surface);border-radius:var(--r-md);
+  padding:16px;text-align:center;
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+}
+.map-kpi strong{
+  display:block;font-size:28px;font-weight:800;color:var(--navy);line-height:1;
+}
+.map-kpi span{font-size:11px;color:var(--muted);margin-top:4px;display:block;font-weight:500}
+
+.legend-bar{
+  background:var(--surface);border-radius:var(--r-md);
+  padding:14px 16px;margin-top:12px;
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-weight:500}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ════════════════════════════════════════
+   CHARTS
+════════════════════════════════════════ */
+.charts-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+@media(max-width:700px){.charts-grid{grid-template-columns:1fr}}
+
+.chart-card{
+  background:var(--surface);border-radius:var(--r-lg);
+  padding:24px;box-shadow:var(--shadow-md);
+  border:1px solid var(--border);
+}
+.chart-card-head{margin-bottom:20px}
+.chart-card-head h3{
+  font-size:14px;font-weight:700;color:var(--navy);letter-spacing:-.2px;
+}
+.chart-card-head p{font-size:11.5px;color:var(--muted);margin-top:3px}
+.chart-wrap{position:relative;height:240px}
+
+/* ════════════════════════════════════════
+   FODA / ACTORS
+════════════════════════════════════════ */
+.actor-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+@media(max-width:720px){.actor-grid{grid-template-columns:1fr}}
+
+.actor-card{
+  background:var(--surface);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+  border-left:4px solid var(--accent-color,var(--navy));
+  overflow:hidden;
+  transition:box-shadow .2s;
+}
+.actor-card:hover{box-shadow:var(--shadow-md)}
+
+.actor-header{
+  padding:16px 18px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;user-select:none;
+  background:var(--surface);
+}
+.actor-avatar{
+  width:40px;height:40px;border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.actor-info{flex:1;min-width:0}
+.actor-info h3{
+  font-size:13.5px;font-weight:700;color:var(--navy);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.actor-info p{font-size:11px;color:var(--muted);margin-top:1px}
+.actor-pills{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.actor-pill{
+  font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;
+  background:var(--bg);color:var(--muted);
+}
+.actor-toggle{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:11px;color:var(--muted);
+  transition:transform .25s,background .2s;
+}
+.actor-card.open .actor-toggle{transform:rotate(180deg);background:var(--navy);color:#fff}
+
+.actor-body{
+  display:none;padding:0 18px 18px;
+}
+.actor-card.open .actor-body{display:block}
+
+.actor-stats-row{
+  display:flex;gap:8px;margin-bottom:14px;padding-top:2px;
+}
+.actor-stat{
+  flex:1;background:var(--bg);border-radius:var(--r-sm);
+  padding:8px;text-align:center;
+}
+.actor-stat strong{display:block;font-size:18px;font-weight:800;color:var(--navy);line-height:1}
+.actor-stat span{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:3px;display:block}
+
+/* FODA boxes */
+.foda-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.foda-box{border-radius:var(--r-sm);padding:12px 14px}
+.foda-box h4{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:8px;display:flex;align-items:center;gap:4px;
+}
+.foda-box ul{list-style:none;padding:0}
+.foda-box li{
+  font-size:11px;line-height:1.45;padding:3px 0 3px 10px;
+  color:#374151;position:relative;
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+.foda-box li:last-child{border-bottom:none}
+.foda-box li::before{content:'•';position:absolute;left:0;font-size:14px;line-height:1.1}
+
+.foda-f{background:#f0fdf4}.foda-f h4{color:#166534}.foda-f li::before{color:#22c55e}
+.foda-o{background:#eff6ff}.foda-o h4{color:#1d4ed8}.foda-o li::before{color:#3b82f6}
+.foda-d{background:#fefce8}.foda-d h4{color:#854d0e}.foda-d li::before{color:#eab308}
+.foda-a{background:#fef2f2}.foda-a h4{color:#991b1b}.foda-a li::before{color:#ef4444}
+
+/* ════════════════════════════════════════
+   CRUCE
+════════════════════════════════════════ */
+.insight-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:14px;margin-bottom:28px;
+}
+@media(max-width:860px){.insight-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.insight-grid{grid-template-columns:1fr}}
+
+.insight-card{
+  background:var(--surface);border-radius:var(--r-lg);
+  padding:20px;box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+  border-top:3px solid var(--ic-color,var(--navy));
+  position:relative;overflow:hidden;
+}
+.insight-icon{font-size:22px;margin-bottom:10px;display:block}
+.insight-card h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3}
+.insight-card p{font-size:11.5px;color:var(--muted);line-height:1.55}
+
+.table-wrap{
+  background:var(--surface);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-md);overflow:clip;
+  border:1px solid var(--border);
+}
+.table-head-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  gap:12px;flex-wrap:wrap;
+}
+.table-head-bar h3{font-size:14px;font-weight:700;color:var(--navy)}
+.table-count{
+  background:var(--bg);border-radius:20px;padding:3px 10px;
+  font-size:11px;font-weight:600;color:var(--muted);
+}
+.table-scroll{overflow-x:auto}
+table.cruce{width:100%;border-collapse:collapse;font-size:12px}
+table.cruce thead th{
+  background:var(--navy);color:rgba(255,255,255,.85);
+  padding:11px 10px;text-align:left;font-weight:600;
+  font-size:11px;letter-spacing:.2px;white-space:nowrap;
+}
+table.cruce tbody tr{border-bottom:1px solid var(--border)}
+table.cruce tbody tr:last-child{border-bottom:none}
+table.cruce tbody tr:nth-child(even) td{background:#fafbfc}
+table.cruce tbody tr:hover td{background:#f0f4ff}
+table.cruce td{padding:9px 10px;vertical-align:middle;color:var(--text)}
+table.cruce td:first-child{font-weight:600;color:var(--navy)}
+
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 9px;border-radius:10px;
+  font-size:10.5px;font-weight:600;white-space:nowrap;
+}
+.b-urbana{background:#dbeafe;color:#1e40af}
+.b-rural{background:#dcfce7;color:#166534}
+.b-func{background:#f3e8ff;color:#6b21a8}
+.b-seg{background:#fee2e2;color:#991b1b}
+.b-adulto{background:#fce7f3;color:#9d174d}
+.b-cosoc{background:#fef3c7;color:#92400e}
+.b-transporte{background:#f1f5f9;color:#475569}
+.b-junta{background:#ecfccb;color:#3f6212}
+.b-nna{background:#d1fae5;color:#065f46}
+.b-otros{background:#f3f4f6;color:#374151}
+
+.chk{color:#16a34a;font-size:15px;font-weight:700}
+.nop{color:#cbd5e1;font-size:15px}
+
+/* ════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════ */
+footer{
+  background:var(--navy2);
+  padding:28px 24px;
+  margin-top:0;
+}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-left p{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6}
+.footer-left strong{color:var(--gold2)}
+.footer-divider{width:1px;height:28px;background:rgba(255,255,255,.1)}
+.footer-right{font-size:11px;color:rgba(255,255,255,.3);text-align:right}
+
+/* ════════════════════════════════════════
+   MAP POPUP
+════════════════════════════════════════ */
+.leaflet-popup-content-wrapper{
+  border-radius:var(--r-lg)!important;padding:0!important;
+  box-shadow:0 8px 30px rgba(0,0,0,.2)!important;
+  border:1px solid var(--border)!important;
+}
+.leaflet-popup-content{margin:0!important;width:220px!important}
+.pop{padding:14px 16px}
+.pop-tipo{
+  display:inline-block;padding:2px 9px;border-radius:10px;
+  font-size:10px;font-weight:700;margin-bottom:8px;
+}
+.pop h3{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3}
+.pop-row{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:3px}
+.pop-asist{
+  margin-top:10px;padding-top:10px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.pop-asist-num{font-size:20px;font-weight:800;color:var(--navy)}
+.pop-asist-lbl{font-size:10px;color:var(--muted);line-height:1.3}
+
+/* ════════════════════════════════════════
+   SNA (Red de Actores)
+════════════════════════════════════════ */
+.sna-themes{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;
+  padding:14px 16px;background:var(--surface);border-radius:var(--r-md);
+  border:1px solid var(--border);
+}
+.sna-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;border-radius:20px;
+  background:#fff;border:2px solid;
+  font-size:11.5px;font-weight:700;cursor:pointer;
+  transition:all .2s;
+  font-family:inherit;
+}
+.sna-chip:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.sna-chip.active{color:#fff!important}
+.sna-chip-icon{font-size:14px}
+.sna-chip-count{
+  background:rgba(0,0,0,.08);padding:1px 7px;border-radius:10px;
+  font-size:10px;font-weight:800;
+}
+.sna-chip.active .sna-chip-count{background:rgba(255,255,255,.25)}
+
+.sna-layout{
+  display:grid;grid-template-columns:1fr 320px;gap:16px;
+}
+@media(max-width:1000px){.sna-layout{grid-template-columns:1fr}}
+
+.sna-graph-wrap{
+  background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);
+  border-radius:var(--r-lg);border:1px solid var(--border);
+  overflow:hidden;position:relative;
+}
+#snaGraph{width:100%;height:580px;cursor:grab}
+#snaGraph:active{cursor:grabbing}
+.sna-tip{
+  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+  background:rgba(15,45,82,.92);color:rgba(255,255,255,.9);
+  padding:6px 14px;border-radius:18px;font-size:10.5px;font-weight:500;
+  white-space:nowrap;backdrop-filter:blur(8px);
+  pointer-events:none;
+}
+
+.sna-side{
+  background:var(--surface);border-radius:var(--r-lg);
+  border:1px solid var(--border);padding:0;overflow:hidden;
+  display:flex;flex-direction:column;max-height:580px;
+}
+.sna-side-head{
+  padding:16px 18px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%);
+  color:#fff;
+}
+.sna-side-head strong{font-size:13px;font-weight:700;display:block}
+.sna-side-sub{font-size:11px;color:rgba(255,255,255,.65);margin-top:2px;display:block}
+.sna-detail{padding:18px;overflow-y:auto;flex:1}
+.sna-empty{text-align:center;padding:36px 12px}
+.sna-detail h4{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.sna-detail .sna-desc{font-size:12px;color:var(--text);line-height:1.55;margin-bottom:14px}
+.sna-detail .sna-actor-list{margin-top:12px}
+.sna-detail .sna-actor{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;
+  background:var(--light);border-radius:var(--r-sm);margin-bottom:6px;
+  border-left:3px solid;
+}
+.sna-actor-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.sna-actor-info{flex:1;min-width:0}
+.sna-actor-name{font-size:11.5px;font-weight:700;color:var(--navy);line-height:1.2}
+.sna-actor-desc{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* SVG styles */
+.sna-link{stroke-opacity:.35;transition:stroke-opacity .2s,stroke-width .2s}
+.sna-link.highlighted{stroke-opacity:.85;stroke-width:3}
+.sna-link.faded{stroke-opacity:.06}
+.sna-node{cursor:pointer;transition:opacity .2s}
+.sna-node.faded{opacity:.2}
+.sna-node-circle{stroke:#fff;stroke-width:2.5;transition:stroke-width .2s}
+.sna-node.highlighted .sna-node-circle{stroke-width:4}
+.sna-node-label{
+  font-size:10.5px;font-weight:700;fill:var(--navy);
+  text-anchor:middle;pointer-events:none;user-select:none;
+  paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;
+}
+.sna-node-sublabel{
+  font-size:9px;font-weight:500;fill:var(--muted);
+  text-anchor:middle;pointer-events:none;user-select:none;
+}
+
+/* Proyectos de trabajo colaborativo */
+.sna-projects{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+  gap:14px;
+}
+.sna-project{
+  background:var(--surface);border-radius:var(--r-lg);
+  border:1px solid var(--border);padding:18px;
+  border-top:4px solid;position:relative;overflow:hidden;
+  transition:all .2s;
+}
+.sna-project:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.sna-project-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sna-project-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.sna-project-title{flex:1;font-size:13.5px;font-weight:800;color:var(--navy);line-height:1.25}
+.sna-project-desc{font-size:11.5px;color:var(--text);line-height:1.55;margin-bottom:12px}
+.sna-project-actors{
+  display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;
+  border-top:1px solid var(--border);
+}
+.sna-project-actor{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:10px;
+  background:var(--light);
+  font-size:9.5px;font-weight:700;color:var(--navy);
+  border:1px solid var(--border);
+}
+.sna-project-actor-dot{width:6px;height:6px;border-radius:50%}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+@media(max-width:860px){
+  .nav-btn{padding:12px 13px;font-size:11.5px}
+}
+@media(max-width:640px){
+  .hero h2{font-size:24px}
+  .hero{padding:30px 16px 36px}
+  .map-footer{grid-template-columns:1fr 1fr}
+  .section{padding:24px 16px 36px}
+  .footer-divider{display:none}
+  .nav-btn{padding:11px 10px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<!-- ═══ HEADER ═══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-icon">🏛️</div>
+      <div class="logo-text">
+        <h1>Diagnóstico Sociedad Civil</h1>
+        <p>Municipalidad de Rengo · PLADECO 2025–2035 · Proceso Participativo</p>
+      </div>
+    </div>
+    <div class="header-pills">
+      <span class="pill pill-gold">Proceso 2024–2025</span>
+      <span class="pill pill-blue">Región O'Higgins</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ NAV ═══════════════════════════════════════════ -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="switchTab('mapa',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      Mapa de Participación
+    </button>
+    <button class="nav-btn" onclick="switchTab('cuantitativo',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      Análisis Cuantitativo
+    </button>
+    <button class="nav-btn" onclick="switchTab('foda',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16m8-8H4"/></svg>
+      Diagnóstico por Actor
+    </button>
+    <button class="nav-btn" onclick="switchTab('cruce',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+      Cruce de Datos
+    </button>
+    <button class="nav-btn" onclick="switchTab('sna',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><line x1="6" y1="6" x2="12" y2="12"/><line x1="18" y1="6" x2="12" y2="12"/><line x1="6" y1="18" x2="12" y2="12"/><line x1="18" y1="18" x2="12" y2="12"/></svg>
+      Red SNA
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Diagnóstico Territorial · Rengo 2025</div>
+    <h2>Participación Ciudadana<br><span>en Rengo</span></h2>
+    <p class="hero-lead">Cruce de entrevistas cualitativas con datos de asistencia territorial para el Plan de Desarrollo Comunal 2025–2035. Diagnóstico integral de la sociedad civil, organizaciones funcionales y territoriales.</p>
+    <div class="stats-grid">
+      <div class="stat-card" style="--accent:#2563eb">
+        <span class="stat-icon">🏘️</span>
+        <span class="stat-num">95</span>
+        <span class="stat-label">Organizaciones</span>
+        <span class="stat-sub">convocadas</span>
+      </div>
+      <div class="stat-card" style="--accent:#16a34a">
+        <span class="stat-icon">👥</span>
+        <span class="stat-num">472</span>
+        <span class="stat-label">Participantes</span>
+        <span class="stat-sub">totales registrados</span>
+      </div>
+      <div class="stat-card" style="--accent:#d4a017">
+        <span class="stat-icon">📍</span>
+        <span class="stat-num">89</span>
+        <span class="stat-label">Con GPS</span>
+        <span class="stat-sub">mapeadas en territorio</span>
+      </div>
+      <div class="stat-card" style="--accent:#7c3aed">
+        <span class="stat-icon">📅</span>
+        <span class="stat-num">74</span>
+        <span class="stat-label">Reuniones</span>
+        <span class="stat-sub">internas y externas</span>
+      </div>
+      <div class="stat-card" style="--accent:#0891b2">
+        <span class="stat-icon">📝</span>
+        <span class="stat-num">30</span>
+        <span class="stat-label">Entrevistas</span>
+        <span class="stat-sub">actores clave</span>
+      </div>
+      <div class="stat-card" style="--accent:#dc2626">
+        <span class="stat-icon">🔍</span>
+        <span class="stat-num">8</span>
+        <span class="stat-label">Grupos FODA</span>
+        <span class="stat-sub">con análisis cualitativo</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTENT ═══════════════════════════════════════ -->
+<div class="content">
+
+<!-- ── MAPA ─────────────────────────────────────────── -->
+<section class="section active" id="sec-mapa">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Distribución Territorial</div>
+      <h2>Mapa de Participación</h2>
+      <p>Visualización geográfica de las 95 organizaciones participantes en el proceso PLADECO. Filtra por tipo para analizar la cobertura por sector.</p>
+    </div>
+
+    <div class="map-toolbar" id="mapFilters"></div>
+    <div id="map"></div>
+    <div class="legend-bar" id="mapLegend"></div>
+
+    <div class="map-footer">
+      <div class="map-kpi"><strong style="color:#1a3d8f">50</strong><span>JJVV Urbanas</span></div>
+      <div class="map-kpi"><strong style="color:#2d9a4d">24</strong><span>JJVV Rurales</span></div>
+      <div class="map-kpi"><strong style="color:#64748b">21</strong><span>Org. Funcionales y otros</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CUANTITATIVO ──────────────────────────────────── -->
+<section class="section" id="sec-cuantitativo">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Estadísticas del Proceso</div>
+      <h2>Análisis Cuantitativo</h2>
+      <p>Distribución estadística de la participación, cronología de reuniones y cobertura territorial por tipo de organización.</p>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h3>Organizaciones por Tipo</h3>
+          <p>Conteo de organizaciones según su categoría funcional o territorial</p>
+        </div>
+        <div class="chart-wrap"><canvas id="chartTipo"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h3>Asistentes por Tipo</h3>
+          <p>Total de personas registradas agrupadas por tipo de organización</p>
+        </div>
+        <div class="chart-wrap"><canvas id="chartAsist"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h3>Cronología de Reuniones</h3>
+          <p>Intensidad del proceso mes a mes — peak en enero 2025 (JJVV urbanas)</p>
+        </div>
+        <div class="chart-wrap"><canvas id="chartCrono"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <h3>Sede de Reunión</h3>
+          <p>Proporción entre reuniones en terreno y en la Municipalidad</p>
+        </div>
+        <div class="chart-wrap"><canvas id="chartSede"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FODA ──────────────────────────────────────────── -->
+<section class="section" id="sec-foda">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Análisis Cualitativo</div>
+      <h2>Diagnóstico por Actor Social</h2>
+      <p>Análisis FODA por grupo actor, elaborado a partir de entrevistas en profundidad y grupos focales realizados durante el proceso participativo 2024–2025.</p>
+    </div>
+    <div class="actor-grid" id="actorGrid"></div>
+  </div>
+</section>
+
+<!-- ── CRUCE ─────────────────────────────────────────── -->
+<section class="section" id="sec-cruce">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Integración de Fuentes</div>
+      <h2>Cruce de Datos</h2>
+      <p>Organizaciones que participaron en reuniones territoriales <strong>y</strong> en el proceso de entrevistas cualitativas del PLADECO, permitiendo un diagnóstico multi-fuente.</p>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight-card" style="--ic-color:#16a34a">
+        <span class="insight-icon">✅</span>
+        <h4>Cobertura Completa</h4>
+        <p>8 grupos actor tienen tanto participación territorial como entrevista cualitativa registrada.</p>
+      </div>
+      <div class="insight-card" style="--ic-color:#1a3d8f">
+        <span class="insight-icon">🏘️</span>
+        <h4>50 JJVV Urbanas</h4>
+        <p>Todas las juntas de vecinos urbanas participaron en reuniones y respondieron cuestionario completo.</p>
+      </div>
+      <div class="insight-card" style="--ic-color:#d4a017">
+        <span class="insight-icon">🌿</span>
+        <h4>24 JJVV Rurales</h4>
+        <p>Con diagnóstico hídrico de Junta de Vigilancia Río Claro y levantamiento social territorial.</p>
+      </div>
+      <div class="insight-card" style="--ic-color:#dc2626">
+        <span class="insight-icon">⚠️</span>
+        <h4>Brechas Detectadas</h4>
+        <p>7 organizaciones sin registro de asistencia. Requieren seguimiento en próxima etapa.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-head-bar">
+        <h3>Tabla de Cruce · Participación &amp; Entrevistas</h3>
+        <span class="table-count" id="cruceCount">20 registros</span>
+      </div>
+      <div class="table-scroll">
+        <table class="cruce">
+          <thead>
+            <tr>
+              <th>Organización / Grupo</th>
+              <th>Tipo</th>
+              <th>Asistentes</th>
+              <th>GPS</th>
+              <th>Entrevista</th>
+              <th>FODA</th>
+              <th>Mes</th>
+              <th>Sede</th>
+            </tr>
+          </thead>
+          <tbody id="cruceBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RED SNA ───────────────────────────────────────── -->
+<section class="section" id="sec-sna">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Análisis de Red Social · Trabajo Colaborativo</div>
+      <h2>Red SNA · Actores y Temas Comunes</h2>
+      <p>Visualización de relaciones entre los actores sociales de Rengo agrupados por <strong>temas comunes y áreas de trabajo colaborativo</strong> identificadas en los FODA. Cada conexión representa una oportunidad concreta de articulación entre organizaciones para el PLADECO 2025–2035. Haz clic en los temas para filtrar la red.</p>
+    </div>
+
+    <!-- Theme filter toolbar -->
+    <div class="sna-themes" id="snaThemes"></div>
+
+    <!-- Network graph + side panel -->
+    <div class="sna-layout">
+      <div class="sna-graph-wrap">
+        <div id="snaGraph"></div>
+        <div class="sna-tip">💡 Arrastra los nodos para reorganizar · Pasa el cursor para ver conexiones · Doble clic para fijar/liberar</div>
+      </div>
+      <div class="sna-side" id="snaSide">
+        <div class="sna-side-head">
+          <strong>Tema seleccionado</strong>
+          <span class="sna-side-sub">Selecciona un tema o actor</span>
+        </div>
+        <div id="snaDetail" class="sna-detail">
+          <div class="sna-empty">
+            <div style="font-size:36px;margin-bottom:8px">🕸️</div>
+            <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px">Red de 13 actores</div>
+            <div style="font-size:11.5px;color:var(--muted);line-height:1.6">Conectados por 9 temas comunes y oportunidades de trabajo conjunto identificadas en los FODA por actor.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trabajo en conjunto a desarrollar -->
+    <div style="margin-top:32px">
+      <div class="sec-head" style="margin-bottom:20px">
+        <div class="sec-eyebrow">Articulaciones Estratégicas</div>
+        <h2 style="font-size:18px">Trabajo en Conjunto a Desarrollar</h2>
+        <p style="font-size:13px;margin-top:6px">Proyectos concretos de articulación inter-actores derivados del cruce de oportunidades del análisis FODA.</p>
+      </div>
+
+      <div class="sna-projects" id="snaProjects"></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /content -->
+
+<!-- ═══ FOOTER ════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <p><strong>Municipalidad de Rengo</strong> · PLADECO 2025–2035</p>
+      <p>Diagnóstico Sociedad Civil · Proceso Participativo 2024–2025 · Región del Libertador B. O'Higgins</p>
+      <p style="margin-top:6px;font-size:11px;color:rgba(255,255,255,.3)">Datos recopilados: Septiembre 2024 – Abril 2025 &nbsp;·&nbsp; 95 organizaciones &nbsp;·&nbsp; 472 participantes</p>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-right">
+      Unidad PLADECO · Administración Municipal de Rengo<br>
+      <span style="font-size:10px;opacity:.6">Publicado Mayo 2025</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════ -->
+<script>
+/* ─── DATA ────────────────────────────────────────── */
+var ORGS = [{"n":"UCAM","c":[-34.406749787851204,-70.86616298265547],"f":"15 de octubre - 11 de noviembre","a":25,"t":"Adulto Mayor","s":"Externa"},{"n":"Club Deportivo Nacional de Rosario","c":[-34.35202777777778,-70.83683333333333],"f":"21 de enero","a":7,"t":"Club Deportivo","s":"Externa"},{"n":"Club Deportivo Real Juventud","c":[-34.336232938776305,-70.83265067895863],"f":"12 de enero","a":4,"t":"Club Deportivo","s":"Externa"},{"n":"Centro Cultural Rosario","c":[-34.350011822051044,-70.83970955767718],"f":"29 de octubre","a":0,"t":"Cultural","s":"Externa"},{"n":"JJVV Apalta","c":[-34.336997710721604,-70.86711601924637],"f":"10 de octubre","a":6,"t":"JJVV Rural","s":"Externa"},{"n":"JJV Popeta","c":[-34.433388888888885,-70.79183333333333],"f":"15 de octubre","a":7,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Esmeralda Villa La Unión","c":[-34.33836111111111,-70.89952777777779],"f":"28 de octubre","a":14,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Chanqueahue","c":[-34.41086111111111,-70.79069444444444],"f":"04 de noviembre","a":5,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV San Jorge","c":[-34.330083333333334,-70.89886111111112],"f":"19 de noviembre","a":20,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Pueblo Hundido","c":[-34.38011111111111,-70.88],"f":"20 de noviembre","a":20,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Los Gomeros y Las 4 Puertas","c":[-34.349722222222226,-70.86136111111111],"f":"01 de diciembre","a":8,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV El Llano","c":[-34.35813888888889,-70.81580555555556],"f":"15 de diciembre","a":17,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Naicura","c":[-34.32368175078814,-70.92287506948998],"f":"15 de diciembre","a":16,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa del Cóbil Población Santa Rosa","c":[-34.40011111111111,-70.8933888888889],"f":"16 de diciembre","a":11,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Las Nieves","c":[-34.47888888888889,-70.74352777777778],"f":"17 de diciembre","a":9,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Las Pataguas","c":[-34.392805555555554,-70.94083333333333],"f":"23 de diciembre","a":3,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Río Claro - La Chimba","c":[-34.41057017896319,-70.81140056811174],"f":"29 de diciembre","a":3,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Cerrillos","c":[-34.39431913707723,-70.78022377654088],"f":"19 de diciembre","a":6,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Choapinos","c":[-34.32425,-70.83333333333333],"f":"12 de diciembre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Las Hojas","c":[-34.39302777777778,-70.87141666666667],"f":"26 de noviembre","a":1,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV El Retiro","c":[-34.33686111111111,-70.83700000000001],"f":"27 de octubre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Lo Cartagena","c":[-34.383544172932574,-70.86704622637166],"f":"10 de octubre","a":1,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Lo de Lobo","c":[-34.37871437746787,-70.81407355027655],"f":"21 de octubre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Don Vicente (Rosario)","c":[-34.35118174333191,-70.83484089716688],"f":"05 de enero","a":33,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Cordillera","c":[-34.35447222222222,-70.83652777777778],"f":"06 de enero","a":21,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rinconada de Malambo","c":[-34.41586388888889,-70.83816666666667],"f":"06 de enero","a":10,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rosario Pichuguao","c":[-34.34402590040686,-70.8353021103506],"f":"07 de enero","a":14,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Arcoíris","c":[-34.35738888888889,-70.83847222222222],"f":"08 de enero","a":18,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rosario Norte","c":[-34.33958156120555,-70.83510759394052],"f":"09 de enero","a":16,"t":"JJVV Rural","s":"Externa"},{"n":"Esgrima","c":[-34.40856169980855,-70.8538534768708],"f":"na","a":1,"t":"Club Deportivo","s":"Externa"},{"n":"Club Océano","c":[-34.39395275274926,-70.8517232005266],"f":"na","a":1,"t":"Club Deportivo","s":"Externa"},{"n":"Carabineros","c":[-34.408692526531084,-70.86407945191705],"f":"23 de febrero","a":2,"t":"Seguridad","s":"Externa"},{"n":"Consultivo Comunal NNA","c":[-34.4103413472238,-70.85712197599382],"f":"27 de abril","a":21,"t":"NNA/Infancia","s":"Externa"},{"n":"Bomberos","c":[-34.405437312262606,-70.84967872588945],"f":"13 de abril","a":5,"t":"Seguridad","s":"Externa"},{"n":"Club de Adulto Mayor Villa Jardín","c":[-34.433388888888885,-70.79183333333333],"f":"06 de marzo","a":17,"t":"Adulto Mayor","s":"Externa"},{"n":"Club de Adulto Mayor Por Siempre Unidos","c":[-34.34490058665432,-70.8362390084657],"f":"04 de marzo","a":13,"t":"Adulto Mayor","s":"Externa"},{"n":"Junta de Vigilancia","c":[-34.40127777777778,-70.85666666666667],"f":"06 de marzo","a":2,"t":"Junta Vigilancia","s":"Externa"},{"n":"Actores Culturales","c":[-34.40842527084617,-70.86346224217233],"f":"26 de noviembre","a":12,"t":"Cultural","s":"Municipal"},{"n":"Colectivos","c":[-34.40842527084617,-70.86346224217233],"f":"26 de febrero","a":10,"t":"Transporte","s":"Municipal"},{"n":"Buses Urbanos / Interurbanos","c":[-34.40842527084617,-70.86346224217233],"f":"25 de febrero","a":3,"t":"Transporte","s":"Municipal"},{"n":"COSOC","c":[-34.40842527084617,-70.86346224217233],"f":"11 de diciembre","a":9,"t":"COSOC","s":"Municipal"},{"n":"Club de Huasos","c":[-34.40842527084617,-70.86346224217233],"f":"24 de febrero","a":6,"t":"Cultural","s":"Municipal"},{"n":"Cámara de Comercio","c":[-34.40842527084617,-70.86346224217233],"f":"25 de septiembre","a":4,"t":"Comercio","s":"Municipal"},{"n":"Ferias de Rengo","c":[-34.40842527084617,-70.86346224217233],"f":"05 de diciembre","a":2,"t":"Comercio","s":"Municipal"},{"n":"Medio Ambiente","c":[-34.40842527084617,-70.86346224217233],"f":"30 de septiembre","a":4,"t":"Medio Ambiente","s":"Municipal"},{"n":"Libertad","c":[-34.408505396644436,-70.85732528906746],"f":"19 de enero","a":59,"t":"JJVV Urbana","s":"Municipal"},{"n":"Gregorio Araya","c":[-34.41495843262286,-70.85702330450339],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"P2","c":[-34.41070779873472,-70.85952870926779],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Las Torres Primera Etapa","c":[-34.414674838919865,-70.86010190222518],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Abedules","c":[-34.407483896166276,-70.84223688381466],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Caupolícan","c":[-34.406266402718984,-70.8512646078043],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Rienzi Valencia","c":[-34.395007168958124,-70.8502340043324],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valentín Letelier","c":[-34.403375417893294,-70.85187257479852],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Santa Laura","c":[-34.390137760775985,-70.85138889241368],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Europa","c":null,"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Los Maitenes","c":null,"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Deseada","c":[-34.402585954171954,-70.87094591312169],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Nueva San Francisco","c":null,"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa El Romeral","c":[-34.41087180969339,-70.85792543865755],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa El Molino","c":[-34.397529584674785,-70.84816005155788],"f":"21 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo","c":[-34.39464164292698,-70.85547623524762],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"La Isla","c":[-34.394302193644755,-70.84579167292951],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo II Etapa II","c":[-34.394827341124696,-70.8555387719292],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Rucahue","c":[-34.399334676180985,-70.8498704901876],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Huertos","c":null,"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Alonso de Ercilla","c":[-34.404710978851064,-70.85166598394015],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa O'Higgins","c":[-34.39213879873815,-70.84976579955715],"f":"27 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Araucanía","c":[-34.391997844230026,-70.85207864680689],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"4 de Septiembre","c":[-34.39439394561628,-70.84556255939732],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Naranjal Norte","c":[-34.407077416959176,-70.86957673361844],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Viñedos de Rengo","c":[-34.39692638064187,-70.84576409114236],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Hacienda Las Palmas II","c":[-34.40974226040788,-70.86985047433768],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Migueles","c":[-34.39133820055936,-70.83190331667232],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"El Esfuerzo","c":[-34.39284050138423,-70.85211341255663],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa España","c":[-34.3971156265743,-70.8544334925729],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Álamos","c":[-34.39615559066269,-70.86260885547372],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Santa Ana","c":[-34.39993470471927,-70.8607128081818],"f":"05 de febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Altos de San Martín","c":[-34.390509739169154,-70.85574373231141],"f":"05 de febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"El Villorrio","c":[-34.41581560006812,-70.85021408775737],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Las Américas","c":[-34.41138888888889,-70.85111111111111],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"San Benito","c":[-34.414161862943125,-70.84816730772665],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Espinos","c":[-34.41054670675779,-70.84136415449328],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Domingo Paredes","c":[-34.41277559486109,-70.85998322633164],"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valle del Claro Sur","c":null,"f":"19 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Hacienda Las Palmas","c":[-34.409086948093055,-70.87109730839443],"f":"05 de febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Brisas del Valle de Rengo","c":[-34.413407684272485,-70.86995956759515],"f":"05 de febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Renguinos del 79","c":[-34.39552902781615,-70.85506883128758],"f":"05 de febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo 1","c":[-34.39354849541132,-70.85697465050173],"f":"05 de febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Primavera Etapa 7","c":[-34.411988529072154,-70.87608280250521],"f":"29 de enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Francisco Ruiz","c":[-34.40250013783104,-70.85768836312475],"f":"10 de marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Oriente","c":[-34.41411358842348,-70.85188272822272],"f":"10 de marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Los Aromos","c":[-34.395231637959405,-70.85648414056246],"f":"10 de marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Augusto Poblete","c":[-34.39485897532925,-70.85623122320716],"f":"10 de marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Unión Tres","c":null,"f":"11 de marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Caupolicán","c":[-34.40028423913118,-70.85880220180249],"f":"12 de marzo","a":0,"t":"JJVV Urbana","s":"Municipal"}];
+
+var TYPE_COLORS={
+  'JJVV Urbana':'#1a3d8f','JJVV Rural':'#2d9a4d','Adulto Mayor':'#8e44ad',
+  'Cultural':'#f5921d','Transporte':'#475569','COSOC':'#c0392b',
+  'Seguridad':'#1e293b','Club Deportivo':'#2980b9','Comercio':'#d97706',
+  'NNA/Infancia':'#059669','Junta Vigilancia':'#92400e','Medio Ambiente':'#0891b2',
+  'Org. Funcional':'#94a3b8'
+};
+
+var FODA_DATA=[
+  {id:'ucam',nombre:'UCAM · Adultos Mayores',emoji:'👴',color:'#8e44ad',
+   desc:'Unión Comunal de Adultos Mayores · 3 reuniones · 55 asistentes',
+   asist:55,reuniones:3,tags:['Bienestar','Salud','Espacios Públicos'],
+   f:['Plazas y plazuelas bien utilizadas por la comunidad','Atención en salud destacada (CESFAM)','Cambio positivo en atención municipal','Actividades comunitarias mejoradas'],
+   o:['Instancias de reciclaje comunitario','Clínica del Adulto Mayor como proyecto futuro','Jornadas exclusivas para personas mayores','Mayor comunicación vecinal'],
+   d:['Centros de reciclaje deteriorados y sin foco','Filas de gran magnitud en CESFAM','Cortes de luz frecuentes en varios sectores','Falta de accesibilidad en eventos'],
+   a:['Inseguridad y luminarias deficientes','Abandono de áreas verdes (Valentín Letelier)','Falta de fiscalización de ordenanzas','Lentitud en respuesta municipal']},
+  {id:'cosoc',nombre:'COSOC · Consejo Sociedad Civil',emoji:'🏛️',color:'#c0392b',
+   desc:'Consejo de la Sociedad Civil · 1 reunión · 9 asistentes',
+   asist:9,reuniones:1,tags:['Gobernanza','Planificación','Participación'],
+   f:['Espacios de participación ciudadana activos','Autoridades receptivas y disponibles','Coordinación sectorial inicial positiva','Instancias de información y consulta'],
+   o:['PRC como herramienta de ordenamiento territorial','CESFAM Rosario con atención integral','Tótems de información ciudadana','Reserva de terrenos para equipamiento futuro'],
+   d:['Tiempos de respuesta lentos o nulos','Descoordinación entre direcciones municipales','Brecha digital y etaria en comunicación','Lenguaje técnico excluyente'],
+   a:['Crecimiento poblacional sin servicios suficientes','Sectores rurales y al otro lado del ferrocarril abandonados','Pocas industrias y migración laboral','PRC requiere actualización urgente']},
+  {id:'cultural',nombre:'Actores Culturales',emoji:'🎭',color:'#f5921d',
+   desc:'Agentes culturales de Rengo · 1 reunión · 12 asistentes',
+   asist:12,reuniones:1,tags:['Cultura','Patrimonio','Identidad'],
+   f:['Iniciativas culturales con buena proyección','Disposición municipal para redes culturales','Articulación de actores a nivel comunal','Programación anual de actividades establecida'],
+   o:['Red de actores para co-diseño de políticas públicas','Plataformas digitales para difusión','Recorridos turísticos y patrimonio local','Jornadas de historia y arqueología comunal'],
+   d:['Sin catastro formal de artesanos','Poca difusión; comunidad no informada','Actores dejados de lado en procesos','Falta de respuesta municipal sistemática'],
+   a:['Pérdida de archivos históricos y patrimoniales','Baja participación en jornadas locales','Falta de financiamiento continuo','Confusión entre artesanía y manualidades']},
+  {id:'huasos',nombre:'Club de Huasos',emoji:'🐎',color:'#92400e',
+   desc:'Clubes de Rinconada, Rosario, Cerrillos y Esmeralda · 1 reunión · 6 asistentes',
+   asist:6,reuniones:1,tags:['Tradición','Cultura Rural','Identidad'],
+   f:['4 clubes activos con décadas de trayectoria','Medias lunas en Cerrillos y Esmeralda','Apoyo municipal en actividades de rodeo','Presencia de amazonas como actividad complementaria'],
+   o:['Cabalgatas en zonas rurales','Talleres de equinoterapia y campo','Alianzas con Federación Campesina','Subvención para emprendedores agrícolas'],
+   d:['Sin local de reuniones (casas particulares)','Poco financiamiento para actividades','Baja presencia en desfiles comunales','Parcelaciones reducen espacios de rodeo'],
+   a:['Pérdida de identidad campesina','Restricciones de actividades rurales en zona urbana','Baja visibilización frente a clubes de fútbol','Vergüenza social hacia actividades campesinas']},
+  {id:'seguridad',nombre:'Carabineros y Bomberos',emoji:'🚒',color:'#1e293b',
+   desc:'4ª Comisaría Carabineros y Bomberos Rengo · 2 reuniones · 7 asistentes',
+   asist:7,reuniones:2,tags:['Seguridad','Emergencias','Prevención'],
+   f:['Trabajo preventivo cumplido; Rengo como ciudad "tranquila"','Patrullajes diarios y MICC operativa','Bomberos con cobertura rural amplia','Coordinación con PDI para labores investigativas'],
+   o:['Cámaras de televigilancia y drones','Fotoradares en avenidas principales','Educación cívica como política preventiva','Recuperación de espacios públicos'],
+   d:['Baja dotación policial a nivel comunal','Espacios públicos y sitios eriazos abandonados','Falta de respuesta municipal a factores de riesgo','Escasa coordinación con Dirección de Tránsito'],
+   a:['Alcoholismo y drogadicción como factores de riesgo','Luminaria deficiente en sectores periféricos','Inhibidores de señal en ruta','Maleza y basura que atrae delincuencia']},
+  {id:'transporte',nombre:'Transporte Público',emoji:'🚌',color:'#2563eb',
+   desc:'GalBus, Servibus y Colectivos · 2 reuniones · 13 asistentes',
+   asist:13,reuniones:2,tags:['Movilidad','Conectividad','Infraestructura'],
+   f:['Empresas formalizadas con décadas de trayectoria','Tecnología GPS y redes sociales para información','Reducción de conflictos entre choferes y usuarios','Cobertura rural amplia (Popeta, Naicura, Cerrillos)'],
+   o:['Terminal de buses como proyecto prioritario','Paraderos con iluminación UV y señalética','Pago QR y tarjeta; cámaras en buses','Subvención adulto mayor para ampliar recorridos'],
+   d:['Sin terminal formal (andenes del mercado)','Frecuencias reducidas post-pandemia','Sin fiscalización de cumplimiento de frecuencias','Veredas sin accesibilidad para sillas de ruedas'],
+   a:['Menor demanda por mayor uso de vehículos particulares','Vías en mal estado durante invierno','Salida del río genera problemas de conectividad','Crecimiento urbano sin rediseño de recorridos']},
+  {id:'jjvv-urbana',nombre:'JJVV Urbanas',emoji:'🏘️',color:'#1a3d8f',
+   desc:'50 Juntas de Vecinos Urbanas · Municipalidad · Enero–Marzo 2025',
+   asist:59,reuniones:50,tags:['Barrios','Vecinos','Gestión Local'],
+   f:['50 JJVV activas con representación en todas las villas','Reunión masiva (59 asistentes en Libertad)','Mayoría lideradas por mujeres con alta motivación','Diagnóstico de socios, sede y necesidades levantado'],
+   o:['Fondos FRIL y mejoramiento barrial','Articulación directa con DIDECO','Diagnóstico territorial participativo','Mejora de plazas y áreas verdes por sector'],
+   d:['Pocas JJVV con sede propia','Baja asistencia en varias villas','Baja participación juvenil en directivas','Desconocimiento de cómo postular a proyectos'],
+   a:['Inseguridad en varios sectores (Villa España, Naranjal Norte)','Falta de equipamiento comunitario básico','Brechas de conectividad vial y peatonal','Luminaria deficiente en pasajes interiores']},
+  {id:'jjvv-rural',nombre:'JJVV Rurales y Junta de Vigilancia',emoji:'🌾',color:'#2d9a4d',
+   desc:'24 JJVV Rurales y Junta Vigilancia Río Claro · Oct. 2024 – Ene. 2025',
+   asist:262,reuniones:25,tags:['Rural','Agua','Identidad Local'],
+   f:['Organizaciones arraigadas con conocimiento del territorio','Junta de Vigilancia con 74 años y 1.200 regantes','Proyecto Embalse El Bollenar en curso','Reconocimiento por DGA y municipio'],
+   o:['Embalse El Bollenar para gestión hídrica','Riego tecnificado para cultivos de mayor valor','Turismo rural y recorridos patrimoniales','Alianzas con DGA y MOP para la cuenca'],
+   d:['20 años de sequía con impacto en cultivos','Baja asistencia en zonas más alejadas (1–3 personas)','Acceso limitado a servicios básicos y salud','Conflictos en permisos y derechos de agua'],
+   a:['Cambio climático y variabilidad hídrica creciente','Parcelaciones que fragmentan territorios productivos','Migración campo-ciudad de jóvenes','Cultivos anuales inviables por falta de agua']}
+];
+
+var CRUCE_DATA=[
+  {org:'UCAM',tipo:'Adulto Mayor',tc:'b-adulto',asist:25,gps:1,e:1,f:1,mes:'Oct-Nov',sede:'Externa'},
+  {org:'COSOC',tipo:'COSOC',tc:'b-cosoc',asist:9,gps:1,e:1,f:1,mes:'Diciembre',sede:'Municipal'},
+  {org:'Actores Culturales',tipo:'Cultural',tc:'b-otros',asist:12,gps:1,e:1,f:1,mes:'Noviembre',sede:'Municipal'},
+  {org:'Club de Huasos',tipo:'Cultural',tc:'b-otros',asist:6,gps:1,e:1,f:1,mes:'Febrero',sede:'Municipal'},
+  {org:'Carabineros',tipo:'Seguridad',tc:'b-seg',asist:2,gps:1,e:1,f:1,mes:'Febrero',sede:'Externa'},
+  {org:'Bomberos',tipo:'Seguridad',tc:'b-seg',asist:5,gps:1,e:1,f:1,mes:'Abril',sede:'Externa'},
+  {org:'Buses Urbanos / Interurbanos',tipo:'Transporte',tc:'b-transporte',asist:3,gps:1,e:1,f:1,mes:'Febrero',sede:'Municipal'},
+  {org:'Colectivos',tipo:'Transporte',tc:'b-transporte',asist:10,gps:1,e:1,f:1,mes:'Febrero',sede:'Municipal'},
+  {org:'JJVV Urbanas (50 villas)',tipo:'JJVV Urbana',tc:'b-urbana',asist:59,gps:1,e:1,f:1,mes:'Ene–Mar',sede:'Municipal'},
+  {org:'JJVV Rurales (24 juntas)',tipo:'JJVV Rural',tc:'b-rural',asist:262,gps:1,e:1,f:1,mes:'Oct–Ene',sede:'Externa'},
+  {org:'Junta Vigilancia Río Claro',tipo:'Junta Vigilancia',tc:'b-junta',asist:2,gps:1,e:1,f:1,mes:'Marzo',sede:'Externa'},
+  {org:'Club Adulto Mayor Villa Jardín',tipo:'Adulto Mayor',tc:'b-adulto',asist:17,gps:1,e:0,f:0,mes:'Marzo',sede:'Externa'},
+  {org:'Club Adulto Mayor Por Siempre Unidos',tipo:'Adulto Mayor',tc:'b-adulto',asist:13,gps:1,e:0,f:0,mes:'Marzo',sede:'Externa'},
+  {org:'Consultivo NNA',tipo:'NNA/Infancia',tc:'b-nna',asist:21,gps:1,e:0,f:0,mes:'Abril',sede:'Externa'},
+  {org:'Cámara de Comercio',tipo:'Comercio',tc:'b-otros',asist:4,gps:1,e:0,f:0,mes:'Septiembre',sede:'Municipal'},
+  {org:'Ferias de Rengo',tipo:'Comercio',tc:'b-otros',asist:2,gps:1,e:0,f:0,mes:'Diciembre',sede:'Municipal'},
+  {org:'Medio Ambiente',tipo:'Medio Ambiente',tc:'b-otros',asist:4,gps:1,e:0,f:0,mes:'Septiembre',sede:'Municipal'},
+  {org:'Club Deportivo Nacional de Rosario',tipo:'Club Deportivo',tc:'b-otros',asist:7,gps:1,e:0,f:0,mes:'Enero',sede:'Externa'},
+  {org:'Club Deportivo Real Juventud',tipo:'Club Deportivo',tc:'b-otros',asist:4,gps:1,e:0,f:0,mes:'Enero',sede:'Externa'},
+  {org:'Centro Cultural Rosario',tipo:'Cultural',tc:'b-otros',asist:0,gps:1,e:0,f:0,mes:'Octubre',sede:'Externa'}
+];
+
+/* ─── MAP ─────────────────────────────────────────── */
+var map, allMarkers=[], activeType='all';
+
+function initMap(){
+  map=L.map('map',{zoomControl:true}).setView([-34.40,-70.855],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors',maxZoom:18
+  }).addTo(map);
+
+  ORGS.forEach(function(org){
+    if(!org.c) return;
+    var col=TYPE_COLORS[org.t]||'#888';
+    var r=org.a>30?14:org.a>15?10:org.a>5?8:6;
+    var m=L.circleMarker(org.c,{
+      radius:r,fillColor:col,color:'#fff',weight:2,fillOpacity:.85,
+    }).addTo(map);
+    m.orgType=org.t;
+    m.bindPopup(
+      '<div class="pop">'+
+      '<span class="pop-tipo" style="background:'+col+'22;color:'+col+'">'+org.t+'</span>'+
+      '<h3>'+org.n+'</h3>'+
+      '<div class="pop-asist">'+
+        '<span class="pop-asist-num">'+(org.a||'—')+'</span>'+
+        '<span class="pop-asist-lbl">asistentes<br>'+org.f+'</span>'+
+      '</div>'+
+      '<div class="pop-row" style="margin-top:8px">📍 '+org.s+'</div>'+
+      '</div>'
+    );
+    allMarkers.push(m);
+  });
+
+  /* Filter buttons */
+  var fc=document.getElementById('mapFilters');
+  var btnAll=document.createElement('button');
+  btnAll.className='filter-all active';
+  btnAll.textContent='Todos (95)';
+  btnAll.onclick=function(){
+    activeType='all';
+    fc.querySelectorAll('.map-chip').forEach(function(b){b.classList.remove('active');b.style.background='#fff';b.style.color=b._col;});
+    btnAll.classList.add('active');
+    allMarkers.forEach(function(m){m.addTo(map);});
+  };
+  fc.appendChild(btnAll);
+
+  Object.keys(TYPE_COLORS).forEach(function(t){
+    var col=TYPE_COLORS[t];
+    var count=ORGS.filter(function(o){return o.t===t;}).length;
+    if(!count) return;
+    var btn=document.createElement('button');
+    btn.className='map-chip';
+    btn.style.borderColor=col;
+    btn.style.color=col;
+    btn._col=col;
+    btn.innerHTML='<span class="dot" style="background:'+col+'"></span>'+t+' ('+count+')';
+    btn.onclick=function(){
+      activeType=t;
+      fc.querySelectorAll('.map-chip').forEach(function(b){b.classList.remove('active');b.style.background='#fff';b.style.color=b._col;});
+      btnAll.classList.remove('active');
+      btn.classList.add('active');
+      btn.style.background=col;btn.style.color='#fff';
+      allMarkers.forEach(function(m){m.orgType===t?m.addTo(map):map.removeLayer(m);});
+    };
+    fc.appendChild(btn);
+  });
+
+  /* Legend */
+  var leg=document.getElementById('mapLegend');
+  Object.entries(TYPE_COLORS).forEach(function(kv){
+    var d=document.createElement('div');
+    d.className='legend-item';
+    d.innerHTML='<span class="legend-dot" style="background:'+kv[1]+'"></span>'+kv[0];
+    leg.appendChild(d);
+  });
+}
+
+/* ─── CHARTS ─────────────────────────────────────── */
+var chartsInit=false;
+function initCharts(){
+  if(chartsInit) return; chartsInit=true;
+  var typeCounts={},typeAsist={};
+  ORGS.forEach(function(o){typeCounts[o.t]=(typeCounts[o.t]||0)+1;typeAsist[o.t]=(typeAsist[o.t]||0)+o.a;});
+  var labels=Object.keys(typeCounts);
+  var cols=labels.map(function(l){return TYPE_COLORS[l]||'#888';});
+  var gridColor='#f1f5f9';
+  var opts={responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    layout:{padding:{bottom:8}},
+    scales:{y:{beginAtZero:true,grid:{color:gridColor},ticks:{font:{size:10}}},
+            x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45,minRotation:30}}}};
+
+  new Chart(document.getElementById('chartTipo'),{type:'bar',
+    data:{labels:labels,datasets:[{data:Object.values(typeCounts),backgroundColor:cols,borderRadius:5,borderSkipped:false}]},
+    options:opts});
+
+  new Chart(document.getElementById('chartAsist'),{type:'bar',
+    data:{labels:labels,datasets:[{data:Object.values(typeAsist),backgroundColor:cols,borderRadius:5,borderSkipped:false}]},
+    options:opts});
+
+  var mesOrder=['septiembre','octubre','noviembre','diciembre','enero','febrero','marzo','abril'];
+  var mesCounts={};mesOrder.forEach(function(m){mesCounts[m]=0;});
+  ORGS.forEach(function(o){var f=o.f.toLowerCase();mesOrder.forEach(function(m){if(f.includes(m))mesCounts[m]++;});});
+  new Chart(document.getElementById('chartCrono'),{type:'line',
+    data:{labels:mesOrder.map(function(m){return m.charAt(0).toUpperCase()+m.slice(1);}),
+          datasets:[{data:Object.values(mesCounts),borderColor:'#1a3d8f',
+            backgroundColor:'rgba(26,61,143,.08)',fill:true,tension:.35,
+            pointBackgroundColor:'#1a3d8f',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,grid:{color:gridColor},ticks:{font:{size:10}}},
+              x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+
+  var ext=ORGS.filter(function(o){return o.s==='Externa';}).length;
+  var mun=ORGS.filter(function(o){return o.s==='Municipal';}).length;
+  new Chart(document.getElementById('chartSede'),{type:'doughnut',
+    data:{labels:['Reunión en Terreno','Municipalidad'],
+          datasets:[{data:[ext,mun],backgroundColor:['#2d9a4d','#1a3d8f'],
+            borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:16,usePointStyle:true}}}}});
+}
+
+/* ─── FODA ───────────────────────────────────────── */
+var fodaInit=false;
+function initFoda(){
+  if(fodaInit) return; fodaInit=true;
+  var grid=document.getElementById('actorGrid');
+  FODA_DATA.forEach(function(a){
+    var card=document.createElement('div');
+    card.className='actor-card';
+    card.style.setProperty('--accent-color',a.color);
+    card.innerHTML=
+      '<div class="actor-header" onclick="toggleActor(this.closest(\'.actor-card\'))">'+
+        '<div class="actor-avatar" style="background:'+a.color+'18">'+a.emoji+'</div>'+
+        '<div class="actor-info">'+
+          '<h3>'+a.nombre+'</h3>'+
+          '<p>'+a.desc+'</p>'+
+          '<div class="actor-pills">'+a.tags.map(function(t){return '<span class="actor-pill">'+t+'</span>';}).join('')+'</div>'+
+        '</div>'+
+        '<div class="actor-toggle">▾</div>'+
+      '</div>'+
+      '<div class="actor-body">'+
+        '<div class="actor-stats-row">'+
+          '<div class="actor-stat"><strong>'+a.asist+'</strong><span>Asistentes</span></div>'+
+          '<div class="actor-stat"><strong>'+a.reuniones+'</strong><span>Reuniones</span></div>'+
+        '</div>'+
+        '<div class="foda-grid">'+
+          '<div class="foda-box foda-f"><h4>💪 Fortalezas</h4><ul>'+a.f.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>'+
+          '<div class="foda-box foda-o"><h4>🚀 Oportunidades</h4><ul>'+a.o.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>'+
+          '<div class="foda-box foda-d"><h4>⚠️ Debilidades</h4><ul>'+a.d.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>'+
+          '<div class="foda-box foda-a"><h4>🔴 Amenazas</h4><ul>'+a.a.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul></div>'+
+        '</div>'+
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
+function toggleActor(card){card.classList.toggle('open');}
+
+/* ─── CRUCE ─────────────────────────────────────── */
+var cruceInit=false;
+function initCruce(){
+  if(cruceInit) return; cruceInit=true;
+  var tb=document.getElementById('cruceBody');
+  CRUCE_DATA.forEach(function(r){
+    var tr=document.createElement('tr');
+    tr.innerHTML=
+      '<td>'+r.org+'</td>'+
+      '<td><span class="badge '+r.tc+'">'+r.tipo+'</span></td>'+
+      '<td style="font-weight:700;color:'+(r.asist>50?'#166534':r.asist>20?'#1d4ed8':'var(--text)')+'">'+r.asist+'</td>'+
+      '<td>'+(r.gps?'<span class="chk">✓</span>':'<span class="nop">–</span>')+'</td>'+
+      '<td>'+(r.e?'<span class="chk">✓</span>':'<span class="nop">–</span>')+'</td>'+
+      '<td>'+(r.f?'<span class="chk">✓</span>':'<span class="nop">–</span>')+'</td>'+
+      '<td style="color:var(--muted);font-size:11px">'+r.mes+'</td>'+
+      '<td><span style="font-size:11px;color:var(--muted)">'+r.sede+'</span></td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('cruceCount').textContent=CRUCE_DATA.length+' registros';
+}
+
+/* ─── SNA · Red de Actores ──────────────────────── */
+var SNA_ACTORS=[
+  {id:'ucam',name:'UCAM',desc:'Adultos Mayores',type:'Adulto Mayor',color:'#8e44ad',size:55},
+  {id:'cosoc',name:'COSOC',desc:'Consejo Soc. Civil',type:'COSOC',color:'#c0392b',size:9},
+  {id:'cultural',name:'Actores Culturales',desc:'Patrimonio',type:'Cultural',color:'#f5921d',size:12},
+  {id:'huasos',name:'Club de Huasos',desc:'Tradición rural',type:'Cultural',color:'#92400e',size:6},
+  {id:'carabineros',name:'Carabineros',desc:'4ª Comisaría',type:'Seguridad',color:'#1e293b',size:2},
+  {id:'bomberos',name:'Bomberos',desc:'Cobertura rural',type:'Seguridad',color:'#0f172a',size:5},
+  {id:'transporte',name:'Transporte',desc:'Buses y Colectivos',type:'Transporte',color:'#2563eb',size:13},
+  {id:'jjvv-u',name:'JJVV Urbanas',desc:'50 villas',type:'JJVV Urbana',color:'#1a3d8f',size:59},
+  {id:'jjvv-r',name:'JJVV Rurales',desc:'24 juntas',type:'JJVV Rural',color:'#2d9a4d',size:80},
+  {id:'jv',name:'JV Río Claro',desc:'1.200 regantes',type:'Junta Vigilancia',color:'#a16207',size:18},
+  {id:'nna',name:'Consultivo NNA',desc:'Infancia',type:'NNA/Infancia',color:'#059669',size:21},
+  {id:'comercio',name:'Cám. Comercio',desc:'Comerciantes',type:'Comercio',color:'#d97706',size:4},
+  {id:'mambiente',name:'Medio Ambiente',desc:'Sustentabilidad',type:'Medio Ambiente',color:'#0891b2',size:4}
+];
+
+var SNA_THEMES=[
+  {id:'seguridad',name:'Seguridad',icon:'🚨',color:'#dc2626',actors:['carabineros','bomberos','jjvv-u','jjvv-r','cosoc'],
+   desc:'Coordinación entre policía, bomberos y juntas vecinales para mejorar la seguridad pública, luminarias deficientes, sitios eriazos abandonados y prevención de drogas/alcoholismo.'},
+  {id:'salud',name:'Salud y Bienestar',icon:'🏥',color:'#16a34a',actors:['ucam','cosoc','jjvv-u','jjvv-r','nna'],
+   desc:'Mejora del CESFAM, atención al adulto mayor (Clínica AM), salud infantil, accesibilidad y bienestar comunitario en sectores urbanos y rurales.'},
+  {id:'cultura',name:'Cultura y Patrimonio',icon:'🎭',color:'#f5921d',actors:['cultural','huasos','jjvv-r','cosoc'],
+   desc:'Rescate del patrimonio campesino, identidad local, programación cultural anual, catastro de artesanos y recorridos patrimoniales.'},
+  {id:'movilidad',name:'Movilidad y Conectividad',icon:'🚌',color:'#2563eb',actors:['transporte','jjvv-u','jjvv-r','comercio','ucam'],
+   desc:'Terminal de buses, paraderos iluminados UV, recorridos rurales, conectividad urbano-rural, accesibilidad veredas y subvención adulto mayor.'},
+  {id:'agua',name:'Gestión Hídrica',icon:'💧',color:'#0891b2',actors:['jv','jjvv-r','mambiente'],
+   desc:'Proyecto Embalse El Bollenar, derechos de agua, riego tecnificado, gestión cuenca Río Claro y sustentabilidad ante 20 años de sequía.'},
+  {id:'espacios',name:'Espacios Públicos',icon:'🌳',color:'#8b5cf6',actors:['ucam','jjvv-u','cultural','carabineros','huasos'],
+   desc:'Plazas y áreas verdes (Valentín Letelier), medias lunas en Cerrillos/Esmeralda, recuperación sitios eriazos y mantención de equipamiento.'},
+  {id:'gobernanza',name:'Gobernanza Local',icon:'🏛️',color:'#7c3aed',actors:['cosoc','jjvv-u','jjvv-r','comercio','cultural','huasos'],
+   desc:'Participación ciudadana, articulación con direcciones municipales, actualización del PRC, planificación territorial y comunicación efectiva.'},
+  {id:'educacion',name:'Educación Cívica',icon:'📚',color:'#0ea5e9',actors:['nna','carabineros','bomberos','cosoc'],
+   desc:'Prevención de drogas/alcoholismo, educación vial, formación cívica y trabajo articulado con infancia y juventud (Consultivo NNA).'},
+  {id:'economia',name:'Economía Local',icon:'💼',color:'#d97706',actors:['comercio','jjvv-r','huasos','transporte','cultural'],
+   desc:'Ferias locales, emprendimiento agrícola, comercio rural, turismo rural-patrimonial y dinamización económica de Rengo.'}
+];
+
+var SNA_PROJECTS=[
+  {id:'p-embalse',title:'Mesa Hídrica Río Claro · Embalse El Bollenar',icon:'💧',color:'#0891b2',
+   desc:'Coordinación entre Junta Vigilancia, JJVV Rurales y Medio Ambiente para acelerar el proyecto Embalse El Bollenar, asegurar derechos de 1.200 regantes y promover riego tecnificado frente a 20 años de sequía.',
+   actors:['jv','jjvv-r','mambiente'],
+   theme:'agua'},
+  {id:'p-seguridad',title:'Plan Comunal de Seguridad Vecinal',icon:'🚨',color:'#dc2626',
+   desc:'Articulación entre Carabineros, Bomberos, JJVV Urbanas/Rurales y COSOC para abordar luminarias deficientes, sitios eriazos, alcoholismo y baja dotación policial. Incluye cámaras de televigilancia, drones y educación cívica preventiva.',
+   actors:['carabineros','bomberos','jjvv-u','jjvv-r','cosoc'],
+   theme:'seguridad'},
+  {id:'p-terminal',title:'Terminal de Buses + Paraderos Inteligentes',icon:'🚌',color:'#2563eb',
+   desc:'Proyecto compartido entre Transporte Público, JJVV, Cámara de Comercio y UCAM. Terminal formal, paraderos iluminados UV, subvención adulto mayor para ampliar recorridos rurales y pago QR/tarjeta.',
+   actors:['transporte','jjvv-u','jjvv-r','comercio','ucam'],
+   theme:'movilidad'},
+  {id:'p-am',title:'Clínica del Adulto Mayor y Reciclaje Comunitario',icon:'🏥',color:'#8e44ad',
+   desc:'Iniciativa UCAM-COSOC-JJVV-NNA para impulsar la Clínica del Adulto Mayor, jornadas exclusivas, recuperación de centros de reciclaje y reducción de filas en CESFAM con jornadas intergeneracionales.',
+   actors:['ucam','cosoc','jjvv-u','nna'],
+   theme:'salud'},
+  {id:'p-cultura',title:'Red Cultural y Patrimonio Vivo',icon:'🎭',color:'#f5921d',
+   desc:'Plataforma colaborativa entre Actores Culturales, Clubes de Huasos, JJVV Rurales y COSOC para catastro de artesanos, recorridos turísticos patrimoniales, jornadas de historia y dignificación de tradiciones campesinas.',
+   actors:['cultural','huasos','jjvv-r','cosoc'],
+   theme:'cultura'},
+  {id:'p-espacios',title:'Recuperación de Espacios Públicos Estratégicos',icon:'🌳',color:'#8b5cf6',
+   desc:'Trabajo conjunto UCAM-JJVV-Culturales-Carabineros-Huasos para reactivar plazas (Valentín Letelier), áreas verdes, medias lunas rurales y sitios eriazos que generan inseguridad. Incluye plan de mantención y vigilancia comunitaria.',
+   actors:['ucam','jjvv-u','cultural','carabineros','huasos'],
+   theme:'espacios'},
+  {id:'p-prc',title:'Actualización PRC y Gobernanza Territorial',icon:'🏛️',color:'#7c3aed',
+   desc:'Liderado por COSOC con apoyo de JJVV, Cámara de Comercio, Culturales y Huasos para actualizar el Plan Regulador Comunal, mejorar coordinación interdirecciones municipales y reducir lenguaje técnico excluyente.',
+   actors:['cosoc','jjvv-u','jjvv-r','comercio','cultural','huasos'],
+   theme:'gobernanza'},
+  {id:'p-educ',title:'Programa Cívico Preventivo Comunal',icon:'📚',color:'#0ea5e9',
+   desc:'Articulación NNA-Carabineros-Bomberos-COSOC para programa de prevención de drogas, educación vial, formación ciudadana en escuelas y campañas con jóvenes y consejos NNA.',
+   actors:['nna','carabineros','bomberos','cosoc'],
+   theme:'educacion'},
+  {id:'p-economia',title:'Dinamización Económica Rural y Patrimonial',icon:'💼',color:'#d97706',
+   desc:'Cámara de Comercio, JJVV Rurales, Huasos, Transporte y Culturales articulados para impulsar ferias locales, emprendimiento agrícola, turismo rural-patrimonial (cabalgatas, equinoterapia) y comercio dinámico.',
+   actors:['comercio','jjvv-r','huasos','transporte','cultural'],
+   theme:'economia'}
+];
+
+var snaInit=false, snaSim=null, snaState={mode:'all',selectedTheme:null,selectedActor:null};
+
+function initSNA(){
+  if(snaInit) return; snaInit=true;
+  if(typeof d3==='undefined'){setTimeout(initSNA,300);return;}
+
+  /* Theme chips */
+  var tc=document.getElementById('snaThemes');
+  var btnAll=document.createElement('button');
+  btnAll.className='sna-chip active';
+  btnAll.style.borderColor='#0f2d52';
+  btnAll.style.background='#0f2d52';
+  btnAll.style.color='#fff';
+  btnAll.innerHTML='<span class="sna-chip-icon">🔗</span> Todos los temas <span class="sna-chip-count">'+SNA_THEMES.length+'</span>';
+  btnAll.onclick=function(){selectTheme(null,btnAll);};
+  tc.appendChild(btnAll);
+
+  SNA_THEMES.forEach(function(t){
+    var c=document.createElement('button');
+    c.className='sna-chip';
+    c.style.borderColor=t.color;
+    c.style.color=t.color;
+    c._color=t.color;
+    c.innerHTML='<span class="sna-chip-icon">'+t.icon+'</span> '+t.name+' <span class="sna-chip-count">'+t.actors.length+'</span>';
+    c.onclick=function(){selectTheme(t.id,c);};
+    tc.appendChild(c);
+  });
+
+  /* Build links */
+  var links=[];
+  SNA_THEMES.forEach(function(theme){
+    for(var i=0;i<theme.actors.length;i++){
+      for(var j=i+1;j<theme.actors.length;j++){
+        links.push({source:theme.actors[i],target:theme.actors[j],theme:theme.id,color:theme.color});
+      }
+    }
+  });
+
+  /* D3 force-directed graph */
+  var container=document.getElementById('snaGraph');
+  var width=container.clientWidth, height=580;
+  var svg=d3.select('#snaGraph').append('svg')
+    .attr('width',width).attr('height',height)
+    .attr('viewBox','0 0 '+width+' '+height);
+
+  var g=svg.append('g');
+
+  /* Zoom & pan */
+  svg.call(d3.zoom().scaleExtent([0.4,3]).on('zoom',function(ev){g.attr('transform',ev.transform);}));
+
+  /* Simulation */
+  snaSim=d3.forceSimulation(SNA_ACTORS.map(function(a){return Object.assign({},a);}))
+    .force('link',d3.forceLink(links).id(function(d){return d.id;}).distance(140).strength(0.15))
+    .force('charge',d3.forceManyBody().strength(-580))
+    .force('center',d3.forceCenter(width/2,height/2))
+    .force('collide',d3.forceCollide().radius(function(d){return Math.sqrt(d.size)*1.8+22;}));
+
+  var link=g.append('g').attr('class','sna-links').selectAll('line')
+    .data(links).enter().append('line')
+    .attr('class','sna-link')
+    .attr('stroke',function(d){return d.color;})
+    .attr('stroke-width',2);
+
+  var node=g.append('g').attr('class','sna-nodes').selectAll('g')
+    .data(snaSim.nodes()).enter().append('g')
+    .attr('class','sna-node')
+    .call(d3.drag()
+      .on('start',function(ev,d){if(!ev.active)snaSim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+      .on('drag',function(ev,d){d.fx=ev.x;d.fy=ev.y;})
+      .on('end',function(ev,d){if(!ev.active)snaSim.alphaTarget(0);}))
+    .on('mouseover',function(ev,d){highlightActor(d.id,true);})
+    .on('mouseout',function(){highlightActor(null);})
+    .on('click',function(ev,d){showActorDetail(d);})
+    .on('dblclick',function(ev,d){d.fx=null;d.fy=null;});
+
+  node.append('circle')
+    .attr('class','sna-node-circle')
+    .attr('r',function(d){return Math.sqrt(d.size)*1.7+10;})
+    .attr('fill',function(d){return d.color;});
+
+  node.append('text')
+    .attr('class','sna-node-label')
+    .attr('dy',4)
+    .text(function(d){return d.name;});
+
+  node.append('text')
+    .attr('class','sna-node-sublabel')
+    .attr('dy',function(d){return Math.sqrt(d.size)*1.7+22;})
+    .text(function(d){return d.desc;});
+
+  snaSim.on('tick',function(){
+    link
+      .attr('x1',function(d){return d.source.x;}).attr('y1',function(d){return d.source.y;})
+      .attr('x2',function(d){return d.target.x;}).attr('y2',function(d){return d.target.y;});
+    node.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
+  });
+
+  /* Helpers */
+  window._snaLinks=link; window._snaNodes=node; window._snaLinksData=links;
+
+  /* Projects */
+  renderSnaProjects();
+}
+
+function selectTheme(themeId,btn){
+  snaState.selectedTheme=themeId;
+  document.querySelectorAll('.sna-chip').forEach(function(c){
+    c.classList.remove('active');
+    if(c._color){c.style.background='#fff';c.style.color=c._color;}
+    else{c.style.background='#fff';c.style.color='#0f2d52';}
+  });
+  btn.classList.add('active');
+  if(btn._color){btn.style.background=btn._color;btn.style.color='#fff';}
+  else{btn.style.background='#0f2d52';btn.style.color='#fff';}
+
+  if(!themeId){
+    /* Show all */
+    window._snaLinks.classed('faded',false).classed('highlighted',false);
+    window._snaNodes.classed('faded',false).classed('highlighted',false);
+    showThemeDetail(null);
+    return;
+  }
+  var theme=SNA_THEMES.find(function(t){return t.id===themeId;});
+  var actorSet=new Set(theme.actors);
+  window._snaLinks
+    .classed('faded',function(d){return d.theme!==themeId;})
+    .classed('highlighted',function(d){return d.theme===themeId;});
+  window._snaNodes
+    .classed('faded',function(d){return !actorSet.has(d.id);})
+    .classed('highlighted',function(d){return actorSet.has(d.id);});
+  showThemeDetail(theme);
+}
+
+function highlightActor(actorId,persist){
+  if(snaState.selectedTheme) return;
+  if(!actorId){
+    window._snaLinks.classed('faded',false).classed('highlighted',false);
+    window._snaNodes.classed('faded',false).classed('highlighted',false);
+    return;
+  }
+  var connected=new Set([actorId]);
+  window._snaLinksData.forEach(function(l){
+    var s=typeof l.source==='object'?l.source.id:l.source;
+    var t=typeof l.target==='object'?l.target.id:l.target;
+    if(s===actorId)connected.add(t);
+    if(t===actorId)connected.add(s);
+  });
+  window._snaLinks.classed('faded',function(d){
+    var s=typeof d.source==='object'?d.source.id:d.source;
+    var t=typeof d.target==='object'?d.target.id:d.target;
+    return s!==actorId&&t!==actorId;
+  }).classed('highlighted',function(d){
+    var s=typeof d.source==='object'?d.source.id:d.source;
+    var t=typeof d.target==='object'?d.target.id:d.target;
+    return s===actorId||t===actorId;
+  });
+  window._snaNodes
+    .classed('faded',function(d){return !connected.has(d.id);})
+    .classed('highlighted',function(d){return d.id===actorId;});
+}
+
+function showThemeDetail(theme){
+  var d=document.getElementById('snaDetail');
+  var h=document.querySelector('.sna-side-head');
+  if(!theme){
+    h.querySelector('strong').textContent='Tema seleccionado';
+    h.querySelector('.sna-side-sub').textContent='Selecciona un tema o actor';
+    d.innerHTML='<div class="sna-empty"><div style="font-size:36px;margin-bottom:8px">🕸️</div><div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px">Red de 13 actores</div><div style="font-size:11.5px;color:var(--muted);line-height:1.6">Conectados por 9 temas comunes y oportunidades de trabajo conjunto identificadas en los FODA por actor.</div></div>';
+    return;
+  }
+  h.querySelector('strong').innerHTML=theme.icon+' '+theme.name;
+  h.querySelector('.sna-side-sub').textContent=theme.actors.length+' actores articulados';
+  h.style.background='linear-gradient(135deg,'+theme.color+' 0%,'+theme.color+'cc 100%)';
+
+  var actors=theme.actors.map(function(id){return SNA_ACTORS.find(function(a){return a.id===id;});}).filter(Boolean);
+  var html='<p class="sna-desc">'+theme.desc+'</p>';
+  html+='<div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Actores conectados</div>';
+  html+='<div class="sna-actor-list">';
+  actors.forEach(function(a){
+    html+='<div class="sna-actor" style="border-left-color:'+a.color+'">'+
+      '<span class="sna-actor-dot" style="background:'+a.color+'"></span>'+
+      '<div class="sna-actor-info">'+
+        '<div class="sna-actor-name">'+a.name+'</div>'+
+        '<div class="sna-actor-desc">'+a.desc+' &middot; '+a.type+'</div>'+
+      '</div>'+
+    '</div>';
+  });
+  html+='</div>';
+  d.innerHTML=html;
+}
+
+function showActorDetail(actor){
+  var connections=new Set();
+  var themes=[];
+  SNA_THEMES.forEach(function(t){if(t.actors.indexOf(actor.id)>=0){themes.push(t);t.actors.forEach(function(id){if(id!==actor.id)connections.add(id);});}});
+  var connectedActors=Array.from(connections).map(function(id){return SNA_ACTORS.find(function(a){return a.id===id;});}).filter(Boolean);
+  var d=document.getElementById('snaDetail');
+  var h=document.querySelector('.sna-side-head');
+  h.querySelector('strong').textContent=actor.name;
+  h.querySelector('.sna-side-sub').textContent=actor.type+' · '+actor.desc;
+  h.style.background='linear-gradient(135deg,'+actor.color+' 0%,'+actor.color+'cc 100%)';
+  var html='<div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Temas que participa ('+themes.length+')</div>';
+  html+='<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px">';
+  themes.forEach(function(t){html+='<span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:12px;background:'+t.color+'18;color:'+t.color+';font-size:10.5px;font-weight:700">'+t.icon+' '+t.name+'</span>';});
+  html+='</div>';
+  html+='<div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Conexiones directas ('+connectedActors.length+')</div>';
+  html+='<div class="sna-actor-list">';
+  connectedActors.forEach(function(a){
+    html+='<div class="sna-actor" style="border-left-color:'+a.color+'">'+
+      '<span class="sna-actor-dot" style="background:'+a.color+'"></span>'+
+      '<div class="sna-actor-info">'+
+        '<div class="sna-actor-name">'+a.name+'</div>'+
+        '<div class="sna-actor-desc">'+a.desc+'</div>'+
+      '</div>'+
+    '</div>';
+  });
+  html+='</div>';
+  d.innerHTML=html;
+}
+
+function renderSnaProjects(){
+  var cont=document.getElementById('snaProjects');
+  if(!cont) return;
+  cont.innerHTML=SNA_PROJECTS.map(function(p){
+    var actorChips=p.actors.map(function(id){
+      var a=SNA_ACTORS.find(function(x){return x.id===id;});
+      if(!a) return '';
+      return '<span class="sna-project-actor"><span class="sna-project-actor-dot" style="background:'+a.color+'"></span>'+a.name+'</span>';
+    }).join('');
+    return '<div class="sna-project" style="border-top-color:'+p.color+'">'+
+      '<div class="sna-project-head">'+
+        '<div class="sna-project-icon" style="background:'+p.color+'18;color:'+p.color+'">'+p.icon+'</div>'+
+        '<div class="sna-project-title">'+p.title+'</div>'+
+      '</div>'+
+      '<div class="sna-project-desc">'+p.desc+'</div>'+
+      '<div class="sna-project-actors">'+actorChips+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ─── TAB SWITCH ─────────────────────────────────── */
+function switchTab(id,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='cuantitativo') initCharts();
+  if(id==='foda') initFoda();
+  if(id==='cruce') initCruce();
+  if(id==='sna') initSNA();
+}
+
+/* ─── COUNTER ANIMATION ──────────────────────────── */
+function animateCounters(){
+  document.querySelectorAll('.stat-num').forEach(function(el){
+    var target=parseInt(el.textContent,10);
+    if(isNaN(target)) return;
+    var start=0,duration=1200,step=Math.ceil(duration/60);
+    var inc=target/60;
+    var cur=0;
+    el.textContent='0';
+    var timer=setInterval(function(){
+      cur+=inc;
+      if(cur>=target){cur=target;clearInterval(timer);}
+      el.textContent=Math.round(cur);
+    },step);
+  });
+}
+
+/* ─── NAV STICKY TOP ─────────────────────────────── */
+function updateNavTop(){
+  var hdr=document.querySelector('.site-header');
+  var nav=document.querySelector('.site-nav');
+  if(hdr&&nav){
+    var hTop=parseInt(window.getComputedStyle(hdr).top)||4;
+    nav.style.top=(hTop+hdr.offsetHeight)+'px';
+  }
+}
+
+/* ─── INIT ───────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',function(){
+  initMap();
+  animateCounters();
+  updateNavTop();
+  window.addEventListener('resize',updateNavTop);
+});
+</script>
+</body>
+</html>
