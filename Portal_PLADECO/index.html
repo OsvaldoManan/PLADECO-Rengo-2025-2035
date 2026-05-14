@@ -807,8 +807,10 @@ body.dark .meta-card .mc-track{background:#334155}
 .construction-banner .cb-contigo-pill img{height:46px;width:auto;display:block;filter:none;border-radius:8px}
 .construction-banner .cb-center{flex:1;text-align:center}
 /* ── Cinta diagonal profesional ── */
-.cb-ribbon-wrap{position:absolute;top:0;right:0;width:180px;height:180px;overflow:hidden;pointer-events:none;z-index:2}
-.cb-ribbon{position:absolute;top:28px;right:-42px;background:linear-gradient(135deg,#e8850f 0%,#f5921d 50%,#fba940 100%);color:#fff;font-size:8px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding:6px 50px;transform:rotate(45deg);box-shadow:0 2px 8px rgba(0,0,0,.25);white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.2);border-top:1px solid rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.25)}
+.cb-ribbon-wrap{display:flex;align-items:center;justify-content:center;flex:1;min-width:0;pointer-events:none}
+.cb-ribbon{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#e8850f 0%,#f5921d 50%,#fba940 100%);color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:7px 18px;border-radius:20px;box-shadow:0 2px 10px rgba(232,133,15,.35);white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.25);animation:cbPulse 3s ease-in-out infinite}
+.cb-ribbon::before{content:'\26A0\FE0F';font-size:13px}
+@keyframes cbPulse{0%,100%{box-shadow:0 2px 10px rgba(232,133,15,.35)}50%{box-shadow:0 2px 18px rgba(245,146,29,.6)}}
 .construction-banner .cb-logo-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .construction-banner .cb-pladeco-pill{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 16px}
 .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:16px;font-weight:900;letter-spacing:.5px;color:#fff}
@@ -823,8 +825,9 @@ body{padding-top:62px}
   .construction-banner .cb-escudo-pill span{display:none}
   .construction-banner .cb-escudo-pill img{height:28px}
   .construction-banner .cb-contigo-pill img{height:28px}
-  .cb-ribbon-wrap{width:150px;height:150px}
-  .cb-ribbon{font-size:7px;padding:4px 40px;top:22px;right:-36px}
+  .cb-ribbon-wrap{flex:0 1 auto}
+  .cb-ribbon{font-size:9px;padding:5px 12px;letter-spacing:.5px}
+  .cb-ribbon::before{font-size:11px}
   .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:12px}
   body{padding-top:40px}
 }
@@ -2228,7 +2231,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v29.4</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v29.5</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4784,10 +4787,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v29.4</span>
+  <span class="ub-ver">v29.5</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v29.5</strong> <span class="ub-date">14 May 2026</span><br>&#127919; Banner «En construcci&#243;n &middot; sujeto a cambios» rediseñado: de cinta diagonal en la esquina superior derecha que se superpon&#237;a al pill «PLADECO 2025-2035», a una **p&#237;ldora horizontal centrada** en el medio del banner. Incluye &#237;cono ⚠️, padding c&#243;modo, border-radius 20px (pill style), animaci&#243;n cbPulse con sombra que late cada 3s, y versi&#243;n mobile responsive con tipograf&#237;a y padding reducidos. El layout ahora respeta el orden: Logos izquierda &middot; Píldora centrada &middot; PLADECO + Cerrar derecha. Cache SW v48.4 → v48.5.</div>
     <div class="ub-entry"><strong>v29.4</strong> <span class="ub-date">14 May 2026</span><br>&#129302; Chatbot &laquo;Contigo Rengo&raquo; ampliado con 9 nuevas entradas tem&#225;ticas sobre todo lo incorporado recientemente: (1) Sociedad Civil con 5 an&#225;lisis integrados &middot; (2) FODA por 8 actores sociales con detalle UCAM/COSOC/Culturales/Huasos/Seguridad/Transporte/JJVV &middot; (3) Red SNA con 13 actores, 9 temas y 9 proyectos colaborativos &middot; (4) 8 Actas de Participaci&#243;n PDF descargables (472 firmas) &middot; (5) 57 Cartograf&#237;as &middot; (6) 73 Gr&#225;ficos del Proceso &middot; (7) Plataforma Integrada con iframe 5 pesta&#241;as &middot; (8) Estructura tem&#225;tica 7 grupos numerados &middot; (9) Mesa H&#237;drica R&#237;o Claro / Embalse Bollenar. Mensaje de bienvenida actualizado (60+ → 70+ temas). Sugerencias renovadas. 8 nuevos comandos r&#225;pidos: !sociedadcivil, !sna, !fodaactor, !actas, !plataforma, !cartografias, !graficos, !embalse. Entrada Galer&#237;a ampliada con menci&#243;n a las Actas. Cache SW v48.3 → v48.4.</div>
     <div class="ub-entry"><strong>v29.3</strong> <span class="ub-date">14 May 2026</span><br>&#127919; Unificaci&#243;n de encabezados duplicados en Sociedad Civil: fusionados los dos t&#237;tulos redundantes («Diagn&#243;stico de la Sociedad Civil Organizada» + «Plataforma Diagn&#243;stico Sociedad Civil · Integrada») en un &#250;nico header coherente «Diagn&#243;stico Sociedad Civil · Plataforma Interactiva Completa» que menciona los 5 an&#225;lisis. El iframe con las 5 pesta&#241;as ahora aparece al inicio de la secci&#243;n (justo despu&#233;s de los 6 KPIs), permitiendo acceso inmediato a la plataforma. Mapa Leaflet nativo y Red SNA Articulaciones movidos como contenido suplementario debajo del iframe. Cache SW v48.2 → v48.3.</div>
     <div class="ub-entry"><strong>v29.2</strong> <span class="ub-date">14 May 2026</span><br>&#9986;&#65039; Limpieza de contenido duplicado en secci&#243;n Sociedad Civil: removidas 509 l&#237;neas HTML que duplicaban contenido del iframe embebido. Eliminados (porque ya est&#225;n disponibles en el iframe interactivo): (a) bloque «Distribuci&#243;n por tipo de organizaci&#243;n» + «Cronolog&#237;a del proceso participativo» con barras y peak ene-2025; (b) bloque «FODA por Actor Social» con las 8 fichas detalladas de UCAM/COSOC/Culturales/Huasos/Seguridad/Transporte/JJVV Urbanas/Rurales; (c) bloque «Cruce de Datos &middot; Integraci&#243;n multi-fuente» con las 4 insight cards. Conservados como valor agregado &#250;nico del portal: header + descripci&#243;n, 6 KPIs principales, Mapa Leaflet nativo con 89 puntos, Red SNA &middot; Articulaciones Estrat&#233;gicas (9 proyectos colaborativos), y el iframe completo con las 5 pesta&#241;as. Cache SW v48.1 → v48.2.</div>
