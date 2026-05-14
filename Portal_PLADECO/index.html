@@ -9306,7 +9306,17 @@ var SC_SNA_THEMES=[
 function renderSNAGraph(){
   var container=document.getElementById('snaGraphContainer');
   if(!container||container._rendered) return;
-  if(typeof d3==='undefined'){setTimeout(renderSNAGraph,400);return;}
+  if(typeof d3==='undefined'){
+    /* Cargar D3 dinámicamente si no está disponible */
+    if(!window._d3Loading){
+      window._d3Loading=true;
+      var s=document.createElement('script');
+      s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';
+      s.onload=function(){renderSNAGraph();};
+      document.head.appendChild(s);
+    }else{setTimeout(renderSNAGraph,300);}
+    return;
+  }
   container._rendered=true;
   var width=container.clientWidth||800,height=540;
   /* Build links from shared themes */
