@@ -2228,7 +2228,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v28.1</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v28.2</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4388,6 +4388,19 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     </div>
   </div>
 
+  <!-- Mapa de Participaci&#243;n Territorial (Leaflet) -->
+  <div class="viz-card" style="margin-bottom:24px;padding:0;overflow:hidden">
+    <div style="padding:18px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+      <div>
+        <h3 style="margin:0;font-size:16px">&#128205; Mapa de Participaci&#243;n Territorial</h3>
+        <div class="viz-sub" style="margin-top:4px">89 organizaciones georreferenciadas en Rengo &middot; Tama&#241;o del punto = cantidad de asistentes &middot; Haz clic en los marcadores para ver detalle</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;max-width:680px;justify-content:flex-end" id="mapSCFilters"></div>
+    </div>
+    <div id="mapSC" style="width:100%;height:520px;background:#e2e8f0;position:relative;z-index:1"></div>
+    <div id="mapSCLegend" style="padding:12px 20px;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;border-top:1px solid var(--border);background:rgba(0,0,0,.02);align-items:center"></div>
+  </div>
+
   <!-- Distribución por tipo + Sede de reunión -->
   <div class="viz-row" style="margin-bottom:24px">
     <!-- Distribución por tipo de organización (13 tipos) -->
@@ -4972,10 +4985,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v28.1</span>
+  <span class="ub-ver">v28.2</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v28.2</strong> <span class="ub-date">14 May 2026</span><br>Mapa Leaflet interactivo integrado nativo en secci&#243;n Sociedad Civil (520px alto, justo bajo los 6 KPIs): 89 organizaciones georreferenciadas con marcadores colorizados por tipo, popups con tipo/asistentes/fecha/sede, 12 chips de filtro por categor&#237;a (JJVV Urbana 44, Rural 25, Adulto Mayor 3, Cultural 3, etc.), leyenda visual y lazy-load v&#237;a IntersectionObserver. No requiere abrir el portal embebido para revisarlo.</div>
     <div class="ub-entry"><strong>v28.1</strong> <span class="ub-date">14 May 2026</span><br>Secci&#243;n Sociedad Civil ampliada: 6 KPIs principales (95 org, 472 part, 89 GPS, 74 reuniones, 30 entrevistas, 8 FODA), 8 FODAs detalladas por actor social (UCAM, COSOC, Culturales, Huasos, Seguridad, Transporte, JJVV Urbanas y Rurales), cronolog&#237;a 8 meses con peak en enero 2025, cruce de datos con 4 insights y URL del portal embebido fijada a localhost:8765.</div>
     <div class="ub-entry"><strong>v28.0</strong> <span class="ub-date">14 May 2026</span><br>Secci&#243;n &laquo;Diagn&#243;stico Sociedad Civil&raquo; integrada: 95 organizaciones, 472 participantes, distribuci&#243;n por tipo, s&#237;ntesis FODA y portal interactivo embebido con carga bajo demanda.</div>
     <div class="ub-entry"><strong>v27.0</strong> <span class="ub-date">14 May 2026</span><br>Nueva pesta&ntilde;a &laquo;225 Pol&iacute;ticas P&uacute;blicas&raquo; en Matriz Estrat&eacute;gica: 225 pol&iacute;ticas con descripci&oacute;n, justificaci&oacute;n, indicadores, l&iacute;nea base, metas 2028/2035, responsable, financiamiento y ODS. Filtro por eje, b&uacute;squeda textual, acorde&oacute;n OE → pol&iacute;ticas expandibles. Dark mode completo.</div>
@@ -9222,6 +9236,83 @@ function toggleScIframe(){
     btn.onmouseout=function(){this.style.background='rgba(45,154,77,.9)'};
   }
 }
+
+// ─── MAPA SOCIEDAD CIVIL (Leaflet lazy-load via IntersectionObserver) ───
+var SC_TYPE_COLORS={'JJVV Urbana':'#1a3d8f','JJVV Rural':'#2d9a4d','Adulto Mayor':'#8e44ad','Cultural':'#f5921d','Transporte':'#475569','COSOC':'#c0392b','Seguridad':'#1e293b','Club Deportivo':'#2980b9','Comercio':'#d97706','NNA/Infancia':'#059669','Junta Vigilancia':'#92400e','Medio Ambiente':'#0891b2'};
+
+var SC_ORGS=[{"n":"UCAM","c":[-34.406749787851204,-70.86616298265547],"f":"15 oct - 11 nov","a":25,"t":"Adulto Mayor","s":"Externa"},{"n":"Club Deportivo Nacional de Rosario","c":[-34.35202777777778,-70.83683333333333],"f":"21 enero","a":7,"t":"Club Deportivo","s":"Externa"},{"n":"Club Deportivo Real Juventud","c":[-34.336232938776305,-70.83265067895863],"f":"12 enero","a":4,"t":"Club Deportivo","s":"Externa"},{"n":"Centro Cultural Rosario","c":[-34.350011822051044,-70.83970955767718],"f":"29 octubre","a":0,"t":"Cultural","s":"Externa"},{"n":"JJVV Apalta","c":[-34.336997710721604,-70.86711601924637],"f":"10 octubre","a":6,"t":"JJVV Rural","s":"Externa"},{"n":"JJV Popeta","c":[-34.433388888888885,-70.79183333333333],"f":"15 octubre","a":7,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Esmeralda Villa La Unión","c":[-34.33836111111111,-70.89952777777779],"f":"28 octubre","a":14,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Chanqueahue","c":[-34.41086111111111,-70.79069444444444],"f":"04 noviembre","a":5,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV San Jorge","c":[-34.330083333333334,-70.89886111111112],"f":"19 noviembre","a":20,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Pueblo Hundido","c":[-34.38011111111111,-70.88],"f":"20 noviembre","a":20,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Los Gomeros y Las 4 Puertas","c":[-34.349722222222226,-70.86136111111111],"f":"01 diciembre","a":8,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV El Llano","c":[-34.35813888888889,-70.81580555555556],"f":"15 diciembre","a":17,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Naicura","c":[-34.32368175078814,-70.92287506948998],"f":"15 diciembre","a":16,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa del Cóbil","c":[-34.40011111111111,-70.8933888888889],"f":"16 diciembre","a":11,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Las Nieves","c":[-34.47888888888889,-70.74352777777778],"f":"17 diciembre","a":9,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Las Pataguas","c":[-34.392805555555554,-70.94083333333333],"f":"23 diciembre","a":3,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Río Claro - La Chimba","c":[-34.41057017896319,-70.81140056811174],"f":"29 diciembre","a":3,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Cerrillos","c":[-34.39431913707723,-70.78022377654088],"f":"19 diciembre","a":6,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Choapinos","c":[-34.32425,-70.83333333333333],"f":"12 diciembre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Las Hojas","c":[-34.39302777777778,-70.87141666666667],"f":"26 noviembre","a":1,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV El Retiro","c":[-34.33686111111111,-70.83700000000001],"f":"27 octubre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Lo Cartagena","c":[-34.383544172932574,-70.86704622637166],"f":"10 octubre","a":1,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Lo de Lobo","c":[-34.37871437746787,-70.81407355027655],"f":"21 octubre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Don Vicente","c":[-34.35118174333191,-70.83484089716688],"f":"05 enero","a":33,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Cordillera","c":[-34.35447222222222,-70.83652777777778],"f":"06 enero","a":21,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rinconada de Malambo","c":[-34.41586388888889,-70.83816666666667],"f":"06 enero","a":10,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rosario Pichuguao","c":[-34.34402590040686,-70.8353021103506],"f":"07 enero","a":14,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Arcoíris","c":[-34.35738888888889,-70.83847222222222],"f":"08 enero","a":18,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rosario Norte","c":[-34.33958156120555,-70.83510759394052],"f":"09 enero","a":16,"t":"JJVV Rural","s":"Externa"},{"n":"Esgrima","c":[-34.40856169980855,-70.8538534768708],"f":"—","a":1,"t":"Club Deportivo","s":"Externa"},{"n":"Club Océano","c":[-34.39395275274926,-70.8517232005266],"f":"—","a":1,"t":"Club Deportivo","s":"Externa"},{"n":"Carabineros","c":[-34.408692526531084,-70.86407945191705],"f":"23 febrero","a":2,"t":"Seguridad","s":"Externa"},{"n":"Consultivo Comunal NNA","c":[-34.4103413472238,-70.85712197599382],"f":"27 abril","a":21,"t":"NNA/Infancia","s":"Externa"},{"n":"Bomberos","c":[-34.405437312262606,-70.84967872588945],"f":"13 abril","a":5,"t":"Seguridad","s":"Externa"},{"n":"Club AM Villa Jardín","c":[-34.433388888888885,-70.79183333333333],"f":"06 marzo","a":17,"t":"Adulto Mayor","s":"Externa"},{"n":"Club AM Por Siempre Unidos","c":[-34.34490058665432,-70.8362390084657],"f":"04 marzo","a":13,"t":"Adulto Mayor","s":"Externa"},{"n":"Junta de Vigilancia","c":[-34.40127777777778,-70.85666666666667],"f":"06 marzo","a":2,"t":"Junta Vigilancia","s":"Externa"},{"n":"Actores Culturales","c":[-34.40842527084617,-70.86346224217233],"f":"26 noviembre","a":12,"t":"Cultural","s":"Municipal"},{"n":"Colectivos","c":[-34.40842527084617,-70.86346224217233],"f":"26 febrero","a":10,"t":"Transporte","s":"Municipal"},{"n":"Buses Urbanos / Interurbanos","c":[-34.40842527084617,-70.86346224217233],"f":"25 febrero","a":3,"t":"Transporte","s":"Municipal"},{"n":"COSOC","c":[-34.40842527084617,-70.86346224217233],"f":"11 diciembre","a":9,"t":"COSOC","s":"Municipal"},{"n":"Club de Huasos","c":[-34.40842527084617,-70.86346224217233],"f":"24 febrero","a":6,"t":"Cultural","s":"Municipal"},{"n":"Cámara de Comercio","c":[-34.40842527084617,-70.86346224217233],"f":"25 septiembre","a":4,"t":"Comercio","s":"Municipal"},{"n":"Ferias de Rengo","c":[-34.40842527084617,-70.86346224217233],"f":"05 diciembre","a":2,"t":"Comercio","s":"Municipal"},{"n":"Medio Ambiente","c":[-34.40842527084617,-70.86346224217233],"f":"30 septiembre","a":4,"t":"Medio Ambiente","s":"Municipal"},{"n":"Libertad","c":[-34.408505396644436,-70.85732528906746],"f":"19 enero","a":59,"t":"JJVV Urbana","s":"Municipal"},{"n":"Gregorio Araya","c":[-34.41495843262286,-70.85702330450339],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"P2","c":[-34.41070779873472,-70.85952870926779],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Las Torres Primera Etapa","c":[-34.414674838919865,-70.86010190222518],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Abedules","c":[-34.407483896166276,-70.84223688381466],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Caupolícan","c":[-34.406266402718984,-70.8512646078043],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Rienzi Valencia","c":[-34.395007168958124,-70.8502340043324],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valentín Letelier","c":[-34.403375417893294,-70.85187257479852],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Santa Laura","c":[-34.390137760775985,-70.85138889241368],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Deseada","c":[-34.402585954171954,-70.87094591312169],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa El Romeral","c":[-34.41087180969339,-70.85792543865755],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa El Molino","c":[-34.397529584674785,-70.84816005155788],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo","c":[-34.39464164292698,-70.85547623524762],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"La Isla","c":[-34.394302193644755,-70.84579167292951],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo II Etapa II","c":[-34.394827341124696,-70.8555387719292],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Rucahue","c":[-34.399334676180985,-70.8498704901876],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Alonso de Ercilla","c":[-34.404710978851064,-70.85166598394015],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa O'Higgins","c":[-34.39213879873815,-70.84976579955715],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Araucanía","c":[-34.391997844230026,-70.85207864680689],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"4 de Septiembre","c":[-34.39439394561628,-70.84556255939732],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Naranjal Norte","c":[-34.407077416959176,-70.86957673361844],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Viñedos de Rengo","c":[-34.39692638064187,-70.84576409114236],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Hacienda Las Palmas II","c":[-34.40974226040788,-70.86985047433768],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Migueles","c":[-34.39133820055936,-70.83190331667232],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"El Esfuerzo","c":[-34.39284050138423,-70.85211341255663],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa España","c":[-34.3971156265743,-70.8544334925729],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Álamos","c":[-34.39615559066269,-70.86260885547372],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Santa Ana","c":[-34.39993470471927,-70.8607128081818],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Altos de San Martín","c":[-34.390509739169154,-70.85574373231141],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"El Villorrio","c":[-34.41581560006812,-70.85021408775737],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Las Américas","c":[-34.41138888888889,-70.85111111111111],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"San Benito","c":[-34.414161862943125,-70.84816730772665],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Espinos","c":[-34.41054670675779,-70.84136415449328],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Domingo Paredes","c":[-34.41277559486109,-70.85998322633164],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Hacienda Las Palmas","c":[-34.409086948093055,-70.87109730839443],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Brisas del Valle de Rengo","c":[-34.413407684272485,-70.86995956759515],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Renguinos del 79","c":[-34.39552902781615,-70.85506883128758],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo 1","c":[-34.39354849541132,-70.85697465050173],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Primavera Etapa 7","c":[-34.411988529072154,-70.87608280250521],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Francisco Ruiz","c":[-34.40250013783104,-70.85768836312475],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Oriente","c":[-34.41411358842348,-70.85188272822272],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Los Aromos","c":[-34.395231637959405,-70.85648414056246],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Augusto Poblete","c":[-34.39485897532925,-70.85623122320716],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Caupolicán","c":[-34.40028423913118,-70.85880220180249],"f":"12 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"}];
+
+function initSocCivMap(){
+  var mapEl=document.getElementById('mapSC');
+  if(!mapEl||mapEl._init) return;
+  if(typeof L==='undefined'){setTimeout(initSocCivMap,500);return;}
+  mapEl._init=true;
+  var map=L.map('mapSC',{zoomControl:true,scrollWheelZoom:false}).setView([-34.40,-70.855],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors',maxZoom:18}).addTo(map);
+  map.on('click',function(){map.scrollWheelZoom.enable();});
+  map.on('mouseout',function(){map.scrollWheelZoom.disable();});
+  var allMarkers=[];
+  SC_ORGS.forEach(function(org){
+    var col=SC_TYPE_COLORS[org.t]||'#888';
+    var r=org.a>30?14:org.a>15?10:org.a>5?8:6;
+    var m=L.circleMarker(org.c,{radius:r,fillColor:col,color:'#fff',weight:2,fillOpacity:.85}).addTo(map);
+    m.orgType=org.t;
+    m.bindPopup(
+      '<div style="padding:8px 10px;min-width:200px">'+
+      '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:'+col+'22;color:'+col+';margin-bottom:6px">'+org.t+'</span>'+
+      '<h3 style="font-size:13px;font-weight:700;margin:0 0 4px 0;color:#0f172a;line-height:1.3">'+org.n+'</h3>'+
+      '<div style="display:flex;align-items:center;gap:8px;border-top:1px solid #eee;padding-top:8px;margin-top:8px">'+
+        '<span style="font-size:20px;font-weight:800;color:#1a3d8f;line-height:1">'+(org.a||'—')+'</span>'+
+        '<span style="font-size:10px;color:#64748b;line-height:1.3">asistentes<br>'+org.f+'</span>'+
+      '</div>'+
+      '<div style="font-size:10.5px;color:#64748b;margin-top:8px">📍 '+org.s+'</div>'+
+      '</div>'
+    );
+    allMarkers.push(m);
+  });
+  var fc=document.getElementById('mapSCFilters');
+  var leg=document.getElementById('mapSCLegend');
+  var btnAll=document.createElement('button');
+  btnAll.style.cssText='padding:5px 11px;background:#1a3d8f;color:#fff;border:none;border-radius:14px;font-size:10.5px;font-weight:700;cursor:pointer';
+  btnAll.textContent='Todos ('+allMarkers.length+')';
+  btnAll.onclick=function(){
+    fc.querySelectorAll('button').forEach(function(b){if(b!==btnAll){b.style.background='#fff';b.style.color=b._col;}});
+    btnAll.style.background='#1a3d8f';btnAll.style.color='#fff';
+    allMarkers.forEach(function(m){m.addTo(map);});
+  };
+  fc.appendChild(btnAll);
+  leg.innerHTML='<strong style="color:var(--text);margin-right:4px;font-size:11px">Tipos:</strong>';
+  Object.keys(SC_TYPE_COLORS).forEach(function(t){
+    var col=SC_TYPE_COLORS[t];
+    var count=SC_ORGS.filter(function(o){return o.t===t;}).length;
+    if(!count) return;
+    var btn=document.createElement('button');
+    btn._col=col;
+    btn.style.cssText='padding:4px 9px;background:#fff;color:'+col+';border:1.5px solid '+col+';border-radius:14px;font-size:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap';
+    btn.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:'+col+';display:inline-block"></span>'+t+' ('+count+')';
+    btn.onclick=function(){
+      fc.querySelectorAll('button').forEach(function(b){if(b===btnAll){b.style.background='#fff';b.style.color='#1a3d8f';}else if(b===btn){b.style.background=col;b.style.color='#fff';}else{b.style.background='#fff';b.style.color=b._col;}});
+      allMarkers.forEach(function(m){m.orgType===t?m.addTo(map):map.removeLayer(m);});
+    };
+    fc.appendChild(btn);
+    var ld=document.createElement('span');
+    ld.style.cssText='display:inline-flex;align-items:center;gap:5px;color:var(--text2);font-size:10.5px';
+    ld.innerHTML='<span style="width:9px;height:9px;border-radius:50%;background:'+col+';display:inline-block"></span>'+t;
+    leg.appendChild(ld);
+  });
+}
+
+// Lazy-init cuando la sección Sociedad Civil entra en viewport
+(function(){
+  var target=document.getElementById('mapSC');
+  if(!target) return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){initSocCivMap();obs.disconnect();}
+    });
+  },{rootMargin:'200px'});
+  obs.observe(target);
+})();
 
 // ── CARDS & ELEMENTS ENTRANCE OBSERVER ──
 const entranceObs=new IntersectionObserver((entries)=>{
