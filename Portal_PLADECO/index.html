@@ -2296,7 +2296,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.6</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.7</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4014,11 +4014,21 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="inst-tab-panel" id="inst-panel-red" style="padding:22px">
       <div style="margin-bottom:14px">
         <h3 style="font-size:15px;color:var(--text);margin:0">&#128268; Red Institucional &middot; Conexiones entre Direcciones</h3>
-        <div style="font-size:12px;color:var(--text2);margin-top:2px">Grafo SNA: 15 direcciones m&#225;s activas conectadas por <strong>temas/categor&#237;as compartidas</strong>. Hover en un nodo resalta sus articulaciones. Arrastra para reorganizar.</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Grafo SNA: 15 direcciones m&#225;s activas conectadas por <strong>temas/categor&#237;as compartidas</strong>. Cada arista representa un &#225;rea com&#250;n entre dos direcciones. Filtra por temas, arrastra los nodos.</div>
+      </div>
+      <!-- Filtros por temática -->
+      <div id="snaInstThemes" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;padding:14px 16px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
+        <button class="sna-theme-chip active" data-theme="all" onclick="filterSNAInst('all',this)" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:18px;border:2px solid #0f2d52;background:#0f2d52;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s">&#128279; Todos los temas</button>
+        <button class="sna-theme-chip" data-theme="CULT" onclick="filterSNAInst('CULT',this)" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:18px;border:2px solid #7c3aed;background:#fff;color:#7c3aed;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s">&#127917; Cultura Organizacional</button>
+        <button class="sna-theme-chip" data-theme="GEST" onclick="filterSNAInst('GEST',this)" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:18px;border:2px solid #dc2626;background:#fff;color:#dc2626;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s">&#128736; Gesti&#243;n</button>
+        <button class="sna-theme-chip" data-theme="REC" onclick="filterSNAInst('REC',this)" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:18px;border:2px solid #f5921d;background:#fff;color:#f5921d;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s">&#128176; Recursos</button>
+        <button class="sna-theme-chip" data-theme="TERR" onclick="filterSNAInst('TERR',this)" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:18px;border:2px solid #0891b2;background:#fff;color:#0891b2;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s">&#127757; Territorio</button>
+        <button class="sna-theme-chip" data-theme="PLAN" onclick="filterSNAInst('PLAN',this)" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:18px;border:2px solid #16a34a;background:#fff;color:#16a34a;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s">&#127919; Planificaci&#243;n</button>
+        <div id="snaInstFilterStats" style="margin-left:auto;display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--text2);font-weight:600"></div>
       </div>
       <div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px;border:1px solid var(--border);overflow:hidden;position:relative;margin-bottom:24px">
         <div id="snaInstGraph" style="width:100%;height:540px;cursor:grab"></div>
-        <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap">&#128161; Arrastra los nodos &middot; Hover resalta conexiones por categor&#237;as compartidas</div>
+        <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap">&#128161; Click en chips de tema &middot; Hover en arista para ver detalle &middot; Drag para reorganizar</div>
       </div>
 
       <div style="margin-bottom:14px">
@@ -5524,10 +5534,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v30.6</span>
+  <span class="ub-ver">v30.7</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v30.7</strong> <span class="ub-date">14 May 2026</span><br>&#127919; **SNA Institucional ultra-interactivo con aristas tem&#225;ticas**: rediseno completo del grafo de relaciones inter-direcciones. Ahora cada par de direcciones que comparte categor&#237;as tem&#225;ticas genera <strong>una arista paralela por cada tema en com&#250;n</strong>, no una sola arista gris&#225;cea. Las aristas se renderizan como <strong>curvas Bezier paralelas separadas 8px</strong> para evitar superposici&#243;n y se colorizan seg&#250;n el tema que conecta (morado=Cultura, rojo=Gesti&#243;n, naranja=Recursos, cyan=Territorio, verde=Planificaci&#243;n). Nuevas funcionalidades: (1) **6 chips de filtro tem&#225;tico** sobre el grafo (Todos, Cultura Org, Gesti&#243;n, Recursos, Territorio, Planificaci&#243;n); (2) **Click en chip** filtra solo aristas de ese tema, ilumina las nodos pertinentes y atenua resto al 28%; (3) **Contador din&#225;mico** muestra direcciones y enlaces activos por filtro; (4) **Hover en arista** muestra tooltip con direcciones conectadas y nombre completo del tema (color del tema); (5) **Hover en nodo** resalta sus articulaciones manteniendo filtro tem&#225;tico activo; (6) Drag-and-drop intacto. Cache SW v49.4 → v49.5.</div>
     <div class="ub-entry"><strong>v30.6</strong> <span class="ub-date">14 May 2026</span><br>&#128202; **Sankey refactorizado**: eliminada categor&#237;a «Perfil Entrevistado» (155 menciones demogr&#225;ficas que no aportan al an&#225;lisis FODA) y eliminado el cuadrante «Sin FODA» (ruido). Ahora el Sankey muestra exclusivamente las **904 menciones FODA reales** distribuidas correctamente: (1) **Columna 1 Direcciones** (7 nodos con sus contribuciones reales: DDEL 160, SECPLAN 155, DIDECO 135, Aseo y Ornato 60, DOM 58, SENDA 50, Otras 286); (2) **Columna 2 Dimensiones** (5 dimensiones tem&#225;ticas: Gesti&#243;n 231, Cultura Org 216, Recursos 169, Territorio 155, Planificaci&#243;n 133); (3) **Columna 3 FODA Cuadrantes** con etiqueta de **principales contribuyentes**: Fortalezas 610 (Gesti&#243;n 165 · Cultura 158), Debilidades 249 (Gesti&#243;n 60 · Cultura 54), Oportunidades 35 (Planificaci&#243;n 13 · Territorio 10), Amenazas 10 (Territorio 5 · Cultura 2). Cada caja FODA muestra su valor total + sub-etiqueta de top 2 dimensiones contribuyentes. Datos exactos alineados (suma 904 en cada columna). Mapeo fodaKeyMap (F→Fortalezas etc.) corregido para que los flujos coincidan visualmente. Cache SW v49.3 → v49.4.</div>
     <div class="ub-entry"><strong>v30.5</strong> <span class="ub-date">14 May 2026</span><br>&#128268; **Nueva pesta&#241;a «Red &amp; Flujos» en Diagn&#243;stico Institucional**: visualizaciones avanzadas de relaciones inter-direcciones. (1) **Grafo SNA D3 force-directed** con 15 direcciones m&#225;s activas (DDEL, SECPLAN, DIDECO, DOM, Aseo, Salud, Seguridad, Biblioteca, Cultura, Deportes, Ni&#241;ez, SENDA, Gabinete, Sec. Municipal, D. Control) conectadas por categor&#237;as compartidas. Hover resalta articulaciones inter-actores, grosor del enlace proporcional a categor&#237;as en com&#250;n, drag-and-drop y zoom. (2) **Diagrama Sankey custom SVG** con flujo de 3 columnas: Direcciones (7 grupos) → Categor&#237;as (6 dimensiones) → FODA cuadrantes (F/D/O/A/Sin FODA). Ancho de flujo proporcional al volumen de respuestas, hover muestra cifra exacta. (3) **4 insight cards** debajo: Nodo M&#225;s Central (DIDECO), Cluster Dominante (Cultura Organizacional), Flujo Cr&#237;tico (Gesti&#243;n→Debilidades 60 menciones), Direcciones Puente (SECPLAN/Gabinete/Control). Tab 5 «Citas Representativas» renombrado a Tab 6, ahora ya son 6 tabs en la secci&#243;n. Cache SW v49.2 → v49.3.</div>
     <div class="ub-entry"><strong>v30.4</strong> <span class="ub-date">14 May 2026</span><br>&#127919; **Contenido del Diagn&#243;stico Institucional potenciado con narrativa interpretativa**: (1) Caja contextual «¿Por qu&#233; una etnograf&#237;a institucional?» que explica el m&#233;todo (Dorothy E. Smith) y conecta el ratio F:D 2.4:1 con el capital humano municipal. (2) Secci&#243;n «Hallazgos Clave» con 6 insights interpretativos: Capital Positivo 67%, Cultura como Tema #1 (55.9%), Gesti&#243;n como Mayor Brecha, Oportunidades Sub-Exploradas (ratio 1:7 vs D), Concentraci&#243;n DDEL+SECPLAN+DIDECO 38%, Mirada Introspectiva. (3) Secci&#243;n «Implicancias Estrat&#233;gicas para el PLADECO» con 6 l&#237;neas de acci&#243;n priorit&#225;rias vinculadas a ejes del plan: Manual de Procedimientos (Eje 6), Mesa Inter-Direcciones (Eje 6), Capacitaci&#243;n Continua (Eje 6 RRHH), Salud Mental Institucional (Eje 1), Descentralizaci&#243;n Rosario (Eje 4), Digitalizaci&#243;n (Eje 6 Gobierno Digital). (4) S&#237;ntesis final «De la Escucha a la Acci&#243;n» con 3 etapas siguientes. (5) Citas representativas expandidas de <strong>8 a 16 testimonios</strong> incorporando voces de SECPLAN, DOM, Aseo y Ornato, Direcci&#243;n de Control, Secretar&#237;a Municipal, DDEL, SENDA y Gabinete (no solo DIDECO). Cache SW v49.1 → v49.2.</div>
@@ -9903,6 +9914,16 @@ var INST_SNA_DIRS=[
   {id:'ctrl',name:'D. Control',cat:['GEST','PLAN'],size:23,color:'#ef4444'}
 ];
 
+/* Mapeo de códigos de temáticas a colores y nombres legibles */
+var SNA_INST_THEME_MAP={
+  CULT:{name:'Cultura Organizacional',color:'#7c3aed'},
+  GEST:{name:'Gestión',color:'#dc2626'},
+  REC:{name:'Recursos',color:'#f5921d'},
+  TERR:{name:'Territorio',color:'#0891b2'},
+  PLAN:{name:'Planificación',color:'#16a34a'}
+};
+var INST_SNA_STATE={links:null,nodes:null,simulation:null,linkSel:null,nodeSel:null,currentFilter:'all'};
+
 function renderInstSNA(){
   var c=document.getElementById('snaInstGraph');
   if(!c||c._rendered) return;
@@ -9911,33 +9932,178 @@ function renderInstSNA(){
     return;
   }
   c._rendered=true;
-  /* Build links: pares con categorías compartidas */
+
+  /* Build links: UNA arista por cada categoría compartida (multi-arista paralela) */
   var links=[];
   for(var i=0;i<INST_SNA_DIRS.length;i++){
     for(var j=i+1;j<INST_SNA_DIRS.length;j++){
       var shared=INST_SNA_DIRS[i].cat.filter(function(x){return INST_SNA_DIRS[j].cat.indexOf(x)>=0;});
-      if(shared.length>0) links.push({source:INST_SNA_DIRS[i].id,target:INST_SNA_DIRS[j].id,weight:shared.length});
+      shared.forEach(function(themeCode,idx){
+        links.push({
+          source:INST_SNA_DIRS[i].id,
+          target:INST_SNA_DIRS[j].id,
+          theme:themeCode,
+          color:SNA_INST_THEME_MAP[themeCode]?SNA_INST_THEME_MAP[themeCode].color:'#94a3b8',
+          parallelOffset:idx-(shared.length-1)/2,
+          totalParallel:shared.length
+        });
+      });
     }
   }
+  INST_SNA_STATE.links=links;
+
   var w=c.clientWidth||800,h=540;
   var svg=d3.select('#snaInstGraph').append('svg').attr('width',w).attr('height',h).attr('viewBox','0 0 '+w+' '+h);
   var g=svg.append('g');
   svg.call(d3.zoom().scaleExtent([0.4,3]).on('zoom',function(ev){g.attr('transform',ev.transform);}));
+
   var nodes=INST_SNA_DIRS.map(function(d){return Object.assign({},d);});
-  var sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(function(d){return d.id;}).distance(function(l){return 160/(l.weight||1);}).strength(0.12)).force('charge',d3.forceManyBody().strength(-520)).force('center',d3.forceCenter(w/2,h/2)).force('collide',d3.forceCollide().radius(function(d){return Math.sqrt(d.size)*1.5+22;}));
-  var link=g.append('g').selectAll('line').data(links).enter().append('line').attr('stroke','#94a3b8').attr('stroke-opacity',function(d){return 0.15+d.weight*0.15;}).attr('stroke-width',function(d){return d.weight*1.5;});
-  var node=g.append('g').selectAll('g').data(sim.nodes()).enter().append('g').style('cursor','pointer').call(d3.drag().on('start',function(ev,d){if(!ev.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}).on('drag',function(ev,d){d.fx=ev.x;d.fy=ev.y;}).on('end',function(ev,d){if(!ev.active)sim.alphaTarget(0);})).on('dblclick',function(ev,d){d.fx=null;d.fy=null;}).on('mouseover',function(ev,d){
-    var conn=new Set([d.id]);links.forEach(function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;if(s===d.id)conn.add(t);if(t===d.id)conn.add(s);});
-    link.attr('stroke-opacity',function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;return s===d.id||t===d.id?0.85:0.05;}).attr('stroke',function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;return s===d.id||t===d.id?d.color:'#cbd5e1';});
-    node.style('opacity',function(n){return conn.has(n.id)?1:0.25;});
-  }).on('mouseout',function(){link.attr('stroke-opacity',function(d){return 0.15+d.weight*0.15;}).attr('stroke','#94a3b8');node.style('opacity',1);});
-  node.append('circle').attr('r',function(d){return Math.sqrt(d.size)*1.4+10;}).attr('fill',function(d){return d.color;}).attr('stroke','#fff').attr('stroke-width',2.5);
-  node.append('text').attr('text-anchor','middle').attr('dy',4).attr('font-size','10.5px').attr('font-weight','700').attr('fill','#0f172a').attr('paint-order','stroke').attr('stroke','#fff').attr('stroke-width','3px').attr('stroke-linejoin','round').text(function(d){return d.name;});
-  node.append('text').attr('text-anchor','middle').attr('dy',function(d){return Math.sqrt(d.size)*1.4+22;}).attr('font-size','9px').attr('fill','#64748b').text(function(d){return d.size+' resp.';});
-  sim.on('tick',function(){
-    link.attr('x1',function(d){return d.source.x;}).attr('y1',function(d){return d.source.y;}).attr('x2',function(d){return d.target.x;}).attr('y2',function(d){return d.target.y;});
-    node.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
+  INST_SNA_STATE.nodes=nodes;
+
+  /* Force simulation: usa pares únicos como links para el cálculo, no aristas paralelas */
+  var uniquePairs={};
+  links.forEach(function(l){
+    var k=l.source<l.target?l.source+'~'+l.target:l.target+'~'+l.source;
+    if(!uniquePairs[k]) uniquePairs[k]={source:l.source,target:l.target,weight:0};
+    uniquePairs[k].weight+=1;
   });
+  var simLinks=Object.values(uniquePairs);
+  var sim=d3.forceSimulation(nodes)
+    .force('link',d3.forceLink(simLinks).id(function(d){return d.id;}).distance(function(l){return 170/Math.max(1,l.weight*0.7);}).strength(0.1))
+    .force('charge',d3.forceManyBody().strength(-560))
+    .force('center',d3.forceCenter(w/2,h/2))
+    .force('collide',d3.forceCollide().radius(function(d){return Math.sqrt(d.size)*1.5+24;}));
+  INST_SNA_STATE.simulation=sim;
+
+  /* Renderizar aristas como path curvado para soportar paralelas */
+  var linkSel=g.append('g').attr('class','sna-inst-links').selectAll('path').data(links).enter().append('path')
+    .attr('class','sna-inst-link')
+    .attr('stroke',function(d){return d.color;})
+    .attr('stroke-width',2.5)
+    .attr('stroke-opacity',0.55)
+    .attr('fill','none')
+    .style('transition','stroke-opacity .25s,stroke-width .25s')
+    .on('mouseover',function(ev,l){
+      d3.select(this).attr('stroke-opacity',1).attr('stroke-width',5);
+      /* Tooltip con info de la conexión */
+      var src=nodes.find(function(n){return n.id===(typeof l.source==='object'?l.source.id:l.source);});
+      var tgt=nodes.find(function(n){return n.id===(typeof l.target==='object'?l.target.id:l.target);});
+      var tip=SNA_INST_THEME_MAP[l.theme]?SNA_INST_THEME_MAP[l.theme].name:l.theme;
+      showSnaTooltip(ev,src.name+' &harr; '+tgt.name+'<br><strong style="color:'+l.color+'">'+tip+'</strong>');
+    })
+    .on('mouseout',function(){
+      var f=INST_SNA_STATE.currentFilter;
+      d3.select(this).attr('stroke-opacity',f==='all'?0.55:(d3.select(this).datum().theme===f?0.85:0.06)).attr('stroke-width',f==='all'?2.5:(d3.select(this).datum().theme===f?3.5:1.5));
+      hideSnaTooltip();
+    });
+  INST_SNA_STATE.linkSel=linkSel;
+
+  var nodeSel=g.append('g').selectAll('g').data(sim.nodes()).enter().append('g').style('cursor','pointer')
+    .call(d3.drag()
+      .on('start',function(ev,d){if(!ev.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+      .on('drag',function(ev,d){d.fx=ev.x;d.fy=ev.y;})
+      .on('end',function(ev,d){if(!ev.active)sim.alphaTarget(0);}))
+    .on('dblclick',function(ev,d){d.fx=null;d.fy=null;})
+    .on('mouseover',function(ev,d){highlightNodeInst(d);})
+    .on('mouseout',function(){clearHighlightInst();});
+  INST_SNA_STATE.nodeSel=nodeSel;
+
+  nodeSel.append('circle').attr('r',function(d){return Math.sqrt(d.size)*1.4+10;}).attr('fill',function(d){return d.color;}).attr('stroke','#fff').attr('stroke-width',2.5);
+  nodeSel.append('text').attr('text-anchor','middle').attr('dy',4).attr('font-size','10.5px').attr('font-weight','700').attr('fill','#0f172a').attr('paint-order','stroke').attr('stroke','#fff').attr('stroke-width','3px').attr('stroke-linejoin','round').text(function(d){return d.name;});
+  nodeSel.append('text').attr('text-anchor','middle').attr('dy',function(d){return Math.sqrt(d.size)*1.4+22;}).attr('font-size','9px').attr('fill','#64748b').text(function(d){return d.size+' resp.';});
+
+  sim.on('tick',function(){
+    linkSel.attr('d',function(l){
+      var s=l.source,t=l.target;
+      var sx=typeof s==='object'?s.x:nodes.find(function(n){return n.id===s;}).x;
+      var sy=typeof s==='object'?s.y:nodes.find(function(n){return n.id===s;}).y;
+      var tx=typeof t==='object'?t.x:nodes.find(function(n){return n.id===t;}).x;
+      var ty=typeof t==='object'?t.y:nodes.find(function(n){return n.id===t;}).y;
+      /* Curvar las aristas paralelas: usar punto medio desplazado perpendicularmente */
+      var dx=tx-sx,dy=ty-sy;
+      var dr=Math.sqrt(dx*dx+dy*dy);
+      var offset=l.parallelOffset*8; /* Separación entre paralelas */
+      var mx=(sx+tx)/2-dy/dr*offset;
+      var my=(sy+ty)/2+dx/dr*offset;
+      return 'M '+sx+' '+sy+' Q '+mx+' '+my+' '+tx+' '+ty;
+    });
+    nodeSel.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
+  });
+
+  /* Calcular stats iniciales y mostrar */
+  updateSNAInstStats('all');
+}
+
+/* Helpers para filtros e interactividad */
+function showSnaTooltip(ev,html){
+  var t=document.getElementById('snaInstTooltip');
+  if(!t){t=document.createElement('div');t.id='snaInstTooltip';t.style.cssText='position:fixed;z-index:9999;background:rgba(15,45,82,.96);color:#fff;padding:8px 12px;border-radius:8px;font-size:11px;font-weight:500;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:260px;line-height:1.45';document.body.appendChild(t);}
+  t.innerHTML=html;t.style.display='block';t.style.left=(ev.clientX+12)+'px';t.style.top=(ev.clientY+12)+'px';
+}
+function hideSnaTooltip(){var t=document.getElementById('snaInstTooltip');if(t)t.style.display='none';}
+
+function highlightNodeInst(d){
+  var connected=new Set([d.id]);
+  INST_SNA_STATE.links.forEach(function(l){
+    var s=typeof l.source==='object'?l.source.id:l.source;
+    var t=typeof l.target==='object'?l.target.id:l.target;
+    if(s===d.id) connected.add(t);
+    if(t===d.id) connected.add(s);
+  });
+  var f=INST_SNA_STATE.currentFilter;
+  INST_SNA_STATE.linkSel.attr('stroke-opacity',function(l){
+    var s=typeof l.source==='object'?l.source.id:l.source;
+    var t=typeof l.target==='object'?l.target.id:l.target;
+    var touches=(s===d.id||t===d.id);
+    if(f!=='all' && l.theme!==f) return 0.02;
+    return touches?0.95:0.05;
+  }).attr('stroke-width',function(l){
+    var s=typeof l.source==='object'?l.source.id:l.source;
+    var t=typeof l.target==='object'?l.target.id:l.target;
+    return (s===d.id||t===d.id)?4:2;
+  });
+  INST_SNA_STATE.nodeSel.style('opacity',function(n){return connected.has(n.id)?1:0.22;});
+}
+function clearHighlightInst(){
+  var f=INST_SNA_STATE.currentFilter;
+  filterSNAInst(f,document.querySelector('.sna-theme-chip[data-theme="'+f+'"]'));
+}
+
+function filterSNAInst(theme,btn){
+  INST_SNA_STATE.currentFilter=theme;
+  /* Actualizar UI de chips */
+  document.querySelectorAll('.sna-theme-chip').forEach(function(b){
+    var t=b.getAttribute('data-theme');
+    b.classList.remove('active');
+    if(t==='all'){b.style.background='#fff';b.style.color='#0f2d52';}
+    else if(SNA_INST_THEME_MAP[t]){b.style.background='#fff';b.style.color=SNA_INST_THEME_MAP[t].color;}
+  });
+  if(btn){btn.classList.add('active');
+    if(theme==='all'){btn.style.background='#0f2d52';btn.style.color='#fff';}
+    else if(SNA_INST_THEME_MAP[theme]){btn.style.background=SNA_INST_THEME_MAP[theme].color;btn.style.color='#fff';}
+  }
+  /* Filtrar aristas */
+  if(!INST_SNA_STATE.linkSel) return;
+  INST_SNA_STATE.linkSel
+    .attr('stroke-opacity',function(l){return theme==='all'?0.55:(l.theme===theme?0.85:0.06);})
+    .attr('stroke-width',function(l){return theme==='all'?2.5:(l.theme===theme?3.5:1.5);});
+  /* Atenuar nodos sin esa temática */
+  INST_SNA_STATE.nodeSel.style('opacity',function(n){return theme==='all'||n.cat.indexOf(theme)>=0?1:0.28;});
+  updateSNAInstStats(theme);
+}
+
+function updateSNAInstStats(theme){
+  var stats=document.getElementById('snaInstFilterStats');
+  if(!stats||!INST_SNA_STATE.links) return;
+  if(theme==='all'){
+    var total=INST_SNA_STATE.links.length;
+    stats.innerHTML='&#128202; <span>'+INST_SNA_STATE.nodes.length+' direcciones</span> &middot; <span>'+total+' aristas tem&#225;ticas</span>';
+  }else{
+    var count=INST_SNA_STATE.links.filter(function(l){return l.theme===theme;}).length;
+    var nodes=INST_SNA_STATE.nodes.filter(function(n){return n.cat.indexOf(theme)>=0;}).length;
+    var nm=SNA_INST_THEME_MAP[theme]?SNA_INST_THEME_MAP[theme].name:theme;
+    stats.innerHTML='&#128269; <span style="color:'+SNA_INST_THEME_MAP[theme].color+';font-weight:700">'+nm+'</span>: <span>'+nodes+' direcciones</span> &middot; <span>'+count+' enlaces</span>';
+  }
 }
 
 /* ─── Sankey Direcciones → Dimensiones → FODA (SVG custom, sin Perfil ni Sin FODA) ─── */
