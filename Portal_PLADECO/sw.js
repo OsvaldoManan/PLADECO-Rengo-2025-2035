@@ -1,4 +1,4 @@
-const CACHE_STATIC='pladeco-static-v49.16';
+const CACHE_STATIC='pladeco-static-v49.17';
 const CACHE_IMG='pladeco-img-v1';
 const CACHE_TILES='pladeco-tiles-v1';
 const MAX_IMG_CACHE=200;
@@ -22,6 +22,7 @@ const STATIC_ASSETS=[
   './escudo-rengo.svg',
   './escudo-rengo-blanco.svg',
   './Obra.png',
+  './logo-pladeco.png',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
@@ -30,20 +31,22 @@ const STATIC_ASSETS=[
 /* ── Install: pre-cache static assets ── */
 self.addEventListener('install',e=>{
   e.waitUntil(
-    caches.open(CACHE_STATIC).then(c=>c.addAll(STATIC_ASSETS))
+    caches.open(CACHE_STATIC).then(c=>c.addAll(STATIC_ASSETS).catch(err=>{
+      // Si algún asset falla, no aborta toda la instalación
+      console.warn('SW install: some assets failed', err);
+    }))
   );
   self.skipWaiting();
 });
 
-/* ── Activate: clean old caches ── */
+/* ── Activate: clean old caches + claim immediately ── */
 self.addEventListener('activate',e=>{
   const keep=new Set([CACHE_STATIC,CACHE_IMG,CACHE_TILES]);
   e.waitUntil(
     caches.keys().then(ks=>Promise.all(
       ks.filter(k=>!keep.has(k)).map(k=>caches.delete(k))
-    ))
+    )).then(()=>self.clients.claim())
   );
-  self.clients.claim();
 });
 
 /* ── Helper: trim cache to max entries ── */
@@ -63,6 +66,17 @@ function isCacheable(req,res){
   if(res.status===0) return false; // opaque error
   if(res.type==='opaque') return true; // opaque OK (CORS images)
   return res.ok;
+}
+
+/* ── Helper: is HTML request? ── */
+function isHTML(req,url){
+  if(req.mode==='navigate') return true;
+  if(req.destination==='document') return true;
+  const accept=req.headers.get('accept')||'';
+  if(accept.includes('text/html')) return true;
+  if(/\.html$/i.test(url.pathname)) return true;
+  if(url.pathname==='/'||url.pathname.endsWith('/')) return true;
+  return false;
 }
 
 /* ── Fetch: strategy per request type ── */
@@ -107,17 +121,43 @@ self.addEventListener('fetch',e=>{
     return;
   }
 
-  /* Static assets + HTML → cache-first with network fallback */
-  e.respondWith(
-    caches.match(e.request).then(r=>{
-      if(r) return r;
-      return fetch(e.request).then(res=>{
-        if(res.ok&&(res.type==='basic'||res.type==='cors')){
+  /* HTML / Navigation requests → NETWORK-FIRST (always try fresh, fallback to cache) */
+  if(isHTML(e.request,url)){
+    e.respondWith(
+      fetch(e.request).then(res=>{
+        // Si la red responde, actualiza la caché y devuelve la respuesta fresca
+        if(res && res.ok){
           const cl=res.clone();
           caches.open(CACHE_STATIC).then(c=>c.put(e.request,cl));
         }
         return res;
-      }).catch(()=>caches.match('./index.html'));
+      }).catch(()=>{
+        // Sin red: fallback a la caché
+        return caches.match(e.request).then(r=>r||caches.match('./index.html'));
+      })
+    );
+    return;
+  }
+
+  /* Static assets (CSS/JS/fonts/etc.) → stale-while-revalidate */
+  e.respondWith(
+    caches.match(e.request).then(cached=>{
+      const networkPromise=fetch(e.request).then(res=>{
+        if(res && res.ok && (res.type==='basic'||res.type==='cors')){
+          const cl=res.clone();
+          caches.open(CACHE_STATIC).then(c=>c.put(e.request,cl));
+        }
+        return res;
+      }).catch(()=>cached);
+      // Si está en caché, devolver inmediatamente y refrescar en background
+      return cached || networkPromise;
     })
   );
+});
+
+/* ── Listen for messages from page (e.g. SKIP_WAITING) ── */
+self.addEventListener('message',e=>{
+  if(e.data && e.data.type==='SKIP_WAITING'){
+    self.skipWaiting();
+  }
 });
