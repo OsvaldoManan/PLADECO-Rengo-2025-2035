@@ -1,4 +1,4 @@
-const CACHE_STATIC='pladeco-static-v49.12';
+const CACHE_STATIC='pladeco-static-v49.13';
 const CACHE_IMG='pladeco-img-v1';
 const CACHE_TILES='pladeco-tiles-v1';
 const MAX_IMG_CACHE=200;
