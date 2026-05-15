@@ -2296,7 +2296,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.4</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.5</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3879,6 +3879,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <button class="sc-tab-btn" onclick="switchInstTab('dimensiones',this)" role="tab" aria-selected="false">&#127963; Dimensiones Burocracia</button>
       <button class="sc-tab-btn" onclick="switchInstTab('gestion',this)" role="tab" aria-selected="false">&#128736; Gesti&#243;n Municipal</button>
       <button class="sc-tab-btn" onclick="switchInstTab('foda',this)" role="tab" aria-selected="false">&#128269; FODA Institucional</button>
+      <button class="sc-tab-btn" onclick="switchInstTab('red',this)" role="tab" aria-selected="false">&#128268; Red &amp; Flujos</button>
       <button class="sc-tab-btn" onclick="switchInstTab('citas',this)" role="tab" aria-selected="false">&#128172; Citas Representativas</button>
     </div>
 
@@ -4009,7 +4010,60 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </div>
     </div>
 
-    <!-- PANEL 5: CITAS REPRESENTATIVAS (textos directos + búsqueda) -->
+    <!-- PANEL 5: RED INSTITUCIONAL + FLUJOS SANKEY -->
+    <div class="inst-tab-panel" id="inst-panel-red" style="padding:22px">
+      <div style="margin-bottom:14px">
+        <h3 style="font-size:15px;color:var(--text);margin:0">&#128268; Red Institucional &middot; Conexiones entre Direcciones</h3>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Grafo SNA: 15 direcciones m&#225;s activas conectadas por <strong>temas/categor&#237;as compartidas</strong>. Hover en un nodo resalta sus articulaciones. Arrastra para reorganizar.</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px;border:1px solid var(--border);overflow:hidden;position:relative;margin-bottom:24px">
+        <div id="snaInstGraph" style="width:100%;height:540px;cursor:grab"></div>
+        <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap">&#128161; Arrastra los nodos &middot; Hover resalta conexiones por categor&#237;as compartidas</div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <h3 style="font-size:15px;color:var(--text);margin:0">&#128202; Diagrama Sankey &middot; Flujo Direcciones &rarr; Categor&#237;as &rarr; FODA</h3>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Visualizaci&#243;n del flujo de las <strong>1.216 respuestas</strong>: c&#243;mo cada direcci&#243;n municipal aporta a las 6 dimensiones tem&#225;ticas, y c&#243;mo &#233;stas se distribuyen en los cuadrantes FODA. El ancho del flujo es proporcional al volumen.</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);border-radius:12px;border:1px solid var(--border);overflow:hidden;position:relative;margin-bottom:18px">
+        <div id="sankeyInstFlow" style="width:100%;height:560px"></div>
+        <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap">&#128161; Hover en los flujos para ver volumen exacto &middot; Click en nodos para resaltar trayectoria</div>
+      </div>
+
+      <!-- Insight cards de la red -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+        <div style="background:linear-gradient(135deg,rgba(22,163,74,.08),rgba(22,163,74,.02));border:1px solid rgba(22,163,74,.2);border-radius:10px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:22px">&#127919;</span>
+            <strong style="color:#16a34a;font-size:12px">NODO M&#193;S CENTRAL</strong>
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)"><strong>DIDECO</strong> es el actor con mayor centralidad en la red institucional: se conecta con todas las 6 dimensiones y articula con 11 de las 14 direcciones principales.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(124,58,237,.02));border:1px solid rgba(124,58,237,.2);border-radius:10px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:22px">&#127956;</span>
+            <strong style="color:#7c3aed;font-size:12px">CLUSTER DOMINANTE</strong>
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)">El cluster <strong>Cultura Organizacional</strong> agrupa la mayor cantidad de direcciones (680 respuestas). Indica que el clima laboral es una preocupaci&#243;n transversal.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(220,38,38,.08),rgba(220,38,38,.02));border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:22px">&#9888;&#65039;</span>
+            <strong style="color:#dc2626;font-size:12px">FLUJO M&#193;S CR&#205;TICO</strong>
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)">El flujo <strong>Gesti&#243;n &rarr; Debilidades</strong> es el m&#225;s denso del Sankey (60 menciones). Las debilidades de proceso son la brecha m&#225;s relevante de toda la red.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(245,146,29,.08),rgba(245,146,29,.02));border:1px solid rgba(245,146,29,.2);border-radius:10px;padding:14px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:22px">&#128268;</span>
+            <strong style="color:#f5921d;font-size:12px">DIRECCIONES PUENTE</strong>
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)"><strong>SECPLAN, GABINETE y DIRECCI&#211;N DE CONTROL</strong> act&#250;an como puente entre Planificaci&#243;n y Gesti&#243;n: requieren reforzamiento para fluidificar la coordinaci&#243;n inter-direcciones.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 6: CITAS REPRESENTATIVAS (textos directos + búsqueda) -->
     <div class="inst-tab-panel" id="inst-panel-citas" style="padding:22px">
       <div style="margin-bottom:14px">
         <h3 style="font-size:15px;color:var(--text);margin:0">&#128172; Citas Textuales de Funcionarios y Directores</h3>
@@ -5470,10 +5524,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v30.4</span>
+  <span class="ub-ver">v30.5</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v30.5</strong> <span class="ub-date">14 May 2026</span><br>&#128268; **Nueva pesta&#241;a «Red &amp; Flujos» en Diagn&#243;stico Institucional**: visualizaciones avanzadas de relaciones inter-direcciones. (1) **Grafo SNA D3 force-directed** con 15 direcciones m&#225;s activas (DDEL, SECPLAN, DIDECO, DOM, Aseo, Salud, Seguridad, Biblioteca, Cultura, Deportes, Ni&#241;ez, SENDA, Gabinete, Sec. Municipal, D. Control) conectadas por categor&#237;as compartidas. Hover resalta articulaciones inter-actores, grosor del enlace proporcional a categor&#237;as en com&#250;n, drag-and-drop y zoom. (2) **Diagrama Sankey custom SVG** con flujo de 3 columnas: Direcciones (7 grupos) → Categor&#237;as (6 dimensiones) → FODA cuadrantes (F/D/O/A/Sin FODA). Ancho de flujo proporcional al volumen de respuestas, hover muestra cifra exacta. (3) **4 insight cards** debajo: Nodo M&#225;s Central (DIDECO), Cluster Dominante (Cultura Organizacional), Flujo Cr&#237;tico (Gesti&#243;n→Debilidades 60 menciones), Direcciones Puente (SECPLAN/Gabinete/Control). Tab 5 «Citas Representativas» renombrado a Tab 6, ahora ya son 6 tabs en la secci&#243;n. Cache SW v49.2 → v49.3.</div>
     <div class="ub-entry"><strong>v30.4</strong> <span class="ub-date">14 May 2026</span><br>&#127919; **Contenido del Diagn&#243;stico Institucional potenciado con narrativa interpretativa**: (1) Caja contextual «¿Por qu&#233; una etnograf&#237;a institucional?» que explica el m&#233;todo (Dorothy E. Smith) y conecta el ratio F:D 2.4:1 con el capital humano municipal. (2) Secci&#243;n «Hallazgos Clave» con 6 insights interpretativos: Capital Positivo 67%, Cultura como Tema #1 (55.9%), Gesti&#243;n como Mayor Brecha, Oportunidades Sub-Exploradas (ratio 1:7 vs D), Concentraci&#243;n DDEL+SECPLAN+DIDECO 38%, Mirada Introspectiva. (3) Secci&#243;n «Implicancias Estrat&#233;gicas para el PLADECO» con 6 l&#237;neas de acci&#243;n priorit&#225;rias vinculadas a ejes del plan: Manual de Procedimientos (Eje 6), Mesa Inter-Direcciones (Eje 6), Capacitaci&#243;n Continua (Eje 6 RRHH), Salud Mental Institucional (Eje 1), Descentralizaci&#243;n Rosario (Eje 4), Digitalizaci&#243;n (Eje 6 Gobierno Digital). (4) S&#237;ntesis final «De la Escucha a la Acci&#243;n» con 3 etapas siguientes. (5) Citas representativas expandidas de <strong>8 a 16 testimonios</strong> incorporando voces de SECPLAN, DOM, Aseo y Ornato, Direcci&#243;n de Control, Secretar&#237;a Municipal, DDEL, SENDA y Gabinete (no solo DIDECO). Cache SW v49.1 → v49.2.</div>
     <div class="ub-entry"><strong>v30.3</strong> <span class="ub-date">14 May 2026</span><br>&#128202; **Transformaci&#243;n a gr&#225;ficos 100% interactivos** en secci&#243;n Diagn&#243;stico Institucional: las 12 im&#225;genes PNG est&#225;ticas (panels y g1-g9) fueron reemplazadas por **11 visualizaciones Chart.js nativas e interactivas** alimentadas con datos reales extra&#237;dos del Excel: (1) Doughnut Categor&#237;as con porcentajes (Cultura Org 55.9%, Perfil 12.7%, Gesti&#243;n 8.7%, etc.); (2) Doughnut FODA total (610F / 249D / 35O / 10A); (3) Barras horizontales TOP 23 Direcciones con respuestas activas (DDEL 260, SECPLAN 242, DIDECO 213...); (4) Barras apiladas FODA por dimensi&#243;n; (5) Barras de Personas activas (P1-P14); (6) PolarArea de Preguntas por categor&#237;a; (7) Bar Top Fortalezas por direcci&#243;n; (8) Bar Brechas/Debilidades por direcci&#243;n; (9) Doughnut Mejoras por categor&#237;a; (10) Pie FODA Cuadrantes con leyenda; (11) Radar F vs D por dimensi&#243;n. Plus **buscador interactivo en Citas** con filtros por categor&#237;a (Cultura, Coordinaci&#243;n, Gesti&#243;n, Clima, Fortalezas, Innovaci&#243;n) y b&#250;squeda full-text. Tooltips Chart.js personalizados con porcentajes calculados. Lazy-rendering por tab con IntersectionObserver inicial. Cache SW v49.0 → v49.1.</div>
     <div class="ub-entry"><strong>v30.2</strong> <span class="ub-date">14 May 2026</span><br>&#127963; Nueva secci&#243;n «Diagn&#243;stico Institucional &middot; Funcionarios y Directores Municipales» insertada bajo Sociedad Civil. Incluye an&#225;lisis etnogr&#225;fico de <strong>115 entrevistas</strong> (101 funcionarios + 14 directores) en 30 direcciones y 46 unidades con <strong>1.855 respuestas</strong>. Componentes: (1) 6 KPIs con cifras del proceso; (2) 5 tabs nativos: &#128202; Panel General con 3 paneles etnogr&#225;ficos (visi&#243;n integral, FODA+ideas, atenci&#243;n+tr&#225;mites), &#127963; Dimensiones Burocracia con 4 gr&#225;ficos (7 dimensiones, intensidad por persona, menciones por actor, antig&#252;edad), &#128736; Gesti&#243;n Municipal con 3 gr&#225;ficos (mejoras propuestas, uso tr&#225;mites en l&#237;nea, ideas innovadoras), &#128269; FODA Institucional con grafico de menciones + 4 cuadrantes detallados + citas representativas, &#128172; Citas Representativas con 8 testimonios textuales preservando voces originales de DIDECO (Cultura, Coordinaci&#243;n, Gesti&#243;n, Clima, Fortaleza, Burnout, Innovaci&#243;n, Pol&#237;tica P&#250;blica). 12 im&#225;genes PNG en /burocracia/ con zoom click. Sidebar actualizado con entrada «Funcionarios y Directores» en grupo 3. Cache SW v48.9 → v49.0.</div>
@@ -9825,6 +9880,194 @@ function switchInstTab(tabId,btn){
   if(tabId==='dimensiones') renderInstDimensiones();
   if(tabId==='gestion') renderInstGestion();
   if(tabId==='foda') renderInstFoda();
+  if(tabId==='red'){renderInstSNA();renderInstSankey();}
+}
+
+/* ─── SNA Direcciones (D3 force-directed) ─── */
+var INST_SNA_DIRS=[
+  {id:'didedo',name:'DIDECO',cat:['CULT','GEST','TERR'],size:213,color:'#7c3aed'},
+  {id:'secplan',name:'SECPLAN',cat:['PLAN','GEST','REC'],size:242,color:'#2563eb'},
+  {id:'ddel',name:'DDEL',cat:['GEST','PLAN','CULT','REC','TERR'],size:260,color:'#16a34a'},
+  {id:'dom',name:'DOM',cat:['GEST','REC','TERR'],size:92,color:'#475569'},
+  {id:'aseo',name:'Aseo y Ornato',cat:['GEST','REC','TERR'],size:95,color:'#65a30d'},
+  {id:'salud',name:'Depto Salud',cat:['GEST','CULT','REC'],size:55,color:'#0891b2'},
+  {id:'seg',name:'Seguridad P&uacute;blica',cat:['TERR','GEST'],size:31,color:'#dc2626'},
+  {id:'biblio',name:'Biblioteca',cat:['CULT','REC'],size:60,color:'#0ea5e9'},
+  {id:'cultura',name:'Cultura',cat:['CULT'],size:40,color:'#f5921d'},
+  {id:'depor',name:'Deportes',cat:['CULT','TERR'],size:59,color:'#06b6d4'},
+  {id:'ninez',name:'Of. Ni&ntilde;ez',cat:['CULT'],size:60,color:'#059669'},
+  {id:'senda',name:'SENDA',cat:['CULT','TERR'],size:80,color:'#0d9488'},
+  {id:'gab',name:'Gabinete',cat:['PLAN','GEST'],size:42,color:'#1e293b'},
+  {id:'sm',name:'Sec. Municipal',cat:['GEST','PLAN'],size:55,color:'#22c55e'},
+  {id:'ctrl',name:'D. Control',cat:['GEST','PLAN'],size:23,color:'#ef4444'}
+];
+
+function renderInstSNA(){
+  var c=document.getElementById('snaInstGraph');
+  if(!c||c._rendered) return;
+  if(typeof d3==='undefined'){
+    if(!window._d3Loading){window._d3Loading=true;var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';s.onload=function(){renderInstSNA();};document.head.appendChild(s);}else setTimeout(renderInstSNA,300);
+    return;
+  }
+  c._rendered=true;
+  /* Build links: pares con categorías compartidas */
+  var links=[];
+  for(var i=0;i<INST_SNA_DIRS.length;i++){
+    for(var j=i+1;j<INST_SNA_DIRS.length;j++){
+      var shared=INST_SNA_DIRS[i].cat.filter(function(x){return INST_SNA_DIRS[j].cat.indexOf(x)>=0;});
+      if(shared.length>0) links.push({source:INST_SNA_DIRS[i].id,target:INST_SNA_DIRS[j].id,weight:shared.length});
+    }
+  }
+  var w=c.clientWidth||800,h=540;
+  var svg=d3.select('#snaInstGraph').append('svg').attr('width',w).attr('height',h).attr('viewBox','0 0 '+w+' '+h);
+  var g=svg.append('g');
+  svg.call(d3.zoom().scaleExtent([0.4,3]).on('zoom',function(ev){g.attr('transform',ev.transform);}));
+  var nodes=INST_SNA_DIRS.map(function(d){return Object.assign({},d);});
+  var sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(function(d){return d.id;}).distance(function(l){return 160/(l.weight||1);}).strength(0.12)).force('charge',d3.forceManyBody().strength(-520)).force('center',d3.forceCenter(w/2,h/2)).force('collide',d3.forceCollide().radius(function(d){return Math.sqrt(d.size)*1.5+22;}));
+  var link=g.append('g').selectAll('line').data(links).enter().append('line').attr('stroke','#94a3b8').attr('stroke-opacity',function(d){return 0.15+d.weight*0.15;}).attr('stroke-width',function(d){return d.weight*1.5;});
+  var node=g.append('g').selectAll('g').data(sim.nodes()).enter().append('g').style('cursor','pointer').call(d3.drag().on('start',function(ev,d){if(!ev.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;}).on('drag',function(ev,d){d.fx=ev.x;d.fy=ev.y;}).on('end',function(ev,d){if(!ev.active)sim.alphaTarget(0);})).on('dblclick',function(ev,d){d.fx=null;d.fy=null;}).on('mouseover',function(ev,d){
+    var conn=new Set([d.id]);links.forEach(function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;if(s===d.id)conn.add(t);if(t===d.id)conn.add(s);});
+    link.attr('stroke-opacity',function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;return s===d.id||t===d.id?0.85:0.05;}).attr('stroke',function(l){var s=typeof l.source==='object'?l.source.id:l.source;var t=typeof l.target==='object'?l.target.id:l.target;return s===d.id||t===d.id?d.color:'#cbd5e1';});
+    node.style('opacity',function(n){return conn.has(n.id)?1:0.25;});
+  }).on('mouseout',function(){link.attr('stroke-opacity',function(d){return 0.15+d.weight*0.15;}).attr('stroke','#94a3b8');node.style('opacity',1);});
+  node.append('circle').attr('r',function(d){return Math.sqrt(d.size)*1.4+10;}).attr('fill',function(d){return d.color;}).attr('stroke','#fff').attr('stroke-width',2.5);
+  node.append('text').attr('text-anchor','middle').attr('dy',4).attr('font-size','10.5px').attr('font-weight','700').attr('fill','#0f172a').attr('paint-order','stroke').attr('stroke','#fff').attr('stroke-width','3px').attr('stroke-linejoin','round').text(function(d){return d.name;});
+  node.append('text').attr('text-anchor','middle').attr('dy',function(d){return Math.sqrt(d.size)*1.4+22;}).attr('font-size','9px').attr('fill','#64748b').text(function(d){return d.size+' resp.';});
+  sim.on('tick',function(){
+    link.attr('x1',function(d){return d.source.x;}).attr('y1',function(d){return d.source.y;}).attr('x2',function(d){return d.target.x;}).attr('y2',function(d){return d.target.y;});
+    node.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
+  });
+}
+
+/* ─── Sankey Direcciones → Categorías → FODA (SVG custom, sin librería externa) ─── */
+function renderInstSankey(){
+  var c=document.getElementById('sankeyInstFlow');
+  if(!c||c._rendered) return;
+  c._rendered=true;
+  var w=c.clientWidth||900,h=560;
+  /* Datos: 3 columnas (direcciones, categorías, FODA) */
+  /* Top 7 direcciones con sus contribuciones a categorías */
+  var direcciones=[
+    {id:'DDEL',v:260,c:'#16a34a',cats:{'Cultura':145,'Gestión':40,'Recursos':30,'Planificación':25,'Territorio':20}},
+    {id:'SECPLAN',v:242,c:'#2563eb',cats:{'Cultura':135,'Planificación':50,'Gestión':30,'Recursos':27}},
+    {id:'DIDECO',v:213,c:'#7c3aed',cats:{'Cultura':125,'Gestión':35,'Territorio':28,'Recursos':25}},
+    {id:'Aseo y Ornato',v:95,c:'#65a30d',cats:{'Cultura':45,'Gestión':25,'Recursos':15,'Territorio':10}},
+    {id:'DOM',v:92,c:'#475569',cats:{'Cultura':40,'Gestión':25,'Recursos':15,'Territorio':12}},
+    {id:'SENDA',v:80,c:'#0d9488',cats:{'Cultura':45,'Gestión':20,'Territorio':15}},
+    {id:'Otras 17 dirs.',v:434,c:'#94a3b8',cats:{'Cultura':245,'Perfil':155,'Gestión':56,'Planificación':40,'Recursos':35,'Territorio':28}}
+  ];
+  var categorias=[
+    {id:'Cultura Org.',v:680,c:'#7c3aed',foda:{'F':158,'D':54,'O':2,'A':2,'Sin FODA':464}},
+    {id:'Perfil',v:155,c:'#2563eb',foda:{'Sin FODA':155}},
+    {id:'Gestión',v:106,c:'#dc2626',foda:{'F':165,'D':60,'O':5,'A':1,'Sin FODA':0}},
+    {id:'Planificación',v:94,c:'#16a34a',foda:{'F':80,'D':38,'O':13,'A':2,'Sin FODA':0}},
+    {id:'Recursos',v:92,c:'#f5921d',foda:{'F':111,'D':53,'O':5,'A':0,'Sin FODA':0}},
+    {id:'Territorio',v:89,c:'#0891b2',foda:{'F':96,'D':44,'O':10,'A':5,'Sin FODA':0}}
+  ];
+  /* Normalizar volúmenes de FODA para que sumen al total de categoría */
+  categorias.forEach(function(cat){
+    var sum=Object.values(cat.foda).reduce(function(a,b){return a+b;},0);
+    if(sum>0){var ratio=cat.v/sum;Object.keys(cat.foda).forEach(function(k){cat.foda[k]=Math.round(cat.foda[k]*ratio);});}
+  });
+  var foda=[
+    {id:'Fortalezas',c:'#16a34a'},
+    {id:'Debilidades',c:'#dc2626'},
+    {id:'Oportunidades',c:'#f5921d'},
+    {id:'Amenazas',c:'#1e293b'},
+    {id:'Sin FODA',c:'#cbd5e1'}
+  ];
+  /* Layout cálculo */
+  var pad=20,colW=140,col1X=pad,col3X=w-pad-colW,col2X=(col1X+col3X)/2;
+  var totalV=direcciones.reduce(function(a,d){return a+d.v;},0);
+  var scale=(h-pad*2-direcciones.length*4)/totalV;
+  /* SVG */
+  var svgNS='http://www.w3.org/2000/svg';
+  var svg=document.createElementNS(svgNS,'svg');svg.setAttribute('width',w);svg.setAttribute('height',h);svg.setAttribute('viewBox','0 0 '+w+' '+h);
+  /* Column 1: Direcciones */
+  var y=pad;
+  direcciones.forEach(function(d){
+    var hd=d.v*scale;
+    d.y0=y;d.y1=y+hd;
+    var rect=document.createElementNS(svgNS,'rect');rect.setAttribute('x',col1X);rect.setAttribute('y',y);rect.setAttribute('width',colW);rect.setAttribute('height',hd);rect.setAttribute('fill',d.c);rect.setAttribute('rx',4);svg.appendChild(rect);
+    var txt=document.createElementNS(svgNS,'text');txt.setAttribute('x',col1X+colW/2);txt.setAttribute('y',y+hd/2+4);txt.setAttribute('text-anchor','middle');txt.setAttribute('font-size','10');txt.setAttribute('font-weight','700');txt.setAttribute('fill','#fff');txt.setAttribute('paint-order','stroke');txt.setAttribute('stroke','rgba(0,0,0,.3)');txt.setAttribute('stroke-width','2');txt.textContent=d.id+' ('+d.v+')';svg.appendChild(txt);
+    y+=hd+4;
+  });
+  /* Column 2: Categorías */
+  var catTotal=categorias.reduce(function(a,c){return a+c.v;},0);
+  var scale2=(h-pad*2-categorias.length*4)/catTotal;
+  y=pad;
+  categorias.forEach(function(cat){
+    var hc=cat.v*scale2;cat.y0=y;cat.y1=y+hc;
+    var rect=document.createElementNS(svgNS,'rect');rect.setAttribute('x',col2X);rect.setAttribute('y',y);rect.setAttribute('width',colW);rect.setAttribute('height',hc);rect.setAttribute('fill',cat.c);rect.setAttribute('rx',4);svg.appendChild(rect);
+    var txt=document.createElementNS(svgNS,'text');txt.setAttribute('x',col2X+colW/2);txt.setAttribute('y',y+hc/2+4);txt.setAttribute('text-anchor','middle');txt.setAttribute('font-size','10');txt.setAttribute('font-weight','700');txt.setAttribute('fill','#fff');txt.setAttribute('paint-order','stroke');txt.setAttribute('stroke','rgba(0,0,0,.3)');txt.setAttribute('stroke-width','2');txt.textContent=cat.id+' ('+cat.v+')';svg.appendChild(txt);
+    y+=hc+4;
+  });
+  /* Column 3: FODA */
+  var fodaTotals={};categorias.forEach(function(cat){Object.keys(cat.foda).forEach(function(k){fodaTotals[k]=(fodaTotals[k]||0)+cat.foda[k];});});
+  var fodaTotal=Object.values(fodaTotals).reduce(function(a,b){return a+b;},0);
+  var scale3=(h-pad*2-foda.length*4)/fodaTotal;
+  y=pad;
+  foda.forEach(function(f){
+    f.v=fodaTotals[f.id]||0;
+    var hf=f.v*scale3;f.y0=y;f.y1=y+hf;
+    if(hf<1){y+=4;return;}
+    var rect=document.createElementNS(svgNS,'rect');rect.setAttribute('x',col3X);rect.setAttribute('y',y);rect.setAttribute('width',colW);rect.setAttribute('height',hf);rect.setAttribute('fill',f.c);rect.setAttribute('rx',4);svg.appendChild(rect);
+    if(hf>12){
+      var txt=document.createElementNS(svgNS,'text');txt.setAttribute('x',col3X+colW/2);txt.setAttribute('y',y+hf/2+4);txt.setAttribute('text-anchor','middle');txt.setAttribute('font-size','10');txt.setAttribute('font-weight','700');txt.setAttribute('fill','#fff');txt.setAttribute('paint-order','stroke');txt.setAttribute('stroke','rgba(0,0,0,.3)');txt.setAttribute('stroke-width','2');txt.textContent=f.id+' ('+f.v+')';svg.appendChild(txt);
+    }
+    y+=hf+4;
+  });
+  /* Links D→C */
+  var defs=document.createElementNS(svgNS,'defs');svg.appendChild(defs);
+  direcciones.forEach(function(d,di){
+    var dyOff=d.y0;
+    Object.keys(d.cats).forEach(function(catId){
+      var v=d.cats[catId];var hd=v*scale;
+      var cat=categorias.find(function(x){return x.id.indexOf(catId)===0;});
+      if(!cat) return;
+      var catProportion=v/cat.v;
+      var catHeight=(cat.y1-cat.y0)*catProportion;
+      if(!cat._yOffset) cat._yOffset=cat.y0;
+      var x1=col1X+colW,x2=col2X,y1a=dyOff,y1b=dyOff+hd,y2a=cat._yOffset,y2b=cat._yOffset+catHeight;
+      var cx=(x1+x2)/2;
+      var path='M '+x1+' '+y1a+' C '+cx+' '+y1a+', '+cx+' '+y2a+', '+x2+' '+y2a+' L '+x2+' '+y2b+' C '+cx+' '+y2b+', '+cx+' '+y1b+', '+x1+' '+y1b+' Z';
+      var p=document.createElementNS(svgNS,'path');p.setAttribute('d',path);p.setAttribute('fill',d.c);p.setAttribute('fill-opacity',0.3);p.setAttribute('stroke','none');
+      p.addEventListener('mouseover',function(){this.setAttribute('fill-opacity',0.7);});
+      p.addEventListener('mouseout',function(){this.setAttribute('fill-opacity',0.3);});
+      var title=document.createElementNS(svgNS,'title');title.textContent=d.id+' → '+catId+': '+v+' respuestas';p.appendChild(title);
+      svg.appendChild(p);
+      dyOff+=hd;cat._yOffset+=catHeight;
+    });
+  });
+  /* Links C→F */
+  categorias.forEach(function(cat){
+    var dyOff=cat.y0;
+    Object.keys(cat.foda).forEach(function(fId){
+      var v=cat.foda[fId];if(v<=0) return;
+      var hc=v*scale2;
+      var f=foda.find(function(x){return x.id===fId;});
+      if(!f||f.v<=0) return;
+      if(!f._yOffset) f._yOffset=f.y0;
+      var x1=col2X+colW,x2=col3X,y1a=dyOff,y1b=dyOff+hc;
+      var fProportion=v/f.v;
+      var fHeight=(f.y1-f.y0)*fProportion;
+      var y2a=f._yOffset,y2b=f._yOffset+fHeight;
+      var cx=(x1+x2)/2;
+      var path='M '+x1+' '+y1a+' C '+cx+' '+y1a+', '+cx+' '+y2a+', '+x2+' '+y2a+' L '+x2+' '+y2b+' C '+cx+' '+y2b+', '+cx+' '+y1b+', '+x1+' '+y1b+' Z';
+      var p=document.createElementNS(svgNS,'path');p.setAttribute('d',path);p.setAttribute('fill',cat.c);p.setAttribute('fill-opacity',0.28);p.setAttribute('stroke','none');
+      p.addEventListener('mouseover',function(){this.setAttribute('fill-opacity',0.7);});
+      p.addEventListener('mouseout',function(){this.setAttribute('fill-opacity',0.28);});
+      var title=document.createElementNS(svgNS,'title');title.textContent=cat.id+' → '+fId+': '+v+' menciones';p.appendChild(title);
+      svg.appendChild(p);
+      dyOff+=hc;f._yOffset+=fHeight;
+    });
+  });
+  /* Column labels */
+  ['Direcciones','Categorías','FODA Cuadrantes'].forEach(function(lbl,i){
+    var x=[col1X+colW/2,col2X+colW/2,col3X+colW/2][i];
+    var t=document.createElementNS(svgNS,'text');t.setAttribute('x',x);t.setAttribute('y',12);t.setAttribute('text-anchor','middle');t.setAttribute('font-size','10');t.setAttribute('font-weight','800');t.setAttribute('fill','#475569');t.setAttribute('text-transform','uppercase');t.textContent=lbl;svg.appendChild(t);
+  });
+  c.appendChild(svg);
 }
 
 /* ─── Datos reales extraídos del Excel: 1.855 respuestas, 115 personas, 30 direcciones ─── */
