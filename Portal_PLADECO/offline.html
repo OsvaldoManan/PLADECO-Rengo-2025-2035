@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sin conexión · PLADECO Rengo 2025-2035</title>
+<meta name="theme-color" content="#0c1f36">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="escudo-rengo.svg">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:linear-gradient(135deg,#0c1f36 0%,#142d5a 50%,#0d3a26 100%);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.55;overflow-x:hidden;position:relative}
+body::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 80%,rgba(45,154,77,.2),transparent 50%),radial-gradient(circle at 80% 20%,rgba(245,146,29,.18),transparent 50%);pointer-events:none}
+.offline-card{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:48px 40px;max-width:520px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative;z-index:1;animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.offline-icon{width:80px;height:80px;margin:0 auto 20px;background:rgba(245,146,29,.15);border:2px solid rgba(245,146,29,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(245,146,29,.3)}50%{transform:scale(1.05);box-shadow:0 0 0 14px rgba(245,146,29,0)}}
+h1{font-size:26px;font-weight:800;margin-bottom:8px;letter-spacing:-.02em;line-height:1.2}
+h1 .accent{color:#f5921d}
+.offline-subtitle{font-size:14px;color:rgba(255,255,255,.75);margin-bottom:28px;line-height:1.6;font-weight:500}
+.offline-status{display:inline-flex;align-items:center;gap:8px;background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);padding:7px 14px;border-radius:20px;font-size:11px;font-weight:700;color:#fca5a5;letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px}
+.offline-status .os-dot{width:8px;height:8px;border-radius:50%;background:#f87171;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.offline-actions{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:12px;font-size:13.5px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .2s;letter-spacing:.01em}
+.btn-primary{background:linear-gradient(135deg,#2d9a4d,#1f7a3a);color:#fff;box-shadow:0 4px 16px rgba(45,154,77,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(45,154,77,.5)}
+.btn-secondary{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.15)}
+.btn-secondary:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3)}
+.offline-tip{margin-top:24px;padding:14px 16px;background:rgba(245,146,29,.08);border-left:3px solid #f5921d;border-radius:8px;font-size:12px;color:rgba(255,255,255,.78);text-align:left;line-height:1.55;font-weight:500}
+.offline-tip strong{color:#fdb94d}
+.offline-footer{margin-top:28px;font-size:10.5px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+@media(max-width:520px){.offline-card{padding:32px 24px}h1{font-size:22px}.offline-icon{width:64px;height:64px;font-size:28px}}
+</style>
+</head>
+<body>
+<main class="offline-card" role="main">
+  <div class="offline-status"><span class="os-dot"></span> Sin conexión a Internet</div>
+  <div class="offline-icon" aria-hidden="true">📡</div>
+  <h1>Estamos <span class="accent">offline</span>, pero seguimos aquí.</h1>
+  <p class="offline-subtitle">El Portal PLADECO Rengo necesita conexión para mostrar todo el contenido interactivo (mapas, gráficos, base de datos en tiempo real). Cuando recuperes la conexión, todo estará disponible.</p>
+
+  <div class="offline-actions">
+    <button class="btn btn-primary" type="button" onclick="window.location.reload()">🔄 Reintentar carga</button>
+    <a class="btn btn-secondary" href="./">🏠 Ir al inicio del portal</a>
+  </div>
+
+  <div class="offline-tip">
+    <strong>💡 Tip:</strong> Si visitaste el portal antes, gran parte del contenido está guardado en caché. La página principal y secciones consultadas previamente seguirán funcionando incluso sin conexión.
+  </div>
+
+  <div class="offline-footer">
+    PLADECO Rengo 2025-2035 · SECPLAC Municipalidad de Rengo
+  </div>
+</main>
+<script>
+// Auto-detect cuando vuelve la conexión y recarga
+window.addEventListener('online', function(){
+  document.querySelector('.offline-status').innerHTML = '<span class="os-dot" style="background:#4ade80;animation:none"></span> ¡Conexión recuperada!';
+  document.querySelector('.offline-status').style.background = 'rgba(34,197,94,.15)';
+  document.querySelector('.offline-status').style.borderColor = 'rgba(34,197,94,.3)';
+  document.querySelector('.offline-status').style.color = '#86efac';
+  setTimeout(function(){window.location.reload();}, 1500);
+});
+</script>
+</body>
+</html>
