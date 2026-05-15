@@ -1568,6 +1568,34 @@ body.dark .construccion-meta span{background:rgba(255,255,255,.05);border-color:
 .countdown-card .cd-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light));border-radius:3px;width:0%;transition:width 1.5s ease}
 
 /* ── F6: Share Button ── */
+/* ══ Botones de acción por sección (share, fav, print) ══ */
+.print-btn{position:absolute;right:68px;top:0;background:none;border:2px solid var(--border);border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer;color:var(--text2);transition:all .2s;line-height:1}
+.print-btn:hover{border-color:#2563eb;color:#2563eb;background:rgba(37,99,235,.08)}
+body.dark .print-btn{border-color:#334155;color:#94a3b8}
+body.dark .print-btn:hover{border-color:#60a5fa;color:#60a5fa}
+.section-reading{position:absolute;right:0;top:38px;font-size:9.5px;color:var(--text2);font-weight:600;letter-spacing:.02em;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.03);padding:3px 8px;border-radius:6px;border:1px solid var(--border)}
+body.dark .section-reading{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08)}
+@media(max-width:700px){.print-btn{display:none}.section-reading{position:static;margin-top:6px;display:inline-flex}}
+@media print{.print-btn,.fav-toggle,.share-btn,.section-reading{display:none!important}}
+@media print{
+  body.printing-section .sidebar,
+  body.printing-section .construction-banner,
+  body.printing-section .countdown-strip,
+  body.printing-section .hero,
+  body.printing-section .group-divider,
+  body.printing-section .plan-status,
+  body.printing-section .quick-index,
+  body.printing-section .construccion-section,
+  body.printing-section .update-badge,
+  body.printing-section .chatbot-fab,
+  body.printing-section .search-fab,
+  body.printing-section .dark-toggle,
+  body.printing-section .back-to-top,
+  body.printing-section footer,
+  body.printing-section section:not(.print-target){display:none!important}
+  body.printing-section .main{padding-left:0!important;margin:0!important}
+  body.printing-section section.print-target{display:block!important;break-inside:avoid;padding:20px 0}
+}
 .share-btn{position:absolute;right:0;top:0;background:none;border:2px solid var(--border);border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer;color:var(--text2);transition:all .2s;line-height:1}
 .share-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(45,154,77,.08)}
 body.dark .share-btn{border-color:#334155;color:#94a3b8}
@@ -2078,8 +2106,17 @@ body.dark .sec-header .badge,body.dark .stat-chip .sc-icon{filter:brightness(.75
 .main::-webkit-scrollbar-thumb:hover{background:var(--text2)}
 
 /* ── Focus Styles (Accessibility) ── */
+/* ══ Accesibilidad: focus-visible global + skip links ══ */
 :focus-visible{outline:2px solid var(--green);outline-offset:2px;border-radius:4px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--green);outline-offset:2px;box-shadow:0 0 0 4px rgba(45,154,77,.15)}
+.skip-link{position:absolute;top:-100px;left:8px;background:var(--green);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;z-index:10000;font-size:13px;font-family:inherit;transition:top .2s;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.skip-link:focus{top:8px}
+@media (prefers-color-scheme: dark){
+  body:not(.dark):not(.theme-explicit){background:#0e1726;color:#e2e8f0}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
 
 /* ── Prefers Reduced Motion (consolidado) ── */
 @media(prefers-reduced-motion:reduce){
@@ -2362,6 +2399,66 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .sem-stat{padding:10px 16px;border-radius:var(--radius);font-size:12px;font-weight:700;text-align:center;min-width:100px;border:1px solid var(--border);background:var(--card);box-shadow:var(--shadow)}
 .sem-stat .ss-val{font-size:22px;font-weight:800;display:block}
 .sem-stat .ss-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-top:2px}
+
+/* ══ FAQ acordeón ══ */
+.faq-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:11px;overflow:hidden;transition:all .2s}
+.faq-item:hover{border-color:rgba(45,154,77,.3);box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.faq-q{width:100%;background:none;border:none;padding:14px 18px;text-align:left;font-family:inherit;font-size:13.5px;font-weight:700;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;line-height:1.4;letter-spacing:-.01em}
+.faq-q:hover{background:rgba(45,154,77,.04)}
+.faq-q .faq-icon{width:24px;height:24px;border-radius:50%;background:rgba(45,154,77,.1);color:#2d9a4d;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .25s,background .2s}
+.faq-item.open .faq-q .faq-icon{background:#2d9a4d;color:#fff;transform:rotate(45deg)}
+.faq-a{display:none;padding:0 18px 16px 60px;font-size:12.5px;color:var(--text2);line-height:1.65;border-top:1px solid var(--border);font-weight:500}
+.faq-item.open .faq-a{display:block;animation:faqSlide .25s ease}
+@keyframes faqSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.faq-a strong{color:var(--text)}
+.faq-a ul{list-style:none;padding-left:0;margin-top:8px}
+.faq-a ul li{padding-left:18px;position:relative;margin-bottom:4px;font-weight:500}
+.faq-a ul li::before{content:'→';position:absolute;left:0;color:#2d9a4d;font-weight:800}
+@media(max-width:600px){.faq-a{padding-left:18px}}
+
+/* ══ Presupuesto Participativo · stat cards ══ */
+.pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.pp-card{background:linear-gradient(180deg,rgba(45,154,77,.04),transparent);border:1px solid var(--border);border-left:4px solid #2d9a4d;border-radius:12px;padding:16px 18px;transition:all .2s}
+.pp-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(45,154,77,.08)}
+.pp-card.gold{border-left-color:#f5921d;background:linear-gradient(180deg,rgba(245,146,29,.04),transparent)}
+.pp-card.navy{border-left-color:#1a3d8f;background:linear-gradient(180deg,rgba(26,61,143,.04),transparent)}
+.pp-card.red{border-left-color:#c0352a;background:linear-gradient(180deg,rgba(192,53,42,.04),transparent)}
+.pp-card-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#2d9a4d;margin-bottom:6px}
+.pp-card.gold .pp-card-eyebrow{color:#f5921d}
+.pp-card.navy .pp-card-eyebrow{color:#1a3d8f}
+.pp-card.red .pp-card-eyebrow{color:#c0352a}
+.pp-card-title{font-family:inherit;font-size:14px;font-weight:800;color:var(--text);margin-bottom:5px;letter-spacing:-.01em;line-height:1.3}
+.pp-card-text{font-size:11.5px;color:var(--text2);line-height:1.55;font-weight:500}
+.pp-stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:16px}
+.pp-stage{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;position:relative}
+.pp-stage-num{position:absolute;top:-10px;left:14px;width:24px;height:24px;border-radius:50%;background:#2d9a4d;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;letter-spacing:-.5px}
+.pp-stage-month{font-size:9.5px;font-weight:700;color:#2d9a4d;letter-spacing:.12em;text-transform:uppercase;margin-top:6px;margin-bottom:3px}
+.pp-stage-title{font-size:12.5px;font-weight:800;color:var(--text);margin-bottom:3px;line-height:1.3}
+.pp-stage-desc{font-size:10.5px;color:var(--text2);line-height:1.5;font-weight:500}
+
+/* ══ Glosario de términos técnicos (tooltips) ══ */
+.glossy{display:inline-block;border-bottom:1px dotted var(--green);cursor:help;color:inherit;text-decoration:none;position:relative;font-weight:inherit}
+.glossy:hover,.glossy:focus{border-bottom-style:solid;border-bottom-color:var(--orange)}
+.glossy[data-tip]:hover::after,
+.glossy[data-tip]:focus::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:#071d36;color:#fff;padding:9px 13px;border-radius:8px;font-size:11.5px;font-weight:500;
+  white-space:normal;width:max-content;max-width:280px;line-height:1.5;letter-spacing:.01em;
+  box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:1000;
+  border:1px solid rgba(255,255,255,.1);
+  animation:glossyIn .15s ease;
+}
+.glossy[data-tip]:hover::before,
+.glossy[data-tip]:focus::before{
+  content:'';position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
+  width:0;height:0;border:6px solid transparent;border-top-color:#071d36;z-index:1000;
+}
+@keyframes glossyIn{from{opacity:0;transform:translateX(-50%) translateY(4px)}to{opacity:1;transform:translateX(-50%)}}
+body.dark .glossy[data-tip]:hover::after{background:#1e293b;border-color:rgba(255,255,255,.15)}
+body.dark .glossy[data-tip]:hover::before{border-top-color:#1e293b}
+@media(max-width:700px){.glossy[data-tip]:hover::after{max-width:200px;font-size:10.5px}}
 
 /* ══ Buscador full-text del portal ══ */
 .search-fab{position:fixed;bottom:32px;right:148px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#2d9a4d,#1f7a3a);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(45,154,77,.4);z-index:99;display:flex;align-items:center;justify-content:center;transition:all .3s}
@@ -2901,6 +2998,8 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-group">
       <div class="sidebar-group-title">7 &middot; Proceso y Documentaci&#243;n</div>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a &amp; Actas Participaci&#243;n</a>
+      <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
+      <a href="#faq"><span class="ico">&#10067;</span> Preguntas Frecuentes</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Entregables Finales</a>
       <a href="#graficos-proceso"><span class="ico">&#128202;</span> 73 Gr&#225;ficos del Proceso</a>
       <a href="#cartografias"><span class="ico">&#128506;</span> 57 Cartograf&#237;as</a>
@@ -2938,7 +3037,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v33.1</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v33.2</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -2980,7 +3079,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
 </div>
 
-<div class="main" role="main">
+<main class="main" id="main-content" role="main">
 
 <!-- ═══ HERO ═══ -->
 <div class="hero" id="hero" role="banner">
@@ -3035,9 +3134,9 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v33.1</span>
+        <span>&#127919; v33.2</span>
         <span>&#128197; 15 Mayo 2026</span>
-        <span>&#128202; 42 secciones</span>
+        <span>&#128202; 44 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
       </div>
@@ -3109,7 +3208,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="quick-index" id="quickIndex">
     <div class="quick-index-header">
       <div>
-        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">42 secciones</span></h3>
+        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">44 secciones</span></h3>
         <div class="quick-index-sub">Atajos a todas las secciones del portal organizadas en 7 grupos tem&aacute;ticos &middot; Las marcadas <strong style="color:#2d9a4d">NEW</strong> son incorporaciones recientes.</div>
       </div>
       <button class="quick-index-toggle" type="button" onclick="document.getElementById('quickIndex').classList.toggle('collapsed')">
@@ -3177,15 +3276,17 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <a href="#cronograma" class="qi-link"><span class="qi-link-ico">&#128197;</span><span class="qi-link-txt">Hoja de Ruta 2025-2035</span></a>
           <a href="#semaforo" class="qi-link"><span class="qi-link-ico">&#128680;</span><span class="qi-link-txt">Sem&aacute;foro de Metas</span></a>
           <a href="#financiamiento" class="qi-link"><span class="qi-link-ico">&#128176;</span><span class="qi-link-txt">Financiamiento</span></a>
+          <a href="#presupuesto-participativo" class="qi-link is-new"><span class="qi-link-ico">&#128181;</span><span class="qi-link-txt">Presupuesto Participativo</span></a>
           <a href="#compromisos" class="qi-link"><span class="qi-link-ico">&#9989;</span><span class="qi-link-txt">Compromisos PLADECO</span></a>
           <a href="#antes-despues" class="qi-link"><span class="qi-link-ico">&#128272;</span><span class="qi-link-txt">Antes / Despu&eacute;s</span></a>
         </div>
       </div>
       <div class="qi-group" data-grp="7">
-        <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Visualizaciones</div></div>
+        <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Documentaci&oacute;n</div></div>
         <div class="qi-links">
           <a href="#graficos" class="qi-link"><span class="qi-link-ico">&#128200;</span><span class="qi-link-txt">73 Gr&aacute;ficos del Proceso</span></a>
           <a href="#galeria" class="qi-link"><span class="qi-link-ico">&#127912;</span><span class="qi-link-txt">Galer&iacute;a Fotogr&aacute;fica</span></a>
+          <a href="#faq" class="qi-link is-new"><span class="qi-link-ico">&#10067;</span><span class="qi-link-txt">Preguntas Frecuentes</span></a>
           <a href="#documentos" class="qi-link"><span class="qi-link-ico">&#128190;</span><span class="qi-link-txt">Documentos descargables</span></a>
         </div>
       </div>
@@ -6120,7 +6221,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <!-- ═══ GROUP: PLANIFICACIÓN ESTRATÉGICA ═══ -->
 <div class="group-divider"><span class="group-divider-label">&#127919; 4 &middot; Planificaci&oacute;n Estrat&eacute;gica</span></div>
 
-<!-- ═══ EJES ESTRATÉGICOS (tabla resumen) — RETIRADA en v33.1: la información de los 6 ejes ya está presente en el panel «¿Cómo va el plan?» al inicio y en detalle completo en #matriz. Se conserva el bloque comentado por trazabilidad. -->
+<!-- ═══ EJES ESTRATÉGICOS (tabla resumen) — RETIRADA en v33.2: la información de los 6 ejes ya está presente en el panel «¿Cómo va el plan?» al inicio y en detalle completo en #matriz. Se conserva el bloque comentado por trazabilidad. -->
 <section id="ejes" class="me-section" style="display:none" aria-hidden="true">
   <div class="sec-header">
     <div class="badge" style="background:#dbeafe;color:#2563eb">Plan Estrat&eacute;gico 2025-2035</div>
@@ -7034,6 +7135,146 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="mvv-viewer-caption" id="mvvViewerCap"></div>
 </div>
 
+<!-- ═══ PRESUPUESTO PARTICIPATIVO ═══ -->
+<section id="presupuesto-participativo" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(45,154,77,.12);color:#2d9a4d">Participaci&oacute;n Vinculante</div>
+    <h2>&#128181; Presupuesto Participativo Comunal</h2>
+    <p>El <strong>Presupuesto Participativo</strong> es el mecanismo de democracia directa por el cual los vecinos y vecinas de Rengo deciden el destino de una porci&oacute;n del presupuesto municipal. Es un compromiso del PLADECO 2025-2035 que materializa el principio de gobierno abierto: <em>nadie conoce mejor sus barrios que quienes los habitan</em>. El proceso combina decisi&oacute;n ciudadana (priorizaci&oacute;n de proyectos), trabajo t&eacute;cnico municipal (factibilidad y costos) y votaci&oacute;n vinculante con cuenta p&uacute;blica anual.</p>
+  </div>
+
+  <!-- Cifras Compromiso -->
+  <div class="pp-grid">
+    <div class="pp-card">
+      <div class="pp-card-eyebrow">Cobertura inicial</div>
+      <div class="pp-card-title">21 UV participan</div>
+      <div class="pp-card-text">9 unidades vecinales urbanas + 12 rurales. Cada UV propone proyectos que la afecten directamente.</div>
+    </div>
+    <div class="pp-card gold">
+      <div class="pp-card-eyebrow">Monto piloto 2026</div>
+      <div class="pp-card-title">$200M comunal</div>
+      <div class="pp-card-text">Asignaci&oacute;n inicial sobre el Fondo de Inversi&oacute;n Municipal. Crece progresivamente seg&uacute;n evaluaci&oacute;n.</div>
+    </div>
+    <div class="pp-card navy">
+      <div class="pp-card-eyebrow">Tipolog&iacute;a elegible</div>
+      <div class="pp-card-title">FRIL + PMU + propios</div>
+      <div class="pp-card-text">&Aacute;reas verdes, multicanchas, ciclov&iacute;as, iluminaci&oacute;n, mobiliario urbano, recuperaci&oacute;n de espacios.</div>
+    </div>
+    <div class="pp-card red">
+      <div class="pp-card-eyebrow">Rendici&oacute;n</div>
+      <div class="pp-card-title">Cuenta P&uacute;blica anual</div>
+      <div class="pp-card-text">Reporte ejecutado vs comprometido, publicado en portal y presentado al COSOC.</div>
+    </div>
+  </div>
+
+  <!-- Etapas del proceso -->
+  <h3 style="font-size:16px;font-weight:800;margin:24px 0 10px;color:var(--text);letter-spacing:-.01em">&#128203; 5 etapas del proceso anual</h3>
+  <div class="pp-stages">
+    <div class="pp-stage">
+      <div class="pp-stage-num">1</div>
+      <div class="pp-stage-month">Marzo &middot; Convocatoria</div>
+      <div class="pp-stage-title">Difusi&oacute;n y registro</div>
+      <div class="pp-stage-desc">Talleres en cada UV. Vecinos se inscriben como electores y formuladores.</div>
+    </div>
+    <div class="pp-stage">
+      <div class="pp-stage-num">2</div>
+      <div class="pp-stage-month">Abril-Mayo &middot; Ideas</div>
+      <div class="pp-stage-title">Formulaci&oacute;n ciudadana</div>
+      <div class="pp-stage-desc">Las UV proponen proyectos con dise&ntilde;o b&aacute;sico y justificaci&oacute;n vecinal.</div>
+    </div>
+    <div class="pp-stage">
+      <div class="pp-stage-num">3</div>
+      <div class="pp-stage-month">Junio &middot; T&eacute;cnico</div>
+      <div class="pp-stage-title">Evaluaci&oacute;n municipal</div>
+      <div class="pp-stage-desc">SECPLAC y direcciones revisan factibilidad, costos y normativa.</div>
+    </div>
+    <div class="pp-stage">
+      <div class="pp-stage-num">4</div>
+      <div class="pp-stage-month">Agosto &middot; Votaci&oacute;n</div>
+      <div class="pp-stage-title">Decisi&oacute;n vinculante</div>
+      <div class="pp-stage-desc">Vecinos eligen entre proyectos validados. Resultado obligatorio para el municipio.</div>
+    </div>
+    <div class="pp-stage">
+      <div class="pp-stage-num">5</div>
+      <div class="pp-stage-month">Sep-Dic &middot; Obras</div>
+      <div class="pp-stage-title">Ejecuci&oacute;n &amp; cuenta</div>
+      <div class="pp-stage-desc">Implementaci&oacute;n con seguimiento ciudadano y rendici&oacute;n p&uacute;blica.</div>
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Compromiso PLADECO 2025-2035 &middot; Ley 20.500 sobre Asociaciones y Participaci&oacute;n Ciudadana &middot; Buenas pr&aacute;cticas SUBDERE Programa Municipio Activo &middot; Referencias comparadas: experiencias de Buin, Talca, La Pintana, San Joaqu&iacute;n.</div>
+  <div class="sec-relacionadas">
+    <div class="sr-label">El presupuesto participativo se articula con</div>
+    <div class="sr-links">
+      <a href="#financiamiento" class="sr-link"><span class="sr-ico">&#128176;</span> Financiamiento PLADECO</a>
+      <a href="#matriz" class="sr-link"><span class="sr-ico">&#127919;</span> Matriz Estrat&eacute;gica</a>
+      <a href="#gestion" class="sr-link"><span class="sr-ico">&#128736;</span> Gesti&oacute;n e Implementaci&oacute;n</a>
+      <a href="#sociedad-civil" class="sr-link"><span class="sr-ico">&#127760;</span> Sociedad Civil Organizada</a>
+      <a href="#compromisos" class="sr-link"><span class="sr-ico">&#9989;</span> Compromisos P&uacute;blicos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ · PREGUNTAS FRECUENTES ═══ -->
+<section id="faq" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(245,146,29,.12);color:#f5921d">Preguntas Frecuentes</div>
+    <h2>&#10067; Preguntas Frecuentes sobre el PLADECO</h2>
+    <p>Respuestas claras a las dudas m&aacute;s habituales sobre qu&eacute; es el PLADECO, qui&eacute;n lo elabora, c&oacute;mo se financia y c&oacute;mo participar. Si tu pregunta no est&aacute; aqu&iacute;, abre el <strong>asistente</strong> en la esquina inferior derecha o escribe a SECPLAC.</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;Qu&eacute; es el PLADECO?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">El <strong>Plan de Desarrollo Comunal (PLADECO)</strong> es el instrumento rector de la planificaci&oacute;n municipal establecido en la <strong>Ley Org&aacute;nica Constitucional de Municipalidades 18.695</strong>. Define la imagen objetivo de la comuna para un per&iacute;odo de 10 a&ntilde;os y articula 6 ejes estrat&eacute;gicos, 27 objetivos y 225 acciones priorizadas. Es de cumplimiento obligatorio para todas las direcciones municipales y orienta la inversi&oacute;n p&uacute;blica.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;Qui&eacute;n elabora el PLADECO de Rengo?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">El PLADECO es liderado por la <strong>SECPLAC</strong> (Secretar&iacute;a Comunal de Planificaci&oacute;n) con apoyo de las 11 direcciones municipales. La metodolog&iacute;a 2025-2035 incorpor&oacute; participaci&oacute;n inclusiva con 472 personas de 95 organizaciones, 115 entrevistas a funcionarios y directores, 4.036 NNA encuestados y 21 unidades vecinales visitadas. La validaci&oacute;n final corresponde al <strong>Honorable Concejo Municipal</strong>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;C&oacute;mo se financian las 225 acciones?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">El portafolio se financia con un <strong>mix de 4 fuentes principales</strong>:<ul><li><strong>Municipal (~64%)</strong>: presupuesto anual + DAEM + Salud + ingresos propios</li><li><strong>FNDR (~18%)</strong>: Fondo Nacional de Desarrollo Regional v&iacute;a GORE O&rsquo;Higgins</li><li><strong>Sectorial (~12%)</strong>: MOP, MINVU, MIDESO, MMA, MinEnerg&iacute;a</li><li><strong>Otras (~6%)</strong>: FRIL, PMU, PMB, SUBTEL FDT, cooperaci&oacute;n internacional</li></ul>Ver detalle en la <a href="#financiamiento" style="color:#2d9a4d;font-weight:700">secci&oacute;n Financiamiento</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;C&oacute;mo puedo participar en la implementaci&oacute;n?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Hay m&uacute;ltiples canales: <ul><li>Tu <strong>Junta de Vecinos</strong> es el primer enlace con el municipio</li><li>El <strong>COSOC</strong> representa a la sociedad civil ante el Concejo Municipal</li><li>El <strong>Presupuesto Participativo</strong> permite priorizar inversiones por UV</li><li>Las <strong>Comisiones Tem&aacute;ticas</strong> sesionan mensualmente por eje</li><li>Las <strong>encuestas y talleres</strong> peri&oacute;dicos recogen tu opini&oacute;n</li></ul></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;Qu&eacute; significan IVSH, IDDC, ICP, ICT y dem&aacute;s &iacute;ndices?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">El portal usa <strong>tooltips autom&aacute;ticos</strong>: pasa el mouse (o toca) sobre cualquier sigla t&eacute;cnica subrayada con puntos verdes para ver la definici&oacute;n. M&aacute;s de 60 t&eacute;rminos est&aacute;n documentados, desde &iacute;ndices de vulnerabilidad (<span class="glossy" data-tip="Índice de Vulnerabilidad Socioeconómica Habitacional · Hacinamiento, materialidad, saneamiento, déficit." tabindex="0">IVSH</span>, <span class="glossy" data-tip="Índice de Brecha Digital Territorial · Internet, equipamiento computacional, móvil." tabindex="0">IBDT</span>, <span class="glossy" data-tip="Índice Compuesto Ponderado · Promedio de los 6 índices de vulnerabilidad." tabindex="0">ICP</span>) hasta instrumentos de inversi&oacute;n (<span class="glossy" data-tip="Fondo Nacional de Desarrollo Regional · Recursos administrados por el GORE." tabindex="0">FNDR</span>, <span class="glossy" data-tip="Fondo Regional de Iniciativa Local · Línea FNDR para inversión municipal." tabindex="0">FRIL</span>, <span class="glossy" data-tip="Programa de Mejoramiento Urbano · Línea SUBDERE para obras menores." tabindex="0">PMU</span>) y siglas institucionales (<span class="glossy" data-tip="Secretaría Comunal de Planificación." tabindex="0">SECPLAC</span>, <span class="glossy" data-tip="Dirección de Desarrollo Comunitario." tabindex="0">DIDECO</span>, <span class="glossy" data-tip="Consejo Comunal de Organizaciones de la Sociedad Civil." tabindex="0">COSOC</span>).</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;C&oacute;mo se mide el avance del plan?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Mediante un <strong>sistema de 16 indicadores semaforizados</strong> con metas escalonadas para 2028 (mediano plazo) y 2035 (largo plazo). Cada indicador tiene l&iacute;nea base 2024 y se reporta anualmente en la Cuenta P&uacute;blica. Adem&aacute;s, el <strong>Observatorio Comunal de Vulnerabilidad</strong> actualiza los 7 &iacute;ndices del Censo bianualmente. Ver detalle en <a href="#semaforo" style="color:#2d9a4d;font-weight:700">Sem&aacute;foro de Metas</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;Qu&eacute; pasa si cambia la administraci&oacute;n municipal?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">El PLADECO 2025-2035 es un <strong>instrumento de Estado Comunal</strong>, no de gobierno municipal. Su horizonte de 10 a&ntilde;os trasciende per&iacute;odos administrativos (2 ciclos completos). Su modificaci&oacute;n requiere aprobaci&oacute;n del Concejo Municipal y debe respetar el proceso participativo. Esto da continuidad y predictibilidad a la planificaci&oacute;n territorial.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
+        <span>&iquest;C&oacute;mo descargo el documento oficial completo?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Todos los entregables formales del proceso est&aacute;n disponibles en la secci&oacute;n <a href="#documentos" style="color:#2d9a4d;font-weight:700">Documentos y Descargas</a>: PDF del PLADECO completo, matriz Excel de las 225 acciones, presentaciones ejecutivas, cartograf&iacute;as GeoJSON y actas firmadas del proceso participativo (472 firmas en 8 cuadernillos).</div>
+    </div>
+  </div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Preguntas sistematizadas a partir de consultas frecuentes recibidas durante el proceso participativo PLADECO 2025-2035 &middot; Equipo SECPLAC.</div>
+</section>
+
 <!-- ═══ DOCUMENTOS ═══ -->
 <section id="documentos">
   <div class="sec-header">
@@ -7116,10 +7357,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v33.1</span>
+  <span class="ub-ver">v33.2</span>
   &#218;ltima actualizaci&#243;n: 15 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v33.2</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MEGA-UPDATE: Revisi&oacute;n integral exhaustiva** &mdash; 6 fases simult&aacute;neas. (1) **Accesibilidad (a11y)**: focus-visible global con box-shadow consistente para inputs/buttons/links/[tabindex]; `<main>` sem&aacute;ntico reemplaza `<div class="main">` con `id="main-content"` para skip-link funcional; `@media (prefers-color-scheme: dark)` para auto-detecci&oacute;n del sistema; `@media (prefers-reduced-motion)` global para usuarios con sensibilidad al movimiento; landmarks ARIA correctos. (2) **UX nuevas**: bot&oacute;n &laquo;Imprimir esta secci&oacute;n&raquo; &#128424; en cada sec-header con CSS `@media print` que oculta sidebar/banners/sections no-target dejando solo la secci&oacute;n elegida en formato impreso limpio; badge &laquo;&#9201; X min&raquo; de tiempo de lectura calculado por secci&oacute;n (220 wpm). (3) **Glosario interactivo con 63 t&eacute;rminos t&eacute;cnicos** auto-detectados: PLADECO, SECPLAC, DIDECO, DOM, DAO, DAEM, SLEP, COSOC, CESFAM, APR, BIP, FNDR, FRIL, PMU, PMB, SUBDERE, SUBTEL, GORE, MIDESO, RSH, MINVU, DS49, DS27, INDAP, PADIS, SENCE, SENAMA, SENDA, SERCOTEC, CPLT, ERD, ODS, OE, UV, JJVV, NNA, AM, PcD, VIF, IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, ICP, ICT, ICVU, SIVUST, ISMT, CIUO, CPV, INE, CEAD, FONASA, PACCC, OGUC, PRC, OMIL, IPP, FCM, SNA, FODA, SAR, SAPU, APS. Tooltips con CSS puro (no requiere JS para renderizar), aplicaci&oacute;n via TreeWalker en `requestIdleCallback`. (4) **Contenido nuevo**: secci&oacute;n **&#128181; Presupuesto Participativo** con 4 stat cards (21 UV, $200M piloto, FRIL+PMU+propios, Cuenta P&uacute;blica anual) + 5 etapas del proceso anual (marzo-diciembre) + referencia comparada con Buin/Talca/La Pintana; secci&oacute;n **&#10067; FAQ Preguntas Frecuentes** con 8 preguntas en acorde&oacute;n accesible (aria-expanded) sobre qu&eacute; es PLADECO, qui&eacute;n elabora, c&oacute;mo se financia, c&oacute;mo participar, qu&eacute; significan las siglas, c&oacute;mo se mide avance, qu&eacute; pasa si cambia administraci&oacute;n, c&oacute;mo descargar el documento. (5) **Footer enriquecido**: nueva columna &laquo;Municipalidad de Rengo&raquo; con 5 enlaces (rengo.cl, Facebook, Instagram, Transparencia Activa, mail secplac@rengo.cl); bloque **&laquo;C&oacute;mo citar este portal&raquo;** en formato APA con cita acad&eacute;mica completa de la Ilustre Municipalidad de Rengo (2026). (6) **Sidebar y &iacute;ndice navegable** actualizados con las 2 nuevas secciones marcadas como **NEW**; conteo total **42 &rarr; 44 secciones**. Cache SW v50.1 &rarr; v50.2.</div>
     <div class="ub-entry"><strong>v33.1</strong> <span class="ub-date">15 May 2026</span><br>&#9989; **Limpieza visual del sidebar + retiro de secci&oacute;n redundante #ejes**: (1) **Mascot &laquo;Preg&uacute;ntame sobre Rengo&raquo;** y **contador &laquo;~min lectura&raquo;** ocultos visualmente del sidebar (`display:none`). La funcionalidad del chatbot se mantiene 100% intacta a trav&eacute;s del FAB flotante &#128172; en la esquina inferior derecha, el bot&oacute;n &laquo;Preguntar al asistente&raquo; del portal-CTA al pie y el FAB de b&uacute;squeda &#128269; (Ctrl+K). Sidebar m&aacute;s limpio y profesional, especialmente en pantallas verticales m&oacute;viles. (2) **Secci&oacute;n &laquo;6 Ejes Estrat&eacute;gicos del PLADECO&raquo; retirada** por redundancia con la Matriz Estrat&eacute;gica Integrada (#matriz) que ya contiene la informaci&oacute;n completa de los 6 ejes, 27 objetivos estrat&eacute;gicos y 225 acciones. La cifra de &laquo;6 ejes&raquo; tambi&eacute;n est&aacute; visible desde el panel &laquo;&iquest;C&oacute;mo va el plan?&raquo; al inicio del portal. T&eacute;cnicamente: secci&oacute;n `#ejes` con `display:none` y `aria-hidden="true"` (HTML preservado por trazabilidad). Los **18 enlaces** que apuntaban a `#ejes` fueron redirigidos a `#matriz`. Enlaces duplicados eliminados del sidebar, del &iacute;ndice navegable al inicio y del TOC del resumen ejecutivo (donde aparec&iacute;an &laquo;Matriz&raquo; + &laquo;6 Ejes&raquo; apuntando al mismo lugar). El TOC ahora dice &laquo;Matriz Estrat&eacute;gica · 6 ejes · 27 OE · 225 acciones priorizadas&raquo;. Cache SW v50.0 &rarr; v50.1.</div>
     <div class="ub-entry"><strong>v33.0</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MAJOR: Implementaci&oacute;n integral de propuestas de auditor&iacute;a**. Esta versi&oacute;n materializa el plan completo de mejoras de UX, contenido y funcionalidad: (1) **Panel &laquo;C&oacute;mo va el plan&raquo;**: nuevo dashboard ejecutivo al inicio del portal con 6 KPIs en tiempo real (Diagn&oacute;stico 100%, Participaci&oacute;n 472, Acciones 225, Aprobaci&oacute;n CM 75%, Cobertura UV 21/21, Entrevistas 115+4.036) con barras semaf&oacute;ricas (verde/&aacute;mbar/rojo) y 4 enlaces de acci&oacute;n directa (Sem&aacute;foro, Matriz, Hoja de Ruta, Descargar). (2) **Buscador full-text del portal**: FAB &#128269; flotante (bottom-right) + atajo `Ctrl+K` / `Cmd+K` abre modal con b&uacute;squeda en las 42 secciones. Indexa t&iacute;tulos y texto completo, devuelve snippets con &lt;mark&gt; highlight, navegaci&oacute;n con flechas y Enter, soporta debounce 120ms. (3) **Mi PLADECO (favoritos)**: bot&oacute;n &#9734;/&#11088; en cada sec-header para guardar secciones favoritas, panel din&aacute;mico en sidebar que aparece cuando hay favoritos, persistencia en localStorage `pladeco-favs`, bot&oacute;n &laquo;Limpiar&raquo; con confirmaci&oacute;n. Cada toggle dispara toast feedback. (4) **#financiamiento**: nuevo bloque &laquo;Mix de Fuentes&raquo; con 4 cards (Municipal 64%, FNDR 18%, Sectorial 12%, Otras 6%) + hallazgo clave sobre Oficina de Gesti&oacute;n de Proyectos PLADECO. (5) **#documentos**: header reescrito enfatizando transparencia y formatos abiertos. (6) **#datos-vivo**: renombrado a &laquo;Indicadores Clave Interactivos&raquo; diferenci&aacute;ndolo del Dashboard. (7) **#galeria**: header expandido describiendo el proceso documentado. (8) **#portal-cta**: nuevo bot&oacute;n &laquo;Buscar en el portal&raquo; + narrativa con cifras agregadas. (9) **#visitas**: renombrado a &laquo;Pulso del Portal&raquo; con &eacute;nfasis en transparencia activa. (10) **sec-relacionadas extendido**: ahora aplicado en #suenos, #financiamiento, #ejes adem&aacute;s de los previos. Sin cambios destructivos: todas las secciones existentes permanecen accesibles. Cache SW v49.18 &rarr; v50.0.</div>
     <div class="ub-entry"><strong>v32.1</strong> <span class="ub-date">15 May 2026</span><br>&#128221; **Auditor&iacute;a editorial integral del portal**: revisi&oacute;n sistem&aacute;tica para reducir redundancia, enriquecer contenido cr&iacute;tico y crear puentes navegables entre secciones complementarias. (A) **Secciones enriquecidas con contexto cuantitativo**: (1) **#testimonios**: header expandido con &laquo;16 testimonios seleccionados de 500+ voces documentadas en 7 perfiles distintos (dirigentes, j&oacute;venes, agricultores, mujeres, migrantes, adultos mayores, gestores culturales)&raquo; m&aacute;s metodolog&iacute;a de scoring; (2) **#antes-despues**: header expandido con &laquo;7 a&ntilde;os de cambios cuantificables 2017-2024&raquo; y conexi&oacute;n con proyecciones 2035; (3) **#suenos**: header expandido explicando que los sue&ntilde;os ciudadanos son &laquo;materia prima de la imagen objetivo PLADECO&raquo;; (4) **#ejes**: header refrescado con respaldo cuantitativo (FODA 904 menciones, 7 &iacute;ndices censales, ICT 56 espacios); (5) **#argumentario**: nueva narrativa &laquo;respuesta articulada a problemas medidos&raquo; con cifras agregadas. (B) **Diferenciaci&oacute;n clara entre #viz y #graficos** (redundancia identificada): #viz renombrado a &laquo;Panel Estrat&eacute;gico de Planificaci&oacute;n&raquo; (orientado a la l&oacute;gica del plan: radar de brechas, treemap pol&iacute;ticas, medidores metas 2035); #graficos como &laquo;Rengo en N&uacute;meros&raquo; (an&aacute;lisis tem&aacute;tico por 6 ejes: Brechas, Benchmarking, Demograf&iacute;a, Coherencia, G&eacute;nero, Seguimiento). (C) **Nuevo componente `.sec-relacionadas`** insertado al final de #testimonios, #antes-despues y #foda con 3-5 enlaces a secciones complementarias. Estilo: gradient verde-navy con border dashed, chips con hover translateY y border verde. Permite navegaci&oacute;n contextual sin necesidad de volver al sidebar, especialmente &uacute;til en mobile. Mapa completo de 42 secciones con an&aacute;lisis de redundancias documentado internamente. Cache SW v49.17 &rarr; v49.18.</div>
@@ -7127,7 +7369,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="ub-entry"><strong>v32.0</strong> <span class="ub-date">15 May 2026</span><br>&#129517;&#9889; **&Iacute;ndice navegable al inicio + Auditor&iacute;a de optimizaci&oacute;n**. Dos mejoras estructurales al servicio del portal: (A) **&Iacute;ndice Interactivo de Secciones** insertado justo despu&eacute;s de &laquo;Portal en Construcci&oacute;n&raquo;, antes del Grupo 1. Componentes: (1) Tarjeta-contenedor con gradient verde-naranja y bot&oacute;n colapsable Mostrar/Ocultar; (2) 7 grupos tem&aacute;ticos diferenciados por color (Introducci&oacute;n, Diagn&oacute;stico Territorial, Participaci&oacute;n, Planificaci&oacute;n, Equipo, Seguimiento, Recursos); (3) 38 enlaces directos a las secciones m&aacute;s relevantes del portal con &iacute;conos contextuales; (4) Badge &laquo;NEW&raquo; en las incorporaciones recientes (Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal, ICT Espacios P&uacute;blicos); (5) Hover con micro-animaci&oacute;n y border-color verde; (6) Responsive grid auto-fit minmax(280px). Facilita la navegaci&oacute;n inicial para usuarios nuevos, especialmente en mobile donde el sidebar est&aacute; oculto por defecto. (B) **Auditor&iacute;a de optimizaci&oacute;n del head HTML**: (1) Chart.js ahora con `defer` (antes carga bloqueante, ahora paralelo no bloqueante); (2) Nuevo `preconnect` a cdnjs.cloudflare.com; (3) **Preload de assets cr&iacute;ticos above-the-fold**: hero-bg.jpg, logo-pladeco.png, escudo-rengo-blanco.svg, Obra.png (priorizan LCP); (4) `<link rel="canonical">` agregado para SEO; (5) Meta keywords + author; (6) Open Graph expandido: og:site_name, og:image:width/height/alt; (7) **Twitter Card** completa (summary_large_image); (8) Meta tags m&oacute;viles: apple-mobile-web-app-status-bar-style, mobile-web-app-capable, format-detection telephone=no; (9) **Schema.org JSON-LD** estructurado como GovernmentService para indexaci&oacute;n sem&aacute;ntica (Google, motores de b&uacute;squeda gubernamentales). Auditor&iacute;a de im&aacute;genes: 63% con `loading="lazy"`, 77% con `decoding="async"`, 72% con width+height (las restantes son above-the-fold con `fetchpriority="high"` y eager loading que es lo correcto). Cache SW v49.15 &rarr; v49.16.</div>
     <div class="ub-entry"><strong>v31.9</strong> <span class="ub-date">15 May 2026</span><br>&#127769;&#9728;&#65039; **Selector de tema Claro/Oscuro visible en sidebar**: si bien la funcionalidad de modo oscuro ya estaba operativa v&iacute;a bot&oacute;n flotante (icono &#9790;) y atajo de teclado &laquo;D&raquo;, era poco descubrible. Se agreg&oacute; un <strong>theme switcher de dos opciones</strong> (&#9728;&#65039; Claro / &#127769; Oscuro) en la parte inferior del sidebar, justo encima del footer institucional. Componentes: (1) Toggle tipo pill con dos botones segmentados, fondo translucent y border-radius 10px, integrado al lenguaje visual del sidebar; (2) Estados activos diferenciados &mdash; verde Rengo `rgba(45,154,77,.18)` para Claro, indigo `rgba(99,102,241,.22)` para Oscuro&mdash; con inset shadow para retroalimentaci&oacute;n visual clara; (3) Etiqueta &laquo;Apariencia&raquo; en uppercase letterspacing como header del control; (4) Funci&oacute;n `setTheme(mode)` que sincroniza el toggle del sidebar con el bot&oacute;n flotante existente (`btnDark`) y persiste preferencia en localStorage `pladeco-dark`; (5) Funci&oacute;n `syncThemeSwitcher(isDark)` que mantiene coherente el estado activo del segmented control con el modo aplicado al body; (6) Init refactorizado para sincronizar ambos controles desde la carga inicial seg&uacute;n preferencia persistida; (7) Bot&oacute;n flotante existente conservado para usuarios habituales con `title` y `aria-label` din&aacute;micos. Se oculta autom&aacute;ticamente cuando el sidebar est&aacute; colapsado. Cache SW v49.14 &rarr; v49.15.</div>
     <div class="ub-entry"><strong>v31.8</strong> <span class="ub-date">15 May 2026</span><br>&#9989; **Correcciones en datos de Direcciones Municipales**: (1) **GABINETE**: &aacute;rea actualizada de &laquo;Coordinaci&oacute;n Pol&iacute;tica&raquo; a <strong>&laquo;Comunicaci&oacute;n y Difusi&oacute;n&raquo;</strong>, reflejando con mayor precisi&oacute;n su funci&oacute;n municipal real. (2) **DAO**: corregido nombre completo de &laquo;Direcci&oacute;n de Admin. y Finanzas&raquo; (incorrecto) a <strong>&laquo;Direcci&oacute;n de Aseo y Ornato&raquo;</strong>, &aacute;rea cambiada de &laquo;Finanzas&raquo; a &laquo;Aseo y Ornato&raquo;, iniciales &laquo;DA&raquo; &rarr; &laquo;AO&raquo;, color avatar verde lima #65a30d (medio ambiente/aseo) para coherencia sem&aacute;ntica. Esto alinea el portal con la estructura org&aacute;nica real de la Municipalidad de Rengo (DAO = Aseo y Ornato seg&uacute;n estructura institucional documentada en el SNA y entrevistas etnogr&aacute;ficas). Cache SW v49.13 &rarr; v49.14.</div>
-    <div class="ub-entry"><strong>v31.7</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **Actualizaci&oacute;n de metadatos del portal e incorporaci&oacute;n de Gabinete**: (1) **Secci&oacute;n &laquo;Portal en Construcci&oacute;n&raquo;** actualizada con versi&oacute;n y fecha vigentes (v29.6 &rarr; v33.1, 14 May 2026 &rarr; 15 May 2026) y conteo real de secciones (38 &rarr; <strong>42</strong>, reflejando la incorporaci&oacute;n de Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos como secciones nativas en versiones recientes). (2) **Update-badge flotante** sincronizado con la fecha correcta (15 Mayo 2026). (3) **Gabinete de Alcald&iacute;a incorporado** como primera direcci&oacute;n municipal participante en la secci&oacute;n Equipo T&eacute;cnico (junto a SECPLAC, DIDECO, DOM, SALUD, Seguridad P&uacute;blica, Secretar&iacute;a Municipal, DAO, Tr&aacute;nsito, DAEM y otros). Coherente con su rol de <strong>direcci&oacute;n puente</strong> identificado en el an&aacute;lisis SNA institucional (articula Planificaci&oacute;n y Gesti&oacute;n entre las direcciones); presencia confirmada en las entrevistas etnogr&aacute;ficas y en los talleres directivos del proceso PLADECO. Sidebar actualizado de &laquo;10 DIRs&raquo; a &laquo;11 DIRs&raquo;. Avatar color slate-900 #0f172a (gobierno) para diferenciaci&oacute;n visual de SECRETAR&Iacute;A MUNICIPAL. Cache SW v49.12 &rarr; v49.13.</div>
+    <div class="ub-entry"><strong>v31.7</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **Actualizaci&oacute;n de metadatos del portal e incorporaci&oacute;n de Gabinete**: (1) **Secci&oacute;n &laquo;Portal en Construcci&oacute;n&raquo;** actualizada con versi&oacute;n y fecha vigentes (v29.6 &rarr; v33.2, 14 May 2026 &rarr; 15 May 2026) y conteo real de secciones (38 &rarr; <strong>42</strong>, reflejando la incorporaci&oacute;n de Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos como secciones nativas en versiones recientes). (2) **Update-badge flotante** sincronizado con la fecha correcta (15 Mayo 2026). (3) **Gabinete de Alcald&iacute;a incorporado** como primera direcci&oacute;n municipal participante en la secci&oacute;n Equipo T&eacute;cnico (junto a SECPLAC, DIDECO, DOM, SALUD, Seguridad P&uacute;blica, Secretar&iacute;a Municipal, DAO, Tr&aacute;nsito, DAEM y otros). Coherente con su rol de <strong>direcci&oacute;n puente</strong> identificado en el an&aacute;lisis SNA institucional (articula Planificaci&oacute;n y Gesti&oacute;n entre las direcciones); presencia confirmada en las entrevistas etnogr&aacute;ficas y en los talleres directivos del proceso PLADECO. Sidebar actualizado de &laquo;10 DIRs&raquo; a &laquo;11 DIRs&raquo;. Avatar color slate-900 #0f172a (gobierno) para diferenciaci&oacute;n visual de SECRETAR&Iacute;A MUNICIPAL. Cache SW v49.12 &rarr; v49.13.</div>
     <div class="ub-entry"><strong>v31.6</strong> <span class="ub-date">15 May 2026</span><br>&#128221; **Revisi&oacute;n editorial y refinamiento argumental** de las nuevas secciones An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos. Mejoras: (1) **Hero An&aacute;lisis Censal**: lead narrativo reescrito para evidenciar la heterogeneidad oculta del ICP medio 0,210 (rango 0,073-0,493) y enfatizar las dos brechas estructurales (+38,7% rural-urbana y 2,74&times; en IPSB); pills actualizadas con datos relacionales en lugar de descriptivos. (2) **Hallazgos clave de los 6 &iacute;ndices**: convertidos de afirmaciones gen&eacute;ricas a <strong>cadenas argumentales evidencia&rarr;mecanismo&rarr;acci&oacute;n</strong> con instrumentos institucionales identificados (MIDESO Chile Cuida, SENAMA, SUBTEL FDT, INDAP PADIS, SENCE, etc.). (3) **6 recomendaciones estrat&eacute;gicas**: ahora incluyen instrumentos de financiamiento concretos (FNDR, FRIL, PMU, PMB, DS49/DS27, Sercotec, Casa Caliente, Chile Califica), metas cuantificables a 4 a&ntilde;os (e.g. reducir IPSB rural de 0,370 a 0,250) y localidades priorizadas con cifras de IPSB/ICHT. (4) **Conclusiones del Tab Recomendaciones**: 5 stat cards reducidas a 4 m&aacute;s densas con causalidad explicada (e.g. "El promedio oculta una vulnerabilidad polarizada"). (5) **Puente Presente&rarr;Futuro An&aacute;lisis Censal**: 6 cards reescritas con instrumentos pareados (FNDR+PMB, SUBTEL FDT, Chile Cuida, SENCE+INDAP, DS49+DS27, Observatorio bianual). (6) **Header ICT**: descripci&oacute;n expandida con la l&oacute;gica centro-periferia (distancia hav&eacute;rsica a Rengo/Rosario/Popeta) e instrumentos identificables. (7) **Hero ICT**: m&eacute;trica ICT 0-100 explicitada (Excelente=100, Bueno=75, Regular=50, Deficiente=25, Cr&iacute;tico=0). (8) **Puente Presente&rarr;Futuro ICT**: 6 cards reescritas con problem&aacute;ticas espec&iacute;ficas (techo derrumbado de EFE, palmeras Phoenix, vertederos H-573), topes presupuestarios FRIL/PMU ($80M), coordinaciones institucionales (Consejo Monumentos, MMA, SEREMI Salud, SUBDERE PMB) y propuesta de evaluaci&oacute;n pre/post-intervenci&oacute;n. Sin cambios estructurales en HTML/JS &mdash; solo refinamiento de texto y datos. Cache SW v49.11 &rarr; v49.12.</div>
     <div class="ub-entry"><strong>v31.5</strong> <span class="ub-date">15 May 2026</span><br>&#128205; **ICT &middot; Espacios P&uacute;blicos integrado como secci&oacute;n nativa**: integraci&oacute;n del archivo `ICT_EspaciosPublicos_Rengo_v4.html` (Secci&oacute;n 11.3 PLADECO) tras la secci&oacute;n An&aacute;lisis Estrat&eacute;gico Censal en el Grupo 2 &middot; Diagn&oacute;stico Territorial. Componentes principales: (1) **Hero gradient navy-verde** con badge ICT promedio comunal y branding &laquo;&Iacute;ndice de Calidad Territorial&raquo;; (2) **5 stat cards interactivas** por estado de conservaci&oacute;n (Excelente, Bueno, Regular, Deficiente, Cr&iacute;tico) con sem&aacute;foro de colores preservado para mantener legibilidad sem&aacute;ntica; (3) **Zona strip de 4 zonas territoriales** (Centro Urbano, Periferia Urbana, Localidades, Rural Disperso) calculadas con distancia hav&eacute;rsica a Rengo/Rosario/Popeta; (4) **Insight bar din&aacute;mica navy-gradient** con narrativa contextual seg&uacute;n filtros activos; (5) **4 pesta&ntilde;as scoped (.ict-)** con tipograf&iacute;a Inter y paleta del portal: **Mapa Leaflet** (56 marcadores con popups custom + slide panel lateral con problem&aacute;ticas y propuestas + toggles por estado/zona + c&iacute;rculos de zona), **An&aacute;lisis** (donut por estado + bar por zona + ranking horizontal de 56 espacios con hover→mapa), **Priorizaci&oacute;n** (matriz centro-periferia con badges ALTA/MEDIA/BAJA seg&uacute;n umbrales ICT + brecha bar chart + composici&oacute;n stacked), **Catastro** (tabla con expandible problem&aacute;ticas+propuestas + vista de tarjetas + filtros por tipolog&iacute;a/b&uacute;squeda); (6) **Puente Presente&rarr;Futuro** con 6 cards vinculando hallazgos del ICT a Ejes PLADECO (Recuperaci&oacute;n Patrimonial Urgente&rarr;Eje 4, Plan FRIL/PMU&rarr;Eje 4, Rural Disperso&rarr;Eje 5, Gesti&oacute;n Ambiental&rarr;Eje 5, Monitoreo ICT&rarr;Eje 6, Casos &eacute;xito&rarr;Eje 4); (7) **Lazy init** con IntersectionObserver para no penalizar el TTI; (8) Sidebar y TOC actualizados. **Adaptaciones del HTML original**: fuentes Fraunces/DM Sans removidas por `font-family:inherit` (Inter del portal); paleta navy/teal/cream/sand reemplazada por verde Rengo #2d9a4d + naranja #f5921d + navy #071d36; colores sem&aacute;foricos de estado y zona PRESERVADOS por su valor sem&aacute;ntico cr&iacute;tico (verde-azul-amarillo-naranja-rojo para estados); modo oscuro compatible con backgrounds rgba. Datos completos: 56 espacios georreferenciados, 5 estados, 4 zonas, 25+ tipolog&iacute;as distintas, problem&aacute;ticas+propuestas detalladas por espacio. Cache SW v49.10 → v49.11.</div>
     <div class="ub-entry"><strong>v31.4</strong> <span class="ub-date">15 May 2026</span><br>&#128302; **An&aacute;lisis Estrat&eacute;gico Censo 2024 integrado como secci&oacute;n nativa**: nueva pieza ejecutiva &laquo;Inteligencia Territorial&raquo; tras la secci&oacute;n Censo (Grupo 2 &middot; Diagn&oacute;stico Territorial) basada en el documento &laquo;An&aacute;lisis Territorial Rengo 2024&raquo; (Marzo 2026). Componentes principales: (1) **Hero gradient navy-verde** con 4 KPIs (63.620 habitantes, 826 manzanas censales, 7 &iacute;ndices, ICP medio 0,210); (2) **Sistema de 5 pesta&ntilde;as scoped** con CSS `.anest-` integrado a la tipograf&iacute;a Inter y paleta del portal (verde Rengo #2d9a4d, naranja #f5921d, navy #071d36): **Metodolog&iacute;a** (Tabla 1 con 23 componentes ponderados de los 6 &iacute;ndices IVSH/IDDC/IBDT/IVFT/ICHT/IPSB + clasificaci&oacute;n cartogr&aacute;fica en 4 rangos), **Resultados Generales** (Tabla 2 estad&iacute;sticas descriptivas + chart medias, Tabla 3 quintiles + donut, Tabla 4 brecha urbano-rural + bar chart comparativo), **An&aacute;lisis por &Iacute;ndice** (6 cards detalladas con focos cr&iacute;ticos y hallazgos clave por dimensi&oacute;n), **Top 15 Localidades** (Tabla 5 ranking con barras de progreso ICP + stacked chart composici&oacute;n + 4 perfiles diferenciados), **Recomendaciones** (4 stat cards conclusiones + 6 recomendaciones estrat&eacute;gicas territorializadas + bibliograf&iacute;a colapsable de 22 referencias acad&eacute;micas Girardot, Huenchuan, PNUD, CEPAL, OCUC, MDSF, etc.); (3) **Puente Presente&rarr;Futuro** con 6 cards vinculando cada hallazgo cr&iacute;tico a un Eje Estrat&eacute;gico del PLADECO (IPSB 2,74&times;&rarr;Eje 5, IBDT&rarr;Eje 2, IDDC&rarr;Eje 3, ICHT_VUL&rarr;Eje 1, IVSH&rarr;Eje 4, Monitoreo&rarr;Eje 6); (4) **4 charts Chart.js lazy-renderizados al cambiar tab** (medias por &iacute;ndice, donut quintiles, bar comparativo urbano-rural, stacked composici&oacute;n top 15); (5) Sidebar y TOC del Resumen Ejecutivo actualizados con enlace nuevo. Datos completos: 826 manzanas, 24 localidades, brecha rural +38,7%, las 15 localidades m&aacute;s vulnerables son todas rurales (El Trebal Huilqu&iacute;o, El Placer, Apalta, Las Nieves, Chapet&oacute;n...). Cache SW v49.9 → v49.10.</div>
@@ -7231,6 +7473,8 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
 </section>
 
+</main>
+
 <footer class="footer" role="contentinfo">
   <div class="footer-inner">
     <div class="footer-brand">
@@ -7256,10 +7500,26 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
         <li><kbd>Esc</kbd> Cerrar modales</li>
       </ul>
     </div>
+    <div class="footer-col">
+      <h5>Municipalidad de Rengo</h5>
+      <ul>
+        <li><a href="https://www.rengo.cl" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">&#127760; rengo.cl</a></li>
+        <li><a href="https://www.facebook.com/MunicipalidaddeRengo" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">&#128240; Facebook oficial</a></li>
+        <li><a href="https://www.instagram.com/municipalidadrengo" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">&#128247; Instagram</a></li>
+        <li><a href="https://www.transparenciaactiva.cl" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">&#128274; Transparencia Activa</a></li>
+        <li><a href="mailto:secplac@rengo.cl" style="color:inherit;text-decoration:none">&#128231; secplac@rengo.cl</a></li>
+      </ul>
+    </div>
+    <div class="footer-col" style="grid-column:1/-1">
+      <h5>&#128218; C&oacute;mo citar este portal</h5>
+      <div style="font-size:11.5px;line-height:1.7;color:rgba(255,255,255,.7);background:rgba(255,255,255,.04);padding:12px 14px;border-radius:8px;border:1px dashed rgba(255,255,255,.15);font-family:'Georgia',serif;font-style:italic">
+        Ilustre Municipalidad de Rengo. (2026). <em>PLADECO Rengo 2025-2035 &middot; Portal Estrat&eacute;gico</em> [Sitio web]. SECPLAC. Recuperado de <a href="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/" target="_blank" rel="noopener" style="color:#7ddb9d">https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/</a>
+      </div>
+    </div>
   </div>
   <div class="footer-bottom">
-    <span>&#169; 2026 Secretar&#237;a de Planificaci&#243;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: Mayo 2026</span>
+    <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
+    <span>Actualizado: 15 Mayo 2026 &middot; v33.2</span>
   </div>
 </footer>
 
@@ -7269,8 +7529,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="presentation-btn" id="presBtn" onclick="togglePresentation()" aria-label="Activar modo presentación">&#9654; Presentar</button>
 <div class="pres-nav"><button onclick="presNav(-1)" aria-label="Diapositiva anterior">&#9664;</button><button onclick="presNav(1)" aria-label="Diapositiva siguiente">&#9654;</button><button onclick="togglePresentation()" aria-label="Salir de presentación">ESC</button></div>
 <div class="pres-counter" id="presCounter"></div>
-
-</div><!-- /main -->
 
 <!-- ═══ COMMAND PALETTE (Ctrl+K) ═══ -->
 <div class="cmd-palette" id="cmdPalette" onclick="if(event.target===this)closeCmdPalette()">
@@ -13957,13 +14215,173 @@ function initShareButtons(){
   document.querySelectorAll('.sec-header').forEach(h=>{
     const sec=h.closest('section');
     if(!sec||!sec.id)return;
-    const btn=document.createElement('button');
-    btn.className='share-btn';btn.innerHTML='🔗';btn.title='Copiar link';
-    btn.onclick=()=>{
-      const url=window.location.origin+window.location.pathname+'#'+sec.id;
-      navigator.clipboard.writeText(url).then(()=>showToast('¡Link copiado!','success')).catch(()=>showToast('Error al copiar','warning'));
-    };
-    h.appendChild(btn);
+    // Share button
+    if(!h.querySelector('.share-btn')){
+      const btn=document.createElement('button');
+      btn.className='share-btn';btn.innerHTML='🔗';btn.title='Copiar link directo';
+      btn.setAttribute('aria-label','Copiar link directo a esta sección');
+      btn.onclick=()=>{
+        const url=window.location.origin+window.location.pathname+'#'+sec.id;
+        navigator.clipboard.writeText(url).then(()=>showToast('¡Link copiado!','success')).catch(()=>showToast('Error al copiar','warning'));
+      };
+      h.appendChild(btn);
+    }
+    // Print button
+    if(!h.querySelector('.print-btn')){
+      const pbtn=document.createElement('button');
+      pbtn.className='print-btn';pbtn.innerHTML='🖨';pbtn.title='Imprimir esta sección';
+      pbtn.setAttribute('aria-label','Imprimir esta sección');
+      pbtn.onclick=()=>printSection(sec);
+      h.appendChild(pbtn);
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// GLOSARIO DE TÉRMINOS TÉCNICOS (tooltips automáticos)
+// ══════════════════════════════════════════════════════
+var GLOSSARY={
+  'PLADECO':'Plan de Desarrollo Comunal · Instrumento rector de la planificación municipal (Ley 18.695).',
+  'SECPLAC':'Secretaría Comunal de Planificación · Unidad técnica municipal a cargo del PLADECO.',
+  'DIDECO':'Dirección de Desarrollo Comunitario · Articula programas sociales y vínculo vecinal.',
+  'DOM':'Dirección de Obras Municipales · Permisos, fiscalización urbanística y obras.',
+  'DAO':'Dirección de Aseo y Ornato · Limpieza, áreas verdes y manejo de residuos.',
+  'DAEM':'Departamento de Administración de Educación Municipal.',
+  'SLEP':'Servicio Local de Educación Pública · Reemplazo gradual de los DAEM.',
+  'COSOC':'Consejo Comunal de Organizaciones de la Sociedad Civil (Ley 20.500).',
+  'CESFAM':'Centro de Salud Familiar · Atención primaria municipal.',
+  'APR':'Agua Potable Rural · Sistemas comunitarios de provisión de agua en zonas rurales.',
+  'BIP':'Banco Integrado de Proyectos · Sistema MIDESO de evaluación social de inversión pública.',
+  'FNDR':'Fondo Nacional de Desarrollo Regional · Recursos administrados por el GORE.',
+  'FRIL':'Fondo Regional de Iniciativa Local · Línea FNDR para inversión municipal (tope ~$80M).',
+  'PMU':'Programa de Mejoramiento Urbano · Línea SUBDERE para obras menores ($80M).',
+  'PMB':'Programa de Mejoramiento de Barrios · Agua potable, saneamiento, electricidad SUBDERE.',
+  'SUBDERE':'Subsecretaría de Desarrollo Regional y Administrativo.',
+  'SUBTEL':'Subsecretaría de Telecomunicaciones · Administra el Fondo de Desarrollo de las Telecomunicaciones (FDT).',
+  'GORE':'Gobierno Regional · Administración regional con gobernador electo.',
+  'MIDESO':'Ministerio de Desarrollo Social y Familia · Coordina el Sistema Chile Cuida y el RSH.',
+  'RSH':'Registro Social de Hogares · Instrumento de focalización social.',
+  'MINVU':'Ministerio de Vivienda y Urbanismo · DS49 (vivienda social) y DS27 (mejoramiento).',
+  'DS49':'Decreto Supremo 49 MINVU · Subsidio de vivienda para sectores vulnerables.',
+  'DS27':'Decreto Supremo 27 MINVU · Subsidio de mejoramiento de viviendas existentes.',
+  'INDAP':'Instituto de Desarrollo Agropecuario · PADIS y otros programas agrícolas.',
+  'PADIS':'Programa de Desarrollo de Acción Local INDAP · Apoyo a pequeña agricultura familiar.',
+  'SENCE':'Servicio Nacional de Capacitación y Empleo.',
+  'SENAMA':'Servicio Nacional del Adulto Mayor.',
+  'SENDA':'Servicio Nacional para la Prevención y Rehabilitación del Consumo de Drogas y Alcohol.',
+  'SERCOTEC':'Servicio de Cooperación Técnica · Apoyo a la micro y pequeña empresa.',
+  'CPLT':'Consejo para la Transparencia · Fiscaliza la Ley 20.285 de Transparencia.',
+  'ERD':'Estrategia Regional de Desarrollo · Instrumento del GORE.',
+  'ODS':'Objetivos de Desarrollo Sostenible (Agenda 2030 ONU).',
+  'OE':'Objetivo Estratégico · Componente operacional de un eje PLADECO.',
+  'UV':'Unidad Vecinal · División territorial básica para participación ciudadana.',
+  'JJVV':'Juntas de Vecinos · Organizaciones comunitarias territoriales (Ley 19.418).',
+  'NNA':'Niños, Niñas y Adolescentes.',
+  'AM':'Adulto/a Mayor.',
+  'PcD':'Persona con Discapacidad.',
+  'VIF':'Violencia Intrafamiliar.',
+  'IVSH':'Índice de Vulnerabilidad Socioeconómica Habitacional · Hacinamiento, materialidad, saneamiento, déficit.',
+  'IDDC':'Índice de Dependencia Demográfica y de Cuidados · Envejecimiento, primera infancia, dependencia.',
+  'IBDT':'Índice de Brecha Digital Territorial · Internet, equipamiento computacional, móvil.',
+  'IVFT':'Índice de Vulnerabilidad Funcional · Discapacidad, carga funcional, interacción con envejecimiento.',
+  'ICHT':'Índice de Capital Humano Territorial · Escolaridad, alfabetismo, participación y calificación laboral.',
+  'IPSB':'Índice de Precariedad de Servicios Básicos · Agua, energía contaminante, residuos.',
+  'ICP':'Índice Compuesto Ponderado · Promedio de los 6 índices de vulnerabilidad.',
+  'ICT':'Índice de Calidad Territorial · Métrica 0-100 del estado de espacios públicos.',
+  'ICVU':'Índice de Calidad de Vida Urbana · PUC + Cámara Chilena de la Construcción.',
+  'SIVUST':'Sistema de Indicadores de Vulnerabilidad Socioterritorial (MDSF 2025).',
+  'ISMT':'Índice Socio Material Territorial · Observatorio de Ciudades UC.',
+  'CIUO':'Clasificador Internacional Uniforme de Ocupaciones · Usado para medir calificación laboral.',
+  'CPV':'Censo de Población y Vivienda · INE Chile.',
+  'INE':'Instituto Nacional de Estadísticas de Chile.',
+  'CEAD':'Centro de Estudios y Análisis del Delito · Fiscalía Nacional.',
+  'FONASA':'Fondo Nacional de Salud · Sistema público de salud chileno.',
+  'PACCC':'Plan de Acción Comunal de Cambio Climático.',
+  'OGUC':'Ordenanza General de Urbanismo y Construcciones.',
+  'PRC':'Plan Regulador Comunal.',
+  'OMIL':'Oficina Municipal de Información Laboral.',
+  'IPP':'Ingresos Propios Permanentes · Autonomía fiscal municipal.',
+  'FCM':'Fondo Común Municipal · Redistribución de recursos entre municipios.',
+  'SNA':'Social Network Analysis · Análisis de red de relaciones.',
+  'FODA':'Fortalezas, Oportunidades, Debilidades y Amenazas · Herramienta de diagnóstico estratégico.',
+  'SAR':'Servicio de Atención Primaria de Urgencia de Alta Resolutividad.',
+  'SAPU':'Servicio de Atención Primaria de Urgencia.',
+  'APS':'Atención Primaria de Salud.'
+};
+
+function applyGlossary(){
+  // Evitar re-aplicar
+  if(window._glossaryApplied)return;
+  window._glossaryApplied=true;
+  // Construir regex de términos (palabras completas, case-sensitive para siglas)
+  var terms=Object.keys(GLOSSARY).sort(function(a,b){return b.length-a.length;});
+  var pattern=new RegExp('\\b('+terms.map(function(t){return t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&');}).join('|')+')\\b','g');
+  // Tags donde NO aplicar (para no romper)
+  var SKIP=new Set(['SCRIPT','STYLE','CODE','PRE','KBD','TEXTAREA','INPUT','BUTTON','A','OPTION','SELECT','TITLE']);
+  // Solo aplicar en secciones de contenido (no en sidebar, no en banners)
+  var roots=document.querySelectorAll('main section p, main section li, main section td, main section .ficha-puente-card-text, main section .anest-block-sub, main section .anest-index-desc, main section .anest-index-key, main section .anest-recom-texto, main section .sec-fuente');
+  roots.forEach(function(root){
+    if(!root||root.closest('a,button,.glossy,.search-result,kbd'))return;
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
+    var nodes=[],n;
+    while((n=walker.nextNode())){
+      if(SKIP.has(n.parentNode.nodeName))continue;
+      if(n.parentNode.closest&&n.parentNode.closest('.glossy,a,button'))continue;
+      if(!n.nodeValue||n.nodeValue.length<3)continue;
+      if(pattern.test(n.nodeValue))nodes.push(n);
+      pattern.lastIndex=0;
+    }
+    nodes.forEach(function(n){
+      var matched=false;
+      var html=n.nodeValue.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(pattern,function(m){
+        matched=true;
+        var tip=GLOSSARY[m].replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        return '<span class="glossy" data-tip="'+tip+'" tabindex="0">'+m+'</span>';
+      });
+      if(matched){
+        var span=document.createElement('span');span.innerHTML=html;
+        n.parentNode.replaceChild(span,n);
+      }
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// IMPRIMIR SECCIÓN INDIVIDUAL
+// ══════════════════════════════════════════════════════
+function printSection(sec){
+  // Estrategia: marcar la sección como print-target, agregar clase al body, llamar window.print()
+  document.body.classList.add('printing-section');
+  document.querySelectorAll('.print-target').forEach(el=>el.classList.remove('print-target'));
+  sec.classList.add('print-target');
+  // Restaurar después de imprimir
+  var cleanup=function(){
+    document.body.classList.remove('printing-section');
+    sec.classList.remove('print-target');
+    window.removeEventListener('afterprint',cleanup);
+  };
+  window.addEventListener('afterprint',cleanup);
+  setTimeout(function(){window.print();},80);
+}
+
+// ══════════════════════════════════════════════════════
+// TIEMPO DE LECTURA POR SECCIÓN
+// ══════════════════════════════════════════════════════
+function initSectionReadingTime(){
+  var WORDS_PER_MIN=220;
+  document.querySelectorAll('section[id]').forEach(function(sec){
+    var h=sec.querySelector('.sec-header');
+    if(!h||h.querySelector('.section-reading'))return;
+    var clone=sec.cloneNode(true);
+    clone.querySelectorAll('script,style,canvas,svg,.share-btn,.fav-toggle,.print-btn').forEach(function(el){el.remove();});
+    var txt=(clone.textContent||'').replace(/\s+/g,' ').trim();
+    var words=txt.split(' ').length;
+    var mins=Math.max(1,Math.round(words/WORDS_PER_MIN));
+    var lbl=document.createElement('span');
+    lbl.className='section-reading';
+    lbl.title=words.toLocaleString('es-CL')+' palabras · '+mins+' min lectura';
+    lbl.innerHTML='⏱ '+mins+' min';
+    h.appendChild(lbl);
   });
 }
 
@@ -14696,6 +15114,10 @@ setInterval(updateCountdown,60000);
 initReadingProgress();
 initShareButtons();
 initFavButtons();
+initSectionReadingTime();
+// Glosario en idle (no bloquea TTI)
+if('requestIdleCallback' in window){requestIdleCallback(applyGlossary,{timeout:3000});}
+else{setTimeout(applyGlossary,1500);}
 initToastTriggers();
 renderMiniSurvey();
 registerVisit();
