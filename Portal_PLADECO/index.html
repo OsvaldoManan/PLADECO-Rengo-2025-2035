@@ -165,6 +165,16 @@ body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 @keyframes progressShine{0%,100%{opacity:0}50%{opacity:1}}
 .sidebar-progress-text{font-size:9px;opacity:.4;margin-top:5px;text-align:right;letter-spacing:.3px}
 .sidebar-footer{padding:12px 20px;border-top:1px solid rgba(255,255,255,.06);font-size:9px;opacity:.35;text-align:center;line-height:1.4}
+.sidebar-theme-switch{padding:12px 16px 10px;border-top:1px solid rgba(255,255,255,.08)}
+.sidebar-theme-switch .ts-label{font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px;text-align:center}
+.sidebar-theme-switch .ts-toggle{display:flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:3px;gap:2px}
+.sidebar-theme-switch .ts-opt{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;border:none;background:transparent;color:rgba(255,255,255,.55);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;border-radius:7px;transition:all .2s;letter-spacing:.02em}
+.sidebar-theme-switch .ts-opt:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.sidebar-theme-switch .ts-opt.active{background:rgba(45,154,77,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(45,154,77,.4)}
+.sidebar-theme-switch .ts-opt .ts-ico{font-size:13px;line-height:1}
+.sidebar-theme-switch .ts-opt[data-theme="dark"].active{background:rgba(99,102,241,.22);box-shadow:inset 0 0 0 1px rgba(99,102,241,.5)}
+body.sidebar-collapsed .sidebar-theme-switch{display:none}
+@media(max-width:900px){.sidebar-theme-switch .ts-opt{padding:8px 6px;font-size:10.5px}}
 .menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer;transition:transform .2s}
 .menu-toggle:active{transform:scale(.9)}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;opacity:0;transition:opacity .3s}
@@ -2741,7 +2751,20 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v31.8</span></div>
+  <div class="sidebar-theme-switch">
+    <div class="ts-label">Apariencia</div>
+    <div class="ts-toggle" role="tablist" aria-label="Selector de tema">
+      <button type="button" class="ts-opt" data-theme="light" onclick="setTheme('light')" role="tab" aria-label="Modo claro">
+        <span class="ts-ico">&#9728;&#65039;</span>
+        <span class="ts-txt">Claro</span>
+      </button>
+      <button type="button" class="ts-opt" data-theme="dark" onclick="setTheme('dark')" role="tab" aria-label="Modo oscuro">
+        <span class="ts-ico">&#127769;</span>
+        <span class="ts-txt">Oscuro</span>
+      </button>
+    </div>
+  </div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v31.9</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -2838,7 +2861,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v31.8</span>
+        <span>&#127919; v31.9</span>
         <span>&#128197; 15 Mayo 2026</span>
         <span>&#128202; 42 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6659,12 +6682,13 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v31.8</span>
+  <span class="ub-ver">v31.9</span>
   &#218;ltima actualizaci&#243;n: 15 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v31.9</strong> <span class="ub-date">15 May 2026</span><br>&#127769;&#9728;&#65039; **Selector de tema Claro/Oscuro visible en sidebar**: si bien la funcionalidad de modo oscuro ya estaba operativa v&iacute;a bot&oacute;n flotante (icono &#9790;) y atajo de teclado &laquo;D&raquo;, era poco descubrible. Se agreg&oacute; un <strong>theme switcher de dos opciones</strong> (&#9728;&#65039; Claro / &#127769; Oscuro) en la parte inferior del sidebar, justo encima del footer institucional. Componentes: (1) Toggle tipo pill con dos botones segmentados, fondo translucent y border-radius 10px, integrado al lenguaje visual del sidebar; (2) Estados activos diferenciados &mdash; verde Rengo `rgba(45,154,77,.18)` para Claro, indigo `rgba(99,102,241,.22)` para Oscuro&mdash; con inset shadow para retroalimentaci&oacute;n visual clara; (3) Etiqueta &laquo;Apariencia&raquo; en uppercase letterspacing como header del control; (4) Funci&oacute;n `setTheme(mode)` que sincroniza el toggle del sidebar con el bot&oacute;n flotante existente (`btnDark`) y persiste preferencia en localStorage `pladeco-dark`; (5) Funci&oacute;n `syncThemeSwitcher(isDark)` que mantiene coherente el estado activo del segmented control con el modo aplicado al body; (6) Init refactorizado para sincronizar ambos controles desde la carga inicial seg&uacute;n preferencia persistida; (7) Bot&oacute;n flotante existente conservado para usuarios habituales con `title` y `aria-label` din&aacute;micos. Se oculta autom&aacute;ticamente cuando el sidebar est&aacute; colapsado. Cache SW v49.14 &rarr; v49.15.</div>
     <div class="ub-entry"><strong>v31.8</strong> <span class="ub-date">15 May 2026</span><br>&#9989; **Correcciones en datos de Direcciones Municipales**: (1) **GABINETE**: &aacute;rea actualizada de &laquo;Coordinaci&oacute;n Pol&iacute;tica&raquo; a <strong>&laquo;Comunicaci&oacute;n y Difusi&oacute;n&raquo;</strong>, reflejando con mayor precisi&oacute;n su funci&oacute;n municipal real. (2) **DAO**: corregido nombre completo de &laquo;Direcci&oacute;n de Admin. y Finanzas&raquo; (incorrecto) a <strong>&laquo;Direcci&oacute;n de Aseo y Ornato&raquo;</strong>, &aacute;rea cambiada de &laquo;Finanzas&raquo; a &laquo;Aseo y Ornato&raquo;, iniciales &laquo;DA&raquo; &rarr; &laquo;AO&raquo;, color avatar verde lima #65a30d (medio ambiente/aseo) para coherencia sem&aacute;ntica. Esto alinea el portal con la estructura org&aacute;nica real de la Municipalidad de Rengo (DAO = Aseo y Ornato seg&uacute;n estructura institucional documentada en el SNA y entrevistas etnogr&aacute;ficas). Cache SW v49.13 &rarr; v49.14.</div>
-    <div class="ub-entry"><strong>v31.7</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **Actualizaci&oacute;n de metadatos del portal e incorporaci&oacute;n de Gabinete**: (1) **Secci&oacute;n &laquo;Portal en Construcci&oacute;n&raquo;** actualizada con versi&oacute;n y fecha vigentes (v29.6 &rarr; v31.8, 14 May 2026 &rarr; 15 May 2026) y conteo real de secciones (38 &rarr; <strong>42</strong>, reflejando la incorporaci&oacute;n de Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos como secciones nativas en versiones recientes). (2) **Update-badge flotante** sincronizado con la fecha correcta (15 Mayo 2026). (3) **Gabinete de Alcald&iacute;a incorporado** como primera direcci&oacute;n municipal participante en la secci&oacute;n Equipo T&eacute;cnico (junto a SECPLAC, DIDECO, DOM, SALUD, Seguridad P&uacute;blica, Secretar&iacute;a Municipal, DAO, Tr&aacute;nsito, DAEM y otros). Coherente con su rol de <strong>direcci&oacute;n puente</strong> identificado en el an&aacute;lisis SNA institucional (articula Planificaci&oacute;n y Gesti&oacute;n entre las direcciones); presencia confirmada en las entrevistas etnogr&aacute;ficas y en los talleres directivos del proceso PLADECO. Sidebar actualizado de &laquo;10 DIRs&raquo; a &laquo;11 DIRs&raquo;. Avatar color slate-900 #0f172a (gobierno) para diferenciaci&oacute;n visual de SECRETAR&Iacute;A MUNICIPAL. Cache SW v49.12 &rarr; v49.13.</div>
+    <div class="ub-entry"><strong>v31.7</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **Actualizaci&oacute;n de metadatos del portal e incorporaci&oacute;n de Gabinete**: (1) **Secci&oacute;n &laquo;Portal en Construcci&oacute;n&raquo;** actualizada con versi&oacute;n y fecha vigentes (v29.6 &rarr; v31.9, 14 May 2026 &rarr; 15 May 2026) y conteo real de secciones (38 &rarr; <strong>42</strong>, reflejando la incorporaci&oacute;n de Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos como secciones nativas en versiones recientes). (2) **Update-badge flotante** sincronizado con la fecha correcta (15 Mayo 2026). (3) **Gabinete de Alcald&iacute;a incorporado** como primera direcci&oacute;n municipal participante en la secci&oacute;n Equipo T&eacute;cnico (junto a SECPLAC, DIDECO, DOM, SALUD, Seguridad P&uacute;blica, Secretar&iacute;a Municipal, DAO, Tr&aacute;nsito, DAEM y otros). Coherente con su rol de <strong>direcci&oacute;n puente</strong> identificado en el an&aacute;lisis SNA institucional (articula Planificaci&oacute;n y Gesti&oacute;n entre las direcciones); presencia confirmada en las entrevistas etnogr&aacute;ficas y en los talleres directivos del proceso PLADECO. Sidebar actualizado de &laquo;10 DIRs&raquo; a &laquo;11 DIRs&raquo;. Avatar color slate-900 #0f172a (gobierno) para diferenciaci&oacute;n visual de SECRETAR&Iacute;A MUNICIPAL. Cache SW v49.12 &rarr; v49.13.</div>
     <div class="ub-entry"><strong>v31.6</strong> <span class="ub-date">15 May 2026</span><br>&#128221; **Revisi&oacute;n editorial y refinamiento argumental** de las nuevas secciones An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos. Mejoras: (1) **Hero An&aacute;lisis Censal**: lead narrativo reescrito para evidenciar la heterogeneidad oculta del ICP medio 0,210 (rango 0,073-0,493) y enfatizar las dos brechas estructurales (+38,7% rural-urbana y 2,74&times; en IPSB); pills actualizadas con datos relacionales en lugar de descriptivos. (2) **Hallazgos clave de los 6 &iacute;ndices**: convertidos de afirmaciones gen&eacute;ricas a <strong>cadenas argumentales evidencia&rarr;mecanismo&rarr;acci&oacute;n</strong> con instrumentos institucionales identificados (MIDESO Chile Cuida, SENAMA, SUBTEL FDT, INDAP PADIS, SENCE, etc.). (3) **6 recomendaciones estrat&eacute;gicas**: ahora incluyen instrumentos de financiamiento concretos (FNDR, FRIL, PMU, PMB, DS49/DS27, Sercotec, Casa Caliente, Chile Califica), metas cuantificables a 4 a&ntilde;os (e.g. reducir IPSB rural de 0,370 a 0,250) y localidades priorizadas con cifras de IPSB/ICHT. (4) **Conclusiones del Tab Recomendaciones**: 5 stat cards reducidas a 4 m&aacute;s densas con causalidad explicada (e.g. "El promedio oculta una vulnerabilidad polarizada"). (5) **Puente Presente&rarr;Futuro An&aacute;lisis Censal**: 6 cards reescritas con instrumentos pareados (FNDR+PMB, SUBTEL FDT, Chile Cuida, SENCE+INDAP, DS49+DS27, Observatorio bianual). (6) **Header ICT**: descripci&oacute;n expandida con la l&oacute;gica centro-periferia (distancia hav&eacute;rsica a Rengo/Rosario/Popeta) e instrumentos identificables. (7) **Hero ICT**: m&eacute;trica ICT 0-100 explicitada (Excelente=100, Bueno=75, Regular=50, Deficiente=25, Cr&iacute;tico=0). (8) **Puente Presente&rarr;Futuro ICT**: 6 cards reescritas con problem&aacute;ticas espec&iacute;ficas (techo derrumbado de EFE, palmeras Phoenix, vertederos H-573), topes presupuestarios FRIL/PMU ($80M), coordinaciones institucionales (Consejo Monumentos, MMA, SEREMI Salud, SUBDERE PMB) y propuesta de evaluaci&oacute;n pre/post-intervenci&oacute;n. Sin cambios estructurales en HTML/JS &mdash; solo refinamiento de texto y datos. Cache SW v49.11 &rarr; v49.12.</div>
     <div class="ub-entry"><strong>v31.5</strong> <span class="ub-date">15 May 2026</span><br>&#128205; **ICT &middot; Espacios P&uacute;blicos integrado como secci&oacute;n nativa**: integraci&oacute;n del archivo `ICT_EspaciosPublicos_Rengo_v4.html` (Secci&oacute;n 11.3 PLADECO) tras la secci&oacute;n An&aacute;lisis Estrat&eacute;gico Censal en el Grupo 2 &middot; Diagn&oacute;stico Territorial. Componentes principales: (1) **Hero gradient navy-verde** con badge ICT promedio comunal y branding &laquo;&Iacute;ndice de Calidad Territorial&raquo;; (2) **5 stat cards interactivas** por estado de conservaci&oacute;n (Excelente, Bueno, Regular, Deficiente, Cr&iacute;tico) con sem&aacute;foro de colores preservado para mantener legibilidad sem&aacute;ntica; (3) **Zona strip de 4 zonas territoriales** (Centro Urbano, Periferia Urbana, Localidades, Rural Disperso) calculadas con distancia hav&eacute;rsica a Rengo/Rosario/Popeta; (4) **Insight bar din&aacute;mica navy-gradient** con narrativa contextual seg&uacute;n filtros activos; (5) **4 pesta&ntilde;as scoped (.ict-)** con tipograf&iacute;a Inter y paleta del portal: **Mapa Leaflet** (56 marcadores con popups custom + slide panel lateral con problem&aacute;ticas y propuestas + toggles por estado/zona + c&iacute;rculos de zona), **An&aacute;lisis** (donut por estado + bar por zona + ranking horizontal de 56 espacios con hover→mapa), **Priorizaci&oacute;n** (matriz centro-periferia con badges ALTA/MEDIA/BAJA seg&uacute;n umbrales ICT + brecha bar chart + composici&oacute;n stacked), **Catastro** (tabla con expandible problem&aacute;ticas+propuestas + vista de tarjetas + filtros por tipolog&iacute;a/b&uacute;squeda); (6) **Puente Presente&rarr;Futuro** con 6 cards vinculando hallazgos del ICT a Ejes PLADECO (Recuperaci&oacute;n Patrimonial Urgente&rarr;Eje 4, Plan FRIL/PMU&rarr;Eje 4, Rural Disperso&rarr;Eje 5, Gesti&oacute;n Ambiental&rarr;Eje 5, Monitoreo ICT&rarr;Eje 6, Casos &eacute;xito&rarr;Eje 4); (7) **Lazy init** con IntersectionObserver para no penalizar el TTI; (8) Sidebar y TOC actualizados. **Adaptaciones del HTML original**: fuentes Fraunces/DM Sans removidas por `font-family:inherit` (Inter del portal); paleta navy/teal/cream/sand reemplazada por verde Rengo #2d9a4d + naranja #f5921d + navy #071d36; colores sem&aacute;foricos de estado y zona PRESERVADOS por su valor sem&aacute;ntico cr&iacute;tico (verde-azul-amarillo-naranja-rojo para estados); modo oscuro compatible con backgrounds rgba. Datos completos: 56 espacios georreferenciados, 5 estados, 4 zonas, 25+ tipolog&iacute;as distintas, problem&aacute;ticas+propuestas detalladas por espacio. Cache SW v49.10 → v49.11.</div>
     <div class="ub-entry"><strong>v31.4</strong> <span class="ub-date">15 May 2026</span><br>&#128302; **An&aacute;lisis Estrat&eacute;gico Censo 2024 integrado como secci&oacute;n nativa**: nueva pieza ejecutiva &laquo;Inteligencia Territorial&raquo; tras la secci&oacute;n Censo (Grupo 2 &middot; Diagn&oacute;stico Territorial) basada en el documento &laquo;An&aacute;lisis Territorial Rengo 2024&raquo; (Marzo 2026). Componentes principales: (1) **Hero gradient navy-verde** con 4 KPIs (63.620 habitantes, 826 manzanas censales, 7 &iacute;ndices, ICP medio 0,210); (2) **Sistema de 5 pesta&ntilde;as scoped** con CSS `.anest-` integrado a la tipograf&iacute;a Inter y paleta del portal (verde Rengo #2d9a4d, naranja #f5921d, navy #071d36): **Metodolog&iacute;a** (Tabla 1 con 23 componentes ponderados de los 6 &iacute;ndices IVSH/IDDC/IBDT/IVFT/ICHT/IPSB + clasificaci&oacute;n cartogr&aacute;fica en 4 rangos), **Resultados Generales** (Tabla 2 estad&iacute;sticas descriptivas + chart medias, Tabla 3 quintiles + donut, Tabla 4 brecha urbano-rural + bar chart comparativo), **An&aacute;lisis por &Iacute;ndice** (6 cards detalladas con focos cr&iacute;ticos y hallazgos clave por dimensi&oacute;n), **Top 15 Localidades** (Tabla 5 ranking con barras de progreso ICP + stacked chart composici&oacute;n + 4 perfiles diferenciados), **Recomendaciones** (4 stat cards conclusiones + 6 recomendaciones estrat&eacute;gicas territorializadas + bibliograf&iacute;a colapsable de 22 referencias acad&eacute;micas Girardot, Huenchuan, PNUD, CEPAL, OCUC, MDSF, etc.); (3) **Puente Presente&rarr;Futuro** con 6 cards vinculando cada hallazgo cr&iacute;tico a un Eje Estrat&eacute;gico del PLADECO (IPSB 2,74&times;&rarr;Eje 5, IBDT&rarr;Eje 2, IDDC&rarr;Eje 3, ICHT_VUL&rarr;Eje 1, IVSH&rarr;Eje 4, Monitoreo&rarr;Eje 6); (4) **4 charts Chart.js lazy-renderizados al cambiar tab** (medias por &iacute;ndice, donut quintiles, bar comparativo urbano-rural, stacked composici&oacute;n top 15); (5) Sidebar y TOC del Resumen Ejecutivo actualizados con enlace nuevo. Datos completos: 826 manzanas, 24 localidades, brecha rural +38,7%, las 15 localidades m&aacute;s vulnerables son todas rurales (El Trebal Huilqu&iacute;o, El Placer, Apalta, Las Nieves, Chapet&oacute;n...). Cache SW v49.9 → v49.10.</div>
@@ -10301,13 +10325,30 @@ document.addEventListener('click',function(e){
   if(badge && badge.classList.contains('expanded') && !badge.contains(e.target)){badge.classList.remove('expanded');}
 });
 
-// ── DARK MODE ──
+// ── DARK / LIGHT MODE ──
+function syncThemeSwitcher(isDark){
+  document.querySelectorAll('.sidebar-theme-switch .ts-opt').forEach(function(b){
+    b.classList.toggle('active', (b.dataset.theme==='dark')===isDark);
+  });
+  var btn=document.getElementById('btnDark');
+  if(btn){
+    btn.innerHTML = isDark ? '☀' : '☾';
+    btn.title = isDark ? 'Modo claro' : 'Modo oscuro';
+    btn.setAttribute('aria-label', isDark ? 'Activar modo claro' : 'Activar modo oscuro');
+  }
+}
+function setTheme(mode){
+  var wantDark = mode==='dark';
+  var isDark = document.body.classList.contains('dark');
+  if(wantDark!==isDark){ toggleDark(); return; }
+  syncThemeSwitcher(wantDark);
+}
 function toggleDark(){
   document.body.classList.toggle('dark');
   const isDark = document.body.classList.contains('dark');
   const btn=document.getElementById('btnDark');
-  btn.innerHTML = isDark ? '☀' : '☾';
-  btn.classList.add('spin');setTimeout(()=>btn.classList.remove('spin'),500);
+  if(btn){btn.classList.add('spin');setTimeout(()=>btn.classList.remove('spin'),500);}
+  syncThemeSwitcher(isDark);
   localStorage.setItem('pladeco-dark', isDark ? '1' : '0');
   // Update theme-color meta for mobile browser bar
   document.querySelector('meta[name="theme-color"]').content=isDark?'#0b1624':'#0c1f36';
@@ -11551,8 +11592,14 @@ document.getElementById('chatInput').addEventListener('keydown',e=>{
 });
 
 // ── INIT ──
-// Restore dark mode preference
-if(localStorage.getItem('pladeco-dark')==='1'){document.body.classList.add('dark');document.getElementById('btnDark').innerHTML='☀';}
+// Restore dark mode preference (also syncs sidebar theme switcher)
+(function(){
+  var savedDark = localStorage.getItem('pladeco-dark')==='1';
+  if(savedDark){document.body.classList.add('dark');}
+  syncThemeSwitcher(savedDark);
+  var meta=document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.content = savedDark?'#0b1624':'#0c1f36';
+})();
 // Re-sync Chart.js defaults after dark mode restore
 Chart.defaults.color=getChartTextColor();
 Chart.defaults.borderColor=getChartGridColor();
