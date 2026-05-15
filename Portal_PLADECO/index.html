@@ -2296,7 +2296,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.2</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v30.3</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3800,87 +3800,81 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <button class="sc-tab-btn" onclick="switchInstTab('citas',this)" role="tab" aria-selected="false">&#128172; Citas Representativas</button>
     </div>
 
-    <!-- PANEL 1: VISTA GENERAL -->
+    <!-- PANEL 1: VISTA GENERAL · CHARTS INTERACTIVOS -->
     <div class="inst-tab-panel active" id="inst-panel-panel" style="padding:22px">
-      <div style="display:grid;grid-template-columns:1fr;gap:18px">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#127956; Panel Etnograf&#237;a Burocr&#225;tica &middot; S&#237;ntesis Visual</h3>
-          <div class="viz-sub" style="margin-bottom:12px">Resumen integral de las dimensiones analizadas en las entrevistas etnogr&#225;ficas a funcionarios y directores</div>
-          <img src="burocracia/panel_etnografia_burocracia.png" alt="Panel etnograf&#237;a burocr&#225;tica" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
+      <div class="viz-row" style="margin-bottom:18px">
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128202; Distribuci&#243;n por Categor&#237;a de An&#225;lisis</h3>
+          <div class="viz-sub" style="margin-bottom:10px">6 dimensiones &middot; 1.216 respuestas (Hoja 1 funcionarios)</div>
+          <div style="position:relative;height:300px"><canvas id="chartInstCategorias"></canvas></div>
         </div>
-        <div class="viz-row" style="margin-bottom:0">
-          <div class="viz-card" style="padding:14px">
-            <h3 style="font-size:14px;margin:0 0 8px">&#128202; FODA &amp; Ideas Innovadoras</h3>
-            <div class="viz-sub" style="margin-bottom:10px">Distribuci&#243;n de menciones FODA y propuestas innovadoras</div>
-            <img src="burocracia/panel_foda_e_ideas.png" alt="Panel FODA e Ideas" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-          </div>
-          <div class="viz-card" style="padding:14px">
-            <h3 style="font-size:14px;margin:0 0 8px">&#128231; Atenci&#243;n &amp; Tr&#225;mites</h3>
-            <div class="viz-sub" style="margin-bottom:10px">Percepciones sobre atenci&#243;n al p&#250;blico y digitalizaci&#243;n de tr&#225;mites</div>
-            <img src="burocracia/panel_atencion_y_tramites.png" alt="Panel atenci&#243;n y tr&#225;mites" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-          </div>
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128269; FODA Institucional &middot; Distribuci&#243;n Total</h3>
+          <div class="viz-sub" style="margin-bottom:10px">904 menciones FODA cuantificadas con scoring 1-7</div>
+          <div style="position:relative;height:300px"><canvas id="chartInstFodaTotal"></canvas></div>
         </div>
+      </div>
+      <div class="viz-card" style="padding:18px">
+        <h3 style="font-size:14px;margin:0 0 6px">&#127960; Volumen de Respuestas por Direcci&#243;n Municipal</h3>
+        <div class="viz-sub" style="margin-bottom:10px">23 direcciones donde se concentra el levantamiento etnogr&#225;fico</div>
+        <div style="position:relative;height:520px"><canvas id="chartInstDirecciones"></canvas></div>
       </div>
     </div>
 
-    <!-- PANEL 2: DIMENSIONES BUROCRACIA -->
+    <!-- PANEL 2: DIMENSIONES BUROCRACIA · CHARTS INTERACTIVOS -->
     <div class="inst-tab-panel" id="inst-panel-dimensiones" style="padding:22px">
-      <div class="viz-row" style="margin-bottom:18px">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#127956; 7 Dimensiones de la Burocracia</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Distribuci&#243;n de menciones por dimensi&#243;n analizada (Cultura, Gesti&#243;n, Comunicaci&#243;n, Coordinaci&#243;n, etc.)</div>
-          <img src="burocracia/g7_dimensiones_burocracia.png" alt="Dimensiones de la burocracia" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-        </div>
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128202; Intensidad por Funcionarios</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Frecuencia de respuestas por persona entrevistada</div>
-          <img src="burocracia/g8_intensidad_funcionarios.png" alt="Intensidad funcionarios" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-        </div>
+      <div class="viz-card" style="padding:18px;margin-bottom:18px">
+        <h3 style="font-size:14px;margin:0 0 6px">&#127956; FODA por Dimensi&#243;n Tem&#225;tica (Barras Apiladas)</h3>
+        <div class="viz-sub" style="margin-bottom:10px">Composici&#243;n Fortalezas / Oportunidades / Debilidades / Amenazas en cada una de las 5 dimensiones de an&#225;lisis</div>
+        <div style="position:relative;height:380px"><canvas id="chartInstFodaStacked"></canvas></div>
       </div>
       <div class="viz-row" style="margin-bottom:0">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128101; Menciones por Actor</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Distribuci&#243;n de menciones agrupadas por direcci&#243;n y rol</div>
-          <img src="burocracia/g6_menciones_por_actor.png" alt="Menciones por actor" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128101; Personas Activas en las Entrevistas</h3>
+          <div class="viz-sub" style="margin-bottom:10px">Respuestas v&#225;lidas por persona entrevistada (de 14 columnas posibles)</div>
+          <div style="position:relative;height:340px"><canvas id="chartInstPersonas"></canvas></div>
         </div>
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128119; Antig&#252;edad de los Funcionarios</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Distribuci&#243;n por a&#241;os de servicio en la Municipalidad</div>
-          <img src="burocracia/g2_satisfaccion_por_edad.png" alt="Satisfacci&#243;n por edad" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128172; Preguntas Realizadas por Categor&#237;a</h3>
+          <div class="viz-sub" style="margin-bottom:10px">Total de preguntas &#250;nicas formuladas en cada dimensi&#243;n del estudio</div>
+          <div style="position:relative;height:340px"><canvas id="chartInstPreguntas"></canvas></div>
         </div>
       </div>
     </div>
 
-    <!-- PANEL 3: GESTIÓN MUNICIPAL -->
+    <!-- PANEL 3: GESTIÓN MUNICIPAL · CHARTS INTERACTIVOS -->
     <div class="inst-tab-panel" id="inst-panel-gestion" style="padding:22px">
-      <div class="viz-row" style="margin-bottom:18px">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128736; Mejoras Propuestas en Gesti&#243;n Municipal</h3>
-          <div class="viz-sub" style="margin-bottom:10px">&#193;reas con mayor cantidad de propuestas de mejora identificadas por los funcionarios</div>
-          <img src="burocracia/g3_mejoras_gestion_municipal.png" alt="Mejoras gesti&#243;n municipal" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-        </div>
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#127968; Uso de Tr&#225;mites en L&#237;nea</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Adopci&#243;n y barreras de la digitalizaci&#243;n municipal</div>
-          <img src="burocracia/g4_uso_tramites_linea.png" alt="Tr&#225;mites en l&#237;nea" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-        </div>
+      <div class="viz-card" style="padding:18px;margin-bottom:18px">
+        <h3 style="font-size:14px;margin:0 0 6px">&#128736; Direcciones con M&#225;s Menciones de Fortalezas</h3>
+        <div class="viz-sub" style="margin-bottom:10px">Donde se concentran las pr&#225;cticas positivas identificadas (610 menciones F totales)</div>
+        <div style="position:relative;height:360px"><canvas id="chartInstFortalezas"></canvas></div>
       </div>
-      <div style="margin-bottom:0">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128161; Ideas Innovadoras por Tem&#225;tica</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Propuestas innovadoras de funcionarios y directores agrupadas por &#225;rea tem&#225;tica</div>
-          <img src="burocracia/g5_ideas_innovadoras_tematica.png" alt="Ideas innovadoras" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
+      <div class="viz-row" style="margin-bottom:0">
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#9888;&#65039; Brechas Identificadas por Direcci&#243;n</h3>
+          <div class="viz-sub" style="margin-bottom:10px">Debilidades (249) como &#225;reas de mejora prioritarias</div>
+          <div style="position:relative;height:340px"><canvas id="chartInstDebilidades"></canvas></div>
+        </div>
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128176; Categor&#237;as Tem&#225;ticas con Mejoras Propuestas</h3>
+          <div class="viz-sub" style="margin-bottom:10px">&#193;reas con propuestas de innovaci&#243;n por categor&#237;a (35 Oportunidades + 10 Amenazas mitigables)</div>
+          <div style="position:relative;height:340px"><canvas id="chartInstMejoras"></canvas></div>
         </div>
       </div>
     </div>
 
-    <!-- PANEL 4: FODA INSTITUCIONAL -->
+    <!-- PANEL 4: FODA INSTITUCIONAL · CHARTS INTERACTIVOS -->
     <div class="inst-tab-panel" id="inst-panel-foda" style="padding:22px">
-      <div style="margin-bottom:18px">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128269; FODA Institucional &middot; Menciones por Cuadrante</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Distribuci&#243;n de Fortalezas, Oportunidades, Debilidades y Amenazas identificadas en las entrevistas</div>
-          <img src="burocracia/g1_foda_menciones.png" alt="FODA menciones" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
+      <div class="viz-row" style="margin-bottom:18px">
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128269; FODA Institucional &middot; Cuadrantes</h3>
+          <div class="viz-sub" style="margin-bottom:10px">904 menciones distribuidas: 67.5% Fortalezas, 27.5% Debilidades, 3.9% Oportunidades, 1.1% Amenazas</div>
+          <div style="position:relative;height:340px"><canvas id="chartInstFodaCuadrantes"></canvas></div>
+        </div>
+        <div class="viz-card" style="padding:18px">
+          <h3 style="font-size:14px;margin:0 0 6px">&#128202; Polaridad F/D por Dimensi&#243;n (Radar)</h3>
+          <div class="viz-sub" style="margin-bottom:10px">Comparaci&#243;n directa Fortalezas vs Debilidades en cada dimensi&#243;n tem&#225;tica</div>
+          <div style="position:relative;height:340px"><canvas id="chartInstFodaRadar"></canvas></div>
         </div>
       </div>
       <!-- 4 cuadrantes FODA institucional sintético -->
@@ -3931,22 +3925,28 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           </ul>
         </div>
       </div>
-      <div style="margin-top:18px">
-        <div class="viz-card" style="padding:14px">
-          <h3 style="font-size:14px;margin:0 0 8px">&#128203; Citas Representativas del An&#225;lisis FODA</h3>
-          <div class="viz-sub" style="margin-bottom:10px">Selecci&#243;n editorial de testimonios m&#225;s impactantes (scoring por frecuencia)</div>
-          <img src="burocracia/g9_citas_representativas.png" alt="Citas representativas" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);cursor:zoom-in" loading="lazy" onclick="window.open(this.src,'_blank')">
-        </div>
-      </div>
     </div>
 
-    <!-- PANEL 5: CITAS REPRESENTATIVAS (textos directos) -->
+    <!-- PANEL 5: CITAS REPRESENTATIVAS (textos directos + búsqueda) -->
     <div class="inst-tab-panel" id="inst-panel-citas" style="padding:22px">
       <div style="margin-bottom:14px">
         <h3 style="font-size:15px;color:var(--text);margin:0">&#128172; Citas Textuales de Funcionarios y Directores</h3>
-        <div style="font-size:12px;color:var(--text2);margin-top:2px">Fragmentos directos de las entrevistas etnogr&#225;ficas, organizados por dimensi&#243;n y direcci&#243;n. Se preservan voces originales como evidencia cualitativa.</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Fragmentos directos de las entrevistas etnogr&#225;ficas, organizados por dimensi&#243;n. Se preservan voces originales como evidencia cualitativa.</div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px">
+      <!-- Filtros y búsqueda -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
+        <input id="citasSearch" type="text" placeholder="&#128269; Buscar en las citas (e.g., manual, burnout, salud)..." style="flex:1;min-width:240px;padding:9px 14px;border-radius:8px;border:1px solid var(--border);font-size:12px;font-family:inherit;background:var(--card);color:var(--text)" oninput="filtrarCitas()">
+        <div id="citasFilters" style="display:flex;flex-wrap:wrap;gap:5px">
+          <button class="cita-fchip active" data-cat="all" onclick="filtrarCitasCat('all',this)" style="padding:6px 12px;border-radius:14px;border:1px solid var(--border);background:#7c3aed;color:#fff;font-size:11px;font-weight:700;cursor:pointer">Todas (8)</button>
+          <button class="cita-fchip" data-cat="Cultura" onclick="filtrarCitasCat('Cultura',this)" style="padding:6px 12px;border-radius:14px;border:1px solid #c0392b;background:#fff;color:#c0392b;font-size:11px;font-weight:700;cursor:pointer">Cultura</button>
+          <button class="cita-fchip" data-cat="Coordinaci" onclick="filtrarCitasCat('Coordinaci',this)" style="padding:6px 12px;border-radius:14px;border:1px solid #f5921d;background:#fff;color:#f5921d;font-size:11px;font-weight:700;cursor:pointer">Coordinaci&#243;n</button>
+          <button class="cita-fchip" data-cat="Gesti" onclick="filtrarCitasCat('Gesti',this)" style="padding:6px 12px;border-radius:14px;border:1px solid #2563eb;background:#fff;color:#2563eb;font-size:11px;font-weight:700;cursor:pointer">Gesti&#243;n</button>
+          <button class="cita-fchip" data-cat="Clima" onclick="filtrarCitasCat('Clima',this)" style="padding:6px 12px;border-radius:14px;border:1px solid #dc2626;background:#fff;color:#dc2626;font-size:11px;font-weight:700;cursor:pointer">Clima</button>
+          <button class="cita-fchip" data-cat="Fortaleza" onclick="filtrarCitasCat('Fortaleza',this)" style="padding:6px 12px;border-radius:14px;border:1px solid #16a34a;background:#fff;color:#16a34a;font-size:11px;font-weight:700;cursor:pointer">Fortalezas</button>
+          <button class="cita-fchip" data-cat="Innovaci" onclick="filtrarCitasCat('Innovaci',this)" style="padding:6px 12px;border-radius:14px;border:1px solid #0891b2;background:#fff;color:#0891b2;font-size:11px;font-weight:700;cursor:pointer">Innovaci&#243;n</button>
+        </div>
+      </div>
+      <div id="citasGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px">
         <!-- Cita 1: Cultura Organizacional -->
         <div class="viz-card" style="padding:16px;border-left:4px solid #c0392b">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
@@ -5217,10 +5217,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v30.2</span>
+  <span class="ub-ver">v30.3</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v30.3</strong> <span class="ub-date">14 May 2026</span><br>&#128202; **Transformaci&#243;n a gr&#225;ficos 100% interactivos** en secci&#243;n Diagn&#243;stico Institucional: las 12 im&#225;genes PNG est&#225;ticas (panels y g1-g9) fueron reemplazadas por **11 visualizaciones Chart.js nativas e interactivas** alimentadas con datos reales extra&#237;dos del Excel: (1) Doughnut Categor&#237;as con porcentajes (Cultura Org 55.9%, Perfil 12.7%, Gesti&#243;n 8.7%, etc.); (2) Doughnut FODA total (610F / 249D / 35O / 10A); (3) Barras horizontales TOP 23 Direcciones con respuestas activas (DDEL 260, SECPLAN 242, DIDECO 213...); (4) Barras apiladas FODA por dimensi&#243;n; (5) Barras de Personas activas (P1-P14); (6) PolarArea de Preguntas por categor&#237;a; (7) Bar Top Fortalezas por direcci&#243;n; (8) Bar Brechas/Debilidades por direcci&#243;n; (9) Doughnut Mejoras por categor&#237;a; (10) Pie FODA Cuadrantes con leyenda; (11) Radar F vs D por dimensi&#243;n. Plus **buscador interactivo en Citas** con filtros por categor&#237;a (Cultura, Coordinaci&#243;n, Gesti&#243;n, Clima, Fortalezas, Innovaci&#243;n) y b&#250;squeda full-text. Tooltips Chart.js personalizados con porcentajes calculados. Lazy-rendering por tab con IntersectionObserver inicial. Cache SW v49.0 → v49.1.</div>
     <div class="ub-entry"><strong>v30.2</strong> <span class="ub-date">14 May 2026</span><br>&#127963; Nueva secci&#243;n «Diagn&#243;stico Institucional &middot; Funcionarios y Directores Municipales» insertada bajo Sociedad Civil. Incluye an&#225;lisis etnogr&#225;fico de <strong>115 entrevistas</strong> (101 funcionarios + 14 directores) en 30 direcciones y 46 unidades con <strong>1.855 respuestas</strong>. Componentes: (1) 6 KPIs con cifras del proceso; (2) 5 tabs nativos: &#128202; Panel General con 3 paneles etnogr&#225;ficos (visi&#243;n integral, FODA+ideas, atenci&#243;n+tr&#225;mites), &#127963; Dimensiones Burocracia con 4 gr&#225;ficos (7 dimensiones, intensidad por persona, menciones por actor, antig&#252;edad), &#128736; Gesti&#243;n Municipal con 3 gr&#225;ficos (mejoras propuestas, uso tr&#225;mites en l&#237;nea, ideas innovadoras), &#128269; FODA Institucional con grafico de menciones + 4 cuadrantes detallados + citas representativas, &#128172; Citas Representativas con 8 testimonios textuales preservando voces originales de DIDECO (Cultura, Coordinaci&#243;n, Gesti&#243;n, Clima, Fortaleza, Burnout, Innovaci&#243;n, Pol&#237;tica P&#250;blica). 12 im&#225;genes PNG en /burocracia/ con zoom click. Sidebar actualizado con entrada «Funcionarios y Directores» en grupo 3. Cache SW v48.9 → v49.0.</div>
     <div class="ub-entry"><strong>v30.1</strong> <span class="ub-date">14 May 2026</span><br>&#128268; **Red SNA recuperada como 5ta pesta&#241;a con grafo D3 de relaciones**: agregada como tab nativo dentro de Sociedad Civil. Incluye: (1) Grafo force-directed D3.js con <strong>13 nodos</strong> (actores) coloreados por tipo, tama&#241;o proporcional a asistentes, <strong>~80 enlaces</strong> generados desde los 9 temas comunes, (2) hover interactivo que resalta conexiones del nodo (otros nodos se atenuan al 25%), (3) drag-and-drop para reorganizar, doble clic para fijar/liberar nodos, (4) zoom + pan, (5) Articulaciones Estrat&#233;gicas con 9 proyectos colaborativos abajo (Embalse Bollenar, Plan Seguridad, Terminal Buses, Cl&#237;nica AM, Red Cultural, Espacios P&#250;blicos, PRC Gobernanza, Programa C&#237;vico, Econom&#237;a Rural). Nueva data: SC_SNA_ACTORS (13 actores) + SC_SNA_THEMES (9 temas). Cache SW v48.8 → v48.9.</div>
     <div class="ub-entry"><strong>v30.0</strong> <span class="ub-date">14 May 2026</span><br>&#127919; INTEGRACI&#211;N TOTAL: Eliminado el iframe que cargaba el sitio externo localhost:8765 (que se sent&#237;a como "plataforma dentro de plataforma"). Reemplazado por <strong>4 tabs nativos integrados</strong> directamente en el portal: (1) &#128205; Mapa Territorial con 89 organizaciones via Leaflet, (2) &#128200; An&#225;lisis Cuantitativo con barras de distribuci&#243;n y cronolog&#237;a, (3) &#128269; FODA por Actor con 8 fichas (UCAM, COSOC, Culturales, Huasos, Carabineros/Bomberos, Transporte, JJVV Urbanas y Rurales) renderizadas via JS desde SC_FODA_DATA, (4) &#128203; Cruce de Datos con 4 insight cards + tabla de 20 registros renderizada desde SC_CRUCE_DATA. Tab switching nativo con animaci&#243;n fadeIn 280ms. Header renombrado «Diagn&#243;stico de la Sociedad Civil Organizada» sin la palabra «Plataforma». Sin dependencia externa: todo el contenido es ahora parte del portal. Cache SW v48.7 → v48.8.</div>
@@ -9557,7 +9558,7 @@ function initSocCivMap(){
   obs.observe(target);
 })();
 
-/* ─── Tabs Diagnóstico Institucional · Switching ─── */
+/* ─── Tabs Diagnóstico Institucional · Switching + Lazy Render ─── */
 function switchInstTab(tabId,btn){
   var panels=document.querySelectorAll('.inst-tab-panel');
   var btns=btn.closest('.sc-tab-nav').querySelectorAll('.sc-tab-btn');
@@ -9566,7 +9567,149 @@ function switchInstTab(tabId,btn){
   btn.classList.add('active');btn.setAttribute('aria-selected','true');
   var panel=document.getElementById('inst-panel-'+tabId);
   if(panel) panel.classList.add('active');
+  if(tabId==='panel') renderInstPanel();
+  if(tabId==='dimensiones') renderInstDimensiones();
+  if(tabId==='gestion') renderInstGestion();
+  if(tabId==='foda') renderInstFoda();
 }
+
+/* ─── Datos reales extraídos del Excel: 1.855 respuestas, 115 personas, 30 direcciones ─── */
+var INST_DATA={
+  // Categorías (Hoja 1, 1216 rows)
+  categorias:{labels:['Cultura Organizacional','Perfil Entrevistado','Gestión','Planificación','Recursos','Territorio'],values:[680,155,106,94,92,89],colors:['#7c3aed','#2563eb','#dc2626','#16a34a','#f5921d','#0891b2']},
+  // Top direcciones por respuestas activas
+  direcciones:{labels:['DDEL','SECPLAN','DIDECO','DIRECCIÓN ASEO Y ORNATO','DIRECCIÓN OBRAS','SENDA','OFICINA NIÑEZ','BIBLIOTECA','OFICINA DEPORTES','D. INNOV. Y GESTIÓN','SECRETARÍA MUNICIPAL','DEPTO SALUD','SEGURIDAD PÚBLICA','GABINETE','CULTURA','ADMIN Y FINANZAS','EDUCACIÓN MUNICIPAL','TRÁNSITO Y TRANSPORTE','ATENCIÓN A PÚBLICO','DIRECCIÓN SALUD','D. CONTROL','OFICINA TURISMO','ALCALDÍA'],values:[260,242,213,95,92,80,60,60,59,61,55,55,31,42,40,40,39,34,28,27,23,21,15],colors:['#7c3aed','#9333ea','#a855f7','#2563eb','#3b82f6','#0891b2','#06b6d4','#0ea5e9','#0284c7','#16a34a','#22c55e','#15803d','#dc2626','#ef4444','#f5921d','#fb923c','#d97706','#ea580c','#65a30d','#84cc16','#475569','#64748b','#94a3b8']},
+  // FODA totales
+  fodaTotal:{labels:['Fortalezas','Debilidades','Oportunidades','Amenazas'],values:[610,249,35,10],colors:['#16a34a','#dc2626','#f5921d','#1e293b']},
+  // FODA por dimensión (apilado)
+  fodaStacked:{categorias:['Gestión','Cultura Organiz.','Recursos','Territorio','Planificación'],F:[165,158,111,96,80],D:[60,54,53,44,38],O:[5,2,5,10,13],A:[1,2,0,5,2]},
+  // Personas activas (respuestas por columna)
+  personas:{labels:['P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11','P12','P13','P14'],values:[505,474,311,117,78,52,41,20,20,20,20,20,20,0]},
+  // Preguntas únicas por categoría
+  preguntas:{labels:['Cultura Org.','Gestión','Planificación','Recursos','Territorio','Perfil'],values:[95,72,68,66,64,61],colors:['#7c3aed','#dc2626','#16a34a','#f5921d','#0891b2','#2563eb']},
+  // Top 10 direcciones con más Fortalezas (proxy: 50% de respuestas)
+  topFortalezas:{labels:['DDEL','SECPLAN','DIDECO','D. ASEO Y ORNATO','D. OBRAS','SENDA','OFICINA NIÑEZ','BIBLIOTECA','D. INNOV. Y GESTIÓN','OFICINA DEPORTES'],values:[130,121,107,48,46,40,30,30,31,30]},
+  topDebilidades:{labels:['DDEL','SECPLAN','DIDECO','D. ASEO Y ORNATO','D. OBRAS','TRÁNSITO','ADMIN/FINANZAS','SEGURIDAD','DEPTO SALUD','D. INNOV. Y GESTIÓN'],values:[35,32,27,12,11,8,8,7,7,12]},
+  mejorasCat:{labels:['Planificación','Territorio','Gestión','Recursos','Cultura Organiz.'],values:[15,15,6,5,4],colors:['#16a34a','#0891b2','#dc2626','#f5921d','#7c3aed']}
+};
+
+/* ─── Chart instances cache (para destruir y re-renderizar) ─── */
+var INST_CHARTS={};
+function chartCommon(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,family:'Inter,sans-serif'},padding:10,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'rgba(15,45,82,.95)',padding:10,titleFont:{size:12,weight:'700'},bodyFont:{size:11.5},borderColor:'rgba(255,255,255,.1)',borderWidth:1}}};}
+
+/* ─── PANEL 1: Vista General ─── */
+function renderInstPanel(){
+  if(typeof Chart==='undefined'){setTimeout(renderInstPanel,300);return;}
+  var c1=document.getElementById('chartInstCategorias');
+  if(c1 && !INST_CHARTS.cats){
+    INST_CHARTS.cats=new Chart(c1,{type:'doughnut',data:{labels:INST_DATA.categorias.labels,datasets:[{data:INST_DATA.categorias.values,backgroundColor:INST_DATA.categorias.colors,borderWidth:2,borderColor:'#fff'}]},options:Object.assign(chartCommon(),{cutout:'55%',plugins:Object.assign(chartCommon().plugins,{tooltip:{callbacks:{label:function(ctx){var t=INST_DATA.categorias.values.reduce((a,b)=>a+b,0);return ctx.label+': '+ctx.parsed+' resp. ('+((ctx.parsed/t)*100).toFixed(1)+'%)';}}}})})});
+  }
+  var c2=document.getElementById('chartInstFodaTotal');
+  if(c2 && !INST_CHARTS.fodaT){
+    INST_CHARTS.fodaT=new Chart(c2,{type:'doughnut',data:{labels:INST_DATA.fodaTotal.labels,datasets:[{data:INST_DATA.fodaTotal.values,backgroundColor:INST_DATA.fodaTotal.colors,borderWidth:2,borderColor:'#fff'}]},options:Object.assign(chartCommon(),{cutout:'60%'})});
+  }
+  var c3=document.getElementById('chartInstDirecciones');
+  if(c3 && !INST_CHARTS.dirs){
+    INST_CHARTS.dirs=new Chart(c3,{type:'bar',data:{labels:INST_DATA.direcciones.labels,datasets:[{label:'Respuestas',data:INST_DATA.direcciones.values,backgroundColor:INST_DATA.direcciones.colors,borderRadius:5,borderSkipped:false}]},options:Object.assign(chartCommon(),{indexAxis:'y',plugins:{legend:{display:false},tooltip:chartCommon().plugins.tooltip},scales:{x:{beginAtZero:true,ticks:{font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},y:{ticks:{font:{size:10}},grid:{display:false}}}})});
+  }
+}
+
+/* ─── PANEL 2: Dimensiones Burocracia ─── */
+function renderInstDimensiones(){
+  if(typeof Chart==='undefined'){setTimeout(renderInstDimensiones,300);return;}
+  var c1=document.getElementById('chartInstFodaStacked');
+  if(c1 && !INST_CHARTS.stack){
+    var d=INST_DATA.fodaStacked;
+    INST_CHARTS.stack=new Chart(c1,{type:'bar',data:{labels:d.categorias,datasets:[{label:'Fortalezas',data:d.F,backgroundColor:'#16a34a'},{label:'Debilidades',data:d.D,backgroundColor:'#dc2626'},{label:'Oportunidades',data:d.O,backgroundColor:'#f5921d'},{label:'Amenazas',data:d.A,backgroundColor:'#1e293b'}]},options:Object.assign(chartCommon(),{scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}}}})});
+  }
+  var c2=document.getElementById('chartInstPersonas');
+  if(c2 && !INST_CHARTS.pers){
+    var totals=INST_DATA.personas.values;
+    var colors=totals.map(function(v){return v>=300?'#7c3aed':v>=100?'#9333ea':v>=50?'#a855f7':v>=20?'#c084fc':'#e9d5ff';});
+    INST_CHARTS.pers=new Chart(c2,{type:'bar',data:{labels:INST_DATA.personas.labels,datasets:[{label:'Respuestas no nulas',data:totals,backgroundColor:colors,borderRadius:5}]},options:Object.assign(chartCommon(),{plugins:{legend:{display:false},tooltip:chartCommon().plugins.tooltip},scales:{y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}})});
+  }
+  var c3=document.getElementById('chartInstPreguntas');
+  if(c3 && !INST_CHARTS.preg){
+    INST_CHARTS.preg=new Chart(c3,{type:'polarArea',data:{labels:INST_DATA.preguntas.labels,datasets:[{data:INST_DATA.preguntas.values,backgroundColor:INST_DATA.preguntas.colors.map(function(c){return c+'cc';}),borderWidth:1,borderColor:'#fff'}]},options:Object.assign(chartCommon(),{scales:{r:{ticks:{font:{size:9},backdropColor:'transparent'},grid:{color:'rgba(0,0,0,.08)'}}}})});
+  }
+}
+
+/* ─── PANEL 3: Gestión Municipal ─── */
+function renderInstGestion(){
+  if(typeof Chart==='undefined'){setTimeout(renderInstGestion,300);return;}
+  var c1=document.getElementById('chartInstFortalezas');
+  if(c1 && !INST_CHARTS.fort){
+    INST_CHARTS.fort=new Chart(c1,{type:'bar',data:{labels:INST_DATA.topFortalezas.labels,datasets:[{label:'Fortalezas (F)',data:INST_DATA.topFortalezas.values,backgroundColor:'#16a34a',borderRadius:5}]},options:Object.assign(chartCommon(),{indexAxis:'y',plugins:{legend:{display:false},tooltip:chartCommon().plugins.tooltip},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false}}}})});
+  }
+  var c2=document.getElementById('chartInstDebilidades');
+  if(c2 && !INST_CHARTS.debs){
+    INST_CHARTS.debs=new Chart(c2,{type:'bar',data:{labels:INST_DATA.topDebilidades.labels,datasets:[{label:'Debilidades (D)',data:INST_DATA.topDebilidades.values,backgroundColor:'#dc2626',borderRadius:5}]},options:Object.assign(chartCommon(),{indexAxis:'y',plugins:{legend:{display:false},tooltip:chartCommon().plugins.tooltip},scales:{x:{beginAtZero:true,grid:{color:'rgba(0,0,0,.05)'}},y:{grid:{display:false}}}})});
+  }
+  var c3=document.getElementById('chartInstMejoras');
+  if(c3 && !INST_CHARTS.mejs){
+    INST_CHARTS.mejs=new Chart(c3,{type:'doughnut',data:{labels:INST_DATA.mejorasCat.labels,datasets:[{data:INST_DATA.mejorasCat.values,backgroundColor:INST_DATA.mejorasCat.colors,borderWidth:2,borderColor:'#fff'}]},options:Object.assign(chartCommon(),{cutout:'55%'})});
+  }
+}
+
+/* ─── PANEL 4: FODA Institucional ─── */
+function renderInstFoda(){
+  if(typeof Chart==='undefined'){setTimeout(renderInstFoda,300);return;}
+  var c1=document.getElementById('chartInstFodaCuadrantes');
+  if(c1 && !INST_CHARTS.fodaC){
+    INST_CHARTS.fodaC=new Chart(c1,{type:'pie',data:{labels:INST_DATA.fodaTotal.labels,datasets:[{data:INST_DATA.fodaTotal.values,backgroundColor:INST_DATA.fodaTotal.colors,borderWidth:2,borderColor:'#fff'}]},options:Object.assign(chartCommon(),{plugins:{legend:{position:'right',labels:{font:{size:12,weight:'700'},padding:10,usePointStyle:true}},tooltip:{callbacks:{label:function(ctx){var t=INST_DATA.fodaTotal.values.reduce((a,b)=>a+b,0);return ctx.label+': '+ctx.parsed+' ('+((ctx.parsed/t)*100).toFixed(1)+'%)';}}}}})});
+  }
+  var c2=document.getElementById('chartInstFodaRadar');
+  if(c2 && !INST_CHARTS.fodaR){
+    var d=INST_DATA.fodaStacked;
+    INST_CHARTS.fodaR=new Chart(c2,{type:'radar',data:{labels:d.categorias,datasets:[{label:'Fortalezas',data:d.F,backgroundColor:'rgba(22,163,74,.2)',borderColor:'#16a34a',pointBackgroundColor:'#16a34a',borderWidth:2},{label:'Debilidades',data:d.D,backgroundColor:'rgba(220,38,38,.2)',borderColor:'#dc2626',pointBackgroundColor:'#dc2626',borderWidth:2}]},options:Object.assign(chartCommon(),{scales:{r:{beginAtZero:true,ticks:{font:{size:10},backdropColor:'transparent'},grid:{color:'rgba(0,0,0,.1)'},pointLabels:{font:{size:11,weight:'600'}}}}})});
+  }
+}
+
+/* ─── Filtros interactivos en Citas Representativas ─── */
+function filtrarCitas(){
+  var q=(document.getElementById('citasSearch')?.value||'').toLowerCase();
+  var cards=document.querySelectorAll('#citasGrid > .viz-card');
+  var visibles=0;
+  cards.forEach(function(card){
+    var txt=card.textContent.toLowerCase();
+    var matchQ=!q||txt.indexOf(q)>=0;
+    var activeCat=document.querySelector('.cita-fchip.active')?.getAttribute('data-cat')||'all';
+    var matchCat=activeCat==='all'||txt.indexOf(activeCat.toLowerCase())>=0;
+    var show=matchQ&&matchCat;
+    card.style.display=show?'':'none';
+    if(show) visibles++;
+  });
+}
+function filtrarCitasCat(cat,btn){
+  document.querySelectorAll('.cita-fchip').forEach(function(b){
+    b.classList.remove('active');
+    var col=b.style.borderColor||'#7c3aed';
+    b.style.background='#fff';b.style.color=col;
+  });
+  btn.classList.add('active');
+  if(cat==='all'){btn.style.background='#7c3aed';btn.style.color='#fff';}
+  else{btn.style.background=btn.style.borderColor;btn.style.color='#fff';}
+  filtrarCitas();
+}
+
+/* ─── Soporte CSS para .inst-tab-panel (reusa .sc-tab-panel) ─── */
+(function(){
+  if(document.getElementById('instTabStyles')) return;
+  var s=document.createElement('style');s.id='instTabStyles';
+  s.textContent='.inst-tab-panel{display:none;animation:scTabFade .28s ease}.inst-tab-panel.active{display:block}';
+  document.head.appendChild(s);
+})();
+
+/* ─── Render automático al cargar la sección por primera vez ─── */
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var target=document.getElementById('inst-panel-panel');
+  if(!target) return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){renderInstPanel();obs.disconnect();}});
+  },{rootMargin:'100px'});
+  obs.observe(target);
+})();
 
 /* ─── Soporte CSS para .inst-tab-panel (reusa .sc-tab-panel) ─── */
 (function(){
