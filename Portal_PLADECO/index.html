@@ -912,10 +912,8 @@ body.dark .meta-card .mc-track{background:#334155}
 .cb-ribbon::before{content:'\26A0\FE0F';font-size:13px}
 @keyframes cbPulse{0%,100%{box-shadow:0 2px 10px rgba(232,133,15,.35)}50%{box-shadow:0 2px 18px rgba(245,146,29,.6)}}
 .construction-banner .cb-logo-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.construction-banner .cb-pladeco-pill{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 16px}
-.construction-banner .cb-pladeco-pill .cb-pt-name{font-size:16px;font-weight:900;letter-spacing:.5px;color:#fff}
-.construction-banner .cb-pladeco-pill .cb-pt-year{font-size:10px;color:var(--orange);font-weight:700;letter-spacing:1.5px}
-.construction-banner .cb-pladeco-pill .cb-pt-line{width:1px;height:26px;background:rgba(255,255,255,.15)}
+.construction-banner .cb-pladeco-pill{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:5px 10px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.construction-banner .cb-pladeco-pill img{height:50px;width:auto;display:block}
 .cb-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);width:28px;height:28px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;line-height:1;margin-left:8px}
 .cb-close:hover{background:rgba(255,255,255,.2);color:#fff;transform:scale(1.1)}
 body{padding-top:62px}
@@ -2383,7 +2381,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
     <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v31.1</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v31.2</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -2414,17 +2412,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
         <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" width="24" height="38" decoding="async">
         <span>Ilustre<br>Municipalidad<br>de Rengo</span>
       </div>
-      <div class="cb-contigo-pill">
-        <img src="2.png" alt="Contigo Rengo Mejor Comuna" width="50" height="28" loading="lazy" decoding="async">
-      </div>
     </div>
     <div class="cb-ribbon-wrap"><div class="cb-ribbon">En construcci&#243;n &#183; sujeto a cambios</div></div>
     <div class="cb-logo-right">
       <div class="cb-pladeco-pill">
-        <div>
-          <div class="cb-pt-name">PLADECO</div>
-          <div class="cb-pt-year">2025 &#8212; 2035</div>
-        </div>
+        <img src="logo-pladeco.png" alt="Logo PLADECO 2025-2035 Plan de Desarrollo Comunal Rengo" width="74" height="56" loading="eager" decoding="async">
       </div>
       <button class="cb-close" onclick="dismissBanner()" title="Cerrar banner" aria-label="Cerrar banner">&times;</button>
     </div>
@@ -5853,10 +5845,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <button class="dark-toggle" id="btnDark" onclick="toggleDark()" title="Modo oscuro" aria-label="Alternar modo oscuro">&#9790;</button>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v31.1</span>
+  <span class="ub-ver">v31.2</span>
   &#218;ltima actualizaci&#243;n: 14 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v31.2</strong> <span class="ub-date">14 May 2026</span><br>&#127919; **Logo PLADECO oficial en banner superior**: (1) Reemplazado el pill «PLADECO 2025 — 2035» (texto blanco con a&#241;os en naranja) por el logo oficial PNG `logo-pladeco.png` (azul + naranja + tagline «Plan de Desarrollo Comunal Rengo»). (2) Eliminado el pill «Contigo Rengo Mejor Comuna» (2.png) del banner para optimizar espacio. (3) Pill del logo ahora tiene fondo blanco con sombra sutil para resaltar el logo en el navy gradient del banner. Cache SW v49.7 → v49.8.</div>
     <div class="ub-entry"><strong>v31.1</strong> <span class="ub-date">14 May 2026</span><br>&#127912; **Ficha Comunal alineada al sistema visual del portal**: unificaci&#243;n de tipograf&#237;a y colores con el resto del sitio. (1) **Tipograf&#237;a**: removidas las fuentes Fraunces (serif) y DM Sans (sans), ahora hereda Inter del portal v&#237;a `font-family:inherit`. Mantiene weights 700-900 para n&#250;meros y t&#237;tulos. (2) **Paleta de colores**: reemplazada paleta navy/teal/gold del estudio original por la paleta oficial del portal: verde Rengo `#2d9a4d` (primario), naranja `#f5921d` (acento), azul navy `#1a3d8f` (info), gradiente dark `#071d36 → #0c2a4a → #0d3a26` en hero (igual que los iframes de Sociedad Civil). (3) **Charts Chart.js**: actualizada paleta a `{navy:#071d36, navy3:#1a3d8f, green:#2d9a4d, greenLight:#48c76e, orange:#f5921d, orangeLight:#fdb94d}`. (4) **Border radius** unificado a 8-12px (antes 4px). (5) **Border de cards** con shadow del portal `var(--shadow)`. Cache SW v49.6 → v49.7.</div>
     <div class="ub-entry"><strong>v31.0</strong> <span class="ub-date">14 May 2026</span><br>&#128202; **Ficha Comunal &middot; Observatorio Laboral integrada como secci&#243;n nativa**: nueva pieza ejecutiva al inicio del Grupo 2 (Diagn&#243;stico Territorial) basada en ficha-comunal-rengo.html del Estudio Realidad Comunal. Componentes: (1) **Hero estilo ficha** con identidad propia (navy + teal + gold) y 3 KPIs principales (63.620 habitantes, 4.439 empresas, US$208M inversi&#243;n); (2) **Strip de 6 indicadores** con datos del Censo, ENE, BNE (Hombres 30.925, Mujeres 32.695, +65a 13.8%, Fuerza trabajo 31.632, Ocupados formales 38%, Vacantes BNE 719); (3) **5 tarjetas con charts Chart.js interactivos lazy-loaded**: Demograf&#237;a + Donut sexo, Mercado Laboral + Barras horizontales, Tejido Empresarial + Donut modalidades, BNE Vacantes + Barras verticales, Inversi&#243;n 2025-2029 + Barra apilada de empleos por tipo; (4) **Secci&#243;n «Del Presente al Futuro»** con 6 cards de estrategias vinculadas a Ejes PLADECO (Envejecimiento→Eje 1, Brecha Ingresos→Eje 2, Tejido Empresarial→Eje 2, Vacantes Agroindustria→Eje 2 OMIL, Inversi&#243;n US$208M→Eje 6 Gesti&#243;n, Formalizaci&#243;n→Eje 2 Calidad Empleo). Cada card linkea a #matriz para continuar la trazabilidad. CSS scoped con prefijo `.ficha-` para no romper estilos del portal. Sidebar actualizado con entrada nueva. Cache SW v49.5 → v49.6.</div>
     <div class="ub-entry"><strong>v30.7</strong> <span class="ub-date">14 May 2026</span><br>&#127919; **SNA Institucional ultra-interactivo con aristas tem&#225;ticas**: rediseno completo del grafo de relaciones inter-direcciones. Ahora cada par de direcciones que comparte categor&#237;as tem&#225;ticas genera <strong>una arista paralela por cada tema en com&#250;n</strong>, no una sola arista gris&#225;cea. Las aristas se renderizan como <strong>curvas Bezier paralelas separadas 8px</strong> para evitar superposici&#243;n y se colorizan seg&#250;n el tema que conecta (morado=Cultura, rojo=Gesti&#243;n, naranja=Recursos, cyan=Territorio, verde=Planificaci&#243;n). Nuevas funcionalidades: (1) **6 chips de filtro tem&#225;tico** sobre el grafo (Todos, Cultura Org, Gesti&#243;n, Recursos, Territorio, Planificaci&#243;n); (2) **Click en chip** filtra solo aristas de ese tema, ilumina las nodos pertinentes y atenua resto al 28%; (3) **Contador din&#225;mico** muestra direcciones y enlaces activos por filtro; (4) **Hover en arista** muestra tooltip con direcciones conectadas y nombre completo del tema (color del tema); (5) **Hover en nodo** resalta sus articulaciones manteniendo filtro tem&#225;tico activo; (6) Drag-and-drop intacto. Cache SW v49.4 → v49.5.</div>
