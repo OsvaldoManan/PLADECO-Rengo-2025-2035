@@ -1,8 +1,8 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v52.2
+// PLADECO Rengo 2025-2035 · Service Worker v52.3
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v52.2';
+const CACHE_STATIC='pladeco-static-v52.3';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
