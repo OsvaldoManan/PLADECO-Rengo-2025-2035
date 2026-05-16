@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limpiar Caché · PLADECO Rengo</title>
+<meta name="theme-color" content="#0c1f36">
+<meta name="robots" content="noindex">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:linear-gradient(135deg,#0c1f36 0%,#142d5a 50%,#0d3a26 100%);color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;line-height:1.55}
+.card{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:36px 32px;max-width:560px;width:100%;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+h1{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em}
+h1 .accent{color:#f5921d}
+.subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:24px}
+.status{padding:14px 16px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.1);font-size:12.5px;text-align:left;margin-bottom:20px;font-family:'Cascadia Code','Consolas',monospace;line-height:1.6;max-height:280px;overflow-y:auto}
+.status .ok{color:#4ade80;font-weight:700}
+.status .err{color:#f87171;font-weight:700}
+.status .info{color:#60a5fa}
+.status .warn{color:#fbbf24}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border-radius:12px;font-size:13.5px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .2s;margin:4px}
+.btn-primary{background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;box-shadow:0 4px 16px rgba(220,38,38,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(220,38,38,.55)}
+.btn-secondary{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.15)}
+.btn-secondary:hover{background:rgba(255,255,255,.15)}
+.steps{margin-top:24px;padding:14px 16px;background:rgba(245,146,29,.08);border-left:3px solid #f5921d;border-radius:8px;font-size:12px;text-align:left;line-height:1.7}
+.steps strong{color:#fdb94d}
+.steps ol{padding-left:20px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🧹 Limpiar <span class="accent">Caché</span> del PLADECO</h1>
+  <p class="subtitle">Esta utilidad elimina el Service Worker y todas las cachés acumuladas para forzar al navegador a descargar la versión más reciente del portal.</p>
+
+  <div class="status" id="status"><span class="info">› Preparado para limpiar caché. Haz clic en el botón rojo.</span></div>
+
+  <div>
+    <button class="btn btn-primary" type="button" onclick="hardReset()">🔥 Limpiar TODO y recargar portal</button>
+  </div>
+  <div>
+    <a class="btn btn-secondary" href="./">🏠 Solo ir al portal</a>
+    <button class="btn btn-secondary" type="button" onclick="checkStatus()">🔍 Ver estado actual</button>
+  </div>
+
+  <div class="steps">
+    <strong>💡 Si esta página no funciona:</strong>
+    <ol>
+      <li>Abre DevTools con <kbd>F12</kbd></li>
+      <li>Pestaña <strong>Application</strong> (Chrome/Edge) o <strong>Storage</strong> (Firefox)</li>
+      <li>Click en <strong>"Clear site data"</strong> / "Eliminar datos del sitio"</li>
+      <li>Recarga con <kbd>F5</kbd></li>
+    </ol>
+  </div>
+</div>
+
+<script>
+const statusEl = document.getElementById('status');
+function log(msg, cls='info'){
+  statusEl.innerHTML += '\n<span class="'+cls+'">› '+msg+'</span>';
+  statusEl.scrollTop = statusEl.scrollHeight;
+}
+function clearStatus(){statusEl.innerHTML='';}
+
+async function checkStatus(){
+  clearStatus();
+  log('Verificando estado del navegador...', 'info');
+  // SW
+  if('serviceWorker' in navigator){
+    const regs = await navigator.serviceWorker.getRegistrations();
+    log('Service Workers registrados: '+regs.length, regs.length?'warn':'ok');
+    regs.forEach(r => log('  · '+r.scope+' (activo: '+(r.active?'sí':'no')+')', 'info'));
+  } else {
+    log('Service Worker NO soportado', 'err');
+  }
+  // Caches
+  if('caches' in window){
+    const keys = await caches.keys();
+    log('Cachés guardadas: '+keys.length, keys.length?'warn':'ok');
+    keys.forEach(k => log('  · '+k, 'info'));
+  }
+  // localStorage
+  log('Items en localStorage: '+localStorage.length, localStorage.length?'warn':'ok');
+  // version del SW
+  if('serviceWorker' in navigator && navigator.serviceWorker.controller){
+    try {
+      const ch = new MessageChannel();
+      navigator.serviceWorker.controller.postMessage({type:'GET_VERSION'}, [ch.port2]);
+      ch.port1.onmessage = e => log('Versión SW activo: '+(e.data.version||'desconocida'), 'info');
+    } catch(e){}
+  }
+}
+
+async function hardReset(){
+  clearStatus();
+  log('🔥 Iniciando limpieza completa...', 'warn');
+
+  // 1. Unregister Service Workers
+  if('serviceWorker' in navigator){
+    try {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      log('Eliminando '+regs.length+' Service Worker(s)...', 'info');
+      for(const reg of regs){
+        const ok = await reg.unregister();
+        log('  · '+reg.scope+': '+(ok?'OK':'falló'), ok?'ok':'err');
+      }
+    } catch(e){ log('Error con SW: '+e.message, 'err'); }
+  }
+
+  // 2. Clear all caches
+  if('caches' in window){
+    try {
+      const keys = await caches.keys();
+      log('Eliminando '+keys.length+' cache(s)...', 'info');
+      for(const key of keys){
+        const ok = await caches.delete(key);
+        log('  · '+key+': '+(ok?'OK':'falló'), ok?'ok':'err');
+      }
+    } catch(e){ log('Error con cachés: '+e.message, 'err'); }
+  }
+
+  // 3. Clear localStorage
+  try {
+    const n = localStorage.length;
+    localStorage.clear();
+    log('localStorage limpiado ('+n+' items eliminados)', 'ok');
+  } catch(e){ log('Error con localStorage: '+e.message, 'err'); }
+
+  // 4. Clear sessionStorage
+  try {
+    sessionStorage.clear();
+    log('sessionStorage limpiado', 'ok');
+  } catch(e){}
+
+  // 5. Clear IndexedDB (opcional)
+  if('indexedDB' in window && indexedDB.databases){
+    try {
+      const dbs = await indexedDB.databases();
+      for(const db of dbs){
+        if(db.name) indexedDB.deleteDatabase(db.name);
+      }
+      log('IndexedDB limpiado ('+dbs.length+' DBs)', 'ok');
+    } catch(e){}
+  }
+
+  log('', 'info');
+  log('✅ LIMPIEZA COMPLETA. Recargando portal en 2 segundos...', 'ok');
+
+  setTimeout(()=> {
+    // Hard reload con bypass de caché
+    window.location.href = './?t=' + Date.now();
+  }, 2000);
+}
+
+// Auto-check al cargar
+checkStatus();
+</script>
+</body>
+</html>
