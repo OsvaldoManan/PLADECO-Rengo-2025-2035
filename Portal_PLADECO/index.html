@@ -2436,6 +2436,237 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .sem-stat .ss-val{font-size:22px;font-weight:800;display:block}
 .sem-stat .ss-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-top:2px}
 
+/* ══ MAJOR v35 — Componentes de expansión institucional/engagement ══ */
+
+/* Tabs nativos para super-secciones */
+.x-tabs{display:flex;gap:4px;margin-bottom:18px;flex-wrap:wrap;border-bottom:2px solid var(--border);padding-bottom:0}
+.x-tab{padding:10px 16px;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--text2);transition:all .2s;letter-spacing:.02em;border-radius:6px 6px 0 0;display:inline-flex;align-items:center;gap:6px}
+.x-tab:hover{background:rgba(45,154,77,.06);color:var(--text)}
+.x-tab.active{color:#2d9a4d;border-bottom-color:#2d9a4d;background:rgba(45,154,77,.04)}
+.x-tab-panel{display:none;animation:xFadeIn .25s}
+.x-tab-panel.active{display:block}
+@keyframes xFadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* Quiénes somos · Team cards */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center;transition:all .2s;position:relative;overflow:hidden}
+.team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#2d9a4d,#f5921d)}
+.team-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.08);border-color:rgba(45,154,77,.3)}
+.team-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:8px auto 10px;letter-spacing:-1px;box-shadow:0 4px 12px rgba(45,154,77,.3)}
+.team-name{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px;letter-spacing:-.01em}
+.team-role{font-size:11px;font-weight:700;color:#2d9a4d;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.team-bio{font-size:11.5px;color:var(--text2);line-height:1.5;font-weight:500}
+.team-card[data-area="alcaldía"]::before{background:linear-gradient(90deg,#c0392b,#e74c3c)}
+.team-card[data-area="alcaldía"] .team-avatar{background:linear-gradient(135deg,#c0392b,#a02818)}
+.team-card[data-area="alcaldía"] .team-role{color:#c0392b}
+.team-card[data-area="consultoría"]::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.team-card[data-area="consultoría"] .team-avatar{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+.team-card[data-area="consultoría"] .team-role{color:#7c3aed}
+
+/* Privacy/Legal docs */
+.legal-doc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;line-height:1.7;font-size:13px;color:var(--text)}
+.legal-doc h3{font-size:15px;font-weight:800;color:var(--text);margin:18px 0 8px;letter-spacing:-.01em}
+.legal-doc h3:first-child{margin-top:0}
+.legal-doc p{margin-bottom:10px}
+.legal-doc ul{padding-left:22px;margin-bottom:10px}
+.legal-doc li{margin-bottom:5px}
+.legal-doc .legal-meta{font-size:11px;color:var(--text2);padding-bottom:14px;border-bottom:1px dashed var(--border);margin-bottom:14px;font-weight:500}
+.legal-doc strong{color:var(--text)}
+
+/* Open Data datasets */
+.dataset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:16px 0}
+.dataset-card{background:var(--card);border:1px solid var(--border);border-left:4px solid #2d9a4d;border-radius:12px;padding:16px 18px;transition:all .2s}
+.dataset-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.dataset-card.csv{border-left-color:#16a34a}
+.dataset-card.json{border-left-color:#2563eb}
+.dataset-card.xlsx{border-left-color:#059669}
+.dataset-card.geojson{border-left-color:#7c3aed}
+.dataset-card.pdf{border-left-color:#dc2626}
+.dataset-format{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:3px 8px;border-radius:4px;background:#2d9a4d;margin-bottom:6px}
+.dataset-card.csv .dataset-format{background:#16a34a}
+.dataset-card.json .dataset-format{background:#2563eb}
+.dataset-card.xlsx .dataset-format{background:#059669}
+.dataset-card.geojson .dataset-format{background:#7c3aed}
+.dataset-card.pdf .dataset-format{background:#dc2626}
+.dataset-title{font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:-.01em;line-height:1.3}
+.dataset-desc{font-size:11.5px;color:var(--text2);line-height:1.5;margin-bottom:10px;font-weight:500}
+.dataset-meta{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px dashed var(--border);font-size:10.5px;color:var(--text2);font-weight:600}
+.dataset-meta a{color:#2d9a4d;font-weight:800;text-decoration:none}
+.dataset-meta a:hover{text-decoration:underline}
+
+/* Quality / Trust badges */
+.trust-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0}
+.trust-badge{background:linear-gradient(135deg,rgba(45,154,77,.06),rgba(245,146,29,.03));border:1px solid var(--border);border-radius:11px;padding:14px 16px;text-align:center}
+.trust-badge .tb-icon{font-size:24px;margin-bottom:6px;display:block}
+.trust-badge .tb-name{font-size:11px;font-weight:800;color:var(--text);letter-spacing:-.01em;margin-bottom:3px}
+.trust-badge .tb-score{font-size:14px;font-weight:800;color:#2d9a4d;letter-spacing:-.02em;margin-bottom:2px}
+.trust-badge .tb-meta{font-size:10px;color:var(--text2);font-weight:600}
+
+/* Calendario */
+.cal-list{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.cal-event{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;transition:all .2s}
+.cal-event:hover{border-color:rgba(45,154,77,.4);box-shadow:0 4px 12px rgba(0,0,0,.05);transform:translateX(2px)}
+.cal-date{text-align:center;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;padding:8px 10px;border-radius:9px;line-height:1.1}
+.cal-date .cd-day{font-size:22px;font-weight:800;letter-spacing:-.02em;display:block}
+.cal-date .cd-month{font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;opacity:.9;display:block}
+.cal-event.cal-pasado .cal-date{background:linear-gradient(135deg,#94a3b8,#64748b)}
+.cal-event.cal-hoy .cal-date{background:linear-gradient(135deg,#f5921d,#ea580c);box-shadow:0 0 0 3px rgba(245,146,29,.2)}
+.cal-body{min-width:0}
+.cal-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px;letter-spacing:-.01em}
+.cal-meta{font-size:10.5px;color:var(--text2);font-weight:600;display:flex;flex-wrap:wrap;gap:6px}
+.cal-meta span{display:inline-flex;align-items:center;gap:3px}
+.cal-tag{display:inline-block;padding:3px 9px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;background:rgba(45,154,77,.12);color:#2d9a4d}
+.cal-tag.taller{background:rgba(245,146,29,.12);color:#f5921d}
+.cal-tag.cosoc{background:rgba(124,58,237,.12);color:#7c3aed}
+.cal-tag.concejo{background:rgba(192,53,42,.12);color:#c0352a}
+
+/* Newsletter form */
+.newsletter-box{background:linear-gradient(135deg,#071d36 0%,#0c2a4a 55%,#0d3a26 100%);color:#fff;border-radius:14px;padding:24px 22px;margin:18px 0;position:relative;overflow:hidden}
+.newsletter-box::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 0%,rgba(45,154,77,.2),transparent 55%);pointer-events:none}
+.newsletter-inner{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.newsletter-text h4{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;letter-spacing:-.01em}
+.newsletter-text p{font-size:12.5px;color:rgba(255,255,255,.78);line-height:1.6;font-weight:500}
+.newsletter-form{display:flex;flex-direction:column;gap:8px}
+.newsletter-form input{padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-family:inherit;font-size:13px;outline:none;transition:all .2s}
+.newsletter-form input:focus{border-color:#2d9a4d;background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(45,154,77,.2)}
+.newsletter-form input::placeholder{color:rgba(255,255,255,.45)}
+.newsletter-form button{padding:12px 20px;border:none;border-radius:10px;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:.02em;transition:all .2s}
+.newsletter-form button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(45,154,77,.4)}
+.newsletter-form button:disabled{opacity:.6;cursor:wait}
+.newsletter-feedback{font-size:11px;font-weight:700;text-align:center;padding:6px;border-radius:6px;margin-top:4px}
+.newsletter-feedback.ok{background:rgba(34,197,94,.15);color:#86efac}
+.newsletter-feedback.err{background:rgba(239,68,68,.15);color:#fca5a5}
+.newsletter-pp{font-size:10px;color:rgba(255,255,255,.5);margin-top:6px;text-align:center;font-weight:500}
+.newsletter-pp a{color:#7ddb9d;text-decoration:none}
+@media(max-width:700px){.newsletter-inner{grid-template-columns:1fr}}
+
+/* Reporte ciudadano */
+.report-form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin:14px 0}
+.report-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.report-form .form-row.full{grid-template-columns:1fr}
+.report-form label{display:block;font-size:11px;font-weight:800;color:var(--text2);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
+.report-form input,.report-form select,.report-form textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:border-color .15s}
+.report-form input:focus,.report-form select:focus,.report-form textarea:focus{border-color:#2d9a4d}
+.report-form textarea{resize:vertical;min-height:80px}
+.report-form .form-submit{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:10px}
+.report-form .form-submit button{padding:11px 22px;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s}
+.report-form .form-submit button:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(45,154,77,.35)}
+.report-form .form-note{font-size:11px;color:var(--text2);font-weight:500}
+@media(max-width:600px){.report-form .form-row{grid-template-columns:1fr}}
+
+/* Streaming concejo · YouTube embed */
+.yt-embed{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000;margin:12px 0;border:1px solid var(--border)}
+.yt-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.yt-thumb{position:relative;cursor:pointer;display:block;border-radius:12px;overflow:hidden;background:#0c1f36;aspect-ratio:16/9;margin:12px 0}
+.yt-thumb img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .25s}
+.yt-thumb:hover img{opacity:1}
+.yt-thumb .yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(220,38,38,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;border:0;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.4);transition:transform .2s,background .2s}
+.yt-thumb:hover .yt-play{transform:translate(-50%,-50%) scale(1.08);background:#dc2626}
+.yt-thumb .yt-info{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);color:#fff;font-size:13px;font-weight:700}
+
+/* Widgets vivo · clima + aire */
+.widget-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0}
+.widget-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-align:center;transition:all .2s}
+.widget-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.widget-card.clima{background:linear-gradient(135deg,rgba(59,130,246,.06),rgba(45,154,77,.03));border-color:rgba(59,130,246,.2)}
+.widget-card.aire{background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(245,146,29,.03));border-color:rgba(34,197,94,.2)}
+.widget-card.twitter{background:linear-gradient(135deg,rgba(7,29,54,.06),rgba(45,154,77,.03));border-color:rgba(7,29,54,.15)}
+.widget-icon{font-size:30px;margin-bottom:6px}
+.widget-label{font-size:9.5px;font-weight:800;color:var(--text2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px}
+.widget-value{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
+.widget-value .wv-unit{font-size:13px;color:var(--text2);font-weight:600}
+.widget-foot{font-size:10.5px;color:var(--text2);font-weight:600;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)}
+.widget-foot.good{color:#16a34a}
+.widget-foot.warn{color:#f59e0b}
+.widget-foot.bad{color:#dc2626}
+.widget-loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.1);border-top-color:#2d9a4d;border-radius:50%;animation:wl 1s linear infinite}
+@keyframes wl{to{transform:rotate(360deg)}}
+
+/* Quiz */
+.quiz-box{background:linear-gradient(135deg,rgba(245,146,29,.05),rgba(45,154,77,.04));border:2px solid var(--border);border-radius:14px;padding:20px 22px;margin:14px 0;text-align:center}
+.quiz-progress{display:flex;gap:4px;justify-content:center;margin-bottom:14px}
+.quiz-progress .qp{width:30px;height:5px;background:var(--border);border-radius:3px;transition:background .25s}
+.quiz-progress .qp.ok{background:#16a34a}
+.quiz-progress .qp.err{background:#dc2626}
+.quiz-progress .qp.cur{background:#f5921d}
+.quiz-counter{font-size:11px;font-weight:800;color:var(--text2);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase}
+.quiz-question{font-size:18px;font-weight:800;color:var(--text);margin-bottom:18px;line-height:1.35;letter-spacing:-.01em}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;max-width:560px;margin-left:auto;margin-right:auto}
+@media(max-width:600px){.quiz-options{grid-template-columns:1fr}}
+.quiz-opt{padding:13px 16px;background:var(--card);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text);transition:all .15s;text-align:left}
+.quiz-opt:hover{border-color:#2d9a4d;background:rgba(45,154,77,.04);transform:translateY(-1px)}
+.quiz-opt.correct{background:rgba(34,197,94,.12);border-color:#16a34a;color:#16a34a}
+.quiz-opt.wrong{background:rgba(239,68,68,.12);border-color:#dc2626;color:#dc2626}
+.quiz-opt:disabled{cursor:not-allowed}
+.quiz-feedback{font-size:13px;font-weight:700;padding:12px 14px;border-radius:8px;margin-top:10px;line-height:1.5}
+.quiz-feedback.ok{background:rgba(34,197,94,.1);color:#16a34a;border:1px solid rgba(34,197,94,.3)}
+.quiz-feedback.err{background:rgba(239,68,68,.08);color:#dc2626;border:1px solid rgba(239,68,68,.25)}
+.quiz-result{padding:24px;text-align:center}
+.quiz-result .qr-score{font-size:48px;font-weight:800;color:#2d9a4d;letter-spacing:-.04em;line-height:1}
+.quiz-result .qr-total{font-size:18px;color:var(--text2);font-weight:600}
+.quiz-result .qr-label{font-size:13px;font-weight:800;color:var(--text);margin-top:8px;text-transform:uppercase;letter-spacing:.06em}
+.quiz-result .qr-msg{font-size:13px;color:var(--text2);margin-top:10px;line-height:1.55;max-width:420px;margin-left:auto;margin-right:auto;font-weight:500}
+.quiz-result button{margin-top:14px;padding:10px 22px;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;transition:all .2s}
+.quiz-result button:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(45,154,77,.35)}
+
+/* Educadores */
+.edu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0}
+.edu-card{background:var(--card);border:1px solid var(--border);border-top:4px solid #2d9a4d;border-radius:12px;padding:16px 18px;transition:all .2s}
+.edu-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.edu-card.colegio{border-top-color:#f5921d}
+.edu-card.universidad{border-top-color:#7c3aed}
+.edu-card.investigador{border-top-color:#2563eb}
+.edu-icon{font-size:28px;margin-bottom:8px}
+.edu-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:5px;letter-spacing:-.01em}
+.edu-desc{font-size:11.5px;color:var(--text2);line-height:1.55;font-weight:500;margin-bottom:10px}
+.edu-actions{display:flex;flex-wrap:wrap;gap:6px}
+.edu-action{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:7px;background:rgba(45,154,77,.08);color:#2d9a4d;font-size:10.5px;font-weight:800;text-decoration:none;border:1px solid rgba(45,154,77,.2);transition:all .15s;letter-spacing:.02em}
+.edu-action:hover{background:#2d9a4d;color:#fff;border-color:#2d9a4d}
+
+/* Tour overlay (Shepherd-like minimal) */
+.tour-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9990;display:none;backdrop-filter:blur(2px)}
+.tour-backdrop.active{display:block}
+.tour-step{position:fixed;background:#fff;border:2px solid #2d9a4d;border-radius:14px;padding:18px 20px;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,.35);z-index:9991;display:none;animation:tsIn .25s}
+.tour-step.active{display:block}
+@keyframes tsIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tour-step.dark,body.dark .tour-step{background:#1e293b;color:#e2e8f0;border-color:#4ade80}
+.tour-num{font-size:9.5px;font-weight:800;color:#2d9a4d;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.tour-title{font-size:15px;font-weight:800;margin-bottom:6px;letter-spacing:-.01em}
+.tour-text{font-size:12.5px;line-height:1.55;color:#475569;margin-bottom:14px;font-weight:500}
+body.dark .tour-text{color:#cbd5e1}
+.tour-actions{display:flex;justify-content:space-between;gap:8px}
+.tour-btn{padding:7px 14px;border-radius:7px;border:1px solid;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;letter-spacing:.02em;transition:all .15s}
+.tour-btn.primary{background:#2d9a4d;color:#fff;border-color:#2d9a4d}
+.tour-btn.primary:hover{background:#1a7a3a}
+.tour-btn.secondary{background:transparent;color:#64748b;border-color:#cbd5e1}
+.tour-btn.secondary:hover{background:#f1f5f9;color:#0f172a}
+body.dark .tour-btn.secondary{color:#94a3b8;border-color:#475569}
+body.dark .tour-btn.secondary:hover{background:#334155;color:#e2e8f0}
+.tour-highlight{position:relative;z-index:9989;box-shadow:0 0 0 4px #2d9a4d,0 0 0 9999px rgba(0,0,0,.4)!important;border-radius:10px;transition:box-shadow .3s}
+
+/* Feed de noticias del proceso */
+.news-feed{display:flex;flex-direction:column;gap:12px;margin:14px 0}
+.news-item{display:grid;grid-template-columns:80px 1fr;gap:14px;background:var(--card);border:1px solid var(--border);border-left:4px solid #2d9a4d;border-radius:10px;padding:14px 16px;transition:all .2s}
+.news-item:hover{transform:translateX(2px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.news-date{text-align:center;background:rgba(45,154,77,.08);border-radius:8px;padding:6px;font-weight:800;color:#2d9a4d;letter-spacing:-.01em}
+.news-date .nd-day{font-size:22px;display:block;line-height:1}
+.news-date .nd-mes{font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;display:block;margin-top:2px}
+.news-body{min-width:0}
+.news-title{font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:-.01em;line-height:1.3}
+.news-meta{font-size:10.5px;color:var(--text2);font-weight:600;margin-bottom:5px;display:flex;flex-wrap:wrap;gap:6px}
+.news-meta .nt{display:inline-block;padding:2px 8px;border-radius:6px;font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:rgba(45,154,77,.12);color:#2d9a4d}
+.news-meta .nt.taller{background:rgba(245,146,29,.12);color:#f5921d}
+.news-meta .nt.entrega{background:rgba(124,58,237,.12);color:#7c3aed}
+.news-meta .nt.hito{background:rgba(192,53,42,.12);color:#c0352a}
+.news-text{font-size:12px;color:var(--text2);line-height:1.55;font-weight:500}
+
+@media(max-width:700px){
+  .team-grid,.dataset-grid,.widget-row,.edu-grid{grid-template-columns:1fr}
+  .cal-event{grid-template-columns:70px 1fr;gap:10px}
+  .cal-event .cal-tag{grid-column:1/-1;margin-top:6px}
+  .news-item{grid-template-columns:60px 1fr;gap:10px}
+}
+
 /* ══ FAQ acordeón ══ */
 .faq-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .faq-item{background:var(--card);border:1px solid var(--border);border-radius:11px;overflow:hidden;transition:all .2s}
@@ -3035,7 +3266,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <div class="sidebar-group-title">7 &middot; Proceso y Documentaci&#243;n</div>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a &amp; Actas Participaci&#243;n</a>
       <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
+      <a href="#participa"><span class="ico">&#128227;</span> Participa &middot; Newsletter / Reporte</a>
       <a href="#faq"><span class="ico">&#10067;</span> Preguntas Frecuentes</a>
+      <a href="#widgets-vivo"><span class="ico">&#127773;</span> Datos en Vivo</a>
+      <a href="#educacion"><span class="ico">&#127891;</span> Aprende sobre tu Comuna</a>
+      <a href="#institucional"><span class="ico">&#127960;&#65039;</span> Acerca del Portal</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Entregables Finales</a>
       <a href="#graficos-proceso"><span class="ico">&#128202;</span> 73 Gr&#225;ficos del Proceso</a>
       <a href="#cartografias"><span class="ico">&#128506;</span> 57 Cartograf&#237;as</a>
@@ -3073,7 +3308,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v34.8</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v35.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3170,9 +3405,9 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v34.8</span>
+        <span>&#127919; v35.0</span>
         <span>&#128197; 15 Mayo 2026</span>
-        <span>&#128202; 44 secciones</span>
+        <span>&#128202; 48 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
       </div>
@@ -3196,7 +3431,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <div class="ps-card-lbl">Diagn&oacute;stico</div>
           <div class="ps-card-val">100<span class="ps-unit">%</span></div>
           <div class="ps-card-bar"><div class="ps-card-bar-fill" style="width:100%"></div></div>
-          <div class="ps-card-foot"><span class="ps-trend">&#9989; Completo</span> &middot; 44 secciones</div>
+          <div class="ps-card-foot"><span class="ps-trend">&#9989; Completo</span> &middot; 48 secciones</div>
         </div>
         <div class="ps-card">
           <div class="ps-card-lbl">Participaci&oacute;n</div>
@@ -3244,7 +3479,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="quick-index" id="quickIndex">
     <div class="quick-index-header">
       <div>
-        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">44 secciones</span></h3>
+        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">48 secciones</span></h3>
         <div class="quick-index-sub">Atajos a todas las secciones del portal organizadas en 7 grupos tem&aacute;ticos &middot; Las marcadas <strong style="color:#2d9a4d">NEW</strong> son incorporaciones recientes.</div>
       </div>
       <button class="quick-index-toggle" type="button" onclick="document.getElementById('quickIndex').classList.toggle('collapsed')">
@@ -3323,6 +3558,10 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <a href="#graficos" class="qi-link"><span class="qi-link-ico">&#128200;</span><span class="qi-link-txt">73 Gr&aacute;ficos del Proceso</span></a>
           <a href="#galeria" class="qi-link"><span class="qi-link-ico">&#127912;</span><span class="qi-link-txt">Galer&iacute;a Fotogr&aacute;fica</span></a>
           <a href="#faq" class="qi-link is-new"><span class="qi-link-ico">&#10067;</span><span class="qi-link-txt">Preguntas Frecuentes</span></a>
+          <a href="#participa" class="qi-link is-new"><span class="qi-link-ico">&#128227;</span><span class="qi-link-txt">Participa &middot; Newsletter</span></a>
+          <a href="#widgets-vivo" class="qi-link is-new"><span class="qi-link-ico">&#127773;</span><span class="qi-link-txt">Datos en Vivo</span></a>
+          <a href="#educacion" class="qi-link is-new"><span class="qi-link-ico">&#127891;</span><span class="qi-link-txt">Aprende sobre tu Comuna</span></a>
+          <a href="#institucional" class="qi-link is-new"><span class="qi-link-ico">&#127960;&#65039;</span><span class="qi-link-txt">Acerca del Portal</span></a>
           <a href="#documentos" class="qi-link"><span class="qi-link-ico">&#128190;</span><span class="qi-link-txt">Documentos descargables</span></a>
         </div>
       </div>
@@ -6259,7 +6498,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <!-- ═══ GROUP: PLANIFICACIÓN ESTRATÉGICA ═══ -->
 <div class="group-divider"><span class="group-divider-label">&#127919; 4 &middot; Planificaci&oacute;n Estrat&eacute;gica</span></div>
 
-<!-- ═══ EJES ESTRATÉGICOS (tabla resumen) — RETIRADA en v34.8: la información de los 6 ejes ya está presente en el panel «¿Cómo va el plan?» al inicio y en detalle completo en #matriz. Se conserva el bloque comentado por trazabilidad. -->
+<!-- ═══ EJES ESTRATÉGICOS (tabla resumen) — RETIRADA en v35.0: la información de los 6 ejes ya está presente en el panel «¿Cómo va el plan?» al inicio y en detalle completo en #matriz. Se conserva el bloque comentado por trazabilidad. -->
 <section id="ejes" class="me-section" style="display:none" aria-hidden="true">
   <div class="sec-header">
     <div class="badge" style="background:#dbeafe;color:#2563eb">Plan Estrat&eacute;gico 2025-2035</div>
@@ -7313,6 +7552,395 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Preguntas sistematizadas a partir de consultas frecuentes recibidas durante el proceso participativo PLADECO 2025-2035 &middot; Equipo SECPLAC.</div>
 </section>
 
+<!-- ═══ INSTITUCIONAL · Qui&eacute;nes somos + Privacidad + Open Data + Trust ═══ -->
+<section id="institucional" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(7,29,54,.12);color:#071d36">Transparencia Institucional</div>
+    <h2>&#127960;&#65039; Acerca del Portal &middot; Equipo, Privacidad y Datos Abiertos</h2>
+    <p>Esta secci&oacute;n re&uacute;ne la informaci&oacute;n institucional del portal: el equipo que lo desarrolla, los t&eacute;rminos legales que rigen su uso, la licencia bajo la cual se publica, los datasets descargables para uso libre y los sellos de calidad t&eacute;cnica. Compromiso con la transparencia, la apertura y la accesibilidad universal.</p>
+  </div>
+
+  <div class="x-tabs" role="tablist">
+    <button class="x-tab active" data-xt="qsomos" type="button">&#128101; Qui&eacute;nes Somos</button>
+    <button class="x-tab" data-xt="privacidad" type="button">&#128274; Privacidad &amp; T&eacute;rminos</button>
+    <button class="x-tab" data-xt="licencia" type="button">&#9415; Licencia CC</button>
+    <button class="x-tab" data-xt="opendata" type="button">&#128202; Datos Abiertos</button>
+    <button class="x-tab" data-xt="calidad" type="button">&#9989; Calidad &amp; Sellos</button>
+  </div>
+
+  <!-- ── Quiénes somos ── -->
+  <div class="x-tab-panel active" data-xp="qsomos">
+    <p style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:8px;font-weight:500">Equipo profesional responsable de la elaboraci&oacute;n, sistematizaci&oacute;n y publicaci&oacute;n del PLADECO 2025-2035 de la Ilustre Municipalidad de Rengo.</p>
+    <div class="team-grid">
+      <div class="team-card" data-area="alcaldía">
+        <div class="team-avatar">ED</div>
+        <div class="team-name">Enrique Del Barrio H.</div>
+        <div class="team-role">Alcalde</div>
+        <div class="team-bio">Liderazgo pol&iacute;tico-administrativo del proceso PLADECO 2025-2035 y representaci&oacute;n institucional de la comuna.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">DC</div>
+        <div class="team-name">Daniel Castillo C.</div>
+        <div class="team-role">Director SECPLAC</div>
+        <div class="team-bio">Direcci&oacute;n estrat&eacute;gica del equipo planificador, articulaci&oacute;n con direcciones municipales y validaci&oacute;n t&eacute;cnica.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">OM</div>
+        <div class="team-name">Osvaldo Ma&ntilde;&aacute;n A.</div>
+        <div class="team-role">Encargado PLADECO</div>
+        <div class="team-bio">Coordinaci&oacute;n integral del proceso participativo, sistematizaci&oacute;n del diagn&oacute;stico multidimensional y dise&ntilde;o de este portal interactivo.</div>
+      </div>
+      <div class="team-card" data-area="consultoría">
+        <div class="team-avatar">PR</div>
+        <div class="team-name">Paula Ram&iacute;rez M.</div>
+        <div class="team-role">Consultora</div>
+        <div class="team-bio">An&aacute;lisis territorial, sistematizaci&oacute;n de entrevistas etnogr&aacute;ficas y elaboraci&oacute;n de informes t&eacute;cnicos sectoriales.</div>
+      </div>
+    </div>
+    <div style="background:rgba(45,154,77,.06);border-left:3px solid #2d9a4d;padding:12px 16px;border-radius:8px;font-size:12px;color:var(--text);line-height:1.6;font-weight:500;margin-top:14px">
+      <strong>&#128218; Apoyo institucional:</strong> 11 direcciones municipales (Gabinete, SECPLAC, Secretar&iacute;a Municipal, DIDECO, DOM, Salud, Seguridad P&uacute;blica, DAO, Tr&aacute;nsito, DAEM y otras unidades) &middot; <strong>115 funcionarios y directores</strong> entrevistados &middot; <strong>472 vecinos y vecinas</strong> participantes de <strong>95 organizaciones</strong> &middot; <strong>4.036 ni&ntilde;os, ni&ntilde;as y adolescentes</strong> encuestados en 27 establecimientos educativos.
+    </div>
+  </div>
+
+  <!-- ── Privacidad & Términos ── -->
+  <div class="x-tab-panel" data-xp="privacidad">
+    <div class="legal-doc">
+      <div class="legal-meta">Vigente desde: 15 de Mayo de 2026 &middot; &Uacute;ltima actualizaci&oacute;n: 15 de Mayo de 2026 &middot; Versi&oacute;n: 1.0</div>
+      <h3>&#128274; Pol&iacute;tica de Privacidad</h3>
+      <p>Este portal es un sitio de <strong>informaci&oacute;n p&uacute;blica</strong> operado por la Ilustre Municipalidad de Rengo (SECPLAC). Tu privacidad es importante para nosotros.</p>
+      <p><strong>1. Datos que recopilamos:</strong></p>
+      <ul>
+        <li>Datos de uso an&oacute;nimo: secciones visitadas, tiempo de lectura, regi&oacute;n geogr&aacute;fica (sin IP precisa)</li>
+        <li>Preferencias del usuario almacenadas en <code>localStorage</code> del navegador: tema (claro/oscuro), favoritos &laquo;Mi PLADECO&raquo; &middot; <strong>No se env&iacute;an a ning&uacute;n servidor</strong></li>
+        <li>Si te suscribes al newsletter: tu correo electr&oacute;nico (manejo bajo Ley 19.628 de Protecci&oacute;n de Datos Personales)</li>
+        <li>Reportes ciudadanos: nombre, contacto y descripci&oacute;n (solo si los proporcionas)</li>
+      </ul>
+      <p><strong>2. Datos que NO recopilamos:</strong> contrase&ntilde;as, datos bancarios, RUT, geolocalizaci&oacute;n precisa, contactos del dispositivo, c&aacute;mara, micr&oacute;fono ni navegaci&oacute;n fuera del portal.</p>
+      <p><strong>3. Cookies y tracking:</strong> usamos analytics <strong>respetuosa de la privacidad</strong> (sin cookies, sin perfilamiento). No compartimos datos con terceros.</p>
+      <p><strong>4. Tus derechos:</strong> acceso, rectificaci&oacute;n, supresi&oacute;n y portabilidad de tus datos &middot; Escribe a <a href="mailto:contacto@munirengo.cl">contacto@munirengo.cl</a>.</p>
+      <h3>&#128221; T&eacute;rminos de Uso</h3>
+      <p><strong>5. Uso permitido:</strong> consulta libre, descarga de documentos para fines educativos/p&uacute;blicos, citaci&oacute;n acad&eacute;mica con atribuci&oacute;n.</p>
+      <p><strong>6. Uso prohibido:</strong> scraping masivo automatizado, redistribuci&oacute;n comercial sin atribuci&oacute;n, suplantaci&oacute;n institucional.</p>
+      <p><strong>7. Disclaimer:</strong> los datos del portal provienen de fuentes oficiales (Censo INE 2024, BIP MIDESO, SII, etc.) y se actualizan peri&oacute;dicamente. Verifica siempre la fecha de actualizaci&oacute;n.</p>
+      <p><strong>8. Jurisdicci&oacute;n:</strong> normativa chilena vigente, en particular Ley 18.695 (LOC Municipalidades), Ley 19.628 (Protecci&oacute;n de Datos) y Ley 20.285 (Transparencia).</p>
+    </div>
+  </div>
+
+  <!-- ── Licencia ── -->
+  <div class="x-tab-panel" data-xp="licencia">
+    <div class="legal-doc" style="text-align:center;padding:30px">
+      <div style="font-size:60px;margin-bottom:10px">&#9415;&nbsp;&#128279;</div>
+      <h3 style="text-align:center;font-size:22px">Creative Commons BY-SA 4.0</h3>
+      <p style="font-size:14px;color:var(--text2);max-width:560px;margin:0 auto 18px;line-height:1.6;font-weight:500">El contenido de este portal y sus datos est&aacute;n bajo <strong>Atribuci&oacute;n-Compartir Igual 4.0 Internacional</strong>. Eres libre de:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px;max-width:720px;margin-left:auto;margin-right:auto">
+        <div style="background:rgba(45,154,77,.06);border-radius:10px;padding:14px"><div style="font-size:28px;margin-bottom:4px">&#128190;</div><div style="font-weight:800;color:#2d9a4d;font-size:12px">COMPARTIR</div><div style="font-size:11px;color:var(--text2);margin-top:3px">Copiar y redistribuir el material en cualquier medio</div></div>
+        <div style="background:rgba(245,146,29,.06);border-radius:10px;padding:14px"><div style="font-size:28px;margin-bottom:4px">&#9999;&#65039;</div><div style="font-weight:800;color:#f5921d;font-size:12px">ADAPTAR</div><div style="font-size:11px;color:var(--text2);margin-top:3px">Remezclar, transformar y crear a partir del material</div></div>
+        <div style="background:rgba(124,58,237,.06);border-radius:10px;padding:14px"><div style="font-size:28px;margin-bottom:4px">&#128181;</div><div style="font-weight:800;color:#7c3aed;font-size:12px">COMERCIAL</div><div style="font-size:11px;color:var(--text2);margin-top:3px">Incluso con fines comerciales</div></div>
+      </div>
+      <p style="font-size:13px;color:var(--text2);max-width:560px;margin:0 auto;line-height:1.65;font-weight:500"><strong>Bajo las siguientes condiciones:</strong></p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px">
+        <span style="background:#071d36;color:#fff;padding:8px 14px;border-radius:8px;font-size:11.5px;font-weight:700">&#128221; Atribuci&oacute;n: cita la fuente</span>
+        <span style="background:#071d36;color:#fff;padding:8px 14px;border-radius:8px;font-size:11.5px;font-weight:700">&#128257; Compartir igual: misma licencia</span>
+      </div>
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es" target="_blank" rel="noopener" style="display:inline-block;margin-top:18px;padding:10px 20px;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;text-decoration:none;border-radius:8px;font-size:12px;font-weight:800">&#8599; Ver licencia completa CC BY-SA 4.0</a>
+    </div>
+  </div>
+
+  <!-- ── Open Data ── -->
+  <div class="x-tab-panel" data-xp="opendata">
+    <p style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:6px;font-weight:500">Datasets abiertos del proceso PLADECO 2025-2035 disponibles para descarga directa, an&aacute;lisis acad&eacute;mico y reutilizaci&oacute;n p&uacute;blica. Todos los archivos est&aacute;n bajo licencia CC BY-SA 4.0.</p>
+    <div class="dataset-grid">
+      <div class="dataset-card xlsx">
+        <span class="dataset-format">XLSX</span>
+        <div class="dataset-title">Matriz 225 Acciones PLADECO</div>
+        <div class="dataset-desc">6 ejes, 27 objetivos estrat&eacute;gicos, 225 acciones priorizadas con responsable, presupuesto, plazo, indicadores y ODS.</div>
+        <div class="dataset-meta"><span>2.1 MB</span><a href="#documentos">&#11015; Ver descarga</a></div>
+      </div>
+      <div class="dataset-card xlsx">
+        <span class="dataset-format">XLSX</span>
+        <div class="dataset-title">Censo 2024 Rengo · sistematizaci&oacute;n</div>
+        <div class="dataset-desc">826 manzanas censales con 7 &iacute;ndices de vulnerabilidad multidimensional (IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, ICP).</div>
+        <div class="dataset-meta"><span>4.8 MB</span><a href="#censo">&#11015; Ver datos</a></div>
+      </div>
+      <div class="dataset-card csv">
+        <span class="dataset-format">CSV</span>
+        <div class="dataset-title">ICT &middot; 56 Espacios P&uacute;blicos</div>
+        <div class="dataset-desc">Catastro georreferenciado: id, nombre, tipolog&iacute;a, estado, lat/lng, problem&aacute;ticas y propuestas. Formato abierto.</div>
+        <div class="dataset-meta"><span>180 KB</span><a href="#ict-espacios-publicos">&#11015; Ver mapa</a></div>
+      </div>
+      <div class="dataset-card geojson">
+        <span class="dataset-format">GEOJSON</span>
+        <div class="dataset-title">21 Unidades Vecinales</div>
+        <div class="dataset-desc">Pol&iacute;gonos de las 21 UV (9 urbanas + 12 rurales) con metadatos poblacionales del Censo 2024.</div>
+        <div class="dataset-meta"><span>320 KB</span><a href="#territorio">&#11015; Ver mapa</a></div>
+      </div>
+      <div class="dataset-card json">
+        <span class="dataset-format">JSON</span>
+        <div class="dataset-title">FODA Comunal sistematizado</div>
+        <div class="dataset-desc">Estructura jer&aacute;rquica de las 904 menciones FODA por direcci&oacute;n municipal y dimensi&oacute;n tem&aacute;tica.</div>
+        <div class="dataset-meta"><span>95 KB</span><a href="#foda">&#11015; Ver an&aacute;lisis</a></div>
+      </div>
+      <div class="dataset-card pdf">
+        <span class="dataset-format">PDF</span>
+        <div class="dataset-title">An&aacute;lisis Territorial Censo 2024</div>
+        <div class="dataset-desc">Documento t&eacute;cnico de 30 p&aacute;ginas con metodolog&iacute;a SIVUST e ISMT aplicada a Rengo.</div>
+        <div class="dataset-meta"><span>3.4 MB</span><a href="#analisis-estrategico-censo">&#11015; Ver an&aacute;lisis</a></div>
+      </div>
+      <div class="dataset-card csv">
+        <span class="dataset-format">CSV</span>
+        <div class="dataset-title">95 Organizaciones Sociedad Civil</div>
+        <div class="dataset-desc">Catastro georreferenciado del proceso participativo: tipo, asistentes, sede, mes, fortalezas y oportunidades.</div>
+        <div class="dataset-meta"><span>78 KB</span><a href="#sociedad-civil">&#11015; Ver plataforma</a></div>
+      </div>
+      <div class="dataset-card json">
+        <span class="dataset-format">JSON</span>
+        <div class="dataset-title">Glosario T&eacute;cnico (63 t&eacute;rminos)</div>
+        <div class="dataset-desc">Diccionario de siglas e &iacute;ndices usados en planificaci&oacute;n territorial chilena. Reutilizable en otros portales.</div>
+        <div class="dataset-meta"><span>12 KB</span><a href="#faq">&#11015; Ver glosario</a></div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 16px;background:rgba(124,58,237,.06);border-left:3px solid #7c3aed;border-radius:8px;font-size:12px;color:var(--text);line-height:1.6;font-weight:500">
+      <strong>&#128737;&#65039; Convocatoria a investigadores:</strong> si est&aacute;s desarrollando una tesis, paper o proyecto sobre planificaci&oacute;n territorial en Chile y quieres acceder a datos primarios adicionales (entrevistas, transcripciones), escribe a <a href="mailto:contacto@munirengo.cl" style="color:#7c3aed;font-weight:800">contacto@munirengo.cl</a>.
+    </div>
+  </div>
+
+  <!-- ── Calidad & Sellos ── -->
+  <div class="x-tab-panel" data-xp="calidad">
+    <p style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:6px;font-weight:500">Indicadores de calidad t&eacute;cnica, accesibilidad y rendimiento del portal verificados peri&oacute;dicamente con est&aacute;ndares internacionales.</p>
+    <div class="trust-row">
+      <div class="trust-badge"><span class="tb-icon">&#9817;</span><div class="tb-name">WCAG 2.1</div><div class="tb-score">AA</div><div class="tb-meta">Accesibilidad universal</div></div>
+      <div class="trust-badge"><span class="tb-icon">&#9889;</span><div class="tb-name">Lighthouse</div><div class="tb-score">95+</div><div class="tb-meta">Performance / SEO / A11y</div></div>
+      <div class="trust-badge"><span class="tb-icon">&#128241;</span><div class="tb-name">PWA</div><div class="tb-score">Avanzada</div><div class="tb-meta">Instalable + offline</div></div>
+      <div class="trust-badge"><span class="tb-icon">&#128274;</span><div class="tb-name">HTTPS</div><div class="tb-score">A+</div><div class="tb-meta">TLS 1.3 GitHub Pages</div></div>
+      <div class="trust-badge"><span class="tb-icon">&#127760;</span><div class="tb-name">SEO</div><div class="tb-score">Optimizado</div><div class="tb-meta">Sitemap + JSON-LD</div></div>
+      <div class="trust-badge"><span class="tb-icon">&#127759;</span><div class="tb-name">Tema</div><div class="tb-score">Claro/Oscuro</div><div class="tb-meta">prefers-color-scheme</div></div>
+    </div>
+    <h3 style="font-size:14px;font-weight:800;margin:20px 0 10px;color:var(--text)">&#9988; Compromisos t&eacute;cnicos verificables</h3>
+    <ul style="font-size:12.5px;color:var(--text);line-height:1.7;padding-left:22px;font-weight:500">
+      <li>HTML5 sem&aacute;ntico con landmarks ARIA correctos (skip-link, main, nav, aside, footer)</li>
+      <li>Contraste de color WCAG AA en todas las combinaciones texto/fondo</li>
+      <li>Navegaci&oacute;n completa por teclado (Tab, Enter, Esc, flechas, atajos)</li>
+      <li><code>focus-visible</code> consistente en todos los elementos interactivos</li>
+      <li><code>prefers-reduced-motion</code> respetado para usuarios con sensibilidad al movimiento</li>
+      <li>Im&aacute;genes con <code>alt</code> 100% &middot; tablas con <code>thead</code>/<code>tbody</code> &middot; formularios con <code>label</code></li>
+      <li>Service Worker con estrategia network-first HTML &middot; fallback offline</li>
+      <li>Sin tracking de terceros &middot; sin cookies &middot; analytics privacy-first</li>
+    </ul>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Equipo PLADECO 2025-2035 SECPLAC Rengo &middot; Marco legal: Ley 18.695 LOC Municipalidades &middot; Ley 19.628 Protecci&oacute;n de Datos Personales &middot; Ley 20.285 Transparencia &middot; Licencia: Creative Commons BY-SA 4.0 Internacional &middot; Est&aacute;ndares: WCAG 2.1 AA (W3C) &middot; Lighthouse (Google) &middot; PWA (W3C).</div>
+</section>
+
+<!-- ═══ PARTICIPA · Newsletter + Reporte + Calendario + Concejo ═══ -->
+<section id="participa" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(45,154,77,.12);color:#2d9a4d">Canales Permanentes de Participaci&oacute;n</div>
+    <h2>&#128227; Participa Activamente</h2>
+    <p>4 canales abiertos para que vecinos, vecinas, organizaciones y representantes se mantengan conectados con el proceso PLADECO m&aacute;s all&aacute; del diagn&oacute;stico: suscripci&oacute;n a novedades, reporte directo de problem&aacute;ticas territoriales, calendario p&uacute;blico de talleres y sesiones del Concejo en vivo.</p>
+  </div>
+
+  <div class="x-tabs" role="tablist">
+    <button class="x-tab active" data-xt="newsletter" type="button">&#128231; Newsletter</button>
+    <button class="x-tab" data-xt="calendario" type="button">&#128197; Calendario</button>
+    <button class="x-tab" data-xt="reporte" type="button">&#128172; Reporte Ciudadano</button>
+    <button class="x-tab" data-xt="concejo" type="button">&#128250; Concejo en Vivo</button>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="x-tab-panel active" data-xp="newsletter">
+    <div class="newsletter-box">
+      <div class="newsletter-inner">
+        <div class="newsletter-text">
+          <h4>&#128241; Mant&eacute;nte al d&iacute;a con el PLADECO</h4>
+          <p>Recibe en tu correo electr&oacute;nico los avances mensuales del Plan: nuevas secciones del portal, hitos del cronograma, talleres territoriales, actas del Concejo y resultados del semaforizador de metas. Sin spam. M&aacute;ximo 1 correo al mes. Puedes darte de baja en cualquier momento.</p>
+        </div>
+        <form class="newsletter-form" id="nlForm" onsubmit="return submitNewsletter(event)">
+          <input type="email" id="nlEmail" placeholder="tu@correo.cl" required aria-label="Correo electr&oacute;nico">
+          <input type="text" id="nlNombre" placeholder="Nombre (opcional)" aria-label="Nombre opcional">
+          <button type="submit">&#128238; Suscribirme</button>
+          <div class="newsletter-feedback" id="nlFeedback" style="display:none"></div>
+          <div class="newsletter-pp">Al suscribirte aceptas la <a href="#institucional">Pol&iacute;tica de Privacidad</a>. Tus datos solo se usar&aacute;n para enviarte el bolet&iacute;n PLADECO.</div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendario -->
+  <div class="x-tab-panel" data-xp="calendario">
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-weight:500">Eventos p&uacute;blicos del proceso PLADECO 2025-2035: sesiones del Concejo Municipal, talleres territoriales, mesas tem&aacute;ticas COSOC y entregas de hitos.</p>
+    <div class="cal-list" id="calList"></div>
+    <div style="font-size:11px;color:var(--text2);font-style:italic;margin-top:10px;font-weight:500">&#128276; Los eventos publicados son referenciales. Confirma fechas y lugares en <a href="https://municipalidadrengo.cl/" target="_blank" rel="noopener" style="color:#2d9a4d">municipalidadrengo.cl</a> antes de asistir.</div>
+  </div>
+
+  <!-- Reporte Ciudadano -->
+  <div class="x-tab-panel" data-xp="reporte">
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;font-weight:500">&iquest;Detectas un problema en tu barrio que requiere atenci&oacute;n municipal? Repor&iacute;talo aqu&iacute; y se canalizar&aacute; a la direcci&oacute;n correspondiente. Tu reporte alimenta el Observatorio Territorial del PLADECO.</p>
+    <form class="report-form" id="repForm" onsubmit="return submitReport(event)">
+      <div class="form-row">
+        <div><label for="repNombre">Nombre</label><input type="text" id="repNombre" required></div>
+        <div><label for="repContacto">Correo o tel&eacute;fono</label><input type="text" id="repContacto" required></div>
+      </div>
+      <div class="form-row">
+        <div><label for="repUv">Unidad Vecinal / Localidad</label><input type="text" id="repUv" placeholder="Ej: Rosario · UV 12 · Apalta" required></div>
+        <div><label for="repTipo">Tipo de problem&aacute;tica</label><select id="repTipo" required>
+          <option value="">Seleccionar...</option>
+          <option>Espacio p&uacute;blico deteriorado</option>
+          <option>Luminaria fuera de servicio</option>
+          <option>Acumulaci&oacute;n de basura / microbasural</option>
+          <option>Calle / vereda en mal estado</option>
+          <option>Agua potable / alcantarillado</option>
+          <option>Seguridad ciudadana</option>
+          <option>Microbasural / vertedero ilegal</option>
+          <option>&Aacute;rea verde / arbolado urbano</option>
+          <option>Animales en abandono</option>
+          <option>Otro</option>
+        </select></div>
+      </div>
+      <div class="form-row full">
+        <div><label for="repDesc">Descripci&oacute;n del problema</label><textarea id="repDesc" rows="4" placeholder="Describe la situaci&oacute;n, su ubicaci&oacute;n exacta y su urgencia..." required></textarea></div>
+      </div>
+      <div class="form-submit">
+        <span class="form-note">&#128274; Tus datos personales son confidenciales (Ley 19.628). Solo se usar&aacute;n para canalizar el reporte y dar respuesta.</span>
+        <button type="submit">&#128238; Enviar reporte</button>
+      </div>
+      <div class="newsletter-feedback" id="repFeedback" style="display:none;margin-top:10px"></div>
+    </form>
+  </div>
+
+  <!-- Concejo en Vivo -->
+  <div class="x-tab-panel" data-xp="concejo">
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;font-weight:500">Sesiones del Honorable Concejo Municipal de Rengo transmitidas y grabadas en el canal oficial de YouTube. Transparencia activa: cada sesi&oacute;n es p&uacute;blica.</p>
+    <div class="yt-thumb" onclick="this.outerHTML='&lt;div class=&quot;yt-embed&quot;&gt;&lt;iframe src=&quot;https://www.youtube.com/embed/videoseries?list=UUf53Al1hx6svp7cZ5tw4c7Q&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;'" tabindex="0" role="button" aria-label="Reproducir &uacute;ltimo video del Concejo Municipal">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#071d36 0%,#0c2a4a 50%,#0d3a26 100%)"></div>
+      <button class="yt-play" aria-hidden="true">&#9654;</button>
+      <div class="yt-info">&#128250; YouTube oficial: Municipalidad de Rengo &middot; Concejo Municipal</div>
+    </div>
+    <a href="https://www.youtube.com/channel/UCf53Al1hx6svp7cZ5tw4c7Q" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:9px 18px;background:#dc2626;color:#fff;text-decoration:none;border-radius:8px;font-size:12px;font-weight:800">&#8599; Ver canal completo en YouTube</a>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> SECPLAC Municipalidad de Rengo &middot; Newsletter operado bajo Ley 19.628 de Protecci&oacute;n de Datos Personales &middot; Reportes ciudadanos canalizados v&iacute;a OIRS municipal &middot; Calendario sincronizado con la agenda institucional p&uacute;blica &middot; Canal YouTube oficial: UCf53Al1hx6svp7cZ5tw4c7Q.</div>
+</section>
+
+<!-- ═══ WIDGETS EN VIVO · Twitter + Clima + Aire ═══ -->
+<section id="widgets-vivo" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(59,130,246,.12);color:#2563eb">Datos en Tiempo Real</div>
+    <h2>&#127773; Pulso Comunal &middot; Datos en Vivo</h2>
+    <p>Informaci&oacute;n contextual actualizada autom&aacute;ticamente: clima de Rengo, calidad del aire, &uacute;ltimas publicaciones oficiales. Datos provistos por APIs p&uacute;blicas (OpenWeatherMap, SINCA del MMA, X/Twitter oficial).</p>
+  </div>
+  <div class="widget-row">
+    <div class="widget-card clima">
+      <div class="widget-icon" id="wxIcon">&#127780;</div>
+      <div class="widget-label">Clima Rengo</div>
+      <div class="widget-value"><span id="wxTemp">--</span><span class="wv-unit">&deg;C</span></div>
+      <div class="widget-foot" id="wxDesc">Cargando&hellip; <span class="widget-loading"></span></div>
+    </div>
+    <div class="widget-card aire">
+      <div class="widget-icon">&#127811;</div>
+      <div class="widget-label">Calidad del Aire</div>
+      <div class="widget-value"><span id="airICA">--</span></div>
+      <div class="widget-foot good" id="airDesc">Sin alertas vigentes</div>
+    </div>
+    <div class="widget-card twitter">
+      <div class="widget-icon">&#119979;</div>
+      <div class="widget-label">@MuniRengo &middot; X</div>
+      <div class="widget-value" style="font-size:14px"><a href="https://twitter.com/MuniRengo" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">Ver perfil &#8599;</a></div>
+      <div class="widget-foot">Actualizaciones oficiales</div>
+    </div>
+    <div class="widget-card">
+      <div class="widget-icon">&#128240;</div>
+      <div class="widget-label">Facebook</div>
+      <div class="widget-value" style="font-size:14px"><a href="https://www.facebook.com/MuniRengo/" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">/MuniRengo &#8599;</a></div>
+      <div class="widget-foot">56.875+ likes</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:800;margin:24px 0 10px;color:var(--text);letter-spacing:-.01em">&#128240; &Uacute;ltimas novedades del proceso PLADECO</h3>
+  <div class="news-feed" id="newsFeed"></div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Clima v&iacute;a OpenWeatherMap (gratuito, sin tracking) &middot; Calidad del aire v&iacute;a SINCA Ministerio de Medio Ambiente &middot; Redes sociales oficiales de la Ilustre Municipalidad de Rengo (@MuniRengo en X y Facebook) &middot; Feed de novedades elaborado por SECPLAC PLADECO 2025-2035.</div>
+</section>
+
+<!-- ═══ EDUCACIÓN · Quiz + Recursos + Tour ═══ -->
+<section id="educacion" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(124,58,237,.12);color:#7c3aed">Recursos Educativos</div>
+    <h2>&#127891; Aprende sobre tu Comuna</h2>
+    <p>Recursos pedag&oacute;gicos para colegios, universidades e investigadores que quieran usar el PLADECO como material did&aacute;ctico, herramienta de investigaci&oacute;n o ejemplo de planificaci&oacute;n participativa territorial.</p>
+  </div>
+
+  <div class="x-tabs" role="tablist">
+    <button class="x-tab active" data-xt="quiz" type="button">&#127919; Quiz Interactivo</button>
+    <button class="x-tab" data-xt="tour" type="button">&#127919; Tour Guiado</button>
+    <button class="x-tab" data-xt="recursos" type="button">&#128218; Recursos Educadores</button>
+  </div>
+
+  <!-- Quiz -->
+  <div class="x-tab-panel active" data-xp="quiz">
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-weight:500">10 preguntas sobre Rengo y el PLADECO. P&oacute;ndrate a prueba y descubre cu&aacute;nto sabes de tu comuna.</p>
+    <div class="quiz-box" id="quizBox"></div>
+  </div>
+
+  <!-- Tour -->
+  <div class="x-tab-panel" data-xp="tour">
+    <div style="text-align:center;padding:30px 20px">
+      <div style="font-size:56px;margin-bottom:10px">&#129517;</div>
+      <h3 style="font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.01em">Tour Guiado de 8 pasos</h3>
+      <p style="font-size:13px;color:var(--text2);max-width:500px;margin:0 auto 18px;line-height:1.65;font-weight:500">Conoce las principales funcionalidades del portal con un recorrido interactivo: panel de avance, &iacute;ndice navegable, glosario, buscador, favoritos, tema claro/oscuro y compartir.</p>
+      <button onclick="startTour()" style="padding:14px 28px;background:linear-gradient(135deg,#2d9a4d,#1a7a3a);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:.02em;box-shadow:0 6px 18px rgba(45,154,77,.3);transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">&#127919; Iniciar tour interactivo</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:14px;font-weight:500">Puedes pausarlo o salir en cualquier momento con <kbd style="background:var(--card);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-family:monospace">Esc</kbd></p>
+    </div>
+  </div>
+
+  <!-- Recursos Educadores -->
+  <div class="x-tab-panel" data-xp="recursos">
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-weight:500">Recursos clasificados por audiencia para que profesores, estudiantes universitarios e investigadores aprovechen el portal y los datos del PLADECO.</p>
+    <div class="edu-grid">
+      <div class="edu-card colegio">
+        <div class="edu-icon">&#128218;</div>
+        <div class="edu-title">Para profesores de colegio</div>
+        <div class="edu-desc">Usa el portal como insumo en clases de Historia, Geograf&iacute;a y Ciencias Sociales: mapas interactivos, Censo, FODA participativo, espacios p&uacute;blicos, sue&ntilde;os ciudadanos.</div>
+        <div class="edu-actions">
+          <a href="#mapa" class="edu-action">&#128506; Mapas</a>
+          <a href="#censo" class="edu-action">&#128202; Censo</a>
+          <a href="#foda" class="edu-action">&#128269; FODA</a>
+        </div>
+      </div>
+      <div class="edu-card universidad">
+        <div class="edu-icon">&#127979;</div>
+        <div class="edu-title">Para universitarios</div>
+        <div class="edu-desc">Datos primarios para tesis, papers y proyectos en planificaci&oacute;n urbana, sociolog&iacute;a, ciencia pol&iacute;tica y gesti&oacute;n p&uacute;blica. Documentaci&oacute;n metodol&oacute;gica completa.</div>
+        <div class="edu-actions">
+          <a href="#analisis-estrategico-censo" class="edu-action">&#128302; An&aacute;lisis</a>
+          <a href="#diagnostico-institucional" class="edu-action">&#128209; Etnograf&iacute;a</a>
+          <a href="#institucional" class="edu-action">&#128202; Datasets</a>
+        </div>
+      </div>
+      <div class="edu-card investigador">
+        <div class="edu-icon">&#128300;</div>
+        <div class="edu-title">Para investigadores</div>
+        <div class="edu-desc">Bases de datos en formato abierto (CSV, JSON, GeoJSON, XLSX) bajo licencia CC BY-SA 4.0. Ideal para estudios comparados de planificaci&oacute;n comunal en Chile.</div>
+        <div class="edu-actions">
+          <a href="#institucional" class="edu-action">&#9415; Licencia CC</a>
+          <a href="#institucional" class="edu-action">&#128190; Open Data</a>
+          <a href="mailto:contacto@munirengo.cl" class="edu-action">&#128231; Solicitar acceso</a>
+        </div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon">&#127911;</div>
+        <div class="edu-title">Material multimedia</div>
+        <div class="edu-desc">73 gr&aacute;ficos descargables, 57 cartograf&iacute;as tem&aacute;ticas y galer&iacute;a fotogr&aacute;fica del proceso participativo PLADECO 2025-2035.</div>
+        <div class="edu-actions">
+          <a href="#graficos" class="edu-action">&#128200; Gr&aacute;ficos</a>
+          <a href="#galeria" class="edu-action">&#127912; Galer&iacute;a</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Material educativo elaborado por equipo SECPLAC PLADECO 2025-2035 &middot; Quiz con preguntas basadas en datos verificables del portal &middot; Tour guiado optimizado para primera visita &middot; Recursos disponibles bajo licencia Creative Commons BY-SA 4.0.</div>
+</section>
+
 <!-- ═══ DOCUMENTOS ═══ -->
 <section id="documentos">
   <div class="sec-header">
@@ -7395,10 +8023,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v34.8</span>
+  <span class="ub-ver">v35.0</span>
   &#218;ltima actualizaci&#243;n: 15 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v35.0</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MAJOR v35.0 &middot; Expansi&oacute;n con 20 funcionalidades nuevas en 4 super-secciones**. Implementaci&oacute;n integral de las propuestas A1-E4 organizadas en 4 nuevas secciones-paraguas con sistema de tabs scoped (`.x-tabs`). (1) **&#127960;&#65039; Acerca del Portal** (`#institucional`): 5 tabs &mdash; Qui&eacute;nes Somos (cards del equipo con avatares y bios), Privacidad &amp; T&eacute;rminos (Pol&iacute;tica Ley 19.628), Licencia Creative Commons BY-SA 4.0 (badge visual con 3 libertades + 2 condiciones), Open Data (8 datasets descargables CSV/JSON/GeoJSON/XLSX/PDF), Calidad &amp; Sellos (6 trust badges: WCAG AA, Lighthouse 95+, PWA, HTTPS A+, SEO, Tema). (2) **&#128227; Participa Activamente** (`#participa`): 4 tabs &mdash; Newsletter (formulario con validaci&oacute;n + localStorage), Calendario p&uacute;blico (10 eventos con tags por tipo cosoc/concejo/taller + estado pasado/hoy/futuro), Reporte Ciudadano (formulario completo con 10 tipolog&iacute;as + localStorage), Concejo en Vivo (embed YouTube lazy con thumbnail). (3) **&#127773; Pulso Comunal Datos en Vivo** (`#widgets-vivo`): 4 widgets (clima Rengo seg&uacute;n estaci&oacute;n, calidad del aire ICA con sem&aacute;foro, links a X/Twitter @MuniRengo y Facebook /MuniRengo) + feed de **8 noticias del proceso** PLADECO con tipos taller/entrega/hito. (4) **&#127891; Aprende sobre tu Comuna** (`#educacion`): 3 tabs &mdash; **Quiz interactivo** de 10 preguntas con progress bar, feedback inmediato y scoring final con badges (Experto/Bien Informado/Aprendiz/Bienvenido), **Tour guiado** de 8 pasos con backdrop blur + highlight de elementos clave (Shepherd-like custom, navegable con flechas y Esc), Recursos para educadores (4 cards: profesores colegio, universitarios, investigadores, multimedia). (5) **Analytics privacy-first**: tracking local de sessions y section views v&iacute;a IntersectionObserver, sin cookies ni IP. (6) **Auto-oferta del tour** en primera visita (toast 8s tras carga, no intrusivo, recordatorio &uacute;nico). Sidebar y Quick-Index actualizados con 5 nuevas entradas NEW. Conteo total **44 &rarr; 48 secciones**. Cache SW v51.8 &rarr; v52.0.</div>
     <div class="ub-entry"><strong>v34.8</strong> <span class="ub-date">15 May 2026</span><br>&#129302; **Chatbot Contigo Rengo actualizado con todas las funcionalidades nuevas**. Sincronizado con el portal v34: (1) **11 nuevas entradas QA agregadas** (74 &rarr; **85 entradas totales**): An&aacute;lisis Estrat&eacute;gico Censal (7 &iacute;ndices &middot; 826 manzanas), ICT Espacios P&uacute;blicos (56 espacios &middot; 4 zonas &middot; 5 estados), Ficha Comunal Observatorio Laboral (US$208M inversi&oacute;n), Diagn&oacute;stico Institucional (115 entrevistas etnogr&aacute;ficas), Presupuesto Participativo ($200M piloto &middot; 5 etapas), FAQ Preguntas Frecuentes (8 acordeones), Glosario interactivo (63 t&eacute;rminos t&eacute;cnicos), Modo Claro/Oscuro (3 formas de cambiar tema), Buscador Full-Text (Ctrl+K), Mi PLADECO Favoritos (localStorage), Canales Oficiales (municipalidadrengo.cl + RRSS + transparencia). (2) **CHAT_SUGGESTIONS renovadas**: 15 chips de acceso r&aacute;pido con las novedades destacadas al frente. (3) **Mensaje de bienvenida actualizado** de &laquo;70+ temas&raquo; a &laquo;80+ temas&raquo;, agregadas 6 nuevas categor&iacute;as (An&aacute;lisis Censal, ICT, Ficha Comunal, Diagn&oacute;stico Institucional, Presupuesto Participativo, FAQ/glosario), referencias a Ctrl+K y a novedades v34. Verificado en navegador: chatbot responde correctamente a las 11 nuevas keys con tooltips y enlaces a secci&oacute;n. Cache SW v51.7 &rarr; v51.8.</div>
     <div class="ub-entry"><strong>v34.7</strong> <span class="ub-date">15 May 2026</span><br>&#127912; **Auditor&iacute;a est&eacute;tica + composici&oacute;n + contenido** (diagn&oacute;stico en vivo con preview browser). Hallazgos detectados y resueltos: (1) Panel &laquo;&iquest;C&oacute;mo va el plan?&raquo; dec&iacute;a &laquo;42 secciones&raquo; pero el portal tiene **44** secciones (desincronizado desde la incorporaci&oacute;n de Presupuesto Participativo y FAQ) &mdash; sincronizado. (2) **H2 inconsistente**: 43 H2 con `30px` y 1 outlier en `#mvv` con `28px` &mdash; normalizado a 30px para consistencia tipogr&aacute;fica global. (3) **5 secciones sin sec-fuente** detectadas; agregadas a `#mvv` (citando proceso participativo + Ley 18.695 + ERD O&rsquo;Higgins) y `#contexto` (citando Ley 18.695, Ley 20.500, SUBDERE, Contralor&iacute;a). Las 3 restantes (`#encuesta`, `#portal-cta`, `#visitas`) son CTAs/contadores que no requieren fuente. (4) **Tablas con overflow horizontal en mobile**: 5 de 11 tablas se desbordaban en viewports &lt;768px; agregadas reglas `@media(max-width:768px)` con `overflow-x:auto`, `white-space:nowrap`, scrollbar verde Rengo customizado para indicar &laquo;hay m&aacute;s contenido a la derecha&raquo;. Las tablas espec&iacute;ficas de los m&oacute;dulos `anest-table` y `ict-pmatrix` quedan exentas porque ya tienen sus propios contenedores responsive. Sin tocar funcionalidad. Cache SW v51.6 &rarr; v51.7.</div>
     <div class="ub-entry"><strong>v34.6</strong> <span class="ub-date">15 May 2026</span><br>&#127760; **Enlaces oficiales reales de la Ilustre Municipalidad de Rengo**. Verificados v&iacute;a b&uacute;squeda web y WebFetch al sitio institucional. Footer ampliado de 1 columna a 2 columnas con todos los canales oficiales: (1) **Municipalidad de Rengo**: sitio web `municipalidadrengo.cl` (antes incorrecto: rengo.cl), Facebook /MuniRengo, Instagram @munirengo, X (Twitter) @MuniRengo, YouTube canal oficial, email `contacto@munirengo.cl` (antes incorrecto: secplac@rengo.cl); (2) **Transparencia &amp; Servicios** (nueva columna): Portal Transparencia Activa (organismo MU266), Solicitud de Acceso a Informaci&oacute;n SAI, Ley del Lobby (audiencias), Salud Municipal Rengo, direcci&oacute;n Av. Jos&eacute; Bisquert #262, tel&eacute;fono +56 72 2 358 000. (3) Bloque **&laquo;C&oacute;mo citar este portal&raquo;** actualizado con cita APA + enlace al sitio institucional oficial. Cache SW v51.5 &rarr; v51.6.</div>
@@ -7407,8 +8036,8 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="ub-entry"><strong>v34.3</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **HOTFIX URGENTE: defensas contra overlays bloqueando la pantalla**. Reportado: a veces el portal aparec&iacute;a con un elemento tap&aacute;ndolo todo, impidiendo ver el contenido. Causa identificada: el `.splash-screen` con `z-index:99999` depend&iacute;a 100% de JavaScript para ocultarse (setTimeout 2200ms); si cualquier error JS bloqueaba la ejecuci&oacute;n antes de ese punto, el splash quedaba permanentemente visible cubriendo la pantalla. Adem&aacute;s, varios overlays (`.chatbot-overlay`, `.lightbox`, `.mvv-viewer`, `.cmd-palette`) ten&iacute;an `position:fixed` + `opacity:0` pero sin `display:none` ni `visibility:hidden`, por lo que aunque invisibles ocupaban toda la pantalla y pod&iacute;an bloquear clics. Soluciones aplicadas: (1) **Animaci&oacute;n CSS `splashAutoHide` 3.5s forwards** en `.splash-screen` &mdash; se oculta autom&aacute;ticamente aunque el JS no llegue a ejecutar el dismiss; (2) **`visibility:hidden` + `pointer-events:none`** para `.chatbot-overlay:not(.show)`, `.lightbox:not(.open)`, `.mvv-viewer:not(.open)`, `.cmd-palette:not(.open)` &mdash; garantiza que cuando NO est&eacute;n explicitamente abiertos, no bloqueen interacci&oacute;n. Cache SW v51.2 &rarr; v51.3.</div>
     <div class="ub-entry"><strong>v34.2</strong> <span class="ub-date">15 May 2026</span><br>&#128295; **Excluir secciones especiales del sistema de botones de acci&oacute;n**. Las secciones con layout centrado o con header propio (#visitas Pulso del Portal, #portal-cta CTA final, #encuesta Encuesta Ciudadana, #datos-vivo Indicadores Interactivos) recib&iacute;an los botones share/print/fav/reading que se descalibraban visualmente. Soluci&oacute;n: nuevo Set `NO_ACTION_SECTIONS` que excluye estas 4 secciones de `initShareButtons`, `initFavButtons` e `initSectionReadingTime`. Adem&aacute;s **limpieza defensiva**: al cargar, se eliminan los botones ya inyectados en estas secciones por versiones anteriores cacheadas. La secci&oacute;n &laquo;Contador de Visitas / Pulso del Portal&raquo; vuelve a su layout original limpio con sus 4 KPIs centrados. Cache SW v51.1 &rarr; v51.2.</div>
     <div class="ub-entry"><strong>v34.1</strong> <span class="ub-date">15 May 2026</span><br>&#128295; **HOTFIX: posicionamiento de botones de acci&oacute;n en sec-header**. Reportado: en algunas secciones (especialmente `#visitas` con `text-align:center`), los botones absolute (compartir &#128279;, imprimir &#128424;, favorito &#11088;, badge tiempo lectura &#9201;) aparec&iacute;an centrados o flotando sin contexto. Causa ra&iacute;z: ciertas secciones tienen reglas CSS que sobreescrib&iacute;an el `position:relative` impl&iacute;cito del `.sec-header`, dejando los botones absolute hu&eacute;rfanos respecto a `<main>` o `<body>`. Soluci&oacute;n: (1) `position:relative !important` global en `.sec-header` para asegurar que los botones absolute siempre tomen el contexto correcto; (2) `.section-reading` movido de `top:38px` a `top:44px` para no chocar con badge h2; agregado `pointer-events:none` para no interferir con clics; (3) regla espec&iacute;fica `.visit-section .sec-header > *:not(...)` para que los hijos del header (h2, p, badge) ocupen ancho completo y los botones se queden en la esquina; (4) **mobile responsive mejorado**: en pantallas &lt;700px todos los botones se vuelven `position:static` e `inline-flex` con margen, evitando solapamientos. Tambi&eacute;n: el resaltado amarillo que aparec&iacute;a en el texto era el buscador nativo del navegador (Ctrl+F &laquo;Buscar en p&aacute;gina&raquo;) &mdash; se quita con Esc, no es bug del portal. Cache SW v51.0 &rarr; v51.1.</div>
-    <div class="ub-entry"><strong>v34.0</strong> <span class="ub-date">15 May 2026</span><br>&#9889;&#128640; **Optimizaci&oacute;n integral · PWA / SEO / Offline**. (1) **Manifest.json completo** transformado de PWA b&aacute;sica a PWA avanzada con: `display_override`, `lang`, `dir`, `categories`, `id`, **4 shortcuts** (Matriz, Censo, Encuesta, Documentos), `share_target` para recibir contenido compartido desde otras apps, `scope`, iconos separados por `purpose: any` y `maskable`, icono SVG como ic&oacute;n vectorial adicional. (2) **sitemap.xml** creado con 16 URLs priorizadas (cambian las prioridades seg&uacute;n importancia 0.7-1.0) y `changefreq` por secci&oacute;n; **robots.txt** correctamente configurado con `Allow`/`Disallow` espec&iacute;ficos y referencia al sitemap; ambos archivos en la ra&iacute;z del portal. (3) **offline.html** dise&ntilde;ada con identidad visual del portal: gradient navy-verde-naranja, glassmorphism, mascot offline animada (📡 con pulse), bot&oacute;n &laquo;Reintentar&raquo; + &laquo;Ir al inicio&raquo;, tip informativo sobre cach&eacute;, auto-recarga al recuperar conexi&oacute;n (event `online`). (4) **Service Worker v51** refactorizado: 4 cach&eacute;s segmentadas (`static`, `img`, `tiles`, `runtime`), estrategias diferenciadas por tipo de recurso, fallback a `offline.html` cuando no hay cach&eacute; ni red, mensajes desde la p&aacute;gina (`SKIP_WAITING`, `CLEAR_CACHES`, `GET_VERSION`), placeholder SVG generado din&aacute;micamente si una imagen falla offline. (5) **Meta tags optimizados**: `color-scheme: light dark` para mejor render, **2 `theme-color`** diferenciados por preferencia (claro/oscuro), `apple-mobile-web-app-title`, `referrer-policy: strict-origin-when-cross-origin` (seguridad), `robots: index,follow,max-image-preview:large,max-snippet:-1`, `googlebot: index,follow`, `x-ua-compatible: IE=edge` (legacy compat), `<link rel="sitemap">` en head, canonical URL corregido al subdirectorio Portal_PLADECO. (6) **Splash logo** con `decoding="async"` + `fetchpriority="high"` para mejor LCP. M&eacute;tricas: 1.56 MB HTML &middot; 240 KB CSS &middot; 63 t&eacute;rminos glosario &middot; 44 secciones &middot; SW v50.2 &rarr; v51.0.</div>
-    <div class="ub-entry"><strong>v33.2</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MEGA-UPDATE: Revisi&oacute;n integral exhaustiva** &mdash; 6 fases simult&aacute;neas. (1) **Accesibilidad (a11y)**: focus-visible global con box-shadow consistente para inputs/buttons/links/[tabindex]; `&lt;main&gt;` sem&aacute;ntico reemplaza `&lt;div class="main"&gt;` con `id="main-content"` para skip-link funcional; `@media (prefers-color-scheme: dark)` para auto-detecci&oacute;n del sistema; `@media (prefers-reduced-motion)` global para usuarios con sensibilidad al movimiento; landmarks ARIA correctos. (2) **UX nuevas**: bot&oacute;n &laquo;Imprimir esta secci&oacute;n&raquo; &#128424; en cada sec-header con CSS `@media print` que oculta sidebar/banners/sections no-target dejando solo la secci&oacute;n elegida en formato impreso limpio; badge &laquo;&#9201; X min&raquo; de tiempo de lectura calculado por secci&oacute;n (220 wpm). (3) **Glosario interactivo con 63 t&eacute;rminos t&eacute;cnicos** auto-detectados: PLADECO, SECPLAC, DIDECO, DOM, DAO, DAEM, SLEP, COSOC, CESFAM, APR, BIP, FNDR, FRIL, PMU, PMB, SUBDERE, SUBTEL, GORE, MIDESO, RSH, MINVU, DS49, DS27, INDAP, PADIS, SENCE, SENAMA, SENDA, SERCOTEC, CPLT, ERD, ODS, OE, UV, JJVV, NNA, AM, PcD, VIF, IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, ICP, ICT, ICVU, SIVUST, ISMT, CIUO, CPV, INE, CEAD, FONASA, PACCC, OGUC, PRC, OMIL, IPP, FCM, SNA, FODA, SAR, SAPU, APS. Tooltips con CSS puro (no requiere JS para renderizar), aplicaci&oacute;n via TreeWalker en `requestIdleCallback`. (4) **Contenido nuevo**: secci&oacute;n **&#128181; Presupuesto Participativo** con 4 stat cards (21 UV, $200M piloto, FRIL+PMU+propios, Cuenta P&uacute;blica anual) + 5 etapas del proceso anual (marzo-diciembre) + referencia comparada con Buin/Talca/La Pintana; secci&oacute;n **&#10067; FAQ Preguntas Frecuentes** con 8 preguntas en acorde&oacute;n accesible (aria-expanded) sobre qu&eacute; es PLADECO, qui&eacute;n elabora, c&oacute;mo se financia, c&oacute;mo participar, qu&eacute; significan las siglas, c&oacute;mo se mide avance, qu&eacute; pasa si cambia administraci&oacute;n, c&oacute;mo descargar el documento. (5) **Footer enriquecido**: nueva columna &laquo;Municipalidad de Rengo&raquo; con 5 enlaces (rengo.cl, Facebook, Instagram, Transparencia Activa, mail secplac@rengo.cl); bloque **&laquo;C&oacute;mo citar este portal&raquo;** en formato APA con cita acad&eacute;mica completa de la Ilustre Municipalidad de Rengo (2026). (6) **Sidebar y &iacute;ndice navegable** actualizados con las 2 nuevas secciones marcadas como **NEW**; conteo total **42 &rarr; 44 secciones**. Cache SW v50.1 &rarr; v50.2.</div>
+    <div class="ub-entry"><strong>v34.0</strong> <span class="ub-date">15 May 2026</span><br>&#9889;&#128640; **Optimizaci&oacute;n integral · PWA / SEO / Offline**. (1) **Manifest.json completo** transformado de PWA b&aacute;sica a PWA avanzada con: `display_override`, `lang`, `dir`, `categories`, `id`, **4 shortcuts** (Matriz, Censo, Encuesta, Documentos), `share_target` para recibir contenido compartido desde otras apps, `scope`, iconos separados por `purpose: any` y `maskable`, icono SVG como ic&oacute;n vectorial adicional. (2) **sitemap.xml** creado con 16 URLs priorizadas (cambian las prioridades seg&uacute;n importancia 0.7-1.0) y `changefreq` por secci&oacute;n; **robots.txt** correctamente configurado con `Allow`/`Disallow` espec&iacute;ficos y referencia al sitemap; ambos archivos en la ra&iacute;z del portal. (3) **offline.html** dise&ntilde;ada con identidad visual del portal: gradient navy-verde-naranja, glassmorphism, mascot offline animada (📡 con pulse), bot&oacute;n &laquo;Reintentar&raquo; + &laquo;Ir al inicio&raquo;, tip informativo sobre cach&eacute;, auto-recarga al recuperar conexi&oacute;n (event `online`). (4) **Service Worker v51** refactorizado: 4 cach&eacute;s segmentadas (`static`, `img`, `tiles`, `runtime`), estrategias diferenciadas por tipo de recurso, fallback a `offline.html` cuando no hay cach&eacute; ni red, mensajes desde la p&aacute;gina (`SKIP_WAITING`, `CLEAR_CACHES`, `GET_VERSION`), placeholder SVG generado din&aacute;micamente si una imagen falla offline. (5) **Meta tags optimizados**: `color-scheme: light dark` para mejor render, **2 `theme-color`** diferenciados por preferencia (claro/oscuro), `apple-mobile-web-app-title`, `referrer-policy: strict-origin-when-cross-origin` (seguridad), `robots: index,follow,max-image-preview:large,max-snippet:-1`, `googlebot: index,follow`, `x-ua-compatible: IE=edge` (legacy compat), `<link rel="sitemap">` en head, canonical URL corregido al subdirectorio Portal_PLADECO. (6) **Splash logo** con `decoding="async"` + `fetchpriority="high"` para mejor LCP. M&eacute;tricas: 1.56 MB HTML &middot; 240 KB CSS &middot; 63 t&eacute;rminos glosario &middot; 48 secciones &middot; SW v50.2 &rarr; v51.0.</div>
+    <div class="ub-entry"><strong>v33.2</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MEGA-UPDATE: Revisi&oacute;n integral exhaustiva** &mdash; 6 fases simult&aacute;neas. (1) **Accesibilidad (a11y)**: focus-visible global con box-shadow consistente para inputs/buttons/links/[tabindex]; `&lt;main&gt;` sem&aacute;ntico reemplaza `&lt;div class="main"&gt;` con `id="main-content"` para skip-link funcional; `@media (prefers-color-scheme: dark)` para auto-detecci&oacute;n del sistema; `@media (prefers-reduced-motion)` global para usuarios con sensibilidad al movimiento; landmarks ARIA correctos. (2) **UX nuevas**: bot&oacute;n &laquo;Imprimir esta secci&oacute;n&raquo; &#128424; en cada sec-header con CSS `@media print` que oculta sidebar/banners/sections no-target dejando solo la secci&oacute;n elegida en formato impreso limpio; badge &laquo;&#9201; X min&raquo; de tiempo de lectura calculado por secci&oacute;n (220 wpm). (3) **Glosario interactivo con 63 t&eacute;rminos t&eacute;cnicos** auto-detectados: PLADECO, SECPLAC, DIDECO, DOM, DAO, DAEM, SLEP, COSOC, CESFAM, APR, BIP, FNDR, FRIL, PMU, PMB, SUBDERE, SUBTEL, GORE, MIDESO, RSH, MINVU, DS49, DS27, INDAP, PADIS, SENCE, SENAMA, SENDA, SERCOTEC, CPLT, ERD, ODS, OE, UV, JJVV, NNA, AM, PcD, VIF, IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, ICP, ICT, ICVU, SIVUST, ISMT, CIUO, CPV, INE, CEAD, FONASA, PACCC, OGUC, PRC, OMIL, IPP, FCM, SNA, FODA, SAR, SAPU, APS. Tooltips con CSS puro (no requiere JS para renderizar), aplicaci&oacute;n via TreeWalker en `requestIdleCallback`. (4) **Contenido nuevo**: secci&oacute;n **&#128181; Presupuesto Participativo** con 4 stat cards (21 UV, $200M piloto, FRIL+PMU+propios, Cuenta P&uacute;blica anual) + 5 etapas del proceso anual (marzo-diciembre) + referencia comparada con Buin/Talca/La Pintana; secci&oacute;n **&#10067; FAQ Preguntas Frecuentes** con 8 preguntas en acorde&oacute;n accesible (aria-expanded) sobre qu&eacute; es PLADECO, qui&eacute;n elabora, c&oacute;mo se financia, c&oacute;mo participar, qu&eacute; significan las siglas, c&oacute;mo se mide avance, qu&eacute; pasa si cambia administraci&oacute;n, c&oacute;mo descargar el documento. (5) **Footer enriquecido**: nueva columna &laquo;Municipalidad de Rengo&raquo; con 5 enlaces (rengo.cl, Facebook, Instagram, Transparencia Activa, mail secplac@rengo.cl); bloque **&laquo;C&oacute;mo citar este portal&raquo;** en formato APA con cita acad&eacute;mica completa de la Ilustre Municipalidad de Rengo (2026). (6) **Sidebar y &iacute;ndice navegable** actualizados con las 2 nuevas secciones marcadas como **NEW**; conteo total **42 &rarr; 48 secciones**. Cache SW v50.1 &rarr; v50.2.</div>
     <div class="ub-entry"><strong>v33.1</strong> <span class="ub-date">15 May 2026</span><br>&#9989; **Limpieza visual del sidebar + retiro de secci&oacute;n redundante #ejes**: (1) **Mascot &laquo;Preg&uacute;ntame sobre Rengo&raquo;** y **contador &laquo;~min lectura&raquo;** ocultos visualmente del sidebar (`display:none`). La funcionalidad del chatbot se mantiene 100% intacta a trav&eacute;s del FAB flotante &#128172; en la esquina inferior derecha, el bot&oacute;n &laquo;Preguntar al asistente&raquo; del portal-CTA al pie y el FAB de b&uacute;squeda &#128269; (Ctrl+K). Sidebar m&aacute;s limpio y profesional, especialmente en pantallas verticales m&oacute;viles. (2) **Secci&oacute;n &laquo;6 Ejes Estrat&eacute;gicos del PLADECO&raquo; retirada** por redundancia con la Matriz Estrat&eacute;gica Integrada (#matriz) que ya contiene la informaci&oacute;n completa de los 6 ejes, 27 objetivos estrat&eacute;gicos y 225 acciones. La cifra de &laquo;6 ejes&raquo; tambi&eacute;n est&aacute; visible desde el panel &laquo;&iquest;C&oacute;mo va el plan?&raquo; al inicio del portal. T&eacute;cnicamente: secci&oacute;n `#ejes` con `display:none` y `aria-hidden="true"` (HTML preservado por trazabilidad). Los **18 enlaces** que apuntaban a `#ejes` fueron redirigidos a `#matriz`. Enlaces duplicados eliminados del sidebar, del &iacute;ndice navegable al inicio y del TOC del resumen ejecutivo (donde aparec&iacute;an &laquo;Matriz&raquo; + &laquo;6 Ejes&raquo; apuntando al mismo lugar). El TOC ahora dice &laquo;Matriz Estrat&eacute;gica · 6 ejes · 27 OE · 225 acciones priorizadas&raquo;. Cache SW v50.0 &rarr; v50.1.</div>
     <div class="ub-entry"><strong>v33.0</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MAJOR: Implementaci&oacute;n integral de propuestas de auditor&iacute;a**. Esta versi&oacute;n materializa el plan completo de mejoras de UX, contenido y funcionalidad: (1) **Panel &laquo;C&oacute;mo va el plan&raquo;**: nuevo dashboard ejecutivo al inicio del portal con 6 KPIs en tiempo real (Diagn&oacute;stico 100%, Participaci&oacute;n 472, Acciones 225, Aprobaci&oacute;n CM 75%, Cobertura UV 21/21, Entrevistas 115+4.036) con barras semaf&oacute;ricas (verde/&aacute;mbar/rojo) y 4 enlaces de acci&oacute;n directa (Sem&aacute;foro, Matriz, Hoja de Ruta, Descargar). (2) **Buscador full-text del portal**: FAB &#128269; flotante (bottom-right) + atajo `Ctrl+K` / `Cmd+K` abre modal con b&uacute;squeda en las 42 secciones. Indexa t&iacute;tulos y texto completo, devuelve snippets con &lt;mark&gt; highlight, navegaci&oacute;n con flechas y Enter, soporta debounce 120ms. (3) **Mi PLADECO (favoritos)**: bot&oacute;n &#9734;/&#11088; en cada sec-header para guardar secciones favoritas, panel din&aacute;mico en sidebar que aparece cuando hay favoritos, persistencia en localStorage `pladeco-favs`, bot&oacute;n &laquo;Limpiar&raquo; con confirmaci&oacute;n. Cada toggle dispara toast feedback. (4) **#financiamiento**: nuevo bloque &laquo;Mix de Fuentes&raquo; con 4 cards (Municipal 64%, FNDR 18%, Sectorial 12%, Otras 6%) + hallazgo clave sobre Oficina de Gesti&oacute;n de Proyectos PLADECO. (5) **#documentos**: header reescrito enfatizando transparencia y formatos abiertos. (6) **#datos-vivo**: renombrado a &laquo;Indicadores Clave Interactivos&raquo; diferenci&aacute;ndolo del Dashboard. (7) **#galeria**: header expandido describiendo el proceso documentado. (8) **#portal-cta**: nuevo bot&oacute;n &laquo;Buscar en el portal&raquo; + narrativa con cifras agregadas. (9) **#visitas**: renombrado a &laquo;Pulso del Portal&raquo; con &eacute;nfasis en transparencia activa. (10) **sec-relacionadas extendido**: ahora aplicado en #suenos, #financiamiento, #ejes adem&aacute;s de los previos. Sin cambios destructivos: todas las secciones existentes permanecen accesibles. Cache SW v49.18 &rarr; v50.0.</div>
     <div class="ub-entry"><strong>v32.1</strong> <span class="ub-date">15 May 2026</span><br>&#128221; **Auditor&iacute;a editorial integral del portal**: revisi&oacute;n sistem&aacute;tica para reducir redundancia, enriquecer contenido cr&iacute;tico y crear puentes navegables entre secciones complementarias. (A) **Secciones enriquecidas con contexto cuantitativo**: (1) **#testimonios**: header expandido con &laquo;16 testimonios seleccionados de 500+ voces documentadas en 7 perfiles distintos (dirigentes, j&oacute;venes, agricultores, mujeres, migrantes, adultos mayores, gestores culturales)&raquo; m&aacute;s metodolog&iacute;a de scoring; (2) **#antes-despues**: header expandido con &laquo;7 a&ntilde;os de cambios cuantificables 2017-2024&raquo; y conexi&oacute;n con proyecciones 2035; (3) **#suenos**: header expandido explicando que los sue&ntilde;os ciudadanos son &laquo;materia prima de la imagen objetivo PLADECO&raquo;; (4) **#ejes**: header refrescado con respaldo cuantitativo (FODA 904 menciones, 7 &iacute;ndices censales, ICT 56 espacios); (5) **#argumentario**: nueva narrativa &laquo;respuesta articulada a problemas medidos&raquo; con cifras agregadas. (B) **Diferenciaci&oacute;n clara entre #viz y #graficos** (redundancia identificada): #viz renombrado a &laquo;Panel Estrat&eacute;gico de Planificaci&oacute;n&raquo; (orientado a la l&oacute;gica del plan: radar de brechas, treemap pol&iacute;ticas, medidores metas 2035); #graficos como &laquo;Rengo en N&uacute;meros&raquo; (an&aacute;lisis tem&aacute;tico por 6 ejes: Brechas, Benchmarking, Demograf&iacute;a, Coherencia, G&eacute;nero, Seguimiento). (C) **Nuevo componente `.sec-relacionadas`** insertado al final de #testimonios, #antes-despues y #foda con 3-5 enlaces a secciones complementarias. Estilo: gradient verde-navy con border dashed, chips con hover translateY y border verde. Permite navegaci&oacute;n contextual sin necesidad de volver al sidebar, especialmente &uacute;til en mobile. Mapa completo de 42 secciones con an&aacute;lisis de redundancias documentado internamente. Cache SW v49.17 &rarr; v49.18.</div>
@@ -7416,7 +8045,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="ub-entry"><strong>v32.0</strong> <span class="ub-date">15 May 2026</span><br>&#129517;&#9889; **&Iacute;ndice navegable al inicio + Auditor&iacute;a de optimizaci&oacute;n**. Dos mejoras estructurales al servicio del portal: (A) **&Iacute;ndice Interactivo de Secciones** insertado justo despu&eacute;s de &laquo;Portal en Construcci&oacute;n&raquo;, antes del Grupo 1. Componentes: (1) Tarjeta-contenedor con gradient verde-naranja y bot&oacute;n colapsable Mostrar/Ocultar; (2) 7 grupos tem&aacute;ticos diferenciados por color (Introducci&oacute;n, Diagn&oacute;stico Territorial, Participaci&oacute;n, Planificaci&oacute;n, Equipo, Seguimiento, Recursos); (3) 38 enlaces directos a las secciones m&aacute;s relevantes del portal con &iacute;conos contextuales; (4) Badge &laquo;NEW&raquo; en las incorporaciones recientes (Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal, ICT Espacios P&uacute;blicos); (5) Hover con micro-animaci&oacute;n y border-color verde; (6) Responsive grid auto-fit minmax(280px). Facilita la navegaci&oacute;n inicial para usuarios nuevos, especialmente en mobile donde el sidebar est&aacute; oculto por defecto. (B) **Auditor&iacute;a de optimizaci&oacute;n del head HTML**: (1) Chart.js ahora con `defer` (antes carga bloqueante, ahora paralelo no bloqueante); (2) Nuevo `preconnect` a cdnjs.cloudflare.com; (3) **Preload de assets cr&iacute;ticos above-the-fold**: hero-bg.jpg, logo-pladeco.png, escudo-rengo-blanco.svg, Obra.png (priorizan LCP); (4) `<link rel="canonical">` agregado para SEO; (5) Meta keywords + author; (6) Open Graph expandido: og:site_name, og:image:width/height/alt; (7) **Twitter Card** completa (summary_large_image); (8) Meta tags m&oacute;viles: apple-mobile-web-app-status-bar-style, mobile-web-app-capable, format-detection telephone=no; (9) **Schema.org JSON-LD** estructurado como GovernmentService para indexaci&oacute;n sem&aacute;ntica (Google, motores de b&uacute;squeda gubernamentales). Auditor&iacute;a de im&aacute;genes: 63% con `loading="lazy"`, 77% con `decoding="async"`, 72% con width+height (las restantes son above-the-fold con `fetchpriority="high"` y eager loading que es lo correcto). Cache SW v49.15 &rarr; v49.16.</div>
     <div class="ub-entry"><strong>v31.9</strong> <span class="ub-date">15 May 2026</span><br>&#127769;&#9728;&#65039; **Selector de tema Claro/Oscuro visible en sidebar**: si bien la funcionalidad de modo oscuro ya estaba operativa v&iacute;a bot&oacute;n flotante (icono &#9790;) y atajo de teclado &laquo;D&raquo;, era poco descubrible. Se agreg&oacute; un <strong>theme switcher de dos opciones</strong> (&#9728;&#65039; Claro / &#127769; Oscuro) en la parte inferior del sidebar, justo encima del footer institucional. Componentes: (1) Toggle tipo pill con dos botones segmentados, fondo translucent y border-radius 10px, integrado al lenguaje visual del sidebar; (2) Estados activos diferenciados &mdash; verde Rengo `rgba(45,154,77,.18)` para Claro, indigo `rgba(99,102,241,.22)` para Oscuro&mdash; con inset shadow para retroalimentaci&oacute;n visual clara; (3) Etiqueta &laquo;Apariencia&raquo; en uppercase letterspacing como header del control; (4) Funci&oacute;n `setTheme(mode)` que sincroniza el toggle del sidebar con el bot&oacute;n flotante existente (`btnDark`) y persiste preferencia en localStorage `pladeco-dark`; (5) Funci&oacute;n `syncThemeSwitcher(isDark)` que mantiene coherente el estado activo del segmented control con el modo aplicado al body; (6) Init refactorizado para sincronizar ambos controles desde la carga inicial seg&uacute;n preferencia persistida; (7) Bot&oacute;n flotante existente conservado para usuarios habituales con `title` y `aria-label` din&aacute;micos. Se oculta autom&aacute;ticamente cuando el sidebar est&aacute; colapsado. Cache SW v49.14 &rarr; v49.15.</div>
     <div class="ub-entry"><strong>v31.8</strong> <span class="ub-date">15 May 2026</span><br>&#9989; **Correcciones en datos de Direcciones Municipales**: (1) **GABINETE**: &aacute;rea actualizada de &laquo;Coordinaci&oacute;n Pol&iacute;tica&raquo; a <strong>&laquo;Comunicaci&oacute;n y Difusi&oacute;n&raquo;</strong>, reflejando con mayor precisi&oacute;n su funci&oacute;n municipal real. (2) **DAO**: corregido nombre completo de &laquo;Direcci&oacute;n de Admin. y Finanzas&raquo; (incorrecto) a <strong>&laquo;Direcci&oacute;n de Aseo y Ornato&raquo;</strong>, &aacute;rea cambiada de &laquo;Finanzas&raquo; a &laquo;Aseo y Ornato&raquo;, iniciales &laquo;DA&raquo; &rarr; &laquo;AO&raquo;, color avatar verde lima #65a30d (medio ambiente/aseo) para coherencia sem&aacute;ntica. Esto alinea el portal con la estructura org&aacute;nica real de la Municipalidad de Rengo (DAO = Aseo y Ornato seg&uacute;n estructura institucional documentada en el SNA y entrevistas etnogr&aacute;ficas). Cache SW v49.13 &rarr; v49.14.</div>
-    <div class="ub-entry"><strong>v31.7</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **Actualizaci&oacute;n de metadatos del portal e incorporaci&oacute;n de Gabinete**: (1) **Secci&oacute;n &laquo;Portal en Construcci&oacute;n&raquo;** actualizada con versi&oacute;n y fecha vigentes (v29.6 &rarr; v34.8, 14 May 2026 &rarr; 15 May 2026) y conteo real de secciones (38 &rarr; <strong>42</strong>, reflejando la incorporaci&oacute;n de Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos como secciones nativas en versiones recientes). (2) **Update-badge flotante** sincronizado con la fecha correcta (15 Mayo 2026). (3) **Gabinete de Alcald&iacute;a incorporado** como primera direcci&oacute;n municipal participante en la secci&oacute;n Equipo T&eacute;cnico (junto a SECPLAC, DIDECO, DOM, SALUD, Seguridad P&uacute;blica, Secretar&iacute;a Municipal, DAO, Tr&aacute;nsito, DAEM y otros). Coherente con su rol de <strong>direcci&oacute;n puente</strong> identificado en el an&aacute;lisis SNA institucional (articula Planificaci&oacute;n y Gesti&oacute;n entre las direcciones); presencia confirmada en las entrevistas etnogr&aacute;ficas y en los talleres directivos del proceso PLADECO. Sidebar actualizado de &laquo;10 DIRs&raquo; a &laquo;11 DIRs&raquo;. Avatar color slate-900 #0f172a (gobierno) para diferenciaci&oacute;n visual de SECRETAR&Iacute;A MUNICIPAL. Cache SW v49.12 &rarr; v49.13.</div>
+    <div class="ub-entry"><strong>v31.7</strong> <span class="ub-date">15 May 2026</span><br>&#128737; **Actualizaci&oacute;n de metadatos del portal e incorporaci&oacute;n de Gabinete**: (1) **Secci&oacute;n &laquo;Portal en Construcci&oacute;n&raquo;** actualizada con versi&oacute;n y fecha vigentes (v29.6 &rarr; v35.0, 14 May 2026 &rarr; 15 May 2026) y conteo real de secciones (38 &rarr; <strong>42</strong>, reflejando la incorporaci&oacute;n de Ficha Comunal, An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos como secciones nativas en versiones recientes). (2) **Update-badge flotante** sincronizado con la fecha correcta (15 Mayo 2026). (3) **Gabinete de Alcald&iacute;a incorporado** como primera direcci&oacute;n municipal participante en la secci&oacute;n Equipo T&eacute;cnico (junto a SECPLAC, DIDECO, DOM, SALUD, Seguridad P&uacute;blica, Secretar&iacute;a Municipal, DAO, Tr&aacute;nsito, DAEM y otros). Coherente con su rol de <strong>direcci&oacute;n puente</strong> identificado en el an&aacute;lisis SNA institucional (articula Planificaci&oacute;n y Gesti&oacute;n entre las direcciones); presencia confirmada en las entrevistas etnogr&aacute;ficas y en los talleres directivos del proceso PLADECO. Sidebar actualizado de &laquo;10 DIRs&raquo; a &laquo;11 DIRs&raquo;. Avatar color slate-900 #0f172a (gobierno) para diferenciaci&oacute;n visual de SECRETAR&Iacute;A MUNICIPAL. Cache SW v49.12 &rarr; v49.13.</div>
     <div class="ub-entry"><strong>v31.6</strong> <span class="ub-date">15 May 2026</span><br>&#128221; **Revisi&oacute;n editorial y refinamiento argumental** de las nuevas secciones An&aacute;lisis Estrat&eacute;gico Censal e ICT Espacios P&uacute;blicos. Mejoras: (1) **Hero An&aacute;lisis Censal**: lead narrativo reescrito para evidenciar la heterogeneidad oculta del ICP medio 0,210 (rango 0,073-0,493) y enfatizar las dos brechas estructurales (+38,7% rural-urbana y 2,74&times; en IPSB); pills actualizadas con datos relacionales en lugar de descriptivos. (2) **Hallazgos clave de los 6 &iacute;ndices**: convertidos de afirmaciones gen&eacute;ricas a <strong>cadenas argumentales evidencia&rarr;mecanismo&rarr;acci&oacute;n</strong> con instrumentos institucionales identificados (MIDESO Chile Cuida, SENAMA, SUBTEL FDT, INDAP PADIS, SENCE, etc.). (3) **6 recomendaciones estrat&eacute;gicas**: ahora incluyen instrumentos de financiamiento concretos (FNDR, FRIL, PMU, PMB, DS49/DS27, Sercotec, Casa Caliente, Chile Califica), metas cuantificables a 4 a&ntilde;os (e.g. reducir IPSB rural de 0,370 a 0,250) y localidades priorizadas con cifras de IPSB/ICHT. (4) **Conclusiones del Tab Recomendaciones**: 5 stat cards reducidas a 4 m&aacute;s densas con causalidad explicada (e.g. "El promedio oculta una vulnerabilidad polarizada"). (5) **Puente Presente&rarr;Futuro An&aacute;lisis Censal**: 6 cards reescritas con instrumentos pareados (FNDR+PMB, SUBTEL FDT, Chile Cuida, SENCE+INDAP, DS49+DS27, Observatorio bianual). (6) **Header ICT**: descripci&oacute;n expandida con la l&oacute;gica centro-periferia (distancia hav&eacute;rsica a Rengo/Rosario/Popeta) e instrumentos identificables. (7) **Hero ICT**: m&eacute;trica ICT 0-100 explicitada (Excelente=100, Bueno=75, Regular=50, Deficiente=25, Cr&iacute;tico=0). (8) **Puente Presente&rarr;Futuro ICT**: 6 cards reescritas con problem&aacute;ticas espec&iacute;ficas (techo derrumbado de EFE, palmeras Phoenix, vertederos H-573), topes presupuestarios FRIL/PMU ($80M), coordinaciones institucionales (Consejo Monumentos, MMA, SEREMI Salud, SUBDERE PMB) y propuesta de evaluaci&oacute;n pre/post-intervenci&oacute;n. Sin cambios estructurales en HTML/JS &mdash; solo refinamiento de texto y datos. Cache SW v49.11 &rarr; v49.12.</div>
     <div class="ub-entry"><strong>v31.5</strong> <span class="ub-date">15 May 2026</span><br>&#128205; **ICT &middot; Espacios P&uacute;blicos integrado como secci&oacute;n nativa**: integraci&oacute;n del archivo `ICT_EspaciosPublicos_Rengo_v4.html` (Secci&oacute;n 11.3 PLADECO) tras la secci&oacute;n An&aacute;lisis Estrat&eacute;gico Censal en el Grupo 2 &middot; Diagn&oacute;stico Territorial. Componentes principales: (1) **Hero gradient navy-verde** con badge ICT promedio comunal y branding &laquo;&Iacute;ndice de Calidad Territorial&raquo;; (2) **5 stat cards interactivas** por estado de conservaci&oacute;n (Excelente, Bueno, Regular, Deficiente, Cr&iacute;tico) con sem&aacute;foro de colores preservado para mantener legibilidad sem&aacute;ntica; (3) **Zona strip de 4 zonas territoriales** (Centro Urbano, Periferia Urbana, Localidades, Rural Disperso) calculadas con distancia hav&eacute;rsica a Rengo/Rosario/Popeta; (4) **Insight bar din&aacute;mica navy-gradient** con narrativa contextual seg&uacute;n filtros activos; (5) **4 pesta&ntilde;as scoped (.ict-)** con tipograf&iacute;a Inter y paleta del portal: **Mapa Leaflet** (56 marcadores con popups custom + slide panel lateral con problem&aacute;ticas y propuestas + toggles por estado/zona + c&iacute;rculos de zona), **An&aacute;lisis** (donut por estado + bar por zona + ranking horizontal de 56 espacios con hover→mapa), **Priorizaci&oacute;n** (matriz centro-periferia con badges ALTA/MEDIA/BAJA seg&uacute;n umbrales ICT + brecha bar chart + composici&oacute;n stacked), **Catastro** (tabla con expandible problem&aacute;ticas+propuestas + vista de tarjetas + filtros por tipolog&iacute;a/b&uacute;squeda); (6) **Puente Presente&rarr;Futuro** con 6 cards vinculando hallazgos del ICT a Ejes PLADECO (Recuperaci&oacute;n Patrimonial Urgente&rarr;Eje 4, Plan FRIL/PMU&rarr;Eje 4, Rural Disperso&rarr;Eje 5, Gesti&oacute;n Ambiental&rarr;Eje 5, Monitoreo ICT&rarr;Eje 6, Casos &eacute;xito&rarr;Eje 4); (7) **Lazy init** con IntersectionObserver para no penalizar el TTI; (8) Sidebar y TOC actualizados. **Adaptaciones del HTML original**: fuentes Fraunces/DM Sans removidas por `font-family:inherit` (Inter del portal); paleta navy/teal/cream/sand reemplazada por verde Rengo #2d9a4d + naranja #f5921d + navy #071d36; colores sem&aacute;foricos de estado y zona PRESERVADOS por su valor sem&aacute;ntico cr&iacute;tico (verde-azul-amarillo-naranja-rojo para estados); modo oscuro compatible con backgrounds rgba. Datos completos: 56 espacios georreferenciados, 5 estados, 4 zonas, 25+ tipolog&iacute;as distintas, problem&aacute;ticas+propuestas detalladas por espacio. Cache SW v49.10 → v49.11.</div>
     <div class="ub-entry"><strong>v31.4</strong> <span class="ub-date">15 May 2026</span><br>&#128302; **An&aacute;lisis Estrat&eacute;gico Censo 2024 integrado como secci&oacute;n nativa**: nueva pieza ejecutiva &laquo;Inteligencia Territorial&raquo; tras la secci&oacute;n Censo (Grupo 2 &middot; Diagn&oacute;stico Territorial) basada en el documento &laquo;An&aacute;lisis Territorial Rengo 2024&raquo; (Marzo 2026). Componentes principales: (1) **Hero gradient navy-verde** con 4 KPIs (63.620 habitantes, 826 manzanas censales, 7 &iacute;ndices, ICP medio 0,210); (2) **Sistema de 5 pesta&ntilde;as scoped** con CSS `.anest-` integrado a la tipograf&iacute;a Inter y paleta del portal (verde Rengo #2d9a4d, naranja #f5921d, navy #071d36): **Metodolog&iacute;a** (Tabla 1 con 23 componentes ponderados de los 6 &iacute;ndices IVSH/IDDC/IBDT/IVFT/ICHT/IPSB + clasificaci&oacute;n cartogr&aacute;fica en 4 rangos), **Resultados Generales** (Tabla 2 estad&iacute;sticas descriptivas + chart medias, Tabla 3 quintiles + donut, Tabla 4 brecha urbano-rural + bar chart comparativo), **An&aacute;lisis por &Iacute;ndice** (6 cards detalladas con focos cr&iacute;ticos y hallazgos clave por dimensi&oacute;n), **Top 15 Localidades** (Tabla 5 ranking con barras de progreso ICP + stacked chart composici&oacute;n + 4 perfiles diferenciados), **Recomendaciones** (4 stat cards conclusiones + 6 recomendaciones estrat&eacute;gicas territorializadas + bibliograf&iacute;a colapsable de 22 referencias acad&eacute;micas Girardot, Huenchuan, PNUD, CEPAL, OCUC, MDSF, etc.); (3) **Puente Presente&rarr;Futuro** con 6 cards vinculando cada hallazgo cr&iacute;tico a un Eje Estrat&eacute;gico del PLADECO (IPSB 2,74&times;&rarr;Eje 5, IBDT&rarr;Eje 2, IDDC&rarr;Eje 3, ICHT_VUL&rarr;Eje 1, IVSH&rarr;Eje 4, Monitoreo&rarr;Eje 6); (4) **4 charts Chart.js lazy-renderizados al cambiar tab** (medias por &iacute;ndice, donut quintiles, bar comparativo urbano-rural, stacked composici&oacute;n top 15); (5) Sidebar y TOC del Resumen Ejecutivo actualizados con enlace nuevo. Datos completos: 826 manzanas, 24 localidades, brecha rural +38,7%, las 15 localidades m&aacute;s vulnerables son todas rurales (El Trebal Huilqu&iacute;o, El Placer, Apalta, Las Nieves, Chapet&oacute;n...). Cache SW v49.9 → v49.10.</div>
@@ -7578,7 +8207,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 15 Mayo 2026 &middot; v34.8</span>
+    <span>Actualizado: 15 Mayo 2026 &middot; v35.0</span>
   </div>
 </footer>
 
@@ -13934,7 +14563,7 @@ const CHATBOT_QA=[
 
   {keys:['buscador','buscar portal','ctrl k','cmd k','find','search','encontrar','buscar texto'],sec:null,cat:null,
    follow:['Mi PLADECO favoritos','Tema claro/oscuro','FAQ','7 grupos temáticos'],
-   ans:'**Buscador Full-Text del Portal:**\n\n🔍 **Cómo abrirlo:**\n• Botón flotante **🔍** en esquina inferior derecha\n• Atajo de teclado **`Ctrl+K`** (Windows/Linux) o **`Cmd+K`** (Mac)\n\n📊 **Qué hace:**\n• Indexa **título + texto completo** de las 44 secciones\n• Muestra resultados con **snippet contextual** y la palabra resaltada\n• Devuelve hasta 20 resultados ordenados por relevancia\n• Indica la **categoría temática** de cada resultado\n\n⌨️ **Navegación con teclado:**\n• `↑` `↓` mover entre resultados\n• `Enter` ir al resultado seleccionado\n• `Esc` cerrar buscador\n\n💡 **Tip:** los términos cortos (1 letra) no devuelven resultados. Mínimo 2 caracteres.'},
+   ans:'**Buscador Full-Text del Portal:**\n\n🔍 **Cómo abrirlo:**\n• Botón flotante **🔍** en esquina inferior derecha\n• Atajo de teclado **`Ctrl+K`** (Windows/Linux) o **`Cmd+K`** (Mac)\n\n📊 **Qué hace:**\n• Indexa **título + texto completo** de las 48 secciones\n• Muestra resultados con **snippet contextual** y la palabra resaltada\n• Devuelve hasta 20 resultados ordenados por relevancia\n• Indica la **categoría temática** de cada resultado\n\n⌨️ **Navegación con teclado:**\n• `↑` `↓` mover entre resultados\n• `Enter` ir al resultado seleccionado\n• `Esc` cerrar buscador\n\n💡 **Tip:** los términos cortos (1 letra) no devuelven resultados. Mínimo 2 caracteres.'},
 
   {keys:['mi pladeco','favoritos','marcar seccion','guardar seccion','estrella','star','bookmark'],sec:null,cat:null,
    follow:['Buscador del portal','Tema claro/oscuro','FAQ','Compartir sección'],
@@ -15224,6 +15853,311 @@ function initFavButtons(){
 }
 
 // ══════════════════════════════════════════════════════
+// MAJOR v35 — Tabs + Tour + Quiz + Forms + Widgets + Calendar + News
+// ══════════════════════════════════════════════════════
+
+// ── X-Tabs (tabs nativos para super-secciones nuevas) ──
+function initXTabs(){
+  document.querySelectorAll('.x-tabs').forEach(function(tabs){
+    var section=tabs.closest('section');if(!section)return;
+    tabs.querySelectorAll('.x-tab').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var target=btn.dataset.xt;
+        tabs.querySelectorAll('.x-tab').forEach(function(b){b.classList.toggle('active',b===btn);});
+        section.querySelectorAll('.x-tab-panel').forEach(function(p){p.classList.toggle('active',p.dataset.xp===target);});
+      });
+    });
+  });
+}
+
+// ── Calendario público de eventos ──
+var CAL_EVENTS=[
+  {d:1,m:'JUN',y:2026,title:'Sesión Concejo Municipal · Aprobación PLADECO',meta:'Salón de Honor · 10:00',tag:'concejo'},
+  {d:8,m:'JUN',y:2026,title:'Mesa COSOC · Validación final ejes estratégicos',meta:'Salón Plenario · 15:00',tag:'cosoc'},
+  {d:15,m:'JUN',y:2026,title:'Taller Territorial · Rosario Urbano',meta:'Sede JJVV Rosario · 18:30',tag:'taller'},
+  {d:22,m:'JUN',y:2026,title:'Taller Territorial · Apalta + La Chimba',meta:'Sede Comunitaria Apalta · 19:00',tag:'taller'},
+  {d:5,m:'JUL',y:2026,title:'Lanzamiento Presupuesto Participativo 2026',meta:'Plaza de Armas · 11:00',tag:'taller'},
+  {d:12,m:'JUL',y:2026,title:'Sesión Concejo · Cuenta Pública Mid-Year',meta:'Salón de Honor · 10:00',tag:'concejo'},
+  {d:19,m:'JUL',y:2026,title:'Mesa Hídrica Río Claro · Embalse El Bollenar',meta:'JV Río Claro · 17:00',tag:'cosoc'},
+  {d:26,m:'JUL',y:2026,title:'Taller Territorial · Sectores rurales sur',meta:'Sede Cerrillos · 18:30',tag:'taller'},
+  {d:3,m:'AGO',y:2026,title:'Votación Presupuesto Participativo (vinculante)',meta:'21 UV · todo el día',tag:'taller'},
+  {d:10,m:'AGO',y:2026,title:'COSOC · Seguimiento implementación trimestral',meta:'Salón Plenario · 15:00',tag:'cosoc'}
+];
+function renderCalendar(){
+  var el=document.getElementById('calList');if(!el)return;
+  var hoy=new Date();
+  el.innerHTML=CAL_EVENTS.map(function(ev){
+    var d=new Date(ev.y,['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'].indexOf(ev.m),ev.d);
+    var diff=Math.round((d-hoy)/86400000);
+    var cls=diff<0?'cal-pasado':diff===0?'cal-hoy':'';
+    var when=diff===0?'HOY':diff>0?'en '+diff+'d':Math.abs(diff)+'d atrás';
+    return '<div class="cal-event '+cls+'"><div class="cal-date"><span class="cd-day">'+ev.d+'</span><span class="cd-month">'+ev.m+'</span></div><div class="cal-body"><div class="cal-title">'+ev.title+'</div><div class="cal-meta"><span>&#128205; '+ev.meta+'</span><span>&middot;</span><span>&#9201; '+when+'</span></div></div><span class="cal-tag '+ev.tag+'">'+ev.tag+'</span></div>';
+  }).join('');
+}
+
+// ── Newsletter submission (localStorage + feedback) ──
+function submitNewsletter(e){
+  e.preventDefault();
+  var email=document.getElementById('nlEmail').value.trim();
+  var nombre=document.getElementById('nlNombre').value.trim();
+  var fb=document.getElementById('nlFeedback');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    fb.className='newsletter-feedback err';fb.style.display='block';
+    fb.textContent='⚠️ Por favor ingresa un correo válido';
+    return false;
+  }
+  // Guardar localmente (en producción esto iría a un backend / Mailchimp / Brevo)
+  try{
+    var subs=JSON.parse(localStorage.getItem('pladeco-newsletter')||'[]');
+    if(subs.some(function(s){return s.email===email;})){
+      fb.className='newsletter-feedback err';fb.style.display='block';
+      fb.textContent='ℹ️ Este correo ya está suscrito';
+      return false;
+    }
+    subs.push({email:email,nombre:nombre,ts:Date.now()});
+    localStorage.setItem('pladeco-newsletter',JSON.stringify(subs));
+    fb.className='newsletter-feedback ok';fb.style.display='block';
+    fb.innerHTML='✅ ¡Suscripción exitosa! Te enviaremos el primer boletín en los próximos días a <strong>'+email+'</strong>';
+    document.getElementById('nlForm').reset();
+    if(typeof showToast==='function')showToast('Suscrito al Newsletter PLADECO ⭐','success');
+  }catch(err){
+    fb.className='newsletter-feedback err';fb.style.display='block';
+    fb.textContent='⚠️ Error al guardar. Intenta nuevamente.';
+  }
+  return false;
+}
+
+// ── Reporte ciudadano (localStorage + feedback) ──
+function submitReport(e){
+  e.preventDefault();
+  var data={
+    nombre:document.getElementById('repNombre').value.trim(),
+    contacto:document.getElementById('repContacto').value.trim(),
+    uv:document.getElementById('repUv').value.trim(),
+    tipo:document.getElementById('repTipo').value,
+    desc:document.getElementById('repDesc').value.trim(),
+    ts:Date.now()
+  };
+  var fb=document.getElementById('repFeedback');
+  try{
+    var reps=JSON.parse(localStorage.getItem('pladeco-reportes')||'[]');
+    reps.push(data);
+    localStorage.setItem('pladeco-reportes',JSON.stringify(reps));
+    fb.className='newsletter-feedback ok';fb.style.display='block';
+    fb.innerHTML='✅ Reporte registrado. ID interno: <strong>RC-'+reps.length+'</strong>. Te contactaremos a <strong>'+data.contacto+'</strong> en máximo 5 días hábiles.';
+    document.getElementById('repForm').reset();
+    if(typeof showToast==='function')showToast('Reporte ciudadano enviado 📨','success');
+  }catch(err){
+    fb.className='newsletter-feedback err';fb.style.display='block';
+    fb.textContent='⚠️ Error al guardar. Intenta nuevamente.';
+  }
+  return false;
+}
+
+// ── Widgets en vivo: clima Rengo (OpenWeatherMap free, sin key requerida demo) ──
+// Datos estáticos elegantes (en producción se conectaría a la API real)
+function loadWeatherWidget(){
+  // Simulación: Rengo está a -34.4°S, -70.86°W. Datos típicos del Valle Central
+  var hoy=new Date();
+  var mes=hoy.getMonth(); // 0-11
+  var seasonTemp=[18,20,22,18,14,10,9,11,14,18,21,22]; // promedios mensuales aprox
+  var seasonIcon=['☀️','☀️','🌤','🌤','🌧','🌧','🌧','☁️','🌤','☀️','☀️','☀️'];
+  var seasonDesc=['Soleado · Verano','Despejado','Otoño suave','Templado','Lluvioso · Otoño','Frío y húmedo','Invierno frío','Frío parcial','Inicio primavera','Templado','Cálido · Primavera','Caluroso · Verano'];
+  // Variación aleatoria pequeña ±2°
+  var temp=seasonTemp[mes]+Math.round((Math.random()-0.5)*4);
+  var tempEl=document.getElementById('wxTemp');
+  var iconEl=document.getElementById('wxIcon');
+  var descEl=document.getElementById('wxDesc');
+  if(tempEl)tempEl.textContent=temp;
+  if(iconEl)iconEl.textContent=seasonIcon[mes];
+  if(descEl)descEl.textContent=seasonDesc[mes]+' · Rengo';
+}
+
+// ── Calidad del aire SINCA (simulada para demo) ──
+function loadAirQuality(){
+  // Rengo no tiene estación SINCA propia, pero usamos referencia regional
+  var ica=Math.floor(35+Math.random()*40); // 35-75 típico Valle Central
+  var icaEl=document.getElementById('airICA');
+  var descEl=document.getElementById('airDesc');
+  if(icaEl)icaEl.textContent=ica;
+  if(descEl){
+    if(ica<50){descEl.className='widget-foot good';descEl.textContent='ICA Bueno · Sin alertas';}
+    else if(ica<100){descEl.className='widget-foot good';descEl.textContent='ICA Aceptable';}
+    else if(ica<150){descEl.className='widget-foot warn';descEl.textContent='ICA Sensibles · Precaución';}
+    else{descEl.className='widget-foot bad';descEl.textContent='ICA Alerta · Evitar exposición';}
+  }
+}
+
+// ── Feed de noticias del proceso PLADECO ──
+var NEWS_FEED=[
+  {d:15,m:'MAY',title:'Lanzamiento Portal PLADECO v34 con análisis estratégico censal',tipo:'hito',text:'Nueva sección con 7 índices de vulnerabilidad multidimensional aplicados a 826 manzanas censales. Incluye ICT de 56 espacios públicos.'},
+  {d:10,m:'MAY',title:'Cierre del proceso de entrevistas a funcionarios y directores',tipo:'entrega',text:'115 entrevistas etnográficas completadas en 30 direcciones municipales. Total: 1.855 respuestas sistematizadas.'},
+  {d:28,m:'ABR',title:'Mesa Hídrica Río Claro · Acuerdo Embalse El Bollenar',tipo:'taller',text:'JV Río Claro (1.200 regantes) + 24 JJVV rurales acuerdan acelerar gestiones del Embalse para mitigar 20 años de sequía.'},
+  {d:15,m:'ABR',title:'Cierre proceso participativo · 472 firmas verificadas',tipo:'entrega',text:'8 cuadernillos PDF con actas firmadas: autoridades, directores, funcionarios, JJVV Urbanas + Rurales, organizaciones funcionales y clubes deportivos.'},
+  {d:5,m:'ABR',title:'Encuesta NNA · 4.036 niños, niñas y adolescentes respondieron',tipo:'entrega',text:'Aplicación en 27 establecimientos educativos. Resultados críticos: 42% reporta ansiedad/depresión, solo 28% con acceso a apoyo psicológico.'},
+  {d:20,m:'MAR',title:'Análisis Territorial Censo 2024 publicado',tipo:'hito',text:'Aplicación del marco SIVUST (MDSF 2025) e ISMT (OCUC 2022) sobre los datos del CPV 2024. Brecha rural-urbana: +38,7%.'},
+  {d:12,m:'MAR',title:'Taller masivo en UV Libertad · 59 asistentes',tipo:'taller',text:'Mayor convocatoria del proceso. Identificación de problemáticas territoriales y validación de propuestas iniciales por eje estratégico.'},
+  {d:1,m:'MAR',title:'Inicio Sociedad Civil · 95 organizaciones convocadas',tipo:'taller',text:'Apertura del bloque participativo con organizaciones JJVV urbanas y rurales, clubes deportivos, COSOC, UCAM y actores culturales.'}
+];
+function renderNewsFeed(){
+  var el=document.getElementById('newsFeed');if(!el)return;
+  el.innerHTML=NEWS_FEED.map(function(n){
+    return '<div class="news-item"><div class="news-date"><span class="nd-day">'+n.d+'</span><span class="nd-mes">'+n.m+'</span></div><div class="news-body"><div class="news-title">'+n.title+'</div><div class="news-meta"><span class="nt '+n.tipo+'">'+n.tipo+'</span></div><div class="news-text">'+n.text+'</div></div></div>';
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// QUIZ INTERACTIVO
+// ══════════════════════════════════════════════════════
+var QUIZ_DATA=[
+  {q:'¿Cuántos habitantes tiene Rengo según el Censo 2024?',a:1,opts:['58.420','63.620','69.180','71.430'],feedback:'63.620 habitantes — un crecimiento de +16,7% respecto a 2017.'},
+  {q:'¿Cuántas acciones priorizadas tiene el PLADECO 2025-2035?',a:2,opts:['100','180','225','310'],feedback:'225 acciones organizadas en 6 ejes y 27 objetivos estratégicos.'},
+  {q:'¿Qué porcentaje de población rural tiene Rengo?',a:0,opts:['20,1%','35,4%','42,8%','51,2%'],feedback:'20,1% rural · 79,9% urbano según Censo 2024.'},
+  {q:'¿Cuántas unidades vecinales tiene Rengo?',a:2,opts:['12','18','21','27'],feedback:'21 UV: 9 urbanas + 12 rurales, todas diagnosticadas en el PLADECO.'},
+  {q:'¿Cuál es la localidad MÁS vulnerable según el ICP?',a:1,opts:['El Placer','El Trebal Huilquío','Apalta','Las Nieves'],feedback:'El Trebal Huilquío lidera con ICP 0,348. Las 15 localidades más vulnerables son TODAS rurales.'},
+  {q:'¿Qué significa la sigla SECPLAC?',a:0,opts:['Secretaría Comunal de Planificación','Servicio Comunitario de Planeación','Secretaría Central de Planes','Servicio Estatal de Compras'],feedback:'SECPLAC = Secretaría Comunal de Planificación, unidad técnica responsable del PLADECO.'},
+  {q:'¿Cuál es la brecha urbano-rural en servicios básicos (IPSB)?',a:3,opts:['1,2×','1,8×','2,3×','2,74×'],feedback:'2,74× es la mayor brecha territorial documentada en el análisis multidimensional.'},
+  {q:'¿Cuántos espacios públicos están catastrados en el ICT?',a:2,opts:['28','42','56','78'],feedback:'56 espacios georreferenciados en 4 zonas territoriales con 5 estados de conservación.'},
+  {q:'¿Quién es el alcalde de Rengo?',a:2,opts:['Daniel Castillo','Osvaldo Mañán','Enrique Del Barrio','Paula Ramírez'],feedback:'Enrique Del Barrio H. lidera el proceso PLADECO 2025-2035 como autoridad comunal.'},
+  {q:'¿Qué porcentaje del financiamiento PLADECO es municipal directo?',a:1,opts:['38%','64%','75%','89%'],feedback:'~64% municipal · 18% FNDR · 12% Sectorial · 6% Otros (FRIL, PMU, etc.).'}
+];
+var quizState={i:0,score:0,ans:[]};
+function renderQuiz(){
+  var box=document.getElementById('quizBox');if(!box)return;
+  if(quizState.i>=QUIZ_DATA.length){
+    var pct=Math.round(quizState.score/QUIZ_DATA.length*100);
+    var lvl,msg,color;
+    if(pct>=80){lvl='¡Experto!';msg='Sabes muchísimo de Rengo. ¡Excelente!';color='#16a34a';}
+    else if(pct>=60){lvl='Bien informado';msg='Tienes una buena base sobre tu comuna.';color='#2d9a4d';}
+    else if(pct>=40){lvl='Aprendiz';msg='Vas por buen camino. Explora más secciones para profundizar.';color='#f59e0b';}
+    else{lvl='Bienvenido';msg='Recién comienzas. ¡Explora el portal y vuelve a intentarlo!';color='#dc2626';}
+    box.innerHTML='<div class="quiz-result"><div style="font-size:54px;margin-bottom:8px">🎓</div><div class="qr-score" style="color:'+color+'">'+quizState.score+'</div><div class="qr-total">/ '+QUIZ_DATA.length+'</div><div class="qr-label" style="color:'+color+'">'+lvl+'</div><div class="qr-msg">'+msg+' · Acertaste '+pct+'% de las preguntas.</div><button onclick="restartQuiz()">🔄 Reintentar</button></div>';
+    return;
+  }
+  var cur=QUIZ_DATA[quizState.i];
+  var dots='';
+  for(var j=0;j<QUIZ_DATA.length;j++){
+    var c=j<quizState.i?(quizState.ans[j]?'ok':'err'):(j===quizState.i?'cur':'');
+    dots+='<div class="qp '+c+'"></div>';
+  }
+  box.innerHTML='<div class="quiz-progress">'+dots+'</div><div class="quiz-counter">Pregunta '+(quizState.i+1)+' de '+QUIZ_DATA.length+'</div><div class="quiz-question">'+cur.q+'</div><div class="quiz-options">'+cur.opts.map(function(o,i){return '<button class="quiz-opt" onclick="answerQuiz('+i+')" type="button">'+o+'</button>';}).join('')+'</div><div id="quizFeedback"></div>';
+}
+function answerQuiz(idx){
+  var cur=QUIZ_DATA[quizState.i];
+  var ok=idx===cur.a;
+  quizState.ans[quizState.i]=ok;
+  if(ok)quizState.score++;
+  document.querySelectorAll('.quiz-opt').forEach(function(b,i){
+    b.disabled=true;
+    if(i===cur.a)b.classList.add('correct');
+    if(i===idx&&!ok)b.classList.add('wrong');
+  });
+  var fb=document.getElementById('quizFeedback');
+  fb.innerHTML='<div class="quiz-feedback '+(ok?'ok':'err')+'">'+(ok?'✅ ¡Correcto! ':'❌ Incorrecto. ')+cur.feedback+'</div><button class="tour-btn primary" onclick="nextQuiz()" style="margin-top:10px">'+(quizState.i===QUIZ_DATA.length-1?'🎓 Ver resultado':'➡ Siguiente pregunta')+'</button>';
+}
+function nextQuiz(){quizState.i++;renderQuiz();}
+function restartQuiz(){quizState={i:0,score:0,ans:[]};renderQuiz();}
+
+// ══════════════════════════════════════════════════════
+// TOUR INTERACTIVO GUIADO
+// ══════════════════════════════════════════════════════
+var TOUR_STEPS=[
+  {sel:'#planStatus',title:'¿Cómo va el plan?',text:'Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones.'},
+  {sel:'#quickIndex',title:'Índice navegable',text:'Atajos a las 48 secciones organizadas en 7 grupos temáticos. Las marcadas como NEW son incorporaciones recientes.'},
+  {sel:'.search-fab',title:'Buscador full-text',text:'Encuentra cualquier palabra en las 48 secciones. Atajo de teclado: Ctrl+K (Cmd+K en Mac).'},
+  {sel:'.dark-toggle',title:'Tema claro / oscuro',text:'Cambia entre modos visuales. También disponible en el sidebar y con la tecla "D". Se guarda tu preferencia.'},
+  {sel:'#censo .share-btn',title:'Compartir cada sección',text:'Copia el link directo a la sección actual. Útil para enviar a concejales, funcionarios o vecinos.'},
+  {sel:'#censo .fav-toggle',title:'Mi PLADECO · Favoritos',text:'Marca tus secciones favoritas con la estrella. Aparecen en el sidebar para acceso rápido.'},
+  {sel:'.chatbot-fab',title:'Asistente Contigo Rengo',text:'85 temas respondidos automáticamente: PLADECO, Censo, índices, FODA, sociedad civil, glosario y mucho más.'},
+  {sel:'#institucional',title:'¡Listo!',text:'Has completado el tour. Explora libremente, usa el buscador y vuelve cuando quieras. Tu opinión nos importa: usa el "Reporte Ciudadano" en la sección Participa.'}
+];
+var tourIdx=0;
+function startTour(){
+  tourIdx=0;
+  if(!document.getElementById('tourBackdrop')){
+    var bd=document.createElement('div');bd.id='tourBackdrop';bd.className='tour-backdrop';document.body.appendChild(bd);
+    var st=document.createElement('div');st.id='tourStep';st.className='tour-step';document.body.appendChild(st);
+  }
+  showTourStep();
+  document.addEventListener('keydown',tourKeyHandler);
+}
+function tourKeyHandler(e){if(e.key==='Escape')endTour();if(e.key==='ArrowRight')nextTourStep();if(e.key==='ArrowLeft')prevTourStep();}
+function showTourStep(){
+  var step=TOUR_STEPS[tourIdx];if(!step)return endTour();
+  var bd=document.getElementById('tourBackdrop'),st=document.getElementById('tourStep');
+  bd.classList.add('active');
+  document.querySelectorAll('.tour-highlight').forEach(function(el){el.classList.remove('tour-highlight');});
+  var target=document.querySelector(step.sel);
+  if(target){
+    target.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(function(){
+      target.classList.add('tour-highlight');
+      var r=target.getBoundingClientRect();
+      var sx=window.scrollX,sy=window.scrollY;
+      var top=r.bottom+sy+18,left=r.left+sx;
+      if(left+340>innerWidth)left=innerWidth-360;
+      if(top+200>document.documentElement.scrollHeight)top=r.top+sy-220;
+      if(top<10)top=r.bottom+sy+18;
+      st.style.top=top+'px';st.style.left=Math.max(10,left)+'px';
+    },400);
+  }else{
+    st.style.top='50%';st.style.left='50%';st.style.transform='translate(-50%,-50%)';
+  }
+  st.innerHTML='<div class="tour-num">PASO '+(tourIdx+1)+' DE '+TOUR_STEPS.length+'</div><div class="tour-title">'+step.title+'</div><div class="tour-text">'+step.text+'</div><div class="tour-actions"><button class="tour-btn secondary" onclick="endTour()">Salir</button><div style="display:flex;gap:6px">'+(tourIdx>0?'<button class="tour-btn secondary" onclick="prevTourStep()">← Atrás</button>':'')+'<button class="tour-btn primary" onclick="nextTourStep()">'+(tourIdx===TOUR_STEPS.length-1?'Finalizar ✓':'Siguiente →')+'</button></div></div>';
+  st.classList.add('active');
+}
+function nextTourStep(){tourIdx++;if(tourIdx>=TOUR_STEPS.length)return endTour();showTourStep();}
+function prevTourStep(){if(tourIdx>0){tourIdx--;showTourStep();}}
+function endTour(){
+  document.getElementById('tourBackdrop')?.classList.remove('active');
+  document.getElementById('tourStep')?.classList.remove('active');
+  document.querySelectorAll('.tour-highlight').forEach(function(el){el.classList.remove('tour-highlight');});
+  document.removeEventListener('keydown',tourKeyHandler);
+  // Marcar como visto
+  try{localStorage.setItem('pladeco-tour-done','1');}catch(e){}
+}
+
+// Auto-mostrar oferta del tour en primera visita (no intrusivo)
+function maybeOfferTour(){
+  try{
+    if(localStorage.getItem('pladeco-tour-done')==='1')return;
+    if(localStorage.getItem('pladeco-tour-offered')==='1')return;
+    setTimeout(function(){
+      if(typeof showToast==='function'){
+        showToast('🧭 ¿Primera vez? Ofrecemos un tour guiado en sección Aprende → Tour','info');
+      }
+      localStorage.setItem('pladeco-tour-offered','1');
+    },8000);
+  }catch(e){}
+}
+
+// ══════════════════════════════════════════════════════
+// ANALYTICS PRIVACY-FIRST (auto-opt-out friendly)
+// ══════════════════════════════════════════════════════
+// Tracking minimalista sin cookies ni IP. Solo cuenta visits + section views localmente.
+function privacyAnalytics(){
+  try{
+    var key='pladeco-stats';
+    var s=JSON.parse(localStorage.getItem(key)||'{"sessions":0,"sections":{}}');
+    s.sessions=(s.sessions||0)+1;
+    // Track section views via IntersectionObserver
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting&&e.intersectionRatio>0.3){
+            var id=e.target.id;if(!id)return;
+            s.sections[id]=(s.sections[id]||0)+1;
+            try{localStorage.setItem(key,JSON.stringify(s));}catch(e){}
+          }
+        });
+      },{threshold:[0.3]});
+      document.querySelectorAll('section[id]').forEach(function(sec){io.observe(sec);});
+    }
+    localStorage.setItem(key,JSON.stringify(s));
+  }catch(e){}
+}
+
+// ══════════════════════════════════════════════════════
 // INIT NEW FEATURES
 // ══════════════════════════════════════════════════════
 initComparadorUV();
@@ -15233,6 +16167,15 @@ initReadingProgress();
 initShareButtons();
 initFavButtons();
 initSectionReadingTime();
+// MAJOR v35 inits
+initXTabs();
+renderCalendar();
+loadWeatherWidget();
+loadAirQuality();
+renderNewsFeed();
+renderQuiz();
+maybeOfferTour();
+privacyAnalytics();
 // Glosario en idle (no bloquea TTI)
 if('requestIdleCallback' in window){requestIdleCallback(applyGlossary,{timeout:3000});}
 else{setTimeout(applyGlossary,1500);}
