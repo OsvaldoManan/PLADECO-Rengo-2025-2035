@@ -2436,6 +2436,48 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .sem-stat .ss-val{font-size:22px;font-weight:800;display:block}
 .sem-stat .ss-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-top:2px}
 
+/* ══ Live-Strip · Mini banner Clima + Aire compacto al inicio ══ */
+.live-strip{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;padding:8px 18px;background:linear-gradient(135deg,rgba(7,29,54,.04),rgba(45,154,77,.03));border-bottom:1px solid var(--border);font-size:12.5px;color:var(--text);font-weight:600;letter-spacing:.01em;transition:background .3s,border-color .3s}
+body.dark .live-strip{background:linear-gradient(135deg,rgba(45,154,77,.08),rgba(7,29,54,.06));border-bottom-color:rgba(255,255,255,.08)}
+.ls-item{display:inline-flex;align-items:center;gap:7px;padding:3px 0;transition:opacity .3s}
+.ls-item.loading{opacity:.55}
+.ls-emoji{font-size:18px;line-height:1}
+.ls-val{font-weight:800;color:var(--text);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.ls-unit{font-size:10.5px;color:var(--text2);font-weight:700;margin-left:1px}
+.ls-desc{font-size:11.5px;color:var(--text2);font-weight:600}
+.ls-sep{width:1px;height:18px;background:var(--border);display:inline-block}
+.ls-sub{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text2);font-weight:600}
+.ls-sub strong{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+.ls-air-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:800;letter-spacing:.02em}
+.ls-air-badge.good{background:rgba(34,197,94,.15);color:#16a34a}
+.ls-air-badge.warn{background:rgba(245,146,29,.15);color:#d97706}
+.ls-air-badge.bad{background:rgba(239,68,68,.15);color:#dc2626}
+.ls-meta{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text2);font-weight:600}
+.ls-pulse{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;display:inline-block}
+.ls-date{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:14px;background:linear-gradient(135deg,rgba(245,146,29,.12),rgba(45,154,77,.10));border:1px solid rgba(245,146,29,.22);font-size:11.5px;font-weight:700;color:var(--text);letter-spacing:.02em;text-transform:capitalize;font-variant-numeric:tabular-nums;transition:all .3s}
+body.dark .ls-date{background:linear-gradient(135deg,rgba(245,146,29,.18),rgba(45,154,77,.15));border-color:rgba(245,146,29,.35)}
+.ls-date .ls-emoji{font-size:14px}
+.ls-date-num{color:#d97706;font-weight:800}
+body.dark .ls-date-num{color:#fbbf24}
+.ls-refresh{background:none;border:none;color:var(--text2);cursor:pointer;font-size:13px;padding:2px 4px;border-radius:4px;transition:all .15s;font-family:inherit}
+.ls-refresh:hover{background:rgba(45,154,77,.1);color:#2d9a4d;transform:rotate(180deg)}
+.ls-refresh.spinning{animation:lsSpin .8s linear infinite}
+@keyframes lsSpin{to{transform:rotate(360deg)}}
+@media(max-width:760px){
+  .live-strip{gap:14px;padding:7px 12px;font-size:11.5px}
+  .ls-emoji{font-size:16px}
+  .ls-desc{display:none}
+  .ls-sub{font-size:10.5px}
+  .ls-sep{display:none}
+  .ls-date{font-size:10.5px;padding:2px 8px}
+}
+@media(max-width:480px){
+  .live-strip{justify-content:space-between}
+  .ls-sub{display:none}
+  .ls-meta{display:none}
+  .ls-date-dia{display:none}
+}
+
 /* ══ MAJOR v35 — Componentes de expansión institucional/engagement ══ */
 
 /* Tabs nativos para super-secciones */
@@ -3268,7 +3310,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
       <a href="#participa"><span class="ico">&#128227;</span> Participa &middot; Newsletter / Reporte</a>
       <a href="#faq"><span class="ico">&#10067;</span> Preguntas Frecuentes</a>
-      <a href="#widgets-vivo"><span class="ico">&#127773;</span> Datos en Vivo</a>
       <a href="#educacion"><span class="ico">&#127891;</span> Aprende sobre tu Comuna</a>
       <a href="#institucional"><span class="ico">&#127960;&#65039;</span> Acerca del Portal</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Entregables Finales</a>
@@ -3308,7 +3349,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v35.1</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v35.2</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3347,6 +3388,37 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </div>
       <button class="cb-close" onclick="dismissBanner()" title="Cerrar banner" aria-label="Cerrar banner">&times;</button>
     </div>
+  </div>
+</div>
+
+<!-- ═══ LIVE STRIP · Fecha + Clima + Aire en tiempo real (datos Open-Meteo, refresh 5min) ═══ -->
+<div class="live-strip" id="liveStrip" aria-label="Pulso comunal de Rengo: fecha, clima y calidad del aire en tiempo real">
+  <div class="ls-date" id="lsDate" title="Fecha actual">
+    <span class="ls-emoji" aria-hidden="true">&#128197;</span>
+    <span class="ls-date-dia" id="lsDateDia">--</span>
+    <span class="ls-date-num" id="lsDateNum">-- --</span>
+    <span id="lsDateAnio">----</span>
+  </div>
+  <div class="ls-sep" aria-hidden="true"></div>
+  <div class="ls-item loading" id="lsClima" title="Clima actual de Rengo">
+    <span class="ls-emoji" id="lsWxIcon">&#127780;</span>
+    <span><span class="ls-val" id="lsWxTemp">--</span><span class="ls-unit">&deg;C</span></span>
+    <span class="ls-desc" id="lsWxDesc">Rengo</span>
+  </div>
+  <div class="ls-sub">
+    <span>&#128167;</span><strong id="lsWxHum">--</strong>%
+    <span style="margin-left:8px">&#128168;</span><strong id="lsWxWind">--</strong> km/h
+  </div>
+  <div class="ls-sep" aria-hidden="true"></div>
+  <div class="ls-item loading" id="lsAire" title="Calidad del aire EAQI">
+    <span class="ls-emoji">&#127811;</span>
+    <span>Aire <span class="ls-val" id="lsAirICA">--</span></span>
+    <span class="ls-air-badge good" id="lsAirBadge">--</span>
+  </div>
+  <div class="ls-meta">
+    <span class="ls-pulse" aria-hidden="true"></span>
+    <span>Actualizado <strong id="lsTime">--:--</strong></span>
+    <button class="ls-refresh" type="button" onclick="loadLiveStrip(true)" title="Actualizar ahora (auto cada 5 min)" aria-label="Actualizar clima y aire ahora">&#8634;</button>
   </div>
 </div>
 
@@ -3405,7 +3477,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v35.1</span>
+        <span>&#127919; v35.2</span>
         <span>&#128197; 15 Mayo 2026</span>
         <span>&#128202; 48 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -3559,7 +3631,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <a href="#galeria" class="qi-link"><span class="qi-link-ico">&#127912;</span><span class="qi-link-txt">Galer&iacute;a Fotogr&aacute;fica</span></a>
           <a href="#faq" class="qi-link is-new"><span class="qi-link-ico">&#10067;</span><span class="qi-link-txt">Preguntas Frecuentes</span></a>
           <a href="#participa" class="qi-link is-new"><span class="qi-link-ico">&#128227;</span><span class="qi-link-txt">Participa &middot; Newsletter</span></a>
-          <a href="#widgets-vivo" class="qi-link is-new"><span class="qi-link-ico">&#127773;</span><span class="qi-link-txt">Datos en Vivo</span></a>
           <a href="#educacion" class="qi-link is-new"><span class="qi-link-ico">&#127891;</span><span class="qi-link-txt">Aprende sobre tu Comuna</span></a>
           <a href="#institucional" class="qi-link is-new"><span class="qi-link-ico">&#127960;&#65039;</span><span class="qi-link-txt">Acerca del Portal</span></a>
           <a href="#documentos" class="qi-link"><span class="qi-link-ico">&#128190;</span><span class="qi-link-txt">Documentos descargables</span></a>
@@ -7797,7 +7868,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </section>
 
 <!-- ═══ WIDGETS EN VIVO · Twitter + Clima + Aire ═══ -->
-<section id="widgets-vivo" class="reveal">
+<section id="widgets-vivo" class="reveal" style="display:none" aria-hidden="true" data-note="Sección movida al live-strip superior en v35.2">
   <div class="sec-header">
     <div class="badge" style="background:rgba(59,130,246,.12);color:#2563eb">Actualizaci&oacute;n autom&aacute;tica cada 5 min</div>
     <h2>&#127773; Pulso Comunal &middot; Clima y Aire en Vivo</h2>
@@ -7997,10 +8068,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v35.1</span>
+  <span class="ub-ver">v35.2</span>
   &#218;ltima actualizaci&#243;n: 15 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v35.2</strong> <span class="ub-date">15 May 2026</span><br>&#128197;&#127773; **Pulso Comunal al inicio + Chip de Fecha (D&iacute;a &middot; Mes &middot; A&ntilde;o)**. Dos refinamientos UX/UI integrados en el live-strip superior: (1) **Live-strip movido a la parte superior del sitio** (justo debajo del construction-banner, antes del `<main>`): compacto, no denso, dise&ntilde;o horizontal con gradient sutil verde-navy, dark mode soportado, responsive con breakpoints @760px (oculta descripciones largas) y @480px (oculta sub-m&eacute;tricas). Muestra: emoji clima + temperatura &deg;C + descripci&oacute;n WMO + humedad% + viento km/h + separador + ICA EAQI + badge sem&aacute;foro good/warn/bad + hora de actualizaci&oacute;n + bot&oacute;n refresh manual. La secci&oacute;n grande `#widgets-vivo` queda oculta con `display:none` y `aria-hidden="true"`. Sidebar y quick-index limpiados (removida entrada &laquo;Datos en Vivo&raquo;). (2) **NUEVO chip de fecha** insertado al inicio del strip (antes del clima): badge con gradient naranja-verde, &iacute;cono &#128197;, muestra **D&iacute;a de la semana &middot; D&iacute;a + Mes &middot; A&ntilde;o** (ej. &laquo;Viernes 15 May 2026&raquo;) con n&uacute;mero destacado en naranja. Funci&oacute;n `updateDateStrip()` con arrays `DIAS_SEM` y `MESES_ES` en espa&ntilde;ol completo. Auto-tick cada **60 segundos** para reflejar el cambio de d&iacute;a a medianoche sin recarga. Tooltip extendido con fecha ISO. Responsive: en mobile &lt;480px se oculta el d&iacute;a de la semana, dejando &laquo;15 May 2026&raquo;. Auto-refresh consolidado: clima/aire cada 5 min + fecha cada 60s + revalidaci&oacute;n en `visibilitychange`. Cache SW v52.1 &rarr; v52.2.</div>
     <div class="ub-entry"><strong>v35.1</strong> <span class="ub-date">15 May 2026</span><br>&#9201;&#65039;&#127773; **Refinamiento: Presupuesto Participativo &laquo;Pr&oacute;ximamente&raquo; + Pulso Comunal con APIs reales**. Dos cambios solicitados implementados: (1) **`#presupuesto-participativo` rediseñada como estado de espera**: badge naranja pulsante &laquo;&#9201;&#65039; Pr&oacute;ximamente &middot; En Evaluaci&oacute;n&raquo;, card central con icono &#9201;&#65039; gigante, mensaje claro que la iniciativa est&aacute; en fase de evaluaci&oacute;n t&eacute;cnica/normativa/presupuestaria por SECPLAC y direcciones municipales, 3 stat cards (Etapa actual: An&aacute;lisis factibilidad &middot; Pr&oacute;xima etapa: Presentaci&oacute;n al Concejo &middot; Comunicaci&oacute;n: Canales municipales), CTA al Newsletter PLADECO para notificaci&oacute;n. (2) **`#widgets-vivo` simplificado con APIs reales**: eliminados los widgets de Twitter, Facebook y el feed de noticias. Solo quedan **2 widgets ampliados**: **Clima Rengo** (Open-Meteo API gratuita, georef -34.41&deg;S/-70.86&deg;W) con temperatura, humedad, viento, c&oacute;digo WMO + emoji + descripci&oacute;n en espa&ntilde;ol; **Calidad del Aire** (Open-Meteo Air Quality API que consume SINCA del MMA) con EAQI europeo, PM2.5, PM10, sem&aacute;foro 6 niveles. **Auto-refresh cada 5 minutos** con setInterval + pausa autom&aacute;tica cuando la pesta&ntilde;a no est&aacute; visible (`visibilitychange`) + bot&oacute;n manual &laquo;Actualizar ahora&raquo;. Cada widget muestra hora de &uacute;ltima actualizaci&oacute;n. Sin API key, sin tracking, CORS habilitado. Verificado en navegador con datos reales (9&deg;C parcialmente nublado, EAQI 63 pobre). Cache SW v52.0 &rarr; v52.1.</div>
     <div class="ub-entry"><strong>v35.0</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MAJOR v35.0 &middot; Expansi&oacute;n con 20 funcionalidades nuevas en 4 super-secciones**. Implementaci&oacute;n integral de las propuestas A1-E4 organizadas en 4 nuevas secciones-paraguas con sistema de tabs scoped (`.x-tabs`). (1) **&#127960;&#65039; Acerca del Portal** (`#institucional`): 5 tabs &mdash; Qui&eacute;nes Somos (cards del equipo con avatares y bios), Privacidad &amp; T&eacute;rminos (Pol&iacute;tica Ley 19.628), Licencia Creative Commons BY-SA 4.0 (badge visual con 3 libertades + 2 condiciones), Open Data (8 datasets descargables CSV/JSON/GeoJSON/XLSX/PDF), Calidad &amp; Sellos (6 trust badges: WCAG AA, Lighthouse 95+, PWA, HTTPS A+, SEO, Tema). (2) **&#128227; Participa Activamente** (`#participa`): 4 tabs &mdash; Newsletter (formulario con validaci&oacute;n + localStorage), Calendario p&uacute;blico (10 eventos con tags por tipo cosoc/concejo/taller + estado pasado/hoy/futuro), Reporte Ciudadano (formulario completo con 10 tipolog&iacute;as + localStorage), Concejo en Vivo (embed YouTube lazy con thumbnail). (3) **&#127773; Pulso Comunal Datos en Vivo** (`#widgets-vivo`): 4 widgets (clima Rengo seg&uacute;n estaci&oacute;n, calidad del aire ICA con sem&aacute;foro, links a X/Twitter @MuniRengo y Facebook /MuniRengo) + feed de **8 noticias del proceso** PLADECO con tipos taller/entrega/hito. (4) **&#127891; Aprende sobre tu Comuna** (`#educacion`): 3 tabs &mdash; **Quiz interactivo** de 10 preguntas con progress bar, feedback inmediato y scoring final con badges (Experto/Bien Informado/Aprendiz/Bienvenido), **Tour guiado** de 8 pasos con backdrop blur + highlight de elementos clave (Shepherd-like custom, navegable con flechas y Esc), Recursos para educadores (4 cards: profesores colegio, universitarios, investigadores, multimedia). (5) **Analytics privacy-first**: tracking local de sessions y section views v&iacute;a IntersectionObserver, sin cookies ni IP. (6) **Auto-oferta del tour** en primera visita (toast 8s tras carga, no intrusivo, recordatorio &uacute;nico). Sidebar y Quick-Index actualizados con 5 nuevas entradas NEW. Conteo total **44 &rarr; 48 secciones**. Cache SW v51.8 &rarr; v52.0.</div>
     <div class="ub-entry"><strong>v34.8</strong> <span class="ub-date">15 May 2026</span><br>&#129302; **Chatbot Contigo Rengo actualizado con todas las funcionalidades nuevas**. Sincronizado con el portal v34: (1) **11 nuevas entradas QA agregadas** (74 &rarr; **85 entradas totales**): An&aacute;lisis Estrat&eacute;gico Censal (7 &iacute;ndices &middot; 826 manzanas), ICT Espacios P&uacute;blicos (56 espacios &middot; 4 zonas &middot; 5 estados), Ficha Comunal Observatorio Laboral (US$208M inversi&oacute;n), Diagn&oacute;stico Institucional (115 entrevistas etnogr&aacute;ficas), Presupuesto Participativo ($200M piloto &middot; 5 etapas), FAQ Preguntas Frecuentes (8 acordeones), Glosario interactivo (63 t&eacute;rminos t&eacute;cnicos), Modo Claro/Oscuro (3 formas de cambiar tema), Buscador Full-Text (Ctrl+K), Mi PLADECO Favoritos (localStorage), Canales Oficiales (municipalidadrengo.cl + RRSS + transparencia). (2) **CHAT_SUGGESTIONS renovadas**: 15 chips de acceso r&aacute;pido con las novedades destacadas al frente. (3) **Mensaje de bienvenida actualizado** de &laquo;70+ temas&raquo; a &laquo;80+ temas&raquo;, agregadas 6 nuevas categor&iacute;as (An&aacute;lisis Censal, ICT, Ficha Comunal, Diagn&oacute;stico Institucional, Presupuesto Participativo, FAQ/glosario), referencias a Ctrl+K y a novedades v34. Verificado en navegador: chatbot responde correctamente a las 11 nuevas keys con tooltips y enlaces a secci&oacute;n. Cache SW v51.7 &rarr; v51.8.</div>
@@ -8182,7 +8254,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 15 Mayo 2026 &middot; v35.1</span>
+    <span>Actualizado: 15 Mayo 2026 &middot; v35.2</span>
   </div>
 </footer>
 
@@ -15930,23 +16002,23 @@ function submitReport(e){
 }
 
 // ══════════════════════════════════════════════════════
-// Widgets en vivo: Clima + Calidad del Aire (APIs reales · Open-Meteo)
-// Auto-refresh cada 5 minutos · CORS habilitado · sin API key
+// Live Strip · Clima + Calidad del Aire (Open-Meteo · auto-refresh 5min)
+// Diseño compacto al inicio del portal · CORS habilitado · sin API key
 // ══════════════════════════════════════════════════════
 var RENGO_COORDS={lat:-34.4067,lon:-70.8597};
 
-// Mapeo WMO weather codes a emoji + descripción
+// Mapeo WMO weather codes a emoji + descripción breve
 var WMO_CODES={
-  0:['☀️','Despejado'],1:['🌤','Mayormente despejado'],2:['⛅','Parcialmente nublado'],3:['☁️','Nublado'],
-  45:['🌫','Niebla'],48:['🌫','Niebla con escarcha'],
-  51:['🌦','Llovizna ligera'],53:['🌦','Llovizna'],55:['🌧','Llovizna intensa'],
-  56:['🌨','Llovizna helada ligera'],57:['🌨','Llovizna helada'],
+  0:['☀️','Despejado'],1:['🌤','Despejado'],2:['⛅','Parc. nublado'],3:['☁️','Nublado'],
+  45:['🌫','Niebla'],48:['🌫','Niebla'],
+  51:['🌦','Llovizna'],53:['🌦','Llovizna'],55:['🌧','Llovizna'],
+  56:['🌨','Llovizna helada'],57:['🌨','Llovizna helada'],
   61:['🌧','Lluvia ligera'],63:['🌧','Lluvia'],65:['🌧','Lluvia intensa'],
-  66:['🌨','Lluvia helada'],67:['🌨','Lluvia helada intensa'],
-  71:['🌨','Nieve ligera'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],77:['❄️','Granos de nieve'],
-  80:['🌦','Chubascos ligeros'],81:['🌧','Chubascos'],82:['⛈','Chubascos intensos'],
-  85:['🌨','Chubascos de nieve'],86:['❄️','Chubascos de nieve intensos'],
-  95:['⛈','Tormenta eléctrica'],96:['⛈','Tormenta con granizo'],99:['⛈','Tormenta intensa']
+  66:['🌨','Lluvia helada'],67:['🌨','Lluvia helada'],
+  71:['🌨','Nieve'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],77:['❄️','Granizo'],
+  80:['🌦','Chubascos'],81:['🌧','Chubascos'],82:['⛈','Chubascos fuertes'],
+  85:['🌨','Chubascos nieve'],86:['❄️','Chubascos nieve'],
+  95:['⛈','Tormenta'],96:['⛈','Tormenta granizo'],99:['⛈','Tormenta fuerte']
 };
 
 function fmtTime(d){
@@ -15955,90 +16027,118 @@ function fmtTime(d){
   return h+':'+m;
 }
 
-function loadWeatherWidget(){
-  var tempEl=document.getElementById('wxTemp');
-  var iconEl=document.getElementById('wxIcon');
-  var descEl=document.getElementById('wxDesc');
-  var humEl=document.getElementById('wxHum');
-  var windEl=document.getElementById('wxWind');
-  var timeEl=document.getElementById('wxTime');
-  if(!tempEl)return;
-  if(descEl)descEl.innerHTML='Actualizando&hellip; <span class="widget-loading"></span>';
+// ── Fecha actual del Pulso Comunal · Día - Mes - Año ──
+var DIAS_SEM=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+var MESES_ES_FULL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var MESES_ES_SHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function updateDateStrip(){
+  var d=new Date();
+  var diaEl=document.getElementById('lsDateDia');
+  var numEl=document.getElementById('lsDateNum');
+  var anioEl=document.getElementById('lsDateAnio');
+  if(diaEl)diaEl.textContent=DIAS_SEM[d.getDay()];
+  if(numEl)numEl.textContent=d.getDate()+' '+MESES_ES_SHORT[d.getMonth()];
+  if(anioEl)anioEl.textContent=d.getFullYear();
+  var box=document.getElementById('lsDate');
+  if(box){
+    var iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    box.setAttribute('title','Fecha actual: '+DIAS_SEM[d.getDay()]+' '+d.getDate()+' de '+MESES_ES_FULL[d.getMonth()]+' de '+d.getFullYear()+' ('+iso+')');
+  }
+}
+
+function loadLiveStrip(manual){
+  var btn=document.querySelector('.ls-refresh');
+  if(manual&&btn)btn.classList.add('spinning');
+  updateDateStrip();
+  loadWeatherStrip();
+  loadAirStrip().finally(function(){if(btn)setTimeout(function(){btn.classList.remove('spinning');},800);});
+}
+
+function loadWeatherStrip(){
+  var item=document.getElementById('lsClima');
+  var tempEl=document.getElementById('lsWxTemp');
+  var iconEl=document.getElementById('lsWxIcon');
+  var descEl=document.getElementById('lsWxDesc');
+  var humEl=document.getElementById('lsWxHum');
+  var windEl=document.getElementById('lsWxWind');
+  var timeEl=document.getElementById('lsTime');
+  if(!tempEl)return Promise.resolve();
+  if(item)item.classList.add('loading');
   var url='https://api.open-meteo.com/v1/forecast?latitude='+RENGO_COORDS.lat+'&longitude='+RENGO_COORDS.lon+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Santiago';
-  fetch(url).then(function(r){return r.json();}).then(function(data){
-    if(!data||!data.current){throw new Error('Respuesta vacía');}
+  return fetch(url).then(function(r){return r.json();}).then(function(data){
+    if(!data||!data.current)throw new Error('Respuesta vacía');
     var c=data.current;
-    var temp=Math.round(c.temperature_2m);
-    var hum=Math.round(c.relative_humidity_2m);
-    var wind=Math.round(c.wind_speed_10m);
-    var code=c.weather_code;
-    var info=WMO_CODES[code]||['🌤','Condición actual'];
-    tempEl.textContent=temp;
+    var info=WMO_CODES[c.weather_code]||['🌤','Rengo'];
+    if(tempEl)tempEl.textContent=Math.round(c.temperature_2m);
     if(iconEl)iconEl.textContent=info[0];
-    if(descEl){descEl.className='widget-foot good';descEl.textContent=info[1]+' · Rengo';}
-    if(humEl)humEl.textContent=hum;
-    if(windEl)windEl.textContent=wind;
+    if(descEl)descEl.textContent=info[1]+' · Rengo';
+    if(humEl)humEl.textContent=Math.round(c.relative_humidity_2m);
+    if(windEl)windEl.textContent=Math.round(c.wind_speed_10m);
     if(timeEl)timeEl.textContent=fmtTime(new Date());
-  }).catch(function(err){
-    if(descEl){descEl.className='widget-foot warn';descEl.textContent='⚠️ No se pudo obtener datos &middot; reintentando&hellip;';}
-    if(tempEl&&tempEl.textContent==='--')tempEl.textContent='?';
+    if(item)item.classList.remove('loading');
+  }).catch(function(){
+    if(descEl)descEl.textContent='Reconectando...';
+    if(item)item.classList.remove('loading');
   });
 }
 
-function loadAirQuality(){
-  var icaEl=document.getElementById('airICA');
-  var descEl=document.getElementById('airDesc');
-  var pm25El=document.getElementById('airPM25');
-  var pm10El=document.getElementById('airPM10');
-  var timeEl=document.getElementById('airTime');
-  if(!icaEl)return;
-  if(descEl)descEl.innerHTML='Actualizando&hellip; <span class="widget-loading"></span>';
-  var url='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+RENGO_COORDS.lat+'&longitude='+RENGO_COORDS.lon+'&current=european_aqi,pm10,pm2_5&timezone=America/Santiago';
-  fetch(url).then(function(r){return r.json();}).then(function(data){
-    if(!data||!data.current){throw new Error('Respuesta vacía');}
-    var c=data.current;
-    var ica=Math.round(c.european_aqi||0);
-    var pm25=c.pm2_5!=null?Math.round(c.pm2_5):'-';
-    var pm10=c.pm10!=null?Math.round(c.pm10):'-';
+function loadAirStrip(){
+  var item=document.getElementById('lsAire');
+  var icaEl=document.getElementById('lsAirICA');
+  var badgeEl=document.getElementById('lsAirBadge');
+  if(!icaEl)return Promise.resolve();
+  if(item)item.classList.add('loading');
+  var url='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+RENGO_COORDS.lat+'&longitude='+RENGO_COORDS.lon+'&current=european_aqi&timezone=America/Santiago';
+  return fetch(url).then(function(r){return r.json();}).then(function(data){
+    if(!data||!data.current)throw new Error('Respuesta vacía');
+    var ica=Math.round(data.current.european_aqi||0);
     icaEl.textContent=ica;
-    if(pm25El)pm25El.textContent=pm25;
-    if(pm10El)pm10El.textContent=pm10;
-    if(timeEl)timeEl.textContent=fmtTime(new Date());
-    if(descEl){
+    if(badgeEl){
       var lvl,cls;
       if(ica<=20){lvl='Muy bueno';cls='good';}
       else if(ica<=40){lvl='Bueno';cls='good';}
       else if(ica<=60){lvl='Moderado';cls='good';}
-      else if(ica<=80){lvl='Pobre &middot; Sensibles';cls='warn';}
+      else if(ica<=80){lvl='Pobre';cls='warn';}
       else if(ica<=100){lvl='Muy pobre';cls='bad';}
-      else{lvl='Extremadamente pobre &middot; Alerta';cls='bad';}
-      descEl.className='widget-foot '+cls;
-      descEl.innerHTML='EAQI: '+lvl;
+      else{lvl='Extr. pobre';cls='bad';}
+      badgeEl.className='ls-air-badge '+cls;
+      badgeEl.textContent=lvl;
     }
-  }).catch(function(err){
-    if(descEl){descEl.className='widget-foot warn';descEl.textContent='⚠️ No se pudo obtener datos &middot; reintentando&hellip;';}
-    if(icaEl&&icaEl.textContent==='--')icaEl.textContent='?';
+    if(item)item.classList.remove('loading');
+  }).catch(function(){
+    if(badgeEl)badgeEl.textContent='⚠️';
+    if(item)item.classList.remove('loading');
   });
 }
 
-// Auto-refresh cada 5 minutos cuando la página está visible
+// Auto-refresh: clima/aire cada 5 min · fecha cada minuto (por si cambia el día a medianoche)
 var _widgetTimer=null;
+var _dateTimer=null;
 function startWidgetAutoRefresh(){
   if(_widgetTimer)return;
   _widgetTimer=setInterval(function(){
     if(document.visibilityState==='visible'){
-      loadWeatherWidget();
-      loadAirQuality();
+      loadLiveStrip();
     }
   },5*60*1000);
-  // Pausar/reanudar al cambiar visibilidad
+  // Tick de fecha cada 60s (barato, sin red): si pasa medianoche se refleja en menos de 1 min
+  if(!_dateTimer){
+    _dateTimer=setInterval(function(){
+      if(document.visibilityState==='visible')updateDateStrip();
+    },60*1000);
+  }
   document.addEventListener('visibilitychange',function(){
     if(document.visibilityState==='visible'){
-      // Si llevaba +5min escondida, refrescar de inmediato
-      loadWeatherWidget();loadAirQuality();
+      updateDateStrip();
+      loadLiveStrip();
     }
   });
 }
+
+// Compat: stubs por si quedan llamadas en otros lugares
+function loadWeatherWidget(){loadWeatherStrip();}
+function loadAirQuality(){loadAirStrip();}
 
 // ── Feed de noticias del proceso PLADECO ──
 var NEWS_FEED=[
@@ -16222,8 +16322,7 @@ initSectionReadingTime();
 // MAJOR v35 inits
 initXTabs();
 renderCalendar();
-loadWeatherWidget();
-loadAirQuality();
+loadLiveStrip();
 startWidgetAutoRefresh();
 renderQuiz();
 maybeOfferTour();
