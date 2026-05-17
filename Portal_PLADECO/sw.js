@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v55.0
+// PLADECO Rengo 2025-2035 · Service Worker v56.0
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v55.0: 8 nuevas funcionalidades v38.0 (reporte georref, voz vecinos, cuadernillo PDF, heatmap, a11y)
+// v56.0: upgrade estético integral v39.0 (tipografía Inter + paleta WCAG AA + 12 capítulos narrativos)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v55.0';
+const CACHE_STATIC='pladeco-static-v56.0';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
