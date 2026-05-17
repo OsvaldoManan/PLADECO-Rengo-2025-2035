@@ -3571,7 +3571,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.2</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.3</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3699,7 +3699,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v36.2</span>
+        <span>&#127919; v36.3</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 52 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -8382,10 +8382,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v36.2</span>
+  <span class="ub-ver">v36.3</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v36.3</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128260; **HOTFIX: KILL-SWITCH para forzar actualizaci&oacute;n del Service Worker viejo en navegadores cliente**. S&iacute;ntoma reportado: &laquo;no me carga el contenido del sitio web&raquo; tras desplegar v36.2. **Causa**: navegadores con Service Worker v53.0 a&uacute;n activo serv&iacute;an HTML cacheado de v36.0 (que ten&iacute;a el bug de colisi&oacute;n `renderTimeline`), aunque GitHub Pages ya sirv&iacute;a v36.2 fixeado. La estrategia network-first del SW v53.0 deber&iacute;a haber actualizado solo, pero usuarios con conectividad lenta o sesi&oacute;n larga manten&iacute;an el SW viejo controlando el dominio. **Fix v53.3**: (1) Bump cache a `pladeco-static-v53.3`. (2) En `activate` del SW, despu&eacute;s de limpiar cach&eacute;s viejas y hacer `clients.claim()`, **notifica a todos los clients via `postMessage({type:'SW_UPDATED',version:CACHE_STATIC})`**. (3) En el HTML, listener `navigator.serviceWorker.onmessage` detecta el mensaje y **fuerza `location.reload()` UNA sola vez** (con flag `sessionStorage.__sw_reload_v` para evitar loop infinito). (4) Listener adicional de `controllerchange` como segunda red de seguridad. (5) Cualquier visita despu&eacute;s de la actualizaci&oacute;n autom&aacute;ticamente fuerza el reload del HTML actualizado con v36.2 (que ya tiene el fix del `renderTimeline`). Tras esto el sitio queda funcional sin intervenci&oacute;n manual del usuario.</div>
     <div class="ub-entry"><strong>v36.2</strong> <span class="ub-date">17 May 2026</span><br>&#128737; **HOTFIX cr&iacute;tico: colisi&oacute;n de funciones rompi&oacute; todo el script v36.0**. Diagnosticado en vivo con preview browser + capturador de errores temprano en localStorage. **Causa ra&iacute;z**: dos funciones declaradas con el mismo nombre y la m&iacute;a sobrescrib&iacute;a la existente, pero se llamaba antes de que mis datos se asignaran. (1) `function renderTimeline()` ya exist&iacute;a en el portal en l&iacute;nea 11671 (renderiza el timeline interno del proceso PLADECO en otra secci&oacute;n) y se llamaba en l&iacute;nea 13382 como parte del init. Yo defin&iacute; otra `renderTimeline()` en l&iacute;nea 16917 que la sobrescrib&iacute;a por hoisting, pero usaba `TIMELINE_EVENTS` que se asignaba en l&iacute;nea 16882 &mdash; cuando se llamaba en 13382, `TIMELINE_EVENTS` a&uacute;n era `undefined` (las `var` no se hoistan su valor, solo el binding), generando `TypeError: Cannot read properties of undefined (reading 'map')` que abortaba **todo el script** despu&eacute;s de las definiciones de funciones (que s&iacute; se hoistan). Por eso TODAS las variables `var` de v36.0 (DIAS_SEM, GALLERY_PROC, ACHIEVEMENTS, COMUNAS_COMP, PROYECTOS_PLADECO) aparec&iacute;an como `undefined` en window. (2) Similar conflicto con `function showToast()` ya existente. **Fix**: (a) renombrar mi funci&oacute;n a `renderProcessTimeline()` y actualizar la llamada init; (b) eliminar mi `showToast` duplicado y usar el original del portal (con firma compatible `showToast(msg,type)`). Verificado en navegador: timeline 11 eventos &check;, galer&iacute;a 18 tiles &check;, comparador 7 comunas + 6 indicadores + insight din&aacute;mico &check;, mapa proyectos 50 marcadores + $22.320M CLP &check;, 12 logros desbloqueables &check;, chip fecha &laquo;Domingo 17 May 2026&raquo; &check;, clima Open-Meteo &check;, badges contador funcional &check;. Cache SW v53.1 &rarr; v53.2.</div>
     <div class="ub-entry"><strong>v36.1</strong> <span class="ub-date">17 May 2026</span><br>&#128260;&#128197; **Sincronizaci&oacute;n integral de fechas y conteos a 17 Mayo 2026**. Actualizaci&oacute;n transversal de metadatos: (1) **33 referencias hardcoded** de &laquo;15 May 2026&raquo; y &laquo;15 Mayo 2026&raquo; sincronizadas a **17 Mayo 2026** en banners, footer, sidebar, panel &laquo;C&oacute;mo va el plan&raquo;, changelogs hist&oacute;ricos y card de construcci&oacute;n. (2) **Conteo de secciones** sincronizado de 48 a **52 secciones** en panel &laquo;C&oacute;mo va el plan&raquo;, &iacute;ndice navegable, tour guiado y splash screen. (3) **Construction-meta** actualizada: v36.0 &rarr; v36.1, 52 secciones confirmadas. (4) **Footer-bottom**, **sidebar-version** y **update-badge** sincronizados. (5) **Verificaci&oacute;n cruzada** de las 4 super-secciones nuevas de v36.0 (timeline, galer&iacute;a-proceso, mapa-proyectos, comparador) &mdash; todas las entradas NEW del sidebar y quick-index apuntan correctamente. Sin cambios funcionales: solo limpieza editorial. Cache SW v53.0 &rarr; v53.1.</div>
     <div class="ub-entry"><strong>v36.0</strong> <span class="ub-date">17 May 2026</span><br>&#127919;&#9889; **MAJOR v36.0 &middot; Upgrade est&eacute;tico integral + 4 nuevas super-secciones + sistema de logros**. La mayor expansi&oacute;n est&eacute;tica y de contenido desde el lanzamiento. Incluye: (A) **Sistema visual unificado** con design tokens en `:root` para radius (xs-2xl), shadows escalonadas (sm-2xl + glow verde/naranja), tipograf&iacute;a fluida con `clamp()` (display/h1/h2/h3/body), transiciones estandarizadas (fast/base/slow/bounce). (B) **Microinteracciones premium**: skeleton loaders animados con gradient shimmer, **ripple effect autom&aacute;tico** en clicks sobre botones/cards (estilo Material), hover 3D con translateY+scale en cards, **toasts ricos** con icono + tipo (success/warn/error/info) + auto-dismiss, **confetti CSS** disparado al completar quiz con &geq;60%. (C) **Splash redise&ntilde;ado**: 3 orbs flotantes con gradient blur + barra de progreso real con 6 mensajes contextuales rotativos (&laquo;Inicializando&hellip;&raquo;, &laquo;Cargando 826 manzanas censales&hellip;&raquo;, etc.). (D) **Hero cinematogr&aacute;fico**: gradient mesh animado con 2 orbs verde-naranja que driftean en 18s loop infinito, count-up animado de los 6 KPIs principales (cubic easing 1.4s), scroll-hint con bounce 2.4s. (E) **&#128467;&#65039; L&iacute;nea de Tiempo Interactiva** `#timeline`: 11 hitos del proceso Mar 2025 &rarr; Jun 2026 con filtros por tipo (hito/taller/entrega/validaci&oacute;n), markers circulares coloreados por tipo, layout dual columna en desktop con l&iacute;nea central, tarjetas con hover elevation. (F) **&#127912; Galer&iacute;a Visual del Proceso** `#galeria-proceso`: 18 placeholders elegantes de talleres/mesas con gradient por categor&iacute;a (UV/rural/NNA/h&iacute;drica/directivos/COSOC), filtros, hover scale+elevation. (G) **&#128205; Mapa Interactivo de Proyectos PLADECO** `#mapa-proyectos`: 50 proyectos georreferenciados con Leaflet, c&iacute;rculos proporcionales al monto, colores por eje, filtros por eje 1-6 + todos, popups con monto/meta, lazy-init via IntersectionObserver, contador din&aacute;mico de proyectos visibles + monto total. (H) **&#9878;&#65039; Comparador con Comunas Vecinas** `#comparador`: 7 comunas del Valle de Cachapoal (Rengo + Requ&iacute;noa + San Vicente + Malloa + Quinta + Do&ntilde;ihue + Coltauco) con 6 indicadores (poblaci&oacute;n, ruralidad, pobreza CASEN, IDH PNUD, escolaridad, FCM SINIM), selecci&oacute;n m&uacute;ltiple (2-5 comunas), tabla comparativa con highlight best/worst por columna, insight din&aacute;mico generado autom&aacute;ticamente. (I) **&#127942; Sistema de Logros del Visitante** (gamificaci&oacute;n privacy-first): FAB flotante con contador + panel desplegable con grid 4x3 de 12 badges desbloqueables (visit, scroll, quiz, fav, search, tour, censo, newsletter, reporte, compare, mapa, master), localStorage `pladeco-achievements-v1`, toast celebratorio + animaci&oacute;n bounce al desbloquear, badge `master` con confetti al llegar a 8/12. Hooks integrados en: quiz, tour, scroll 50%, favoritos, b&uacute;squeda, hashchange a secciones censales/mapa/comparador. (J) Sidebar y Quick-Index actualizados con **4 entradas NEW**. Conteo total **48 &rarr; 52 secciones**. Cache SW v52.3 &rarr; v53.0.</div>
@@ -8572,7 +8573,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v36.2</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v36.3</span>
   </div>
 </footer>
 
@@ -17667,7 +17668,7 @@ function exportSectionPDF(sectionId){
   setTimeout(function(){printWin.print();},500);
 }
 
-// ── SERVICE WORKER ──
+// ── SERVICE WORKER + KILL-SWITCH v53.3 ──
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').then(function(reg){
     reg.addEventListener('updatefound',function(){
@@ -17675,13 +17676,41 @@ if('serviceWorker' in navigator){
       if(nw){
         nw.addEventListener('statechange',function(){
           if(nw.state==='activated'){
-            showToast('Portal actualizado — recargando...','success');
+            if(typeof showToast==='function')showToast('Portal actualizado — recargando...','success');
             setTimeout(function(){location.reload();},1500);
           }
         });
       }
     });
   }).catch(function(){});
+  // KILL-SWITCH v53.3: escuchar mensaje del SW para reload forzado tras update
+  navigator.serviceWorker.addEventListener('message',function(e){
+    if(e.data&&e.data.type==='SW_UPDATED'){
+      try{
+        // Si la versión cambió a v53.3+, recargar UNA SOLA VEZ (evitar loop)
+        var last=sessionStorage.getItem('__sw_reload_v');
+        if(last!==e.data.version){
+          sessionStorage.setItem('__sw_reload_v',e.data.version);
+          console.log('[SW] Nueva versión detectada:',e.data.version,'— recargando');
+          if(typeof showToast==='function')showToast('Nueva versión instalada','success');
+          setTimeout(function(){location.reload();},800);
+        }
+      }catch(_){}
+    }
+  });
+  // Detectar cambio de controller (otra señal de nuevo SW activo)
+  var refreshing=false;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(refreshing)return;
+    refreshing=true;
+    try{
+      var last=sessionStorage.getItem('__sw_ctl_reload');
+      if(last!=='1'){
+        sessionStorage.setItem('__sw_ctl_reload','1');
+        setTimeout(function(){location.reload();},500);
+      }
+    }catch(_){}
+  });
 }
 </script>
 </body>
