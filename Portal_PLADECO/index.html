@@ -3571,7 +3571,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.1</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.2</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3699,7 +3699,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v36.1</span>
+        <span>&#127919; v36.2</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 52 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -8382,10 +8382,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v36.1</span>
+  <span class="ub-ver">v36.2</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v36.2</strong> <span class="ub-date">17 May 2026</span><br>&#128737; **HOTFIX cr&iacute;tico: colisi&oacute;n de funciones rompi&oacute; todo el script v36.0**. Diagnosticado en vivo con preview browser + capturador de errores temprano en localStorage. **Causa ra&iacute;z**: dos funciones declaradas con el mismo nombre y la m&iacute;a sobrescrib&iacute;a la existente, pero se llamaba antes de que mis datos se asignaran. (1) `function renderTimeline()` ya exist&iacute;a en el portal en l&iacute;nea 11671 (renderiza el timeline interno del proceso PLADECO en otra secci&oacute;n) y se llamaba en l&iacute;nea 13382 como parte del init. Yo defin&iacute; otra `renderTimeline()` en l&iacute;nea 16917 que la sobrescrib&iacute;a por hoisting, pero usaba `TIMELINE_EVENTS` que se asignaba en l&iacute;nea 16882 &mdash; cuando se llamaba en 13382, `TIMELINE_EVENTS` a&uacute;n era `undefined` (las `var` no se hoistan su valor, solo el binding), generando `TypeError: Cannot read properties of undefined (reading 'map')` que abortaba **todo el script** despu&eacute;s de las definiciones de funciones (que s&iacute; se hoistan). Por eso TODAS las variables `var` de v36.0 (DIAS_SEM, GALLERY_PROC, ACHIEVEMENTS, COMUNAS_COMP, PROYECTOS_PLADECO) aparec&iacute;an como `undefined` en window. (2) Similar conflicto con `function showToast()` ya existente. **Fix**: (a) renombrar mi funci&oacute;n a `renderProcessTimeline()` y actualizar la llamada init; (b) eliminar mi `showToast` duplicado y usar el original del portal (con firma compatible `showToast(msg,type)`). Verificado en navegador: timeline 11 eventos &check;, galer&iacute;a 18 tiles &check;, comparador 7 comunas + 6 indicadores + insight din&aacute;mico &check;, mapa proyectos 50 marcadores + $22.320M CLP &check;, 12 logros desbloqueables &check;, chip fecha &laquo;Domingo 17 May 2026&raquo; &check;, clima Open-Meteo &check;, badges contador funcional &check;. Cache SW v53.1 &rarr; v53.2.</div>
     <div class="ub-entry"><strong>v36.1</strong> <span class="ub-date">17 May 2026</span><br>&#128260;&#128197; **Sincronizaci&oacute;n integral de fechas y conteos a 17 Mayo 2026**. Actualizaci&oacute;n transversal de metadatos: (1) **33 referencias hardcoded** de &laquo;15 May 2026&raquo; y &laquo;15 Mayo 2026&raquo; sincronizadas a **17 Mayo 2026** en banners, footer, sidebar, panel &laquo;C&oacute;mo va el plan&raquo;, changelogs hist&oacute;ricos y card de construcci&oacute;n. (2) **Conteo de secciones** sincronizado de 48 a **52 secciones** en panel &laquo;C&oacute;mo va el plan&raquo;, &iacute;ndice navegable, tour guiado y splash screen. (3) **Construction-meta** actualizada: v36.0 &rarr; v36.1, 52 secciones confirmadas. (4) **Footer-bottom**, **sidebar-version** y **update-badge** sincronizados. (5) **Verificaci&oacute;n cruzada** de las 4 super-secciones nuevas de v36.0 (timeline, galer&iacute;a-proceso, mapa-proyectos, comparador) &mdash; todas las entradas NEW del sidebar y quick-index apuntan correctamente. Sin cambios funcionales: solo limpieza editorial. Cache SW v53.0 &rarr; v53.1.</div>
     <div class="ub-entry"><strong>v36.0</strong> <span class="ub-date">17 May 2026</span><br>&#127919;&#9889; **MAJOR v36.0 &middot; Upgrade est&eacute;tico integral + 4 nuevas super-secciones + sistema de logros**. La mayor expansi&oacute;n est&eacute;tica y de contenido desde el lanzamiento. Incluye: (A) **Sistema visual unificado** con design tokens en `:root` para radius (xs-2xl), shadows escalonadas (sm-2xl + glow verde/naranja), tipograf&iacute;a fluida con `clamp()` (display/h1/h2/h3/body), transiciones estandarizadas (fast/base/slow/bounce). (B) **Microinteracciones premium**: skeleton loaders animados con gradient shimmer, **ripple effect autom&aacute;tico** en clicks sobre botones/cards (estilo Material), hover 3D con translateY+scale en cards, **toasts ricos** con icono + tipo (success/warn/error/info) + auto-dismiss, **confetti CSS** disparado al completar quiz con &geq;60%. (C) **Splash redise&ntilde;ado**: 3 orbs flotantes con gradient blur + barra de progreso real con 6 mensajes contextuales rotativos (&laquo;Inicializando&hellip;&raquo;, &laquo;Cargando 826 manzanas censales&hellip;&raquo;, etc.). (D) **Hero cinematogr&aacute;fico**: gradient mesh animado con 2 orbs verde-naranja que driftean en 18s loop infinito, count-up animado de los 6 KPIs principales (cubic easing 1.4s), scroll-hint con bounce 2.4s. (E) **&#128467;&#65039; L&iacute;nea de Tiempo Interactiva** `#timeline`: 11 hitos del proceso Mar 2025 &rarr; Jun 2026 con filtros por tipo (hito/taller/entrega/validaci&oacute;n), markers circulares coloreados por tipo, layout dual columna en desktop con l&iacute;nea central, tarjetas con hover elevation. (F) **&#127912; Galer&iacute;a Visual del Proceso** `#galeria-proceso`: 18 placeholders elegantes de talleres/mesas con gradient por categor&iacute;a (UV/rural/NNA/h&iacute;drica/directivos/COSOC), filtros, hover scale+elevation. (G) **&#128205; Mapa Interactivo de Proyectos PLADECO** `#mapa-proyectos`: 50 proyectos georreferenciados con Leaflet, c&iacute;rculos proporcionales al monto, colores por eje, filtros por eje 1-6 + todos, popups con monto/meta, lazy-init via IntersectionObserver, contador din&aacute;mico de proyectos visibles + monto total. (H) **&#9878;&#65039; Comparador con Comunas Vecinas** `#comparador`: 7 comunas del Valle de Cachapoal (Rengo + Requ&iacute;noa + San Vicente + Malloa + Quinta + Do&ntilde;ihue + Coltauco) con 6 indicadores (poblaci&oacute;n, ruralidad, pobreza CASEN, IDH PNUD, escolaridad, FCM SINIM), selecci&oacute;n m&uacute;ltiple (2-5 comunas), tabla comparativa con highlight best/worst por columna, insight din&aacute;mico generado autom&aacute;ticamente. (I) **&#127942; Sistema de Logros del Visitante** (gamificaci&oacute;n privacy-first): FAB flotante con contador + panel desplegable con grid 4x3 de 12 badges desbloqueables (visit, scroll, quiz, fav, search, tour, censo, newsletter, reporte, compare, mapa, master), localStorage `pladeco-achievements-v1`, toast celebratorio + animaci&oacute;n bounce al desbloquear, badge `master` con confetti al llegar a 8/12. Hooks integrados en: quiz, tour, scroll 50%, favoritos, b&uacute;squeda, hashchange a secciones censales/mapa/comparador. (J) Sidebar y Quick-Index actualizados con **4 entradas NEW**. Conteo total **48 &rarr; 52 secciones**. Cache SW v52.3 &rarr; v53.0.</div>
     <div class="ub-entry"><strong>v35.3</strong> <span class="ub-date">17 May 2026</span><br>&#128279; **Banner Institucional unificado con el Pulso Comunal**. Antes el portal mostraba dos banners separados arriba (el institucional fixed con escudo/ribbon/logo, y el strip de fecha/clima/aire que quedaba debajo no-fixed y se perd&iacute;a al hacer scroll). Ahora **ambos se fusionan en un &uacute;nico contenedor `.construction-banner.unified-banner` con dos sub-filas**: (1) **Fila 1 `.cb-row`** mantiene la identidad institucional (escudo Rengo + ribbon naranja &laquo;En construcci&oacute;n &middot; sujeto a cambios&raquo; + logo PLADECO + bot&oacute;n cerrar); (2) **Fila 2 `.live-strip` integrada** con el Pulso Comunal: chip de fecha &laquo;Viernes 17 May 2026&raquo; con bg naranja-verde semitransparente, separador, clima Open-Meteo (emoji WMO + temp + descripci&oacute;n + humedad + viento), separador, calidad del aire EAQI con badge sem&aacute;foro, y meta-info con punto verde pulsante + hora de actualizaci&oacute;n + bot&oacute;n refresh. La fila 2 hereda el gradient navy del banner con overlay `rgba(0,0,0,.18→.28)` + `backdrop-filter:blur(6px)`, separador `border-top:1px solid rgba(255,255,255,.08)` para diferenciar sutilmente las dos filas sin romper la cohesi&oacute;n visual. Texto blanco/claro en lugar del color de texto base. Badges de aire con bordes translucent claros. Punto verde con `box-shadow` brillante. Ambas filas se ocultan juntas al cerrar el banner (`dismissed`). `body{padding-top:96px}` (antes 62px) para acomodar la altura total; 76px en &lt;900px y 70px en &lt;560px. Auto-refresh sigue: clima/aire cada 5 min, fecha cada 60s, revalidaci&oacute;n en `visibilitychange`. Cache SW v52.2 &rarr; v52.3.</div>
@@ -8571,7 +8572,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v36.1</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v36.2</span>
   </div>
 </footer>
 
@@ -16672,21 +16673,7 @@ renderVisitCounter();
 initParallax();
 initFiltrosCruzados();
 renderSankeyFlow();
-
-// ══════════════════════════════════════════════════════
-// MAJOR v36.0 · INITS NUEVAS FUNCIONALIDADES
-// ══════════════════════════════════════════════════════
-renderTimeline();
-renderGalleryProc();
-initRippleEffect();
-initAchievements();
-// Mapa y comparador con lazy init via IntersectionObserver
-lazyInitOnView('#mapa-proyectos',initMapaProyectos);
-lazyInitOnView('#comparador',initComparador);
-// Splash con progreso real
-animateSplashProgress();
-// Count-up del hero stats al cargar
-setTimeout(function(){animateHeroCountUps();},400);
+// MAJOR v36.0 inits — se ejecutan al final del script grande (después de las definiciones de datos)
 
 // ══════════════════════════════════════════════════════════════════════
 // MAJOR v36.0 · FUNCIONES NUEVAS
@@ -16776,22 +16763,7 @@ function initRippleEffect(){
   });
 }
 
-/* ══════════════════════════════════════════════════════
-   TOAST helper mejorado · uso: showToast(msg, type, icon)
-   ══════════════════════════════════════════════════════ */
-function showToast(msg,type,icon,duration){
-  type=type||'info';
-  icon=icon||({success:'✅',warn:'⚠️',error:'❌',info:'💬'})[type];
-  duration=duration||3500;
-  var c=document.getElementById('toastContainer');if(!c)return;
-  var t=document.createElement('div');
-  t.className='toast '+type;
-  t.innerHTML='<span class="toast-icon">'+icon+'</span><span class="toast-text">'+msg+'</span><button class="toast-close" aria-label="Cerrar">&times;</button>';
-  t.querySelector('.toast-close').onclick=function(){t.classList.add('toast-leaving');setTimeout(function(){t.remove();},300);};
-  c.appendChild(t);
-  setTimeout(function(){if(t.parentNode){t.classList.add('toast-leaving');setTimeout(function(){t.remove();},300);}},duration);
-}
-window.showToast=showToast;
+/* ── v36: usamos el showToast(msg,type) ya existente del portal (línea ~15521) ── */
 
 /* ══════════════════════════════════════════════════════
    CONFETTI BURST · llamar tras quiz alto / logro
@@ -16917,7 +16889,7 @@ var TIMELINE_EVENTS=[
   {date:'17 May 2026',type:'hito',title:'Lanzamiento Portal PLADECO v35 con análisis censal',text:'Nueva sección con 7 índices de vulnerabilidad multidimensional aplicados a 826 manzanas censales. Incluye ICT de 56 espacios públicos.'},
   {date:'Jun 2026',type:'validacion',title:'Aprobación final por Concejo Municipal',text:'Presentación al Concejo Municipal para aprobación del PLADECO 2025-2035, dando inicio formal a la fase de implementación 2026-2035.'}
 ];
-function renderTimeline(){
+function renderProcessTimeline(){
   var list=document.getElementById('timelineList');if(!list)return;
   var icons={hito:'🎯',taller:'💬',entrega:'📦',validacion:'✅'};
   list.innerHTML=TIMELINE_EVENTS.map(function(e){
@@ -17206,6 +17178,20 @@ function initComparador(){
   renderComparadorGrid();
   renderComparadorTable();
 }
+
+// ══════════════════════════════════════════════════════
+// MAJOR v36.0 · LLAMADAS INIT (después de todas las definiciones de datos)
+// ══════════════════════════════════════════════════════
+try{renderProcessTimeline();}catch(e){console.warn('renderProcessTimeline:',e);}
+try{renderGalleryProc();}catch(e){console.warn('renderGalleryProc:',e);}
+try{initRippleEffect();}catch(e){console.warn('initRippleEffect:',e);}
+try{initAchievements();}catch(e){console.warn('initAchievements:',e);}
+try{lazyInitOnView('#mapa-proyectos',initMapaProyectos);}catch(e){console.warn('initMapaProyectos:',e);}
+try{lazyInitOnView('#comparador',initComparador);}catch(e){console.warn('initComparador:',e);}
+try{animateSplashProgress();}catch(e){console.warn('animateSplashProgress:',e);}
+setTimeout(function(){try{animateHeroCountUps();}catch(e){console.warn('animateHeroCountUps:',e);}},400);
+// Garantizar que el strip de fecha se renderice al menos una vez aunque loadLiveStrip falle
+try{updateDateStrip();}catch(e){console.warn('updateDateStrip:',e);}
 
 // ══════════════════════════════════════════════════════
 // SAFE CHART WRAPPER (Error Boundary)
