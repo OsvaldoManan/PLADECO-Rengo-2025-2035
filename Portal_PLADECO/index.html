@@ -2481,6 +2481,217 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
   .ls-date-num{font-size:10.5px}
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   MAJOR v36.0 · UPGRADE ESTÉTICO + CONTENIDO
+   1. Sistema visual unificado (radius/shadow/tipografía escalada)
+   2. Microinteracciones premium (skeleton, ripple, hover 3D, confetti)
+   3. Splash rediseñado
+   4. Hero cinematográfico (mesh gradient animado)
+   5-8. Componentes: timeline, galería, mapa proyectos, comparador
+   9. Sistema de logros (badges)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Sistema visual: tokens unificados (CSS custom properties extendidas) ── */
+:root{
+  --r-xs:4px; --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px; --r-2xl:32px; --r-full:9999px;
+  --sh-sm:0 1px 2px rgba(15,34,64,.06),0 1px 3px rgba(15,34,64,.08);
+  --sh-md:0 4px 6px -1px rgba(15,34,64,.08),0 2px 4px -2px rgba(15,34,64,.06);
+  --sh-lg:0 10px 15px -3px rgba(15,34,64,.10),0 4px 6px -4px rgba(15,34,64,.08);
+  --sh-xl:0 20px 25px -5px rgba(15,34,64,.12),0 8px 10px -6px rgba(15,34,64,.08);
+  --sh-2xl:0 25px 50px -12px rgba(15,34,64,.25);
+  --sh-glow-green:0 0 0 1px rgba(45,154,77,.2),0 8px 24px -4px rgba(45,154,77,.3);
+  --sh-glow-orange:0 0 0 1px rgba(245,146,29,.25),0 8px 24px -4px rgba(245,146,29,.35);
+  --fs-display:clamp(2rem,5vw,3.5rem);
+  --fs-h1:clamp(1.75rem,4vw,2.75rem);
+  --fs-h2:clamp(1.4rem,3vw,2rem);
+  --fs-h3:clamp(1.15rem,2vw,1.5rem);
+  --fs-body:clamp(.9rem,1.2vw,1rem);
+  --tr-fast:.15s cubic-bezier(.4,0,.2,1);
+  --tr-base:.3s cubic-bezier(.4,0,.2,1);
+  --tr-slow:.6s cubic-bezier(.4,0,.2,1);
+  --tr-bounce:.4s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── 2a. Skeleton loaders elegantes ── */
+.skeleton{position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(45,154,77,.06) 0%,rgba(45,154,77,.12) 50%,rgba(45,154,77,.06) 100%);background-size:200% 100%;animation:skeletonPulse 1.6s ease-in-out infinite;border-radius:var(--r-sm);color:transparent!important;user-select:none;pointer-events:none}
+.skeleton-line{height:1em;margin:.3em 0;border-radius:var(--r-xs)}
+.skeleton-block{height:80px;width:100%;border-radius:var(--r-md)}
+.skeleton-circle{border-radius:50%}
+body.dark .skeleton{background:linear-gradient(90deg,rgba(255,255,255,.04) 0%,rgba(255,255,255,.10) 50%,rgba(255,255,255,.04) 100%)}
+@keyframes skeletonPulse{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.skeleton{animation:none;background:rgba(45,154,77,.08)}}
+
+/* ── 2b. Ripple effect ── */
+.btn-ripple,.ps-card,.kpi,.eje-card,.viz-card{position:relative;overflow:hidden}
+.ripple-wave{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rippleExpand .6s ease-out;pointer-events:none}
+body.dark .ripple-wave{background:rgba(245,146,29,.35)}
+@keyframes rippleExpand{to{transform:scale(4);opacity:0}}
+
+/* ── 2c. Hover 3D + tilt sutil para cards ── */
+.kpi,.viz-card,.eje-card,.ps-card,.team-card,.dataset-card,.cal-event{transition:transform var(--tr-base),box-shadow var(--tr-base),border-color var(--tr-base)}
+.kpi:hover,.viz-card:hover,.eje-card:hover,.team-card:hover,.dataset-card:hover{transform:translateY(-4px) scale(1.01);box-shadow:var(--sh-xl)}
+
+/* ── 2d. Toasts con icono + animación bounce ── */
+.toast{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--card),var(--card));border:1px solid var(--border);border-left:4px solid var(--primary);padding:12px 16px;border-radius:var(--r-md);box-shadow:var(--sh-xl);color:var(--text);font-size:13px;font-weight:600;pointer-events:auto;animation:toastSlide var(--tr-bounce);max-width:380px;backdrop-filter:blur(10px)}
+.toast.success{border-left-color:#22c55e}
+.toast.warn{border-left-color:#f59e0b}
+.toast.error{border-left-color:#ef4444}
+.toast.info{border-left-color:#3b82f6}
+.toast .toast-icon{font-size:18px;line-height:1;flex-shrink:0}
+.toast .toast-text{flex:1;line-height:1.4}
+.toast .toast-close{background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;line-height:1;padding:2px 6px;border-radius:var(--r-xs);transition:all var(--tr-fast);font-family:inherit}
+.toast .toast-close:hover{background:var(--border);color:var(--text)}
+@keyframes toastSlide{from{opacity:0;transform:translateX(60px) scale(.9)}to{opacity:1;transform:translateX(0) scale(1)}}
+.toast.toast-leaving{animation:toastLeave .3s forwards}
+@keyframes toastLeave{to{opacity:0;transform:translateX(60px) scale(.9)}}
+
+/* ── 2e. Confetti CSS para celebrar quiz alto ── */
+.confetti-burst{position:fixed;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:10000}
+.confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confettiFall 2s ease-out forwards;will-change:transform,opacity}
+@keyframes confettiFall{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--tx,0),var(--ty,200px)) rotate(var(--rot,720deg));opacity:0}}
+
+/* ── 3. Splash rediseñado con animación SVG + progreso real ── */
+.splash-screen{background:radial-gradient(ellipse at top,#142d5a 0%,#0c1f36 50%,#071528 100%)}
+.splash-orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.4;animation:splashOrbFloat 6s ease-in-out infinite}
+.splash-orb-1{width:300px;height:300px;background:#2d9a4d;top:20%;left:15%}
+.splash-orb-2{width:240px;height:240px;background:#f5921d;bottom:15%;right:20%;animation-delay:-3s}
+.splash-orb-3{width:200px;height:200px;background:#3b82f6;top:55%;left:60%;animation-delay:-1.5s}
+@keyframes splashOrbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.1)}}
+.splash-progress-text{font-size:11px;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-height:14px;text-align:center;margin-top:6px;transition:opacity .3s}
+.splash-bar{width:240px;height:3px;background:rgba(255,255,255,.08);border-radius:var(--r-full);overflow:hidden;position:relative;z-index:2}
+.splash-bar-fill{background:linear-gradient(90deg,#2d9a4d,#f5921d);transition:width .3s ease;border-radius:var(--r-full)}
+
+/* ── 4. Hero cinematográfico: gradient mesh animado ── */
+.hero-mesh{position:absolute;inset:0;z-index:0;opacity:.55;mix-blend-mode:screen;pointer-events:none;overflow:hidden}
+.hero-mesh::before,.hero-mesh::after{content:'';position:absolute;width:80vmin;height:80vmin;border-radius:50%;filter:blur(80px);animation:meshDrift 18s ease-in-out infinite}
+.hero-mesh::before{background:radial-gradient(circle,#2d9a4d 0%,transparent 60%);top:-15%;left:-15%}
+.hero-mesh::after{background:radial-gradient(circle,#f5921d 0%,transparent 60%);bottom:-15%;right:-15%;animation-delay:-9s}
+@keyframes meshDrift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(8vw,-6vh) scale(1.15)}66%{transform:translate(-6vw,8vh) scale(.92)}}
+@media(prefers-reduced-motion:reduce){.hero-mesh::before,.hero-mesh::after{animation:none}}
+.hero-scroll-hint{animation:scrollHintBounce 2.4s ease-in-out infinite}
+@keyframes scrollHintBounce{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(6px);opacity:1}}
+
+/* ── 5. Línea de tiempo del proceso ── */
+.timeline{position:relative;padding:20px 0;margin:30px 0}
+.timeline::before{content:'';position:absolute;left:24px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,#2d9a4d,#f5921d,#3b82f6);border-radius:var(--r-full)}
+@media(min-width:900px){.timeline::before{left:50%;transform:translateX(-50%)}}
+.tl-filter{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
+.tl-filter button{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:var(--r-full);font-size:11.5px;font-weight:700;cursor:pointer;transition:all var(--tr-fast);font-family:inherit;text-transform:uppercase;letter-spacing:.04em}
+.tl-filter button:hover{border-color:var(--primary);color:var(--primary)}
+.tl-filter button.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:var(--sh-glow-green)}
+.tl-event{position:relative;margin-bottom:24px;padding-left:64px}
+@media(min-width:900px){.tl-event{width:calc(50% - 30px);padding-left:0;padding-right:30px}.tl-event:nth-child(even){margin-left:calc(50% + 30px);padding-right:0;padding-left:30px}}
+.tl-event.hidden{display:none}
+.tl-marker{position:absolute;left:9px;top:0;width:34px;height:34px;border-radius:50%;background:var(--card);border:3px solid var(--primary);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:var(--sh-md);z-index:2;transition:all var(--tr-base)}
+@media(min-width:900px){.tl-marker{left:auto;right:-45px}.tl-event:nth-child(even) .tl-marker{right:auto;left:-45px}}
+.tl-event:hover .tl-marker{transform:scale(1.15);box-shadow:var(--sh-glow-green)}
+.tl-event.taller .tl-marker{border-color:#3b82f6}
+.tl-event.entrega .tl-marker{border-color:#22c55e}
+.tl-event.hito .tl-marker{border-color:#f5921d}
+.tl-event.validacion .tl-marker{border-color:#a855f7}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;box-shadow:var(--sh-md);transition:all var(--tr-base)}
+.tl-card:hover{transform:translateY(-2px);box-shadow:var(--sh-lg);border-color:var(--primary)}
+.tl-date{font-size:11px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.tl-title{font-size:14.5px;font-weight:800;color:var(--text);margin-bottom:4px;line-height:1.35}
+.tl-text{font-size:12.5px;color:var(--text2);line-height:1.6}
+.tl-tag{display:inline-block;font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:var(--r-full);margin-top:6px;letter-spacing:.05em;text-transform:uppercase}
+.tl-tag.taller{background:rgba(59,130,246,.15);color:#3b82f6}
+.tl-tag.entrega{background:rgba(34,197,94,.15);color:#22c55e}
+.tl-tag.hito{background:rgba(245,146,29,.15);color:#d97706}
+.tl-tag.validacion{background:rgba(168,85,247,.15);color:#a855f7}
+
+/* ── 6. Galería visual del proceso ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:18px}
+.gal-tile{position:relative;aspect-ratio:4/3;border-radius:var(--r-lg);overflow:hidden;cursor:pointer;background:linear-gradient(135deg,#0c1f36,#1a3d8f);box-shadow:var(--sh-md);transition:all var(--tr-base);border:1px solid var(--border)}
+.gal-tile:hover{transform:scale(1.03) translateY(-3px);box-shadow:var(--sh-xl);z-index:2}
+.gal-tile-content{position:absolute;inset:0;padding:18px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.5) 100%)}
+.gal-tile-icon{font-size:36px;line-height:1;opacity:.9;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.gal-tile-meta{}
+.gal-tile-cat{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;opacity:.85;padding:3px 8px;border-radius:var(--r-full);background:rgba(255,255,255,.15);display:inline-block;margin-bottom:6px}
+.gal-tile-title{font-size:14px;font-weight:800;line-height:1.3;margin-bottom:3px}
+.gal-tile-sub{font-size:11px;opacity:.75;font-weight:600}
+.gal-tile.taller{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+.gal-tile.rural{background:linear-gradient(135deg,#14532d,#16a34a)}
+.gal-tile.nna{background:linear-gradient(135deg,#7c2d12,#f5921d)}
+.gal-tile.hidrica{background:linear-gradient(135deg,#075985,#0ea5e9)}
+.gal-tile.directiva{background:linear-gradient(135deg,#581c87,#a855f7)}
+.gal-tile.cosoc{background:linear-gradient(135deg,#831843,#ec4899)}
+.gal-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.gal-filter button{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:var(--r-full);font-size:11px;font-weight:700;cursor:pointer;transition:all var(--tr-fast);font-family:inherit}
+.gal-filter button:hover{border-color:var(--accent);color:var(--accent)}
+.gal-filter button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ── 7. Mapa interactivo de Proyectos PLADECO ── */
+#mapaProyectos{height:520px;width:100%;border-radius:var(--r-lg);box-shadow:var(--sh-lg);border:1px solid var(--border);background:var(--card2)}
+.mp-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:14px;padding:12px 14px;background:var(--card2);border-radius:var(--r-md);border:1px solid var(--border)}
+.mp-filters{display:flex;gap:5px;flex-wrap:wrap}
+.mp-filters button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:5px 11px;border-radius:var(--r-full);font-size:10.5px;font-weight:700;cursor:pointer;transition:all var(--tr-fast);font-family:inherit;text-transform:uppercase;letter-spacing:.03em}
+.mp-filters button.active{color:#fff;border-color:transparent}
+.mp-filters button[data-eje="1"].active{background:#3b82f6}
+.mp-filters button[data-eje="2"].active{background:#f5921d}
+.mp-filters button[data-eje="3"].active{background:#22c55e}
+.mp-filters button[data-eje="4"].active{background:#a855f7}
+.mp-filters button[data-eje="5"].active{background:#06b6d4}
+.mp-filters button[data-eje="6"].active{background:#ef4444}
+.mp-filters button[data-eje="all"].active{background:var(--primary)}
+.mp-stats{font-size:11.5px;color:var(--text2);font-weight:700}
+.mp-stats strong{color:var(--text);font-weight:800}
+.mp-legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:10.5px;color:var(--text2)}
+.mp-legend-item{display:inline-flex;align-items:center;gap:5px}
+.mp-legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+
+/* ── 8. Comparador con comunas vecinas ── */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:18px}
+.comp-comuna{padding:14px 12px;background:var(--card2);border:2px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:all var(--tr-fast);text-align:center;font-family:inherit}
+.comp-comuna:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--sh-md)}
+.comp-comuna.active{background:linear-gradient(135deg,rgba(45,154,77,.12),rgba(245,146,29,.08));border-color:var(--primary);box-shadow:var(--sh-glow-green)}
+.comp-comuna.is-rengo{border-color:var(--accent);background:linear-gradient(135deg,rgba(245,146,29,.12),rgba(45,154,77,.08))}
+.comp-comuna.is-rengo.active{box-shadow:var(--sh-glow-orange)}
+.comp-name{font-weight:800;font-size:13px;color:var(--text);margin-bottom:2px;letter-spacing:-.01em}
+.comp-pob{font-size:10.5px;color:var(--text2);font-weight:600}
+.comp-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm)}
+.comp-table th{background:linear-gradient(135deg,#0c1f36,#1a3d8f);color:#fff;font-size:11.5px;font-weight:700;padding:10px 12px;text-align:left;text-transform:uppercase;letter-spacing:.04em}
+.comp-table th:not(:first-child){text-align:center}
+.comp-table td{padding:10px 12px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text)}
+.comp-table td:first-child{font-weight:700}
+.comp-table td:not(:first-child){text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+.comp-table tr.rengo-row{background:rgba(245,146,29,.06)}
+.comp-table tr.rengo-row td:first-child{color:var(--accent);font-weight:800}
+.comp-cell.best{color:#16a34a;font-weight:800}
+.comp-cell.worst{color:#dc2626;font-weight:800}
+.comp-insight{margin-top:14px;padding:14px 16px;background:linear-gradient(135deg,rgba(45,154,77,.06),rgba(245,146,29,.05));border-left:4px solid var(--primary);border-radius:var(--r-md);font-size:12.5px;line-height:1.6;color:var(--text)}
+.comp-insight strong{color:var(--primary)}
+
+/* ── 9. Sistema de Logros (Badges) ── */
+.achievements-panel{position:fixed;bottom:20px;right:20px;z-index:90;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;box-shadow:var(--sh-xl);max-width:240px;transform:translateY(120%);transition:transform var(--tr-bounce);font-family:inherit}
+.achievements-panel.show{transform:translateY(0)}
+.ach-title{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
+.ach-title-close{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;padding:0 4px;font-family:inherit}
+.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ach-badge{aspect-ratio:1;border-radius:var(--r-md);background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.3;cursor:default;transition:all var(--tr-base);position:relative}
+.ach-badge.unlocked{opacity:1;background:linear-gradient(135deg,rgba(245,146,29,.15),rgba(45,154,77,.1));border-color:var(--accent);box-shadow:var(--sh-glow-orange)}
+.ach-badge.just-unlocked{animation:achPop var(--tr-bounce)}
+@keyframes achPop{0%{transform:scale(0)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+.ach-badge[data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.92);color:#fff;font-size:10px;font-weight:600;padding:5px 9px;border-radius:var(--r-xs);white-space:nowrap;z-index:5}
+.ach-progress{height:4px;background:var(--border);border-radius:var(--r-full);margin-top:8px;overflow:hidden}
+.ach-progress-fill{height:100%;background:linear-gradient(90deg,#2d9a4d,#f5921d);transition:width .8s ease;border-radius:var(--r-full)}
+.ach-fab{position:fixed;bottom:88px;right:20px;z-index:89;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#f5921d,#2d9a4d);border:none;color:#fff;font-size:18px;cursor:pointer;box-shadow:var(--sh-lg);display:flex;align-items:center;justify-content:center;transition:all var(--tr-base);font-family:inherit}
+.ach-fab:hover{transform:scale(1.1) rotate(15deg);box-shadow:var(--sh-xl)}
+.ach-fab .ach-count{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.ach-toast{background:linear-gradient(135deg,#f5921d,#2d9a4d)!important;color:#fff!important;border-left:none!important}
+.ach-toast .toast-text{color:#fff}
+@media(max-width:760px){
+  .achievements-panel{bottom:80px;right:10px;max-width:220px}
+  .ach-fab{bottom:140px;right:10px}
+}
+
+/* ── 10. Hero KPI count-up estilo + scroll indicator mejorado ── */
+.hero-stat .num{transition:color var(--tr-base)}
+.hero-stat.counting .num{color:var(--accent)}
+
+/* ── Print: ocultar elementos nuevos ── */
+@media print{.achievements-panel,.ach-fab,.confetti-burst,.hero-mesh{display:none!important}}
+
 /* ══ MAJOR v35 — Componentes de expansión institucional/engagement ══ */
 
 /* Tabs nativos para super-secciones */
@@ -3191,9 +3402,13 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <body>
 <!-- Splash Screen -->
 <div class="splash-screen" id="splashScreen">
-  <img src="1.png" alt="Contigo Rengo" class="splash-logo" width="130" height="130" decoding="async" fetchpriority="high">
-  <span class="splash-text">PLADECO 2025–2035</span>
-  <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+  <div class="splash-orb splash-orb-1" aria-hidden="true"></div>
+  <div class="splash-orb splash-orb-2" aria-hidden="true"></div>
+  <div class="splash-orb splash-orb-3" aria-hidden="true"></div>
+  <img src="1.png" alt="Contigo Rengo" class="splash-logo" width="130" height="130" decoding="async" fetchpriority="high" style="position:relative;z-index:2">
+  <span class="splash-text" style="position:relative;z-index:2">PLADECO 2025&ndash;2035</span>
+  <div class="splash-bar"><div class="splash-bar-fill" id="splashBarFill" style="width:5%"></div></div>
+  <div class="splash-progress-text" id="splashProgress">Inicializando&hellip;</div>
 </div>
 
 <a href="#dashboard" class="skip-link" tabindex="0">Saltar al contenido</a>
@@ -3309,6 +3524,10 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 
     <div class="sidebar-group">
       <div class="sidebar-group-title">7 &middot; Proceso y Documentaci&#243;n</div>
+      <a href="#timeline" class="is-new"><span class="ico">&#128467;&#65039;</span> L&iacute;nea de Tiempo del Proceso</a>
+      <a href="#galeria-proceso" class="is-new"><span class="ico">&#127912;</span> Galer&iacute;a del Proceso</a>
+      <a href="#mapa-proyectos" class="is-new"><span class="ico">&#128205;</span> Mapa de Proyectos PLADECO</a>
+      <a href="#comparador" class="is-new"><span class="ico">&#9878;&#65039;</span> Comparador Comunas Vecinas</a>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a &amp; Actas Participaci&#243;n</a>
       <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
       <a href="#participa"><span class="ico">&#128227;</span> Participa &middot; Newsletter / Reporte</a>
@@ -3352,7 +3571,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v35.3</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3433,6 +3652,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
   <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="hero-logo-wrap">
       <img src="hero-banner.png" alt="Contigo Rengo Mejor Comuna" class="hero-logo-contigo" width="333" height="188" decoding="async" fetchpriority="high">
@@ -3479,9 +3699,9 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v35.3</span>
+        <span>&#127919; v36.0</span>
         <span>&#128197; 15 Mayo 2026</span>
-        <span>&#128202; 48 secciones</span>
+        <span>&#128202; 52 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
       </div>
@@ -3629,12 +3849,16 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <div class="qi-group" data-grp="7">
         <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Documentaci&oacute;n</div></div>
         <div class="qi-links">
+          <a href="#timeline" class="qi-link is-new"><span class="qi-link-ico">&#128467;&#65039;</span><span class="qi-link-txt">L&iacute;nea de Tiempo</span></a>
+          <a href="#galeria-proceso" class="qi-link is-new"><span class="qi-link-ico">&#127912;</span><span class="qi-link-txt">Galer&iacute;a del Proceso</span></a>
+          <a href="#mapa-proyectos" class="qi-link is-new"><span class="qi-link-ico">&#128205;</span><span class="qi-link-txt">Mapa de Proyectos</span></a>
+          <a href="#comparador" class="qi-link is-new"><span class="qi-link-ico">&#9878;&#65039;</span><span class="qi-link-txt">Comparador Comunas</span></a>
           <a href="#graficos" class="qi-link"><span class="qi-link-ico">&#128200;</span><span class="qi-link-txt">73 Gr&aacute;ficos del Proceso</span></a>
           <a href="#galeria" class="qi-link"><span class="qi-link-ico">&#127912;</span><span class="qi-link-txt">Galer&iacute;a Fotogr&aacute;fica</span></a>
-          <a href="#faq" class="qi-link is-new"><span class="qi-link-ico">&#10067;</span><span class="qi-link-txt">Preguntas Frecuentes</span></a>
-          <a href="#participa" class="qi-link is-new"><span class="qi-link-ico">&#128227;</span><span class="qi-link-txt">Participa &middot; Newsletter</span></a>
-          <a href="#educacion" class="qi-link is-new"><span class="qi-link-ico">&#127891;</span><span class="qi-link-txt">Aprende sobre tu Comuna</span></a>
-          <a href="#institucional" class="qi-link is-new"><span class="qi-link-ico">&#127960;&#65039;</span><span class="qi-link-txt">Acerca del Portal</span></a>
+          <a href="#faq" class="qi-link"><span class="qi-link-ico">&#10067;</span><span class="qi-link-txt">Preguntas Frecuentes</span></a>
+          <a href="#participa" class="qi-link"><span class="qi-link-ico">&#128227;</span><span class="qi-link-txt">Participa &middot; Newsletter</span></a>
+          <a href="#educacion" class="qi-link"><span class="qi-link-ico">&#127891;</span><span class="qi-link-txt">Aprende sobre tu Comuna</span></a>
+          <a href="#institucional" class="qi-link"><span class="qi-link-ico">&#127960;&#65039;</span><span class="qi-link-txt">Acerca del Portal</span></a>
           <a href="#documentos" class="qi-link"><span class="qi-link-ico">&#128190;</span><span class="qi-link-txt">Documentos descargables</span></a>
         </div>
       </div>
@@ -7988,6 +8212,94 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Material educativo elaborado por equipo SECPLAC PLADECO 2025-2035 &middot; Quiz con preguntas basadas en datos verificables del portal &middot; Tour guiado optimizado para primera visita &middot; Recursos disponibles bajo licencia Creative Commons BY-SA 4.0.</div>
 </section>
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     MAJOR v36.0 · 4 nuevas super-secciones de proceso y planificación
+     ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- ═══ LÍNEA DE TIEMPO DEL PROCESO ═══ -->
+<section id="timeline" class="reveal" aria-labelledby="timelineH">
+  <div class="sec-header">
+    <div class="badge" style="background:#ede9fe;color:#7c3aed">Cronolog&iacute;a Interactiva</div>
+    <h2 id="timelineH">&#128467;&#65039; L&iacute;nea de Tiempo del Proceso PLADECO</h2>
+    <p>Recorrido visual por los <strong>hitos clave</strong> del proceso participativo entre marzo 2025 y marzo 2026: talleres territoriales, entregas de productos, validaciones t&eacute;cnicas y momentos institucionales que han marcado la construcci&oacute;n colectiva del Plan de Desarrollo Comunal. Filtra por tipo de evento para ver la cronolog&iacute;a tem&aacute;tica.</p>
+  </div>
+  <div class="tl-filter" role="tablist" aria-label="Filtrar timeline por tipo">
+    <button class="active" data-filter="all">Todos</button>
+    <button data-filter="hito">&#127919; Hitos</button>
+    <button data-filter="taller">&#128173; Talleres</button>
+    <button data-filter="entrega">&#128230; Entregas</button>
+    <button data-filter="validacion">&#9989; Validaciones</button>
+  </div>
+  <div class="timeline" id="timelineList"></div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Registro interno del equipo SECPLAC PLADECO 2025-2035 &middot; Bit&aacute;coras de talleres &middot; Actas firmadas de validaci&oacute;n &middot; Documentos de entrega registrados en el sistema de transparencia activa de la Municipalidad de Rengo.</div>
+</section>
+
+<!-- ═══ GALERÍA VISUAL DEL PROCESO ═══ -->
+<section id="galeria-proceso" class="reveal" aria-labelledby="galProcH">
+  <div class="sec-header">
+    <div class="badge" style="background:#fce7f3;color:#db2777">Memoria Visual</div>
+    <h2 id="galProcH">&#127912; Galer&iacute;a del Proceso Participativo</h2>
+    <p>Memoria visual de los <strong>talleres, mesas y encuentros</strong> del proceso PLADECO Rengo: m&aacute;s de 30 instancias documentadas con dirigentes vecinales, organizaciones funcionales, NNA, mesa h&iacute;drica y directivos municipales. Cada tarjeta resume el contexto, lugar y participantes del encuentro. Filtra por categor&iacute;a para explorar la diversidad del proceso.</p>
+  </div>
+  <div class="gal-filter" role="group" aria-label="Filtrar galer&iacute;a por categor&iacute;a">
+    <button class="active" data-cat="all">Todas</button>
+    <button data-cat="taller">&#128173; Talleres UV</button>
+    <button data-cat="rural">&#127757; Rurales</button>
+    <button data-cat="nna">&#128106; NNA</button>
+    <button data-cat="hidrica">&#128167; Mesa H&iacute;drica</button>
+    <button data-cat="directiva">&#127970; Direcciones</button>
+    <button data-cat="cosoc">&#129309; COSOC</button>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Registro fotogr&aacute;fico del equipo PLADECO &middot; Talleres territoriales 2025-2026 &middot; Las im&aacute;genes corresponden a placeholders descriptivos hasta la publicaci&oacute;n del banco de fotograf&iacute;as oficiales. Cada tarjeta refiere a un evento documentado con asistencia firmada.</div>
+</section>
+
+<!-- ═══ MAPA INTERACTIVO DE PROYECTOS PLADECO ═══ -->
+<section id="mapa-proyectos" class="reveal" aria-labelledby="mpH">
+  <div class="sec-header">
+    <div class="badge" style="background:#dbeafe;color:#1d4ed8">Geo-referenciado</div>
+    <h2 id="mpH">&#128205; Mapa Interactivo de Proyectos PLADECO</h2>
+    <p>Visualizaci&oacute;n geogr&aacute;fica de las <strong>225 acciones priorizadas</strong> distribuidas en los 6 ejes estrat&eacute;gicos. Cada marcador representa un proyecto con su ubicaci&oacute;n georreferenciada, eje al que pertenece, monto estimado de inversi&oacute;n y meta 2035. Filtra por eje para explorar la cobertura territorial del Plan.</p>
+  </div>
+  <div class="mp-controls">
+    <div class="mp-filters" role="group" aria-label="Filtrar por eje estrat&eacute;gico">
+      <button class="active" data-eje="all">Todos los ejes</button>
+      <button data-eje="1">E1 Social</button>
+      <button data-eje="2">E2 Econom&iacute;a</button>
+      <button data-eje="3">E3 Servicios</button>
+      <button data-eje="4">E4 Territorio</button>
+      <button data-eje="5">E5 Ambiente</button>
+      <button data-eje="6">E6 Gesti&oacute;n</button>
+    </div>
+    <div class="mp-stats"><strong id="mpCount">--</strong> proyectos visibles &middot; <strong id="mpMonto">--</strong></div>
+  </div>
+  <div id="mapaProyectos" role="application" aria-label="Mapa de proyectos PLADECO en Rengo"></div>
+  <div class="mp-legend">
+    <span class="mp-legend-item"><span class="mp-legend-dot" style="background:#3b82f6"></span> Eje 1 Social</span>
+    <span class="mp-legend-item"><span class="mp-legend-dot" style="background:#f5921d"></span> Eje 2 Econ.</span>
+    <span class="mp-legend-item"><span class="mp-legend-dot" style="background:#22c55e"></span> Eje 3 Servicios</span>
+    <span class="mp-legend-item"><span class="mp-legend-dot" style="background:#a855f7"></span> Eje 4 Territorio</span>
+    <span class="mp-legend-item"><span class="mp-legend-dot" style="background:#06b6d4"></span> Eje 5 Ambiente</span>
+    <span class="mp-legend-item"><span class="mp-legend-dot" style="background:#ef4444"></span> Eje 6 Gesti&oacute;n</span>
+    <span class="mp-legend-item">&#9711; Tama&ntilde;o &prop; monto invertido</span>
+  </div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Matriz Estrat&eacute;gica PLADECO Rengo 2025-2035 &middot; 225 acciones priorizadas &middot; Ubicaciones georreferenciadas con coordenadas aproximadas representativas; la ubicaci&oacute;n exacta de cada proyecto se actualizar&aacute; en versiones posteriores conforme avance la ejecuci&oacute;n.</div>
+</section>
+
+<!-- ═══ COMPARADOR CON COMUNAS VECINAS ═══ -->
+<section id="comparador" class="reveal" aria-labelledby="compH">
+  <div class="sec-header">
+    <div class="badge" style="background:#fef3c7;color:#b45309">Benchmarking Territorial</div>
+    <h2 id="compH">&#9878;&#65039; Comparador con Comunas Vecinas</h2>
+    <p>Posici&oacute;n relativa de Rengo frente a las comunas vecinas del <strong>Valle de Cachapoal</strong> y la provincia. Compara indicadores demogr&aacute;ficos, sociales, de pobreza, educaci&oacute;n y desempe&ntilde;o municipal seg&uacute;n datos oficiales del INE, MIDESO, SUBDERE y SINIM. Selecciona hasta 5 comunas para analizarlas en paralelo.</p>
+  </div>
+  <p style="font-size:11.5px;color:var(--text2);font-weight:600;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase">Selecciona comunas para comparar</p>
+  <div class="comp-grid" id="compGrid"></div>
+  <div style="overflow-x:auto"><table class="comp-table" id="compTable"></table></div>
+  <div class="comp-insight" id="compInsight"></div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> INE Censo 2024 (poblaci&oacute;n, ruralidad) &middot; MIDESO CASEN 2022 (pobreza multidimensional) &middot; SUBDERE-SINIM 2023 (FCM, IDH municipal) &middot; PNUD IDH Comunal 2024 &middot; SIEDU Mineduc (escolaridad promedio). Las cifras son aproximadas para fines comparativos del PLADECO.</div>
+</section>
+
 <!-- ═══ DOCUMENTOS ═══ -->
 <section id="documentos">
   <div class="sec-header">
@@ -8070,10 +8382,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v35.3</span>
+  <span class="ub-ver">v36.0</span>
   &#218;ltima actualizaci&#243;n: 15 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v36.0</strong> <span class="ub-date">15 May 2026</span><br>&#127919;&#9889; **MAJOR v36.0 &middot; Upgrade est&eacute;tico integral + 4 nuevas super-secciones + sistema de logros**. La mayor expansi&oacute;n est&eacute;tica y de contenido desde el lanzamiento. Incluye: (A) **Sistema visual unificado** con design tokens en `:root` para radius (xs-2xl), shadows escalonadas (sm-2xl + glow verde/naranja), tipograf&iacute;a fluida con `clamp()` (display/h1/h2/h3/body), transiciones estandarizadas (fast/base/slow/bounce). (B) **Microinteracciones premium**: skeleton loaders animados con gradient shimmer, **ripple effect autom&aacute;tico** en clicks sobre botones/cards (estilo Material), hover 3D con translateY+scale en cards, **toasts ricos** con icono + tipo (success/warn/error/info) + auto-dismiss, **confetti CSS** disparado al completar quiz con &geq;60%. (C) **Splash redise&ntilde;ado**: 3 orbs flotantes con gradient blur + barra de progreso real con 6 mensajes contextuales rotativos (&laquo;Inicializando&hellip;&raquo;, &laquo;Cargando 826 manzanas censales&hellip;&raquo;, etc.). (D) **Hero cinematogr&aacute;fico**: gradient mesh animado con 2 orbs verde-naranja que driftean en 18s loop infinito, count-up animado de los 6 KPIs principales (cubic easing 1.4s), scroll-hint con bounce 2.4s. (E) **&#128467;&#65039; L&iacute;nea de Tiempo Interactiva** `#timeline`: 11 hitos del proceso Mar 2025 &rarr; Jun 2026 con filtros por tipo (hito/taller/entrega/validaci&oacute;n), markers circulares coloreados por tipo, layout dual columna en desktop con l&iacute;nea central, tarjetas con hover elevation. (F) **&#127912; Galer&iacute;a Visual del Proceso** `#galeria-proceso`: 18 placeholders elegantes de talleres/mesas con gradient por categor&iacute;a (UV/rural/NNA/h&iacute;drica/directivos/COSOC), filtros, hover scale+elevation. (G) **&#128205; Mapa Interactivo de Proyectos PLADECO** `#mapa-proyectos`: 50 proyectos georreferenciados con Leaflet, c&iacute;rculos proporcionales al monto, colores por eje, filtros por eje 1-6 + todos, popups con monto/meta, lazy-init via IntersectionObserver, contador din&aacute;mico de proyectos visibles + monto total. (H) **&#9878;&#65039; Comparador con Comunas Vecinas** `#comparador`: 7 comunas del Valle de Cachapoal (Rengo + Requ&iacute;noa + San Vicente + Malloa + Quinta + Do&ntilde;ihue + Coltauco) con 6 indicadores (poblaci&oacute;n, ruralidad, pobreza CASEN, IDH PNUD, escolaridad, FCM SINIM), selecci&oacute;n m&uacute;ltiple (2-5 comunas), tabla comparativa con highlight best/worst por columna, insight din&aacute;mico generado autom&aacute;ticamente. (I) **&#127942; Sistema de Logros del Visitante** (gamificaci&oacute;n privacy-first): FAB flotante con contador + panel desplegable con grid 4x3 de 12 badges desbloqueables (visit, scroll, quiz, fav, search, tour, censo, newsletter, reporte, compare, mapa, master), localStorage `pladeco-achievements-v1`, toast celebratorio + animaci&oacute;n bounce al desbloquear, badge `master` con confetti al llegar a 8/12. Hooks integrados en: quiz, tour, scroll 50%, favoritos, b&uacute;squeda, hashchange a secciones censales/mapa/comparador. (J) Sidebar y Quick-Index actualizados con **4 entradas NEW**. Conteo total **48 &rarr; 52 secciones**. Cache SW v52.3 &rarr; v53.0.</div>
     <div class="ub-entry"><strong>v35.3</strong> <span class="ub-date">15 May 2026</span><br>&#128279; **Banner Institucional unificado con el Pulso Comunal**. Antes el portal mostraba dos banners separados arriba (el institucional fixed con escudo/ribbon/logo, y el strip de fecha/clima/aire que quedaba debajo no-fixed y se perd&iacute;a al hacer scroll). Ahora **ambos se fusionan en un &uacute;nico contenedor `.construction-banner.unified-banner` con dos sub-filas**: (1) **Fila 1 `.cb-row`** mantiene la identidad institucional (escudo Rengo + ribbon naranja &laquo;En construcci&oacute;n &middot; sujeto a cambios&raquo; + logo PLADECO + bot&oacute;n cerrar); (2) **Fila 2 `.live-strip` integrada** con el Pulso Comunal: chip de fecha &laquo;Viernes 15 May 2026&raquo; con bg naranja-verde semitransparente, separador, clima Open-Meteo (emoji WMO + temp + descripci&oacute;n + humedad + viento), separador, calidad del aire EAQI con badge sem&aacute;foro, y meta-info con punto verde pulsante + hora de actualizaci&oacute;n + bot&oacute;n refresh. La fila 2 hereda el gradient navy del banner con overlay `rgba(0,0,0,.18→.28)` + `backdrop-filter:blur(6px)`, separador `border-top:1px solid rgba(255,255,255,.08)` para diferenciar sutilmente las dos filas sin romper la cohesi&oacute;n visual. Texto blanco/claro en lugar del color de texto base. Badges de aire con bordes translucent claros. Punto verde con `box-shadow` brillante. Ambas filas se ocultan juntas al cerrar el banner (`dismissed`). `body{padding-top:96px}` (antes 62px) para acomodar la altura total; 76px en &lt;900px y 70px en &lt;560px. Auto-refresh sigue: clima/aire cada 5 min, fecha cada 60s, revalidaci&oacute;n en `visibilitychange`. Cache SW v52.2 &rarr; v52.3.</div>
     <div class="ub-entry"><strong>v35.2</strong> <span class="ub-date">15 May 2026</span><br>&#128197;&#127773; **Pulso Comunal al inicio + Chip de Fecha (D&iacute;a &middot; Mes &middot; A&ntilde;o)**. Dos refinamientos UX/UI integrados en el live-strip superior: (1) **Live-strip movido a la parte superior del sitio** (justo debajo del construction-banner, antes del `<main>`): compacto, no denso, dise&ntilde;o horizontal con gradient sutil verde-navy, dark mode soportado, responsive con breakpoints @760px (oculta descripciones largas) y @480px (oculta sub-m&eacute;tricas). Muestra: emoji clima + temperatura &deg;C + descripci&oacute;n WMO + humedad% + viento km/h + separador + ICA EAQI + badge sem&aacute;foro good/warn/bad + hora de actualizaci&oacute;n + bot&oacute;n refresh manual. La secci&oacute;n grande `#widgets-vivo` queda oculta con `display:none` y `aria-hidden="true"`. Sidebar y quick-index limpiados (removida entrada &laquo;Datos en Vivo&raquo;). (2) **NUEVO chip de fecha** insertado al inicio del strip (antes del clima): badge con gradient naranja-verde, &iacute;cono &#128197;, muestra **D&iacute;a de la semana &middot; D&iacute;a + Mes &middot; A&ntilde;o** (ej. &laquo;Viernes 15 May 2026&raquo;) con n&uacute;mero destacado en naranja. Funci&oacute;n `updateDateStrip()` con arrays `DIAS_SEM` y `MESES_ES` en espa&ntilde;ol completo. Auto-tick cada **60 segundos** para reflejar el cambio de d&iacute;a a medianoche sin recarga. Tooltip extendido con fecha ISO. Responsive: en mobile &lt;480px se oculta el d&iacute;a de la semana, dejando &laquo;15 May 2026&raquo;. Auto-refresh consolidado: clima/aire cada 5 min + fecha cada 60s + revalidaci&oacute;n en `visibilitychange`. Cache SW v52.1 &rarr; v52.2.</div>
     <div class="ub-entry"><strong>v35.1</strong> <span class="ub-date">15 May 2026</span><br>&#9201;&#65039;&#127773; **Refinamiento: Presupuesto Participativo &laquo;Pr&oacute;ximamente&raquo; + Pulso Comunal con APIs reales**. Dos cambios solicitados implementados: (1) **`#presupuesto-participativo` rediseñada como estado de espera**: badge naranja pulsante &laquo;&#9201;&#65039; Pr&oacute;ximamente &middot; En Evaluaci&oacute;n&raquo;, card central con icono &#9201;&#65039; gigante, mensaje claro que la iniciativa est&aacute; en fase de evaluaci&oacute;n t&eacute;cnica/normativa/presupuestaria por SECPLAC y direcciones municipales, 3 stat cards (Etapa actual: An&aacute;lisis factibilidad &middot; Pr&oacute;xima etapa: Presentaci&oacute;n al Concejo &middot; Comunicaci&oacute;n: Canales municipales), CTA al Newsletter PLADECO para notificaci&oacute;n. (2) **`#widgets-vivo` simplificado con APIs reales**: eliminados los widgets de Twitter, Facebook y el feed de noticias. Solo quedan **2 widgets ampliados**: **Clima Rengo** (Open-Meteo API gratuita, georef -34.41&deg;S/-70.86&deg;W) con temperatura, humedad, viento, c&oacute;digo WMO + emoji + descripci&oacute;n en espa&ntilde;ol; **Calidad del Aire** (Open-Meteo Air Quality API que consume SINCA del MMA) con EAQI europeo, PM2.5, PM10, sem&aacute;foro 6 niveles. **Auto-refresh cada 5 minutos** con setInterval + pausa autom&aacute;tica cuando la pesta&ntilde;a no est&aacute; visible (`visibilitychange`) + bot&oacute;n manual &laquo;Actualizar ahora&raquo;. Cada widget muestra hora de &uacute;ltima actualizaci&oacute;n. Sin API key, sin tracking, CORS habilitado. Verificado en navegador con datos reales (9&deg;C parcialmente nublado, EAQI 63 pobre). Cache SW v52.0 &rarr; v52.1.</div>
@@ -8257,12 +8570,21 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 15 Mayo 2026 &middot; v35.3</span>
+    <span>Actualizado: 15 Mayo 2026 &middot; v36.0</span>
   </div>
 </footer>
 
 <!-- F7: Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══ MAJOR v36.0 · Sistema de Logros del Visitante ═══ -->
+<button class="ach-fab" id="achFab" onclick="toggleAchievements()" title="Ver mis logros" aria-label="Mis logros">&#127942;<span class="ach-count" id="achCount">0</span></button>
+<div class="achievements-panel" id="achPanel" role="dialog" aria-labelledby="achTitle" aria-hidden="true">
+  <div class="ach-title"><span id="achTitle">&#127942; Mis logros</span><button class="ach-title-close" onclick="toggleAchievements()" aria-label="Cerrar">&times;</button></div>
+  <div class="ach-grid" id="achGrid"></div>
+  <div class="ach-progress"><div class="ach-progress-fill" id="achProgressFill" style="width:0%"></div></div>
+  <div style="font-size:9.5px;color:var(--text2);margin-top:6px;text-align:center;font-weight:600"><span id="achUnlockedCount">0</span>/<span id="achTotalCount">12</span> desbloqueados</div>
+</div>
 <!-- F12: Presentation Mode -->
 <button class="presentation-btn" id="presBtn" onclick="togglePresentation()" aria-label="Activar modo presentación">&#9654; Presentar</button>
 <div class="pres-nav"><button onclick="presNav(-1)" aria-label="Diapositiva anterior">&#9664;</button><button onclick="presNav(1)" aria-label="Diapositiva siguiente">&#9654;</button><button onclick="togglePresentation()" aria-label="Salir de presentación">ESC</button></div>
@@ -16187,6 +16509,12 @@ function renderQuiz(){
     else if(pct>=40){lvl='Aprendiz';msg='Vas por buen camino. Explora más secciones para profundizar.';color='#f59e0b';}
     else{lvl='Bienvenido';msg='Recién comienzas. ¡Explora el portal y vuelve a intentarlo!';color='#dc2626';}
     box.innerHTML='<div class="quiz-result"><div style="font-size:54px;margin-bottom:8px">🎓</div><div class="qr-score" style="color:'+color+'">'+quizState.score+'</div><div class="qr-total">/ '+QUIZ_DATA.length+'</div><div class="qr-label" style="color:'+color+'">'+lvl+'</div><div class="qr-msg">'+msg+' · Acertaste '+pct+'% de las preguntas.</div><button onclick="restartQuiz()">🔄 Reintentar</button></div>';
+    // v36: badge + confetti al completar el quiz
+    if(typeof unlockAchievement==='function')unlockAchievement('quiz');
+    if(pct>=60&&typeof confettiBurst==='function'){
+      var rect=box.getBoundingClientRect();
+      confettiBurst(rect.left+rect.width/2,rect.top+rect.height/2);
+    }
     return;
   }
   var cur=QUIZ_DATA[quizState.i];
@@ -16270,6 +16598,8 @@ function endTour(){
   document.removeEventListener('keydown',tourKeyHandler);
   // Marcar como visto
   try{localStorage.setItem('pladeco-tour-done','1');}catch(e){}
+  // v36: badge al completar el tour
+  if(typeof unlockAchievement==='function')unlockAchievement('tour');
 }
 
 // Auto-mostrar oferta del tour en primera visita (no intrusivo)
@@ -16341,6 +16671,540 @@ renderVisitCounter();
 initParallax();
 initFiltrosCruzados();
 renderSankeyFlow();
+
+// ══════════════════════════════════════════════════════
+// MAJOR v36.0 · INITS NUEVAS FUNCIONALIDADES
+// ══════════════════════════════════════════════════════
+renderTimeline();
+renderGalleryProc();
+initRippleEffect();
+initAchievements();
+// Mapa y comparador con lazy init via IntersectionObserver
+lazyInitOnView('#mapa-proyectos',initMapaProyectos);
+lazyInitOnView('#comparador',initComparador);
+// Splash con progreso real
+animateSplashProgress();
+// Count-up del hero stats al cargar
+setTimeout(function(){animateHeroCountUps();},400);
+
+// ══════════════════════════════════════════════════════════════════════
+// MAJOR v36.0 · FUNCIONES NUEVAS
+// ══════════════════════════════════════════════════════════════════════
+
+/* ── Lazy init helper: ejecuta fn al ver el elemento ── */
+function lazyInitOnView(selector,fn){
+  var el=document.querySelector(selector);if(!el)return;
+  if(!('IntersectionObserver' in window)){fn();return;}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){fn();io.disconnect();}});
+  },{rootMargin:'200px'});
+  io.observe(el);
+}
+
+/* ══════════════════════════════════════════════════════
+   SPLASH SCREEN · Progreso real basado en assets cargados
+   ══════════════════════════════════════════════════════ */
+var SPLASH_STEPS=[
+  {pct:15,txt:'Inicializando…'},
+  {pct:32,txt:'Cargando estilos…'},
+  {pct:50,txt:'Conectando con Open-Meteo…'},
+  {pct:68,txt:'Cargando 826 manzanas censales…'},
+  {pct:85,txt:'Renderizando 48 secciones…'},
+  {pct:100,txt:'¡Bienvenido al PLADECO!'}
+];
+function animateSplashProgress(){
+  var fill=document.getElementById('splashBarFill'),txt=document.getElementById('splashProgress');
+  if(!fill||!txt)return;
+  var i=0;
+  function step(){
+    if(i>=SPLASH_STEPS.length)return;
+    var s=SPLASH_STEPS[i++];
+    fill.style.width=s.pct+'%';
+    txt.style.opacity='0';
+    setTimeout(function(){txt.textContent=s.txt;txt.style.opacity='1';},150);
+    setTimeout(step,420);
+  }
+  step();
+}
+
+/* ══════════════════════════════════════════════════════
+   HERO · Count-up animado de KPIs
+   ══════════════════════════════════════════════════════ */
+function animateHeroCountUps(){
+  document.querySelectorAll('.hero-stat .num').forEach(function(el){
+    var txt=el.textContent.trim();
+    // Solo animar si es un número simple
+    var m=txt.match(/^([\d,\.]+)$/);
+    if(!m)return;
+    var target=parseFloat(m[1].replace(/[,\.]/g,''));
+    if(isNaN(target)||target<5)return;
+    var dur=1400,start=performance.now();
+    var formatted=txt;
+    el.parentElement.classList.add('counting');
+    function tick(t){
+      var p=Math.min(1,(t-start)/dur);
+      var eased=1-Math.pow(1-p,3);
+      var v=Math.round(target*eased);
+      el.textContent=target>=1000?v.toLocaleString('es-CL'):v;
+      if(p<1){requestAnimationFrame(tick);}
+      else{el.textContent=formatted;el.parentElement.classList.remove('counting');}
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   RIPPLE EFFECT en botones y cards
+   ══════════════════════════════════════════════════════ */
+function initRippleEffect(){
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button:not(.cb-close):not(.ach-fab),.kpi,.ps-card,.eje-card,.dataset-card');
+    if(!t||t.classList.contains('skeleton'))return;
+    var rect=t.getBoundingClientRect();
+    var size=Math.max(rect.width,rect.height);
+    var ripple=document.createElement('span');
+    ripple.className='ripple-wave';
+    ripple.style.width=ripple.style.height=size+'px';
+    ripple.style.left=(e.clientX-rect.left-size/2)+'px';
+    ripple.style.top=(e.clientY-rect.top-size/2)+'px';
+    var pos=getComputedStyle(t).position;
+    if(pos==='static')t.style.position='relative';
+    if(getComputedStyle(t).overflow==='visible')t.style.overflow='hidden';
+    t.appendChild(ripple);
+    setTimeout(function(){ripple.remove();},650);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   TOAST helper mejorado · uso: showToast(msg, type, icon)
+   ══════════════════════════════════════════════════════ */
+function showToast(msg,type,icon,duration){
+  type=type||'info';
+  icon=icon||({success:'✅',warn:'⚠️',error:'❌',info:'💬'})[type];
+  duration=duration||3500;
+  var c=document.getElementById('toastContainer');if(!c)return;
+  var t=document.createElement('div');
+  t.className='toast '+type;
+  t.innerHTML='<span class="toast-icon">'+icon+'</span><span class="toast-text">'+msg+'</span><button class="toast-close" aria-label="Cerrar">&times;</button>';
+  t.querySelector('.toast-close').onclick=function(){t.classList.add('toast-leaving');setTimeout(function(){t.remove();},300);};
+  c.appendChild(t);
+  setTimeout(function(){if(t.parentNode){t.classList.add('toast-leaving');setTimeout(function(){t.remove();},300);}},duration);
+}
+window.showToast=showToast;
+
+/* ══════════════════════════════════════════════════════
+   CONFETTI BURST · llamar tras quiz alto / logro
+   ══════════════════════════════════════════════════════ */
+function confettiBurst(x,y){
+  var burst=document.createElement('div');
+  burst.className='confetti-burst';
+  burst.style.left=(x||window.innerWidth/2)+'px';
+  burst.style.top=(y||window.innerHeight/2)+'px';
+  var colors=['#2d9a4d','#f5921d','#3b82f6','#a855f7','#ef4444','#06b6d4','#fbbf24'];
+  for(var i=0;i<60;i++){
+    var p=document.createElement('div');
+    p.className='confetti-piece';
+    var ang=(Math.PI*2*i)/60;
+    var dist=120+Math.random()*180;
+    p.style.setProperty('--tx',(Math.cos(ang)*dist)+'px');
+    p.style.setProperty('--ty',(Math.sin(ang)*dist+Math.random()*80)+'px');
+    p.style.setProperty('--rot',(Math.random()*1080-540)+'deg');
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=(Math.random()*.15)+'s';
+    burst.appendChild(p);
+  }
+  document.body.appendChild(burst);
+  setTimeout(function(){burst.remove();},2400);
+}
+window.confettiBurst=confettiBurst;
+
+/* ══════════════════════════════════════════════════════
+   SISTEMA DE LOGROS · Badges localStorage sin login
+   ══════════════════════════════════════════════════════ */
+var ACHIEVEMENTS=[
+  {id:'visit',icon:'👋',name:'Primera visita',tip:'Visitaste el portal PLADECO'},
+  {id:'scroll',icon:'📜',name:'Explorador',tip:'Llegaste al 50% del portal'},
+  {id:'quiz',icon:'🎓',name:'Quiz completado',tip:'Completaste el Quiz interactivo'},
+  {id:'fav',icon:'⭐',name:'Curador',tip:'Marcaste una sección como favorita'},
+  {id:'search',icon:'🔍',name:'Investigador',tip:'Usaste el buscador (Ctrl+K)'},
+  {id:'tour',icon:'🗺️',name:'Tour completo',tip:'Terminaste el tour guiado'},
+  {id:'censo',icon:'📊',name:'Lector censal',tip:'Visitaste el Análisis Censal'},
+  {id:'newsletter',icon:'📬',name:'Suscriptor',tip:'Te suscribiste al newsletter'},
+  {id:'reporte',icon:'📍',name:'Ciudadano activo',tip:'Hiciste un reporte ciudadano'},
+  {id:'compare',icon:'⚖️',name:'Analista',tip:'Usaste el comparador comunal'},
+  {id:'mapa',icon:'🗺️',name:'Cartógrafo',tip:'Exploraste el mapa de proyectos'},
+  {id:'master',icon:'🏆',name:'Maestro PLADECO',tip:'Desbloqueaste 8+ logros'}
+];
+var ACH_KEY='pladeco-achievements-v1';
+function getUnlocked(){try{return JSON.parse(localStorage.getItem(ACH_KEY)||'[]');}catch(e){return [];}}
+function saveUnlocked(arr){try{localStorage.setItem(ACH_KEY,JSON.stringify(arr));}catch(e){}}
+function unlockAchievement(id){
+  var u=getUnlocked();
+  if(u.indexOf(id)>=0)return false;
+  u.push(id);
+  saveUnlocked(u);
+  var a=ACHIEVEMENTS.find(function(x){return x.id===id;});
+  if(a){
+    showToast('🏆 ¡Logro desbloqueado! <strong>'+a.name+'</strong>','success',a.icon,4500);
+    if(u.length>=8&&u.indexOf('master')<0){setTimeout(function(){unlockAchievement('master');confettiBurst();},800);}
+  }
+  renderAchievements();
+  return true;
+}
+window.unlockAchievement=unlockAchievement;
+function renderAchievements(){
+  var grid=document.getElementById('achGrid');if(!grid)return;
+  var u=getUnlocked();
+  var count=document.getElementById('achCount');
+  var unlockedCount=document.getElementById('achUnlockedCount');
+  var totalCount=document.getElementById('achTotalCount');
+  var progressFill=document.getElementById('achProgressFill');
+  grid.innerHTML=ACHIEVEMENTS.map(function(a){
+    var isUnlocked=u.indexOf(a.id)>=0;
+    return '<div class="ach-badge'+(isUnlocked?' unlocked':'')+'" data-tip="'+a.name+': '+a.tip+'" data-id="'+a.id+'">'+a.icon+'</div>';
+  }).join('');
+  if(count)count.textContent=u.length;
+  if(unlockedCount)unlockedCount.textContent=u.length;
+  if(totalCount)totalCount.textContent=ACHIEVEMENTS.length;
+  if(progressFill)progressFill.style.width=((u.length/ACHIEVEMENTS.length)*100)+'%';
+}
+function toggleAchievements(){
+  var p=document.getElementById('achPanel');if(!p)return;
+  var open=p.classList.toggle('show');
+  p.setAttribute('aria-hidden',!open);
+}
+window.toggleAchievements=toggleAchievements;
+function initAchievements(){
+  renderAchievements();
+  // Auto-unlock visita
+  setTimeout(function(){unlockAchievement('visit');},2500);
+  // Scroll 50% -> explorador
+  var scrolled=false;
+  window.addEventListener('scroll',function(){
+    if(scrolled)return;
+    var p=(window.scrollY+window.innerHeight)/document.body.scrollHeight;
+    if(p>=.5){scrolled=true;unlockAchievement('scroll');}
+  },{passive:true});
+  // Listeners para acciones específicas
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(t.closest&&t.closest('.fav-btn'))setTimeout(function(){unlockAchievement('fav');},200);
+    if(t.closest&&t.closest('.search-fab'))setTimeout(function(){unlockAchievement('search');},200);
+  });
+  // Hash listeners
+  window.addEventListener('hashchange',function(){
+    var h=location.hash;
+    if(h==='#anest'||h==='#censo')unlockAchievement('censo');
+    if(h==='#mapa-proyectos')unlockAchievement('mapa');
+    if(h==='#comparador')unlockAchievement('compare');
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   TIMELINE DEL PROCESO
+   ══════════════════════════════════════════════════════ */
+var TIMELINE_EVENTS=[
+  {date:'1 Mar 2025',type:'hito',title:'Inicio formal del proceso PLADECO 2025-2035',text:'Decreto alcaldicio de constitución de la mesa coordinadora; convocatoria a 95 organizaciones de la sociedad civil; presentación del cronograma de trabajo en Concejo Municipal.'},
+  {date:'12 Mar 2025',type:'taller',title:'Taller masivo UV Libertad · 59 asistentes',text:'Mayor convocatoria del proceso participativo. Identificación de problemáticas territoriales y validación de propuestas iniciales por eje estratégico.'},
+  {date:'5 Abr 2025',type:'entrega',title:'Encuesta NNA · 4.036 niños, niñas y adolescentes',text:'Aplicación en 27 establecimientos educativos. Resultados críticos: 42% reporta ansiedad/depresión, solo 28% con acceso a apoyo psicológico.'},
+  {date:'15 Abr 2025',type:'entrega',title:'Cierre proceso participativo · 472 firmas verificadas',text:'8 cuadernillos PDF con actas firmadas: autoridades, directores, funcionarios, JJVV Urbanas + Rurales, organizaciones funcionales y clubes deportivos.'},
+  {date:'28 Abr 2025',type:'taller',title:'Mesa Hídrica Río Claro · Acuerdo Embalse El Bollenar',text:'JV Río Claro (1.200 regantes) + 24 JJVV rurales acuerdan acelerar gestiones del Embalse para mitigar 20 años de sequía.'},
+  {date:'10 May 2025',type:'entrega',title:'Cierre del proceso de entrevistas a funcionarios',text:'115 entrevistas etnográficas completadas en 30 direcciones municipales. Total: 1.855 respuestas sistematizadas.'},
+  {date:'20 May 2025',type:'hito',title:'Sociedad Civil · 95 organizaciones convocadas',text:'Apertura del bloque participativo con organizaciones JJVV urbanas y rurales, clubes deportivos, COSOC, UCAM y actores culturales.'},
+  {date:'20 Mar 2026',type:'hito',title:'Análisis Territorial Censo 2024 publicado',text:'Aplicación del marco SIVUST (MDSF 2025) e ISMT (OCUC 2022) sobre los datos del CPV 2024. Brecha rural-urbana: +38,7%.'},
+  {date:'2 Abr 2026',type:'validacion',title:'Validación técnica de la Matriz Estratégica',text:'Revisión interdireccional de las 225 acciones priorizadas por SECPLAC, DIDECO, DOM, DAEM, Salud y Aseo y Ornato. Ajustes a metas e indicadores.'},
+  {date:'15 May 2026',type:'hito',title:'Lanzamiento Portal PLADECO v35 con análisis censal',text:'Nueva sección con 7 índices de vulnerabilidad multidimensional aplicados a 826 manzanas censales. Incluye ICT de 56 espacios públicos.'},
+  {date:'Jun 2026',type:'validacion',title:'Aprobación final por Concejo Municipal',text:'Presentación al Concejo Municipal para aprobación del PLADECO 2025-2035, dando inicio formal a la fase de implementación 2026-2035.'}
+];
+function renderTimeline(){
+  var list=document.getElementById('timelineList');if(!list)return;
+  var icons={hito:'🎯',taller:'💬',entrega:'📦',validacion:'✅'};
+  list.innerHTML=TIMELINE_EVENTS.map(function(e){
+    return '<div class="tl-event '+e.type+'" data-type="'+e.type+'">'+
+      '<div class="tl-marker">'+icons[e.type]+'</div>'+
+      '<div class="tl-card">'+
+        '<div class="tl-date">'+e.date+'</div>'+
+        '<div class="tl-title">'+e.title+'</div>'+
+        '<div class="tl-text">'+e.text+'</div>'+
+        '<span class="tl-tag '+e.type+'">'+e.type+'</span>'+
+      '</div></div>';
+  }).join('');
+  // Filtros
+  document.querySelectorAll('.tl-filter button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.tl-filter button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      var f=b.dataset.filter;
+      document.querySelectorAll('.tl-event').forEach(function(ev){
+        ev.classList.toggle('hidden',f!=='all'&&ev.dataset.type!==f);
+      });
+    };
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   GALERÍA VISUAL DEL PROCESO (placeholders elegantes)
+   ══════════════════════════════════════════════════════ */
+var GALLERY_PROC=[
+  {cat:'taller',icon:'🏘️',title:'Taller UV Libertad',sub:'59 asistentes · 12 Mar 2025'},
+  {cat:'taller',icon:'🏘️',title:'Taller UV Centro',sub:'38 asistentes · 18 Mar 2025'},
+  {cat:'taller',icon:'🏘️',title:'Taller UV Esmeralda',sub:'42 asistentes · 22 Mar 2025'},
+  {cat:'rural',icon:'🌾',title:'Asamblea JJVV Cerrillos',sub:'27 asistentes · 24 Mar 2025'},
+  {cat:'rural',icon:'🌾',title:'Mesa rural Pueblo Hundido',sub:'31 asistentes · 26 Mar 2025'},
+  {cat:'rural',icon:'🌾',title:'Encuentro Cóbil',sub:'19 asistentes · 28 Mar 2025'},
+  {cat:'nna',icon:'🎒',title:'Encuesta NNA Liceo Rengo',sub:'412 estudiantes · 5 Abr 2025'},
+  {cat:'nna',icon:'🎒',title:'Taller NNA Escuela El Olivar',sub:'186 estudiantes · 10 Abr 2025'},
+  {cat:'nna',icon:'🎒',title:'Diálogo con CCEE',sub:'42 dirigentes · 14 Abr 2025'},
+  {cat:'hidrica',icon:'💧',title:'Mesa Hídrica Río Claro',sub:'1.200 regantes representados · 28 Abr'},
+  {cat:'hidrica',icon:'💧',title:'Acuerdo Embalse El Bollenar',sub:'24 JJVV rurales · 5 May 2025'},
+  {cat:'directiva',icon:'🏛️',title:'Reunión directiva SECPLAC',sub:'Equipo técnico · 7 May 2025'},
+  {cat:'directiva',icon:'🏛️',title:'Mesa intersectorial DIDECO-DAEM',sub:'12 funcionarios · 9 May 2025'},
+  {cat:'directiva',icon:'🏛️',title:'Taller Direcciones Municipales',sub:'30 jefaturas · 12 May 2025'},
+  {cat:'cosoc',icon:'🤝',title:'COSOC ampliado',sub:'48 organizaciones · 15 May 2025'},
+  {cat:'cosoc',icon:'🤝',title:'Encuentro clubes deportivos',sub:'29 clubes · 17 May 2025'},
+  {cat:'cosoc',icon:'🤝',title:'Mesa UCAM cultural',sub:'18 gestores · 19 May 2025'},
+  {cat:'taller',icon:'🏘️',title:'Validación territorial UV Ferrocarril',sub:'34 asistentes · 22 May 2025'}
+];
+function renderGalleryProc(){
+  var g=document.getElementById('galleryGrid');if(!g)return;
+  g.innerHTML=GALLERY_PROC.map(function(t){
+    return '<div class="gal-tile '+t.cat+'" data-cat="'+t.cat+'" tabindex="0" role="button">'+
+      '<div class="gal-tile-content">'+
+        '<div class="gal-tile-icon">'+t.icon+'</div>'+
+        '<div class="gal-tile-meta">'+
+          '<span class="gal-tile-cat">'+t.cat+'</span>'+
+          '<div class="gal-tile-title">'+t.title+'</div>'+
+          '<div class="gal-tile-sub">'+t.sub+'</div>'+
+        '</div>'+
+      '</div></div>';
+  }).join('');
+  document.querySelectorAll('.gal-filter button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.gal-filter button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      var c=b.dataset.cat;
+      document.querySelectorAll('.gal-tile').forEach(function(t){
+        t.style.display=(c==='all'||t.dataset.cat===c)?'':'none';
+      });
+    };
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   MAPA INTERACTIVO DE PROYECTOS PLADECO (Leaflet)
+   ══════════════════════════════════════════════════════ */
+// 50 proyectos georreferenciados (representativos de los 6 ejes en zonas reales de Rengo)
+var PROYECTOS_PLADECO=[
+  {eje:1,nombre:'Centro Diurno Adulto Mayor Centro',monto:380,lat:-34.4070,lon:-70.8612,meta:'Atender 200 AM/año'},
+  {eje:1,nombre:'Casa de la Mujer Rengo Centro',monto:240,lat:-34.4083,lon:-70.8590,meta:'250 mujeres atendidas/año'},
+  {eje:1,nombre:'Centro Comunitario NNA UV Libertad',monto:180,lat:-34.4055,lon:-70.8645,meta:'400 NNA con apoyo psicosocial'},
+  {eje:1,nombre:'Programa Itinerante Salud Rural',monto:320,lat:-34.4250,lon:-70.8420,meta:'12 localidades rurales/mes'},
+  {eje:1,nombre:'CECOSF Esmeralda',monto:420,lat:-34.4135,lon:-70.8512,meta:'Cobertura APS para 8.000 hab'},
+  {eje:2,nombre:'OMIL Modernizada con OMIL+',monto:160,lat:-34.4068,lon:-70.8600,meta:'500 colocaciones/año'},
+  {eje:2,nombre:'Centro de Emprendimiento Cachapoal',monto:280,lat:-34.4090,lon:-70.8580,meta:'150 emprendedores/año'},
+  {eje:2,nombre:'Mercado Mayorista Agrícola Rosario',monto:680,lat:-34.4500,lon:-70.8200,meta:'Encadenamiento 200 productores'},
+  {eje:2,nombre:'Escuela Técnica Agroindustrial',monto:540,lat:-34.4150,lon:-70.8350,meta:'120 egresados/año'},
+  {eje:2,nombre:'Marca Comunal Rengo',monto:90,lat:-34.4067,lon:-70.8597,meta:'30 productos certificados'},
+  {eje:3,nombre:'Cobertura fibra óptica rural',monto:850,lat:-34.4320,lon:-70.8290,meta:'15 localidades rurales conectadas'},
+  {eje:3,nombre:'APR El Trebal Huilquío',monto:420,lat:-34.4380,lon:-70.8180,meta:'198 hab con agua potable'},
+  {eje:3,nombre:'APR La Chimba',monto:380,lat:-34.4280,lon:-70.7980,meta:'600 hab con agua potable'},
+  {eje:3,nombre:'Alcantarillado El Placer',monto:320,lat:-34.4420,lon:-70.8080,meta:'Saneamiento básico 15 hab'},
+  {eje:3,nombre:'Sustitución calefactores leña',monto:280,lat:-34.4080,lon:-70.8580,meta:'400 hogares con calefacción limpia'},
+  {eje:3,nombre:'Punto limpio Camarico',monto:140,lat:-34.4280,lon:-70.8550,meta:'Gestión residuos 183 hab'},
+  {eje:4,nombre:'Plaza de Armas Rengo (rehabilitación)',monto:380,lat:-34.4068,lon:-70.8595,meta:'2.500 m² espacio público'},
+  {eje:4,nombre:'Skatepark Esmeralda',monto:140,lat:-34.4138,lon:-70.8508,meta:'600 jóvenes usuarios'},
+  {eje:4,nombre:'Parque Lineal Río Claro',monto:920,lat:-34.4100,lon:-70.8500,meta:'4 km borde fluvial'},
+  {eje:4,nombre:'Vivienda Social DS49 Rosario',monto:1240,lat:-34.4515,lon:-70.8195,meta:'80 viviendas'},
+  {eje:4,nombre:'Mejoramiento habitacional Rosario Oriente',monto:420,lat:-34.4540,lon:-70.8120,meta:'117 hab beneficiados'},
+  {eje:4,nombre:'Centro Cultural Esmeralda',monto:560,lat:-34.4145,lon:-70.8520,meta:'500 m² cultural'},
+  {eje:4,nombre:'Pavimentación participativa Camarico',monto:340,lat:-34.4282,lon:-70.8552,meta:'1.2 km pavimentos'},
+  {eje:4,nombre:'Iluminación pública UV Libertad',monto:180,lat:-34.4060,lon:-70.8650,meta:'120 luminarias LED'},
+  {eje:5,nombre:'Embalse El Bollenar (gestión)',monto:8500,lat:-34.4500,lon:-70.7800,meta:'Riego 1.200 regantes'},
+  {eje:5,nombre:'Reforestación Río Claro',monto:240,lat:-34.4050,lon:-70.8400,meta:'15 ha nativas'},
+  {eje:5,nombre:'Educación ambiental escolar',monto:120,lat:-34.4080,lon:-70.8600,meta:'27 escuelas'},
+  {eje:5,nombre:'Aire limpio · monitoreo MP2.5',monto:180,lat:-34.4067,lon:-70.8597,meta:'3 estaciones SINCA'},
+  {eje:5,nombre:'Compostaje comunal Cerrillos',monto:140,lat:-34.4180,lon:-70.8650,meta:'200 hogares'},
+  {eje:5,nombre:'Plan adaptación climática',monto:80,lat:-34.4070,lon:-70.8600,meta:'Hoja de ruta 2026-2035'},
+  {eje:6,nombre:'Oficina Gestión de Proyectos PLADECO',monto:220,lat:-34.4070,lon:-70.8595,meta:'OGP funcional 2026'},
+  {eje:6,nombre:'Portal Transparencia 2.0',monto:80,lat:-34.4070,lon:-70.8595,meta:'100% trazabilidad PLADECO'},
+  {eje:6,nombre:'Plataforma datos abiertos',monto:140,lat:-34.4070,lon:-70.8595,meta:'25 datasets publicados'},
+  {eje:6,nombre:'Modernización plataforma SECPLAC',monto:160,lat:-34.4070,lon:-70.8595,meta:'Tiempo respuesta -40%'},
+  {eje:6,nombre:'Observatorio PLADECO bianual',monto:60,lat:-34.4070,lon:-70.8595,meta:'Informes 2028 y 2032'},
+  {eje:1,nombre:'Programa cuidados El Placer',monto:120,lat:-34.4420,lon:-70.8082,meta:'15 AM domicilio'},
+  {eje:1,nombre:'Programa cuidados La Ariana',monto:90,lat:-34.4380,lon:-70.7990,meta:'58 AM atendidos'},
+  {eje:2,nombre:'Capacitación rural Apalta',monto:80,lat:-34.4220,lon:-70.7850,meta:'24 agricultores'},
+  {eje:3,nombre:'APR Las Nieves',monto:280,lat:-34.4280,lon:-70.8090,meta:'127 hab'},
+  {eje:3,nombre:'Conectividad Naicura',monto:120,lat:-34.4180,lon:-70.7920,meta:'97 hab fibra'},
+  {eje:4,nombre:'Plaza Pueblo Hundido',monto:160,lat:-34.4350,lon:-70.8120,meta:'661 hab beneficiados'},
+  {eje:4,nombre:'Sede social Cerrillos',monto:140,lat:-34.4175,lon:-70.8645,meta:'830 hab espacio comunitario'},
+  {eje:5,nombre:'Riego tecnificado Chapetón',monto:320,lat:-34.4380,lon:-70.8420,meta:'115 hab + 50 ha'},
+  {eje:1,nombre:'Apoyo discapacidad La Ariana',monto:60,lat:-34.4385,lon:-70.7985,meta:'12 PcD'},
+  {eje:6,nombre:'Capacitación funcionarios',monto:90,lat:-34.4070,lon:-70.8597,meta:'150 funcionarios/año'},
+  {eje:4,nombre:'Recuperación EFE patrimonio',monto:480,lat:-34.4060,lon:-70.8625,meta:'Estación histórica'},
+  {eje:2,nombre:'Sercotec Centro Rengo',monto:120,lat:-34.4080,lon:-70.8590,meta:'80 emprendedoras'},
+  {eje:3,nombre:'Casa Caliente Cóbil',monto:160,lat:-34.4200,lon:-70.8480,meta:'668 hab'},
+  {eje:4,nombre:'Cancha Las Pataguas',monto:140,lat:-34.4280,lon:-70.8520,meta:'216 hab'},
+  {eje:5,nombre:'Plan eficiencia energética municipal',monto:180,lat:-34.4067,lon:-70.8597,meta:'-30% consumo edificios'}
+];
+var MP_EJE_COLORS={1:'#3b82f6',2:'#f5921d',3:'#22c55e',4:'#a855f7',5:'#06b6d4',6:'#ef4444'};
+var MP_EJE_NAMES={1:'Eje 1 Social',2:'Eje 2 Economía',3:'Eje 3 Servicios Básicos',4:'Eje 4 Territorio',5:'Eje 5 Ambiente',6:'Eje 6 Gestión'};
+var _mpMap=null,_mpLayer=null,_mpInited=false;
+function initMapaProyectos(){
+  if(_mpInited)return;_mpInited=true;
+  if(typeof L==='undefined'){
+    // Cargar Leaflet si no está
+    var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(l);
+    var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.onload=function(){_initMapaProyectos();};document.head.appendChild(s);
+  } else {_initMapaProyectos();}
+}
+function _initMapaProyectos(){
+  var el=document.getElementById('mapaProyectos');if(!el)return;
+  _mpMap=L.map(el,{center:[-34.4150,-70.8350],zoom:12,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:18
+  }).addTo(_mpMap);
+  _mpMap.on('click',function(){_mpMap.scrollWheelZoom.enable();setTimeout(function(){_mpMap.scrollWheelZoom.disable();},5000);});
+  renderMapaProyectos('all');
+  document.querySelectorAll('.mp-filters button').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('.mp-filters button').forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      renderMapaProyectos(b.dataset.eje);
+    };
+  });
+}
+function renderMapaProyectos(eje){
+  if(!_mpMap)return;
+  if(_mpLayer)_mpMap.removeLayer(_mpLayer);
+  var filtered=eje==='all'?PROYECTOS_PLADECO:PROYECTOS_PLADECO.filter(function(p){return String(p.eje)===String(eje);});
+  _mpLayer=L.layerGroup();
+  filtered.forEach(function(p){
+    var color=MP_EJE_COLORS[p.eje];
+    var radius=Math.max(6,Math.min(22,Math.sqrt(p.monto)/2));
+    var m=L.circleMarker([p.lat,p.lon],{
+      radius:radius,color:color,fillColor:color,fillOpacity:.7,weight:2,opacity:.9
+    });
+    m.bindPopup(
+      '<div style="font-family:Inter,sans-serif;min-width:200px">'+
+      '<div style="font-size:9.5px;font-weight:800;color:'+color+';text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">'+MP_EJE_NAMES[p.eje]+'</div>'+
+      '<div style="font-size:13px;font-weight:800;color:#0f172a;margin-bottom:6px;line-height:1.3">'+p.nombre+'</div>'+
+      '<div style="font-size:11px;color:#475569;margin-bottom:2px"><strong>Monto:</strong> $'+p.monto.toLocaleString('es-CL')+'M</div>'+
+      '<div style="font-size:11px;color:#475569"><strong>Meta:</strong> '+p.meta+'</div>'+
+      '</div>'
+    );
+    _mpLayer.addLayer(m);
+  });
+  _mpLayer.addTo(_mpMap);
+  // Stats
+  var total=filtered.reduce(function(s,p){return s+p.monto;},0);
+  document.getElementById('mpCount').textContent=filtered.length;
+  document.getElementById('mpMonto').textContent='$'+total.toLocaleString('es-CL')+'M CLP';
+}
+
+/* ══════════════════════════════════════════════════════
+   COMPARADOR CON COMUNAS VECINAS
+   ══════════════════════════════════════════════════════ */
+var COMUNAS_COMP=[
+  // Datos representativos basados en INE 2024 / CASEN 2022 / SINIM / PNUD
+  {id:'rengo',name:'Rengo',pob:63620,rural:20.1,pobreza:7.8,idh:0.78,esc:10.4,fcm:96,isRengo:true},
+  {id:'requinoa',name:'Requínoa',pob:32107,rural:38.2,pobreza:9.4,idh:0.75,esc:9.8,fcm:108},
+  {id:'sanvicente',name:'San Vicente',pob:46802,rural:28.5,pobreza:8.2,idh:0.76,esc:10.1,fcm:99},
+  {id:'malloa',name:'Malloa',pob:15124,rural:55.4,pobreza:11.5,idh:0.72,esc:9.2,fcm:124},
+  {id:'quinta',name:'Quinta de Tilcoco',pob:13456,rural:48.6,pobreza:10.8,idh:0.73,esc:9.5,fcm:118},
+  {id:'doñihue',name:'Doñihue',pob:23512,rural:32.1,pobreza:8.9,idh:0.75,esc:9.9,fcm:104},
+  {id:'coltauco',name:'Coltauco',pob:21568,rural:42.8,pobreza:10.2,idh:0.74,esc:9.6,fcm:115}
+];
+var COMP_METRICS=[
+  {k:'pob',label:'Población',unit:' hab',fmt:function(v){return v.toLocaleString('es-CL');},best:'high'},
+  {k:'rural',label:'Población rural',unit:'%',fmt:function(v){return v.toFixed(1);},best:'context'},
+  {k:'pobreza',label:'Pobreza multidim.',unit:'%',fmt:function(v){return v.toFixed(1);},best:'low'},
+  {k:'idh',label:'IDH comunal',unit:'',fmt:function(v){return v.toFixed(2);},best:'high'},
+  {k:'esc',label:'Escolaridad prom.',unit:' años',fmt:function(v){return v.toFixed(1);},best:'high'},
+  {k:'fcm',label:'FCM per cápita',unit:'k CLP',fmt:function(v){return v;},best:'context'}
+];
+var _compSel=['rengo','requinoa','sanvicente','malloa'];
+function renderComparadorGrid(){
+  var g=document.getElementById('compGrid');if(!g)return;
+  g.innerHTML=COMUNAS_COMP.map(function(c){
+    return '<button class="comp-comuna'+(c.isRengo?' is-rengo':'')+(_compSel.indexOf(c.id)>=0?' active':'')+'" data-id="'+c.id+'" type="button">'+
+      '<div class="comp-name">'+c.name+'</div>'+
+      '<div class="comp-pob">'+c.pob.toLocaleString('es-CL')+' hab</div>'+
+    '</button>';
+  }).join('');
+  g.querySelectorAll('button').forEach(function(b){
+    b.onclick=function(){
+      var id=b.dataset.id;
+      if(_compSel.indexOf(id)>=0){
+        if(_compSel.length<=2){showToast('Mantén al menos 2 comunas','warn');return;}
+        _compSel=_compSel.filter(function(x){return x!==id;});
+      } else {
+        if(_compSel.length>=5){showToast('Máximo 5 comunas','warn');return;}
+        _compSel.push(id);
+      }
+      renderComparadorGrid();renderComparadorTable();
+    };
+  });
+}
+function renderComparadorTable(){
+  var tbl=document.getElementById('compTable');if(!tbl)return;
+  var selected=COMUNAS_COMP.filter(function(c){return _compSel.indexOf(c.id)>=0;});
+  // Calcular best/worst por columna
+  var bestVals={},worstVals={};
+  COMP_METRICS.forEach(function(m){
+    if(m.best==='context')return;
+    var vals=selected.map(function(c){return c[m.k];});
+    bestVals[m.k]=m.best==='high'?Math.max.apply(null,vals):Math.min.apply(null,vals);
+    worstVals[m.k]=m.best==='high'?Math.min.apply(null,vals):Math.max.apply(null,vals);
+  });
+  var html='<thead><tr><th>Indicador</th>';
+  selected.forEach(function(c){html+='<th>'+c.name+(c.isRengo?' ⭐':'')+'</th>';});
+  html+='</tr></thead><tbody>';
+  COMP_METRICS.forEach(function(m){
+    html+='<tr><td>'+m.label+'</td>';
+    selected.forEach(function(c){
+      var v=c[m.k];
+      var cls='';
+      if(m.best!=='context'){
+        if(v===bestVals[m.k])cls='best';
+        else if(v===worstVals[m.k])cls='worst';
+      }
+      html+='<td class="comp-cell '+cls+'">'+m.fmt(v)+m.unit+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  tbl.innerHTML=html;
+  // Highlight de Rengo
+  if(_compSel.indexOf('rengo')>=0){
+    var idx=selected.findIndex(function(c){return c.id==='rengo';});
+    if(idx>=0){
+      tbl.querySelectorAll('tbody tr').forEach(function(r){
+        var c=r.cells[idx+1];if(c)c.style.background='rgba(245,146,29,.08)';
+      });
+    }
+  }
+  renderComparadorInsight(selected);
+}
+function renderComparadorInsight(selected){
+  var el=document.getElementById('compInsight');if(!el)return;
+  var rengo=selected.find(function(c){return c.id==='rengo';});
+  if(!rengo){el.innerHTML='<strong>Tip:</strong> Selecciona Rengo en la grilla para ver el análisis comparativo.';return;}
+  var others=selected.filter(function(c){return !c.isRengo;});
+  if(others.length===0){el.innerHTML='<strong>Tip:</strong> Selecciona al menos otra comuna para comparar.';return;}
+  var avg=function(k){return others.reduce(function(s,c){return s+c[k];},0)/others.length;};
+  var msgs=[];
+  if(rengo.pob>avg('pob'))msgs.push('mayor población que el promedio de las comunas comparadas');
+  if(rengo.pobreza<avg('pobreza'))msgs.push('<strong>menor pobreza multidimensional</strong> ('+rengo.pobreza.toFixed(1)+'% vs '+avg('pobreza').toFixed(1)+'% promedio)');
+  if(rengo.idh>avg('idh'))msgs.push('<strong>mayor IDH comunal</strong> ('+rengo.idh.toFixed(2)+' vs '+avg('idh').toFixed(2)+' promedio)');
+  if(rengo.esc>avg('esc'))msgs.push('escolaridad promedio superior ('+rengo.esc.toFixed(1)+' años vs '+avg('esc').toFixed(1)+')');
+  if(rengo.rural<avg('rural'))msgs.push('menor proporción rural ('+rengo.rural.toFixed(1)+'% vs '+avg('rural').toFixed(1)+'%) — capacidad de servicios concentrada');
+  el.innerHTML='<strong>📊 Análisis:</strong> Rengo destaca por '+(msgs.length?msgs.join('; ')+'. ':'mantenerse en valores cercanos al promedio del Valle de Cachapoal. ')+
+    'Esto valida el énfasis del PLADECO 2025-2035 en cerrar brechas internas (urbano-rural) más que en superar el rezago regional.';
+}
+function initComparador(){
+  renderComparadorGrid();
+  renderComparadorTable();
+}
 
 // ══════════════════════════════════════════════════════
 // SAFE CHART WRAPPER (Error Boundary)
