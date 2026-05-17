@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v53.3 (KILL-SWITCH)
+// PLADECO Rengo 2025-2035 · Service Worker v53.4
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v53.3: limpia TODAS las cachés viejas y notifica reload a clientes
+// v53.4: hotfix votación de vecinos · auto-reload tras update
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v53.3';
+const CACHE_STATIC='pladeco-static-v53.4';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

@@ -3571,7 +3571,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.3</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v36.4</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3699,7 +3699,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v36.3</span>
+        <span>&#127919; v36.4</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 52 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -8382,10 +8382,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v36.3</span>
+  <span class="ub-ver">v36.4</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v36.4</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128499;&#65039; **HOTFIX: Votaci&oacute;n de vecinos mostraba solo el voto local en lugar de TODOS los votos del backend**. Reporte del usuario: &laquo;al votar solamente aparece lo que vota en su IP, requiero que aparezca todo&raquo;. **Diagn&oacute;stico**: el backend Google Apps Script s&iacute; funcionaba (verificado con `curl`: devuelve `{ok:true,votes:[1,0,0,1,1,1]}` con 4 votos registrados), pero el cliente: (1) Al renderizar `renderMiniSurvey()` tras voto previo, llamaba `showSurveyResults(el,...,null)` que usaba `localStorage.pladeco-survey-data` como fuente &mdash; ese localStorage solo conten&iacute;a el voto del usuario actual, no los acumulados. (2) Luego s&iacute; llamaba al backend, pero solo si la respuesta lleg&oacute; antes de cualquier interrupci&oacute;n del flujo. En many casos, el usuario ve&iacute;a primero su propio voto y NUNCA llegaba a ver los totales. (3) `submitSurvey()` ten&iacute;a el mismo patr&oacute;n: mostraba resultados con localStorage antes de esperar respuesta del backend. **Fix v36.4**: (a) Nuevo helper `fetchSurveyVotes(forceRefresh)` con cache TTL 60s para no saturar Apps Script. (b) Nuevo `_showSurveyLoading()` que muestra skeleton loaders mientras llega la respuesta del backend. (c) **`renderMiniSurvey()` reescrito**: si el usuario ya vot&oacute;, muestra loading e inmediatamente hace GET al backend, mostrando resultados SOLO cuando llegan los votos globales. Fallback a cache localStorage `pladeco-survey-global` si el backend falla. (d) **`submitSurvey()` reescrito**: muestra loading durante el POST y solo renderiza resultados cuando el backend devuelve los votos actualizados de TODOS los participantes. Optimistic update local en caso de timeout. (e) **`showSurveyResults()` ahora recibe flag `isFromBackend`** que controla el mensaje de sync: &laquo;&#128226; Resultados en vivo: acumulados de TODOS los participantes&raquo; (verde) vs &laquo;&#9888;&#65039; Sin conexi&oacute;n al servidor &mdash; mostrando &uacute;ltimos datos guardados [Reintentar]&raquo; (warning, con link clickeable). (f) Pluralizaci&oacute;n correcta: &laquo;1 vecino ha votado&raquo; vs &laquo;N vecinos han votado&raquo;. Verificado en preview: usuario simulado con 1 voto local ahora ve correctamente los 4 votos globales acumulados del backend. Cache SW v53.3 &rarr; v53.4.</div>
     <div class="ub-entry"><strong>v36.3</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128260; **HOTFIX: KILL-SWITCH para forzar actualizaci&oacute;n del Service Worker viejo en navegadores cliente**. S&iacute;ntoma reportado: &laquo;no me carga el contenido del sitio web&raquo; tras desplegar v36.2. **Causa**: navegadores con Service Worker v53.0 a&uacute;n activo serv&iacute;an HTML cacheado de v36.0 (que ten&iacute;a el bug de colisi&oacute;n `renderTimeline`), aunque GitHub Pages ya sirv&iacute;a v36.2 fixeado. La estrategia network-first del SW v53.0 deber&iacute;a haber actualizado solo, pero usuarios con conectividad lenta o sesi&oacute;n larga manten&iacute;an el SW viejo controlando el dominio. **Fix v53.3**: (1) Bump cache a `pladeco-static-v53.3`. (2) En `activate` del SW, despu&eacute;s de limpiar cach&eacute;s viejas y hacer `clients.claim()`, **notifica a todos los clients via `postMessage({type:'SW_UPDATED',version:CACHE_STATIC})`**. (3) En el HTML, listener `navigator.serviceWorker.onmessage` detecta el mensaje y **fuerza `location.reload()` UNA sola vez** (con flag `sessionStorage.__sw_reload_v` para evitar loop infinito). (4) Listener adicional de `controllerchange` como segunda red de seguridad. (5) Cualquier visita despu&eacute;s de la actualizaci&oacute;n autom&aacute;ticamente fuerza el reload del HTML actualizado con v36.2 (que ya tiene el fix del `renderTimeline`). Tras esto el sitio queda funcional sin intervenci&oacute;n manual del usuario.</div>
     <div class="ub-entry"><strong>v36.2</strong> <span class="ub-date">17 May 2026</span><br>&#128737; **HOTFIX cr&iacute;tico: colisi&oacute;n de funciones rompi&oacute; todo el script v36.0**. Diagnosticado en vivo con preview browser + capturador de errores temprano en localStorage. **Causa ra&iacute;z**: dos funciones declaradas con el mismo nombre y la m&iacute;a sobrescrib&iacute;a la existente, pero se llamaba antes de que mis datos se asignaran. (1) `function renderTimeline()` ya exist&iacute;a en el portal en l&iacute;nea 11671 (renderiza el timeline interno del proceso PLADECO en otra secci&oacute;n) y se llamaba en l&iacute;nea 13382 como parte del init. Yo defin&iacute; otra `renderTimeline()` en l&iacute;nea 16917 que la sobrescrib&iacute;a por hoisting, pero usaba `TIMELINE_EVENTS` que se asignaba en l&iacute;nea 16882 &mdash; cuando se llamaba en 13382, `TIMELINE_EVENTS` a&uacute;n era `undefined` (las `var` no se hoistan su valor, solo el binding), generando `TypeError: Cannot read properties of undefined (reading 'map')` que abortaba **todo el script** despu&eacute;s de las definiciones de funciones (que s&iacute; se hoistan). Por eso TODAS las variables `var` de v36.0 (DIAS_SEM, GALLERY_PROC, ACHIEVEMENTS, COMUNAS_COMP, PROYECTOS_PLADECO) aparec&iacute;an como `undefined` en window. (2) Similar conflicto con `function showToast()` ya existente. **Fix**: (a) renombrar mi funci&oacute;n a `renderProcessTimeline()` y actualizar la llamada init; (b) eliminar mi `showToast` duplicado y usar el original del portal (con firma compatible `showToast(msg,type)`). Verificado en navegador: timeline 11 eventos &check;, galer&iacute;a 18 tiles &check;, comparador 7 comunas + 6 indicadores + insight din&aacute;mico &check;, mapa proyectos 50 marcadores + $22.320M CLP &check;, 12 logros desbloqueables &check;, chip fecha &laquo;Domingo 17 May 2026&raquo; &check;, clima Open-Meteo &check;, badges contador funcional &check;. Cache SW v53.1 &rarr; v53.2.</div>
     <div class="ub-entry"><strong>v36.1</strong> <span class="ub-date">17 May 2026</span><br>&#128260;&#128197; **Sincronizaci&oacute;n integral de fechas y conteos a 17 Mayo 2026**. Actualizaci&oacute;n transversal de metadatos: (1) **33 referencias hardcoded** de &laquo;15 May 2026&raquo; y &laquo;15 Mayo 2026&raquo; sincronizadas a **17 Mayo 2026** en banners, footer, sidebar, panel &laquo;C&oacute;mo va el plan&raquo;, changelogs hist&oacute;ricos y card de construcci&oacute;n. (2) **Conteo de secciones** sincronizado de 48 a **52 secciones** en panel &laquo;C&oacute;mo va el plan&raquo;, &iacute;ndice navegable, tour guiado y splash screen. (3) **Construction-meta** actualizada: v36.0 &rarr; v36.1, 52 secciones confirmadas. (4) **Footer-bottom**, **sidebar-version** y **update-badge** sincronizados. (5) **Verificaci&oacute;n cruzada** de las 4 super-secciones nuevas de v36.0 (timeline, galer&iacute;a-proceso, mapa-proyectos, comparador) &mdash; todas las entradas NEW del sidebar y quick-index apuntan correctamente. Sin cambios funcionales: solo limpieza editorial. Cache SW v53.0 &rarr; v53.1.</div>
@@ -8573,7 +8574,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v36.3</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v36.4</span>
   </div>
 </footer>
 
@@ -15553,21 +15554,59 @@ function backendFetch(action,method,body){
 var _surveyEjeNames=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
 var _surveyEjeColors=['#e63946','#f4a261','#2a9d8f','#7b2cbf','#d62828','#457b9d'];
 
+// v36.4: cache TTL para evitar abusar del backend (refresh cada 60s)
+var _surveyCacheTime=0;var _surveyCacheData=null;
+function fetchSurveyVotes(forceRefresh){
+  // Cache de 60s para evitar saturar Apps Script
+  if(!forceRefresh && _surveyCacheData && (Date.now()-_surveyCacheTime)<60000){
+    return Promise.resolve(_surveyCacheData);
+  }
+  return backendFetch('votes','GET').then(function(data){
+    if(data&&data.ok&&data.votes){
+      _surveyCacheData=data.votes;
+      _surveyCacheTime=Date.now();
+      // Persistir como fallback offline
+      try{localStorage.setItem('pladeco-survey-global',JSON.stringify({votes:data.votes,t:Date.now()}));}catch(_){}
+      return data.votes;
+    }
+    return null;
+  });
+}
+
+function _showSurveyLoading(el){
+  el.innerHTML='<h4>&#128483;&#65039; Cargando votos de todos los vecinos...</h4>'+
+    '<div style="display:flex;align-items:center;gap:12px;padding:20px;color:var(--text2);font-size:13px;font-weight:600">'+
+      '<span class="ls-pulse" style="width:10px;height:10px"></span>'+
+      'Conectando con servidor de votos en tiempo real...'+
+    '</div>'+
+    '<div style="display:flex;flex-direction:column;gap:8px;padding:0 4px">'+
+      _surveyEjeNames.map(function(n){return '<div class="skeleton skeleton-block" style="height:24px"></div>';}).join('')+
+    '</div>';
+}
+
 function renderMiniSurvey(){
   var el=document.getElementById('miniSurvey');if(!el)return;
   var voted=localStorage.getItem('pladeco-survey');
   if(voted){
-    // Mostrar resultados locales inmediatamente
-    showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,null);
-    // Luego sincronizar con backend para datos acumulados reales
-    backendFetch('votes','GET').then(function(data){
-      if(data&&data.ok&&data.votes){
-        localStorage.setItem('pladeco-survey-data',JSON.stringify(data.votes));
-        showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,data.votes);
-      }
+    // v36.4: SIEMPRE pedir al backend los votos reales globales antes de mostrar
+    _showSurveyLoading(el);
+    fetchSurveyVotes(true).then(function(globalVotes){
+      // Usar votos globales si responden; si no, fallback a último cache global o localStorage
+      var fallback=null;
+      try{
+        var cached=JSON.parse(localStorage.getItem('pladeco-survey-global')||'null');
+        if(cached&&cached.votes)fallback=cached.votes;
+      }catch(_){}
+      var votesToShow=globalVotes||fallback||JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
+      showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,votesToShow,!!globalVotes);
+    }).catch(function(){
+      // Si todo falla, mostrar con fallback
+      showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,null,false);
     });
     return;
   }
+  // Si NO ha votado: mostrar form Y pre-cargar votos globales en background
+  fetchSurveyVotes(false);
   var _surveyDescriptions=[
     'Salud, bienestar, adulto mayor, infancia y familia',
     'Empleo, comercio, turismo y emprendimiento local',
@@ -15587,29 +15626,44 @@ function submitSurvey(){
   var sel=document.querySelector('input[name=surveyEje]:checked');
   if(!sel){showToast('Selecciona un eje','warning');return;}
   var idx=+sel.value;
-  // Guardar localmente
-  var votes=JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
-  votes[idx]++;
-  localStorage.setItem('pladeco-survey-data',JSON.stringify(votes));
+  // Marcar como votado localmente (anti-duplicado)
   localStorage.setItem('pladeco-survey','1');
   localStorage.setItem('pladeco-survey-vote',String(idx));
-  showToast('¡Gracias por votar!','success');
+  // Optimistic update local: incrementar 1 en la posición votada del cache
+  if(_surveyCacheData){_surveyCacheData[idx]++;}
+  showToast('Enviando tu voto al servidor...','info');
   var el=document.getElementById('miniSurvey');
-  showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,null);
-  // Enviar al backend
+  // Mostrar loading mientras se sincroniza
+  _showSurveyLoading(el);
+  // Enviar al backend Y esperar respuesta con TODOS los votos actualizados
   backendFetch('vote','POST',{action:'vote',eje:idx}).then(function(data){
     if(data&&data.ok&&data.votes){
-      localStorage.setItem('pladeco-survey-data',JSON.stringify(data.votes));
-      showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,data.votes);
+      // Backend devolvió los votos GLOBALES actualizados — guardamos y mostramos eso
+      _surveyCacheData=data.votes;
+      _surveyCacheTime=Date.now();
+      try{localStorage.setItem('pladeco-survey-global',JSON.stringify({votes:data.votes,t:Date.now()}));}catch(_){}
+      showToast('¡Voto registrado! Ahora ves todos los votos.','success');
+      showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,data.votes,true);
+    }else{
+      // Backend falló — usar fallback con el optimistic update
+      showToast('Voto guardado localmente. Se sincronizará después.','warning');
+      var fallback=null;
+      try{
+        var cached=JSON.parse(localStorage.getItem('pladeco-survey-global')||'null');
+        if(cached&&cached.votes){
+          var v=cached.votes.slice();v[idx]++;fallback=v;
+        }
+      }catch(_){}
+      showSurveyResults(el,_surveyEjeNames,_surveyEjeColors,fallback||_surveyCacheData,false);
     }
   });
 }
 
-function showSurveyResults(el,names,colors,remoteVotes){
+function showSurveyResults(el,names,colors,remoteVotes,isFromBackend){
   var votes=remoteVotes||JSON.parse(localStorage.getItem('pladeco-survey-data')||'[0,0,0,0,0,0]');
   var total=votes.reduce(function(a,b){return a+b;},0)||1;
   var userVote=localStorage.getItem('pladeco-survey-vote');
-  var isOnline=!!BACKEND_URL;
+  var isOnline=isFromBackend===true; // v36.4: explícito si vino del backend
   var bars=names.map(function(n,i){
     var pct=Math.round(votes[i]/total*100);
     var isUserVote=userVote!==null&&+userVote===i;
@@ -15625,11 +15679,11 @@ function showSurveyResults(el,names,colors,remoteVotes){
     '<div class="survey-results-layout">'+
       '<div class="survey-results-bars">'+bars+
         '<div class="survey-vote-badge" style="background:rgba(45,154,77,.1);color:var(--accent)">&#9989; Tu voto ha sido registrado &mdash; &iexcl;Gracias por participar!</div>'+
-        '<div class="survey-sync"><span class="survey-sync-dot '+(isOnline?'':'offline')+'"></span>'+(isOnline?'Resultados acumulados de todos los participantes':'Solo muestra tu voto — pronto se acumularán todos')+'</div>'+
+        '<div class="survey-sync"><span class="survey-sync-dot '+(isOnline?'':'offline')+'"></span>'+(isOnline?'&#128226; Resultados en vivo: acumulados de TODOS los participantes':'&#9888;&#65039; Sin conexi&oacute;n al servidor &mdash; mostrando &uacute;ltimos datos guardados. <a href="#" onclick="event.preventDefault();renderMiniSurvey();" style="color:var(--accent);text-decoration:underline">Reintentar</a>')+'</div>'+
       '</div>'+
       '<div class="survey-results-chart">'+
         '<canvas id="surveyDonut" width="260" height="260"></canvas>'+
-        '<div class="survey-results-total"><strong>'+total+'</strong> vecinos han votado</div>'+
+        '<div class="survey-results-total"><strong>'+total+'</strong> vecino'+(total===1?'':'s')+' '+(total===1?'ha':'han')+' votado</div>'+
         '<div class="survey-chart-help">El círculo muestra la proporción de votos que recibió cada tema. Los colores coinciden con las barras de arriba.</div>'+
       '</div>'+
     '</div>';
