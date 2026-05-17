@@ -2919,6 +2919,135 @@ a:hover{text-decoration-color:var(--accent)}
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   MAJOR v40.0 · 8 mejoras NAVEGACIÓN + ACCESO
+   A1 Mini-mapa scrollspy · A2 Nav capítulos · A3 Progress global
+   A4 Breadcrumbs sticky · B1 Command Palette · B2 Bottom nav mobile
+   B3 Atajos teclado · B4 Historial reciente
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── A3. Barra de progreso global de scroll ── */
+.scroll-progress-v40{position:fixed;top:0;left:var(--sidebar-w);right:0;height:4px;z-index:1200;background:transparent;pointer-events:none;transition:left .3s ease}
+.scroll-progress-bar{height:100%;background:linear-gradient(90deg,#1a3d8f,#2d9a4d 50%,#f5921d);width:0%;transition:width .15s ease;border-radius:0 2px 2px 0;box-shadow:0 0 8px rgba(245,146,29,.5)}
+@media(max-width:900px){.scroll-progress-v40{left:0}}
+
+/* ── A4. Breadcrumbs dinámicos sticky ── */
+.breadcrumbs-v40{position:fixed;top:96px;left:var(--sidebar-w);right:0;height:34px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:97;display:flex;align-items:center;padding:0 20px;font-size:12px;color:var(--text2);font-weight:600;transform:translateY(-100%);transition:transform .3s ease,left .3s ease;gap:6px;overflow-x:auto;white-space:nowrap}
+.breadcrumbs-v40.visible{transform:translateY(0)}
+.breadcrumbs-v40 a{color:var(--text2);text-decoration:none;padding:2px 6px;border-radius:4px;transition:all .15s}
+.breadcrumbs-v40 a:hover{color:var(--accent);background:rgba(45,154,77,.08)}
+.breadcrumbs-v40 .bc-sep{color:var(--text-muted);font-weight:400;opacity:.6}
+.breadcrumbs-v40 .bc-current{color:var(--text);font-weight:800}
+.breadcrumbs-v40 .bc-cap{color:var(--accent);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:10.5px}
+body.dark .breadcrumbs-v40{background:rgba(26,35,50,.92);border-bottom-color:var(--border)}
+@media(max-width:900px){.breadcrumbs-v40{left:0;top:76px}}
+@media(max-width:560px){.breadcrumbs-v40{top:70px;font-size:11px;padding:0 12px}}
+/* Compensar el contenido cuando hay breadcrumbs */
+body.bc-active{padding-top:130px !important}
+@media(max-width:900px){body.bc-active{padding-top:110px !important}}
+@media(max-width:560px){body.bc-active{padding-top:104px !important}}
+
+/* ── A1. Mini-mapa lateral con scrollspy ── */
+.minimap-v40{position:fixed;top:140px;right:20px;width:260px;max-height:calc(100vh - 220px);overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-md);z-index:88;font-family:inherit;transition:all .3s ease;opacity:0;transform:translateX(20px);pointer-events:none}
+.minimap-v40.visible{opacity:1;transform:translateX(0);pointer-events:auto}
+.minimap-v40.collapsed{width:48px;padding:10px 8px;cursor:pointer}
+.minimap-v40.collapsed .minimap-content{display:none}
+.minimap-v40.collapsed .minimap-collapsed-icon{display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent);height:30px}
+.minimap-v40 .minimap-collapsed-icon{display:none}
+.minimap-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.minimap-cap-label{font-size:9.5px;font-weight:900;color:var(--accent);letter-spacing:.15em;text-transform:uppercase}
+.minimap-cap-title{font-size:12px;font-weight:800;color:var(--text);margin-top:2px;line-height:1.3}
+.minimap-toggle{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px}
+.minimap-toggle:hover{background:var(--bg-soft);color:var(--accent)}
+.minimap-list{list-style:none;padding:0;margin:0}
+.minimap-list li{padding:5px 0;font-size:11.5px;line-height:1.4;border-left:2px solid transparent;padding-left:10px;margin-left:-10px;transition:all .2s;cursor:pointer;color:var(--text2)}
+.minimap-list li:hover{color:var(--accent);border-left-color:var(--border-strong)}
+.minimap-list li.active{color:var(--accent);font-weight:800;border-left-color:var(--accent);background:rgba(45,154,77,.05);border-radius:0 6px 6px 0}
+.minimap-list li.visited{color:var(--text);opacity:.7}
+.minimap-list li a{color:inherit;text-decoration:none;display:block;font-size:inherit}
+.minimap-progress{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:10px;color:var(--text-muted);font-weight:600}
+.minimap-progress-bar{flex:1;height:3px;background:var(--bg-soft);border-radius:2px;margin:0 8px;overflow:hidden}
+.minimap-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-light),var(--accent),var(--accent2));border-radius:2px;transition:width .3s}
+@media(max-width:1300px){.minimap-v40{display:none}}
+
+/* ── A2. Botones navegación entre capítulos ── */
+.cap-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:48px 0 20px;padding:0}
+.cap-nav-btn{display:flex;flex-direction:column;padding:18px 22px;background:var(--card);border:2px solid var(--border);border-radius:14px;text-decoration:none;transition:all .3s var(--tr-base,cubic-bezier(.4,0,.2,1));cursor:pointer;color:var(--text)}
+.cap-nav-btn:hover{border-color:var(--accent);background:linear-gradient(135deg,rgba(45,154,77,.04),rgba(245,146,29,.03));transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.cap-nav-btn.next{text-align:right}
+.cap-nav-btn.prev{text-align:left}
+.cap-nav-dir{font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px}
+.cap-nav-num{font-size:9.5px;font-weight:800;color:var(--accent);letter-spacing:.12em;margin-bottom:3px}
+.cap-nav-title{font-size:14px;font-weight:800;color:var(--text);line-height:1.3;letter-spacing:-.01em}
+.cap-nav-btn.disabled{opacity:.4;pointer-events:none}
+@media(max-width:560px){.cap-nav{grid-template-columns:1fr;gap:10px}.cap-nav-btn{padding:14px 18px}}
+
+/* ── B1. Command Palette (Cmd+K mejorado) ── */
+.cmdp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);z-index:9000;display:flex;align-items:flex-start;justify-content:center;padding-top:100px;opacity:0;visibility:hidden;transition:all .25s ease}
+.cmdp-overlay.open{opacity:1;visibility:visible}
+.cmdp{width:100%;max-width:620px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.5);overflow:hidden;transform:translateY(-10px) scale(.97);transition:transform .25s ease;font-family:inherit;max-height:calc(100vh - 160px);display:flex;flex-direction:column}
+.cmdp-overlay.open .cmdp{transform:translateY(0) scale(1)}
+.cmdp-header{display:flex;align-items:center;padding:16px 18px;border-bottom:1px solid var(--border);gap:10px}
+.cmdp-input{flex:1;background:none;border:none;outline:none;font-size:15px;font-weight:500;color:var(--text);font-family:inherit;padding:0}
+.cmdp-input::placeholder{color:var(--text-muted)}
+.cmdp-kbd{font-size:10px;background:var(--bg-soft);border:1px solid var(--border);color:var(--text2);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:.05em;font-family:monospace}
+.cmdp-body{flex:1;overflow-y:auto;padding:6px 0}
+.cmdp-group{padding:6px 18px}
+.cmdp-group-label{font-size:9.5px;font-weight:900;letter-spacing:.15em;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;padding:4px 0}
+.cmdp-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .12s;color:var(--text);font-size:13px;text-decoration:none}
+.cmdp-item:hover,.cmdp-item.selected{background:linear-gradient(135deg,rgba(45,154,77,.1),rgba(245,146,29,.06))}
+.cmdp-item.selected{box-shadow:inset 0 0 0 2px rgba(45,154,77,.3)}
+.cmdp-item-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0}
+.cmdp-item-content{flex:1;min-width:0}
+.cmdp-item-title{font-weight:700;color:var(--text);font-size:13px;line-height:1.3}
+.cmdp-item-desc{font-size:11px;color:var(--text2);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cmdp-item-kbd{font-size:10px;color:var(--text-muted);font-family:monospace;background:var(--bg-soft);padding:2px 6px;border-radius:4px;border:1px solid var(--border)}
+.cmdp-footer{padding:8px 16px;border-top:1px solid var(--border);font-size:10.5px;color:var(--text-muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;background:var(--bg-soft)}
+.cmdp-footer kbd{font-size:10px;background:var(--card);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-weight:700;font-family:monospace}
+.cmdp-empty{padding:30px 20px;text-align:center;color:var(--text-muted);font-size:13px}
+
+/* ── B2. Bottom Navigation Bar mobile ── */
+.bottom-nav-v40{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);z-index:95;display:none;padding:6px 4px 8px;box-shadow:0 -4px 20px rgba(0,0,0,.08)}
+.bottom-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;text-decoration:none;color:var(--text2);font-size:9.5px;font-weight:700;transition:color .15s;border-radius:8px;letter-spacing:.02em;text-align:center}
+.bottom-nav-item:hover,.bottom-nav-item.active{color:var(--accent)}
+.bottom-nav-item.active{background:rgba(45,154,77,.08)}
+.bottom-nav-icon{font-size:20px;line-height:1;margin-bottom:3px}
+@media(max-width:760px){
+  .bottom-nav-v40{display:flex}
+  body{padding-bottom:64px !important}
+  .ach-fab{bottom:80px !important}
+  .a11y-fab{bottom:208px !important}
+  .chatbot-fab{bottom:80px !important}
+  .achievements-panel{bottom:140px !important}
+}
+
+/* ── B3. Cheat sheet de atajos de teclado ── */
+.kbd-cheat{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);z-index:9100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:all .25s ease}
+.kbd-cheat.open{opacity:1;visibility:visible}
+.kbd-cheat-card{background:var(--card);border-radius:16px;padding:28px 32px;max-width:640px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.5);transform:scale(.95);transition:transform .25s}
+.kbd-cheat.open .kbd-cheat-card{transform:scale(1)}
+.kbd-cheat-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.kbd-cheat-head h3{font-size:18px;font-weight:800;color:var(--text);margin:0}
+.kbd-cheat-close{background:none;border:none;color:var(--text2);font-size:22px;cursor:pointer;padding:0 6px;line-height:1}
+.kbd-cheat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.kbd-cheat-section h4{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+.kbd-cheat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px;color:var(--text2);border-bottom:1px dashed var(--border)}
+.kbd-cheat-row:last-child{border-bottom:none}
+.kbd-cheat-keys{display:inline-flex;gap:4px}
+.kbd-cheat-keys kbd{background:var(--bg-soft);border:1px solid var(--border);color:var(--text);padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;font-family:monospace;box-shadow:0 1px 0 var(--border-strong);min-width:24px;text-align:center}
+
+/* ── B4. Historial Visitado Reciente (en sidebar) ── */
+.recent-visits{padding:0 18px 12px;border-top:1px solid rgba(255,255,255,.08);margin-top:8px}
+.recent-visits-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(245,146,29,.7);opacity:.7;padding:12px 0 6px;display:flex;align-items:center;gap:6px}
+.recent-visits-title::after{content:'';flex:1;height:1px;background:rgba(245,146,29,.2)}
+.recent-visits a{display:block;padding:5px 8px;font-size:11.5px;color:rgba(255,255,255,.55);text-decoration:none;border-radius:5px;margin-bottom:2px;transition:all .2s;border-left:2px solid transparent}
+.recent-visits a:hover{color:#fff;background:rgba(255,255,255,.04);border-left-color:rgba(245,146,29,.5)}
+.recent-visits-empty{font-size:10.5px;color:rgba(255,255,255,.3);font-style:italic;padding:4px 8px}
+
+/* Smooth scroll offset global (D2 bonus) */
+html{scroll-padding-top:140px}
+section[id]{scroll-margin-top:140px}
+
+/* ══════════════════════════════════════════════════════════════════
    MAJOR v38.0 · 8 NUEVAS FUNCIONALIDADES
    A1 Reporte georref · A2 Voz Vecinos · A3 Cuadernillo PDF · A4 Hero carrusel
    A5 Mapa macrosector · A6 Tutorial · B4 Heatmap · D1 Accesibilidad
@@ -4012,6 +4141,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <a href="#visitas"><span class="ico">&#128101;</span> Contador de Visitas</a>
     </div>
   </div>
+  <!-- B4 · Historial visitado reciente -->
+  <div class="recent-visits" id="recentVisits" style="display:none">
+    <div class="recent-visits-title">&#128488;&#65039; Visitado recientemente</div>
+    <div id="recentVisitsList"></div>
+  </div>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente" tabindex="0" role="button" aria-label="Abrir asistente PLADECO" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleChatbot()}" style="display:none">
     <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" width="60" height="60" loading="lazy" decoding="async">
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
@@ -4043,7 +4177,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v39.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v40.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4173,7 +4307,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v39.0</span>
+        <span>&#127919; v40.0</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 59 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -9160,10 +9294,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v39.0</span>
+  <span class="ub-ver">v40.0</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v40.0</strong> <span class="ub-date">17 May 2026</span><br>&#129517;&#9889; **MAJOR v40.0 &middot; 8 mejoras de NAVEGACI&Oacute;N + ACCESO**. Tras el upgrade est&eacute;tico y narrativo de v39, ahora el portal mejora c&oacute;mo el usuario se orienta y se mueve dentro de las 59 secciones y 12 cap&iacute;tulos. **LOTE A &middot; Navegaci&oacute;n inteligente**: (A1) **Mini-mapa lateral con scrollspy** &mdash; barra lateral derecha estilo Notion/Stripe que muestra las secciones del cap&iacute;tulo actual, resalta visualmente d&oacute;nde est&aacute;s mientras haces scroll, indica posici&oacute;n (X/12 cap&iacute;tulos), porcentaje de avance, colapsable. Solo desktop &gt;1300px. (A2) **Botones &laquo;Cap&iacute;tulo anterior / Cap&iacute;tulo siguiente&raquo;** auto-insertados al final de cada cap&iacute;tulo via JS al cargar &mdash; tipo libro digital con flechas, t&iacute;tulo, romano y emoji del cap&iacute;tulo destino. (A3) **Barra de progreso global de scroll** &mdash; barra fina superior con gradient azul&rarr;verde&rarr;naranja que crece al hacer scroll, indicando % visto del portal. (A4) **Breadcrumbs din&aacute;micos sticky** &mdash; aparecen tras 250px de scroll: &laquo;&#127968;&#65039; > Cap. II · Conoce tu Comuna > An&aacute;lisis Censal&raquo;, blur de fondo, click para volver. **LOTE B &middot; Acceso r&aacute;pido**: (B1) **Command Palette** (Ctrl+K o `/`) &mdash; evoluci&oacute;n del buscador: ahora con 3 categor&iacute;as (Acciones, Cap&iacute;tulos, Resultados de b&uacute;squeda), 10 acciones r&aacute;pidas (votar, reportar, descargar cuadernillo, suscribir, quiz, logros, accesibilidad, tema, tour), navegaci&oacute;n &uarr;&darr; + Enter, dise&ntilde;o estilo VS Code/Linear. (B2) **Bottom Navigation Bar mobile** &mdash; barra inferior fija en m&oacute;vil con 5 botones: Inicio, Votar, Reportar, Buscar, Logros. Compensaci&oacute;n autom&aacute;tica de FABs y padding. (B3) **Atajos de teclado** + **cheat sheet** &mdash; `?` muestra modal con todos los atajos: G+H Home, G+V Votar, G+R Reportar, G+M Mapa, G+C Cuadernillo, G+E ERD, G+P Voz Vecinos, G+G arriba, G abajo, [ ] cap anterior/siguiente, 1-9 saltar a cap N, / o Ctrl+K command palette, ? cheat sheet, Esc cerrar, c contraste, + - texto, d tema. (B4) **Historial &laquo;Visitado recientemente&raquo;** &mdash; en el sidebar al final, muestra las &uacute;ltimas 6 secciones que visitaste detectadas por IntersectionObserver (threshold .4). Click vuelve r&aacute;pidamente. localStorage. **BONUS D2**: scroll-padding-top y scroll-margin-top globales para que los anchors no queden tapados por el banner unificado. Conteo total: 59 secciones (sin cambios). Cache SW v56.0 &rarr; v57.0.</div>
     <div class="ub-entry"><strong>v39.0</strong> <span class="ub-date">17 May 2026</span><br>&#127912;&#9889; **MAJOR v39.0 &middot; Upgrade est&eacute;tico integral + Relato Narrativo en 12 cap&iacute;tulos**. Redise&ntilde;o tipogr&aacute;fico y de paleta para mejor legibilidad, m&aacute;s respiraci&oacute;n entre secciones y un recorrido coherente que cuenta la historia del PLADECO. **TIPOGRAF&Iacute;A REFINADA**: (1) Fuente Inter (Google Fonts) con font-feature-settings ss01/cv11/calt para mejor renderizado num&eacute;rico y de letras. (2) Tama&ntilde;os fluidos con `clamp()` en todas las jerarqu&iacute;as (display/h2/h3/h4/p/sec-header). (3) `line-height` aumentado de 1.55 a 1.68 en body y 1.7 en p&aacute;rrafos. (4) `letter-spacing` negativo en titulares (-.022em a -.03em) para mejor compactaci&oacute;n visual. (5) `font-smoothing: antialiased` global. **PALETA REFINADA WCAG AA**: (1) `--text` con contraste 14:1, `--text2` 7:1, `--text3` 5:1, `--text-muted` 3:1. (2) `--bg` m&aacute;s claro (#f8fafc en lugar de #f5f6f8) y nuevo `--bg-soft` (#f1f5f9) para secciones alternadas. (3) Dark mode con paleta paralela `--bg:#0a0f1c` y `--card:#1a2332`. (4) Bordes m&aacute;s sutiles: `--border:#e2e8f0` y nuevo `--border-strong`. **CAP&Iacute;TULOS NARRATIVOS** (group-divider redise&ntilde;ado): (1) Card grande con gradient sutil y border-radius 20px en lugar de la l&iacute;nea horizontal anterior. (2) **&laquo;CAP&Iacute;TULO N&raquo; en romano** generado autom&aacute;ticamente con `::before` y `data-cap`. (3) **T&iacute;tulo del cap&iacute;tulo** grande con emoji. (4) **Sub-t&iacute;tulo descriptivo** (`.cap-sub`) que explica qu&eacute; vas a encontrar en ese cap&iacute;tulo, contando el relato. (5) Barra superior con gradient animado (azul &rarr; verde &rarr; naranja, ciclo 8s) que recorre el espectro de la marca. **RELATO EN 12 CAP&Iacute;TULOS**: I.Bienvenida &amp; Marco &middot; II.Conoce tu Comuna (Diagn&oacute;stico Territorial) &middot; III.An&aacute;lisis Territorial (Datos en Profundidad) &middot; IV.La Voz de la Comunidad (Participaci&oacute;n) &middot; V.Hacia D&oacute;nde Vamos (Planificaci&oacute;n Estrat&eacute;gica) &middot; VI.Qui&eacute;nes lo Construyen (Gobernanza) &middot; VII.C&oacute;mo lo Mediremos (Seguimiento) &middot; VIII.Recursos &amp; Aprendizaje &middot; IX.Memoria del Proceso (Timeline/Galer&iacute;a/Mapas) &middot; X.&iexcl;Tu Turno! (Participa Activamente) &middot; XI.Articulaci&oacute;n Regional (ERD O'Higgins) &middot; XII.Cierre y Transparencia. **MEJORAS ADICIONALES**: padding vertical de secciones aumentado (clamp 40px a 72px), badges del sec-header con letter-spacing .1em, sec-fuente con border-left verde m&aacute;s prominente, scrollbar customizado, `::selection` con color de marca, animaciones respetan `prefers-reduced-motion`. Sin cambios funcionales: solo mejora visual y narrativa. Cache SW v55.0 &rarr; v56.0.</div>
     <div class="ub-entry"><strong>v38.0</strong> <span class="ub-date">17 May 2026</span><br>&#127919;&#9889; **MAJOR v38.0 &middot; 8 nuevas funcionalidades de Ciudadan&iacute;a 4.0 y Accesibilidad**. Tras benchmark de portales municipales chilenos (Santiago, Pe&ntilde;alol&eacute;n, Temuco, Pudahuel), se implementan 6 quick wins + 1 funcionalidad de impacto alto + 1 mejora de accesibilidad. **Lote A · Quick Wins**: (1) **A1 #reporta** &mdash; Mapa Leaflet de Reporte Ciudadano Georreferenciado: el vecino hace click en el mapa donde detect&oacute; un problema (bache, basura, alumbrado, sem&aacute;foro, seguridad, agua/sanit, otro), completa formulario flotante con descripci&oacute;n y foto opcional (base64 hasta 2MB). Se guarda en localStorage + intento al backend Apps Script con nuevo endpoint &laquo;reporte&raquo;. 7 categor&iacute;as con colores distintos en el mapa. Anti-spam por timing. Achievement &laquo;reporte&raquo; se desbloquea autom&aacute;ticamente. (2) **A2 #voz-vecinos** &mdash; Dashboard agregador en vivo: 6 cards con KPIs (votos encuesta, reportes registrados, suscriptores newsletter, visitas, favoritos guardados, logros desbloqueados). Auto-refresh cada 60s + bot&oacute;n manual. Cada card con color, icono, n&uacute;mero grande, label y trend. (3) **A3 #cuadernillo** &mdash; Generador de PDF personalizado por UV: dropdown con las 21 UV (9 urbanas + 12 rurales), bot&oacute;n &laquo;Generar PDF&raquo; con jsPDF lazy-load. PDF de 1 p&aacute;gina con: portada navy, datos demogr&aacute;ficos Censo 2024, 7 &iacute;ndices SIVUST con sem&aacute;foro de color (verde/amarillo/rojo seg&uacute;n valor), espacios p&uacute;blicos ICT, proyectos PLADECO asignados, dato destacado. Archivo: &laquo;Cuadernillo-PLADECO-UV-X.pdf&raquo; ~250KB. (4) **A4 hero-carousel** &mdash; Carrusel rotativo en el hero con 6 slides auto-rotativos cada 6s: votaci&oacute;n, reportes, pulso, cuadernillo, ERD, quiz. Dots clickables con animaci&oacute;n. Pausa autom&aacute;tica cuando pesta&ntilde;a no visible. (5) **A5 #macrosector** &mdash; Mapa de los 4 macrosectores (Centro Urbano, Periferia, Localidades, Rural Disperso) con pol&iacute;gonos clickables. Panel lateral muestra perfil zonal: poblaci&oacute;n, UV en zona, ICP vulnerabilidad, proyectos, problem&aacute;ticas principales. (6) **A6 #tutorial** &mdash; Tutorial visual interactivo &laquo;C&oacute;mo participar en 60 segundos&raquo;: 5 pasos animados (bienvenida, votar, reportar, suscribir, compartir+logros) con emoji bouncing, CTA, progress bar, controles play/pausa/anterior/siguiente, auto-avance cada 5s. **Lote B · Impacto alto**: (7) **B4 #heatmap** &mdash; Mapa de Calor de problem&aacute;ticas con Leaflet.heat plugin (CDN open-source MIT): gradient verde &rarr; amarillo &rarr; rojo seg&uacute;n densidad de reportes. Filtros por per&iacute;odo (todo / mes / semana). Datos demo iniciales mientras se acumulan reportes reales. **Lote D · Optimizaci&oacute;n**: (8) **D1 #a11y-fab** &mdash; FAB flotante de accesibilidad con panel desplegable: tama&ntilde;o texto (A / A+ / A++), alto contraste (modo oscuro fuerte con tipograf&iacute;a amarilla y links cyan), text-to-speech con Web Speech API (click en texto &rarr; lo lee en es-CL), bot&oacute;n restablecer. Persiste configuraci&oacute;n en localStorage. Sidebar y Quick-Index actualizados con **6 entradas NEW**. Conteo total **53 &rarr; 59 secciones**. Cache SW v54.0 &rarr; v55.0.</div>
     <div class="ub-entry"><strong>v37.0</strong> <span class="ub-date">17 May 2026</span><br>&#127956;&#9889; **MAJOR v37.0 &middot; Secci&oacute;n Estrategia Regional de Desarrollo (ERD) O'Higgins 2024-2036**. Articulaci&oacute;n vertical PLADECO Rengo &harr; ERD Regional. Nueva super-secci&oacute;n `#erd` con: (1) **Hero institucional** con datos de Resoluci&oacute;n Exenta N&deg; 439 (GORE O'Higgins + UOH), 33 comunas consultadas, vigencia 2024-2036. (2) **Imagen Objetivo regional** parafraseada con las 5 dimensiones de la visi&oacute;n consensuada (sostenibilidad, bienestar, gobernanza inclusiva, matriz diversificada, identidad cultural). (3) **3 tabs scoped** (`.erd-tabs` con prefijo `.erd-`): &laquo;Deliberaciones&raquo;, &laquo;Agendas&raquo;, &laquo;Articulaci&oacute;n PLADECO&raquo;. (4) **Tab 1 &middot; 10 Deliberaciones Regionales**: grid de cards con n&uacute;mero gigante de fondo, emoji tem&aacute;tico y descripci&oacute;n: 1.Escasez H&iacute;drica, 2.Disputas Uso Suelo, 3.Impactos Agroindustria, 4.Distribuci&oacute;n Oportunidades, 5.Borde Costero, 6.Violencias, 7.Inmigraci&oacute;n, 8.Matriz Productiva/Vida Rural, 9.Educaci&oacute;n/Empleo Juventudes, 10.Cultura e Identidades. (5) **Tab 2 &middot; 4 Agendas Estrat&eacute;gicas** con cards coloreadas (rojo/azul/verde/naranja) y sus ejes estructurantes: Desarrollo Humano (Derechos Sociales, Convivencia, Ruralidad, Cultura/Patrimonio), Gobernanza Pol&iacute;tico-Institucional (Confianza P&uacute;blica, Capacidades, Gobernanza ERD), Medio Ambiente (Cambio Clim&aacute;tico, Conservaci&oacute;n, Ordenamiento, Econom&iacute;a Circular), Desarrollo Econ&oacute;mico (Diversificaci&oacute;n, Derechos B&aacute;sicos, Sustentabilidad, Asociatividad). (6) **Tab 3 &middot; Articulaci&oacute;n PLADECO Rengo &harr; ERD**: tabla cascada que mapea cada Agenda ERD &rarr; Eje PLADECO correspondiente (Eje 1 Cultura/Salud, Eje 2 Econ&oacute;mico, Eje 3 Educaci&oacute;n, Eje 4 Territorio, Eje 5 Ambiente, Eje 6 Gesti&oacute;n). Incluye nota sobre el aporte espec&iacute;fico de Rengo a la ERD (4&ordf; comuna m&aacute;s poblada Cachapoal, evidencia para 7 de las 10 deliberaciones). (7) CSS scoped con prefijo `.erd-` para no afectar el resto del portal: `.erd-hero` con gradient navy-azul-verde, `.erd-io` con borde naranja, `.erd-deliberacion` con n&uacute;mero gigante decorativo, `.erd-agenda` con cards coloreadas por agenda (var `--ag-color`), `.erd-cascada` con flecha animada. (8) **Sidebar y Quick-Index** actualizados con nueva entrada NEW &laquo;ERD O'Higgins 2024-2036&raquo;. (9) Funci&oacute;n `initErdTabs()` para manejo de tabs scoped. Fuente oficial: erd.uoh.cl + Resoluci&oacute;n Exenta N&deg; 439 (CORE diciembre 2024). Conteo total **52 &rarr; 53 secciones**. Cache SW v53.5 &rarr; v54.0.</div>
@@ -9356,12 +9491,117 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v39.0</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v40.0</span>
   </div>
 </footer>
 
 <!-- F7: Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══ MAJOR v40.0 · Navegación + Acceso ═══ -->
+
+<!-- A3 · Barra de progreso de scroll global -->
+<div class="scroll-progress-v40" id="scrollProgressV40" aria-hidden="true"><div class="scroll-progress-bar" id="scrollProgressBar"></div></div>
+
+<!-- A4 · Breadcrumbs sticky dinámicos -->
+<nav class="breadcrumbs-v40" id="breadcrumbsV40" aria-label="Navegaci&oacute;n contextual" role="navigation">
+  <a href="#dashboard" title="Volver al inicio">&#127968;&#65039;</a>
+  <span class="bc-sep">&rsaquo;</span>
+  <span class="bc-cap" id="bcCap">--</span>
+  <span class="bc-sep">&rsaquo;</span>
+  <span class="bc-current" id="bcCurrent">--</span>
+</nav>
+
+<!-- A1 · Mini-mapa lateral con scrollspy -->
+<aside class="minimap-v40" id="minimapV40" aria-label="Mapa de navegaci&oacute;n del cap&iacute;tulo" role="navigation">
+  <div class="minimap-collapsed-icon" onclick="toggleMinimap()" title="Expandir">&#128300;</div>
+  <div class="minimap-content">
+    <div class="minimap-header">
+      <div>
+        <div class="minimap-cap-label" id="mmCapLabel">CAP&Iacute;TULO --</div>
+        <div class="minimap-cap-title" id="mmCapTitle">--</div>
+      </div>
+      <button class="minimap-toggle" onclick="toggleMinimap()" title="Colapsar" aria-label="Colapsar mini-mapa">&#10094;</button>
+    </div>
+    <ul class="minimap-list" id="mmList" role="list"></ul>
+    <div class="minimap-progress">
+      <span id="mmProgressPct">0%</span>
+      <div class="minimap-progress-bar"><div class="minimap-progress-fill" id="mmProgressFill"></div></div>
+      <span id="mmCapInfo">--/--</span>
+    </div>
+  </div>
+</aside>
+
+<!-- B1 · Command Palette (Cmd+K mejorado) -->
+<div class="cmdp-overlay" id="cmdpOverlay" role="dialog" aria-label="Paleta de comandos" aria-modal="true" onclick="if(event.target===this)closeCmdp()">
+  <div class="cmdp">
+    <div class="cmdp-header">
+      <span style="font-size:18px;color:var(--text-muted)">&#128269;</span>
+      <input type="text" class="cmdp-input" id="cmdpInput" placeholder="Buscar o ejecutar acci&oacute;n..." aria-label="Buscar o ejecutar comando" autocomplete="off">
+      <span class="cmdp-kbd">ESC</span>
+    </div>
+    <div class="cmdp-body" id="cmdpBody"></div>
+    <div class="cmdp-footer">
+      <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navegar</span>
+      <span><kbd>&crarr;</kbd> Ejecutar</span>
+      <span><kbd>esc</kbd> Cerrar</span>
+      <span><kbd>?</kbd> Atajos</span>
+    </div>
+  </div>
+</div>
+
+<!-- B2 · Bottom Navigation Bar mobile -->
+<nav class="bottom-nav-v40" id="bottomNavV40" role="navigation" aria-label="Navegaci&oacute;n inferior m&oacute;vil">
+  <a href="#dashboard" class="bottom-nav-item" data-target="dashboard"><span class="bottom-nav-icon">&#127968;&#65039;</span><span>Inicio</span></a>
+  <a href="#encuesta" class="bottom-nav-item" data-target="encuesta"><span class="bottom-nav-icon">&#128499;&#65039;</span><span>Votar</span></a>
+  <a href="#reporta" class="bottom-nav-item" data-target="reporta"><span class="bottom-nav-icon">&#128205;</span><span>Reportar</span></a>
+  <button type="button" class="bottom-nav-item" onclick="openCmdp()" aria-label="Buscar"><span class="bottom-nav-icon">&#128269;</span><span>Buscar</span></button>
+  <button type="button" class="bottom-nav-item" onclick="toggleAchievements()" aria-label="Mis logros"><span class="bottom-nav-icon">&#127942;</span><span>Logros</span></button>
+</nav>
+
+<!-- B3 · Cheat sheet de atajos de teclado -->
+<div class="kbd-cheat" id="kbdCheat" role="dialog" aria-label="Atajos de teclado" aria-modal="true" onclick="if(event.target===this)closeKbdCheat()">
+  <div class="kbd-cheat-card">
+    <div class="kbd-cheat-head">
+      <h3>&#9000; Atajos de teclado</h3>
+      <button class="kbd-cheat-close" onclick="closeKbdCheat()" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="kbd-cheat-grid">
+      <div class="kbd-cheat-section">
+        <h4>Navegaci&oacute;n r&aacute;pida</h4>
+        <div class="kbd-cheat-row"><span>Inicio</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>h</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Votar (encuesta)</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>v</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Reportar problema</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>r</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Mapa proyectos</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>m</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Cuadernillo UV</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>c</kbd></span></div>
+        <div class="kbd-cheat-row"><span>ERD O'Higgins</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>e</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Voz Vecinos</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>p</kbd></span></div>
+      </div>
+      <div class="kbd-cheat-section">
+        <h4>Acciones generales</h4>
+        <div class="kbd-cheat-row"><span>Buscar / Command Palette</span><span class="kbd-cheat-keys"><kbd>/</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Buscar (alt.)</span><span class="kbd-cheat-keys"><kbd>Ctrl</kbd><kbd>k</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Mostrar atajos</span><span class="kbd-cheat-keys"><kbd>?</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Cerrar overlays</span><span class="kbd-cheat-keys"><kbd>Esc</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Modo oscuro</span><span class="kbd-cheat-keys"><kbd>d</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Subir al inicio</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>g</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Bajar al final</span><span class="kbd-cheat-keys"><kbd>G</kbd></span></div>
+      </div>
+      <div class="kbd-cheat-section">
+        <h4>Capitulos</h4>
+        <div class="kbd-cheat-row"><span>Capitulo anterior</span><span class="kbd-cheat-keys"><kbd>[</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Capitulo siguiente</span><span class="kbd-cheat-keys"><kbd>]</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Saltar a cap. 1-9</span><span class="kbd-cheat-keys"><kbd>1</kbd>&hellip;<kbd>9</kbd></span></div>
+      </div>
+      <div class="kbd-cheat-section">
+        <h4>Accesibilidad</h4>
+        <div class="kbd-cheat-row"><span>Aumentar texto</span><span class="kbd-cheat-keys"><kbd>+</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Reducir texto</span><span class="kbd-cheat-keys"><kbd>-</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Alto contraste</span><span class="kbd-cheat-keys"><kbd>c</kbd></span></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ MAJOR v38.0 · D1 Accesibilidad Avanzada · FAB + Panel ═══ -->
 <button class="a11y-fab" id="a11yFab" onclick="toggleA11y()" title="Accesibilidad" aria-label="Opciones de accesibilidad">&#9881;&#65039;</button>
@@ -18139,6 +18379,439 @@ function initComparador(){
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   MAJOR v40.0 · 8 mejoras navegación + acceso · JS implementación
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Datos de los 12 capítulos (mapeo cap-id → secciones) ── */
+var V40_CAPITULOS=[
+  {id:'capitulo-1',cap:'I',title:'Bienvenida & Marco',emoji:'📝'},
+  {id:'capitulo-2',cap:'II',title:'Conoce tu Comuna',emoji:'📍'},
+  {id:'capitulo-3',cap:'III',title:'Análisis Territorial',emoji:'📊'},
+  {id:'capitulo-4',cap:'IV',title:'Voz de la Comunidad',emoji:'🗣️'},
+  {id:'capitulo-5',cap:'V',title:'Hacia Dónde Vamos',emoji:'🎯'},
+  {id:'capitulo-6',cap:'VI',title:'Quiénes lo Construyen',emoji:'🏛️'},
+  {id:'capitulo-7',cap:'VII',title:'Cómo lo Mediremos',emoji:'📈'},
+  {id:'capitulo-8',cap:'VIII',title:'Recursos & Aprendizaje',emoji:'📚'},
+  {id:'capitulo-9',cap:'IX',title:'Memoria del Proceso',emoji:'🎥'},
+  {id:'capitulo-10',cap:'X',title:'¡Tu Turno!',emoji:'⚡'},
+  {id:'capitulo-11',cap:'XI',title:'Articulación Regional',emoji:'🌎'},
+  {id:'capitulo-12',cap:'XII',title:'Cierre y Transparencia',emoji:'🏆'}
+];
+
+/* ── A3. Barra de progreso de scroll global ── */
+function v40InitScrollProgress(){
+  var bar=document.getElementById('scrollProgressBar');if(!bar)return;
+  window.addEventListener('scroll',function(){
+    var scrolled=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var pct=total>0?Math.min(100,(scrolled/total)*100):0;
+    bar.style.width=pct+'%';
+  },{passive:true});
+}
+
+/* ── A1+A4. Scrollspy + Breadcrumbs + Mini-mapa ── */
+var _v40CurrentCap=null;
+function v40DetectCurrentChapter(){
+  // Encontrar qué capítulo está actualmente arriba en viewport
+  var scrollY=window.scrollY+200;
+  var current=null;
+  var nextCap=null;
+  for(var i=0;i<V40_CAPITULOS.length;i++){
+    var capEl=document.getElementById(V40_CAPITULOS[i].id);
+    if(!capEl)continue;
+    var top=capEl.offsetTop;
+    if(top<=scrollY){current=V40_CAPITULOS[i];}
+    else if(!nextCap){nextCap=V40_CAPITULOS[i];break;}
+  }
+  return {current:current,next:nextCap};
+}
+function v40DetectCurrentSection(){
+  // Encontrar qué sección está actualmente más visible
+  var sections=document.querySelectorAll('section[id]');
+  var scrollY=window.scrollY+200;
+  var current=null;
+  sections.forEach(function(s){
+    if(s.offsetTop<=scrollY)current=s;
+  });
+  return current;
+}
+function v40UpdateBreadcrumbs(){
+  var info=v40DetectCurrentChapter();
+  var sec=v40DetectCurrentSection();
+  var bc=document.getElementById('breadcrumbsV40');
+  var bcCap=document.getElementById('bcCap');
+  var bcCurrent=document.getElementById('bcCurrent');
+  if(!bc)return;
+  // Mostrar breadcrumbs solo cuando hayas hecho scroll de 250px
+  if(window.scrollY>250){
+    bc.classList.add('visible');
+    document.body.classList.add('bc-active');
+    if(info.current&&bcCap){bcCap.textContent='Cap. '+info.current.cap+' · '+info.current.title;}
+    if(sec&&bcCurrent){
+      var h2=sec.querySelector('h2');
+      bcCurrent.textContent=h2?h2.textContent.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,'').trim():sec.id;
+    }
+  } else {
+    bc.classList.remove('visible');
+    document.body.classList.remove('bc-active');
+  }
+}
+function v40UpdateMinimap(){
+  var info=v40DetectCurrentChapter();
+  var mm=document.getElementById('minimapV40');
+  if(!mm)return;
+  if(window.scrollY<400||!info.current){
+    mm.classList.remove('visible');
+    return;
+  }
+  mm.classList.add('visible');
+  // Si cambió de capítulo, regenerar lista
+  if(_v40CurrentCap!==info.current.id){
+    _v40CurrentCap=info.current.id;
+    var capIdx=V40_CAPITULOS.findIndex(function(c){return c.id===info.current.id;});
+    document.getElementById('mmCapLabel').textContent='CAPÍTULO '+info.current.cap;
+    document.getElementById('mmCapTitle').textContent=info.current.emoji+' '+info.current.title;
+    document.getElementById('mmCapInfo').textContent=(capIdx+1)+'/'+V40_CAPITULOS.length;
+    // Buscar secciones del capítulo actual (entre este divider y el siguiente)
+    var startEl=document.getElementById(info.current.id);
+    var nextCapEl=info.next?document.getElementById(info.next.id):null;
+    var startY=startEl?startEl.offsetTop:0;
+    var endY=nextCapEl?nextCapEl.offsetTop:Infinity;
+    var secs=[];
+    document.querySelectorAll('section[id]').forEach(function(s){
+      if(s.offsetTop>=startY&&s.offsetTop<endY&&s.offsetHeight>50){
+        var h2=s.querySelector('h2');
+        if(h2&&!s.hasAttribute('aria-hidden'))secs.push({id:s.id,title:h2.textContent.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,'').trim().substring(0,40)});
+      }
+    });
+    var list=document.getElementById('mmList');
+    list.innerHTML=secs.map(function(s){return '<li data-id="'+s.id+'" onclick="document.getElementById(\''+s.id+'\').scrollIntoView({behavior:\'smooth\',block:\'start\'})"><a href="#'+s.id+'">'+s.title+'</a></li>';}).join('');
+    // Progreso del capítulo en el plan
+    var pct=Math.round(((capIdx+1)/V40_CAPITULOS.length)*100);
+    document.getElementById('mmProgressPct').textContent=pct+'%';
+    document.getElementById('mmProgressFill').style.width=pct+'%';
+  }
+  // Actualizar item activo en mini-mapa
+  var currentSec=v40DetectCurrentSection();
+  if(currentSec){
+    document.querySelectorAll('#mmList li').forEach(function(li){
+      li.classList.toggle('active',li.dataset.id===currentSec.id);
+    });
+  }
+}
+function toggleMinimap(){
+  var mm=document.getElementById('minimapV40');
+  if(!mm)return;
+  mm.classList.toggle('collapsed');
+  try{localStorage.setItem('v40-mm-collapsed',mm.classList.contains('collapsed')?'1':'0');}catch(_){}
+}
+
+/* ── A2. Botones navegación entre capítulos (auto-insertar) ── */
+function v40InsertChapterNavButtons(){
+  for(var i=0;i<V40_CAPITULOS.length;i++){
+    var cap=V40_CAPITULOS[i];
+    var prev=i>0?V40_CAPITULOS[i-1]:null;
+    var next=i<V40_CAPITULOS.length-1?V40_CAPITULOS[i+1]:null;
+    var capEl=document.getElementById(cap.id);
+    if(!capEl)continue;
+    // Encontrar la última sección de ESTE capítulo (antes del próximo capítulo)
+    var nextCapEl=next?document.getElementById(next.id):null;
+    var lastSec=null;
+    var startY=capEl.offsetTop;
+    var endY=nextCapEl?nextCapEl.offsetTop:Infinity;
+    document.querySelectorAll('section[id]').forEach(function(s){
+      if(s.offsetTop>=startY&&s.offsetTop<endY&&s.offsetHeight>50&&!s.hasAttribute('aria-hidden'))lastSec=s;
+    });
+    if(!lastSec)continue;
+    if(lastSec.querySelector('.cap-nav'))continue; // Ya insertado
+    var nav=document.createElement('div');
+    nav.className='cap-nav';
+    nav.innerHTML=
+      '<a class="cap-nav-btn prev '+(!prev?'disabled':'')+'" '+(prev?'href="#'+prev.id+'"':'')+'>'+
+        '<span class="cap-nav-dir">&lsaquo; Capitulo anterior</span>'+
+        (prev?'<span class="cap-nav-num">CAPITULO '+prev.cap+'</span><span class="cap-nav-title">'+prev.emoji+' '+prev.title+'</span>':'<span class="cap-nav-num">--</span><span class="cap-nav-title">Inicio</span>')+
+      '</a>'+
+      '<a class="cap-nav-btn next '+(!next?'disabled':'')+'" '+(next?'href="#'+next.id+'"':'')+'>'+
+        '<span class="cap-nav-dir">Capitulo siguiente &rsaquo;</span>'+
+        (next?'<span class="cap-nav-num">CAPITULO '+next.cap+'</span><span class="cap-nav-title">'+next.emoji+' '+next.title+'</span>':'<span class="cap-nav-num">FIN</span><span class="cap-nav-title">¡Has completado el portal!</span>')+
+      '</a>';
+    lastSec.appendChild(nav);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   B1. Command Palette (Cmd+K mejorado)
+   ══════════════════════════════════════════════════════ */
+var CMDP_ACTIONS=[
+  // Acciones rápidas (top)
+  {cat:'acciones',icon:'🗳️',title:'Votar en la encuesta',desc:'Vota tu tema prioritario',kbd:'g v',href:'#encuesta'},
+  {cat:'acciones',icon:'📍',title:'Reportar un problema',desc:'Marca en el mapa donde detectaste un problema',kbd:'g r',href:'#reporta'},
+  {cat:'acciones',icon:'📝',title:'Descargar cuadernillo de mi UV',desc:'PDF personalizado por Unidad Vecinal',kbd:'g c',href:'#cuadernillo'},
+  {cat:'acciones',icon:'📨',title:'Suscribirme al Newsletter',desc:'Recibir actualizaciones del PLADECO',href:'#participa'},
+  {cat:'acciones',icon:'📅',title:'Ver calendario de cabildos',desc:'Pr&oacute;ximas reuniones territoriales',href:'#participa'},
+  {cat:'acciones',icon:'🎓',title:'Hacer el Quiz interactivo',desc:'10 preguntas sobre Rengo',href:'#educacion'},
+  {cat:'acciones',icon:'🏆',title:'Ver mis logros',desc:'12 badges desbloqueables',action:'toggleAchievements'},
+  {cat:'acciones',icon:'⚙️',title:'Accesibilidad',desc:'Tama&ntilde;o texto, contraste, lectura en voz',action:'toggleA11y'},
+  {cat:'acciones',icon:'🌙',title:'Cambiar tema (claro/oscuro)',desc:'Alternar modo de visualizaci&oacute;n',action:'toggleDark'},
+  {cat:'acciones',icon:'🎬',title:'Iniciar Tour guiado',desc:'Recorrido por las secciones clave',action:'startTour'},
+  // Navegación a capítulos
+  {cat:'capitulos',icon:'📝',title:'Capítulo I · Bienvenida',kbd:'1',href:'#capitulo-1'},
+  {cat:'capitulos',icon:'📍',title:'Capítulo II · Conoce tu Comuna',kbd:'2',href:'#capitulo-2'},
+  {cat:'capitulos',icon:'📊',title:'Capítulo III · Análisis Territorial',kbd:'3',href:'#capitulo-3'},
+  {cat:'capitulos',icon:'🗣️',title:'Capítulo IV · Voz de la Comunidad',kbd:'4',href:'#capitulo-4'},
+  {cat:'capitulos',icon:'🎯',title:'Capítulo V · Hacia Dónde Vamos',kbd:'5',href:'#capitulo-5'},
+  {cat:'capitulos',icon:'🏛️',title:'Capítulo VI · Quiénes lo Construyen',kbd:'6',href:'#capitulo-6'},
+  {cat:'capitulos',icon:'📈',title:'Capítulo VII · Cómo lo Mediremos',kbd:'7',href:'#capitulo-7'},
+  {cat:'capitulos',icon:'📚',title:'Capítulo VIII · Recursos & Aprendizaje',kbd:'8',href:'#capitulo-8'},
+  {cat:'capitulos',icon:'🎥',title:'Capítulo IX · Memoria del Proceso',kbd:'9',href:'#capitulo-9'},
+  {cat:'capitulos',icon:'⚡',title:'Capítulo X · ¡Tu Turno!',href:'#capitulo-10'},
+  {cat:'capitulos',icon:'🌎',title:'Capítulo XI · Articulación Regional',href:'#capitulo-11'},
+  {cat:'capitulos',icon:'🏆',title:'Capítulo XII · Cierre y Transparencia',href:'#capitulo-12'}
+];
+var _cmdpSelected=0,_cmdpResults=[];
+function openCmdp(){
+  var ov=document.getElementById('cmdpOverlay');
+  ov.classList.add('open');
+  document.getElementById('cmdpInput').value='';
+  document.getElementById('cmdpInput').focus();
+  cmdpUpdateResults('');
+}
+function closeCmdp(){
+  document.getElementById('cmdpOverlay').classList.remove('open');
+}
+function cmdpUpdateResults(q){
+  q=q.toLowerCase().trim();
+  var body=document.getElementById('cmdpBody');
+  // Acciones que matchean
+  var actions=CMDP_ACTIONS.filter(function(a){
+    if(!q)return true;
+    return a.title.toLowerCase().indexOf(q)>=0||(a.desc&&a.desc.toLowerCase().indexOf(q)>=0);
+  });
+  // Búsqueda en secciones (usando _portalSearchIndex existente)
+  var sections=[];
+  if(typeof buildPortalSearchIndex==='function'&&q.length>=2){
+    try{
+      var idx=buildPortalSearchIndex();
+      sections=idx.filter(function(s){return s.title.toLowerCase().indexOf(q)>=0||s.textLower.indexOf(q)>=0;}).slice(0,6).map(function(s){
+        return {cat:'secciones',icon:'📄',title:s.title,desc:'Sección · '+(s.cat||'Portal'),href:'#'+s.id};
+      });
+    }catch(e){}
+  }
+  _cmdpResults=actions.concat(sections);
+  _cmdpSelected=0;
+  // Agrupar
+  var groups={acciones:[],capitulos:[],secciones:[]};
+  _cmdpResults.forEach(function(r){if(groups[r.cat])groups[r.cat].push(r);});
+  var html='';
+  var i=0;
+  if(groups.acciones.length){
+    html+='<div class="cmdp-group"><div class="cmdp-group-label">⚡ Acciones</div>';
+    groups.acciones.forEach(function(a){html+=cmdpItemHTML(a,i++);});
+    html+='</div>';
+  }
+  if(groups.capitulos.length){
+    html+='<div class="cmdp-group"><div class="cmdp-group-label">📑 Capítulos</div>';
+    groups.capitulos.forEach(function(a){html+=cmdpItemHTML(a,i++);});
+    html+='</div>';
+  }
+  if(groups.secciones.length){
+    html+='<div class="cmdp-group"><div class="cmdp-group-label">🔍 Resultados de búsqueda</div>';
+    groups.secciones.forEach(function(a){html+=cmdpItemHTML(a,i++);});
+    html+='</div>';
+  }
+  if(!_cmdpResults.length){html='<div class="cmdp-empty">No se encontraron resultados</div>';}
+  body.innerHTML=html;
+  cmdpUpdateSelection();
+}
+function cmdpItemHTML(a,idx){
+  return '<div class="cmdp-item" data-idx="'+idx+'" onclick="cmdpRun('+idx+')">'+
+    '<div class="cmdp-item-icon">'+a.icon+'</div>'+
+    '<div class="cmdp-item-content">'+
+      '<div class="cmdp-item-title">'+a.title+'</div>'+
+      (a.desc?'<div class="cmdp-item-desc">'+a.desc+'</div>':'')+
+    '</div>'+
+    (a.kbd?'<span class="cmdp-item-kbd">'+a.kbd+'</span>':'')+
+  '</div>';
+}
+function cmdpUpdateSelection(){
+  document.querySelectorAll('.cmdp-item').forEach(function(el){
+    el.classList.toggle('selected',+el.dataset.idx===_cmdpSelected);
+  });
+  var sel=document.querySelector('.cmdp-item.selected');
+  if(sel)sel.scrollIntoView({block:'nearest'});
+}
+function cmdpRun(idx){
+  var a=_cmdpResults[idx];if(!a)return;
+  closeCmdp();
+  if(a.href){
+    var id=a.href.replace('#','');
+    var el=document.getElementById(id);
+    if(el){el.scrollIntoView({behavior:'smooth',block:'start'});history.pushState(null,'',a.href);}
+  } else if(a.action){
+    if(typeof window[a.action]==='function')window[a.action]();
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   B3. Atajos de teclado globales
+   ══════════════════════════════════════════════════════ */
+var _kbdSeq='';
+var _kbdSeqTimer=null;
+function openKbdCheat(){document.getElementById('kbdCheat').classList.add('open');}
+function closeKbdCheat(){document.getElementById('kbdCheat').classList.remove('open');}
+function v40InitKeyboardShortcuts(){
+  document.addEventListener('keydown',function(e){
+    // Ignorar si está en input/textarea
+    var tag=e.target.tagName.toLowerCase();
+    var isInput=tag==='input'||tag==='textarea'||tag==='select'||e.target.isContentEditable;
+    // Esc cierra todo (siempre)
+    if(e.key==='Escape'){
+      closeCmdp();closeKbdCheat();
+      if(typeof closeRepForm==='function')closeRepForm();
+      if(typeof closeMacPanel==='function')closeMacPanel();
+      return;
+    }
+    if(isInput&&e.key!=='Escape')return;
+    // Cmd/Ctrl + K → Command palette
+    if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openCmdp();return;}
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    // Atajos simples
+    var k=e.key;
+    if(k==='/'){e.preventDefault();openCmdp();return;}
+    if(k==='?'){e.preventDefault();openKbdCheat();return;}
+    if(k==='c'){if(typeof a11yToggleContrast==='function')a11yToggleContrast();return;}
+    if(k==='+'||k==='='){if(typeof a11ySetSize==='function')a11ySetSize(document.body.classList.contains('a11y-xlarge')?'xlarge':document.body.classList.contains('a11y-large')?'xlarge':'large');return;}
+    if(k==='-'){if(typeof a11ySetSize==='function')a11ySetSize(document.body.classList.contains('a11y-xlarge')?'large':'normal');return;}
+    if(k==='d'){
+      var btn=document.getElementById('btnDark');
+      if(btn)btn.click();
+      else document.body.classList.toggle('dark');
+      return;
+    }
+    if(k==='['){v40JumpChapter(-1);return;}
+    if(k===']'){v40JumpChapter(1);return;}
+    if(k==='G'){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});return;}
+    // Saltar a capítulo 1-9
+    if(/^[1-9]$/.test(k)){
+      var capId='capitulo-'+k;
+      var el=document.getElementById(capId);
+      if(el){el.scrollIntoView({behavior:'smooth'});return;}
+    }
+    // Secuencias G+letra
+    if(_kbdSeq==='g'){
+      _kbdSeq='';if(_kbdSeqTimer)clearTimeout(_kbdSeqTimer);
+      var target=null;
+      if(k==='h')target='dashboard';
+      else if(k==='v')target='encuesta';
+      else if(k==='r')target='reporta';
+      else if(k==='m')target='mapa-proyectos';
+      else if(k==='c')target='cuadernillo';
+      else if(k==='e')target='erd';
+      else if(k==='p')target='voz-vecinos';
+      else if(k==='g'){window.scrollTo({top:0,behavior:'smooth'});return;}
+      if(target){
+        var el=document.getElementById(target);
+        if(el){el.scrollIntoView({behavior:'smooth'});return;}
+      }
+    }
+    if(k==='g'){_kbdSeq='g';if(_kbdSeqTimer)clearTimeout(_kbdSeqTimer);_kbdSeqTimer=setTimeout(function(){_kbdSeq='';},1000);return;}
+  });
+  // Command palette: navegación con flechas
+  document.getElementById('cmdpInput').addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'){e.preventDefault();_cmdpSelected=Math.min(_cmdpResults.length-1,_cmdpSelected+1);cmdpUpdateSelection();}
+    else if(e.key==='ArrowUp'){e.preventDefault();_cmdpSelected=Math.max(0,_cmdpSelected-1);cmdpUpdateSelection();}
+    else if(e.key==='Enter'){e.preventDefault();cmdpRun(_cmdpSelected);}
+  });
+  document.getElementById('cmdpInput').addEventListener('input',function(e){cmdpUpdateResults(e.target.value);});
+}
+function v40JumpChapter(dir){
+  var info=v40DetectCurrentChapter();
+  if(!info.current)return;
+  var idx=V40_CAPITULOS.findIndex(function(c){return c.id===info.current.id;});
+  var newIdx=idx+dir;
+  if(newIdx<0||newIdx>=V40_CAPITULOS.length)return;
+  var target=document.getElementById(V40_CAPITULOS[newIdx].id);
+  if(target)target.scrollIntoView({behavior:'smooth'});
+}
+function toggleDark(){var b=document.getElementById('btnDark');if(b)b.click();else document.body.classList.toggle('dark');}
+
+/* ══════════════════════════════════════════════════════
+   B2. Bottom Nav (actualizar item activo)
+   ══════════════════════════════════════════════════════ */
+function v40UpdateBottomNav(){
+  var sec=v40DetectCurrentSection();
+  if(!sec)return;
+  document.querySelectorAll('.bottom-nav-item[data-target]').forEach(function(el){
+    el.classList.toggle('active',el.dataset.target===sec.id);
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   B4. Historial visitado reciente
+   ══════════════════════════════════════════════════════ */
+var V40_RECENT_KEY='pladeco-recent-v40';
+function v40TrackVisit(id){
+  if(!id)return;
+  try{
+    var arr=JSON.parse(localStorage.getItem(V40_RECENT_KEY)||'[]');
+    arr=arr.filter(function(x){return x!==id;});
+    arr.unshift(id);
+    arr=arr.slice(0,6);
+    localStorage.setItem(V40_RECENT_KEY,JSON.stringify(arr));
+    v40RenderRecent();
+  }catch(_){}
+}
+function v40RenderRecent(){
+  var container=document.getElementById('recentVisits');
+  var list=document.getElementById('recentVisitsList');
+  if(!container||!list)return;
+  var arr=[];
+  try{arr=JSON.parse(localStorage.getItem(V40_RECENT_KEY)||'[]');}catch(_){}
+  if(!arr.length){container.style.display='none';return;}
+  container.style.display='block';
+  list.innerHTML=arr.map(function(id){
+    var sec=document.getElementById(id);
+    if(!sec)return '';
+    var h2=sec.querySelector('h2');
+    var title=h2?h2.textContent.trim().substring(0,32):id;
+    return '<a href="#'+id+'">'+title+'</a>';
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════
+   v40 INIT principal · scroll listeners + setup
+   ══════════════════════════════════════════════════════ */
+function initV40Navigation(){
+  v40InitScrollProgress();
+  v40InitKeyboardShortcuts();
+  v40RenderRecent();
+  // Restaurar estado mini-mapa
+  try{if(localStorage.getItem('v40-mm-collapsed')==='1'){document.getElementById('minimapV40').classList.add('collapsed');}}catch(_){}
+  // Insertar botones nav entre capítulos (después de un breve delay para que el DOM esté listo)
+  setTimeout(function(){v40InsertChapterNavButtons();},800);
+  // Scroll listeners (debounced)
+  var _scrollTimer=null;
+  window.addEventListener('scroll',function(){
+    if(_scrollTimer)return;
+    _scrollTimer=requestAnimationFrame(function(){
+      v40UpdateBreadcrumbs();
+      v40UpdateMinimap();
+      v40UpdateBottomNav();
+      _scrollTimer=null;
+    });
+  },{passive:true});
+  // Trackear secciones visitadas
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting&&en.intersectionRatio>.4){v40TrackVisit(en.target.id);}
+      });
+    },{threshold:.4});
+    document.querySelectorAll('section[id]').forEach(function(s){io.observe(s);});
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    MAJOR v38.0 · 8 nuevas funcionalidades · JS implementación
    ══════════════════════════════════════════════════════════════════ */
 
@@ -18732,6 +19405,8 @@ try{lazyInitOnView('#macrosector',initMacrosector);}catch(e){console.warn('macro
 try{initTutorial();}catch(e){console.warn('tutorial:',e);}
 try{_initCuadernillo();}catch(e){console.warn('cuadernillo:',e);}
 try{initA11y();}catch(e){console.warn('a11y:',e);}
+// MAJOR v40.0 · navegación + acceso
+try{initV40Navigation();}catch(e){console.warn('v40 nav:',e);}
 try{renderGalleryProc();}catch(e){console.warn('renderGalleryProc:',e);}
 try{initRippleEffect();}catch(e){console.warn('initRippleEffect:',e);}
 try{initAchievements();}catch(e){console.warn('initAchievements:',e);}
