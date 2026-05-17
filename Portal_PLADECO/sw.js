@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v53.4
+// PLADECO Rengo 2025-2035 · Service Worker v53.5
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v53.4: hotfix votación de vecinos · auto-reload tras update
+// v53.5: votación en tiempo real con auto-refresh cada 30s
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v53.4';
+const CACHE_STATIC='pladeco-static-v53.5';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
