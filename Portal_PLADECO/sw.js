@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v54.0
+// PLADECO Rengo 2025-2035 · Service Worker v55.0
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v54.0: nueva sección Estrategia Regional de Desarrollo (ERD) O'Higgins
+// v55.0: 8 nuevas funcionalidades v38.0 (reporte georref, voz vecinos, cuadernillo PDF, heatmap, a11y)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v54.0';
+const CACHE_STATIC='pladeco-static-v55.0';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

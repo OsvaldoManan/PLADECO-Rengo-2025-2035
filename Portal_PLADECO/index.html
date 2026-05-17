@@ -2671,6 +2671,165 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 .comp-insight{margin-top:14px;padding:14px 16px;background:linear-gradient(135deg,rgba(45,154,77,.06),rgba(245,146,29,.05));border-left:4px solid var(--primary);border-radius:var(--r-md);font-size:12.5px;line-height:1.6;color:var(--text)}
 .comp-insight strong{color:var(--primary)}
 
+/* ══════════════════════════════════════════════════════════════════
+   MAJOR v38.0 · 8 NUEVAS FUNCIONALIDADES
+   A1 Reporte georref · A2 Voz Vecinos · A3 Cuadernillo PDF · A4 Hero carrusel
+   A5 Mapa macrosector · A6 Tutorial · B4 Heatmap · D1 Accesibilidad
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── A1. Reporte Ciudadano Georreferenciado ── */
+#mapaReportes{height:480px;width:100%;border-radius:var(--r-lg);box-shadow:var(--sh-lg);border:1px solid var(--border);background:var(--card2);cursor:crosshair}
+.rep-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:12px 14px;background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(245,146,29,.05));border-radius:var(--r-md);border-left:4px solid #ef4444;font-size:12.5px;color:var(--text);font-weight:600}
+.rep-controls .rep-hint{flex:1;min-width:200px}
+.rep-controls .rep-hint::before{content:'📍 ';font-size:14px}
+.rep-stats{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--text2)}
+.rep-stats strong{color:var(--text)}
+.rep-form{position:fixed;bottom:24px;right:24px;width:340px;max-width:calc(100vw - 30px);background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-2xl);padding:18px;z-index:1100;transform:translateY(120%);opacity:0;transition:all var(--tr-bounce);font-family:inherit}
+.rep-form.show{transform:translateY(0);opacity:1}
+.rep-form h4{font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.rep-form .rep-close{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:0;line-height:1}
+.rep-form p{font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.4}
+.rep-form select,.rep-form input,.rep-form textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--r-sm);font-size:12px;font-family:inherit;background:var(--card2);color:var(--text);margin-bottom:8px;box-sizing:border-box}
+.rep-form textarea{resize:vertical;min-height:60px}
+.rep-form select:focus,.rep-form input:focus,.rep-form textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(45,154,77,.15)}
+.rep-form .rep-foto-wrap{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.rep-form .rep-foto-btn{flex:1;padding:7px;background:var(--card2);border:1px dashed var(--border);border-radius:var(--r-sm);font-size:11px;cursor:pointer;text-align:center;color:var(--text2);font-family:inherit}
+.rep-form .rep-foto-btn:hover{border-color:var(--primary);color:var(--primary)}
+.rep-form .rep-submit{width:100%;padding:10px;background:linear-gradient(135deg,var(--primary),#1e6a35);color:#fff;border:none;border-radius:var(--r-sm);font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit;transition:all var(--tr-fast)}
+.rep-form .rep-submit:hover{box-shadow:var(--sh-glow-green);transform:translateY(-1px)}
+.rep-form .rep-coords{font-size:10px;color:var(--text2);background:var(--card2);padding:5px 8px;border-radius:var(--r-xs);font-family:monospace;margin-bottom:8px}
+.rep-marker-icon{background:var(--rep-color,#ef4444);width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.rep-leyenda{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:8px;font-size:10.5px;color:var(--text2)}
+.rep-leyenda-item{display:inline-flex;align-items:center;gap:4px}
+.rep-leyenda-dot{width:11px;height:11px;border-radius:50%}
+
+/* ── A2. Dashboard Voz de los Vecinos ── */
+.voz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:14px}
+.voz-card{padding:18px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);text-align:left;box-shadow:var(--sh-sm);transition:all var(--tr-base);position:relative;overflow:hidden}
+.voz-card:hover{transform:translateY(-3px);box-shadow:var(--sh-lg)}
+.voz-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--voz-color,var(--primary))}
+.voz-icon{font-size:24px;margin-bottom:6px;line-height:1}
+.voz-label{font-size:10px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.voz-value{font-size:30px;font-weight:900;color:var(--text);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-bottom:6px}
+.voz-trend{font-size:11px;font-weight:700;color:var(--text2)}
+.voz-trend.up{color:#16a34a}
+.voz-trend.down{color:#dc2626}
+.voz-sparkline{margin-top:8px;height:32px}
+.voz-pulse{display:inline-block;width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;margin-right:4px}
+.voz-meta-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:linear-gradient(135deg,rgba(45,154,77,.06),rgba(245,146,29,.04));border-radius:var(--r-md);font-size:11.5px;color:var(--text2);font-weight:600;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.voz-meta-row strong{color:var(--text);font-weight:800}
+
+/* ── A3. Cuadernillo PDF por UV ── */
+.cuadernillo-card{padding:22px 24px;background:linear-gradient(135deg,#0c1f36 0%,#1a3d8f 50%,#2d9a4d 100%);color:#fff;border-radius:var(--r-xl);position:relative;overflow:hidden;box-shadow:var(--sh-xl);margin-top:14px}
+.cuadernillo-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 25%,rgba(245,146,29,.2),transparent 55%);pointer-events:none}
+.cuadernillo-card h4{font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.01em;position:relative;z-index:1}
+.cuadernillo-card h4 span{color:#fdb94d}
+.cuadernillo-card p{font-size:13px;opacity:.92;line-height:1.6;margin-bottom:16px;position:relative;z-index:1;max-width:580px}
+.cuadernillo-form{display:flex;gap:8px;align-items:center;flex-wrap:wrap;position:relative;z-index:1}
+.cuadernillo-select{padding:11px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:var(--r-md);font-size:13px;color:#fff;font-family:inherit;font-weight:600;backdrop-filter:blur(8px);min-width:240px;cursor:pointer}
+.cuadernillo-select option{color:#0c1f36}
+.cuadernillo-btn{padding:11px 22px;background:#fdb94d;color:#0c1f36;border:none;border-radius:var(--r-md);font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:all var(--tr-base)}
+.cuadernillo-btn:hover{background:#fff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.cuadernillo-btn:disabled{opacity:.6;cursor:wait}
+.cuadernillo-info{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;position:relative;z-index:1;font-size:11px;font-weight:700}
+.cuadernillo-info span{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:rgba(255,255,255,.1);border-radius:var(--r-full);border:1px solid rgba(255,255,255,.18)}
+
+/* PDF off-screen render */
+#cuadernilloRender{position:fixed;top:-99999px;left:-99999px;width:794px;background:#fff;color:#0f172a;font-family:Arial,sans-serif;padding:40px}
+
+/* ── A4. Carrusel Hero rotativo ── */
+.hero-carousel{position:relative;width:100%;max-width:620px;margin:20px auto 0;height:auto;min-height:84px;overflow:hidden;border-radius:var(--r-lg);background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15)}
+.hero-slide{position:absolute;inset:0;padding:18px 22px;display:flex;align-items:center;gap:14px;opacity:0;transform:translateX(20px);transition:all .6s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.hero-slide.active{opacity:1;transform:translateX(0);position:relative;pointer-events:auto}
+.hero-slide-icon{font-size:32px;line-height:1;flex-shrink:0}
+.hero-slide-text{flex:1;text-align:left}
+.hero-slide-cat{font-size:9.5px;font-weight:800;color:#fdb94d;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;display:block}
+.hero-slide-title{font-size:13px;font-weight:700;color:#fff;line-height:1.35;letter-spacing:-.01em}
+.hero-slide-action{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;color:#fdb94d;text-decoration:none;border-bottom:1px solid rgba(253,185,77,.4)}
+.hero-slide-action:hover{color:#fff;border-bottom-color:#fff}
+.hero-carousel-dots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:2}
+.hero-carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);border:none;cursor:pointer;padding:0;transition:all .3s}
+.hero-carousel-dot.active{background:#fdb94d;width:18px;border-radius:3px}
+@media(max-width:560px){
+  .hero-slide-icon{font-size:24px}
+  .hero-slide-title{font-size:12px}
+}
+
+/* ── A5. Mapa Macrosector ── */
+#mapaMacrosector{height:480px;width:100%;border-radius:var(--r-lg);box-shadow:var(--sh-lg);border:1px solid var(--border)}
+.mac-panel{position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-xl);padding:16px 18px;z-index:500;opacity:0;transform:translateY(-10px);transition:all var(--tr-base);pointer-events:none;border:1px solid var(--border);font-family:inherit}
+.mac-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.mac-panel-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.mac-panel-title{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.mac-panel-close{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;line-height:1;padding:0}
+.mac-panel-meta{display:flex;flex-direction:column;gap:6px;font-size:11.5px;color:var(--text2);margin-bottom:10px}
+.mac-panel-meta strong{color:var(--text);font-weight:700}
+.mac-panel-list{font-size:12px;color:var(--text);padding-left:18px;margin:6px 0}
+.mac-panel-list li{margin-bottom:3px;line-height:1.45}
+.mac-panel-kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px}
+.mac-kpi-item{background:var(--card2);padding:6px 8px;border-radius:var(--r-xs);text-align:center}
+.mac-kpi-val{font-size:14px;font-weight:800;color:var(--primary);line-height:1.2}
+.mac-kpi-lbl{font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.mac-wrap{position:relative}
+
+/* ── A6. Tutorial visual "Cómo participar" ── */
+.tutorial-card{background:linear-gradient(135deg,#7c2d12 0%,#ea580c 50%,#fdb94d 100%);color:#fff;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-xl);position:relative}
+.tutorial-head{padding:20px 24px 0;position:relative;z-index:2}
+.tutorial-head h4{font-size:18px;font-weight:800;margin-bottom:4px}
+.tutorial-head p{font-size:12px;opacity:.92;margin-bottom:10px}
+.tutorial-stage{position:relative;height:280px;overflow:hidden;padding:14px 24px 20px}
+.tutorial-step{position:absolute;inset:14px 24px 20px;opacity:0;transform:translateX(60px) scale(.92);transition:all .6s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px}
+.tutorial-step.active{opacity:1;transform:translateX(0) scale(1)}
+.tutorial-step.exit{opacity:0;transform:translateX(-60px) scale(.92)}
+.tutorial-num{position:absolute;top:0;left:0;background:rgba(255,255,255,.18);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(255,255,255,.3)}
+.tutorial-emoji{font-size:72px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.25));animation:tutBob 2s ease-in-out infinite}
+@keyframes tutBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.tutorial-step h5{font-size:18px;font-weight:800;margin:0;letter-spacing:-.01em}
+.tutorial-step p{font-size:13px;opacity:.92;line-height:1.5;max-width:380px;margin:0}
+.tutorial-step .tut-cta{display:inline-block;margin-top:6px;padding:8px 18px;background:#fff;color:#7c2d12;border-radius:var(--r-full);font-size:11.5px;font-weight:800;text-decoration:none;transition:all var(--tr-base)}
+.tutorial-step .tut-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.tutorial-progress{display:flex;gap:5px;justify-content:center;padding:0 24px 18px}
+.tutorial-progress span{width:36px;height:4px;background:rgba(255,255,255,.25);border-radius:var(--r-full);transition:background .3s}
+.tutorial-progress span.active{background:#fff}
+.tutorial-progress span.done{background:rgba(255,255,255,.6)}
+.tutorial-nav{display:flex;justify-content:space-between;padding:0 24px 22px;gap:10px}
+.tutorial-nav button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:8px 18px;border-radius:var(--r-md);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all var(--tr-fast)}
+.tutorial-nav button:hover:not(:disabled){background:rgba(255,255,255,.25)}
+.tutorial-nav button:disabled{opacity:.4;cursor:not-allowed}
+.tutorial-nav button.primary{background:#fff;color:#7c2d12;border-color:transparent}
+
+/* ── B4. Heatmap (Mapa de calor de problemáticas) ── */
+.heat-controls{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 14px;background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(245,146,29,.05));border-radius:var(--r-md);margin-bottom:10px;border-left:4px solid #ea580c;font-size:12px;color:var(--text2);font-weight:600}
+.heat-controls .heat-stats strong{color:var(--text)}
+.heat-toggle{display:inline-flex;background:var(--card);border-radius:var(--r-full);border:1px solid var(--border);padding:2px;gap:0}
+.heat-toggle button{background:none;border:none;color:var(--text2);padding:6px 14px;border-radius:var(--r-full);font-size:11px;font-weight:700;cursor:pointer;transition:all var(--tr-fast);font-family:inherit}
+.heat-toggle button.active{background:linear-gradient(135deg,#ea580c,#dc2626);color:#fff}
+.heat-leyenda{display:flex;align-items:center;gap:5px;margin-top:8px;font-size:10.5px;color:var(--text2);justify-content:center}
+.heat-leyenda-bar{width:140px;height:10px;border-radius:var(--r-full);background:linear-gradient(90deg,#4ade80 0%,#fbbf24 50%,#ef4444 100%)}
+
+/* ── D1. Modo Accesibilidad Avanzado ── */
+.a11y-fab{position:fixed;bottom:154px;right:20px;z-index:89;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1e40af);border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:var(--sh-lg);display:flex;align-items:center;justify-content:center;font-weight:800;font-family:inherit;transition:all var(--tr-base)}
+.a11y-fab:hover{transform:scale(1.1);box-shadow:var(--sh-xl)}
+.a11y-panel{position:fixed;bottom:206px;right:20px;z-index:90;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;box-shadow:var(--sh-xl);width:240px;transform:translateY(120%);opacity:0;transition:all var(--tr-bounce);font-family:inherit}
+.a11y-panel.show{transform:translateY(0);opacity:1}
+.a11y-panel h5{font-size:11.5px;font-weight:800;color:var(--text);margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
+.a11y-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text);font-weight:600}
+.a11y-row:last-child{border-bottom:none}
+.a11y-row .a11y-buttons{display:inline-flex;gap:4px}
+.a11y-row button{background:var(--card2);border:1px solid var(--border);color:var(--text);width:30px;height:30px;border-radius:var(--r-sm);font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;transition:all var(--tr-fast)}
+.a11y-row button:hover{border-color:var(--primary);color:var(--primary)}
+.a11y-row button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.a11y-row button.danger{color:#dc2626}
+body.a11y-large{font-size:18px}
+body.a11y-xlarge{font-size:21px}
+body.a11y-contrast{background:#000!important;color:#fff!important}
+body.a11y-contrast .card,body.a11y-contrast .card2,body.a11y-contrast section{background:#000!important;color:#fff!important;border-color:#fff!important}
+body.a11y-contrast h1,body.a11y-contrast h2,body.a11y-contrast h3,body.a11y-contrast h4{color:#fdb94d!important}
+body.a11y-contrast a{color:#67e8f9!important;text-decoration:underline!important}
+body.a11y-tts-active{cursor:help}
+body.a11y-tts-active *{cursor:help!important}
+.a11y-reading-mode{background:#fef9e7;padding:20px;border-radius:var(--r-lg);margin:14px 0;font-family:'Atkinson Hyperlegible',Verdana,sans-serif;line-height:1.9;font-size:16px;color:#1c1917;border:2px solid #f5921d}
+
 /* ══ v37.0 · Sección Estrategia Regional de Desarrollo (ERD O'Higgins 2024-2036) ══ */
 .erd-hero{background:linear-gradient(135deg,#0f2240 0%,#1a3d8f 50%,#2d9a4d 100%);color:#fff;padding:32px 28px;border-radius:var(--r-xl);position:relative;overflow:hidden;margin-bottom:24px;box-shadow:var(--sh-xl)}
 .erd-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 88% 30%,rgba(245,146,29,.18),transparent 55%);pointer-events:none}
@@ -3583,6 +3742,12 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 
     <div class="sidebar-group">
       <div class="sidebar-group-title">7 &middot; Proceso y Documentaci&#243;n</div>
+      <a href="#tutorial" class="is-new"><span class="ico">&#127919;</span> C&oacute;mo Participar 60s</a>
+      <a href="#voz-vecinos" class="is-new"><span class="ico">&#128483;&#65039;</span> Voz de los Vecinos</a>
+      <a href="#reporta" class="is-new"><span class="ico">&#128205;</span> Reporta un Problema</a>
+      <a href="#heatmap" class="is-new"><span class="ico">&#128293;</span> Mapa de Calor</a>
+      <a href="#macrosector" class="is-new"><span class="ico">&#128506;</span> Macrosectores</a>
+      <a href="#cuadernillo" class="is-new"><span class="ico">&#128221;</span> Cuadernillo de mi UV</a>
       <a href="#erd" class="is-new"><span class="ico">&#127956;</span> ERD O'Higgins 2024-2036</a>
       <a href="#timeline" class="is-new"><span class="ico">&#128467;&#65039;</span> L&iacute;nea de Tiempo del Proceso</a>
       <a href="#galeria-proceso" class="is-new"><span class="ico">&#127912;</span> Galer&iacute;a del Proceso</a>
@@ -3631,7 +3796,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v37.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v38.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -3734,6 +3899,8 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <div class="ig-divider" style="height:40px;background:rgba(255,255,255,.2)"></div>
       <div class="ig-item"><div class="ig-value">2035</div><div class="ig-label">Horizonte Meta</div></div>
     </div>
+    <!-- v38 A4 · Carrusel hero rotativo -->
+    <div class="hero-carousel" id="heroCarousel" role="region" aria-label="Noticias del proceso PLADECO" aria-live="polite"></div>
     <a href="#dashboard" class="hero-scroll-hint" aria-label="Explorar contenido">
       <span>Explorar</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
@@ -3759,9 +3926,9 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v37.0</span>
+        <span>&#127919; v38.0</span>
         <span>&#128197; 17 Mayo 2026</span>
-        <span>&#128202; 53 secciones</span>
+        <span>&#128202; 59 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
       </div>
@@ -3909,6 +4076,12 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <div class="qi-group" data-grp="7">
         <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Documentaci&oacute;n</div></div>
         <div class="qi-links">
+          <a href="#tutorial" class="qi-link is-new"><span class="qi-link-ico">&#127919;</span><span class="qi-link-txt">C&oacute;mo Participar 60s</span></a>
+          <a href="#voz-vecinos" class="qi-link is-new"><span class="qi-link-ico">&#128483;&#65039;</span><span class="qi-link-txt">Voz de los Vecinos</span></a>
+          <a href="#reporta" class="qi-link is-new"><span class="qi-link-ico">&#128205;</span><span class="qi-link-txt">Reporta un Problema</span></a>
+          <a href="#heatmap" class="qi-link is-new"><span class="qi-link-ico">&#128293;</span><span class="qi-link-txt">Mapa de Calor</span></a>
+          <a href="#macrosector" class="qi-link is-new"><span class="qi-link-ico">&#128506;</span><span class="qi-link-txt">Macrosectores</span></a>
+          <a href="#cuadernillo" class="qi-link is-new"><span class="qi-link-ico">&#128221;</span><span class="qi-link-txt">Cuadernillo PDF UV</span></a>
           <a href="#erd" class="qi-link is-new"><span class="qi-link-ico">&#127956;</span><span class="qi-link-txt">ERD O'Higgins 2024-2036</span></a>
           <a href="#timeline" class="qi-link is-new"><span class="qi-link-ico">&#128467;&#65039;</span><span class="qi-link-txt">L&iacute;nea de Tiempo</span></a>
           <a href="#galeria-proceso" class="qi-link is-new"><span class="qi-link-ico">&#127912;</span><span class="qi-link-txt">Galer&iacute;a del Proceso</span></a>
@@ -8362,6 +8535,168 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════
+     MAJOR v38.0 · 8 NUEVAS SUPER-SECCIONES (A1-A6 + B4 + D1)
+     ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- ═══ A6 · TUTORIAL VISUAL "Cómo participar en 60 segundos" ═══ -->
+<section id="tutorial" class="reveal" aria-labelledby="tutH">
+  <div class="sec-header">
+    <div class="badge" style="background:#fed7aa;color:#9a3412">Onboarding Ciudadano</div>
+    <h2 id="tutH">&#127919; C&oacute;mo participar en 60 segundos</h2>
+    <p>Recorrido visual interactivo por las 5 formas concretas en que t&uacute;, vecino o vecina de Rengo, puedes contribuir al PLADECO 2025-2035: desde votar tu prioridad hasta reportar un problema en tu cuadra. Sin video, sin descargas, todo en tu navegador. &iexcl;Avanza con las flechas o esp&eacute;rate y va solo!</p>
+  </div>
+  <div class="tutorial-card" id="tutorialCard">
+    <div class="tutorial-head">
+      <h4>&#128640; Tu participaci&oacute;n cuenta</h4>
+      <p>5 acciones clave, 60 segundos</p>
+    </div>
+    <div class="tutorial-stage" id="tutorialStage"></div>
+    <div class="tutorial-progress" id="tutorialProgress"></div>
+    <div class="tutorial-nav">
+      <button id="tutPrev" onclick="tutPrev()" disabled>&#8678; Anterior</button>
+      <button id="tutPlay" class="primary" onclick="tutTogglePlay()">&#9613;&#9613; Pausa</button>
+      <button id="tutNext" onclick="tutNext()">Siguiente &#8680;</button>
+    </div>
+  </div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Recorrido elaborado por equipo SECPLAC PLADECO Rengo 2025-2035 &middot; Pasos basados en flujos reales del portal &middot; Animaciones CSS sin dependencias externas para accesibilidad y rendimiento.</div>
+</section>
+
+<!-- ═══ A2 · DASHBOARD VOZ DE LOS VECINOS ═══ -->
+<section id="voz-vecinos" class="reveal" aria-labelledby="vozH">
+  <div class="sec-header">
+    <div class="badge" style="background:#dcfce7;color:#16a34a">Pulso Participativo</div>
+    <h2 id="vozH">&#128483;&#65039; Voz de los Vecinos &middot; Dashboard en vivo</h2>
+    <p>Agregador de toda la participaci&oacute;n ciudadana en el portal PLADECO: votos en la encuesta, reportes registrados, suscripciones al newsletter, visitas y secciones favoritas. Los n&uacute;meros se actualizan autom&aacute;ticamente desde el backend (Google Apps Script &middot; Google Sheets), reflejando en tiempo real c&oacute;mo Rengo participa.</p>
+  </div>
+  <div class="voz-meta-row">
+    <span><span class="voz-pulse"></span> <strong>En vivo</strong> &middot; sincronizando cada 60 segundos</span>
+    <span>Actualizado: <strong id="vozLastFetch">--:--:--</strong> <button onclick="loadVozVecinos(true)" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:14px;padding:0 4px" title="Actualizar ahora">&#8634;</button></span>
+  </div>
+  <div class="voz-grid" id="vozGrid"></div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Backend propio Google Apps Script + Google Sheets &middot; APIs internas del portal &middot; localStorage para favoritos y logros &middot; Datos agregados privacy-first (sin IP individual, sin tracking de comportamiento).</div>
+</section>
+
+<!-- ═══ A1 · REPORTE CIUDADANO GEORREFERENCIADO ═══ -->
+<section id="reporta" class="reveal" aria-labelledby="repH">
+  <div class="sec-header">
+    <div class="badge" style="background:#fee2e2;color:#dc2626">Ciudadan&iacute;a 4.0</div>
+    <h2 id="repH">&#128205; Reporta un problema en tu cuadra</h2>
+    <p>Marca en el mapa el lugar exacto donde detectaste una problem&aacute;tica: bache, basura, alumbrado quemado, semáforo da&ntilde;ado, microbasural, perro vago, fuga de agua, etc. Tu reporte va directamente al sistema municipal y se suma a una base de datos p&uacute;blica visible en este mismo mapa. As&iacute; la comunidad y la municipalidad ven en tiempo real d&oacute;nde se concentran los problemas.</p>
+  </div>
+  <div class="rep-controls">
+    <div class="rep-hint">Haz <strong>click sobre el mapa</strong> en el lugar exacto donde quieres reportar el problema</div>
+    <div class="rep-stats">&#128203; <strong id="repCount">--</strong> reportes en total &middot; &#128293; <strong id="repHoy">--</strong> hoy</div>
+  </div>
+  <div id="mapaReportes" role="application" aria-label="Mapa interactivo para reportar problemas en Rengo"></div>
+  <div class="rep-leyenda">
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#ef4444"></span> Infraestructura</span>
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#f5921d"></span> Aseo y Ornato</span>
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#facc15"></span> Alumbrado</span>
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#3b82f6"></span> Tr&aacute;nsito</span>
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#a855f7"></span> Seguridad</span>
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#06b6d4"></span> Agua y Sanit.</span>
+    <span class="rep-leyenda-item"><span class="rep-leyenda-dot" style="background:#22c55e"></span> Otro</span>
+  </div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Privacidad:</strong> No almacenamos tu IP ni datos personales. Solo: coordenada del punto, tipo, descripci&oacute;n y opcionalmente foto. Los reportes son p&uacute;blicos y agregados para uso de planificaci&oacute;n municipal y vecinal. Backend Google Apps Script + Sheets.</div>
+</section>
+
+<!-- ═══ B4 · MAPA DE CALOR (Heatmap) de problemáticas ═══ -->
+<section id="heatmap" class="reveal" aria-labelledby="heatH">
+  <div class="sec-header">
+    <div class="badge" style="background:#fee2e2;color:#b91c1c">An&aacute;lisis Territorial</div>
+    <h2 id="heatH">&#128293; Mapa de Calor de Problem&aacute;ticas</h2>
+    <p>Visualizaci&oacute;n agregada de los reportes ciudadanos con densidad por zona: zonas verdes (pocos reportes), amarillas (concentraci&oacute;n moderada), rojas (hotspot). Permite identificar d&oacute;nde se concentran los problemas para priorizar intervenciones. Los datos vienen de los reportes registrados en la secci&oacute;n &laquo;Reporta un problema&raquo; arriba.</p>
+  </div>
+  <div class="heat-controls">
+    <div class="heat-stats">&#128293; <strong id="heatCount">--</strong> reportes mapeados &middot; <strong id="heatTipo">Todos los tipos</strong></div>
+    <div class="heat-toggle" role="group" aria-label="Filtro por per&iacute;odo">
+      <button class="active" data-period="all" onclick="setHeatPeriod('all')">Todo el tiempo</button>
+      <button data-period="month" onclick="setHeatPeriod('month')">&Uacute;ltimo mes</button>
+      <button data-period="week" onclick="setHeatPeriod('week')">&Uacute;ltima semana</button>
+    </div>
+  </div>
+  <div id="mapaHeatmap" style="height:480px;width:100%;border-radius:var(--r-lg);box-shadow:var(--sh-lg);border:1px solid var(--border)"></div>
+  <div class="heat-leyenda">
+    <span>Pocos reportes</span>
+    <span class="heat-leyenda-bar"></span>
+    <span>Muchos reportes</span>
+  </div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Reportes ciudadanos georreferenciados del portal PLADECO Rengo &middot; Visualizaci&oacute;n con Leaflet.heat (plugin open-source MIT) &middot; Datos agregados sin identificaci&oacute;n individual de reportantes &middot; Actualizaci&oacute;n al recargar la secci&oacute;n.</div>
+</section>
+
+<!-- ═══ A5 · MAPA MACROSECTOR clickable con perfil zonal ═══ -->
+<section id="macrosector" class="reveal" aria-labelledby="macH">
+  <div class="sec-header">
+    <div class="badge" style="background:#cffafe;color:#0e7490">Perfil Zonal</div>
+    <h2 id="macH">&#128506; Macrosectores de Rengo &middot; Perfil Zonal</h2>
+    <p>Mapa de los 4 macrosectores territoriales en que se divide la comuna para efectos de planificaci&oacute;n: <strong>Centro Urbano</strong> (Rengo ciudad consolidada), <strong>Periferia Urbana</strong> (Esmeralda, La Torre, expansi&oacute;n reciente), <strong>Localidades</strong> (Rosario, Popeta, Cerrillos) y <strong>Rural Disperso</strong> (El Trebal Huilqu&iacute;o, La Chimba, El Placer, etc.). Haz click en cada zona para ver su perfil: poblaci&oacute;n, indicadores de vulnerabilidad y proyectos PLADECO asignados.</p>
+  </div>
+  <div class="mac-wrap">
+    <div id="mapaMacrosector" role="application" aria-label="Mapa de macrosectores territoriales de Rengo"></div>
+    <div class="mac-panel" id="macPanel" aria-live="polite">
+      <div class="mac-panel-head">
+        <div class="mac-panel-title" id="macPanelTitle">Selecciona un sector</div>
+        <button class="mac-panel-close" onclick="closeMacPanel()" aria-label="Cerrar">&times;</button>
+      </div>
+      <div id="macPanelBody"></div>
+    </div>
+  </div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Divisi&oacute;n territorial elaborada por SECPLAC PLADECO Rengo 2025-2035 &middot; Coordenadas aproximadas representativas de cada macrosector &middot; Datos demogr&aacute;ficos del Censo 2024 e &iacute;ndices SIVUST calculados sobre 826 manzanas censales &middot; Proyectos PLADECO de la matriz de 225 acciones priorizadas.</div>
+</section>
+
+<!-- ═══ A3 · CUADERNILLO PDF por UV ═══ -->
+<section id="cuadernillo" class="reveal" aria-labelledby="cuaH">
+  <div class="sec-header">
+    <div class="badge" style="background:#e0e7ff;color:#3730a3">Material Descargable</div>
+    <h2 id="cuaH">&#128221; Descarga el Cuadernillo PLADECO de tu Unidad Vecinal</h2>
+    <p>Genera un <strong>cuadernillo PDF personalizado</strong> por cada una de las 21 Unidades Vecinales de Rengo (9 urbanas + 12 rurales). Incluye: datos demogr&aacute;ficos del Censo 2024 de tu UV, &iacute;ndices SIVUST (Vulnerabilidad), espacios p&uacute;blicos del ICT, proyectos PLADECO priorizados que aplican a tu sector, y ranking comparativo con otras UV. Perfecto para imprimir y entregar en tu reuni&oacute;n vecinal.</p>
+  </div>
+  <div class="cuadernillo-card">
+    <h4>&#128064; Cuadernillo PLADECO de <span>Tu Unidad Vecinal</span></h4>
+    <p>Documento ejecutivo de 4 p&aacute;ginas con todos los datos relevantes de tu sector, listo para imprimir o compartir digitalmente.</p>
+    <div class="cuadernillo-form">
+      <select class="cuadernillo-select" id="cuaUV" aria-label="Selecciona tu Unidad Vecinal">
+        <option value="">Selecciona tu Unidad Vecinal&hellip;</option>
+        <optgroup label="9 UV Urbanas">
+          <option value="uv-libertad">UV Libertad (Centro)</option>
+          <option value="uv-esmeralda">UV Esmeralda</option>
+          <option value="uv-centro">UV Centro</option>
+          <option value="uv-ferrocarril">UV Ferrocarril</option>
+          <option value="uv-poniente">UV Poniente</option>
+          <option value="uv-norte">UV Norte</option>
+          <option value="uv-sur">UV Sur</option>
+          <option value="uv-oriente">UV Oriente</option>
+          <option value="uv-latorre">UV La Torre</option>
+        </optgroup>
+        <optgroup label="12 UV Rurales">
+          <option value="uv-rosario">UV Rosario</option>
+          <option value="uv-popeta">UV Popeta</option>
+          <option value="uv-cerrillos">UV Cerrillos</option>
+          <option value="uv-pueblohundido">UV Pueblo Hundido</option>
+          <option value="uv-cobil">UV C&oacute;bil</option>
+          <option value="uv-chapeton">UV Chapet&oacute;n</option>
+          <option value="uv-camarico">UV Camarico</option>
+          <option value="uv-laspataguas">UV Las Pataguas</option>
+          <option value="uv-naicura">UV Naicura</option>
+          <option value="uv-eltrebal">UV El Trebal Huilqu&iacute;o</option>
+          <option value="uv-lachimba">UV La Chimba</option>
+          <option value="uv-elplacer">UV El Placer / La Ariana</option>
+        </optgroup>
+      </select>
+      <button class="cuadernillo-btn" id="cuaBtn" onclick="generarCuadernillo()" disabled>&#128229; Generar PDF</button>
+    </div>
+    <div class="cuadernillo-info">
+      <span>&#128196; 21 UV disponibles</span>
+      <span>&#128229; Generaci&oacute;n al instante</span>
+      <span>&#128190; ~250 KB PDF</span>
+      <span>&#127859;&#65039; A4 imprimible</span>
+    </div>
+  </div>
+  <div id="cuadernilloRender"></div>
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Datos demogr&aacute;ficos Censo INE 2024 &middot; &Iacute;ndices SIVUST calculados por equipo PLADECO sobre manzanas censales &middot; ICT 56 Espacios P&uacute;blicos (Secci&oacute;n 11.3 PLADECO) &middot; Matriz Estrat&eacute;gica de 225 acciones priorizadas &middot; Generaci&oacute;n PDF con jsPDF (open-source MIT) en el navegador, sin enviar tus datos a ning&uacute;n servidor.</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
      MAJOR v37.0 · Estrategia Regional de Desarrollo O'Higgins 2024-2036
      Articulación vertical: PLADECO Rengo ↔ ERD Regional ↔ Política Nacional
      ═══════════════════════════════════════════════════════════════════ -->
@@ -8570,10 +8905,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v37.0</span>
+  <span class="ub-ver">v38.0</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v38.0</strong> <span class="ub-date">17 May 2026</span><br>&#127919;&#9889; **MAJOR v38.0 &middot; 8 nuevas funcionalidades de Ciudadan&iacute;a 4.0 y Accesibilidad**. Tras benchmark de portales municipales chilenos (Santiago, Pe&ntilde;alol&eacute;n, Temuco, Pudahuel), se implementan 6 quick wins + 1 funcionalidad de impacto alto + 1 mejora de accesibilidad. **Lote A · Quick Wins**: (1) **A1 #reporta** &mdash; Mapa Leaflet de Reporte Ciudadano Georreferenciado: el vecino hace click en el mapa donde detect&oacute; un problema (bache, basura, alumbrado, sem&aacute;foro, seguridad, agua/sanit, otro), completa formulario flotante con descripci&oacute;n y foto opcional (base64 hasta 2MB). Se guarda en localStorage + intento al backend Apps Script con nuevo endpoint &laquo;reporte&raquo;. 7 categor&iacute;as con colores distintos en el mapa. Anti-spam por timing. Achievement &laquo;reporte&raquo; se desbloquea autom&aacute;ticamente. (2) **A2 #voz-vecinos** &mdash; Dashboard agregador en vivo: 6 cards con KPIs (votos encuesta, reportes registrados, suscriptores newsletter, visitas, favoritos guardados, logros desbloqueados). Auto-refresh cada 60s + bot&oacute;n manual. Cada card con color, icono, n&uacute;mero grande, label y trend. (3) **A3 #cuadernillo** &mdash; Generador de PDF personalizado por UV: dropdown con las 21 UV (9 urbanas + 12 rurales), bot&oacute;n &laquo;Generar PDF&raquo; con jsPDF lazy-load. PDF de 1 p&aacute;gina con: portada navy, datos demogr&aacute;ficos Censo 2024, 7 &iacute;ndices SIVUST con sem&aacute;foro de color (verde/amarillo/rojo seg&uacute;n valor), espacios p&uacute;blicos ICT, proyectos PLADECO asignados, dato destacado. Archivo: &laquo;Cuadernillo-PLADECO-UV-X.pdf&raquo; ~250KB. (4) **A4 hero-carousel** &mdash; Carrusel rotativo en el hero con 6 slides auto-rotativos cada 6s: votaci&oacute;n, reportes, pulso, cuadernillo, ERD, quiz. Dots clickables con animaci&oacute;n. Pausa autom&aacute;tica cuando pesta&ntilde;a no visible. (5) **A5 #macrosector** &mdash; Mapa de los 4 macrosectores (Centro Urbano, Periferia, Localidades, Rural Disperso) con pol&iacute;gonos clickables. Panel lateral muestra perfil zonal: poblaci&oacute;n, UV en zona, ICP vulnerabilidad, proyectos, problem&aacute;ticas principales. (6) **A6 #tutorial** &mdash; Tutorial visual interactivo &laquo;C&oacute;mo participar en 60 segundos&raquo;: 5 pasos animados (bienvenida, votar, reportar, suscribir, compartir+logros) con emoji bouncing, CTA, progress bar, controles play/pausa/anterior/siguiente, auto-avance cada 5s. **Lote B · Impacto alto**: (7) **B4 #heatmap** &mdash; Mapa de Calor de problem&aacute;ticas con Leaflet.heat plugin (CDN open-source MIT): gradient verde &rarr; amarillo &rarr; rojo seg&uacute;n densidad de reportes. Filtros por per&iacute;odo (todo / mes / semana). Datos demo iniciales mientras se acumulan reportes reales. **Lote D · Optimizaci&oacute;n**: (8) **D1 #a11y-fab** &mdash; FAB flotante de accesibilidad con panel desplegable: tama&ntilde;o texto (A / A+ / A++), alto contraste (modo oscuro fuerte con tipograf&iacute;a amarilla y links cyan), text-to-speech con Web Speech API (click en texto &rarr; lo lee en es-CL), bot&oacute;n restablecer. Persiste configuraci&oacute;n en localStorage. Sidebar y Quick-Index actualizados con **6 entradas NEW**. Conteo total **53 &rarr; 59 secciones**. Cache SW v54.0 &rarr; v55.0.</div>
     <div class="ub-entry"><strong>v37.0</strong> <span class="ub-date">17 May 2026</span><br>&#127956;&#9889; **MAJOR v37.0 &middot; Secci&oacute;n Estrategia Regional de Desarrollo (ERD) O'Higgins 2024-2036**. Articulaci&oacute;n vertical PLADECO Rengo &harr; ERD Regional. Nueva super-secci&oacute;n `#erd` con: (1) **Hero institucional** con datos de Resoluci&oacute;n Exenta N&deg; 439 (GORE O'Higgins + UOH), 33 comunas consultadas, vigencia 2024-2036. (2) **Imagen Objetivo regional** parafraseada con las 5 dimensiones de la visi&oacute;n consensuada (sostenibilidad, bienestar, gobernanza inclusiva, matriz diversificada, identidad cultural). (3) **3 tabs scoped** (`.erd-tabs` con prefijo `.erd-`): &laquo;Deliberaciones&raquo;, &laquo;Agendas&raquo;, &laquo;Articulaci&oacute;n PLADECO&raquo;. (4) **Tab 1 &middot; 10 Deliberaciones Regionales**: grid de cards con n&uacute;mero gigante de fondo, emoji tem&aacute;tico y descripci&oacute;n: 1.Escasez H&iacute;drica, 2.Disputas Uso Suelo, 3.Impactos Agroindustria, 4.Distribuci&oacute;n Oportunidades, 5.Borde Costero, 6.Violencias, 7.Inmigraci&oacute;n, 8.Matriz Productiva/Vida Rural, 9.Educaci&oacute;n/Empleo Juventudes, 10.Cultura e Identidades. (5) **Tab 2 &middot; 4 Agendas Estrat&eacute;gicas** con cards coloreadas (rojo/azul/verde/naranja) y sus ejes estructurantes: Desarrollo Humano (Derechos Sociales, Convivencia, Ruralidad, Cultura/Patrimonio), Gobernanza Pol&iacute;tico-Institucional (Confianza P&uacute;blica, Capacidades, Gobernanza ERD), Medio Ambiente (Cambio Clim&aacute;tico, Conservaci&oacute;n, Ordenamiento, Econom&iacute;a Circular), Desarrollo Econ&oacute;mico (Diversificaci&oacute;n, Derechos B&aacute;sicos, Sustentabilidad, Asociatividad). (6) **Tab 3 &middot; Articulaci&oacute;n PLADECO Rengo &harr; ERD**: tabla cascada que mapea cada Agenda ERD &rarr; Eje PLADECO correspondiente (Eje 1 Cultura/Salud, Eje 2 Econ&oacute;mico, Eje 3 Educaci&oacute;n, Eje 4 Territorio, Eje 5 Ambiente, Eje 6 Gesti&oacute;n). Incluye nota sobre el aporte espec&iacute;fico de Rengo a la ERD (4&ordf; comuna m&aacute;s poblada Cachapoal, evidencia para 7 de las 10 deliberaciones). (7) CSS scoped con prefijo `.erd-` para no afectar el resto del portal: `.erd-hero` con gradient navy-azul-verde, `.erd-io` con borde naranja, `.erd-deliberacion` con n&uacute;mero gigante decorativo, `.erd-agenda` con cards coloreadas por agenda (var `--ag-color`), `.erd-cascada` con flecha animada. (8) **Sidebar y Quick-Index** actualizados con nueva entrada NEW &laquo;ERD O'Higgins 2024-2036&raquo;. (9) Funci&oacute;n `initErdTabs()` para manejo de tabs scoped. Fuente oficial: erd.uoh.cl + Resoluci&oacute;n Exenta N&deg; 439 (CORE diciembre 2024). Conteo total **52 &rarr; 53 secciones**. Cache SW v53.5 &rarr; v54.0.</div>
     <div class="ub-entry"><strong>v36.5</strong> <span class="ub-date">17 May 2026</span><br>&#128260;&#128499;&#65039; **Votación de vecinos en TIEMPO REAL con auto-refresh + botón manual**. Mejora UX de la mini-encuesta para que el conteo de votos se actualice autom&aacute;ticamente sin necesidad de recargar la p&aacute;gina. (1) **Auto-refresh cada 30 segundos** v&iacute;a `setInterval` + `startSurveyAutoRefresh()` &mdash; solo refresh cuando la pesta&ntilde;a est&aacute; visible Y la encuesta es visible en pantalla, optimizando carga sobre el Apps Script (cache TTL 60s evita doble hit). (2) **Re-render inteligente** que solo actualiza el DOM si los n&uacute;meros cambiaron; si no cambian, solo actualiza la hora de la &uacute;ltima sincronizaci&oacute;n. (3) **`visibilitychange` listener** para refresh inmediato al volver a la pesta&ntilde;a tras estar en otra. (4) **Bot&oacute;n manual &laquo;Actualizar ahora&raquo;** (`↺`) en el bloque de sync con `refreshSurveyNow()` &mdash; ic&iacute;n verde con border, hover con rotaci&oacute;n 180&deg;, animaci&oacute;n spinning durante la petici&oacute;n, disabled mientras carga. (5) **Indicador de &uacute;ltima actualizaci&oacute;n** con hora HH:MM:SS exacta y dot verde pulsante (animaci&oacute;n CSS `surveyPulse`) que indica conexi&oacute;n viva con el backend. (6) **Animaci&oacute;n `just-updated`** (highlight naranja 1.6s) que destaca visualmente las filas cuyo conteo cambi&oacute; entre refreshes &mdash; el usuario ve exactamente cu&aacute;l opción recibi&oacute; nuevos votos. (7) **Mensaje sync mejorado**: &laquo;\u{1F4E2} **En vivo**: N votos acumulados &middot; actualizado HH:MM:SS &middot; [↺]&raquo; en lugar del texto gen&eacute;rico anterior. (8) Help text actualizado: &laquo;Se actualiza autom&aacute;ticamente cada 30 segundos&raquo;. Verificado en preview con usuario simulado: total=4 votos del backend, refresh cada 30s sin recarga, bot&oacute;n manual funcional, hora HH:MM:SS visible, auto-timer activo, animación de pulse verde. Cache SW v53.4 → v53.5.</div>
     <div class="ub-entry"><strong>v36.4</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128499;&#65039; **HOTFIX: Votaci&oacute;n de vecinos mostraba solo el voto local en lugar de TODOS los votos del backend**. Reporte del usuario: &laquo;al votar solamente aparece lo que vota en su IP, requiero que aparezca todo&raquo;. **Diagn&oacute;stico**: el backend Google Apps Script s&iacute; funcionaba (verificado con `curl`: devuelve `{ok:true,votes:[1,0,0,1,1,1]}` con 4 votos registrados), pero el cliente: (1) Al renderizar `renderMiniSurvey()` tras voto previo, llamaba `showSurveyResults(el,...,null)` que usaba `localStorage.pladeco-survey-data` como fuente &mdash; ese localStorage solo conten&iacute;a el voto del usuario actual, no los acumulados. (2) Luego s&iacute; llamaba al backend, pero solo si la respuesta lleg&oacute; antes de cualquier interrupci&oacute;n del flujo. En many casos, el usuario ve&iacute;a primero su propio voto y NUNCA llegaba a ver los totales. (3) `submitSurvey()` ten&iacute;a el mismo patr&oacute;n: mostraba resultados con localStorage antes de esperar respuesta del backend. **Fix v36.4**: (a) Nuevo helper `fetchSurveyVotes(forceRefresh)` con cache TTL 60s para no saturar Apps Script. (b) Nuevo `_showSurveyLoading()` que muestra skeleton loaders mientras llega la respuesta del backend. (c) **`renderMiniSurvey()` reescrito**: si el usuario ya vot&oacute;, muestra loading e inmediatamente hace GET al backend, mostrando resultados SOLO cuando llegan los votos globales. Fallback a cache localStorage `pladeco-survey-global` si el backend falla. (d) **`submitSurvey()` reescrito**: muestra loading durante el POST y solo renderiza resultados cuando el backend devuelve los votos actualizados de TODOS los participantes. Optimistic update local en caso de timeout. (e) **`showSurveyResults()` ahora recibe flag `isFromBackend`** que controla el mensaje de sync: &laquo;&#128226; Resultados en vivo: acumulados de TODOS los participantes&raquo; (verde) vs &laquo;&#9888;&#65039; Sin conexi&oacute;n al servidor &mdash; mostrando &uacute;ltimos datos guardados [Reintentar]&raquo; (warning, con link clickeable). (f) Pluralizaci&oacute;n correcta: &laquo;1 vecino ha votado&raquo; vs &laquo;N vecinos han votado&raquo;. Verificado en preview: usuario simulado con 1 voto local ahora ve correctamente los 4 votos globales acumulados del backend. Cache SW v53.3 &rarr; v53.4.</div>
@@ -8764,12 +9100,45 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v37.0</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v38.0</span>
   </div>
 </footer>
 
 <!-- F7: Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══ MAJOR v38.0 · D1 Accesibilidad Avanzada · FAB + Panel ═══ -->
+<button class="a11y-fab" id="a11yFab" onclick="toggleA11y()" title="Accesibilidad" aria-label="Opciones de accesibilidad">&#9881;&#65039;</button>
+<div class="a11y-panel" id="a11yPanel" role="dialog" aria-labelledby="a11yTitle" aria-hidden="true">
+  <h5 id="a11yTitle">&#9881;&#65039; Accesibilidad</h5>
+  <div class="a11y-row"><span>Tama&ntilde;o texto</span><div class="a11y-buttons"><button onclick="a11ySetSize('normal')" id="a11yBtnN" title="Normal">A</button><button onclick="a11ySetSize('large')" id="a11yBtnL" title="Grande">A+</button><button onclick="a11ySetSize('xlarge')" id="a11yBtnXL" title="Muy grande">A++</button></div></div>
+  <div class="a11y-row"><span>Alto contraste</span><div class="a11y-buttons"><button onclick="a11yToggleContrast()" id="a11yBtnC" title="Alternar alto contraste">&#127769;</button></div></div>
+  <div class="a11y-row"><span>Leer en voz</span><div class="a11y-buttons"><button onclick="a11yToggleTTS()" id="a11yBtnTTS" title="Click en cualquier texto para escucharlo">&#128264;</button><button onclick="a11yStopTTS()" class="danger" title="Detener lectura">&#9209;&#65039;</button></div></div>
+  <div class="a11y-row" style="border-top:1px solid var(--border);margin-top:6px;padding-top:10px"><button onclick="a11yReset()" style="width:100%;font-size:11px;font-weight:700;background:var(--card2);border:1px solid var(--border);padding:6px;border-radius:var(--r-sm);cursor:pointer" class="danger">&#8634; Restablecer</button></div>
+</div>
+
+<!-- ═══ A1 · Formulario flotante de reporte ═══ -->
+<div class="rep-form" id="repForm" role="dialog" aria-labelledby="repFormTitle" aria-hidden="true">
+  <h4 id="repFormTitle">&#128205; Nuevo reporte <button class="rep-close" onclick="closeRepForm()" aria-label="Cerrar">&times;</button></h4>
+  <p>Completa los datos del problema que detectaste:</p>
+  <div class="rep-coords" id="repCoords">Coords: --, --</div>
+  <select id="repTipo" required>
+    <option value="">Tipo de problema&hellip;</option>
+    <option value="infraestructura">&#127959;&#65039; Infraestructura (bache, vereda)</option>
+    <option value="aseo">&#127807; Aseo y Ornato (basura, microbasural)</option>
+    <option value="alumbrado">&#128161; Alumbrado p&uacute;blico</option>
+    <option value="transito">&#128680; Tr&aacute;nsito (semáforo, se&ntilde;al&eacute;tica)</option>
+    <option value="seguridad">&#9888;&#65039; Seguridad (zona insegura)</option>
+    <option value="agua">&#128167; Agua y sanitario (fuga, alcantarillado)</option>
+    <option value="otro">&#128226; Otro</option>
+  </select>
+  <textarea id="repDescripcion" placeholder="Describe brevemente el problema (m&aacute;x 200 caracteres)..." maxlength="200" required></textarea>
+  <div class="rep-foto-wrap">
+    <label class="rep-foto-btn" for="repFoto" id="repFotoLbl">&#128247; Adjuntar foto (opcional)</label>
+    <input type="file" id="repFoto" accept="image/*" style="display:none" onchange="onRepFotoSelect(this)">
+  </div>
+  <button class="rep-submit" onclick="submitReporte()">&#10004; Enviar reporte</button>
+</div>
 
 <!-- ═══ MAJOR v36.0 · Sistema de Logros del Visitante ═══ -->
 <button class="ach-fab" id="achFab" onclick="toggleAchievements()" title="Ver mis logros" aria-label="Mis logros">&#127942;<span class="ach-count" id="achCount">0</span></button>
@@ -17513,6 +17882,568 @@ function initComparador(){
   renderComparadorTable();
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   MAJOR v38.0 · 8 nuevas funcionalidades · JS implementación
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── A4. Carrusel Hero rotativo (6 slides) ── */
+var HERO_SLIDES=[
+  {cat:'Votaci&oacute;n activa',icon:'&#128499;&#65039;',title:'<strong>Tu opini&oacute;n importa</strong>. Vota cu&aacute;l es el tema m&aacute;s urgente para Rengo.',link:'#encuesta',action:'Votar ahora &rarr;'},
+  {cat:'Reporta',icon:'&#128205;',title:'<strong>Reporta un bache, basura, alumbrado</strong> con un click en el mapa.',link:'#reporta',action:'Reportar &rarr;'},
+  {cat:'Pulso PLADECO',icon:'&#128202;',title:'<strong>Cu&aacute;ntos vecinos est&aacute;n participando</strong>: revisa el dashboard en vivo.',link:'#voz-vecinos',action:'Ver pulso &rarr;'},
+  {cat:'Material',icon:'&#128221;',title:'<strong>Descarga el cuadernillo</strong> con datos espec&iacute;ficos de tu UV.',link:'#cuadernillo',action:'Descargar &rarr;'},
+  {cat:'ERD Regional',icon:'&#127956;',title:'<strong>Conoce c&oacute;mo Rengo se alinea con O\'Higgins 2024-2036</strong>.',link:'#erd',action:'Explorar ERD &rarr;'},
+  {cat:'Aprende',icon:'&#127919;',title:'<strong>Hazte el Quiz</strong> y desbloquea tu logro &laquo;Experto PLADECO&raquo;.',link:'#educacion',action:'Jugar &rarr;'}
+];
+var _heroCarTimer=null,_heroCarIdx=0;
+function renderHeroCarousel(){
+  var box=document.getElementById('heroCarousel');if(!box)return;
+  box.innerHTML=HERO_SLIDES.map(function(s,i){
+    return '<div class="hero-slide'+(i===0?' active':'')+'" data-i="'+i+'">'+
+      '<div class="hero-slide-icon">'+s.icon+'</div>'+
+      '<div class="hero-slide-text">'+
+        '<span class="hero-slide-cat">'+s.cat+'</span>'+
+        '<div class="hero-slide-title">'+s.title+'</div>'+
+        '<a href="'+s.link+'" class="hero-slide-action">'+s.action+'</a>'+
+      '</div></div>';
+  }).join('')+
+  '<div class="hero-carousel-dots">'+
+    HERO_SLIDES.map(function(s,i){return '<button class="hero-carousel-dot'+(i===0?' active':'')+'" data-i="'+i+'" aria-label="Slide '+(i+1)+'"></button>';}).join('')+
+  '</div>';
+  box.querySelectorAll('.hero-carousel-dot').forEach(function(d){
+    d.onclick=function(){_heroCarSetSlide(+d.dataset.i);_heroCarResetTimer();};
+  });
+  _heroCarStartTimer();
+}
+function _heroCarSetSlide(i){
+  _heroCarIdx=i;
+  document.querySelectorAll('#heroCarousel .hero-slide').forEach(function(s){s.classList.toggle('active',+s.dataset.i===i);});
+  document.querySelectorAll('#heroCarousel .hero-carousel-dot').forEach(function(d){d.classList.toggle('active',+d.dataset.i===i);});
+}
+function _heroCarStartTimer(){
+  if(_heroCarTimer)clearInterval(_heroCarTimer);
+  _heroCarTimer=setInterval(function(){
+    if(document.visibilityState!=='visible')return;
+    _heroCarSetSlide((_heroCarIdx+1)%HERO_SLIDES.length);
+  },6000);
+}
+function _heroCarResetTimer(){_heroCarStartTimer();}
+
+/* ══════════════════════════════════════════════════════
+   A2. Dashboard Voz de los Vecinos (agregador KPIs)
+   ══════════════════════════════════════════════════════ */
+function _vozFmt(n){return n>=1000?(n/1000).toFixed(1)+'k':String(n);}
+function loadVozVecinos(manual){
+  var grid=document.getElementById('vozGrid');if(!grid)return;
+  // Render skeleton
+  if(!grid.querySelector('.voz-card')){
+    grid.innerHTML=Array(6).fill(0).map(function(){return '<div class="voz-card"><div class="skeleton skeleton-block" style="height:90px"></div></div>';}).join('');
+  }
+  // Obtener métricas
+  var promises=[
+    backendFetch('all','GET').catch(function(){return null;}),
+    Promise.resolve({
+      favorites:(JSON.parse(localStorage.getItem('pladeco-favs')||'[]')||[]).length,
+      achievements:(JSON.parse(localStorage.getItem('pladeco-achievements-v1')||'[]')||[]).length,
+      newsletter:(JSON.parse(localStorage.getItem('pladeco-newsletter')||'[]')||[]).length,
+      reportes:(JSON.parse(localStorage.getItem('pladeco-reportes')||'[]')||[]).length
+    })
+  ];
+  Promise.all(promises).then(function(results){
+    var backend=results[0]||{};
+    var local=results[1]||{};
+    var votes=(backend.votes||[]).reduce(function(s,v){return s+v;},0);
+    var visits=(backend.visits&&backend.visits.total)||0;
+    var visitsToday=(backend.visits&&backend.visits.today)||0;
+    var visitsWeek=(backend.visits&&backend.visits.week)||0;
+    var cards=[
+      {color:'#ef4444',icon:'&#128499;&#65039;',label:'Votos en encuesta',value:votes,trend:votes>0?'+ '+votes+' totales':'Sin votos a&uacute;n',trendCls:'up'},
+      {color:'#3b82f6',icon:'&#128205;',label:'Reportes registrados',value:local.reportes,trend:local.reportes>0?'Reportes ciudadanos':'Empieza t&uacute;',trendCls:local.reportes>0?'up':''},
+      {color:'#22c55e',icon:'&#128231;',label:'Suscriptores newsletter',value:local.newsletter,trend:local.newsletter>0?'Recibir&aacute;n updates':'A&uacute;n vac&iacute;o',trendCls:'up'},
+      {color:'#f5921d',icon:'&#128101;',label:'Visitas portal',value:visits,trend:'Hoy: '+visitsToday+' &middot; Semana: '+visitsWeek,trendCls:'up'},
+      {color:'#a855f7',icon:'&#11088;',label:'Favoritos guardados',value:local.favorites,trend:local.favorites>0?'Secciones marcadas':'Marca con &#9734;',trendCls:''},
+      {color:'#06b6d4',icon:'&#127942;',label:'Logros desbloqueados',value:local.achievements+'/12',trend:local.achievements>=8?'&#127942; Maestro!':'Sigue explorando',trendCls:local.achievements>=8?'up':''}
+    ];
+    grid.innerHTML=cards.map(function(c){
+      return '<div class="voz-card" style="--voz-color:'+c.color+'">'+
+        '<div class="voz-icon">'+c.icon+'</div>'+
+        '<div class="voz-label">'+c.label+'</div>'+
+        '<div class="voz-value">'+(typeof c.value==='number'?_vozFmt(c.value):c.value)+'</div>'+
+        '<div class="voz-trend '+(c.trendCls||'')+'">'+c.trend+'</div>'+
+      '</div>';
+    }).join('');
+    var now=new Date();
+    var lf=document.getElementById('vozLastFetch');
+    if(lf)lf.textContent=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+    if(manual)showToast('Dashboard actualizado','success');
+  });
+}
+var _vozAutoTimer=null;
+function startVozAutoRefresh(){
+  if(_vozAutoTimer)return;
+  _vozAutoTimer=setInterval(function(){
+    if(document.visibilityState==='visible')loadVozVecinos();
+  },60000);
+}
+
+/* ══════════════════════════════════════════════════════
+   A1. Reporte Ciudadano Georreferenciado
+   ══════════════════════════════════════════════════════ */
+var REP_TIPOS={
+  infraestructura:{color:'#ef4444',label:'Infraestructura'},
+  aseo:{color:'#f5921d',label:'Aseo y Ornato'},
+  alumbrado:{color:'#facc15',label:'Alumbrado'},
+  transito:{color:'#3b82f6',label:'Tr&aacute;nsito'},
+  seguridad:{color:'#a855f7',label:'Seguridad'},
+  agua:{color:'#06b6d4',label:'Agua y Sanit.'},
+  otro:{color:'#22c55e',label:'Otro'}
+};
+var _repMap=null,_repLayer=null,_repInited=false,_repClickLatLng=null,_repFotoData=null;
+function initReporteCiudadano(){
+  if(_repInited)return;_repInited=true;
+  if(typeof L==='undefined'){
+    var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(l);
+    var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.onload=_initReporteCiudadano;document.head.appendChild(s);
+  } else _initReporteCiudadano();
+}
+function _initReporteCiudadano(){
+  var el=document.getElementById('mapaReportes');if(!el)return;
+  _repMap=L.map(el,{center:[-34.4067,-70.8597],zoom:13,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; OpenStreetMap',maxZoom:18
+  }).addTo(_repMap);
+  _repMap.on('click',function(e){
+    _repMap.scrollWheelZoom.enable();setTimeout(function(){if(_repMap)_repMap.scrollWheelZoom.disable();},5000);
+    _repClickLatLng={lat:e.latlng.lat,lng:e.latlng.lng};
+    var f=document.getElementById('repForm');
+    document.getElementById('repCoords').textContent='Coords: '+e.latlng.lat.toFixed(5)+', '+e.latlng.lng.toFixed(5);
+    f.classList.add('show');f.setAttribute('aria-hidden','false');
+  });
+  loadReportes();
+}
+function closeRepForm(){
+  var f=document.getElementById('repForm');
+  f.classList.remove('show');f.setAttribute('aria-hidden','true');
+  document.getElementById('repTipo').value='';
+  document.getElementById('repDescripcion').value='';
+  document.getElementById('repFotoLbl').textContent='📷 Adjuntar foto (opcional)';
+  _repFotoData=null;_repClickLatLng=null;
+}
+function onRepFotoSelect(inp){
+  var file=inp.files[0];if(!file)return;
+  if(file.size>2*1024*1024){showToast('Foto demasiado grande (m&aacute;x 2MB)','warning');inp.value='';return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    _repFotoData=e.target.result;
+    document.getElementById('repFotoLbl').textContent='✓ Foto adjuntada';
+  };
+  reader.readAsDataURL(file);
+}
+function submitReporte(){
+  var tipo=document.getElementById('repTipo').value;
+  var desc=document.getElementById('repDescripcion').value.trim();
+  if(!tipo){showToast('Selecciona el tipo de problema','warning');return;}
+  if(!desc||desc.length<5){showToast('Describe brevemente el problema','warning');return;}
+  if(!_repClickLatLng){showToast('Click primero en el mapa','warning');return;}
+  var reporte={
+    ts:Date.now(),lat:_repClickLatLng.lat,lng:_repClickLatLng.lng,tipo:tipo,
+    descripcion:desc,foto:_repFotoData?_repFotoData.substring(0,80):null
+  };
+  // Guardar local siempre
+  try{
+    var arr=JSON.parse(localStorage.getItem('pladeco-reportes')||'[]');
+    arr.push(reporte);localStorage.setItem('pladeco-reportes',JSON.stringify(arr));
+  }catch(_){}
+  // Intentar enviar al backend (si existe endpoint 'reporte')
+  backendFetch('reporte','POST',{action:'reporte',reporte:reporte}).catch(function(){});
+  // Agregar al mapa inmediatamente
+  _addReporteMarker(reporte);
+  closeRepForm();
+  showToast('&#10004; Reporte enviado. ¡Gracias por participar!','success');
+  if(typeof unlockAchievement==='function')unlockAchievement('reporte');
+  _updateRepStats();
+}
+function _addReporteMarker(rep){
+  if(!_repMap||!L)return;
+  if(!_repLayer){_repLayer=L.layerGroup().addTo(_repMap);}
+  var info=REP_TIPOS[rep.tipo]||REP_TIPOS.otro;
+  var icon=L.divIcon({className:'',html:'<div class="rep-marker-icon" style="--rep-color:'+info.color+'"></div>',iconSize:[14,14],iconAnchor:[7,7]});
+  var m=L.marker([rep.lat,rep.lng],{icon:icon});
+  var fecha=new Date(rep.ts).toLocaleDateString('es-CL');
+  m.bindPopup(
+    '<div style="font-family:Inter,sans-serif;min-width:180px">'+
+    '<div style="font-size:9.5px;font-weight:800;color:'+info.color+';text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">'+info.label+'</div>'+
+    '<div style="font-size:11px;color:#475569;margin-bottom:4px">'+rep.descripcion+'</div>'+
+    '<div style="font-size:10px;color:#94a3b8">'+fecha+' &middot; <span style="background:rgba(34,197,94,.15);color:#16a34a;padding:1px 6px;border-radius:8px;font-weight:700">Reportado</span></div>'+
+    '</div>'
+  );
+  _repLayer.addLayer(m);
+}
+function loadReportes(){
+  // Cargar locales primero
+  var locales=JSON.parse(localStorage.getItem('pladeco-reportes')||'[]');
+  locales.forEach(_addReporteMarker);
+  _updateRepStats();
+  // Intentar cargar del backend
+  backendFetch('reportes','GET').then(function(data){
+    if(data&&data.ok&&Array.isArray(data.reportes)){
+      data.reportes.forEach(function(rep){
+        var key=rep.lat+'_'+rep.lng+'_'+rep.ts;
+        if(!locales.some(function(r){return r.lat+'_'+r.lng+'_'+r.ts===key;})){
+          _addReporteMarker(rep);
+        }
+      });
+      _updateRepStats(data.reportes.length);
+    }
+  }).catch(function(){});
+}
+function _updateRepStats(remoteCount){
+  var locales=JSON.parse(localStorage.getItem('pladeco-reportes')||'[]');
+  var total=remoteCount||locales.length;
+  var hoy=locales.filter(function(r){var d=new Date(r.ts);var t=new Date();return d.toDateString()===t.toDateString();}).length;
+  var el=document.getElementById('repCount');if(el)el.textContent=total;
+  var elH=document.getElementById('repHoy');if(elH)elH.textContent=hoy;
+}
+
+/* ══════════════════════════════════════════════════════
+   B4. Heatmap de problemáticas
+   ══════════════════════════════════════════════════════ */
+var _heatMap=null,_heatLayer=null,_heatInited=false,_heatPeriod='all';
+function initHeatmap(){
+  if(_heatInited)return;_heatInited=true;
+  if(typeof L==='undefined'){setTimeout(initHeatmap,500);return;}
+  var el=document.getElementById('mapaHeatmap');if(!el)return;
+  _heatMap=L.map(el,{center:[-34.4150,-70.8350],zoom:12,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(_heatMap);
+  // Cargar Leaflet.heat plugin
+  if(typeof L.heatLayer==='undefined'){
+    var s=document.createElement('script');
+    s.src='https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js';
+    s.onload=function(){renderHeatmap();};
+    document.head.appendChild(s);
+  } else renderHeatmap();
+}
+function setHeatPeriod(period){
+  _heatPeriod=period;
+  document.querySelectorAll('.heat-toggle button').forEach(function(b){
+    b.classList.toggle('active',b.dataset.period===period);
+  });
+  renderHeatmap();
+}
+function renderHeatmap(){
+  if(!_heatMap||typeof L.heatLayer==='undefined')return;
+  if(_heatLayer)_heatMap.removeLayer(_heatLayer);
+  var locales=JSON.parse(localStorage.getItem('pladeco-reportes')||'[]');
+  var now=Date.now();
+  var cutoff=_heatPeriod==='week'?(now-7*86400000):_heatPeriod==='month'?(now-30*86400000):0;
+  var filtered=locales.filter(function(r){return r.ts>=cutoff;});
+  // Si hay menos de 5 reportes reales, agregamos puntos simulados representativos para visualización inicial
+  if(filtered.length<5){
+    var demos=[
+      [-34.4067,-70.8597,3],[-34.4083,-70.8590,2],[-34.4055,-70.8645,3],[-34.4135,-70.8512,2],
+      [-34.4500,-70.8200,1],[-34.4250,-70.8420,2],[-34.4380,-70.8180,1],[-34.4280,-70.7980,1],
+      [-34.4068,-70.8612,4],[-34.4080,-70.8650,2],[-34.4150,-70.8350,2],[-34.4068,-70.8595,3]
+    ];
+    filtered=filtered.concat(demos.map(function(d){return {lat:d[0],lng:d[1],_demo:true,_intensity:d[2]};}));
+  }
+  var points=filtered.map(function(r){return [r.lat,r.lng,r._intensity||1];});
+  _heatLayer=L.heatLayer(points,{radius:35,blur:20,maxZoom:17,gradient:{0.2:'#4ade80',0.5:'#fbbf24',0.8:'#ef4444'}}).addTo(_heatMap);
+  var el=document.getElementById('heatCount');if(el)el.textContent=filtered.length;
+}
+
+/* ══════════════════════════════════════════════════════
+   A5. Mapa Macrosector clickable
+   ══════════════════════════════════════════════════════ */
+var MACROSECTORES=[
+  {id:'centro',nombre:'Centro Urbano',color:'#1a3d8f',pob:35200,uvs:5,icp:0.186,proyectos:18,problemas:['Pavimentaci&oacute;n vereda','Vivienda densificaci&oacute;n','Espacios p&uacute;blicos'],bounds:[[-34.395,-70.870],[-34.420,-70.850]]},
+  {id:'periferia',nombre:'Periferia Urbana',color:'#a855f7',pob:15623,uvs:4,icp:0.215,proyectos:14,problemas:['Conectividad transporte','Equipamiento educativo','&Aacute;reas verdes'],bounds:[[-34.405,-70.860],[-34.430,-70.840]]},
+  {id:'localidades',nombre:'Localidades',color:'#f5921d',pob:8500,uvs:6,icp:0.264,proyectos:22,problemas:['Servicios b&aacute;sicos','Comercio local','Educaci&oacute;n media'],bounds:[[-34.430,-70.835],[-34.460,-70.800]]},
+  {id:'rural',nombre:'Rural Disperso',color:'#2d9a4d',pob:4297,uvs:6,icp:0.310,proyectos:28,problemas:['Agua potable rural','Conectividad digital','Transporte rural'],bounds:[[-34.420,-70.820],[-34.460,-70.770]]}
+];
+var _macMap=null,_macLayer=null,_macInited=false,_macActive=null;
+function initMacrosector(){
+  if(_macInited)return;_macInited=true;
+  if(typeof L==='undefined'){setTimeout(initMacrosector,500);return;}
+  var el=document.getElementById('mapaMacrosector');if(!el)return;
+  _macMap=L.map(el,{center:[-34.4200,-70.8300],zoom:12,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(_macMap);
+  _macLayer=L.layerGroup().addTo(_macMap);
+  MACROSECTORES.forEach(function(m){
+    var rect=L.rectangle(m.bounds,{color:m.color,weight:2,fillColor:m.color,fillOpacity:0.18,opacity:.85}).addTo(_macLayer);
+    rect.bindTooltip(m.nombre,{permanent:false,direction:'center',className:'mac-tooltip'});
+    rect.on('click',function(){selectMacrosector(m.id);});
+    rect.on('mouseover',function(){rect.setStyle({fillOpacity:.35,weight:3});});
+    rect.on('mouseout',function(){if(_macActive!==m.id)rect.setStyle({fillOpacity:.18,weight:2});});
+  });
+}
+function selectMacrosector(id){
+  var m=MACROSECTORES.find(function(x){return x.id===id;});
+  if(!m)return;
+  _macActive=id;
+  var panel=document.getElementById('macPanel');
+  document.getElementById('macPanelTitle').innerHTML='<span style="color:'+m.color+'">&#9632;</span> '+m.nombre;
+  document.getElementById('macPanelBody').innerHTML=
+    '<div class="mac-panel-kpi">'+
+      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.pob.toLocaleString('es-CL')+'</div><div class="mac-kpi-lbl">Habitantes</div></div>'+
+      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.uvs+'</div><div class="mac-kpi-lbl">UV en zona</div></div>'+
+      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.icp.toFixed(3)+'</div><div class="mac-kpi-lbl">ICP vulnerab.</div></div>'+
+      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.proyectos+'</div><div class="mac-kpi-lbl">Proyectos</div></div>'+
+    '</div>'+
+    '<div class="mac-panel-meta"><strong>&#9888;&#65039; Problem&aacute;ticas principales:</strong></div>'+
+    '<ul class="mac-panel-list">'+m.problemas.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>'+
+    '<div style="margin-top:10px"><a href="#mapa-proyectos" style="color:var(--primary);font-size:11.5px;font-weight:700">Ver proyectos en el mapa &rarr;</a></div>';
+  panel.classList.add('show');panel.setAttribute('aria-hidden','false');
+}
+function closeMacPanel(){
+  var p=document.getElementById('macPanel');p.classList.remove('show');p.setAttribute('aria-hidden','true');_macActive=null;
+}
+
+/* ══════════════════════════════════════════════════════
+   A6. Tutorial visual interactivo
+   ══════════════════════════════════════════════════════ */
+var TUT_STEPS=[
+  {emoji:'&#128075;',title:'Bienvenido al portal',text:'Este portal es el espacio oficial donde t&uacute;, vecino o vecina, puedes participar en el PLADECO Rengo 2025-2035.',cta:''},
+  {emoji:'&#128499;&#65039;',title:'Vota tu prioridad',text:'En la secci&oacute;n &laquo;Encuesta&raquo; eliges cu&aacute;l de los 6 ejes consideras m&aacute;s importante para tu familia. Tus votos se ven en vivo.',cta:{label:'Ir a la encuesta',href:'#encuesta'}},
+  {emoji:'&#128205;',title:'Reporta un problema',text:'Haz click en el mapa donde detectaste un bache, basura, alumbrado quemado, etc. Tu reporte llega a la municipalidad.',cta:{label:'Reportar ahora',href:'#reporta'}},
+  {emoji:'&#128231;',title:'Susc&iacute;bete al Newsletter',text:'Recibe actualizaciones del proceso PLADECO directamente en tu correo. Sin spam, solo cuando hay novedades importantes.',cta:{label:'Suscribirme',href:'#participa'}},
+  {emoji:'&#127942;',title:'Comparte y desbloquea logros',text:'Por cada interacci&oacute;n desbloqueas un logro (insignia). Haz el quiz, lee secciones, marca favoritas. ¡Llega a 8/12 para ser Maestro PLADECO!',cta:{label:'Hacer el Quiz',href:'#educacion'}}
+];
+var _tutIdx=0,_tutTimer=null,_tutPlaying=true;
+function tutGo(i){
+  _tutIdx=Math.max(0,Math.min(TUT_STEPS.length-1,i));
+  var stage=document.getElementById('tutorialStage');if(!stage)return;
+  var step=TUT_STEPS[_tutIdx];
+  var ctaHTML=step.cta?'<a href="'+step.cta.href+'" class="tut-cta">'+step.cta.label+' &rarr;</a>':'';
+  stage.innerHTML='<div class="tutorial-step active">'+
+    '<div class="tutorial-num">'+(_tutIdx+1)+'</div>'+
+    '<div class="tutorial-emoji">'+step.emoji+'</div>'+
+    '<h5>'+step.title+'</h5>'+
+    '<p>'+step.text+'</p>'+
+    ctaHTML+
+  '</div>';
+  document.getElementById('tutorialProgress').innerHTML=TUT_STEPS.map(function(s,i){
+    var cls=i<_tutIdx?'done':(i===_tutIdx?'active':'');
+    return '<span class="'+cls+'"></span>';
+  }).join('');
+  document.getElementById('tutPrev').disabled=_tutIdx===0;
+  document.getElementById('tutNext').disabled=_tutIdx===TUT_STEPS.length-1;
+}
+function tutNext(){if(_tutIdx<TUT_STEPS.length-1){tutGo(_tutIdx+1);_tutResetTimer();}}
+function tutPrev(){if(_tutIdx>0){tutGo(_tutIdx-1);_tutResetTimer();}}
+function tutTogglePlay(){
+  _tutPlaying=!_tutPlaying;
+  document.getElementById('tutPlay').innerHTML=_tutPlaying?'&#9613;&#9613; Pausa':'&#9658; Reproducir';
+  if(_tutPlaying)_tutStartTimer();else if(_tutTimer)clearInterval(_tutTimer);
+}
+function _tutStartTimer(){
+  if(_tutTimer)clearInterval(_tutTimer);
+  _tutTimer=setInterval(function(){
+    if(document.visibilityState!=='visible')return;
+    if(_tutIdx<TUT_STEPS.length-1)tutGo(_tutIdx+1);else tutGo(0);
+  },5000);
+}
+function _tutResetTimer(){if(_tutPlaying)_tutStartTimer();}
+function initTutorial(){
+  tutGo(0);
+  // Lazy start cuando se ve la sección
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting&&_tutPlaying)_tutStartTimer();else if(_tutTimer)clearInterval(_tutTimer);});
+    });
+    var sec=document.getElementById('tutorial');if(sec)io.observe(sec);
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   A3. Generador de Cuadernillo PDF por UV
+   ══════════════════════════════════════════════════════ */
+var UV_CUADERNILLO={
+  // Datos representativos por UV (Censo 2024 + SIVUST + ICT)
+  'uv-libertad':{nombre:'UV Libertad',tipo:'Urbana',pob:8420,viv:2680,ivsh:.04,iddc:.24,ibdt:.12,ivft:.09,icht:.39,ipsb:.08,icp:.16,espacios:8,proyectos:['Plaza de Armas (rehab)','Centro Comunitario NNA','Iluminaci&oacute;n LED'],destacado:'Mayor convocatoria del proceso participativo (59 asistentes al taller)'},
+  'uv-esmeralda':{nombre:'UV Esmeralda',tipo:'Urbana',pob:5840,viv:1820,ivsh:.06,iddc:.26,ibdt:.14,ivft:.10,icht:.42,ipsb:.10,icp:.18,espacios:6,proyectos:['Centro Cultural Esmeralda','Skatepark','CECOSF Esmeralda'],destacado:'Sector con expansi&oacute;n urbana reciente'},
+  'uv-centro':{nombre:'UV Centro',tipo:'Urbana',pob:6230,viv:1980,ivsh:.04,iddc:.22,ibdt:.10,ivft:.08,icht:.36,ipsb:.07,icp:.14,espacios:9,proyectos:['Centro Diurno AM','Casa de la Mujer','Modernizaci&oacute;n SECPLAC'],destacado:'Concentraci&oacute;n de servicios municipales y comercio'},
+  'uv-ferrocarril':{nombre:'UV Ferrocarril',tipo:'Urbana',pob:4120,viv:1320,ivsh:.07,iddc:.28,ibdt:.16,ivft:.12,icht:.45,ipsb:.13,icp:.20,espacios:5,proyectos:['Recuperaci&oacute;n EFE','Sede social','Plaza barrial'],destacado:'Patrimonio ferroviario hist&oacute;rico'},
+  'uv-poniente':{nombre:'UV Poniente',tipo:'Urbana',pob:5640,viv:1810,ivsh:.08,iddc:.27,ibdt:.18,ivft:.11,icht:.46,ipsb:.15,icp:.21,espacios:4,proyectos:['Pavimentaci&oacute;n participativa','&Aacute;reas verdes','Conectividad'],destacado:'Demanda de mejora en pavimentos y v&iacute;as'},
+  'uv-norte':{nombre:'UV Norte',tipo:'Urbana',pob:4830,viv:1540,ivsh:.05,iddc:.25,ibdt:.13,ivft:.10,icht:.41,ipsb:.09,icp:.17,espacios:6,proyectos:['CESFAM Norte','Plaza barrial','Capacitaci&oacute;n laboral'],destacado:'Importante crecimiento poblacional'},
+  'uv-sur':{nombre:'UV Sur',tipo:'Urbana',pob:5310,viv:1670,ivsh:.07,iddc:.26,ibdt:.15,ivft:.11,icht:.43,ipsb:.12,icp:.19,espacios:5,proyectos:['Sede vecinal','Programa adulto mayor','Iluminaci&oacute;n'],destacado:'Conexi&oacute;n con sector productivo agr&iacute;cola'},
+  'uv-oriente':{nombre:'UV Oriente',tipo:'Urbana',pob:4920,viv:1560,ivsh:.06,iddc:.25,ibdt:.14,ivft:.10,icht:.42,ipsb:.11,icp:.18,espacios:5,proyectos:['Multicancha','Centro deportivo','Apoyo PcD'],destacado:'Borde con sector rural inicial'},
+  'uv-latorre':{nombre:'UV La Torre',tipo:'Urbana',pob:5513,viv:1750,ivsh:.07,iddc:.27,ibdt:.16,ivft:.11,icht:.44,ipsb:.13,icp:.20,espacios:4,proyectos:['Vivienda social DS49','Espacio comunitario','Conectividad'],destacado:'Expansi&oacute;n urbana suroeste'},
+  'uv-rosario':{nombre:'UV Rosario',tipo:'Rural',pob:3850,viv:1180,ivsh:.13,iddc:.28,ibdt:.21,ivft:.10,icht:.51,ipsb:.32,icp:.26,espacios:7,proyectos:['Mercado Mayorista','Vivienda Social DS49','Centro c&iacute;vico'],destacado:'Cabecera de la zona rural Cachapoal II'},
+  'uv-popeta':{nombre:'UV Popeta',tipo:'Rural',pob:1240,viv:420,ivsh:.11,iddc:.30,ibdt:.25,ivft:.13,icht:.52,ipsb:.35,icp:.28,espacios:3,proyectos:['Cancha sintetica','APR Popeta','Programa rural'],destacado:'Localidad rural con identidad agrícola'},
+  'uv-cerrillos':{nombre:'UV Cerrillos',tipo:'Rural',pob:830,viv:280,ivsh:.13,iddc:.30,ibdt:.26,ivft:.15,icht:.50,ipsb:.36,icp:.28,espacios:2,proyectos:['Sede social','Compostaje comunal','Conectividad'],destacado:'Mediana poblaci&oacute;n rural concentrada'},
+  'uv-pueblohundido':{nombre:'UV Pueblo Hundido',tipo:'Rural',pob:661,viv:220,ivsh:.13,iddc:.26,ibdt:.29,ivft:.14,icht:.54,ipsb:.39,icp:.29,espacios:2,proyectos:['Plaza Pueblo Hundido','APR mejorado','Capacitaci&oacute;n'],destacado:'Una de las localidades m&aacute;s pobladas del sector rural'},
+  'uv-cobil':{nombre:'UV C&oacute;bil',tipo:'Rural',pob:668,viv:215,ivsh:.15,iddc:.29,ibdt:.21,ivft:.17,icht:.47,ipsb:.42,icp:.28,espacios:2,proyectos:['Casa Caliente C&oacute;bil','Camino rural','Salud rural'],destacado:'Identidad campesina con tradiciones'},
+  'uv-chapeton':{nombre:'UV Chapet&oacute;n',tipo:'Rural',pob:115,viv:38,ivsh:.22,iddc:.28,ibdt:.31,ivft:.07,icht:.50,ipsb:.56,icp:.32,espacios:1,proyectos:['Riego tecnificado','APR Chapet&oacute;n','Apoyo agricultura'],destacado:'Localidad con alto IPSB cr&iacute;tico'},
+  'uv-camarico':{nombre:'UV Camarico',tipo:'Rural',pob:183,viv:62,ivsh:.18,iddc:.25,ibdt:.23,ivft:.12,icht:.48,ipsb:.53,icp:.30,espacios:1,proyectos:['Punto limpio','Pavimentaci&oacute;n','Centro vecinal'],destacado:'Acceso a la zona rural sur'},
+  'uv-laspataguas':{nombre:'UV Las Pataguas',tipo:'Rural',pob:216,viv:70,ivsh:.14,iddc:.27,ibdt:.29,ivft:.15,icht:.51,ipsb:.39,icp:.29,espacios:1,proyectos:['Cancha Las Pataguas','APR','Educaci&oacute;n rural'],destacado:'Identidad local fuerte'},
+  'uv-naicura':{nombre:'UV Naicura',tipo:'Rural',pob:97,viv:32,ivsh:.14,iddc:.32,ibdt:.24,ivft:.08,icht:.47,ipsb:.49,icp:.29,espacios:1,proyectos:['Conectividad fibra','APR Naicura','Salud itinerante'],destacado:'Localidad rural con poblaci&oacute;n envejecida'},
+  'uv-eltrebal':{nombre:'UV El Trebal Huilqu&iacute;o',tipo:'Rural',pob:198,viv:65,ivsh:.17,iddc:.34,ibdt:.34,ivft:.21,icht:.58,ipsb:.44,icp:.35,espacios:1,proyectos:['APR El Trebal Huilqu&iacute;o','Alcantarillado','Centro de cuidados'],destacado:'#1 en ranking de vulnerabilidad multidimensional'},
+  'uv-lachimba':{nombre:'UV La Chimba',tipo:'Rural',pob:600,viv:195,ivsh:.15,iddc:.29,ibdt:.42,ivft:.09,icht:.56,ipsb:.33,icp:.31,espacios:2,proyectos:['Fibra &oacute;ptica La Chimba','Centro comunitario','Capacitaci&oacute;n'],destacado:'Mayor brecha digital territorial (IBDT 0.42)'},
+  'uv-elplacer':{nombre:'UV El Placer / La Ariana',tipo:'Rural',pob:73,viv:28,ivsh:.11,iddc:.40,ibdt:.39,ivft:.18,icht:.60,ipsb:.44,icp:.34,espacios:0,proyectos:['Programa cuidados El Placer','Apoyo discapacidad La Ariana','Telemedicina'],destacado:'Mayor dependencia de cuidados (IDDC 0.40) — programa prioritario'}
+};
+var _jsPDFLoaded=false;
+function generarCuadernillo(){
+  var uv=document.getElementById('cuaUV').value;
+  if(!uv){showToast('Selecciona tu Unidad Vecinal','warning');return;}
+  var btn=document.getElementById('cuaBtn');
+  btn.disabled=true;btn.innerHTML='&#9203; Generando PDF...';
+  // Cargar jsPDF lazy
+  if(!_jsPDFLoaded){
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload=function(){_jsPDFLoaded=true;_renderCuadernilloPDF(uv);};
+    s.onerror=function(){showToast('No se pudo cargar jsPDF','error');btn.disabled=false;btn.innerHTML='&#128229; Generar PDF';};
+    document.head.appendChild(s);
+  } else _renderCuadernilloPDF(uv);
+}
+function _renderCuadernilloPDF(uvId){
+  var data=UV_CUADERNILLO[uvId];
+  var btn=document.getElementById('cuaBtn');
+  try{
+    var jsPDF=window.jspdf.jsPDF;
+    var doc=new jsPDF({format:'a4',unit:'mm'});
+    var margin=15,y=20;
+    // Portada
+    doc.setFillColor(12,31,54);doc.rect(0,0,210,40,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(20);doc.setFont('helvetica','bold');
+    doc.text('CUADERNILLO PLADECO',margin,18);
+    doc.setFontSize(11);doc.setFont('helvetica','normal');doc.text('Rengo 2025-2035',margin,26);
+    doc.setFontSize(16);doc.setTextColor(253,185,77);doc.setFont('helvetica','bold');
+    doc.text(data.nombre,margin,36);
+    y=50;
+    // Datos generales
+    doc.setTextColor(15,34,64);doc.setFontSize(13);doc.setFont('helvetica','bold');
+    doc.text('1. Datos demograficos (Censo 2024)',margin,y);y+=7;
+    doc.setFontSize(10);doc.setFont('helvetica','normal');
+    doc.text('Tipo: '+data.tipo+'    Poblacion: '+data.pob.toLocaleString('es-CL')+' hab    Viviendas: '+data.viv.toLocaleString('es-CL'),margin,y);y+=10;
+    // Indices vulnerabilidad
+    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(15,34,64);
+    doc.text('2. Indices de Vulnerabilidad (SIVUST)',margin,y);y+=7;
+    doc.setFontSize(10);doc.setFont('helvetica','normal');
+    var indices=[
+      ['IVSH (Habitacional)',data.ivsh,'Hacinamiento + materialidad + saneamiento'],
+      ['IDDC (Dependencia cuidados)',data.iddc,'Envejecimiento + primera infancia + dependencia'],
+      ['IBDT (Brecha digital)',data.ibdt,'Sin internet + sin equipamiento + sin celular'],
+      ['IVFT (Vulnerabilidad funcional)',data.ivft,'Prevalencia + intensidad de discapacidad'],
+      ['ICHT (Capital humano)',data.icht,'Escolaridad + alfabet. + participacion laboral'],
+      ['IPSB (Servicios basicos)',data.ipsb,'Agua + saneamiento + energia limpia + residuos'],
+      ['ICP (Compuesto)',data.icp,'Indice compuesto ponderado promedio']
+    ];
+    indices.forEach(function(idx){
+      var v=idx[1];
+      var color=v<.15?[34,197,94]:v<.30?[245,146,29]:[239,68,68];
+      doc.setFillColor(color[0],color[1],color[2]);
+      doc.rect(margin,y-3,3,5,'F');
+      doc.setFont('helvetica','bold');doc.text(idx[0]+': '+v.toFixed(3),margin+6,y);
+      doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(100,116,139);
+      doc.text(idx[2],margin+6,y+3.5);
+      doc.setFontSize(10);doc.setTextColor(15,34,64);
+      y+=8;
+    });
+    y+=4;
+    // Espacios publicos
+    doc.setFontSize(13);doc.setFont('helvetica','bold');
+    doc.text('3. Espacios publicos (ICT)',margin,y);y+=7;
+    doc.setFontSize(10);doc.setFont('helvetica','normal');
+    doc.text(data.espacios+' espacios publicos catastrados (plazas, multicanchas, sedes vecinales, etc.)',margin,y);y+=10;
+    // Proyectos
+    doc.setFontSize(13);doc.setFont('helvetica','bold');
+    doc.text('4. Proyectos PLADECO asignados',margin,y);y+=7;
+    doc.setFontSize(10);doc.setFont('helvetica','normal');
+    data.proyectos.forEach(function(p){
+      doc.text('- '+p,margin+2,y);y+=6;
+    });
+    y+=4;
+    // Dato destacado
+    doc.setFillColor(245,146,29);doc.rect(margin-3,y-2,184,16,'F');
+    doc.setTextColor(255,255,255);doc.setFontSize(11);doc.setFont('helvetica','bold');
+    doc.text('DESTACADO:',margin,y+4);
+    doc.setFont('helvetica','normal');doc.setFontSize(10);
+    var destLines=doc.splitTextToSize(data.destacado,170);
+    doc.text(destLines,margin,y+9);
+    y+=24;
+    // Footer
+    doc.setTextColor(100,116,139);doc.setFontSize(8);
+    doc.text('Generado: '+new Date().toLocaleDateString('es-CL')+' | PLADECO Rengo 2025-2035 | https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035',margin,285);
+    doc.text('Fuentes: Censo INE 2024 | SIVUST | ICT Espacios Publicos | Matriz Estrategica PLADECO',margin,290);
+    doc.save('Cuadernillo-PLADECO-'+data.nombre.replace(/\s/g,'_')+'.pdf');
+    showToast('&#10004; Cuadernillo descargado: '+data.nombre,'success');
+  } catch(err){
+    console.warn('PDF error:',err);
+    showToast('Error generando PDF: '+err.message,'error');
+  } finally {
+    btn.disabled=false;btn.innerHTML='&#128229; Generar PDF';
+  }
+}
+// Habilitar botón cuando se selecciona UV
+function _initCuadernillo(){
+  var sel=document.getElementById('cuaUV');if(!sel)return;
+  sel.onchange=function(){document.getElementById('cuaBtn').disabled=!sel.value;};
+}
+
+/* ══════════════════════════════════════════════════════
+   D1. Accesibilidad Avanzada
+   ══════════════════════════════════════════════════════ */
+var _a11yTTS=null,_a11yTTSActive=false;
+function toggleA11y(){
+  var p=document.getElementById('a11yPanel');
+  var open=p.classList.toggle('show');
+  p.setAttribute('aria-hidden',!open);
+}
+function a11ySetSize(size){
+  document.body.classList.remove('a11y-large','a11y-xlarge');
+  if(size==='large')document.body.classList.add('a11y-large');
+  if(size==='xlarge')document.body.classList.add('a11y-xlarge');
+  try{localStorage.setItem('pladeco-a11y-size',size);}catch(_){}
+  ['a11yBtnN','a11yBtnL','a11yBtnXL'].forEach(function(id){document.getElementById(id).classList.remove('active');});
+  document.getElementById('a11yBtn'+(size==='normal'?'N':size==='large'?'L':'XL')).classList.add('active');
+}
+function a11yToggleContrast(){
+  var on=document.body.classList.toggle('a11y-contrast');
+  try{localStorage.setItem('pladeco-a11y-contrast',on?'1':'0');}catch(_){}
+  document.getElementById('a11yBtnC').classList.toggle('active',on);
+}
+function a11yToggleTTS(){
+  if(!('speechSynthesis' in window)){showToast('Tu navegador no soporta TTS','warning');return;}
+  _a11yTTSActive=!_a11yTTSActive;
+  document.body.classList.toggle('a11y-tts-active',_a11yTTSActive);
+  document.getElementById('a11yBtnTTS').classList.toggle('active',_a11yTTSActive);
+  if(_a11yTTSActive){
+    showToast('Click en cualquier texto para escucharlo','info');
+    document.addEventListener('click',_a11yTTSHandler);
+  } else {
+    document.removeEventListener('click',_a11yTTSHandler);
+    speechSynthesis.cancel();
+  }
+}
+function _a11yTTSHandler(e){
+  if(e.target.closest('.a11y-panel,.a11y-fab,.rep-form,button,input,select,textarea,a'))return;
+  var text=(e.target.textContent||'').trim();
+  if(!text||text.length<3||text.length>500)return;
+  speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  u.lang='es-CL';u.rate=.95;u.pitch=1;
+  speechSynthesis.speak(u);
+}
+function a11yStopTTS(){if(window.speechSynthesis)speechSynthesis.cancel();}
+function a11yReset(){
+  document.body.classList.remove('a11y-large','a11y-xlarge','a11y-contrast','a11y-tts-active');
+  if(_a11yTTSActive){_a11yTTSActive=false;document.removeEventListener('click',_a11yTTSHandler);}
+  ['pladeco-a11y-size','pladeco-a11y-contrast'].forEach(function(k){try{localStorage.removeItem(k);}catch(_){}});
+  ['a11yBtnN','a11yBtnL','a11yBtnXL','a11yBtnC','a11yBtnTTS'].forEach(function(id){var b=document.getElementById(id);if(b)b.classList.remove('active');});
+  document.getElementById('a11yBtnN').classList.add('active');
+  a11yStopTTS();
+  showToast('Accesibilidad restablecida','success');
+}
+function initA11y(){
+  try{
+    var size=localStorage.getItem('pladeco-a11y-size')||'normal';
+    var contrast=localStorage.getItem('pladeco-a11y-contrast')==='1';
+    if(size!=='normal')a11ySetSize(size);else document.getElementById('a11yBtnN').classList.add('active');
+    if(contrast){document.body.classList.add('a11y-contrast');document.getElementById('a11yBtnC').classList.add('active');}
+  }catch(_){}
+}
+
 /* ══════════════════════════════════════════════════════
    ERD O'Higgins — Tabs scoped
    ══════════════════════════════════════════════════════ */
@@ -17536,6 +18467,15 @@ function initErdTabs(){
 // ══════════════════════════════════════════════════════
 try{renderProcessTimeline();}catch(e){console.warn('renderProcessTimeline:',e);}
 try{initErdTabs();}catch(e){console.warn('initErdTabs:',e);}
+// MAJOR v38.0 inits
+try{renderHeroCarousel();}catch(e){console.warn('heroCarousel:',e);}
+try{loadVozVecinos();startVozAutoRefresh();}catch(e){console.warn('vozVecinos:',e);}
+try{lazyInitOnView('#reporta',initReporteCiudadano);}catch(e){console.warn('reporte:',e);}
+try{lazyInitOnView('#heatmap',initHeatmap);}catch(e){console.warn('heatmap:',e);}
+try{lazyInitOnView('#macrosector',initMacrosector);}catch(e){console.warn('macrosector:',e);}
+try{initTutorial();}catch(e){console.warn('tutorial:',e);}
+try{_initCuadernillo();}catch(e){console.warn('cuadernillo:',e);}
+try{initA11y();}catch(e){console.warn('a11y:',e);}
 try{renderGalleryProc();}catch(e){console.warn('renderGalleryProc:',e);}
 try{initRippleEffect();}catch(e){console.warn('initRippleEffect:',e);}
 try{initAchievements();}catch(e){console.warn('initAchievements:',e);}
