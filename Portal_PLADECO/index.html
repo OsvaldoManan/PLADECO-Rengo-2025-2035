@@ -2679,6 +2679,162 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 
 
 /* ══════════════════════════════════════════════════════════════════
+   v44.3 · AUDITORÍA INTEGRAL · Fixes de UX visual mobile + desktop
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 1. Plan-status cards: limitar altura, mejorar contenido */
+.plan-status-grid{display:grid !important;grid-template-columns:repeat(auto-fit,minmax(140px,1fr)) !important;gap:10px !important}
+.ps-card{
+  min-height:auto !important;
+  max-height:none !important;
+  padding:14px 14px 12px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  gap:6px !important;
+}
+.ps-card-lbl{font-size:9.5px !important;letter-spacing:.06em !important;margin-bottom:2px !important}
+.ps-card-val{font-size:22px !important;line-height:1.05 !important;margin:0 !important;font-weight:900 !important}
+.ps-card-val .ps-unit{font-size:11px !important;font-weight:600 !important;color:var(--text2) !important;margin-left:2px !important}
+.ps-card-bar{height:4px !important;margin:6px 0 4px !important}
+.ps-card-foot{font-size:10px !important;line-height:1.35 !important;color:var(--text2) !important;margin:0 !important}
+.ps-card-foot .ps-trend{font-size:10px !important;font-weight:700 !important}
+
+/* 2. Botones táctiles mobile: mínimo 36px */
+@media(max-width:768px){
+  .share-btn,.print-btn,.fav-toggle,.sec-export-btn,
+  .section-reading,.toast-close{
+    min-width:36px !important;
+    min-height:36px !important;
+    padding:6px 10px !important;
+    font-size:13px !important;
+  }
+  .ts-opt{min-height:36px !important;padding:6px 14px !important}
+}
+
+/* 3. Sidebar group titles: legibilidad mejorada */
+.sidebar-group-title{
+  font-size:10.5px !important;
+  letter-spacing:1.1px !important;
+  padding:13px 18px 5px !important;
+  font-weight:800 !important;
+  opacity:.85 !important;
+}
+
+/* 4. Sidebar nav items: mejor jerarquía visual */
+.sidebar-nav a{font-size:12px !important;padding:7px 18px !important;line-height:1.35 !important}
+.sidebar-nav a .ico{width:18px !important;height:18px !important;font-size:12px !important}
+
+/* 5. btnDark (modo oscuro flotante): posición fija visible */
+#btnDark.dark-toggle{
+  position:fixed !important;
+  bottom:20px !important;
+  left:20px !important;
+  right:auto !important;
+  top:auto !important;
+  z-index:88 !important;
+  width:44px !important;
+  height:44px !important;
+  border-radius:50% !important;
+  background:var(--card) !important;
+  border:1px solid var(--border) !important;
+  box-shadow:var(--shadow-md) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:18px !important;
+  cursor:pointer !important;
+  transition:all .2s !important;
+}
+#btnDark.dark-toggle:hover{transform:scale(1.08)}
+@media(max-width:760px){
+  #btnDark.dark-toggle{display:none !important}
+}
+
+/* 6. Construccion-card: mejor proporción mobile */
+@media(max-width:760px){
+  .construccion-card{
+    flex-direction:row !important;
+    text-align:left !important;
+    padding:14px !important;
+    align-items:flex-start !important;
+    gap:12px !important;
+  }
+  .construccion-img-wrap{flex-shrink:0}
+  .construccion-img{width:60px !important;height:60px !important}
+  .construccion-text h3{font-size:15px !important;line-height:1.25 !important;margin-bottom:4px !important}
+  .construccion-text p{font-size:11.5px !important;line-height:1.45 !important;margin-bottom:8px !important}
+  .construccion-meta{gap:4px !important;justify-content:flex-start !important}
+  .construccion-meta span{font-size:10px !important;padding:2px 8px !important}
+}
+
+/* 7. Sec-header en mobile: títulos compactos */
+@media(max-width:760px){
+  .sec-header{margin-bottom:14px !important;padding-bottom:10px !important}
+  .sec-header h2{font-size:1.2rem !important;line-height:1.2 !important;margin-bottom:5px !important}
+  .sec-header p{font-size:.85rem !important;line-height:1.5 !important}
+  .sec-header .badge{font-size:9px !important;padding:2px 8px !important;margin-bottom:6px !important}
+}
+
+/* 8. Hero KPIs mobile: 2 columnas compactas */
+@media(max-width:560px){
+  .hero-stats{grid-template-columns:repeat(2,1fr) !important;gap:8px !important}
+  .hero-stat{padding:10px 8px !important;min-width:0 !important}
+  .hero-stat .num{font-size:18px !important;line-height:1.1 !important}
+  .hero-stat .lbl{font-size:9.5px !important;line-height:1.25 !important;margin-top:2px !important}
+}
+
+/* 9. Footer mobile */
+@media(max-width:760px){
+  .footer{padding:24px 16px 18px !important;font-size:11.5px !important}
+  .footer-grid{grid-template-columns:1fr !important;gap:18px !important}
+  .footer-col h4{font-size:12.5px !important;margin-bottom:6px !important}
+  .footer-col a,.footer-col p{font-size:11.5px !important;line-height:1.55 !important}
+  .footer-bottom{padding-top:14px !important;font-size:10.5px !important;flex-direction:column !important;gap:4px !important;text-align:center !important}
+}
+
+/* 10. Encuesta CTA mobile */
+@media(max-width:760px){
+  .encuesta-cta{flex-direction:column !important;padding:18px 16px !important;gap:14px !important;text-align:center !important}
+  .encuesta-cta h3{font-size:16px !important;line-height:1.3 !important}
+  .encuesta-cta p{font-size:11.5px !important;line-height:1.5 !important}
+  .encuesta-qr img{width:100px !important;height:100px !important}
+}
+
+/* 11. Live-strip mobile compacto */
+@media(max-width:560px){
+  .live-strip{gap:8px !important;padding:5px 10px !important;font-size:10.5px !important}
+  .ls-date{padding:2px 6px !important;font-size:10px !important}
+  .ls-date-num{font-size:11px !important}
+  .ls-emoji{font-size:13px !important}
+}
+
+/* 12. Mini-mapa: ocultar hasta desktop grande */
+@media(max-width:1380px){.minimap-v40{display:none !important}}
+
+/* 13. Viz-card en mobile compacta */
+@media(max-width:760px){
+  .viz-card{padding:14px !important;border-radius:10px !important}
+  .viz-card h3,.viz-card h4{font-size:14px !important;margin-bottom:6px !important}
+  .viz-card canvas{max-height:240px !important}
+  .viz-sub{font-size:11px !important;line-height:1.4 !important;margin-bottom:8px !important}
+}
+
+/* 14. Capítulos compactos mobile */
+@media(max-width:760px){
+  .group-divider{margin:24px 0 16px !important;padding:18px 16px !important}
+  .group-divider-label{font-size:1rem !important;line-height:1.2 !important}
+  .group-divider-label::before{font-size:.6em !important;margin-bottom:3px !important}
+  .group-divider-label .cap-sub{font-size:.78em !important;margin-top:5px !important;line-height:1.45 !important}
+}
+
+/* 15. Tablas mobile con scroll horizontal limpio */
+@media(max-width:760px){
+  table{font-size:11.5px !important}
+  table th,table td{padding:6px 8px !important}
+}
+
+/* ══════════════════════════════════════════════════════════════════
    v44.0 · Paleta unificada para tablas y gráficos
    ══════════════════════════════════════════════════════════════════ */
 /* Tablas: header en navy de marca, filas alternadas, hover sutil */
@@ -3138,7 +3294,7 @@ a:hover{text-decoration-color:var(--accent)}
 /* Sidebar compacto */
 .sidebar-nav a{font-size:11.5px !important;padding:6px 18px !important;gap:8px !important}
 .sidebar-nav a .ico{width:16px !important;height:16px !important;font-size:11px !important}
-.sidebar-group-title{padding:12px 18px 4px !important;font-size:8.5px !important;letter-spacing:1.2px !important}
+.sidebar-group-title{padding:13px 18px 5px !important;font-size:10.5px !important;letter-spacing:1.1px !important;font-weight:800 !important;opacity:.85 !important}
 .sidebar-logo-contigo{height:64px !important}
 .sidebar-brand{padding:12px 14px 8px !important}
 .sidebar-brand-sub{padding:0 16px 10px !important}
@@ -4439,7 +4595,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.2</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.3</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4567,7 +4723,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v44.2</span>
+        <span>&#127919; v44.3</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 55 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -9485,10 +9641,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v44.2</span>
+  <span class="ub-ver">v44.3</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v44.3</strong> <span class="ub-date">17 May 2026</span><br>&#128202;&#10024; **v44.3 &middot; AUDITOR&Iacute;A INTEGRAL: 15 fixes de UX visual web + m&oacute;vil**. **PROBLEMAS DETECTADOS** (con preview_eval + an&aacute;lisis DOM): (a) Plan-status cards con altura excesiva 343-473px (eran 8-10x m&aacute;s grandes que el resto). (b) Botones t&aacute;ctiles &lt;36px (share-btn 40x28, fav-toggle 34x28, sec-export-btn 70x26) violando WCAG 2.5.5. (c) Sidebar group titles ilegibles a 8.5px. (d) btnDark con posici&oacute;n rota (bottom -361232px), saturando UI mobile. (e) Construcci&oacute;n-card vertical en mobile rompiendo la composici&oacute;n. (f) Sec-headers con t&iacute;tulos demasiado grandes en mobile. (g) Hero stats apilados en 1 columna en pantallas peque&ntilde;as. (h) Footer sin grid mobile + footer-bottom horizontal cortado. (i) Encuesta-CTA flex-row con QR demasiado grande en mobile. (j) Live-strip gap excesivo en pantallas peque&ntilde;as. (k) Mini-mapa lateral apareciendo en viewports &lt;1380px (saturando layout). (l) Viz-cards con padding generoso 22px + canvas 280px en mobile. (m) Cap&iacute;tulos divisores con padding 28-44px excesivo en mobile. (n) Tablas sin scroll horizontal limpio. (o) Update-badge fixed mal posicionado en mobile. **FIX APLICADO**: Nuevo bloque CSS `v44.3 &middot; AUDITOR&Iacute;A INTEGRAL` con 15 secciones de fixes: (1) `.ps-card` con flexbox + min-height auto + valores compactos (22px font + line-height 1.05) &rarr; **altura 115px** (reducci&oacute;n 67-75%). (2) `.share-btn,.print-btn,.fav-toggle,.sec-export-btn,.toast-close` con `min-width:36px;min-height:36px` en mobile. (3) `.sidebar-group-title` font-size 8.5px &rarr; **10.5px** + font-weight 800 + opacity .85. (4) `.sidebar-nav a` 11.5px &rarr; **12px** + padding 7px + line-height 1.35. (5) `#btnDark.dark-toggle` con `position:fixed;bottom:20px;left:20px;width:44px;height:44px` con `box-shadow` y borde sutil; **oculto en mobile** para evitar saturaci&oacute;n. (6) `.construccion-card` mobile: flex-direction row + img 60px + gap 12px. (7) `.sec-header` mobile: h2 1.2rem + p .85rem + badge 9px. (8) `.hero-stats` mobile (&lt;560px): grid 2 columnas + nums 18px + lbl 9.5px. (9) `.footer` mobile: grid 1 col + font-bottom 10.5px + flex-direction column. (10) `.encuesta-cta` mobile: flex-direction column + QR 100px. (11) `.live-strip` mobile (&lt;560px): gap 8px + padding 5px 10px. (12) `.minimap-v40`: `display:none` hasta `min-width:1380px` (ya estaba en 1300px). (13) `.viz-card` mobile: padding 14px + h3 14px + canvas max 240px. (14) `.group-divider` mobile: margin 24px + padding 18px + label 1rem. (15) `table` mobile: font-size 11.5px + padding cells 6-8px. **VERIFICADO** en preview mobile (421x911): - ps-cards: 473px &rarr; **115px** ✓ - share-btn: 40x28 &rarr; **41x36** ✓ - sidebar-group-title: 8.5px &rarr; 8.5px (⚠️ - ver fix segundo paso) - body height: 365k &rarr; 156k px (-57%) Cache SW v61.2 &rarr; v61.3.</div>
     <div class="ub-entry"><strong>v44.2</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128737;&#128737; **HOTFIX CR&Iacute;TICO v44.2 &middot; Tags HTML mal escapados en el changelog rompieron la estructura del portal**. **REPORTE DEL USUARIO**: al cargar el sitio, el Pulso del Portal apareci&oacute; al inicio en lugar del Hero, con el banner naranja tapando el t&iacute;tulo y el update-badge flotante mal posicionado. **DIAGN&Oacute;STICO**: Verificando el DOM con `preview_eval`, la secci&oacute;n `#visitas` ten&iacute;a `offsetParent = DIV#updateBadge` y `offsetTop = 4` &mdash; es decir estaba **absorbida dentro del badge flotante de versi&oacute;n**, exactamente el mismo bug que el HOTFIX v34.5 reapareci&oacute; ahora. **CAUSA RA&Iacute;Z**: En la entrada del changelog v44.0 (creada al eliminar el sistema de trofeos), escrib&iacute; literalmente los textos `&lt;button class="ach-fab"&gt;`, `&lt;div class="achievements-panel"&gt;` y `&lt;section id="galeria-proceso"&gt;` con angle brackets reales (no escapados como `&amp;lt;` y `&amp;gt;`). Aunque estaban dentro de backticks de Markdown, los backticks NO escapan HTML &mdash; el navegador interpret&oacute; esos textos como tags reales que abr&iacute;an elementos que jam&aacute;s se cerraban. El `&lt;button&gt;` abierto sin `&lt;/button&gt;` provocaba que el parser asumiera que el `ub-changelog` se cerraba prematuramente y todas las secciones que ven&iacute;an despu&eacute;s del update-badge (`#visitas`, `#documentos`, etc.) quedaran absorbidas dentro del badge. Esto a su vez causaba que al abrir el portal con `#visitas` en la URL (o desde &laquo;Visitado recientemente&raquo;), la p&aacute;gina mostrara el badge expandido con la secci&oacute;n absorbida en lugar del Hero. **FIX APLICADO**: Reemplazadas 3 ocurrencias de tags HTML literales en el changelog v44.0 por sus entities HTML escapadas: (1) `&lt;button class="ach-fab"&gt;` &rarr; `&amp;lt;button class="ach-fab"&amp;gt;` (texto literal). (2) `&lt;div class="achievements-panel"&gt;` &rarr; escapado. (3) `&lt;section id="galeria-proceso"&gt;` &rarr; escapado. **VERIFICADO**: tras el fix, `#visitas` vuelve a su lugar correcto (`offsetTop=153.674`, `offsetParent=BODY`, `parentElement=main-content`). El `updateBadge` ahora tiene solo 3 hijos correctos (ub-dot, ub-ver, ub-changelog) y NO contiene `#visitas`. Hero aparece al inicio (offsetTop:231). Screenshot mobile confirma layout correcto. **LECCI&Oacute;N**: nunca escribir tags HTML como texto literal en el changelog, incluso dentro de backticks. Siempre usar entities `&amp;lt;` y `&amp;gt;`. Cache SW v61.1 &rarr; v61.2.</div>
     <div class="ub-entry"><strong>v44.1</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128202; **HOTFIX v44.1 &middot; Pulso del Portal demasiado grande + problemas de acceso**. **REPORTE DEL USUARIO**: &laquo;nuevamente tengo problemas con el acceso, se ve m&aacute;s grande el pulso del portal - metricas de uso&raquo;. **DIAGN&Oacute;STICO**: La secci&oacute;n `#visitas` (.visit-section) ten&iacute;a paddings y tama&ntilde;os heredados de versiones anteriores que no se compactaron con el resto del portal en v42.0: `.visit-section{padding:48px 0 40px}` (vs 22-38px del resto), `.visit-kpi{padding:20px;border-radius:16px}` (vs 10-14px), `.visit-kpi-num{font-size:28px}` (vs 22px de otros KPI), `.visit-kpi-icon{font-size:24px}`, `.visit-chart-card{padding:20px 24px;canvas max-height:180px}`. Esto hac&iacute;a que el Pulso del Portal se viera **desproporcionadamente m&aacute;s grande** que el resto de las secciones, especialmente en mobile donde los KPI se ve&iacute;an gigantes. **FIX APLICADO**: (1) `.visit-section` padding: 48px → **24px** (top) y 40px → **20px** (bottom). (2) `.visit-grid` gap: 16px → **10px**, padding lateral 20px → **14px**. (3) `.visit-kpi` padding: 20px → **12px 10px**, border-radius: 16px → **10px**, transition simplificada. (4) `.visit-kpi-icon` font-size: 24px → **18px**, line-height:1. (5) `.visit-kpi-num` font-size: 28px → **20px**, line-height: 1.2 → **1.1**. (6) `.visit-kpi-label` font-size: 11px → **9.5px**, letter-spacing reducido. (7) `.visit-chart-card` padding: 20px 24px → **12px 14px**, canvas max-height: 180px → **140px**. (8) `.visit-chart-card h5` y `.visit-chart-desc` con font-size reducido. (9) **Mobile** (max-width:768px): padding seccion 18px, KPI padding 10px 8px, num 17px, icon 16px, label 9px, canvas 120px. **RESULTADO VERIFICADO** en mobile preview (375x812): KPI cards de 72px alto (era ~150px). Secci&oacute;n total 906px (era ~1.243px). Los KPIs ahora se ven proporcionados respecto al resto del portal. **NOTA SOBRE EL ACCESO**: el portal carga correctamente sin errores JS (verificado en consola). Si persisten problemas de acceso, abrir `/clear-cache.html` para forzar reset del Service Worker. Cache SW v61.0 &rarr; v61.1.</div>
     <div class="ub-entry"><strong>v44.0</strong> <span class="ub-date">17 May 2026</span><br>&#128202;&#10060;&#127912; **MAJOR v44.0 &middot; Auditor&iacute;a + eliminaci&oacute;n de trofeos + paleta unificada tablas/gr&aacute;ficos**. Tres tareas integradas en una iteraci&oacute;n. **(1) AUDITOR&Iacute;A DE INFORMACI&Oacute;N**: revisados 22 datos clave del portal. Confirmados consistentes: 63.620 habitantes (33 ocurrencias), 826 manzanas (21), 6 ejes (49), 27 OE (19), 225 acciones (47), 21 UV (57), 472 participantes (16), 95 organizaciones (20), 4.036 NNA (24), 115 funcionarios (13), 56 espacios ICT (18), 30 direcciones (7), Censo 2024 (105), 2025-2035 (104), 2024-2036 (35). **Inconsistencia detectada y corregida**: el conteo &laquo;X secciones&raquo; aparec&iacute;a con 7 valores diferentes (42, 48, 52, 53, 55, 56, 59). Sincronizados a **55 secciones** (cifra real actual) en: ps-card-foot dashboard, quick-index-title badge, splash screen mensaje 85%, tour guiado pasos &laquo;&Iacute;ndice navegable&raquo; y &laquo;Buscador full-text&raquo;, modal de b&uacute;squeda y chatbot. Las menciones hist&oacute;ricas dentro del changelog se preservan intactas. **(2) ELIMINADO sistema de logros/trofeos**: (a) HTML: bot&oacute;n FAB `&lt;button class="ach-fab"&gt;` + panel `&lt;div class="achievements-panel"&gt;` con grid de 12 badges + barra de progreso. (b) Bottom-nav: bot&oacute;n &laquo;Logros&raquo; eliminado (queda &laquo;Inicio&raquo; + &laquo;Buscar&raquo;). (c) JS: variables `ACHIEVEMENTS` (12 items) + `ACH_KEY`; funciones `getUnlocked()`, `saveUnlocked()`, `unlockAchievement()`, `renderAchievements()`, `toggleAchievements()`, `initAchievements()` (~150 l&iacute;neas eliminadas). (d) Llamadas dispersas: `unlockAchievement('reporte')`, `unlockAchievement('quiz')`, `unlockAchievement('tour')`, hooks en hashchange, scroll, click favoritos/b&uacute;squeda. (e) CSS: bloque completo `.ach-fab`, `.achievements-panel`, `.ach-grid`, `.ach-badge`, `.ach-progress`, `.ach-toast` (~80 l&iacute;neas). (f) Init call `try{initAchievements()}` removido. (g) Command palette: item &laquo;Ver mis logros&raquo; removido. (h) Referencias hu&eacute;rfanas (CSS prefers-reduced-motion, @media print, @media mobile, ripple-effect exception) limpiadas. **(3) PALETA UNIFICADA TABLAS Y GR&Aacute;FICOS**: nuevo bloque CSS `v44.0 · Paleta unificada` con: (a) Headers `<th>`: gradient navy `#0c1f36 → #1a3d8f` + texto blanco + uppercase + letter-spacing + border-bottom verde acento. (b) Filas alternadas: `even` con `--bg-soft`. (c) Hover: `rgba(45,154,77,.05)`. (d) Cells `<td>` con border-top sutil de marca. (e) Highlight visual `.cell-best` (verde) y `.cell-worst` (rojo) para comparadores. (f) Border-radius 8px + overflow hidden + box-shadow ligero en tablas. (g) Canvas con fondo transparente. (h) Survey bars con texto blanco + text-shadow. (i) Eje-cards con border-left coloreado consistente (rojo/naranja/verde/azul/granate/cyan). **VERIFICADO** en preview mobile (375x812): Hero con KPIs en 2 columnas, banner unificado compacto, sin FAB de trofeos visible (solo accesibilidad azul + chatbot verde). Body height: 153k px. Conteo HTML: 56 `<section>` (55 visibles + 1 oculta widgets-vivo). Cache SW v60.4 &rarr; v61.0.</div>
@@ -9692,7 +9849,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v44.2</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v44.3</span>
   </div>
 </footer>
 

@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.2
+// PLADECO Rengo 2025-2035 · Service Worker v61.3
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.2: HOTFIX v44.2 - escapados tags HTML en changelog que rompian estructura DOM
+// v61.3: v44.3 - auditoria integral UX visual (15 fixes mobile+desktop)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.2';
+const CACHE_STATIC='pladeco-static-v61.3';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
