@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v60.4
+// PLADECO Rengo 2025-2035 · Service Worker v61.0
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v60.4: v43.4 - eliminada seccion galeria-proceso (Galeria del Proceso Participativo)
+// v61.0: MAJOR v44.0 - auditoria + eliminacion trofeos + paleta tablas/graficos unificada
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v60.4';
+const CACHE_STATIC='pladeco-static-v61.0';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

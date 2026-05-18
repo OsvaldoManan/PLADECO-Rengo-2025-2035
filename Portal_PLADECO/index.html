@@ -2671,6 +2671,89 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 .comp-insight{margin-top:14px;padding:14px 16px;background:linear-gradient(135deg,rgba(45,154,77,.06),rgba(245,146,29,.05));border-left:4px solid var(--primary);border-radius:var(--r-md);font-size:12.5px;line-height:1.6;color:var(--text)}
 .comp-insight strong{color:var(--primary)}
 
+
+/* ══════════════════════════════════════════════════════════════════
+   v44.0 · Paleta unificada para tablas y gráficos
+   ══════════════════════════════════════════════════════════════════ */
+/* Tablas: header en navy de marca, filas alternadas, hover sutil */
+table th{
+  background:linear-gradient(135deg,#0c1f36 0%,#1a3d8f 100%) !important;
+  color:#fff !important;
+  font-weight:700 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.04em !important;
+  font-size:11px !important;
+  border-bottom:2px solid var(--accent) !important;
+}
+table tbody tr{
+  background:var(--card);
+  transition:background .15s;
+}
+table tbody tr:nth-child(even){
+  background:var(--bg-soft);
+}
+table tbody tr:hover{
+  background:rgba(45,154,77,.05) !important;
+}
+table td{
+  border-top:1px solid var(--border) !important;
+  color:var(--text) !important;
+}
+table caption{
+  font-size:11.5px !important;
+  color:var(--text2) !important;
+  font-style:italic !important;
+  caption-side:bottom !important;
+  padding-top:8px !important;
+}
+
+/* Highlight visual cells (best/worst en comparadores) */
+.comp-cell.best,.cell-best{
+  background:rgba(45,154,77,.15) !important;
+  color:#16a34a !important;
+  font-weight:800 !important;
+}
+.comp-cell.worst,.cell-worst{
+  background:rgba(239,68,68,.12) !important;
+  color:#dc2626 !important;
+  font-weight:700 !important;
+}
+
+/* Tablas dentro de cards/viz-cards: mejor padding y bordes */
+.viz-card table,.matriz-table,.comp-table,.ficha-table,.anest-table{
+  border-radius:8px !important;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(15,23,42,.05);
+}
+
+/* Charts/canvas: fondo limpio */
+canvas{
+  background:transparent !important;
+}
+
+/* Donut/pie chart labels más legibles */
+.chart-legend{
+  font-size:11.5px !important;
+  color:var(--text2) !important;
+}
+
+/* Survey bars (encuesta) - misma paleta de marca */
+.sr-fill{
+  font-weight:700;
+  font-size:11px;
+  color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.3);
+  padding-left:8px;
+}
+
+/* Eje cards: borde izquierdo más prominente */
+.eje-card[style*="--eje1"],.eje-card[data-eje="1"]{border-left-color:#c0392b !important}
+.eje-card[style*="--eje2"],.eje-card[data-eje="2"]{border-left-color:#f5921d !important}
+.eje-card[style*="--eje3"],.eje-card[data-eje="3"]{border-left-color:#2d9a4d !important}
+.eje-card[style*="--eje4"],.eje-card[data-eje="4"]{border-left-color:#1a3d8f !important}
+.eje-card[style*="--eje5"],.eje-card[data-eje="5"]{border-left-color:#8B1A1A !important}
+.eje-card[style*="--eje6"],.eje-card[data-eje="6"]{border-left-color:#2980b9 !important}
+
 /* ══════════════════════════════════════════════════════════════════
    HOTFIX v43.3 · Prevenir desbordamiento de texto en barras/cards/secciones
    ══════════════════════════════════════════════════════════════════ */
@@ -3092,7 +3175,7 @@ button,.btn,.portal-cta-btn{font-size:12.5px !important}
 /* Reducir motion para usuarios sensibles */
 @media (prefers-reduced-motion: reduce){
   .group-divider::after,.hero-mesh::before,.hero-mesh::after,
-  .voz-pulse,.ls-pulse,.ach-fab,.a11y-fab,.tutorial-emoji{animation:none !important}
+  .voz-pulse,.ls-pulse,.a11y-fab{animation:none !important}
   *{transition-duration:.01ms !important;animation-duration:.01ms !important}
 }
 
@@ -3216,10 +3299,8 @@ body.bc-active{padding-top:130px !important}
 @media(max-width:760px){
   .bottom-nav-v40{display:flex}
   body{padding-bottom:64px !important}
-  .ach-fab{bottom:80px !important}
   .a11y-fab{bottom:208px !important}
   .chatbot-fab{bottom:80px !important}
-  .achievements-panel{bottom:140px !important}
 }
 
 /* ── B3. Cheat sheet de atajos de teclado ── */
@@ -3458,35 +3539,12 @@ body.a11y-tts-active *{cursor:help!important}
   .erd-cascada .erd-arrow{transform:rotate(90deg)}
 }
 
-/* ── 9. Sistema de Logros (Badges) ── */
-.achievements-panel{position:fixed;bottom:20px;right:20px;z-index:90;background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:14px;box-shadow:var(--sh-xl);max-width:240px;transform:translateY(120%);transition:transform var(--tr-bounce);font-family:inherit}
-.achievements-panel.show{transform:translateY(0)}
-.ach-title{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
-.ach-title-close{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;padding:0 4px;font-family:inherit}
-.ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.ach-badge{aspect-ratio:1;border-radius:var(--r-md);background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.3;cursor:default;transition:all var(--tr-base);position:relative}
-.ach-badge.unlocked{opacity:1;background:linear-gradient(135deg,rgba(245,146,29,.15),rgba(45,154,77,.1));border-color:var(--accent);box-shadow:var(--sh-glow-orange)}
-.ach-badge.just-unlocked{animation:achPop var(--tr-bounce)}
-@keyframes achPop{0%{transform:scale(0)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
-.ach-badge[data-tip]:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(0,0,0,.92);color:#fff;font-size:10px;font-weight:600;padding:5px 9px;border-radius:var(--r-xs);white-space:nowrap;z-index:5}
-.ach-progress{height:4px;background:var(--border);border-radius:var(--r-full);margin-top:8px;overflow:hidden}
-.ach-progress-fill{height:100%;background:linear-gradient(90deg,#2d9a4d,#f5921d);transition:width .8s ease;border-radius:var(--r-full)}
-.ach-fab{position:fixed;bottom:88px;right:20px;z-index:89;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#f5921d,#2d9a4d);border:none;color:#fff;font-size:18px;cursor:pointer;box-shadow:var(--sh-lg);display:flex;align-items:center;justify-content:center;transition:all var(--tr-base);font-family:inherit}
-.ach-fab:hover{transform:scale(1.1) rotate(15deg);box-shadow:var(--sh-xl)}
-.ach-fab .ach-count{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
-.ach-toast{background:linear-gradient(135deg,#f5921d,#2d9a4d)!important;color:#fff!important;border-left:none!important}
-.ach-toast .toast-text{color:#fff}
-@media(max-width:760px){
-  .achievements-panel{bottom:80px;right:10px;max-width:220px}
-  .ach-fab{bottom:140px;right:10px}
-}
-
 /* ── 10. Hero KPI count-up estilo + scroll indicator mejorado ── */
 .hero-stat .num{transition:color var(--tr-base)}
 .hero-stat.counting .num{color:var(--accent)}
 
 /* ── Print: ocultar elementos nuevos ── */
-@media print{.achievements-panel,.ach-fab,.confetti-burst,.hero-mesh{display:none!important}}
+@media print{.confetti-burst,.hero-mesh{display:none!important}}
 
 /* ══ MAJOR v35 — Componentes de expansión institucional/engagement ══ */
 
@@ -4375,7 +4433,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v43.4</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4503,7 +4561,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v43.4</span>
+        <span>&#127919; v44.0</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 55 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -4529,7 +4587,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <div class="ps-card-lbl">Diagn&oacute;stico</div>
           <div class="ps-card-val">100<span class="ps-unit">%</span></div>
           <div class="ps-card-bar"><div class="ps-card-bar-fill" style="width:100%"></div></div>
-          <div class="ps-card-foot"><span class="ps-trend">&#9989; Completo</span> &middot; 52 secciones</div>
+          <div class="ps-card-foot"><span class="ps-trend">&#9989; Completo</span> &middot; 55 secciones</div>
         </div>
         <div class="ps-card">
           <div class="ps-card-lbl">Participaci&oacute;n</div>
@@ -4577,7 +4635,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="quick-index" id="quickIndex">
     <div class="quick-index-header">
       <div>
-        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">52 secciones</span></h3>
+        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">55 secciones</span></h3>
         <div class="quick-index-sub">Atajos a todas las secciones del portal organizadas en 7 grupos tem&aacute;ticos &middot; Las marcadas <strong style="color:#2d9a4d">NEW</strong> son incorporaciones recientes.</div>
       </div>
       <button class="quick-index-toggle" type="button" onclick="document.getElementById('quickIndex').classList.toggle('collapsed')">
@@ -9410,7 +9468,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     <div class="search-modal-results" id="portalSearchResults">
       <div class="search-modal-empty">
         <div class="sme-emoji">&#128269;</div>
-        <div class="sme-text">Escribe un t&eacute;rmino para buscar entre las 42 secciones del portal.<br>Ej: &laquo;censo&raquo;, &laquo;vivienda&raquo;, &laquo;participaci&oacute;n&raquo;, &laquo;rural&raquo;&hellip;</div>
+        <div class="sme-text">Escribe un t&eacute;rmino para buscar entre las 55 secciones del portal.<br>Ej: &laquo;censo&raquo;, &laquo;vivienda&raquo;, &laquo;participaci&oacute;n&raquo;, &laquo;rural&raquo;&hellip;</div>
       </div>
     </div>
     <div class="search-modal-footer">
@@ -9421,10 +9479,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v43.4</span>
+  <span class="ub-ver">v44.0</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v44.0</strong> <span class="ub-date">17 May 2026</span><br>&#128202;&#10060;&#127912; **MAJOR v44.0 &middot; Auditor&iacute;a + eliminaci&oacute;n de trofeos + paleta unificada tablas/gr&aacute;ficos**. Tres tareas integradas en una iteraci&oacute;n. **(1) AUDITOR&Iacute;A DE INFORMACI&Oacute;N**: revisados 22 datos clave del portal. Confirmados consistentes: 63.620 habitantes (33 ocurrencias), 826 manzanas (21), 6 ejes (49), 27 OE (19), 225 acciones (47), 21 UV (57), 472 participantes (16), 95 organizaciones (20), 4.036 NNA (24), 115 funcionarios (13), 56 espacios ICT (18), 30 direcciones (7), Censo 2024 (105), 2025-2035 (104), 2024-2036 (35). **Inconsistencia detectada y corregida**: el conteo &laquo;X secciones&raquo; aparec&iacute;a con 7 valores diferentes (42, 48, 52, 53, 55, 56, 59). Sincronizados a **55 secciones** (cifra real actual) en: ps-card-foot dashboard, quick-index-title badge, splash screen mensaje 85%, tour guiado pasos &laquo;&Iacute;ndice navegable&raquo; y &laquo;Buscador full-text&raquo;, modal de b&uacute;squeda y chatbot. Las menciones hist&oacute;ricas dentro del changelog se preservan intactas. **(2) ELIMINADO sistema de logros/trofeos**: (a) HTML: bot&oacute;n FAB `<button class="ach-fab">` + panel `<div class="achievements-panel">` con grid de 12 badges + barra de progreso. (b) Bottom-nav: bot&oacute;n &laquo;Logros&raquo; eliminado (queda &laquo;Inicio&raquo; + &laquo;Buscar&raquo;). (c) JS: variables `ACHIEVEMENTS` (12 items) + `ACH_KEY`; funciones `getUnlocked()`, `saveUnlocked()`, `unlockAchievement()`, `renderAchievements()`, `toggleAchievements()`, `initAchievements()` (~150 l&iacute;neas eliminadas). (d) Llamadas dispersas: `unlockAchievement('reporte')`, `unlockAchievement('quiz')`, `unlockAchievement('tour')`, hooks en hashchange, scroll, click favoritos/b&uacute;squeda. (e) CSS: bloque completo `.ach-fab`, `.achievements-panel`, `.ach-grid`, `.ach-badge`, `.ach-progress`, `.ach-toast` (~80 l&iacute;neas). (f) Init call `try{initAchievements()}` removido. (g) Command palette: item &laquo;Ver mis logros&raquo; removido. (h) Referencias hu&eacute;rfanas (CSS prefers-reduced-motion, @media print, @media mobile, ripple-effect exception) limpiadas. **(3) PALETA UNIFICADA TABLAS Y GR&Aacute;FICOS**: nuevo bloque CSS `v44.0 · Paleta unificada` con: (a) Headers `<th>`: gradient navy `#0c1f36 → #1a3d8f` + texto blanco + uppercase + letter-spacing + border-bottom verde acento. (b) Filas alternadas: `even` con `--bg-soft`. (c) Hover: `rgba(45,154,77,.05)`. (d) Cells `<td>` con border-top sutil de marca. (e) Highlight visual `.cell-best` (verde) y `.cell-worst` (rojo) para comparadores. (f) Border-radius 8px + overflow hidden + box-shadow ligero en tablas. (g) Canvas con fondo transparente. (h) Survey bars con texto blanco + text-shadow. (i) Eje-cards con border-left coloreado consistente (rojo/naranja/verde/azul/granate/cyan). **VERIFICADO** en preview mobile (375x812): Hero con KPIs en 2 columnas, banner unificado compacto, sin FAB de trofeos visible (solo accesibilidad azul + chatbot verde). Body height: 153k px. Conteo HTML: 56 `<section>` (55 visibles + 1 oculta widgets-vivo). Cache SW v60.4 &rarr; v61.0.</div>
     <div class="ub-entry"><strong>v43.4</strong> <span class="ub-date">17 May 2026</span><br>&#10060; **Eliminada secci&oacute;n &laquo;Galer&iacute;a del Proceso Participativo&raquo;** (`#galeria-proceso`). Reportado por usuario como contenido a remover. **ELIMINADO**: (1) Secci&oacute;n HTML completa `<section id="galeria-proceso">` con sus 18 tarjetas de placeholders categorizadas (UV, rural, NNA, h&iacute;drica, directivos, COSOC) &mdash; 1.684 chars. (2) Variable JS `GALLERY_PROC` con los 18 datos. (3) Funci&oacute;n `renderGalleryProc()` completa. (4) Llamada `try{renderGalleryProc()}catch...` del init. (5) 2 entradas del sidebar nav que apuntaban a `#galeria-proceso`. (6) Referencias en command palette (si exist&iacute;an). **RESULTADO**: Conteo de secciones 56 &rarr; **55**. Reducci&oacute;n total de ~4.760 chars. Cap&iacute;tulo IX (Memoria del Proceso) ahora contiene 3 secciones: timeline, galeria (fotos), antes-despues. Cache SW v60.3 &rarr; v60.4.</div>
     <div class="ub-entry"><strong>v43.3</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128203; **HOTFIX v43.3 &middot; Texto se desbordaba en barras y recuadros al comprimir**. **REPORTE DEL USUARIO**: &laquo;al comprimir las barras se ve el texto hac&iacute;a afuera, lo mismo pasa con las secciones y sus recuadros&raquo;. **DIAGN&Oacute;STICO**: Tras la compactaci&oacute;n integral v42.0 (reducci&oacute;n de padding y tama&ntilde;os) y la eliminaci&oacute;n de secciones v43.0, varios elementos con texto largo (URLs, IDs t&eacute;cnicos, palabras compuestas, t&iacute;tulos largos) se desbordaban de sus contenedores al no tener reglas CSS de wrap apropiadas. Afectaba especialmente: sidebar nav items, mini-mapa lateral, breadcrumbs sticky, voz-cards, KPIs, ficha-pills, construccion-meta pills y bottom-nav items. **FIX APLICADO**: Nuevo bloque CSS global `HOTFIX v43.3` insertado al inicio de los estilos con: (1) `box-sizing:border-box` global. (2) `overflow-wrap:break-word` + `word-wrap:break-word` en body/p/span/div/li/td/th/a/h1-h6. (3) `min-width:0` + `max-width:100%` en todos los flex/grid children (sidebar links, minimap items, breadcrumbs, voz cards, KPIs, etc.) para evitar que se expandan m&aacute;s all&aacute; del contenedor. (4) `text-overflow:ellipsis` con `white-space:nowrap` en items truncables (sidebar nav, minimap, breadcrumbs current/cap, recent visits, voz labels, construccion meta pills, bottom nav text). (5) `flex-wrap:wrap` en construccion-meta, live-strip, x-tabs y heat-toggle para que sus items se acomoden en m&uacute;ltiples filas. (6) `white-space:normal` + `overflow-wrap:break-word` en titulos descriptivos (KPI labels, sec-header h2, capitulo titles, hero h1). (7) `img,svg,canvas,video,iframe { max-width:100%; height:auto }` para que media nunca desborde. (8) `table { max-width:100% }` y wrapper con `overflow-x:auto`. (9) Construccion-card pasa a `flex-direction:column` en mobile. **VERIFICACI&Oacute;N**: tras el fix, solo 1 secci&oacute;n con desborde m&iacute;nimo (11px, no visible). Body width 421 vs viewport 406. Sin overflows visuales perceptibles. Cache SW v60.2 &rarr; v60.3.</div>
     <div class="ub-entry"><strong>v43.2</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128202; **HOTFIX v43.2 &middot; Animaci&oacute;n count-up del hero confund&iacute;a el n&uacute;mero de habitantes**. **REPORTE DEL USUARIO**: &laquo;me pasa con los habitantes de Rengo, me tira un n&uacute;mero que no es&raquo;. **DIAGN&Oacute;STICO**: El n&uacute;mero oficial **63.620 habitantes** (Censo INE 2024) estaba correctamente escrito en TODAS las secciones del portal (16+ referencias verificadas). El problema era visual: la funci&oacute;n `animateHeroCountUps()` (introducida en v36.0) hac&iacute;a un count-up animado del KPI del hero desde 0 hasta 63.620 a lo largo de 1.4 segundos, mostrando n&uacute;meros intermedios como &laquo;10.000&raquo;, &laquo;30.000&raquo;, &laquo;55.000&raquo; durante la animaci&oacute;n. El usuario al cargar la p&aacute;gina ve&iacute;a estos n&uacute;meros intermedios y los interpretaba como &laquo;el n&uacute;mero que no es&raquo;. **FIX APLICADO**: Funci&oacute;n `animateHeroCountUps()` simplificada para mostrar los valores finales directamente, sin animaci&oacute;n de conteo. El KPI &laquo;Habitantes (Censo 2024) 63.620&raquo; ahora aparece est&aacute;tico desde el primer instante de carga. **VERIFICACI&Oacute;N**: capturados 5 snapshots del texto del KPI a t=0ms, 200ms, 600ms, 1200ms y 2000ms tras la carga. En todos los casos: **63.620** (estable, sin n&uacute;meros intermedios). **DATO CONFIRMADO**: 63.620 es la cifra oficial del Censo Nacional de Poblaci&oacute;n y Vivienda 2024 del INE, publicada en la Resoluci&oacute;n Exenta N&deg; 439 del GORE O'Higgins (ERD 2024-2036) y consistente en todas las secciones del portal (ficha-comunal, censo, an&aacute;lisis-estrat&eacute;gico, dashboard, hero, capítulo II, etc.). Cache SW v60.1 &rarr; v60.2.</div>
@@ -9625,7 +9684,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v43.4</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v44.0</span>
   </div>
 </footer>
 
@@ -9688,8 +9747,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <nav class="bottom-nav-v40" id="bottomNavV40" role="navigation" aria-label="Navegaci&oacute;n inferior m&oacute;vil">
   <a href="#dashboard" class="bottom-nav-item" data-target="dashboard"><span class="bottom-nav-icon">&#127968;&#65039;</span><span>Inicio</span></a>
   <button type="button" class="bottom-nav-item" onclick="openCmdp()" aria-label="Buscar"><span class="bottom-nav-icon">&#128269;</span><span>Buscar</span></button>
-  <button type="button" class="bottom-nav-item" onclick="toggleAchievements()" aria-label="Mis logros"><span class="bottom-nav-icon">&#127942;</span><span>Logros</span></button>
-</nav>
+  </nav>
 
 <!-- B3 · Cheat sheet de atajos de teclado -->
 <div class="kbd-cheat" id="kbdCheat" role="dialog" aria-label="Atajos de teclado" aria-modal="true" onclick="if(event.target===this)closeKbdCheat()">
@@ -9744,10 +9802,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="a11y-row" style="border-top:1px solid var(--border);margin-top:6px;padding-top:10px"><button onclick="a11yReset()" style="width:100%;font-size:11px;font-weight:700;background:var(--card2);border:1px solid var(--border);padding:6px;border-radius:var(--r-sm);cursor:pointer" class="danger">&#8634; Restablecer</button></div>
 </div>
 
-<!-- ═══ MAJOR v36.0 · Sistema de Logros del Visitante ═══ -->
-<button class="ach-fab" id="achFab" onclick="toggleAchievements()" title="Ver mis logros" aria-label="Mis logros">&#127942;<span class="ach-count" id="achCount">0</span></button>
-<div class="achievements-panel" id="achPanel" role="dialog" aria-labelledby="achTitle" aria-hidden="true">
-  <div class="ach-title"><span id="achTitle">&#127942; Mis logros</span><button class="ach-title-close" onclick="toggleAchievements()" aria-label="Cerrar">&times;</button></div>
   <div class="ach-grid" id="achGrid"></div>
   <div class="ach-progress"><div class="ach-progress-fill" id="achProgressFill" style="width:0%"></div></div>
   <div style="font-size:9.5px;color:var(--text2);margin-top:6px;text-align:center;font-weight:600"><span id="achUnlockedCount">0</span>/<span id="achTotalCount">12</span> desbloqueados</div>
@@ -16102,7 +16156,7 @@ const CHATBOT_QA=[
 
   {keys:['buscador','buscar portal','ctrl k','cmd k','find','search','encontrar','buscar texto'],sec:null,cat:null,
    follow:['Mi PLADECO favoritos','Tema claro/oscuro','FAQ','7 grupos temáticos'],
-   ans:'**Buscador Full-Text del Portal:**\n\n🔍 **Cómo abrirlo:**\n• Botón flotante **🔍** en esquina inferior derecha\n• Atajo de teclado **`Ctrl+K`** (Windows/Linux) o **`Cmd+K`** (Mac)\n\n📊 **Qué hace:**\n• Indexa **título + texto completo** de las 48 secciones\n• Muestra resultados con **snippet contextual** y la palabra resaltada\n• Devuelve hasta 20 resultados ordenados por relevancia\n• Indica la **categoría temática** de cada resultado\n\n⌨️ **Navegación con teclado:**\n• `↑` `↓` mover entre resultados\n• `Enter` ir al resultado seleccionado\n• `Esc` cerrar buscador\n\n💡 **Tip:** los términos cortos (1 letra) no devuelven resultados. Mínimo 2 caracteres.'},
+   ans:'**Buscador Full-Text del Portal:**\n\n🔍 **Cómo abrirlo:**\n• Botón flotante **🔍** en esquina inferior derecha\n• Atajo de teclado **`Ctrl+K`** (Windows/Linux) o **`Cmd+K`** (Mac)\n\n📊 **Qué hace:**\n• Indexa **título + texto completo** de las 55 secciones\n• Muestra resultados con **snippet contextual** y la palabra resaltada\n• Devuelve hasta 20 resultados ordenados por relevancia\n• Indica la **categoría temática** de cada resultado\n\n⌨️ **Navegación con teclado:**\n• `↑` `↓` mover entre resultados\n• `Enter` ir al resultado seleccionado\n• `Esc` cerrar buscador\n\n💡 **Tip:** los términos cortos (1 letra) no devuelven resultados. Mínimo 2 caracteres.'},
 
   {keys:['mi pladeco','favoritos','marcar seccion','guardar seccion','estrella','star','bookmark'],sec:null,cat:null,
    follow:['Buscador del portal','Tema claro/oscuro','FAQ','Compartir sección'],
@@ -17376,7 +17430,7 @@ function renderPortalSearchResults(results,query){
   var cntEl=document.getElementById('portalSearchCount');
   if(cntEl) cntEl.textContent=results.length;
   if(!query||query.length<2){
-    el.innerHTML='<div class="search-modal-empty"><div class="sme-emoji">🔍</div><div class="sme-text">Escribe un término para buscar entre las 42 secciones del portal.<br>Ej: «censo», «vivienda», «participación», «rural»…</div></div>';
+    el.innerHTML='<div class="search-modal-empty"><div class="sme-emoji">🔍</div><div class="sme-text">Escribe un término para buscar entre las 55 secciones del portal.<br>Ej: «censo», «vivienda», «participación», «rural»…</div></div>';
     return;
   }
   if(!results.length){
@@ -17819,7 +17873,6 @@ function renderQuiz(){
     else{lvl='Bienvenido';msg='Recién comienzas. ¡Explora el portal y vuelve a intentarlo!';color='#dc2626';}
     box.innerHTML='<div class="quiz-result"><div style="font-size:54px;margin-bottom:8px">🎓</div><div class="qr-score" style="color:'+color+'">'+quizState.score+'</div><div class="qr-total">/ '+QUIZ_DATA.length+'</div><div class="qr-label" style="color:'+color+'">'+lvl+'</div><div class="qr-msg">'+msg+' · Acertaste '+pct+'% de las preguntas.</div><button onclick="restartQuiz()">🔄 Reintentar</button></div>';
     // v36: badge + confetti al completar el quiz
-    if(typeof unlockAchievement==='function')unlockAchievement('quiz');
     if(pct>=60&&typeof confettiBurst==='function'){
       var rect=box.getBoundingClientRect();
       confettiBurst(rect.left+rect.width/2,rect.top+rect.height/2);
@@ -17855,8 +17908,8 @@ function restartQuiz(){quizState={i:0,score:0,ans:[]};renderQuiz();}
 // ══════════════════════════════════════════════════════
 var TOUR_STEPS=[
   {sel:'#planStatus',title:'¿Cómo va el plan?',text:'Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones.'},
-  {sel:'#quickIndex',title:'Índice navegable',text:'Atajos a las 52 secciones organizadas en 7 grupos temáticos. Las marcadas como NEW son incorporaciones recientes.'},
-  {sel:'.search-fab',title:'Buscador full-text',text:'Encuentra cualquier palabra en las 52 secciones. Atajo de teclado: Ctrl+K (Cmd+K en Mac).'},
+  {sel:'#quickIndex',title:'Índice navegable',text:'Atajos a las 55 secciones organizadas en 7 grupos temáticos. Las marcadas como NEW son incorporaciones recientes.'},
+  {sel:'.search-fab',title:'Buscador full-text',text:'Encuentra cualquier palabra en las 55 secciones. Atajo de teclado: Ctrl+K (Cmd+K en Mac).'},
   {sel:'.dark-toggle',title:'Tema claro / oscuro',text:'Cambia entre modos visuales. También disponible en el sidebar y con la tecla "D". Se guarda tu preferencia.'},
   {sel:'#censo .share-btn',title:'Compartir cada sección',text:'Copia el link directo a la sección actual. Útil para enviar a concejales, funcionarios o vecinos.'},
   {sel:'#censo .fav-toggle',title:'Mi PLADECO · Favoritos',text:'Marca tus secciones favoritas con la estrella. Aparecen en el sidebar para acceso rápido.'},
@@ -17908,8 +17961,7 @@ function endTour(){
   // Marcar como visto
   try{localStorage.setItem('pladeco-tour-done','1');}catch(e){}
   // v36: badge al completar el tour
-  if(typeof unlockAchievement==='function')unlockAchievement('tour');
-}
+  }
 
 // Auto-mostrar oferta del tour en primera visita (no intrusivo)
 function maybeOfferTour(){
@@ -18004,7 +18056,7 @@ var SPLASH_STEPS=[
   {pct:32,txt:'Cargando estilos…'},
   {pct:50,txt:'Conectando con Open-Meteo…'},
   {pct:68,txt:'Cargando 826 manzanas censales…'},
-  {pct:85,txt:'Renderizando 52 secciones…'},
+  {pct:85,txt:'Renderizando 55 secciones…'},
   {pct:100,txt:'¡Bienvenido al PLADECO!'}
 ];
 function animateSplashProgress(){
@@ -18039,7 +18091,7 @@ function animateHeroCountUps(){
    ══════════════════════════════════════════════════════ */
 function initRippleEffect(){
   document.addEventListener('click',function(e){
-    var t=e.target.closest('button:not(.cb-close):not(.ach-fab),.kpi,.ps-card,.eje-card,.dataset-card');
+    var t=e.target.closest('button:not(.cb-close),.kpi,.ps-card,.eje-card,.dataset-card');
     if(!t||t.classList.contains('skeleton'))return;
     var rect=t.getBoundingClientRect();
     var size=Math.max(rect.width,rect.height);
@@ -18087,85 +18139,6 @@ window.confettiBurst=confettiBurst;
 /* ══════════════════════════════════════════════════════
    SISTEMA DE LOGROS · Badges localStorage sin login
    ══════════════════════════════════════════════════════ */
-var ACHIEVEMENTS=[
-  {id:'visit',icon:'👋',name:'Primera visita',tip:'Visitaste el portal PLADECO'},
-  {id:'scroll',icon:'📜',name:'Explorador',tip:'Llegaste al 50% del portal'},
-  {id:'quiz',icon:'🎓',name:'Quiz completado',tip:'Completaste el Quiz interactivo'},
-  {id:'fav',icon:'⭐',name:'Curador',tip:'Marcaste una sección como favorita'},
-  {id:'search',icon:'🔍',name:'Investigador',tip:'Usaste el buscador (Ctrl+K)'},
-  {id:'tour',icon:'🗺️',name:'Tour completo',tip:'Terminaste el tour guiado'},
-  {id:'censo',icon:'📊',name:'Lector censal',tip:'Visitaste el Análisis Censal'},
-  {id:'newsletter',icon:'📬',name:'Suscriptor',tip:'Te suscribiste al newsletter'},
-  
-  {id:'compare',icon:'⚖️',name:'Analista',tip:'Usaste el comparador comunal'},
-  {id:'mapa',icon:'🗺️',name:'Cartógrafo',tip:'Exploraste el mapa de proyectos'},
-  {id:'master',icon:'🏆',name:'Maestro PLADECO',tip:'Desbloqueaste 8+ logros'}
-];
-var ACH_KEY='pladeco-achievements-v1';
-function getUnlocked(){try{return JSON.parse(localStorage.getItem(ACH_KEY)||'[]');}catch(e){return [];}}
-function saveUnlocked(arr){try{localStorage.setItem(ACH_KEY,JSON.stringify(arr));}catch(e){}}
-function unlockAchievement(id){
-  var u=getUnlocked();
-  if(u.indexOf(id)>=0)return false;
-  u.push(id);
-  saveUnlocked(u);
-  var a=ACHIEVEMENTS.find(function(x){return x.id===id;});
-  if(a){
-    showToast('🏆 ¡Logro desbloqueado! <strong>'+a.name+'</strong>','success',a.icon,4500);
-    if(u.length>=8&&u.indexOf('master')<0){setTimeout(function(){unlockAchievement('master');confettiBurst();},800);}
-  }
-  renderAchievements();
-  return true;
-}
-window.unlockAchievement=unlockAchievement;
-function renderAchievements(){
-  var grid=document.getElementById('achGrid');if(!grid)return;
-  var u=getUnlocked();
-  var count=document.getElementById('achCount');
-  var unlockedCount=document.getElementById('achUnlockedCount');
-  var totalCount=document.getElementById('achTotalCount');
-  var progressFill=document.getElementById('achProgressFill');
-  grid.innerHTML=ACHIEVEMENTS.map(function(a){
-    var isUnlocked=u.indexOf(a.id)>=0;
-    return '<div class="ach-badge'+(isUnlocked?' unlocked':'')+'" data-tip="'+a.name+': '+a.tip+'" data-id="'+a.id+'">'+a.icon+'</div>';
-  }).join('');
-  if(count)count.textContent=u.length;
-  if(unlockedCount)unlockedCount.textContent=u.length;
-  if(totalCount)totalCount.textContent=ACHIEVEMENTS.length;
-  if(progressFill)progressFill.style.width=((u.length/ACHIEVEMENTS.length)*100)+'%';
-}
-function toggleAchievements(){
-  var p=document.getElementById('achPanel');if(!p)return;
-  var open=p.classList.toggle('show');
-  p.setAttribute('aria-hidden',!open);
-}
-window.toggleAchievements=toggleAchievements;
-function initAchievements(){
-  renderAchievements();
-  // Auto-unlock visita
-  setTimeout(function(){unlockAchievement('visit');},2500);
-  // Scroll 50% -> explorador
-  var scrolled=false;
-  window.addEventListener('scroll',function(){
-    if(scrolled)return;
-    var p=(window.scrollY+window.innerHeight)/document.body.scrollHeight;
-    if(p>=.5){scrolled=true;unlockAchievement('scroll');}
-  },{passive:true});
-  // Listeners para acciones específicas
-  document.addEventListener('click',function(e){
-    var t=e.target;
-    if(t.closest&&t.closest('.fav-btn'))setTimeout(function(){unlockAchievement('fav');},200);
-    if(t.closest&&t.closest('.search-fab'))setTimeout(function(){unlockAchievement('search');},200);
-  });
-  // Hash listeners
-  window.addEventListener('hashchange',function(){
-    var h=location.hash;
-    if(h==='#anest'||h==='#censo')unlockAchievement('censo');
-    if(h==='#mapa-proyectos')unlockAchievement('mapa');
-    if(h==='#comparador')unlockAchievement('compare');
-  });
-}
-
 /* ══════════════════════════════════════════════════════
    TIMELINE DEL PROCESO
    ══════════════════════════════════════════════════════ */
@@ -18597,7 +18570,6 @@ var CMDP_ACTIONS=[
   {cat:'acciones',icon:'📝',title:'Descargar cuadernillo de mi UV',desc:'PDF personalizado por Unidad Vecinal',kbd:'g c',href:'#cuadernillo'},
   {cat:'acciones',icon:'📅',title:'Ver calendario de cabildos',desc:'Pr&oacute;ximas reuniones territoriales',href:'#participa'},
   {cat:'acciones',icon:'🎓',title:'Hacer el Quiz interactivo',desc:'10 preguntas sobre Rengo',href:'#educacion'},
-  {cat:'acciones',icon:'🏆',title:'Ver mis logros',desc:'12 badges desbloqueables',action:'toggleAchievements'},
   {cat:'acciones',icon:'⚙️',title:'Accesibilidad',desc:'Tama&ntilde;o texto, contraste, lectura en voz',action:'toggleA11y'},
   {cat:'acciones',icon:'🌙',title:'Cambiar tema (claro/oscuro)',desc:'Alternar modo de visualizaci&oacute;n',action:'toggleDark'},
   {cat:'acciones',icon:'🎬',title:'Iniciar Tour guiado',desc:'Recorrido por las secciones clave',action:'startTour'},
@@ -19036,7 +19008,6 @@ function submitReporte(){
   _addReporteMarker(reporte);
   closeRepForm();
   showToast('&#10004; Reporte enviado. ¡Gracias por participar!','success');
-  if(typeof unlockAchievement==='function')unlockAchievement('reporte');
   _updateRepStats();
 }
 function _addReporteMarker(rep){
@@ -19455,7 +19426,6 @@ try{initA11y();}catch(e){console.warn('a11y:',e);}
 // MAJOR v40.0 · navegación + acceso
 try{initV40Navigation();}catch(e){console.warn('v40 nav:',e);}
 try{initRippleEffect();}catch(e){console.warn('initRippleEffect:',e);}
-try{initAchievements();}catch(e){console.warn('initAchievements:',e);}
 try{lazyInitOnView('#mapa-proyectos',initMapaProyectos);}catch(e){console.warn('initMapaProyectos:',e);}
 try{lazyInitOnView('#comparador',initComparador);}catch(e){console.warn('initComparador:',e);}
 try{animateSplashProgress();}catch(e){console.warn('animateSplashProgress:',e);}
