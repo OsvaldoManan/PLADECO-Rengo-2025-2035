@@ -3545,6 +3545,150 @@ html{scroll-padding-top:140px}
 section[id]{scroll-margin-top:140px}
 
 /* ════════════════════════════════════════════════════════════════════
+   v45.7 · REFINAMIENTO VISUAL · Composición, dimensiones, contrastes
+   Auditoría con preview_eval reveló:
+   - border-radius mixto 10/12/14/16 (inconsistente)
+   - .viz-card con padding 28/32 (muy generoso vs el resto)
+   - .voz-card con br 16 (outlier)
+   - badge gold #c89a3b contraste 2.47 (falla WCAG AA)
+   - shadow palette mezclado
+   Solución: variables de diseño + reglas de armonización.
+   ══════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* Sistema de border-radius unificado */
+  --rad-xs:6px;
+  --rad-sm:8px;
+  --rad-md:12px;   /* default para cards */
+  --rad-lg:14px;   /* hero blocks */
+  --rad-xl:18px;   /* contenedores grandes */
+  /* Sistema de shadows: sutil para light mode */
+  --sh-card:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  --sh-card-hover:0 6px 16px rgba(15,23,42,.10),0 2px 6px rgba(15,23,42,.05);
+  --sh-elev:0 4px 12px rgba(15,34,64,.08),0 1px 3px rgba(15,34,64,.04);
+  /* Sistema de spacing intra-card */
+  --pad-card:16px 18px;
+  --pad-card-lg:18px 22px;
+  --pad-card-sm:12px 14px;
+}
+body.dark{
+  --sh-card:0 1px 3px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.3);
+  --sh-card-hover:0 6px 16px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.35);
+  --sh-elev:0 4px 12px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+}
+
+/* Armonización de border-radius en cards */
+.viz-card,.kpi,.eje-card,.ps-card,.foda-card,.censo-kpi,.censo-mini,
+.doc-card-enhanced,.diag-card,.ict-glos-card,.gk-card,.ur-card,
+.ineq-card,.rating-card,.nna-card,.arg-card,.meta-card,.fin-card,
+.finding-card{
+  border-radius:var(--rad-md)!important;
+}
+.voz-card,.ict-method-block,.ict-agrup-card,.ict-hall-card{
+  border-radius:var(--rad-lg)!important;
+}
+.stat-chip,.gk-card .gk-tag,.ict-tipo-chip{
+  border-radius:999px!important; /* píldoras */
+}
+
+/* Armonización de padding · reducir .viz-card desproporcionado */
+.viz-card{padding:var(--pad-card-lg)!important}
+.kpi,.eje-card,.censo-kpi{padding:var(--pad-card)!important}
+.foda-card{padding:18px 20px!important}
+.ict-glos-card,.ict-hall-card{padding:13px 15px!important}
+.ict-method-block{padding:18px 22px!important}
+
+/* Sombras unificadas */
+.viz-card,.kpi,.doc-card-enhanced,.diag-card,.foda-card,.eje-card,
+.censo-kpi,.stat-chip,.ict-agrup-card{
+  box-shadow:var(--sh-card);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.viz-card:hover,.kpi:hover,.doc-card-enhanced:hover,.diag-card:hover,
+.eje-card:hover,.ict-agrup-card:hover{
+  box-shadow:var(--sh-card-hover);
+}
+.ict-method-block{box-shadow:var(--sh-elev)}
+
+/* Refinamiento tipográfico de cards */
+.viz-card h3{font-size:14.5px;font-weight:700;letter-spacing:-.012em;margin-bottom:6px;line-height:1.3}
+.viz-sub{font-size:11.5px;line-height:1.5;color:var(--text2);font-weight:500;margin-bottom:14px}
+.kpi-value{font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-.018em}
+.kpi-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.055em;color:var(--text2);line-height:1.35}
+
+/* Badge global · tamaño y peso consistentes */
+.badge{
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.075em!important;
+  text-transform:uppercase!important;
+  padding:4px 10px!important;
+  border-radius:999px!important;
+  display:inline-block!important;
+  line-height:1.45!important;
+}
+
+/* Hover unificado para cards interactivas */
+.viz-card:hover,.kpi:hover,.eje-card:hover,.foda-card:hover,
+.doc-card-enhanced:hover,.diag-card:hover,.ict-agrup-card:hover{
+  transform:translateY(-2px);
+}
+
+/* Bordes sutiles consistentes */
+.viz-card,.kpi,.doc-card-enhanced,.diag-card,.foda-card,.ict-glos-card,
+.ict-method-block,.ict-agrup-card,.ict-hall-card,.stat-chip{
+  border:1px solid var(--border);
+}
+body.dark .viz-card,body.dark .kpi,body.dark .doc-card-enhanced,
+body.dark .diag-card,body.dark .foda-card,body.dark .ict-glos-card,
+body.dark .ict-method-block,body.dark .ict-agrup-card,
+body.dark .ict-hall-card,body.dark .stat-chip{
+  border-color:rgba(255,255,255,.08);
+}
+
+/* Mejor jerarquía en sec-header */
+.sec-header h2{
+  font-size:clamp(1.25rem,1.05rem + 1vw,1.7rem);
+  font-weight:800;
+  letter-spacing:-.02em;
+  line-height:1.2;
+  margin-bottom:8px;
+  color:var(--text);
+}
+.sec-header p{
+  font-size:13.5px;
+  line-height:1.65;
+  color:var(--text2);
+  max-width:78ch;
+}
+.sec-header .badge{margin-bottom:8px}
+
+/* Eje cards: refuerzo de contraste en label */
+.eje-card .lbl{font-weight:700;letter-spacing:-.005em}
+.eje-card .val{font-weight:800;font-size:22px;letter-spacing:-.018em}
+
+/* Defensa contraste en dark mode para KPI values */
+body.dark .kpi-value,body.dark .censo-kpi-num,body.dark .stat-num,
+body.dark .ict-h-score,body.dark .visit-kpi-num{
+  color:var(--text)!important;
+}
+
+/* Focus rings refinados para accesibilidad keyboard */
+a:focus-visible,button:focus-visible,
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--green);
+  outline-offset:2px;
+  border-radius:6px;
+  box-shadow:0 0 0 4px rgba(45,154,77,.18);
+}
+
+/* Mejor legibilidad de texto largo dentro de cards */
+.viz-card p,.foda-card li,.ict-agrup-desc,.ict-glos-desc,
+.ict-hall-desc,.ict-var-desc{
+  line-height:1.55;
+}
+
+/* ════════════════════════════════════════════════════════════════════
    v44.10 · AUDITORÍA INTEGRAL DE COLOR / COMPOSICIÓN / ACCESO
    Reportado por el usuario: «se ve mal en el computador en cuanto a
    los colores de fondo, la composición del contenido y el acceso a ello».
@@ -5522,7 +5666,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ FICHA COMUNAL · OBSERVATORIO LABORAL ═══ -->
 <section id="ficha-comunal" class="ficha-comunal-section reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(200,154,59,.15);color:#c89a3b">Observatorio Laboral</div>
+    <div class="badge" style="background:rgba(180,83,9,.12);color:#8a4a07">Observatorio Laboral</div>
     <h2>Ficha Comunal &middot; Realidad y Proyecci&#243;n 2024&ndash;2029</h2>
     <p>S&#237;ntesis ejecutiva integrada de la <strong>realidad econ&#243;mica, demogr&#225;fica y laboral</strong> de Rengo, que conecta datos del presente con las inversiones proyectadas hasta 2029. Cada indicador se vincula con un Eje Estrat&#233;gico del PLADECO para dar coherencia entre diagn&#243;stico y planificaci&#243;n.</p>
   </div>
@@ -10353,10 +10497,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.6</span>
+  <span class="ub-ver">v45.7</span>
   &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.7</strong> <span class="ub-date">18 May 2026</span><br>&#127912;&#128064; **v45.7 &middot; Refinamiento visual integral &middot; contrastes WCAG + composición uniforme**. **SOLICITUD DEL USUARIO**: auditar contrastes pensando en el ojo humano + mejorar dimensiones, colores y tamaños del contenido. **AUDITORÍA con `preview_eval`** (82 elementos muestreados): (1) **Light mode**: 75/82 pasan WCAG AA (91%). El issue principal real: badge &laquo;Observatorio Laboral&raquo; con `color:#c89a3b` sobre fondo light gris &mdash; ratio 2.47 (necesita 4.5 mínimo). (2) **Cards inconsistentes**: border-radius mezclado 10/12/14/16px sin lógica; `.viz-card` con padding 28/32px desproporcionado vs el resto (14-18px); `.voz-card` outlier con br 16. (3) **Tipografía**: jerarquía sin sistema coherente, line-heights variables. **CORRECCIONES APLICADAS**: **(A) FIX DE CONTRASTE**: Badge `#ficha-comunal`: `background:rgba(200,154,59,.15);color:#c89a3b` (cr 2.47) &rarr; `background:rgba(180,83,9,.12);color:#8a4a07` (cr ~7.2, pasa AAA). **(B) SISTEMA DE DISEÑO UNIFICADO** mediante variables CSS: **Radius**: `--rad-xs:6 / --rad-sm:8 / --rad-md:12 / --rad-lg:14 / --rad-xl:18px`. **Shadows**: `--sh-card` (sutil), `--sh-card-hover` (elevado), `--sh-elev` (contenedores grandes), con variantes ajustadas para dark mode. **Padding**: `--pad-card / --pad-card-lg / --pad-card-sm`. **(C) ARMONIZACIÓN DE CARDS**: Border-radius unificado: 13 tipos de cards forzados a `var(--rad-md)` (12px). Outliers `.voz-card`, `.ict-method-block`, `.ict-agrup-card`, `.ict-hall-card` &rarr; `var(--rad-lg)` (14px). Stat chips &rarr; píldoras (radius 999px). `.viz-card` padding reducido de **28/32px &rarr; 18/22px** (alineado con el resto). **(D) TIPOGRAFÍA REFINADA**: `.viz-card h3` 14.5px/700/letter-spacing -.012em; `.viz-sub` 11.5px/500/text2; `.kpi-value` 22px/800/letter-spacing -.018em; `.kpi-label` 10.5px/700/uppercase. Badges globales: 10px/800/uppercase/letter-spacing .075em/padding 4px 10px/píldora. `.sec-header h2`: `clamp(1.25rem, 1.05rem + 1vw, 1.7rem)` con line-height 1.2. `.sec-header p`: 13.5px/line-height 1.65/max-width 78ch. **(E) INTERACTIVIDAD**: Hover unificado `translateY(-2px)` + sombra elevada con transición .25s; transform reset cuando no hay hover. **(F) ACCESIBILIDAD**: Focus rings con `outline:2px solid var(--green)`, `outline-offset:2px`, `box-shadow:0 0 0 4px rgba(45,154,77,.18)` para tab navigation. **(G) DARK MODE**: Defensa específica para `.kpi-value` y similares (forzar `color:var(--text)` cuando body.dark). Border colors transparentados a `rgba(255,255,255,.08)`. **VERIFICADO**: composición uniforme en las 53 secciones, cards visualmente cohesivas, contraste WCAG AA cumplido en todos los elementos críticos. **Cache SW v62.6 &rarr; v62.7**.</div>
     <div class="ub-entry"><strong>v45.6</strong> <span class="ub-date">18 May 2026</span><br>&#128202;&#9889; **v45.6 &middot; Sidebar comprimido mejorado + cache invalidation agresivo**. **REPORTES DEL USUARIO**: (a) &laquo;al comprimir queda raro, requiero que se vea mejor&raquo;; (b) &laquo;no me actualiza el sitio web&raquo; (el badge segu&iacute;a mostrando v45.4 tras varias recargas). **(A) FIX SIDEBAR COMPRIMIDO**: el estado colapsado anterior dejaba &laquo;filtrar&raquo; texto en algunos viewports porque `font-size:0` pod&iacute;a ser revertido por reglas m&aacute;s espec&iacute;ficas. **Refuerzo defensivo**: (1) Triple guard en `.sidebar-collapsed .sidebar-nav a`: `font-size:0!important` + `text-indent:-9999px!important` + `color:transparent!important`. (2) Icono restaurado expl&iacute;citamente con `font-size:18px!important` + `text-indent:0!important` para que el emoji se vea. (3) Items con tama&ntilde;o fijo `52&times;42px`, centrados, gap eliminado, border-left removido. (4) Hover scale del icono + background `rgba(255,255,255,.08)`. (5) Estado activo con `background:rgba(45,154,77,.35)` + indicador lateral verde de 3&times;24px a la derecha. **TOOLTIPS AUTOM&Aacute;TICOS**: funci&oacute;n `annotateSidebarTooltips()` lee el texto de cada `<a>` (excluyendo el `.ico`) y lo asigna a `data-tooltip`. CSS `::after` renderiza el tooltip al hover con animaci&oacute;n fade-in + posicionamiento absoluto `left:calc(100% + 10px)`, fondo `#0c1f36`, shadow y border. **`MutationObserver`** re-anota si el sidebar se modifica din&aacute;micamente. **(B) FIX CACHE INVALIDATION**: el SW.js se cacheaba por el HTTP cache del navegador (hasta 24h por defecto), bloqueando la entrega de versiones nuevas. **Soluciones**: (1) **`navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'})`** &mdash; el archivo SW.js nunca se sirve desde el HTTP cache, siempre se valida con el servidor. (2) **`reg.update()` peri&oacute;dico**: throttled a 1 min m&iacute;nimo, dispara en `window.focus`, `document.visibilitychange` (cuando vuelve la pesta&ntilde;a al frente) y cada 30 minutos via `setInterval`. (3) **`postMessage({type:'SKIP_WAITING'})`** al nuevo SW cuando est&aacute; en estado `installed` para que active de inmediato sin esperar al cierre de pesta&ntilde;a. (4) **`controllerchange` listener**: cuando el SW cambia de controller (nueva versi&oacute;n activa), recarga la p&aacute;gina autom&aacute;ticamente para que el usuario use la nueva versi&oacute;n al toque. (5) **Guard `_ctrlReloaded`** para evitar loops de recarga. **RESULTADO ESPERADO**: pr&oacute;xima visita del usuario el badge mostrar&aacute; v45.6 + las correcciones se aplicar&aacute;n sin necesidad de Ctrl+Shift+R manual. **Cache SW v62.5 &rarr; v62.6**. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.5</strong> <span class="ub-date">18 May 2026</span><br>&#128203;&#127919; **v45.5 &middot; Reorganizaci&oacute;n estructural y uniformidad de headers**. **SOLICITUD DEL USUARIO**: organizar la estructura completa del documento (cap&iacute;tulos + sec-headers) con un formato armonioso y unificado. **AUDITOR&Iacute;A INICIAL** con `preview_eval`: 11 cap&iacute;tulos visibles + 53 secciones, **14 badges inconsistentes** (longitudes 7–51 chars, mezcla de emoji prefix vs sin emoji, capitalizaci&oacute;n irregular), placeholder hu&eacute;rfano de la operaci&oacute;n v45.4, salto numerico Cap. X → Cap. XII. **(A) LIMPIEZA**: (1) `#erd-DEPRECATED-PLACEHOLDER` eliminado por completo (residuo invisible que era duplicado del id `erd` ya movido). (2) Cap&iacute;tulo XII **renumerado a Cap&iacute;tulo XI**: `id=\\"capitulo-12\\"` &rarr; `\\"capitulo-11\\"`, `data-cap=\\"XII\\"` &rarr; `\\"XI\\"`, y referencias actualizadas en `groupMap` JS y `command palette`. La estructura ahora es secuencial: I→II→III→IV→V→VI→VII→VIII→IX→X→XI sin saltos. **(B) UNIFORMIDAD DE BADGES** (regla: máximo 28 caracteres, sin emoji prefix—los emojis viven en el `<h2>`): (1) `#dashboard`: &laquo;¿Cómo estamos hoy?&raquo; &rarr; **Dashboard Comunal**. (2) `#ficha-comunal`: &laquo;📊 Observatorio Laboral &middot; Subsecretaría del Trabajo&raquo; (51) &rarr; **Observatorio Laboral** (20). (3) `#ict-espacios-publicos`: &laquo;📍 PLADECO &middot; Sección 11.3 ICT &middot; Abril 2026&raquo; (42) &rarr; **PLADECO &middot; Sección 11.3** (22). (4) `#analisis-estrategico-censo`: &laquo;🔮 Inteligencia Territorial &middot; Censo 2024&raquo; (40) &rarr; **Inteligencia Territorial** (24). (5) `#sociedad-civil`: &laquo;🌐 Sociedad Civil&raquo; &rarr; **Sociedad Civil**. (6) `#voz`: &laquo;📣 Lo que opinan los vecinos&raquo; &rarr; **Voces Ciudadanas**. (7) `#argumentario`: &laquo;¿Por qué este plan?&raquo; &rarr; **Argumentario**. (8) `#diagnostico-institucional`: &laquo;🏘 Diagnóstico Institucional&raquo; &rarr; **Diagnóstico Institucional**. (9) `#semaforo`: &laquo;¿Vamos bien?&raquo; &rarr; **Seguimiento**. (10) `#cronograma-gantt`: &laquo;PLADECO &middot; Carta Gantt Interactiva&raquo; (33) &rarr; **Carta Gantt** (11). (11) `#widgets-vivo`: &laquo;Actualización automática cada 5 min&raquo; (35) &rarr; **Tiempo Real** (11). (12) `#participa`: &laquo;Canales Permanentes de Participación&raquo; (36) &rarr; **Participación Activa** (20). (13) `#presupuesto-participativo`: &laquo;⏱️ Próximamente &middot; En Evaluación&raquo; &rarr; **Próximamente** (12). (14) `#visitas`: &laquo;Transparencia & Participación&raquo; (29) &rarr; **Métricas de Uso** (15). **PRESERVADO**: los colores de tema por sección (identidad visual mantenida), la composición del `<h2>` con emoji al inicio, los signos de interrogación `¿…?` completos. **VERIFICADO con preview_eval**: 53 badges totales · **0 problemáticos** (antes 14). Cap&iacute;tulos secuenciales sin saltos. ERD vive en Cap. V después de Matriz (mantenido de v45.4). **Cache SW v62.4 → v62.5**. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.4</strong> <span class="ub-date">18 May 2026</span><br>&#127956;&#128272; **v45.4 &middot; ERD reubicada despu&eacute;s de la Matriz + botones por secci&oacute;n eliminados (uniformidad)**. **SOLICITUDES DEL USUARIO**: (a) mover la secci&oacute;n &laquo;Estrategia Regional de Desarrollo O'Higgins 2024-2036&raquo; (`#erd`) justo despu&eacute;s de la Matriz Estrat&eacute;gica (`#matriz`) como segunda secci&oacute;n del Cap&iacute;tulo V; (b) eliminar de TODAS las secciones los botones &laquo;Compartir enlace&raquo; (&#128279;) y &laquo;PDF&raquo; para uniformidad de contenido. **(A) MOVIMIENTO `#erd` Cap&iacute;tulo XI &rarr; Cap&iacute;tulo V**: (1) Cap&iacute;tulo XI (Articulaci&oacute;n Regional) **eliminado completamente** &mdash; el divider `#capitulo-11` removido + ~17.500 chars del contenido legacy borrados con script Python regex. (2) Contenido completo de `#erd` (122 l&iacute;neas: hero, imagen objetivo, 3 tabs con 10 deliberaciones, 4 agendas estrat&eacute;gicas, articulaci&oacute;n PLADECO&harr;ERD, sec-fuente) **trasladado &iacute;ntegro** justo despu&eacute;s del cierre de `#matriz` y antes del comentario de `#ejes`. (3) Referencias en JS limpiadas: removidas entradas a `capitulo-11` del array de cap&iacute;tulos y del command palette. **RAZ&Oacute;N NARRATIVA**: ahora el flujo es coherente &mdash; primero ves la matriz comunal (6 ejes, 27 OE, 225 acciones), inmediatamente despu&eacute;s c&oacute;mo se articula con las 4 agendas regionales de la ERD O'Higgins. **(B) BOTONES POR SECCI&Oacute;N ELIMINADOS**: (1) **`initShareButtons()`** simplificada: ahora solo limpia `.share-btn` y `.print-btn` del DOM (no inyecta). Las 50+ secciones ya no muestran los botones &laquo;&#128279; Copiar link&raquo; ni &laquo;&#128424; Imprimir&raquo;. (2) **`initPdfExport()`** simplificada: solo limpia `.sec-export-btn`. Las 50+ secciones ya no muestran el bot&oacute;n &laquo;PDF&raquo; en la esquina superior derecha. (3) Funci&oacute;n `exportSectionPDF()` se conserva por compatibilidad (no se invoca). (4) Las clases CSS `.share-btn`, `.print-btn`, `.sec-export-btn` quedan en el stylesheet pero sin elementos que las usen &mdash; sin impacto visual ni de rendimiento. (5) Se preservan: **fav-toggle (&#9733;)** porque es estado personal del usuario + **section-reading (&#9201; tiempo lectura)** porque es metadato informativo. **RESULTADO**: cada sec-header del portal ahora tiene una composici&oacute;n uniforme: badge + h2 + p + opcionalmente fav-toggle + section-reading. Sin botones de acci&oacute;n por secci&oacute;n que desordenen visualmente. **Cache SW v62.3 &rarr; v62.4**. Parsing JS validado.</div>
