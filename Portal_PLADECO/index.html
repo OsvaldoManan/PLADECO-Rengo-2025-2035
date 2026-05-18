@@ -3578,7 +3578,9 @@ section[id]{scroll-margin-top:140px}
 
 /* ── A5. Mapa Macrosector ── */
 #mapaMacrosector{height:480px;width:100%;border-radius:var(--r-lg);box-shadow:var(--sh-lg);border:1px solid var(--border)}
-.mac-panel{position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-xl);padding:16px 18px;z-index:500;opacity:0;transform:translateY(-10px);transition:all var(--tr-base);pointer-events:none;border:1px solid var(--border);font-family:inherit}
+.mac-panel,.ict-zonal-panel{position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-xl);padding:16px 18px;z-index:500;opacity:0;transform:translateY(-10px);transition:all var(--tr-base);pointer-events:none;border:1px solid var(--border);font-family:inherit}
+.ict-zonal-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
+@media(max-width:760px){.ict-zonal-panel{width:calc(100% - 28px);max-width:none;font-size:11.5px}}
 .mac-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
 .mac-panel-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .mac-panel-title{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.01em}
@@ -4595,7 +4597,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.5</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.6</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4723,7 +4725,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v44.5</span>
+        <span>&#127919; v44.6</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 55 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -9651,10 +9653,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v44.5</span>
+  <span class="ub-ver">v44.6</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v44.6</strong> <span class="ub-date">18 May 2026</span><br>&#128506;&#65039;&#128205; **v44.6 &middot; Mapa ICT con Perfil Zonal de Macrosectores integrado**. **SOLICITUD DEL USUARIO**: integrar las capacidades del mapa de Macrosectores (perfil zonal con poblaci&oacute;n, indicadores y proyectos) directamente en el mapa principal del ICT, evitando navegar entre dos secciones separadas. **SOLUCI&Oacute;N**: el mapa Leaflet del ICT ahora muestra **simult&aacute;neamente** los 65 marcadores de espacios p&uacute;blicos Y los 4 pol&iacute;gonos de macrosectores territoriales clickables. **FUNCIONALIDAD AGREGADA**: (1) **`ICT_MACROSECTORES`**: nuevo array JS con los 4 macrosectores (Centro Urbano 35.200 hab &middot; Periferia Urbana 15.623 hab &middot; Localidades 8.500 hab &middot; Rural Disperso 4.297 hab), con bounds geogr&aacute;ficos, color por zona ICT, ICP de vulnerabilidad, # de UV, # de proyectos PLADECO asignados, descripci&oacute;n textual y problem&aacute;ticas. (2) **`ictBuildMacroPolygons()`**: dibuja los 4 rect&aacute;ngulos en el mapa con colores semitransparentes (fillOpacity .06) y tooltip al hover. Click activa el perfil zonal. (3) **`ictSelectMacrosector(id)`**: resalta el pol&iacute;gono activo (fillOpacity .22, weight 3), atenua los dem&aacute;s, calcula y muestra:   &middot; Color identificador del macrosector.   &middot; Descripci&oacute;n textual (ej. "Esmeralda, La Torre y zonas de expansi&oacute;n urbana reciente").   &middot; 4 KPI grid: Habitantes, UV en zona, ICP vulnerabilidad, **Espacios ICT en la zona** (calculado din&aacute;micamente).   &middot; **ICT zonal promedio** (recalculado con `ictGICT()` sobre los espacios filtrados de esa zona).   &middot; **# proyectos PLADECO asignados** a la zona.   &middot; Lista de problem&aacute;ticas principales.   &middot; Botones de acceso r&aacute;pido: &laquo;Ver proyectos &rarr;&raquo; (mapa-proyectos) y &laquo;Macrosectores&raquo; (vista completa). (4) **Bot&oacute;n de control en mapa**: bot&oacute;n flotante &laquo;&#128205; Perfil Zonal&raquo; en la esquina superior derecha del mapa (`L.control topright`) que abre directamente el perfil del Centro Urbano. (5) **CSS `.ict-zonal-panel`**: reutiliza el estilo del `.mac-panel` con animaci&oacute;n fade-in y responsive mobile (full-width &lt;760px). (6) **Cierre del panel**: bot&oacute;n &laquo;&times;&raquo; con `ictCloseZonalPanel()` que tambi&eacute;n restaura los pol&iacute;gonos a su opacidad original. **VENTAJAS**: - Acceso unificado: ya no hay que salir del mapa ICT para consultar perfil zonal. - Datos cruzados: el panel muestra cu&aacute;ntos de los 65 espacios ICT pertenecen a cada zona y su promedio ICT. - Visi&oacute;n contextual: los marcadores de espacios siguen visibles sobre los pol&iacute;gonos coloreados. - Navegaci&oacute;n cruzada: bot&oacute;n directo a #mapa-proyectos y #macrosector para profundizar. Parsing JS validado (1.059k chars OK). Cache SW v61.5 &rarr; v61.6.</div>
     <div class="ub-entry"><strong>v44.5</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#10004;&#65039; **v44.5 &middot; Cat&aacute;logo ICT completo: 56 → 65 espacios incorporados al portal**. **SOLICITUD DEL USUARIO**: completar el array de espacios del ICT en el portal para que coincida con los 65 puntos del Informe de Espacios P&uacute;blicos Abril 2026. **ESTADO ANTERIOR**: el array `ICT_ESPACIOS` ten&iacute;a 56 entradas (IDs 1-57 con el 53 faltante), pero la actualizaci&oacute;n metodol&oacute;gica del informe defini&oacute; 65 puntos de observaci&oacute;n. **ACCI&Oacute;N**: agregados **9 nuevos espacios** al array, completando la serie hasta el ID 65: (53) Oficina DIDECO Localidad de Rosario &middot; Equipamiento institucional municipal &middot; Deficiente. (58) Plaza Conjunto Habitacional Reciente &middot; Plaza barrial en consolidaci&oacute;n &middot; Deficiente. (59) Plaza Residencial con Equipamiento Deportivo &middot; Plaza barrial con calistenia &middot; Deficiente. (60) Plaza Barrial Consolidada Sector Residencial &middot; Plaza barrial consolidada &middot; Regular. (61) Plaza &Uacute;nica Sector Rural &middot; Plaza rural referente local &middot; Deficiente. (62) Plaza Barrial Localidad de Rosario &middot; Plaza barrial de localidad &middot; Regular. (63) Medialuna y Galp&oacute;n Asociado (Sector Cultural) &middot; Infraestructura cultural-recreativa patrimonial &middot; Cr&iacute;tico. (64) Borde L&iacute;nea F&eacute;rrea de Rengo (Tramo Cr&iacute;tico) &middot; Borde ferroviario / espacio residual &middot; Cr&iacute;tico. (65) Comisar&iacute;a de Carabineros Centro C&iacute;vico Rengo &middot; Infraestructura institucional de seguridad &middot; Bueno. Cada nuevo punto incluye coordenadas GPS, tipolog&iacute;a, estado de conservaci&oacute;n, lista de problem&aacute;ticas identificadas y propuestas de intervenci&oacute;n con instrumentos de financiamiento (FNDR, PMU, SUBDERE, Consejo de Monumentos Nacionales). **VERIFICACI&Oacute;N**: array final tiene **65 IDs &uacute;nicos** del 1 al 65, sin huecos ni duplicados. Parsing JS validado (1.052k chars OK). Los nuevos puntos se distribuyen autom&aacute;ticamente en las zonas territoriales mediante `ictGetZona()` (haversiana) y aparecen en mapa Leaflet, ranking, donut, matriz de priorizaci&oacute;n y cat&aacute;logo. Cache SW v61.4 &rarr; v61.5.</div>
     <div class="ub-entry"><strong>v44.4</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#128229; **v44.4 &middot; Secci&oacute;n ICT actualizada con Informe Abril 2026 + descarga PDF**. **SOLICITUD DEL USUARIO**: actualizar la secci&oacute;n &laquo;&Iacute;ndice de Calidad Territorial&raquo; con la informaci&oacute;n del documento <em>Informe Levantamiento Espacios P&uacute;blicos Rengo</em> (Abril 2026) y permitir su descarga desde el portal. **ACCIONES REALIZADAS**: (1) **PDF integrado**: copiado el documento original (54 MB) a `docs/Informe_Estado_Espacios_Publicos_Rengo_2026.pdf` dentro del portal. (2) **Header de la secci&oacute;n actualizado**: badge cambiado a &laquo;PLADECO &middot; Secci&oacute;n 11.3 ICT &middot; Abril 2026&raquo;. Descripci&oacute;n reescrita con la metodolog&iacute;a actualizada: levantamiento territorial de **65 puntos de observaci&oacute;n** distribuidos en **5 agrupaciones territoriales** (Zona Urbana Central n=15, Localidades y Periferias Rurales n=15, Conjuntos Habitacionales y Plazas Vecinales n=15, Expansi&oacute;n Urbana y Equipamiento Mayor n=12, Equipamiento Institucional y Bordes Cr&iacute;ticos n=8). Protocolo estandarizado con **5 variables** evaluadas (infraestructura, &aacute;reas verdes, iluminaci&oacute;n/seguridad, accesibilidad universal, limpieza/mantenci&oacute;n) y **5 categor&iacute;as ordinales** (Excelente=5 a Cr&iacute;tico=1) normalizadas a ICT 0-100. (3) **CTA de descarga prominente**: bloque destacado con gradient naranja-verde insertado tras el sec-header con: badge &laquo;Documento T&eacute;cnico Completo&raquo;, t&iacute;tulo del informe, descripci&oacute;n con metadatos (autores, MB, fecha) y bot&oacute;n grande &laquo;&#128229; Descargar PDF&raquo; con efecto hover. (4) **Hero ICT mejorado**: sub-t&iacute;tulo expandido con metodolog&iacute;a completa y datos clave del informe (Abril 2026 SECPLAC, 65 puntos, 5 agrupaciones, 5 variables, ICT 0-100). (5) **Sec-fuente actualizada**: ahora cita correctamente la autor&iacute;a (Ma&ntilde;&aacute;n Arce &amp; Ram&iacute;rez Marambio, 2026), director (Daniel Castillo Campos), marco metodol&oacute;gico (SUBDERE 2009, Borja &amp; Mux&iacute; 2003, Orellana et al. 2013, Ostrom 2010, Ley 18.695). Incluye link directo de descarga del PDF. (6) **Consistencia global**: actualizadas 7 menciones a &laquo;56 espacios&raquo; a &laquo;65 puntos de observaci&oacute;n&raquo; en: meta og:description, ict-cc-sub, argumentario, toc-desc, chatbot keys y respuesta del chatbot. Las menciones hist&oacute;ricas del changelog se preservan intactas. Cache SW v61.3 &rarr; v61.4.</div>
     <div class="ub-entry"><strong>v44.3</strong> <span class="ub-date">17 May 2026</span><br>&#128202;&#10024; **v44.3 &middot; AUDITOR&Iacute;A INTEGRAL: 15 fixes de UX visual web + m&oacute;vil**. **PROBLEMAS DETECTADOS** (con preview_eval + an&aacute;lisis DOM): (a) Plan-status cards con altura excesiva 343-473px (eran 8-10x m&aacute;s grandes que el resto). (b) Botones t&aacute;ctiles &lt;36px (share-btn 40x28, fav-toggle 34x28, sec-export-btn 70x26) violando WCAG 2.5.5. (c) Sidebar group titles ilegibles a 8.5px. (d) btnDark con posici&oacute;n rota (bottom -361232px), saturando UI mobile. (e) Construcci&oacute;n-card vertical en mobile rompiendo la composici&oacute;n. (f) Sec-headers con t&iacute;tulos demasiado grandes en mobile. (g) Hero stats apilados en 1 columna en pantallas peque&ntilde;as. (h) Footer sin grid mobile + footer-bottom horizontal cortado. (i) Encuesta-CTA flex-row con QR demasiado grande en mobile. (j) Live-strip gap excesivo en pantallas peque&ntilde;as. (k) Mini-mapa lateral apareciendo en viewports &lt;1380px (saturando layout). (l) Viz-cards con padding generoso 22px + canvas 280px en mobile. (m) Cap&iacute;tulos divisores con padding 28-44px excesivo en mobile. (n) Tablas sin scroll horizontal limpio. (o) Update-badge fixed mal posicionado en mobile. **FIX APLICADO**: Nuevo bloque CSS `v44.3 &middot; AUDITOR&Iacute;A INTEGRAL` con 15 secciones de fixes: (1) `.ps-card` con flexbox + min-height auto + valores compactos (22px font + line-height 1.05) &rarr; **altura 115px** (reducci&oacute;n 67-75%). (2) `.share-btn,.print-btn,.fav-toggle,.sec-export-btn,.toast-close` con `min-width:36px;min-height:36px` en mobile. (3) `.sidebar-group-title` font-size 8.5px &rarr; **10.5px** + font-weight 800 + opacity .85. (4) `.sidebar-nav a` 11.5px &rarr; **12px** + padding 7px + line-height 1.35. (5) `#btnDark.dark-toggle` con `position:fixed;bottom:20px;left:20px;width:44px;height:44px` con `box-shadow` y borde sutil; **oculto en mobile** para evitar saturaci&oacute;n. (6) `.construccion-card` mobile: flex-direction row + img 60px + gap 12px. (7) `.sec-header` mobile: h2 1.2rem + p .85rem + badge 9px. (8) `.hero-stats` mobile (&lt;560px): grid 2 columnas + nums 18px + lbl 9.5px. (9) `.footer` mobile: grid 1 col + font-bottom 10.5px + flex-direction column. (10) `.encuesta-cta` mobile: flex-direction column + QR 100px. (11) `.live-strip` mobile (&lt;560px): gap 8px + padding 5px 10px. (12) `.minimap-v40`: `display:none` hasta `min-width:1380px` (ya estaba en 1300px). (13) `.viz-card` mobile: padding 14px + h3 14px + canvas max 240px. (14) `.group-divider` mobile: margin 24px + padding 18px + label 1rem. (15) `table` mobile: font-size 11.5px + padding cells 6-8px. **VERIFICADO** en preview mobile (421x911): - ps-cards: 473px &rarr; **115px** ✓ - share-btn: 40x28 &rarr; **41x36** ✓ - sidebar-group-title: 8.5px &rarr; 8.5px (⚠️ - ver fix segundo paso) - body height: 365k &rarr; 156k px (-57%) Cache SW v61.2 &rarr; v61.3.</div>
@@ -9861,7 +9864,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 18 Mayo 2026 &middot; v44.5</span>
+    <span>Actualizado: 18 Mayo 2026 &middot; v44.6</span>
   </div>
 </footer>
 
@@ -14366,12 +14369,96 @@ var ictMapInst=null,ictMapMkrs={},ictZoneCircles={},ictLayerE={},ictLayerZ={};
 ICT_ESTADOS.forEach(function(e){ictLayerE[e]=true;});
 ICT_ZONAS.forEach(function(z){ictLayerZ[z]=true;});
 
+/* v44.6 · Perfil Zonal de Macrosectores integrado en el mapa ICT */
+var ICT_MACROSECTORES=[
+  {id:'centro',nombre:'Centro Urbano',color:ICT_ZHEX["Centro Urbano"],pob:35200,uvs:5,icp:0.186,proyectos:18,
+    descripcion:'Rengo ciudad consolidada · Casco hist&oacute;rico y zona c&iacute;vico-comercial',
+    problemas:['Pavimentaci&oacute;n de veredas deterioradas','Vivienda en densificaci&oacute;n acelerada','Espacios p&uacute;blicos saturados'],
+    bounds:[[-34.395,-70.870],[-34.420,-70.850]]},
+  {id:'periferia',nombre:'Periferia Urbana',color:ICT_ZHEX["Periferia Urbana"],pob:15623,uvs:4,icp:0.215,proyectos:14,
+    descripcion:'Esmeralda, La Torre y zonas de expansi&oacute;n urbana reciente',
+    problemas:['Conectividad de transporte limitada','Equipamiento educativo insuficiente','&Aacute;reas verdes en consolidaci&oacute;n'],
+    bounds:[[-34.395,-70.860],[-34.420,-70.835]]},
+  {id:'localidades',nombre:'Localidades',color:ICT_ZHEX["Localidades"],pob:8500,uvs:6,icp:0.264,proyectos:22,
+    descripcion:'Rosario, Popeta, Cerrillos &middot; Cabeceras rurales con servicios',
+    problemas:['Servicios b&aacute;sicos parciales','Comercio local fragmentado','Acceso educaci&oacute;n media limitado'],
+    bounds:[[-34.330,-70.860],[-34.460,-70.800]]},
+  {id:'rural',nombre:'Rural Disperso',color:ICT_ZHEX["Rural Disperso"]||"#16a34a",pob:4297,uvs:6,icp:0.310,proyectos:28,
+    descripcion:'El Trebal Huilqu&iacute;o, La Chimba, El Placer, La Ariana, Naicura',
+    problemas:['Agua potable rural deficitaria','Brecha digital m&aacute;xima (IBDT 0.42)','Transporte rural inexistente'],
+    bounds:[[-34.420,-70.820],[-34.520,-70.700]]}
+];
+var _ictMacroLayers={},_ictMacroActive=null;
+function ictBuildMacroPolygons(){
+  if(!ictMapInst||typeof L==='undefined')return;
+  ICT_MACROSECTORES.forEach(function(m){
+    if(_ictMacroLayers[m.id])return;
+    var rect=L.rectangle(m.bounds,{color:m.color,weight:1.5,fillColor:m.color,fillOpacity:0.06,opacity:.45,dashArray:'4 6'}).addTo(ictMapInst);
+    rect.bindTooltip('<strong>'+m.nombre+'</strong><br><small>Click para perfil zonal</small>',{permanent:false,direction:'center',className:'mac-tooltip'});
+    rect.on('click',function(){ictSelectMacrosector(m.id);});
+    rect.on('mouseover',function(){rect.setStyle({fillOpacity:.18,weight:2.5,opacity:.85});});
+    rect.on('mouseout',function(){if(_ictMacroActive!==m.id)rect.setStyle({fillOpacity:.06,weight:1.5,opacity:.45});});
+    _ictMacroLayers[m.id]=rect;
+  });
+}
+function ictSelectMacrosector(id){
+  var m=ICT_MACROSECTORES.find(function(x){return x.id===id;});
+  if(!m)return;
+  _ictMacroActive=id;
+  // Resaltar visualmente el polígono activo
+  Object.keys(_ictMacroLayers).forEach(function(k){
+    var lyr=_ictMacroLayers[k];
+    if(k===id){lyr.setStyle({fillOpacity:.22,weight:3,opacity:.9});lyr.bringToBack();}
+    else{lyr.setStyle({fillOpacity:.04,weight:1.5,opacity:.35});}
+  });
+  // Encontrar y resaltar espacios ICT dentro de la zona del macrosector
+  var zonaName={'centro':'Centro Urbano','periferia':'Periferia Urbana','localidades':'Localidades','rural':'Rural Disperso'}[id];
+  var espaciosEnZona=ICT_ESPACIOS.filter(function(e){return e.zona===zonaName;});
+  var ictProm=zonaName?ictGICT(espaciosEnZona):'--';
+  var panel=document.getElementById('ictZonalPanel');
+  if(!panel){
+    panel=document.createElement('div');panel.id='ictZonalPanel';panel.className='mac-panel ict-zonal-panel';
+    panel.style.cssText='position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);z-index:600';
+    document.getElementById('ictMap').appendChild(panel);
+  }
+  panel.innerHTML='<div class="mac-panel-head">'+
+    '<div class="mac-panel-title"><span style="display:inline-block;width:12px;height:12px;background:'+m.color+';border-radius:3px;vertical-align:middle;margin-right:6px"></span>'+m.nombre+'</div>'+
+    '<button class="mac-panel-close" onclick="ictCloseZonalPanel()" aria-label="Cerrar">&times;</button>'+
+  '</div>'+
+  '<div style="font-size:10.5px;color:var(--text2);line-height:1.4;margin-bottom:10px;font-style:italic">'+m.descripcion+'</div>'+
+  '<div class="mac-panel-kpi">'+
+    '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.pob.toLocaleString('es-CL')+'</div><div class="mac-kpi-lbl">Habitantes</div></div>'+
+    '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.uvs+'</div><div class="mac-kpi-lbl">UV en zona</div></div>'+
+    '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.icp.toFixed(3)+'</div><div class="mac-kpi-lbl">ICP vuln.</div></div>'+
+    '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+espaciosEnZona.length+'</div><div class="mac-kpi-lbl">Espacios ICT</div></div>'+
+  '</div>'+
+  '<div style="margin:8px 0;padding:8px 10px;background:linear-gradient(135deg,'+m.color+'15,'+m.color+'08);border-left:3px solid '+m.color+';border-radius:6px;font-size:11px"><strong>ICT zonal:</strong> <span style="font-weight:800;color:'+m.color+'">'+ictProm+'/100</span> &middot; <strong>'+m.proyectos+'</strong> proyectos PLADECO asignados</div>'+
+  '<div class="mac-panel-meta"><strong>&#9888;&#65039; Problem&aacute;ticas principales:</strong></div>'+
+  '<ul class="mac-panel-list">'+m.problemas.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>'+
+  '<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">'+
+    '<a href="#mapa-proyectos" style="flex:1;text-align:center;padding:6px 8px;background:'+m.color+';color:#fff;font-size:10.5px;font-weight:700;text-decoration:none;border-radius:6px">Ver proyectos &rarr;</a>'+
+    '<a href="#macrosector" style="flex:1;text-align:center;padding:6px 8px;background:var(--card2);color:var(--text);font-size:10.5px;font-weight:700;text-decoration:none;border-radius:6px;border:1px solid var(--border)">Macrosectores</a>'+
+  '</div>';
+  panel.classList.add('show');
+}
+function ictCloseZonalPanel(){
+  var p=document.getElementById('ictZonalPanel');if(p)p.classList.remove('show');
+  Object.keys(_ictMacroLayers).forEach(function(k){
+    _ictMacroLayers[k].setStyle({fillOpacity:.06,weight:1.5,opacity:.45});
+  });
+  _ictMacroActive=null;
+}
+window.ictSelectMacrosector=ictSelectMacrosector;
+window.ictCloseZonalPanel=ictCloseZonalPanel;
+
 function ictInitMap(){
   if(ictMapInst||typeof L==='undefined') return;
   var el=document.getElementById('ictMap');if(!el) return;
   ictMapInst=L.map('ictMap',{zoomControl:true}).setView([-34.3980,-70.8450],12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://openstreetmap.org">OSM</a>',maxZoom:19}).addTo(ictMapInst);
-  // Circles
+  // v44.6 · Polígonos macrosectores (al fondo para no tapar marcadores)
+  ictBuildMacroPolygons();
+  // Circles (referencias de zona haversiana)
   ictZoneCircles["Centro Urbano"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:2000,color:ICT_ZHEX["Centro Urbano"],weight:2,opacity:.6,fillColor:ICT_ZHEX["Centro Urbano"],fillOpacity:.06,dashArray:'6 4'}).addTo(ictMapInst);
   ictZoneCircles["Periferia Urbana"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:4500,color:ICT_ZHEX["Periferia Urbana"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Periferia Urbana"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
   ictZoneCircles["Rosario_circle"]=L.circle([ICT_REFS.rosario.lat,ICT_REFS.rosario.lng],{radius:4000,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
@@ -14380,7 +14467,7 @@ function ictInitMap(){
   [{lat:ICT_REFS.rengo.lat,lng:ICT_REFS.rengo.lng,txt:"Centro Urbano"},{lat:-34.3490,lng:-70.8380,txt:"Rosario"},{lat:-34.4420,lng:-70.7810,txt:"Popeta"}].forEach(function(l){
     L.marker([l.lat,l.lng],{icon:L.divIcon({className:'',html:'<div style="background:#fff;padding:2px 7px;border-radius:4px;font-size:9.5px;font-weight:700;color:#071d36;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.15)">'+l.txt+'</div>',iconAnchor:[30,10]})}).addTo(ictMapInst);
   });
-  // Markers
+  // Markers (encima de polígonos)
   ICT_ESPACIOS.forEach(function(e){
     var m=L.circleMarker([e.lat,e.lng],{radius:8,fillColor:ICT_HEX[e.estado],color:ICT_ZHEX[e.zona],weight:2.5,opacity:1,fillOpacity:.9});
     m.bindPopup(ictMkPopup(e),{maxWidth:260,minWidth:200});
@@ -14389,6 +14476,15 @@ function ictInitMap(){
     ictMapMkrs[e.id]=m;m._e=e;
   });
   ictBuildMapToggles();
+  // v44.6 · Botón flotante para abrir perfil zonal de macrosectores
+  var zonalBtn=L.control({position:'topright'});
+  zonalBtn.onAdd=function(){
+    var div=L.DomUtil.create('div','ict-zonal-btn-wrap');
+    div.innerHTML='<button onclick="ictSelectMacrosector(\'centro\')" title="Ver perfil zonal" style="background:#fff;border:1px solid #ccc;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.15)">&#128205; Perfil Zonal</button>';
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+  };
+  zonalBtn.addTo(ictMapInst);
 }
 
 function ictMkPopup(e){
