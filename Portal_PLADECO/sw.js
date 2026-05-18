@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.4
+// PLADECO Rengo 2025-2035 · Service Worker v61.5
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.4: v44.4 - actualizada seccion ICT con informe Abril 2026 + descarga PDF
+// v61.5: v44.5 - completados 9 espacios ICT (56 a 65 puntos del Informe Abril 2026)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.4';
+const CACHE_STATIC='pladeco-static-v61.5';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
