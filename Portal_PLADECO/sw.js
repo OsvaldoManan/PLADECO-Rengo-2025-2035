@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.3
+// PLADECO Rengo 2025-2035 · Service Worker v61.4
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.3: v44.3 - auditoria integral UX visual (15 fixes mobile+desktop)
+// v61.4: v44.4 - actualizada seccion ICT con informe Abril 2026 + descarga PDF
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.3';
+const CACHE_STATIC='pladeco-static-v61.4';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
