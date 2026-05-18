@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v60.1
+// PLADECO Rengo 2025-2035 · Service Worker v60.2
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v60.1: hotfix v43.1 - removido postMessage que causaba loop de reload
+// v60.2: hotfix v43.2 - desactivada animacion count-up del hero
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v60.1';
+const CACHE_STATIC='pladeco-static-v60.2';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
