@@ -1139,48 +1139,6 @@ body.dark .foda-q-a{background:rgba(245,158,11,.08);border-color:rgba(245,158,11
 .tag-cloud .tag{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;transition:all .3s;cursor:default;border:2px solid transparent;line-height:1}
 .tag-cloud .tag:hover{transform:scale(1.1);box-shadow:0 4px 12px rgba(0,0,0,.15);border-color:currentColor}
 
-/* ── Timeline Horizontal (Hoja de Ruta) ── */
-.timeline-h{position:relative;padding:20px 0 40px;overflow-x:auto}
-.timeline-track{display:flex;align-items:flex-start;gap:0;position:relative;min-width:max-content;padding:0 20px}
-.timeline-track::before{content:'';position:absolute;top:38px;left:20px;right:20px;height:5px;background:linear-gradient(90deg,#22c55e 0%,#22c55e 18%,#4361ee 25%,#f59e0b 40%,#94a3b8 60%,#94a3b8 100%);border-radius:3px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.tl-item{position:relative;width:130px;flex-shrink:0;text-align:center;padding-top:60px;cursor:default}
-.tl-item .tl-emoji{position:absolute;top:0;left:50%;transform:translateX(-50%);font-size:22px;z-index:3;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));transition:transform .3s}
-.tl-item:hover .tl-emoji{transform:translateX(-50%) scale(1.3)}
-.tl-item .tl-dot{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:22px;height:22px;border-radius:50%;border:4px solid var(--card);z-index:2;transition:all .3s}
-.tl-item:hover .tl-dot{transform:translateX(-50%) scale(1.25)}
-.tl-item .tl-year{font-size:14px;font-weight:900;margin-bottom:3px;letter-spacing:.5px}
-.tl-item .tl-label{font-size:10px;line-height:1.4;font-weight:700;padding:0 4px}
-.tl-item .tl-status{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;padding:2px 8px;border-radius:6px;display:inline-block}
-/* done */
-.tl-item.done .tl-dot{background:#22c55e;box-shadow:0 0 0 3px #22c55e,0 0 16px rgba(34,197,94,.5)}
-.tl-item.done .tl-year{color:#22c55e}
-.tl-item.done .tl-label{color:#15803d}
-.tl-item.done .tl-status{background:#d1fae5;color:#15803d}
-/* current */
-.tl-item.current .tl-dot{background:#4361ee;box-shadow:0 0 0 3px #4361ee,0 0 20px rgba(67,97,238,.55);animation:tlPulse 2s infinite}
-.tl-item.current .tl-year{color:#4361ee}
-.tl-item.current .tl-label{color:#4361ee}
-.tl-item.current .tl-status{background:#e0e7ff;color:#4338ca}
-@keyframes tlPulse{0%,100%{box-shadow:0 0 0 3px #4361ee,0 0 16px rgba(67,97,238,.4)}50%{box-shadow:0 0 0 5px #4361ee,0 0 28px rgba(67,97,238,.6)}}
-/* pending */
-.tl-item.pending .tl-dot{background:#f59e0b;border-color:var(--card);box-shadow:0 0 0 3px #f59e0b,0 0 12px rgba(245,158,11,.35)}
-.tl-item.pending .tl-year{color:#f59e0b}
-.tl-item.pending .tl-label{color:#b45309}
-.tl-item.pending .tl-status{background:#fef3c7;color:#b45309}
-/* future */
-.tl-item.future .tl-dot{background:var(--card);border-color:#cbd5e1;box-shadow:0 0 0 3px #cbd5e1}
-.tl-item.future .tl-year{color:#94a3b8}
-.tl-item.future .tl-label{color:var(--text2)}
-.tl-item.future .tl-status{background:var(--bg);color:var(--text2)}
-body.dark .tl-item.done .tl-label{color:#4ade80}
-body.dark .tl-item.current .tl-label{color:#818cf8}
-body.dark .tl-item.pending .tl-label{color:#f5921d}
-body.dark .tl-item.done .tl-status{background:#052e16;color:#4ade80}
-body.dark .tl-item.current .tl-status{background:#1e1b4b;color:#818cf8}
-body.dark .tl-item.pending .tl-status{background:#451a03;color:#f5921d}
-body.dark .tl-item.future .tl-status{background:#1e293b;color:#64748b}
-body.dark .tl-item.future .tl-dot{background:#1e293b;border-color:#475569;box-shadow:0 0 0 3px #475569}
-
 /* ── Urban vs Rural Cards ── */
 .ur-compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 @media(max-width:900px){.ur-compare{grid-template-columns:1fr}}
@@ -1436,17 +1394,6 @@ body.dark .tl-pladeco-item.tl-active .tl-p-badge{background:#1e1b4b;color:#818cf
 body.dark .tl-pladeco-item.tl-pending .tl-p-badge{background:#451a03;color:#f5921d}
 body.dark .tl-pladeco-item.tl-future .tl-p-badge{background:#1e293b;color:#64748b}
 body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#475569;box-shadow:0 0 0 3px #475569}
-
-/* ── Cronograma Tab Switcher ── */
-.crono-tabs{display:flex;gap:6px;margin-bottom:20px;justify-content:center;flex-wrap:wrap}
-.crono-tab{padding:8px 20px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--border);background:var(--card);color:var(--text2);transition:all .25s;user-select:none}
-.crono-tab:hover{border-color:var(--accent);color:var(--accent);background:rgba(26,61,143,.04)}
-.crono-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 12px rgba(26,61,143,.25)}
-body.dark .crono-tab{background:var(--card);border-color:var(--border)}
-body.dark .crono-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.crono-panel{display:none;animation:cronoPanelIn .4s ease}
-.crono-panel.active{display:block}
-@keyframes cronoPanelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── Onboarding Tooltip ── */
 .onboard-tip{position:fixed;z-index:9990;max-width:320px;padding:16px 20px;background:var(--accent);color:#fff;border-radius:14px;box-shadow:0 8px 32px rgba(26,61,143,.35);font-size:13px;line-height:1.55;pointer-events:auto;animation:onboardIn .45s cubic-bezier(.4,0,.2,1);display:none}
@@ -4531,8 +4478,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 
     <div class="sidebar-group">
       <div class="sidebar-group-title">6 &middot; Seguimiento y Metas</div>
-      <a href="#cronograma"><span class="ico">&#128197;</span> Hoja de Ruta 2025&#8211;2035</a>
-      <a href="#cronograma" onclick="setTimeout(function(){var t=document.querySelectorAll('.crono-tab');if(t[1])switchCronoTab(t[1],1);},300)" style="padding-left:42px;font-size:11.5px;opacity:.85"><span class="ico">&#128221;</span> Proceso PLADECO</a>
       <a href="#semaforo"><span class="ico">&#128678;</span> Sem&#225;foro de Metas</a>
       <a href="#compromisos"><span class="ico">&#9989;</span> Compromisos P&#250;blicos</a>
       <a href="#financiamiento"><span class="ico">&#128176;</span> Financiamiento &middot; Recursos</a>
@@ -4597,7 +4542,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.6</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.7</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4725,7 +4670,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v44.6</span>
+        <span>&#127919; v44.7</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 55 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -4787,7 +4732,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <div class="plan-status-cta">
         <a href="#semaforo" class="ps-cta-link">&#128678; Ver Sem&aacute;foro de Metas</a>
         <a href="#matriz" class="ps-cta-link">&#127919; Matriz Estrat&eacute;gica</a>
-        <a href="#cronograma" class="ps-cta-link">&#128197; Hoja de Ruta</a>
         <a href="#documentos" class="ps-cta-link">&#128190; Descargar Plan</a>
       </div>
     </div>
@@ -4864,7 +4808,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <div class="qi-group" data-grp="6">
         <div class="qi-group-head"><div class="qi-group-num">6</div><div class="qi-group-name">Seguimiento &amp; Compromisos</div></div>
         <div class="qi-links">
-          <a href="#cronograma" class="qi-link"><span class="qi-link-ico">&#128197;</span><span class="qi-link-txt">Hoja de Ruta 2025-2035</span></a>
           <a href="#semaforo" class="qi-link"><span class="qi-link-ico">&#128680;</span><span class="qi-link-txt">Sem&aacute;foro de Metas</span></a>
           <a href="#financiamiento" class="qi-link"><span class="qi-link-ico">&#128176;</span><span class="qi-link-txt">Financiamiento</span></a>
           <a href="#presupuesto-participativo" class="qi-link is-new"><span class="qi-link-ico">&#128181;</span><span class="qi-link-txt">Presupuesto Participativo</span></a>
@@ -6644,10 +6587,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
     </div>
   </div>
   <div class="viz-row">
-    <div class="viz-card viz-full">
-      <h3>&#128197; Hoja de Ruta PLADECO 2025-2035</h3>
-      <div class="viz-sub">Cronograma de hitos estrat&#233;gicos &mdash; desde la Etnograf&#237;a Social e Institucional hasta la Meta Final 2035</div>
-      <div class="timeline-h"><div class="timeline-track" id="timeline"></div></div>
     </div>
   </div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Participaci&oacute;n ciudadana PLADECO 2025 &mdash; Encuestas, talleres comunitarios y entrevistas en 21 unidades vecinales de Rengo &middot; 140 personas encuestadas (119 adultos + 21 j&oacute;venes).</div>
@@ -7454,7 +7393,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <li><a href="#gestion"><span>Gestión PLADECO</span><span class="toc-desc">Modernización municipal</span></a></li>
       <li><a href="#semaforo"><span>Semáforo de Metas</span><span class="toc-desc">Seguimiento indicadores</span></a></li>
       <li><a href="#financiamiento"><span>Financiamiento</span><span class="toc-desc">Presupuesto y fuentes</span></a></li>
-      <li><a href="#cronograma"><span>Hoja de Ruta</span><span class="toc-desc">Timeline 2025-2035</span></a></li>
+      <li></li>
       <li><a href="#documentos"><span>Documentos</span><span class="toc-desc">Descargas y reportes</span></a></li>
     </ol>
   </div>
@@ -8269,26 +8208,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 <!-- ═══ GROUP: SEGUIMIENTO ═══ -->
 <div class="group-divider" id="capitulo-7"><span class="group-divider-label" data-cap="VII">&#128200; C&oacute;mo lo Mediremos &middot; Seguimiento, Metas y Financiamiento<span class="cap-sub">Para que el plan no quede en papel, definimos sem&aacute;foros, cronogramas, mix de financiamiento (Municipal 64% + FNDR 18% + Sectorial 12% + Otras 6%) y evidencia visual del cambio antes/despu&eacute;s.</span></span></div>
 
-<!-- ═══ TIMELINE PLADECO (unified) ═══ -->
-<section id="cronograma" class="reveal">
-  <div class="sec-header">
-    <div class="badge" style="background:#e0e7ff;color:#4338ca">Cronograma</div>
-    <h2>&#128197; Hoja de Ruta &amp; Proceso PLADECO</h2>
-    <p>Hitos estrat&#233;gicos 2025-2035 y cronolog&#237;a detallada del proceso de formulaci&#243;n del Plan de Desarrollo Comunal</p>
-  </div>
-  <div class="crono-tabs">
-    <button class="crono-tab active" onclick="switchCronoTab(this,0)">&#128640; Hoja de Ruta 2025-2035</button>
-    <button class="crono-tab" onclick="switchCronoTab(this,1)">&#128221; Proceso Detallado</button>
-  </div>
-  <div class="crono-panel active" id="cronoPanel0">
-    <div class="tl-pladeco" id="tlPladeco"></div>
-  </div>
-  <div class="crono-panel" id="cronoPanel1">
-    <div class="timeline-proceso" id="timelineProceso"></div>
-  </div>
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Cronograma oficial PLADECO Rengo 2025-2035, Decreto Alcaldicio &bull; SECPLA, Registro de actividades &bull; Municipalidad de Rengo</div>
-</section>
-
 <!-- ═══ VISUALIZACIONES INTERACTIVAS ═══ -->
 <section id="viz">
   <div class="sec-header">
@@ -8513,7 +8432,6 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <a href="#matriz" class="sr-link"><span class="sr-ico">&#127919;</span> Matriz Estrat&eacute;gica</a>
       <a href="#gestion" class="sr-link"><span class="sr-ico">&#128736;</span> Gesti&oacute;n e Implementaci&oacute;n</a>
       <a href="#semaforo" class="sr-link"><span class="sr-ico">&#128678;</span> Sem&aacute;foro de Metas</a>
-      <a href="#cronograma" class="sr-link"><span class="sr-ico">&#128197;</span> Hoja de Ruta 2025-2035</a>
       <a href="#ficha-comunal" class="sr-link"><span class="sr-ico">&#128202;</span> Inversi&oacute;n US$208M Proyectada</a>
     </div>
   </div>
@@ -9118,8 +9036,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <a href="#censo" class="sr-link"><span class="sr-ico">&#128101;</span> Censo 2024 completo</a>
       <a href="#analisis-estrategico-censo" class="sr-link"><span class="sr-ico">&#128302;</span> An&aacute;lisis Estrat&eacute;gico Censal</a>
       <a href="#semaforo" class="sr-link"><span class="sr-ico">&#128678;</span> Sem&aacute;foro de Metas 2035</a>
-      <a href="#cronograma" class="sr-link"><span class="sr-ico">&#128197;</span> Hoja de Ruta 2025-2035</a>
-    </div>
+      </div>
   </div>
 </section>
 
@@ -9653,10 +9570,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v44.6</span>
+  <span class="ub-ver">v44.7</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v44.7</strong> <span class="ub-date">18 May 2026</span><br>&#10060;&#128197; **v44.7 &middot; Eliminado todo lo relacionado con cronogramas y fases**. **SOLICITUD DEL USUARIO**: remover toda la informaci&oacute;n de cronogramas y fases del PLADECO en el sitio web porque est&aacute; elaborando una nueva carta gantt y procesos que se agregar&aacute;n m&aacute;s adelante. **ACCIONES REALIZADAS**: (1) **Secci&oacute;n `#cronograma` eliminada**: removida la secci&oacute;n &laquo;Hoja de Ruta &amp; Proceso PLADECO&raquo; completa (1.112 chars) con sus dos tabs (Hoja de Ruta 2025-2035 + Proceso PLADECO). (2) **Funciones JS eliminadas**: `renderTimelinePladeco()` (1.561 chars, render del timeline horizontal) y `switchCronoTab()` (336 chars, conmutador de pesta&ntilde;as del cronograma). (3) **Llamadas de init removidas**: la llamada `renderTimelinePladeco()` del init principal del portal. (4) **Enlaces de navegaci&oacute;n limpiados**: 7 enlaces a `#cronograma` eliminados del sidebar, quick-index, sec-relacionadas y dem&aacute;s lugares. Entrada del buscador full-text removida. (5) **CSS hu&eacute;rfano eliminado**: bloque `.tl-pladeco*` (Timeline Horizontal Hoja de Ruta) de ~3.186 chars y `.crono-tab*` (Cronograma Tab Switcher) de ~914 chars. (6) **Viz-card &laquo;Hoja de Ruta PLADECO 2025-2035&raquo;** eliminada de #viz. (7) **Item de galer&iacute;a `G06_Gantt_2026_2035.png`** removido del array `GRAFICOS` de descargas. (8) **Item `MX04_Hoja_Ruta_Metas.png`** removido del array de gr&aacute;ficos matriciales. (9) **Referencia `cronograma:'Hoja de Ruta'`** removida del objeto `sectionNames` usado por el sistema de breadcrumbs. **TOTAL REDUCCI&Oacute;N**: ~8.600 chars (-0.4%) eliminados del HTML. Parsing JS validado (1.057k chars OK). **PR&Oacute;XIMOS PASOS**: el usuario integrar&aacute; en futuras versiones su nueva carta gantt y procesos del PLADECO. Cache SW v61.6 &rarr; v61.7.</div>
     <div class="ub-entry"><strong>v44.6</strong> <span class="ub-date">18 May 2026</span><br>&#128506;&#65039;&#128205; **v44.6 &middot; Mapa ICT con Perfil Zonal de Macrosectores integrado**. **SOLICITUD DEL USUARIO**: integrar las capacidades del mapa de Macrosectores (perfil zonal con poblaci&oacute;n, indicadores y proyectos) directamente en el mapa principal del ICT, evitando navegar entre dos secciones separadas. **SOLUCI&Oacute;N**: el mapa Leaflet del ICT ahora muestra **simult&aacute;neamente** los 65 marcadores de espacios p&uacute;blicos Y los 4 pol&iacute;gonos de macrosectores territoriales clickables. **FUNCIONALIDAD AGREGADA**: (1) **`ICT_MACROSECTORES`**: nuevo array JS con los 4 macrosectores (Centro Urbano 35.200 hab &middot; Periferia Urbana 15.623 hab &middot; Localidades 8.500 hab &middot; Rural Disperso 4.297 hab), con bounds geogr&aacute;ficos, color por zona ICT, ICP de vulnerabilidad, # de UV, # de proyectos PLADECO asignados, descripci&oacute;n textual y problem&aacute;ticas. (2) **`ictBuildMacroPolygons()`**: dibuja los 4 rect&aacute;ngulos en el mapa con colores semitransparentes (fillOpacity .06) y tooltip al hover. Click activa el perfil zonal. (3) **`ictSelectMacrosector(id)`**: resalta el pol&iacute;gono activo (fillOpacity .22, weight 3), atenua los dem&aacute;s, calcula y muestra:   &middot; Color identificador del macrosector.   &middot; Descripci&oacute;n textual (ej. "Esmeralda, La Torre y zonas de expansi&oacute;n urbana reciente").   &middot; 4 KPI grid: Habitantes, UV en zona, ICP vulnerabilidad, **Espacios ICT en la zona** (calculado din&aacute;micamente).   &middot; **ICT zonal promedio** (recalculado con `ictGICT()` sobre los espacios filtrados de esa zona).   &middot; **# proyectos PLADECO asignados** a la zona.   &middot; Lista de problem&aacute;ticas principales.   &middot; Botones de acceso r&aacute;pido: &laquo;Ver proyectos &rarr;&raquo; (mapa-proyectos) y &laquo;Macrosectores&raquo; (vista completa). (4) **Bot&oacute;n de control en mapa**: bot&oacute;n flotante &laquo;&#128205; Perfil Zonal&raquo; en la esquina superior derecha del mapa (`L.control topright`) que abre directamente el perfil del Centro Urbano. (5) **CSS `.ict-zonal-panel`**: reutiliza el estilo del `.mac-panel` con animaci&oacute;n fade-in y responsive mobile (full-width &lt;760px). (6) **Cierre del panel**: bot&oacute;n &laquo;&times;&raquo; con `ictCloseZonalPanel()` que tambi&eacute;n restaura los pol&iacute;gonos a su opacidad original. **VENTAJAS**: - Acceso unificado: ya no hay que salir del mapa ICT para consultar perfil zonal. - Datos cruzados: el panel muestra cu&aacute;ntos de los 65 espacios ICT pertenecen a cada zona y su promedio ICT. - Visi&oacute;n contextual: los marcadores de espacios siguen visibles sobre los pol&iacute;gonos coloreados. - Navegaci&oacute;n cruzada: bot&oacute;n directo a #mapa-proyectos y #macrosector para profundizar. Parsing JS validado (1.059k chars OK). Cache SW v61.5 &rarr; v61.6.</div>
     <div class="ub-entry"><strong>v44.5</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#10004;&#65039; **v44.5 &middot; Cat&aacute;logo ICT completo: 56 → 65 espacios incorporados al portal**. **SOLICITUD DEL USUARIO**: completar el array de espacios del ICT en el portal para que coincida con los 65 puntos del Informe de Espacios P&uacute;blicos Abril 2026. **ESTADO ANTERIOR**: el array `ICT_ESPACIOS` ten&iacute;a 56 entradas (IDs 1-57 con el 53 faltante), pero la actualizaci&oacute;n metodol&oacute;gica del informe defini&oacute; 65 puntos de observaci&oacute;n. **ACCI&Oacute;N**: agregados **9 nuevos espacios** al array, completando la serie hasta el ID 65: (53) Oficina DIDECO Localidad de Rosario &middot; Equipamiento institucional municipal &middot; Deficiente. (58) Plaza Conjunto Habitacional Reciente &middot; Plaza barrial en consolidaci&oacute;n &middot; Deficiente. (59) Plaza Residencial con Equipamiento Deportivo &middot; Plaza barrial con calistenia &middot; Deficiente. (60) Plaza Barrial Consolidada Sector Residencial &middot; Plaza barrial consolidada &middot; Regular. (61) Plaza &Uacute;nica Sector Rural &middot; Plaza rural referente local &middot; Deficiente. (62) Plaza Barrial Localidad de Rosario &middot; Plaza barrial de localidad &middot; Regular. (63) Medialuna y Galp&oacute;n Asociado (Sector Cultural) &middot; Infraestructura cultural-recreativa patrimonial &middot; Cr&iacute;tico. (64) Borde L&iacute;nea F&eacute;rrea de Rengo (Tramo Cr&iacute;tico) &middot; Borde ferroviario / espacio residual &middot; Cr&iacute;tico. (65) Comisar&iacute;a de Carabineros Centro C&iacute;vico Rengo &middot; Infraestructura institucional de seguridad &middot; Bueno. Cada nuevo punto incluye coordenadas GPS, tipolog&iacute;a, estado de conservaci&oacute;n, lista de problem&aacute;ticas identificadas y propuestas de intervenci&oacute;n con instrumentos de financiamiento (FNDR, PMU, SUBDERE, Consejo de Monumentos Nacionales). **VERIFICACI&Oacute;N**: array final tiene **65 IDs &uacute;nicos** del 1 al 65, sin huecos ni duplicados. Parsing JS validado (1.052k chars OK). Los nuevos puntos se distribuyen autom&aacute;ticamente en las zonas territoriales mediante `ictGetZona()` (haversiana) y aparecen en mapa Leaflet, ranking, donut, matriz de priorizaci&oacute;n y cat&aacute;logo. Cache SW v61.4 &rarr; v61.5.</div>
     <div class="ub-entry"><strong>v44.4</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#128229; **v44.4 &middot; Secci&oacute;n ICT actualizada con Informe Abril 2026 + descarga PDF**. **SOLICITUD DEL USUARIO**: actualizar la secci&oacute;n &laquo;&Iacute;ndice de Calidad Territorial&raquo; con la informaci&oacute;n del documento <em>Informe Levantamiento Espacios P&uacute;blicos Rengo</em> (Abril 2026) y permitir su descarga desde el portal. **ACCIONES REALIZADAS**: (1) **PDF integrado**: copiado el documento original (54 MB) a `docs/Informe_Estado_Espacios_Publicos_Rengo_2026.pdf` dentro del portal. (2) **Header de la secci&oacute;n actualizado**: badge cambiado a &laquo;PLADECO &middot; Secci&oacute;n 11.3 ICT &middot; Abril 2026&raquo;. Descripci&oacute;n reescrita con la metodolog&iacute;a actualizada: levantamiento territorial de **65 puntos de observaci&oacute;n** distribuidos en **5 agrupaciones territoriales** (Zona Urbana Central n=15, Localidades y Periferias Rurales n=15, Conjuntos Habitacionales y Plazas Vecinales n=15, Expansi&oacute;n Urbana y Equipamiento Mayor n=12, Equipamiento Institucional y Bordes Cr&iacute;ticos n=8). Protocolo estandarizado con **5 variables** evaluadas (infraestructura, &aacute;reas verdes, iluminaci&oacute;n/seguridad, accesibilidad universal, limpieza/mantenci&oacute;n) y **5 categor&iacute;as ordinales** (Excelente=5 a Cr&iacute;tico=1) normalizadas a ICT 0-100. (3) **CTA de descarga prominente**: bloque destacado con gradient naranja-verde insertado tras el sec-header con: badge &laquo;Documento T&eacute;cnico Completo&raquo;, t&iacute;tulo del informe, descripci&oacute;n con metadatos (autores, MB, fecha) y bot&oacute;n grande &laquo;&#128229; Descargar PDF&raquo; con efecto hover. (4) **Hero ICT mejorado**: sub-t&iacute;tulo expandido con metodolog&iacute;a completa y datos clave del informe (Abril 2026 SECPLAC, 65 puntos, 5 agrupaciones, 5 variables, ICT 0-100). (5) **Sec-fuente actualizada**: ahora cita correctamente la autor&iacute;a (Ma&ntilde;&aacute;n Arce &amp; Ram&iacute;rez Marambio, 2026), director (Daniel Castillo Campos), marco metodol&oacute;gico (SUBDERE 2009, Borja &amp; Mux&iacute; 2003, Orellana et al. 2013, Ostrom 2010, Ley 18.695). Incluye link directo de descarga del PDF. (6) **Consistencia global**: actualizadas 7 menciones a &laquo;56 espacios&raquo; a &laquo;65 puntos de observaci&oacute;n&raquo; en: meta og:description, ict-cc-sub, argumentario, toc-desc, chatbot keys y respuesta del chatbot. Las menciones hist&oacute;ricas del changelog se preservan intactas. Cache SW v61.3 &rarr; v61.4.</div>
@@ -9864,7 +9782,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 18 Mayo 2026 &middot; v44.6</span>
+    <span>Actualizado: 18 Mayo 2026 &middot; v44.7</span>
   </div>
 </footer>
 
@@ -10099,7 +10017,6 @@ const GRAFICOS = [
   {file:"G03_SNA_Benchmarking.png",title:"SNA — Benchmarking Regional"},
   {file:"G04_RedPoliticas.png",title:"Red de Políticas Públicas"},
   {file:"G05_FODA.png",title:"Análisis FODA Integrado"},
-  {file:"G06_Gantt_2026_2035.png",title:"Cronograma Gantt 2026-2035"},
   {file:"G07_Piramide_Demografica.png",title:"Pirámide Demográfica"},
   {file:"G08_Financiero.png",title:"Análisis Financiero Municipal"},
   {file:"G09_Heatmap_ODS.png",title:"Heatmap Vinculación ODS"},
@@ -12372,38 +12289,7 @@ function renderPlazoFin(){
 }
 
 // ── CRONO TAB SWITCHER ──
-function switchCronoTab(btn,idx){
-  document.querySelectorAll('.crono-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.crono-panel').forEach(p=>p.classList.remove('active'));
-  var panel=document.getElementById('cronoPanel'+idx);
-  if(panel) panel.classList.add('active');
-}
-
 // ── TIMELINE PLADECO ──
-function renderTimelinePladeco(){
-  const el=document.getElementById('tlPladeco');
-  if(!el)return;
-  const milestones=[
-    {year:'2025',label:'Diagnóstico Territorial',desc:'Levantamiento 21 UV, cartografía, encuestas NNA',status:'tl-done',badge:'Completado'},
-    {year:'2025',label:'Participación Ciudadana',desc:'Talleres, entrevistas, COSOC, voz ciudadana',status:'tl-done',badge:'Completado'},
-    {year:'2025',label:'Formulación Estratégica',desc:'6 ejes, 32 OE, 225 políticas, FODA cruzado',status:'tl-done',badge:'Completado'},
-    {year:'2026',label:'Aprobación CONCEJO',desc:'Votación Concejo Municipal y promulgación',status:'tl-active',badge:'En proceso'},
-    {year:'2026',label:'Implementación Fase 1',desc:'Comisiones de trabajo, primeros proyectos BIP',status:'tl-pending',badge:'Próximo'},
-    {year:'2028',label:'Evaluación Intermedia',desc:'Medición de metas intermedias (16 KPI)',status:'tl-future',badge:'Futuro'},
-    {year:'2030',label:'Ajuste Medio Término',desc:'Revisión estratégica y recalibración',status:'tl-future',badge:'Futuro'},
-    {year:'2035',label:'Evaluación Final',desc:'Cierre del ciclo PLADECO, informe final',status:'tl-future',badge:'Futuro'}
-  ];
-  el.innerHTML='<div class="tl-pladeco-track">'+milestones.map(m=>`
-    <div class="tl-pladeco-item ${m.status}">
-      <div class="tl-p-dot"></div>
-      <div class="tl-p-year">${m.year}</div>
-      <div class="tl-p-label">${m.label}</div>
-      <div class="tl-p-desc">${m.desc}</div>
-      <div class="tl-p-badge">${m.badge}</div>
-    </div>`).join('')+'</div>';
-}
-
 // ── COMPARADOR METAS (Grouped Bar) ──
 function renderComparador(){
   const ctx=document.getElementById('chartComparador');
@@ -12665,7 +12551,6 @@ const GRAFICOS_DATA=[
 {src:'Gráficos/MX01_Plazos_Implementacion.png',titulo:'Plazos de Implementación',cat:'MX'},
 {src:'Gráficos/MX02_Inclusividad_Politicas.png',titulo:'Inclusividad de Políticas',cat:'MX'},
 {src:'Gráficos/MX03_Heatmap_Inclusion_Eje.png',titulo:'Heatmap Inclusión por Eje',cat:'MX'},
-{src:'Gráficos/MX04_Hoja_Ruta_Metas.png',titulo:'Hoja de Ruta: Metas',cat:'MX'},
 {src:'Gráficos/MX05_Desigualdad_Territorial_UV.png',titulo:'Desigualdad Territorial UV',cat:'MX'},
 {src:'Gráficos/MX06_Radiografia_NNA.png',titulo:'Radiografía NNA',cat:'MX'},
 {src:'Gráficos/MX07_Financiamiento_por_Eje.png',titulo:'Financiamiento por Eje',cat:'MX'},
@@ -14741,7 +14626,7 @@ function ictInit(){
 function initBreadcrumb(){
   const bc=document.getElementById('sectionBreadcrumb');
   const bcText=document.getElementById('sbText');
-  const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',cronograma:'Hoja de Ruta',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
+  const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
   _onScroll(function(){
     const scrollY=window.scrollY;
     if(scrollY<200){bc.classList.remove('visible');return;}
@@ -14870,7 +14755,7 @@ Chart.defaults.borderColor=getChartGridColor();
 renderUV();renderComisiones();renderDocsEnhanced();
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
 renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
-renderTimelinePladeco();renderTimeline();renderEthnoTabs();
+renderTimeline();renderEthnoTabs();
 renderSemaforo();initSemaforoFilter();renderComparador();renderResumen();renderPlazoPills();
 renderInclChips();renderArgumentario();renderGestionKPIs();
 animateCounters();animateKPIs();
@@ -15948,7 +15833,6 @@ function filterSidebar(q){
 const CMD_SECTIONS=[
   {id:'mvv',name:'Misión, Visión y Valores',icon:'🏛️',cat:'Institucional'},
   {id:'dashboard',name:'Indicadores Clave',icon:'📊',cat:'Dashboard'},
-  {id:'cronograma',name:'Hoja de Ruta',icon:'📅',cat:'Cronograma'},
   {id:'viz',name:'Visualizaciones Interactivas',icon:'📈',cat:'Interactivo'},
   {id:'datos-vivo',name:'Datos en Vivo',icon:'⚡',cat:'Dashboard'},
   {id:'mapa',name:'Mapa Interactivo',icon:'🗺️',cat:'Territorio'},

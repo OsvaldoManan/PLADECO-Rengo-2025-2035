@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.6
+// PLADECO Rengo 2025-2035 · Service Worker v61.7
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.6: v44.6 - mapa ICT integra Perfil Zonal de Macrosectores
+// v61.7: v44.7 - eliminados cronogramas y fases (esperando nueva carta gantt)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.6';
+const CACHE_STATIC='pladeco-static-v61.7';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
