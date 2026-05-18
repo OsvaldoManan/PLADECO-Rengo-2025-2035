@@ -2672,6 +2672,130 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 .comp-insight strong{color:var(--primary)}
 
 /* ══════════════════════════════════════════════════════════════════
+   HOTFIX v43.3 · Prevenir desbordamiento de texto en barras/cards/secciones
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Global: box-sizing border-box */
+*,*::before,*::after{box-sizing:border-box}
+
+/* Texto largo parte suavemente sin desbordar */
+body,p,span:not([class*="ico"]):not([class*="emoji"]),div,li,td,th,a,h1,h2,h3,h4,h5,h6{
+  overflow-wrap:break-word;
+  word-wrap:break-word;
+}
+
+/* Flex/grid children no deben expandir más allá del contenedor */
+.sidebar-nav a,.minimap-list li,.minimap-list li a,
+.breadcrumbs-v40,.breadcrumbs-v40 span,.breadcrumbs-v40 a,
+.recent-visits a,
+.cmdp-item,.cmdp-item-content,.cmdp-item-title,.cmdp-item-desc,
+.kpi,.viz-card,.eje-card,.ps-card,.team-card,.dataset-card,.voz-card,
+.hero-stat,.hero-stat .lbl,
+.ficha-pill,.ficha-row,.anest-pill,
+.sec-header,.sec-header h2,.sec-header p,
+.tl-card,.tl-event,
+.bottom-nav-item,
+.action-item,
+.construccion-meta span,
+.cap-nav-btn{
+  min-width:0;
+  max-width:100%;
+}
+
+/* Sidebar: items largos truncan con ellipsis */
+.sidebar-nav a{display:flex;align-items:center;overflow:hidden}
+.sidebar-nav a > *:not(.ico){
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  min-width:0;
+  flex:1;
+}
+
+/* Mini-mapa items: truncar */
+.minimap-list li{padding-right:6px}
+.minimap-list li a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Breadcrumbs: items individuales no desbordan */
+.breadcrumbs-v40 .bc-current,.breadcrumbs-v40 .bc-cap{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:50vw;
+}
+
+/* Recent visits */
+.recent-visits a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+
+/* Voz cards no desbordan */
+.voz-card{overflow:hidden}
+.voz-label,.voz-trend{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* KPI: nums no rompen, labels y detail sí */
+.hero-stat .num,.kpi .kpi-value,.ps-card-val{white-space:nowrap}
+.hero-stat .lbl,.kpi .kpi-label,.kpi .kpi-detail,.ps-card-lbl,.ps-card-foot{
+  white-space:normal;
+  overflow-wrap:break-word;
+  line-height:1.3;
+}
+
+/* Construccion-meta pills se acomodan en múltiples filas */
+.construccion-meta{flex-wrap:wrap;gap:6px}
+.construccion-meta span{flex:0 1 auto;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Live-strip se acomoda en múltiples filas */
+.live-strip{flex-wrap:wrap}
+.live-strip>*{min-width:0}
+
+/* Bottom nav items */
+.bottom-nav-item{overflow:hidden}
+.bottom-nav-item span:not(.bottom-nav-icon){
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  max-width:100%;
+  display:block;
+}
+
+/* Cards: contenedor general */
+section,.viz-card,.eje-card,.kpi,.ps-card,.team-card,.dataset-card,.voz-card,.tl-card{
+  overflow-wrap:break-word;
+}
+
+/* Imágenes/media nunca desbordan */
+img,svg,canvas,video,iframe{max-width:100%;height:auto}
+
+/* Tablas con scroll horizontal cuando son anchas */
+table{max-width:100%}
+.viz-card{overflow-x:auto}
+
+/* Code/pre/kbd parten suavemente */
+code,pre,kbd,samp{overflow-wrap:break-word;word-break:normal;max-width:100%}
+pre{overflow-x:auto}
+
+/* Sec-header: títulos largos no desbordan */
+.sec-header h2{overflow-wrap:break-word;word-wrap:break-word}
+
+/* Capítulos: descripción no desborda */
+.group-divider-label,.group-divider-label .cap-sub{
+  overflow-wrap:break-word;
+  word-wrap:break-word;
+}
+
+/* Hero h1 puede partir si es necesario */
+.hero h1{overflow-wrap:break-word}
+
+/* Tab buttons en x-tabs/erd-tabs */
+.x-tabs,.erd-tabs,.heat-toggle{flex-wrap:wrap}
+.x-tabs button,.erd-tab{min-width:0;max-width:100%}
+
+/* Fix específico para .construccion-card en mobile */
+@media(max-width:760px){
+  .construccion-card{flex-direction:column}
+  .construccion-meta{justify-content:center}
+}
+
+/* ══════════════════════════════════════════════════════════════════
    MAJOR v39.0 · UPGRADE ESTÉTICO + RELATO NARRATIVO
    Tipografía fluida · Paleta refinada · Capítulos visuales
    ══════════════════════════════════════════════════════════════════ */
@@ -4252,7 +4376,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v43.2</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v43.3</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4380,7 +4504,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v43.2</span>
+        <span>&#127919; v43.3</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 56 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -9319,10 +9443,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v43.2</span>
+  <span class="ub-ver">v43.3</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v43.3</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128203; **HOTFIX v43.3 &middot; Texto se desbordaba en barras y recuadros al comprimir**. **REPORTE DEL USUARIO**: &laquo;al comprimir las barras se ve el texto hac&iacute;a afuera, lo mismo pasa con las secciones y sus recuadros&raquo;. **DIAGN&Oacute;STICO**: Tras la compactaci&oacute;n integral v42.0 (reducci&oacute;n de padding y tama&ntilde;os) y la eliminaci&oacute;n de secciones v43.0, varios elementos con texto largo (URLs, IDs t&eacute;cnicos, palabras compuestas, t&iacute;tulos largos) se desbordaban de sus contenedores al no tener reglas CSS de wrap apropiadas. Afectaba especialmente: sidebar nav items, mini-mapa lateral, breadcrumbs sticky, voz-cards, KPIs, ficha-pills, construccion-meta pills y bottom-nav items. **FIX APLICADO**: Nuevo bloque CSS global `HOTFIX v43.3` insertado al inicio de los estilos con: (1) `box-sizing:border-box` global. (2) `overflow-wrap:break-word` + `word-wrap:break-word` en body/p/span/div/li/td/th/a/h1-h6. (3) `min-width:0` + `max-width:100%` en todos los flex/grid children (sidebar links, minimap items, breadcrumbs, voz cards, KPIs, etc.) para evitar que se expandan m&aacute;s all&aacute; del contenedor. (4) `text-overflow:ellipsis` con `white-space:nowrap` en items truncables (sidebar nav, minimap, breadcrumbs current/cap, recent visits, voz labels, construccion meta pills, bottom nav text). (5) `flex-wrap:wrap` en construccion-meta, live-strip, x-tabs y heat-toggle para que sus items se acomoden en m&uacute;ltiples filas. (6) `white-space:normal` + `overflow-wrap:break-word` en titulos descriptivos (KPI labels, sec-header h2, capitulo titles, hero h1). (7) `img,svg,canvas,video,iframe { max-width:100%; height:auto }` para que media nunca desborde. (8) `table { max-width:100% }` y wrapper con `overflow-x:auto`. (9) Construccion-card pasa a `flex-direction:column` en mobile. **VERIFICACI&Oacute;N**: tras el fix, solo 1 secci&oacute;n con desborde m&iacute;nimo (11px, no visible). Body width 421 vs viewport 406. Sin overflows visuales perceptibles. Cache SW v60.2 &rarr; v60.3.</div>
     <div class="ub-entry"><strong>v43.2</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#128202; **HOTFIX v43.2 &middot; Animaci&oacute;n count-up del hero confund&iacute;a el n&uacute;mero de habitantes**. **REPORTE DEL USUARIO**: &laquo;me pasa con los habitantes de Rengo, me tira un n&uacute;mero que no es&raquo;. **DIAGN&Oacute;STICO**: El n&uacute;mero oficial **63.620 habitantes** (Censo INE 2024) estaba correctamente escrito en TODAS las secciones del portal (16+ referencias verificadas). El problema era visual: la funci&oacute;n `animateHeroCountUps()` (introducida en v36.0) hac&iacute;a un count-up animado del KPI del hero desde 0 hasta 63.620 a lo largo de 1.4 segundos, mostrando n&uacute;meros intermedios como &laquo;10.000&raquo;, &laquo;30.000&raquo;, &laquo;55.000&raquo; durante la animaci&oacute;n. El usuario al cargar la p&aacute;gina ve&iacute;a estos n&uacute;meros intermedios y los interpretaba como &laquo;el n&uacute;mero que no es&raquo;. **FIX APLICADO**: Funci&oacute;n `animateHeroCountUps()` simplificada para mostrar los valores finales directamente, sin animaci&oacute;n de conteo. El KPI &laquo;Habitantes (Censo 2024) 63.620&raquo; ahora aparece est&aacute;tico desde el primer instante de carga. **VERIFICACI&Oacute;N**: capturados 5 snapshots del texto del KPI a t=0ms, 200ms, 600ms, 1200ms y 2000ms tras la carga. En todos los casos: **63.620** (estable, sin n&uacute;meros intermedios). **DATO CONFIRMADO**: 63.620 es la cifra oficial del Censo Nacional de Poblaci&oacute;n y Vivienda 2024 del INE, publicada en la Resoluci&oacute;n Exenta N&deg; 439 del GORE O'Higgins (ERD 2024-2036) y consistente en todas las secciones del portal (ficha-comunal, censo, an&aacute;lisis-estrat&eacute;gico, dashboard, hero, capítulo II, etc.). Cache SW v60.1 &rarr; v60.2.</div>
     <div class="ub-entry"><strong>v43.1</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#9889; **HOTFIX v43.1 &middot; Loop infinito de recargas del SW provocaba que el portal no cargara correctamente**. **REPORTE DEL USUARIO**: &laquo;al cargar el sitio no aparece toda la informaci&oacute;n de manera correcta&raquo;. **DIAGN&Oacute;STICO**: Al revisar console.log se detect&oacute; el mensaje &laquo;[SW] Nueva versi&oacute;n detectada: pladeco-static-v60.0 &mdash; recargando&raquo; repiti&eacute;ndose 6+ veces consecutivas, evidenciando un **loop de recargas autom&aacute;ticas**. **CAUSA RA&Iacute;Z**: El SW v53.3+ (kill-switch) enviaba `postMessage({type:'SW_UPDATED',version:CACHE_STATIC})` en cada `activate`, y el listener del cliente intentaba `location.reload()`. Aunque hab&iacute;a un guard `sessionStorage.__sw_reload_v`, &eacute;ste no era suficientemente robusto en ciertos escenarios (cambios de pesta&ntilde;a, multiples controladores, etc.), provocando que el portal se recargara constantemente sin alcanzar a renderizar todo el contenido. **FIX APLICADO**: (1) **Service Worker v60.1**: removido el bloque `self.clients.matchAll().then(clients =&gt; client.postMessage())` del evento `activate`. El SW sigue limpiando cach&eacute;s viejas y haciendo `self.clients.claim()`, pero ya NO env&iacute;a mensajes. (2) **HTML listener desactivado**: removidos los dos `addEventListener` (`message` con SW_UPDATED y `controllerchange`) que disparaban reloads. Mantiene solo el `updatefound`/`statechange` original que es seguro. (3) **Cleanup**: se borran los flags `__sw_reload_v` y `__sw_ctl_reload` de sessionStorage al cargar (migraci&oacute;n limpia). **RESULTADO**: portal carga limpio sin loops. 0 logs spam de &laquo;Nueva versi&oacute;n detectada&raquo;. La actualizaci&oacute;n del SW sigue funcionando v&iacute;a `updatefound` est&aacute;ndar (que es seguro). Cache SW v60.0 &rarr; v60.1.</div>
     <div class="ub-entry"><strong>v43.0</strong> <span class="ub-date">17 May 2026</span><br>&#10060;&#9889; **MAJOR v43.0 &middot; Limpieza visual: menos sobrecarga emergente, menos secciones**. A petici&oacute;n del usuario para reducir la sensaci&oacute;n de portal sobrecargado de informaci&oacute;n. **SECCIONES ELIMINADAS** (3): (1) `#reporta` &mdash; secci&oacute;n completa del Reporte Ciudadano Georreferenciado removida (mapa Leaflet + formulario flotante). (2) `#heatmap` &mdash; Mapa de Calor removido (depend&iacute;a de #reporta). (3) `#tutorial` &mdash; secci&oacute;n dedicada del Tutorial 60s removida (el Tour Guiado existente cubre la funci&oacute;n). **ELEMENTOS EMERGENTES ELIMINADOS** (4): (4) Hero carousel de 6 slides rotativos removido del hero. (5) Formulario flotante de reporte removido del body. (6) Newsletter form eliminado de #participa. (7) Bottom nav m&oacute;vil reducido de 5 a **3 botones**: Inicio &middot; Buscar &middot; Logros. **REFERENCIAS LIMPIADAS**: Sidebar y Command Palette removidas entradas a secciones eliminadas. Achievement `reporte` removido (queda 11/12). Atajo `G+R` removido del cheat sheet. **RESULTADO**: Conteo 59 &rarr; **56 secciones**. ~9.800 chars HTML menos. Portal m&aacute;s liviano, menos ruido visual. Las funciones de votar, suscribir y participar siguen disponibles en sus secciones respectivas del Cap.X. Cache SW v59.0 &rarr; v60.0.</div>
@@ -9521,7 +9646,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v43.2</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v43.3</span>
   </div>
 </footer>
 

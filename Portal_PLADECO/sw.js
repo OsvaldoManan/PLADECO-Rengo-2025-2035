@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v60.2
+// PLADECO Rengo 2025-2035 · Service Worker v60.3
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v60.2: hotfix v43.2 - desactivada animacion count-up del hero
+// v60.3: hotfix v43.3 - prevenir desbordamiento texto en barras y recuadros
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v60.2';
+const CACHE_STATIC='pladeco-static-v60.3';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
