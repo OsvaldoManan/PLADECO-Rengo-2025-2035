@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v60.0
+// PLADECO Rengo 2025-2035 · Service Worker v60.1
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v60.0: limpieza visual v43.0 - eliminadas secciones reporta/heatmap/tutorial
+// v60.1: hotfix v43.1 - removido postMessage que causaba loop de reload
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v60.0';
+const CACHE_STATIC='pladeco-static-v60.1';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -49,26 +49,16 @@ self.addEventListener('install',function(e){
   );
 });
 
-/* ── Activate: KILL-SWITCH v53.3 - limpia TODAS las cachés y notifica reload ── */
+/* ── Activate: limpia cachés viejas + claim (sin postMessage para evitar loops de reload) ── */
 self.addEventListener('activate',function(e){
   var keep=new Set([CACHE_STATIC,CACHE_IMG,CACHE_TILES,CACHE_RUNTIME]);
   e.waitUntil(
     caches.keys().then(function(ks){
-      // KILL-SWITCH: borrar TODAS las cachés viejas con nombres distintos
       return Promise.all(ks.filter(function(k){return !keep.has(k);}).map(function(k){
-        console.log('[SW v53.3] Eliminando cache vieja:', k);
+        console.log('[SW] Eliminando cache vieja:', k);
         return caches.delete(k);
       }));
-    }).then(function(){
-      return self.clients.claim();
-    }).then(function(){
-      // Notificar a todos los clientes que hay nueva versión disponible
-      return self.clients.matchAll({includeUncontrolled:true}).then(function(clients){
-        clients.forEach(function(client){
-          try{client.postMessage({type:'SW_UPDATED',version:CACHE_STATIC});}catch(e){}
-        });
-      });
-    })
+    }).then(function(){return self.clients.claim();})
   );
 });
 

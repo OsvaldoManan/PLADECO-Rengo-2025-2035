@@ -4252,7 +4252,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v43.0</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v43.1</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4380,7 +4380,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v43.0</span>
+        <span>&#127919; v43.1</span>
         <span>&#128197; 17 Mayo 2026</span>
         <span>&#128202; 56 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -9319,10 +9319,11 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v43.0</span>
+  <span class="ub-ver">v43.1</span>
   &#218;ltima actualizaci&#243;n: 17 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v43.1</strong> <span class="ub-date">17 May 2026</span><br>&#128737;&#9889; **HOTFIX v43.1 &middot; Loop infinito de recargas del SW provocaba que el portal no cargara correctamente**. **REPORTE DEL USUARIO**: &laquo;al cargar el sitio no aparece toda la informaci&oacute;n de manera correcta&raquo;. **DIAGN&Oacute;STICO**: Al revisar console.log se detect&oacute; el mensaje &laquo;[SW] Nueva versi&oacute;n detectada: pladeco-static-v60.0 &mdash; recargando&raquo; repiti&eacute;ndose 6+ veces consecutivas, evidenciando un **loop de recargas autom&aacute;ticas**. **CAUSA RA&Iacute;Z**: El SW v53.3+ (kill-switch) enviaba `postMessage({type:'SW_UPDATED',version:CACHE_STATIC})` en cada `activate`, y el listener del cliente intentaba `location.reload()`. Aunque hab&iacute;a un guard `sessionStorage.__sw_reload_v`, &eacute;ste no era suficientemente robusto en ciertos escenarios (cambios de pesta&ntilde;a, multiples controladores, etc.), provocando que el portal se recargara constantemente sin alcanzar a renderizar todo el contenido. **FIX APLICADO**: (1) **Service Worker v60.1**: removido el bloque `self.clients.matchAll().then(clients =&gt; client.postMessage())` del evento `activate`. El SW sigue limpiando cach&eacute;s viejas y haciendo `self.clients.claim()`, pero ya NO env&iacute;a mensajes. (2) **HTML listener desactivado**: removidos los dos `addEventListener` (`message` con SW_UPDATED y `controllerchange`) que disparaban reloads. Mantiene solo el `updatefound`/`statechange` original que es seguro. (3) **Cleanup**: se borran los flags `__sw_reload_v` y `__sw_ctl_reload` de sessionStorage al cargar (migraci&oacute;n limpia). **RESULTADO**: portal carga limpio sin loops. 0 logs spam de &laquo;Nueva versi&oacute;n detectada&raquo;. La actualizaci&oacute;n del SW sigue funcionando v&iacute;a `updatefound` est&aacute;ndar (que es seguro). Cache SW v60.0 &rarr; v60.1.</div>
     <div class="ub-entry"><strong>v43.0</strong> <span class="ub-date">17 May 2026</span><br>&#10060;&#9889; **MAJOR v43.0 &middot; Limpieza visual: menos sobrecarga emergente, menos secciones**. A petici&oacute;n del usuario para reducir la sensaci&oacute;n de portal sobrecargado de informaci&oacute;n. **SECCIONES ELIMINADAS** (3): (1) `#reporta` &mdash; secci&oacute;n completa del Reporte Ciudadano Georreferenciado removida (mapa Leaflet + formulario flotante). (2) `#heatmap` &mdash; Mapa de Calor removido (depend&iacute;a de #reporta). (3) `#tutorial` &mdash; secci&oacute;n dedicada del Tutorial 60s removida (el Tour Guiado existente cubre la funci&oacute;n). **ELEMENTOS EMERGENTES ELIMINADOS** (4): (4) Hero carousel de 6 slides rotativos removido del hero. (5) Formulario flotante de reporte removido del body. (6) Newsletter form eliminado de #participa. (7) Bottom nav m&oacute;vil reducido de 5 a **3 botones**: Inicio &middot; Buscar &middot; Logros. **REFERENCIAS LIMPIADAS**: Sidebar y Command Palette removidas entradas a secciones eliminadas. Achievement `reporte` removido (queda 11/12). Atajo `G+R` removido del cheat sheet. **RESULTADO**: Conteo 59 &rarr; **56 secciones**. ~9.800 chars HTML menos. Portal m&aacute;s liviano, menos ruido visual. Las funciones de votar, suscribir y participar siguen disponibles en sus secciones respectivas del Cap.X. Cache SW v59.0 &rarr; v60.0.</div>
     <div class="ub-entry"><strong>v42.0</strong> <span class="ub-date">17 May 2026</span><br>&#128202;&#9889; **MAJOR v42.0 &middot; Compactaci&oacute;n integral del contenido y espaciado**. Tras la recomposici&oacute;n estructural v41.0, ahora se optimiza el ESPACIADO para que el contenido sea m&aacute;s denso y eficiente sin perder legibilidad. **TIPOGRAF&Iacute;A COMPACTA**: body font-size de 16px&rarr;14.2px, line-height de 1.68&rarr;1.55, H2 de 33px&rarr;20.8px (clamp 1.5rem&rarr;1.7rem), H3 1.5rem&rarr;1.3rem, P&aacute;rrafos line-height 1.7&rarr;1.55. **PADDING SECCIONES**: de clamp(40px,72px) &rarr; clamp(22px,38px) (-50% espacio vertical). **GROUP-DIVIDER**: margin 60-100px&rarr;32-52px, padding 28-44px&rarr;18-28px, border-radius 20px&rarr;14px. **HERO**: padding 32px, h1 de 3.2rem&rarr;2.6rem, KPIs cards 9-11px padding. **CARDS** (KPI, viz, eje, ps, dataset, team): border-radius 14px&rarr;10px, padding 22px&rarr;14px, valores 30px&rarr;22px, labels 12px&rarr;11px. **SEC-HEADER**: margin-bottom 20-32px&rarr;14-20px, badges 5px&rarr;3px padding. **SEC-FUENTE**: 14-18px&rarr;9-13px padding, font 0.85rem&rarr;0.78rem. **CONSTRUCCION-CARD**: padding 28px&rarr;18px, h3 22px&rarr;18px, img 110px&rarr;80px. **PLAN-STATUS**: padding 28px&rarr;18px, t&iacute;tulo 22px&rarr;17px. **SIDEBAR**: links 12.5px&rarr;11.5px, padding 8px&rarr;6px, group-title 9px&rarr;8.5px, logo 78px&rarr;64px. **MINI-MAPA**: width 260px&rarr;240px, padding 14px&rarr;11px, items 11.5px&rarr;11px. **BREADCRUMBS**: height 34px&rarr;30px, font 12px&rarr;11.5px. **TABLAS**: padding cells 10-14px&rarr;7-10px, font 13px&rarr;12px. **MOBILE**: padding seccion 36px&rarr;22px, divider margin 50px&rarr;28px, hero h1 1.8rem&rarr;1.5rem. **RESULTADO**: contenido ~25% m&aacute;s denso verticalmente, m&aacute;s contenido visible en cada scroll, mejor uso del ancho disponible, lectura m&aacute;s &aacute;gil. La legibilidad se mantiene con line-height 1.55 (recomendado WCAG) y contraste WCAG AA preservado. Cache SW v58.0 &rarr; v59.0.</div>
     <div class="ub-entry"><strong>v41.0</strong> <span class="ub-date">17 May 2026</span><br>&#129517;&#9889; **MAJOR v41.0 &middot; Recomposici&oacute;n estructural: 16 secciones movidas a su cap&iacute;tulo correcto**. Tras auditor&iacute;a completa de coherencia narrativa, se identificaron 6 secciones cr&iacute;ticas + 10 mejorables mal ubicadas que romp&iacute;an el relato. Reordenamiento ejecutado con script Python preservando todos los IDs (enlaces #encuesta, #matriz, etc. siguen funcionando id&eacute;nticos). **MOVIMIENTOS REALIZADOS** (16 total): (1)  Cap.X &rarr; **Cap.I** (es onboarding, debe ser primero). (2)  Cap.I &rarr; **Cap.X** (es acci&oacute;n ciudadana, no introducci&oacute;n). (3)  Cap.I &rarr; **Cap.V** (es el coraz&oacute;n de la planificaci&oacute;n estrat&eacute;gica). (4)  Cap.IX &rarr; **Cap.V** (los 50 proyectos georef SON la planificaci&oacute;n). (5)  (comunal vecinas) Cap.IX &rarr; **Cap.II** (es diagn&oacute;stico comparativo). (6)  Cap.X &rarr; **Cap.III** (es an&aacute;lisis territorial). (7)  Cap.II &rarr; **Cap.III** (es an&aacute;lisis avanzado). (8)  Cap.II &rarr; **Cap.III** (an&aacute;lisis avanzado). (9)  Cap.IV &rarr; **Cap.V** (es an&aacute;lisis estrat&eacute;gico, no voz). (10)  Cap.IV &rarr; **Cap.VI** (es gobernanza). (11)  Cap.VII &rarr; **Cap.IX** (memoria visual de cambios). (12)  Cap.VII &rarr; **Cap.VIII** (es material descargable). (13)  (fotos) Cap.VIII &rarr; **Cap.IX** (memoria del proceso). (14)  Cap.VIII &rarr; **Cap.X** (acci&oacute;n ciudadana). (15)  (newsletter+reporte+calendario) Cap.VIII &rarr; **Cap.X** (acciones). (16)  (Quiz+Tour) Cap.VIII &rarr; **Cap.X** (acciones de aprendizaje). **NUEVA COMPOSICI&Oacute;N COHERENTE**: Cap.I (4 secs: tutorial &middot; mvv &middot; contexto &middot; dashboard) &middot; Cap.II (3: ficha-comunal &middot; censo &middot; comparador) &middot; Cap.III (10: macrosector &middot; ict &middot; an&aacute;lisis-censal &middot; datos-vivo &middot; mapa &middot; territorio &middot; comparador-uv &middot; desigualdad &middot; territorial-adv &middot; nna) &middot; Cap.IV (4: sociedad-civil &middot; voz &middot; sue&ntilde;os &middot; testimonios) &middot; Cap.V (8: foda &middot; matriz &middot; ejes &middot; ods &middot; gesti&oacute;n &middot; argumentario &middot; resumen &middot; mapa-proyectos) &middot; Cap.VI (5: diagn&oacute;stico-institucional &middot; equipo &middot; sna &middot; etnograf&iacute;a &middot; comisiones) &middot; Cap.VII (5: cronograma &middot; viz &middot; sem&aacute;foro &middot; compromisos &middot; financiamiento) &middot; Cap.VIII (3+widgets oculto: gr&aacute;ficos &middot; faq &middot; institucional) &middot; Cap.IX (4: timeline &middot; galer&iacute;a-proceso &middot; galer&iacute;a &middot; antes-despu&eacute;s) &middot; **Cap.X (8: encuesta &middot; voz-vecinos &middot; reporta &middot; heatmap &middot; cuadernillo &middot; participa &middot; presupuesto-participativo &middot; educaci&oacute;n) &mdash; ahora concentra TODA la acci&oacute;n ciudadana** &middot; Cap.XI (1: erd) &middot; Cap.XII (3: documentos &middot; cta &middot; visitas). El relato ahora fluye naturalmente: Bienvenida y onboarding &rarr; Conocer la comuna &rarr; An&aacute;lisis profundo &rarr; Escuchar voces &rarr; Planificar &rarr; Conocer actores &rarr; Medir &rarr; Recursos &rarr; Memoria visual &rarr; ACTUAR &rarr; Articulaci&oacute;n regional &rarr; Cierre. Sin cambios funcionales: solo recomposici&oacute;n estructural. Cache SW v57.0 &rarr; v58.0.</div>
@@ -9519,7 +9520,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 17 Mayo 2026 &middot; v43.0</span>
+    <span>Actualizado: 17 Mayo 2026 &middot; v43.1</span>
   </div>
 </footer>
 
@@ -19906,34 +19907,13 @@ if('serviceWorker' in navigator){
       }
     });
   }).catch(function(){});
-  // KILL-SWITCH v53.3: escuchar mensaje del SW para reload forzado tras update
-  navigator.serviceWorker.addEventListener('message',function(e){
-    if(e.data&&e.data.type==='SW_UPDATED'){
-      try{
-        // Si la versión cambió a v53.3+, recargar UNA SOLA VEZ (evitar loop)
-        var last=sessionStorage.getItem('__sw_reload_v');
-        if(last!==e.data.version){
-          sessionStorage.setItem('__sw_reload_v',e.data.version);
-          console.log('[SW] Nueva versión detectada:',e.data.version,'— recargando');
-          if(typeof showToast==='function')showToast('Nueva versión instalada','success');
-          setTimeout(function(){location.reload();},800);
-        }
-      }catch(_){}
-    }
-  });
-  // Detectar cambio de controller (otra señal de nuevo SW activo)
-  var refreshing=false;
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    if(refreshing)return;
-    refreshing=true;
-    try{
-      var last=sessionStorage.getItem('__sw_ctl_reload');
-      if(last!=='1'){
-        sessionStorage.setItem('__sw_ctl_reload','1');
-        setTimeout(function(){location.reload();},500);
-      }
-    }catch(_){}
-  });
+  // v43.1: kill-switch listeners DESACTIVADOS para evitar loops de reload.
+  // El SW v60.0+ ya no envía postMessage. updatefound de arriba es suficiente.
+  // Solo limpiar el flag viejo si existe (cleanup migración).
+  try{
+    sessionStorage.removeItem('__sw_reload_v');
+    sessionStorage.removeItem('__sw_ctl_reload');
+  }catch(_){}
 }
 </script>
 </body>
