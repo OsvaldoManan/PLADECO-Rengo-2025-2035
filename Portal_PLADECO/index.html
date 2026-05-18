@@ -1450,6 +1450,36 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 body.dark .doc-card-enhanced .doc-btn{background:#1e293b}
 body.dark .doc-card-enhanced .doc-btn:hover{background:var(--accent)}
 
+/* ── Diagramas Metodológicos (v44.8) ── */
+.diag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:8px}
+.diag-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s}
+.diag-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.14)}
+.diag-thumb{position:relative;width:100%;aspect-ratio:4/3;background:#f3f4f6;cursor:zoom-in;overflow:hidden}
+body.dark .diag-thumb{background:#1e293b}
+.diag-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+.diag-card:hover .diag-thumb img{transform:scale(1.04)}
+.diag-thumb-ico{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:3px 8px;border-radius:14px;font-weight:700;letter-spacing:.5px;backdrop-filter:blur(4px)}
+.diag-body{padding:11px 12px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.diag-cat{font-size:9.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#b45309}
+body.dark .diag-cat{color:#fbbf24}
+.diag-title{font-size:12.5px;font-weight:700;line-height:1.35;color:var(--text);flex:1}
+.diag-actions{display:flex;gap:6px;margin-top:4px}
+.diag-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:8px 6px;border-radius:7px;font-size:10.5px;font-weight:700;text-decoration:none;transition:background .2s,color .2s;border:none;cursor:pointer;font-family:inherit}
+.diag-btn.primary{background:var(--accent);color:#fff}
+.diag-btn.primary:hover{background:#127032}
+.diag-btn.secondary{background:var(--bg);color:var(--text);border:1px solid var(--border)}
+.diag-btn.secondary:hover{background:var(--card);border-color:var(--accent);color:var(--accent)}
+body.dark .diag-btn.secondary{background:#0f172a;color:var(--text)}
+.diag-counter{text-align:center;font-size:12px;color:var(--text2);margin-top:14px;padding:8px;background:var(--bg);border-radius:8px}
+@media (max-width:560px){
+  .diag-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .diag-body{padding:9px}
+  .diag-title{font-size:11.5px}
+  .diag-btn{font-size:10px;padding:7px 4px}
+}
+.lightbox-dl{position:absolute;top:20px;left:28px;background:rgba(45,154,77,.92);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;z-index:10001;text-decoration:none;transition:background .2s}
+.lightbox-dl:hover{background:#127032}
+
 /* ── F1: Buscador Sidebar ── */
 .sidebar-nav a.search-hidden{display:none!important}
 
@@ -4362,6 +4392,88 @@ body.dark .pol-meta-box{border-color:#2d3748}
 body.dark .pol-meta-box:nth-child(1){background:rgba(254,243,199,.08)}
 body.dark .pol-meta-box:nth-child(2){background:rgba(219,234,254,.08)}
 body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
+
+/* ═══════════════════════════════════════════════════════════════════
+   v44.8 · Carta Gantt Interactiva PLADECO 2025-2032 (#cronograma-gantt)
+   ═══════════════════════════════════════════════════════════════════ */
+#cronograma-gantt{padding-top:28px;padding-bottom:32px}
+.cg-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0 18px}
+.cg-kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;border-top:3px solid #c2410c;text-align:left;transition:transform .15s ease,box-shadow .15s ease}
+.cg-kpi:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.cg-kpi-ico{font-size:18px;line-height:1;margin-bottom:6px}
+.cg-kpi-num{font-size:18px;font-weight:800;color:var(--text);line-height:1.1;letter-spacing:-.02em}
+.cg-kpi-lbl{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+.cg-filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 16px;padding:10px;background:var(--bg-soft);border-radius:10px;border:1px solid var(--border)}
+.cg-f-btn{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 13px;font-size:11.5px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s ease}
+.cg-f-btn:hover{background:rgba(194,65,12,.08);border-color:#c2410c;color:var(--text)}
+.cg-f-btn.active{background:linear-gradient(135deg,#c2410c,#f5921d);border-color:#c2410c;color:#fff;box-shadow:0 3px 10px rgba(194,65,12,.28)}
+.cg-f-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.cg-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.04)}
+.cg-chart{display:grid;grid-template-columns:240px repeat(11,minmax(54px,1fr));overflow-x:auto;overflow-y:hidden;font-size:12px;position:relative;background:linear-gradient(180deg,var(--bg-soft) 0,var(--card) 44px)}
+.cg-chart::-webkit-scrollbar{height:8px}
+.cg-chart::-webkit-scrollbar-track{background:var(--bg-soft)}
+.cg-chart::-webkit-scrollbar-thumb{background:#c2410c80;border-radius:4px}
+.cg-chart::-webkit-scrollbar-thumb:hover{background:#c2410c}
+.cg-h-label{grid-column:1;background:linear-gradient(135deg,#0c1f36,#1a3d8f);color:#fff;padding:10px 12px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid #c2410c;display:flex;align-items:center;position:sticky;left:0;z-index:3}
+.cg-h-month{background:#0c1f36;color:#fff;padding:8px 4px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-align:center;border-bottom:2px solid #c2410c;border-left:1px solid rgba(255,255,255,.08);text-transform:uppercase}
+.cg-h-month .cg-h-num{display:block;font-size:9px;font-weight:600;opacity:.7;letter-spacing:0;margin-top:2px;text-transform:none}
+.cg-row{display:contents}
+.cg-row .cg-label{grid-column:1;padding:10px 12px;font-weight:700;color:var(--text);background:var(--card);border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:8px;position:sticky;left:0;z-index:2;font-size:12px;line-height:1.3;transition:background .12s ease}
+.cg-row .cg-label:hover{background:var(--bg-soft)}
+.cg-row.cg-process .cg-label{font-weight:800;background:linear-gradient(90deg,var(--bg-soft),var(--card))}
+.cg-row.cg-process .cg-label .cg-pnum{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;border-radius:6px;flex-shrink:0}
+.cg-row.cg-process .cg-label .cg-pchev{margin-left:auto;font-size:11px;color:var(--text2);transition:transform .2s ease;flex-shrink:0}
+.cg-row.cg-process.open .cg-label .cg-pchev{transform:rotate(90deg)}
+.cg-row.cg-activity .cg-label{padding-left:36px;font-weight:500;font-size:11.5px;color:var(--text2);background:var(--card);border-left:3px solid transparent}
+.cg-row.cg-activity .cg-label .cg-anum{font-weight:800;color:var(--text);font-size:10.5px;background:var(--bg-soft);padding:2px 6px;border-radius:4px;margin-right:6px;flex-shrink:0;border:1px solid var(--border)}
+.cg-cell{border-bottom:1px solid var(--border);border-left:1px solid var(--border);min-height:38px;position:relative;background:var(--card)}
+.cg-cell.cg-cell-weekend{background:rgba(0,0,0,.012)}
+.cg-row.cg-activity .cg-cell{background:rgba(0,0,0,.008)}
+.cg-bar{position:absolute;top:50%;transform:translateY(-50%);left:4px;right:4px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:flex-start;padding:0 8px;font-size:10px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;text-shadow:0 1px 2px rgba(0,0,0,.25);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.cg-bar:hover{transform:translateY(-50%) scale(1.04);box-shadow:0 4px 12px rgba(0,0,0,.22);filter:brightness(1.08);z-index:5}
+.cg-bar.cg-bar-process{height:26px;background:linear-gradient(135deg,var(--cg-c1,#c2410c),var(--cg-c2,#f5921d));font-weight:800;font-size:10.5px}
+.cg-bar.cg-bar-activity{height:18px;background:var(--cg-c1,#c2410c);font-size:9.5px;opacity:.92;border:1px solid rgba(255,255,255,.18)}
+.cg-tooltip{position:fixed;background:#0c1f36;color:#fff;padding:10px 14px;border-radius:8px;font-size:11.5px;font-weight:500;line-height:1.5;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.32);pointer-events:none;z-index:9999;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease,visibility .15s ease}
+.cg-tooltip.visible{opacity:1;visibility:visible;transform:translateY(0)}
+.cg-tooltip strong{color:#f5921d;display:block;font-weight:800;font-size:12px;margin-bottom:4px}
+.cg-tooltip .cg-tt-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:10px;color:#cbd5e1}
+.cg-tooltip .cg-tt-meta span{background:rgba(255,255,255,.08);padding:2px 8px;border-radius:4px}
+.cg-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:20px}
+.cg-list-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;border-left:4px solid var(--cg-c1,#c2410c);transition:transform .15s ease,box-shadow .15s ease}
+.cg-list-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.cg-list-card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cg-list-card-num{display:inline-flex;width:26px;height:26px;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;border-radius:7px;background:var(--cg-c1,#c2410c);flex-shrink:0}
+.cg-list-card-title{font-size:13.5px;font-weight:800;color:var(--text);line-height:1.3}
+.cg-list-card-period{font-size:10.5px;color:var(--text2);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+.cg-list-card-acts{font-size:11.5px;color:var(--text2);line-height:1.55}
+.cg-list-card-acts li{margin-bottom:4px}
+.cg-list-card-acts li strong{color:var(--text);font-weight:700}
+.cg-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:18px}
+.cg-note-card{background:linear-gradient(135deg,rgba(45,154,77,.04),rgba(245,146,29,.03));border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;border-top:3px solid #2d9a4d}
+.cg-note-ico{font-size:22px;line-height:1;flex-shrink:0}
+.cg-note-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px}
+.cg-note-desc{font-size:11.5px;color:var(--text2);line-height:1.55}
+@media(max-width:760px){
+  .cg-kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+  .cg-kpi{padding:10px}
+  .cg-kpi-num{font-size:15px}
+  .cg-cta-download{flex-direction:column;align-items:stretch!important;text-align:center}
+  .cg-cta-download a{justify-content:center}
+  .cg-chart{font-size:10.5px;grid-template-columns:160px repeat(11,minmax(44px,1fr))}
+  .cg-h-label{padding:7px 8px;font-size:9.5px}
+  .cg-h-month{padding:6px 2px;font-size:9.5px}
+  .cg-row .cg-label{padding:8px 9px;font-size:10.5px}
+  .cg-row.cg-activity .cg-label{padding-left:24px;font-size:10px}
+  .cg-bar{height:18px;font-size:9px;padding:0 5px}
+  .cg-bar.cg-bar-process{height:22px;font-size:9px}
+  .cg-bar.cg-bar-activity{height:14px;font-size:8px}
+}
+body.dark .cg-h-label,body.dark .cg-h-month{background:#1a2332;color:#e2e8f0;border-bottom-color:#f5921d}
+body.dark .cg-row .cg-label{background:#1a2332;color:#e2e8f0}
+body.dark .cg-row.cg-activity .cg-cell{background:rgba(255,255,255,.012)}
+body.dark .cg-cell{background:#1a2332}
+body.dark .cg-row .cg-label:hover{background:#243043}
+body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </style>
 </head>
 <body>
@@ -4481,6 +4593,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <a href="#semaforo"><span class="ico">&#128678;</span> Sem&#225;foro de Metas</a>
       <a href="#compromisos"><span class="ico">&#9989;</span> Compromisos P&#250;blicos</a>
       <a href="#financiamiento"><span class="ico">&#128176;</span> Financiamiento &middot; Recursos</a>
+      <a href="#cronograma-gantt" class="is-new"><span class="ico">&#128197;</span> Cronograma Gantt 2025-2032</a>
       <a href="#antes-despues"><span class="ico">&#128260;</span> Antes &middot; Despu&#233;s</a>
       <a href="#graficos"><span class="ico">&#128200;</span> An&#225;lisis Gr&#225;ficos</a>
     </div>
@@ -4501,6 +4614,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <a href="#educacion"><span class="ico">&#127891;</span> Aprende sobre tu Comuna</a>
       <a href="#institucional"><span class="ico">&#127960;&#65039;</span> Acerca del Portal</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Entregables Finales</a>
+      <a href="#diagramas"><span class="ico">&#128194;</span> 16 Diagramas Metodol&oacute;gicos</a>
       <a href="#graficos-proceso"><span class="ico">&#128202;</span> 73 Gr&#225;ficos del Proceso</a>
       <a href="#cartografias"><span class="ico">&#128506;</span> 57 Cartograf&#237;as</a>
       <a href="#visitas"><span class="ico">&#128101;</span> Contador de Visitas</a>
@@ -4542,7 +4656,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.7</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.9</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4670,8 +4784,8 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v44.7</span>
-        <span>&#128197; 17 Mayo 2026</span>
+        <span>&#127919; v44.9</span>
+        <span>&#128197; 18 Mayo 2026</span>
         <span>&#128202; 55 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
@@ -4810,6 +4924,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
         <div class="qi-links">
           <a href="#semaforo" class="qi-link"><span class="qi-link-ico">&#128680;</span><span class="qi-link-txt">Sem&aacute;foro de Metas</span></a>
           <a href="#financiamiento" class="qi-link"><span class="qi-link-ico">&#128176;</span><span class="qi-link-txt">Financiamiento</span></a>
+          <a href="#cronograma-gantt" class="qi-link is-new"><span class="qi-link-ico">&#128197;</span><span class="qi-link-txt">Cronograma Gantt</span></a>
           <a href="#presupuesto-participativo" class="qi-link is-new"><span class="qi-link-ico">&#128181;</span><span class="qi-link-txt">Presupuesto Participativo</span></a>
           <a href="#compromisos" class="qi-link"><span class="qi-link-ico">&#9989;</span><span class="qi-link-txt">Compromisos PLADECO</span></a>
           <a href="#antes-despues" class="qi-link"><span class="qi-link-ico">&#128272;</span><span class="qi-link-txt">Antes / Despu&eacute;s</span></a>
@@ -4832,6 +4947,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
           <a href="#educacion" class="qi-link"><span class="qi-link-ico">&#127891;</span><span class="qi-link-txt">Aprende sobre tu Comuna</span></a>
           <a href="#institucional" class="qi-link"><span class="qi-link-ico">&#127960;&#65039;</span><span class="qi-link-txt">Acerca del Portal</span></a>
           <a href="#documentos" class="qi-link"><span class="qi-link-ico">&#128190;</span><span class="qi-link-txt">Documentos descargables</span></a>
+          <a href="#diagramas" class="qi-link"><span class="qi-link-ico">&#128194;</span><span class="qi-link-txt">16 Diagramas metodol&oacute;gicos</span></a>
         </div>
       </div>
     </div>
@@ -7393,6 +7509,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
       <li><a href="#gestion"><span>Gestión PLADECO</span><span class="toc-desc">Modernización municipal</span></a></li>
       <li><a href="#semaforo"><span>Semáforo de Metas</span><span class="toc-desc">Seguimiento indicadores</span></a></li>
       <li><a href="#financiamiento"><span>Financiamiento</span><span class="toc-desc">Presupuesto y fuentes</span></a></li>
+      <li><a href="#cronograma-gantt"><span>Cronograma Gantt</span><span class="toc-desc">7 macroprocesos · 22 actividades · 11 meses · Ago 25 → Jun 26</span></a></li>
       <li></li>
       <li><a href="#documentos"><span>Documentos</span><span class="toc-desc">Descargas y reportes</span></a></li>
     </ol>
@@ -8437,6 +8554,89 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
 </section>
 
+<!-- ═══ CRONOGRAMA · CARTA GANTT INTERACTIVA (v44.8) ═══ -->
+<section id="cronograma-gantt" class="reveal" aria-labelledby="cgH">
+  <div class="sec-header">
+    <div class="badge" style="background:#fff7ed;color:#c2410c">PLADECO &middot; Carta Gantt Interactiva</div>
+    <h2 id="cgH">&#128197; Cronograma del Proceso PLADECO 2025-2032</h2>
+    <p>Carta Gantt interactiva con los <strong>7 macroprocesos</strong> y <strong>22 actividades espec&iacute;ficas</strong> del proceso de actualizaci&oacute;n del PLADECO Rengo, distribuidos en <strong>11 meses</strong> de trabajo entre Agosto 2025 y Junio 2026. Cada barra representa la duraci&oacute;n estimada de la actividad. Toca cualquier macroproceso para desplegar sus actividades, usa los filtros para enfocar la vista o descarga el documento PDF original elaborado por SECPLAC.</p>
+  </div>
+
+  <!-- CTA Descarga PDF -->
+  <div class="cg-cta-download" style="background:linear-gradient(135deg,rgba(245,146,29,.08),rgba(45,154,77,.06));border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin:18px 0 22px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between">
+    <div style="flex:1;min-width:240px">
+      <div style="font-size:10px;font-weight:800;color:#c2410c;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">&#128196; Documento T&eacute;cnico Original</div>
+      <div style="font-size:16px;font-weight:800;color:var(--text);margin-bottom:4px;line-height:1.3">PLADECO Rengo &mdash; Cronograma del Proceso 2025-2032</div>
+      <div style="font-size:12.5px;color:var(--text2);font-weight:500;line-height:1.5">Carta Gantt oficial con la planificaci&oacute;n de los 7 procesos del PLADECO &middot; Modalidad h&iacute;brida &middot; SECPLAC Municipalidad de Rengo &middot; 143 KB &middot; PDF</div>
+    </div>
+    <a href="./docs/PLADECO_Cronograma_2025-2032.pdf" download="PLADECO_Cronograma_2025-2032.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#c2410c,#f5921d);color:#fff;padding:12px 22px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 4px 14px rgba(194,65,12,.32);transition:transform .15s ease,box-shadow .15s ease" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(194,65,12,.42)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px rgba(194,65,12,.32)'">
+      <span style="font-size:18px">&#128229;</span> Descargar PDF
+    </a>
+  </div>
+
+  <!-- KPIs resumen -->
+  <div class="cg-kpis">
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#128203;</div><div class="cg-kpi-num">7</div><div class="cg-kpi-lbl">Macroprocesos</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#9881;</div><div class="cg-kpi-num">22</div><div class="cg-kpi-lbl">Actividades</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#128197;</div><div class="cg-kpi-num">11</div><div class="cg-kpi-lbl">Meses</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#128197;</div><div class="cg-kpi-num">Ago 25 &mdash; Jun 26</div><div class="cg-kpi-lbl">Per&iacute;odo</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#128104;&#8205;&#128187;</div><div class="cg-kpi-num">H&iacute;brida</div><div class="cg-kpi-lbl">Modalidad</div></div>
+  </div>
+
+  <!-- Filtros de procesos -->
+  <div class="cg-filter-row" id="cgFilterRow">
+    <button class="cg-f-btn active" data-filter="all" onclick="cgFilter('all',this)"><span class="cg-f-dot" style="background:#475569"></span> Todos los procesos</button>
+  </div>
+
+  <!-- Carta Gantt -->
+  <div class="cg-wrap">
+    <div class="cg-chart" id="cgChart" role="table" aria-label="Carta Gantt PLADECO 2025-2032"></div>
+  </div>
+
+  <!-- Tooltip -->
+  <div class="cg-tooltip" id="cgTooltip" role="tooltip"></div>
+
+  <!-- Lista narrativa expandible -->
+  <div class="cg-list" id="cgList"></div>
+
+  <!-- Notas -->
+  <div class="cg-notes">
+    <div class="cg-note-card">
+      <div class="cg-note-ico">&#128104;&#8205;&#128187;</div>
+      <div class="cg-note-body">
+        <div class="cg-note-title">Modalidad H&iacute;brida</div>
+        <div class="cg-note-desc">El proceso combina trabajo presencial (entrevistas territoriales, jornadas con OSC, talleres con concejales) y remoto (sistematizaci&oacute;n de datos, encuesta digital masiva, an&aacute;lisis bibliogr&aacute;fico).</div>
+      </div>
+    </div>
+    <div class="cg-note-card">
+      <div class="cg-note-ico">&#128221;</div>
+      <div class="cg-note-body">
+        <div class="cg-note-title">Evidencia del Trabajo</div>
+        <div class="cg-note-desc">Cada actividad genera registros verificables: entrevistas grabadas con consentimiento, actas firmadas, presentaciones SECPLAC, jornadas documentadas y fuentes bibliogr&aacute;ficas citadas.</div>
+      </div>
+    </div>
+    <div class="cg-note-card">
+      <div class="cg-note-ico">&#128279;</div>
+      <div class="cg-note-body">
+        <div class="cg-note-title">Gobernanza Polic&eacute;ntrica</div>
+        <div class="cg-note-desc">La metodolog&iacute;a (Ostrom 2010) categoriza actores en institucionales (alcalde, concejales, directores, funcionarios) y sociedad civil (OSC, dirigentes UV, comunidades educativas, adultos mayores).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> SECPLAC Municipalidad de Rengo &bull; Cronograma del Proceso de Actualizaci&oacute;n PLADECO Rengo 2025-2032 &bull; Modalidad h&iacute;brida &bull; Mayo 2026 &bull; Documento PDF disponible para descarga al inicio de esta secci&oacute;n.</div>
+  <div class="sec-relacionadas">
+    <div class="sr-label">El cronograma se conecta con</div>
+    <div class="sr-links">
+      <a href="#equipo" class="sr-link"><span class="sr-ico">&#128104;&#8205;&#128188;</span> Equipo SECPLAC</a>
+      <a href="#sociedad-civil" class="sr-link"><span class="sr-ico">&#129309;</span> Sociedad Civil</a>
+      <a href="#diagnostico-institucional" class="sr-link"><span class="sr-ico">&#127963;&#65039;</span> Entrevistas Institucionales</a>
+      <a href="#voz-vecinos" class="sr-link"><span class="sr-ico">&#128483;&#65039;</span> Voz Vecinos</a>
+      <a href="#encuesta" class="sr-link"><span class="sr-ico">&#128203;</span> Encuesta Masiva</a>
+    </div>
+  </div>
+</section>
+
 <!-- ═══ GROUP: PROCESO Y RECURSOS ═══ -->
 <div class="group-divider" id="capitulo-8"><span class="group-divider-label" data-cap="VIII">&#128218; Recursos &amp; Aprendizaje &middot; Documentos y Glosario<span class="cap-sub">Todo el material del proceso disponible para descargar: documentos t&eacute;cnicos, 73 gr&aacute;ficos, 57 cartograf&iacute;as, FAQ, glosario de 63 t&eacute;rminos y un quiz interactivo para aprender sobre tu comuna.</span></span></div>
 
@@ -8517,6 +8717,16 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   <div class="lightbox-caption" id="lightboxCaption"></div>
   <div class="lightbox-counter" id="lightboxCounter"></div>
   <div class="lightbox-progress" id="lightboxProgress"></div>
+</div>
+
+<!-- Lightbox Diagramas -->
+<div class="lightbox" id="diagLightbox" onclick="closeDiagLightbox(event)">
+  <button class="lightbox-close" onclick="closeDiagLightbox()" aria-label="Cerrar">&#10005;</button>
+  <a id="diagDlBtn" class="lightbox-dl" download href="#" onclick="event.stopPropagation()">&#11015; Descargar JPG</a>
+  <button class="lightbox-nav lightbox-prev" onclick="navDiagLightbox(-1)" aria-label="Anterior">&#10094;</button>
+  <img id="diagLightboxImg" src="" alt="Diagrama PLADECO">
+  <button class="lightbox-nav lightbox-next" onclick="navDiagLightbox(1)" aria-label="Siguiente">&#10095;</button>
+  <div class="lightbox-caption" id="diagLightboxCaption"></div>
 </div>
 
 <!-- ═══ MVV IMAGE VIEWER ═══ -->
@@ -9497,6 +9707,15 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="docs-grid" id="docs-grid"></div>
 
+  <!-- Diagramas Metodológicos PLADECO -->
+  <div id="diagramas" class="sec-header" style="margin-top:40px">
+    <div class="badge" style="background:#fef3c7;color:#b45309">Esquemas &middot; Metodolog&iacute;a</div>
+    <h2>&#128194; Diagramas Metodol&oacute;gicos PLADECO 2025-2035</h2>
+    <p>16 diagramas que documentan visualmente la metodolog&iacute;a, gobernanza, etnograf&iacute;a y procesos formulativos del PLADECO. Cada esquema est&aacute; disponible en alta resoluci&oacute;n (JPG) para descarga directa, uso docente y citaci&oacute;n en informes t&eacute;cnicos.</p>
+  </div>
+  <div class="diag-grid" id="diagGrid"></div>
+  <div class="diag-counter" id="diagCounter"></div>
+
   <!-- Gráficos del proceso -->
   <div id="graficos-proceso" class="sec-header" style="margin-top:40px">
     <div class="badge" style="background:#ede9fe;color:#7c3aed">Visualizaciones</div>
@@ -9570,10 +9789,12 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v44.7</span>
-  &#218;ltima actualizaci&#243;n: 17 Mayo 2026
+  <span class="ub-ver">v44.9</span>
+  &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v44.9</strong> <span class="ub-date">18 May 2026</span><br>&#128197;&#9889; **v44.9 &middot; Nueva Carta Gantt Interactiva PLADECO 2025-2032**. **SOLICITUD DEL USUARIO**: integrar al portal como elemento interactivo la nueva carta gantt del proceso PLADECO entregada por SECPLAC en PDF (143 KB). **IMPLEMENTACI&Oacute;N**: (1) **PDF integrado** en `docs/PLADECO_Cronograma_2025-2032.pdf`. (2) **Nueva secci&oacute;n `#cronograma-gantt`** en Cap&iacute;tulo VII (Seguimiento) despu&eacute;s de #financiamiento. Header con badge naranja, t&iacute;tulo &laquo;&#128197; Cronograma del Proceso PLADECO 2025-2032&raquo;, descripci&oacute;n con 7 macroprocesos / 22 actividades / 11 meses Ago 2025 - Jun 2026. (3) **CTA descarga prominente** con gradient naranja-verde y bot&oacute;n grande &laquo;&#128229; Descargar PDF&raquo; con efecto hover (translateY -2px + box-shadow expandido). (4) **5 KPI cards**: 7 Macroprocesos, 22 Actividades, 11 Meses, Ago 25 - Jun 26, Modalidad H&iacute;brida. (5) **Filtros pill** (8 botones: Todos + 7 procesos con dot identificador). (6) **Carta Gantt CSS Grid** `240px repeat(11,minmax(54px,1fr))` con header sticky (11 meses Ago-Jun). 7 filas de macroprocesos clickables (toggle expand) + sub-filas de actividades cuando abiertos. Barras absolutas posicionadas con `right:calc(-N*100% + 4px)` para extenderse N columnas. (7) **Array `CG_DATA`** con 7 procesos. Colores: P1 navy #1a3d8f, P2 verde #2d9a4d, P3 naranja #f5921d, P4 granate #c0392b, P5 violeta #7c3aed, P6 cyan #0891b2, P7 ambar #d97706. (8) **Lista narrativa de tarjetas** debajo del gantt con resumen de cada proceso (n&uacute;mero, icono, t&iacute;tulo, per&iacute;odo, lista de actividades) que respeta filtro activo. (9) **Tooltip flotante** al hover de barras (t&iacute;tulo, per&iacute;odo, meta), posicionado din&aacute;micamente con `cgMoveTip()` para no salir del viewport. (10) **3 cards de notas**: Modalidad H&iacute;brida, Evidencia del Trabajo, Gobernanza Polic&eacute;ntrica (Ostrom 2010). (11) **Sec-relacionadas** con 5 enlaces (#equipo, #sociedad-civil, #diagnostico-institucional, #voz-vecinos, #encuesta). (12) **`cgInit()` lazy** v&iacute;a IntersectionObserver (rootMargin 200px). (13) **Navegaci&oacute;n agregada** en sidebar group 6, quick-index group 6, TOC del resumen y sectionNames del breadcrumb. (14) **Mobile responsive**: grid columns 160px+44px, paddings/fontSizes compactados, CTA en columna. (15) **Dark mode** con estilos espec&iacute;ficos `body.dark .cg-*`. **PROCESOS** (del PDF SECPLAC): P1 Recopilaci&oacute;n+Puesta en Marcha (Ago-Sep), P2 An&aacute;lisis Te&oacute;rico (Ago-Oct), P3 Cuanti/Cuali (Sep-Nov), P4 Entrevistas Institucionales (Oct-Dic), P5 Entrevista Sociedad Civil (Nov-Ene), P6 Entrevista Comunidad (Dic-Mar), P7 Encuesta Masiva (Ago-Jun, todo el per&iacute;odo). Cache SW v61.8 &rarr; v61.9.</div>
+    <div class="ub-entry"><strong>v44.8</strong> <span class="ub-date">18 May 2026</span><br>&#128194;&#11015; **v44.8 &middot; Diagramas Metodol&oacute;gicos PLADECO disponibles para descarga**. **SOLICITUD DEL USUARIO**: agregar la carpeta `Diagramas PLADECO 2025-2035` a la secci&oacute;n de documentos para descarga. **ACCIONES REALIZADAS**: (1) **Carpeta `/diagramas/` creada** en el portal con los 16 esquemas originales del usuario, renombrados a nombres URL-safe (`01_composicion_gobernanza_institucional.jpg` &hellip; `16_proceso_diagnostico_mixto.jpg`), tama&ntilde;o total ~3.1 MB. (2) **Nueva sub-secci&oacute;n `#diagramas`** insertada dentro de `#documentos`, entre los Entregables y los Gr&aacute;ficos del Proceso, con sec-header propio (badge naranja &laquo;Esquemas &middot; Metodolog&iacute;a&raquo;). (3) **Array JS `DIAGRAMAS`** con 16 entradas (categor&iacute;as: Gobernanza, Estructura, Diagn&oacute;stico, Etnograf&iacute;a, Planificaci&oacute;n, Metodolog&iacute;a, Marco normativo, Participaci&oacute;n) + funci&oacute;n `renderDiagramas()` que dibuja una grid responsiva `diag-grid` con thumbnails 4:3 lazy-loaded. (4) **Lightbox dedicado `#diagLightbox`** independiente del de Galer&iacute;a, con: bot&oacute;n &laquo;Descargar JPG&raquo; flotante con `download` HTML5, navegaci&oacute;n &larr;/&rarr;/Esc por teclado, contador `(idx/total)`. (5) **Cada card incluye** thumb clickeable + badge num&eacute;rico + categor&iacute;a + t&iacute;tulo + dos botones (&laquo;Ver&raquo; y &laquo;Descargar&raquo; nativo via `download` attribute). (6) **Navegaci&oacute;n actualizada**: agregada entrada `#diagramas` en sidebar Cap.VIII (entre Entregables y Gr&aacute;ficos), Quick-Index final, Command Palette, breadcrumbs (`sectionNames`) y array `sections` del grupo &laquo;Proceso y Recursos&raquo;. (7) **CSS `.diag-grid` / `.diag-card`** nuevo bloque con dark-mode + responsive mobile (grid min-150px &lt;560px, font reducido). (8) **Service Worker v61.7 &rarr; v61.8**, cache busting autom&aacute;tico (los JPG quedan en CACHE_IMG bajo cache-first on-demand, no en STATIC para no inflar el pre-cache). Parsing HTML/JS validado. **PR&Oacute;XIMOS PASOS**: si requieres categorizaci&oacute;n adicional, filtros o reordenamiento de los diagramas, indicame el criterio.</div>
     <div class="ub-entry"><strong>v44.7</strong> <span class="ub-date">18 May 2026</span><br>&#10060;&#128197; **v44.7 &middot; Eliminado todo lo relacionado con cronogramas y fases**. **SOLICITUD DEL USUARIO**: remover toda la informaci&oacute;n de cronogramas y fases del PLADECO en el sitio web porque est&aacute; elaborando una nueva carta gantt y procesos que se agregar&aacute;n m&aacute;s adelante. **ACCIONES REALIZADAS**: (1) **Secci&oacute;n `#cronograma` eliminada**: removida la secci&oacute;n &laquo;Hoja de Ruta &amp; Proceso PLADECO&raquo; completa (1.112 chars) con sus dos tabs (Hoja de Ruta 2025-2035 + Proceso PLADECO). (2) **Funciones JS eliminadas**: `renderTimelinePladeco()` (1.561 chars, render del timeline horizontal) y `switchCronoTab()` (336 chars, conmutador de pesta&ntilde;as del cronograma). (3) **Llamadas de init removidas**: la llamada `renderTimelinePladeco()` del init principal del portal. (4) **Enlaces de navegaci&oacute;n limpiados**: 7 enlaces a `#cronograma` eliminados del sidebar, quick-index, sec-relacionadas y dem&aacute;s lugares. Entrada del buscador full-text removida. (5) **CSS hu&eacute;rfano eliminado**: bloque `.tl-pladeco*` (Timeline Horizontal Hoja de Ruta) de ~3.186 chars y `.crono-tab*` (Cronograma Tab Switcher) de ~914 chars. (6) **Viz-card &laquo;Hoja de Ruta PLADECO 2025-2035&raquo;** eliminada de #viz. (7) **Item de galer&iacute;a `G06_Gantt_2026_2035.png`** removido del array `GRAFICOS` de descargas. (8) **Item `MX04_Hoja_Ruta_Metas.png`** removido del array de gr&aacute;ficos matriciales. (9) **Referencia `cronograma:'Hoja de Ruta'`** removida del objeto `sectionNames` usado por el sistema de breadcrumbs. **TOTAL REDUCCI&Oacute;N**: ~8.600 chars (-0.4%) eliminados del HTML. Parsing JS validado (1.057k chars OK). **PR&Oacute;XIMOS PASOS**: el usuario integrar&aacute; en futuras versiones su nueva carta gantt y procesos del PLADECO. Cache SW v61.6 &rarr; v61.7.</div>
     <div class="ub-entry"><strong>v44.6</strong> <span class="ub-date">18 May 2026</span><br>&#128506;&#65039;&#128205; **v44.6 &middot; Mapa ICT con Perfil Zonal de Macrosectores integrado**. **SOLICITUD DEL USUARIO**: integrar las capacidades del mapa de Macrosectores (perfil zonal con poblaci&oacute;n, indicadores y proyectos) directamente en el mapa principal del ICT, evitando navegar entre dos secciones separadas. **SOLUCI&Oacute;N**: el mapa Leaflet del ICT ahora muestra **simult&aacute;neamente** los 65 marcadores de espacios p&uacute;blicos Y los 4 pol&iacute;gonos de macrosectores territoriales clickables. **FUNCIONALIDAD AGREGADA**: (1) **`ICT_MACROSECTORES`**: nuevo array JS con los 4 macrosectores (Centro Urbano 35.200 hab &middot; Periferia Urbana 15.623 hab &middot; Localidades 8.500 hab &middot; Rural Disperso 4.297 hab), con bounds geogr&aacute;ficos, color por zona ICT, ICP de vulnerabilidad, # de UV, # de proyectos PLADECO asignados, descripci&oacute;n textual y problem&aacute;ticas. (2) **`ictBuildMacroPolygons()`**: dibuja los 4 rect&aacute;ngulos en el mapa con colores semitransparentes (fillOpacity .06) y tooltip al hover. Click activa el perfil zonal. (3) **`ictSelectMacrosector(id)`**: resalta el pol&iacute;gono activo (fillOpacity .22, weight 3), atenua los dem&aacute;s, calcula y muestra:   &middot; Color identificador del macrosector.   &middot; Descripci&oacute;n textual (ej. "Esmeralda, La Torre y zonas de expansi&oacute;n urbana reciente").   &middot; 4 KPI grid: Habitantes, UV en zona, ICP vulnerabilidad, **Espacios ICT en la zona** (calculado din&aacute;micamente).   &middot; **ICT zonal promedio** (recalculado con `ictGICT()` sobre los espacios filtrados de esa zona).   &middot; **# proyectos PLADECO asignados** a la zona.   &middot; Lista de problem&aacute;ticas principales.   &middot; Botones de acceso r&aacute;pido: &laquo;Ver proyectos &rarr;&raquo; (mapa-proyectos) y &laquo;Macrosectores&raquo; (vista completa). (4) **Bot&oacute;n de control en mapa**: bot&oacute;n flotante &laquo;&#128205; Perfil Zonal&raquo; en la esquina superior derecha del mapa (`L.control topright`) que abre directamente el perfil del Centro Urbano. (5) **CSS `.ict-zonal-panel`**: reutiliza el estilo del `.mac-panel` con animaci&oacute;n fade-in y responsive mobile (full-width &lt;760px). (6) **Cierre del panel**: bot&oacute;n &laquo;&times;&raquo; con `ictCloseZonalPanel()` que tambi&eacute;n restaura los pol&iacute;gonos a su opacidad original. **VENTAJAS**: - Acceso unificado: ya no hay que salir del mapa ICT para consultar perfil zonal. - Datos cruzados: el panel muestra cu&aacute;ntos de los 65 espacios ICT pertenecen a cada zona y su promedio ICT. - Visi&oacute;n contextual: los marcadores de espacios siguen visibles sobre los pol&iacute;gonos coloreados. - Navegaci&oacute;n cruzada: bot&oacute;n directo a #mapa-proyectos y #macrosector para profundizar. Parsing JS validado (1.059k chars OK). Cache SW v61.5 &rarr; v61.6.</div>
     <div class="ub-entry"><strong>v44.5</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#10004;&#65039; **v44.5 &middot; Cat&aacute;logo ICT completo: 56 → 65 espacios incorporados al portal**. **SOLICITUD DEL USUARIO**: completar el array de espacios del ICT en el portal para que coincida con los 65 puntos del Informe de Espacios P&uacute;blicos Abril 2026. **ESTADO ANTERIOR**: el array `ICT_ESPACIOS` ten&iacute;a 56 entradas (IDs 1-57 con el 53 faltante), pero la actualizaci&oacute;n metodol&oacute;gica del informe defini&oacute; 65 puntos de observaci&oacute;n. **ACCI&Oacute;N**: agregados **9 nuevos espacios** al array, completando la serie hasta el ID 65: (53) Oficina DIDECO Localidad de Rosario &middot; Equipamiento institucional municipal &middot; Deficiente. (58) Plaza Conjunto Habitacional Reciente &middot; Plaza barrial en consolidaci&oacute;n &middot; Deficiente. (59) Plaza Residencial con Equipamiento Deportivo &middot; Plaza barrial con calistenia &middot; Deficiente. (60) Plaza Barrial Consolidada Sector Residencial &middot; Plaza barrial consolidada &middot; Regular. (61) Plaza &Uacute;nica Sector Rural &middot; Plaza rural referente local &middot; Deficiente. (62) Plaza Barrial Localidad de Rosario &middot; Plaza barrial de localidad &middot; Regular. (63) Medialuna y Galp&oacute;n Asociado (Sector Cultural) &middot; Infraestructura cultural-recreativa patrimonial &middot; Cr&iacute;tico. (64) Borde L&iacute;nea F&eacute;rrea de Rengo (Tramo Cr&iacute;tico) &middot; Borde ferroviario / espacio residual &middot; Cr&iacute;tico. (65) Comisar&iacute;a de Carabineros Centro C&iacute;vico Rengo &middot; Infraestructura institucional de seguridad &middot; Bueno. Cada nuevo punto incluye coordenadas GPS, tipolog&iacute;a, estado de conservaci&oacute;n, lista de problem&aacute;ticas identificadas y propuestas de intervenci&oacute;n con instrumentos de financiamiento (FNDR, PMU, SUBDERE, Consejo de Monumentos Nacionales). **VERIFICACI&Oacute;N**: array final tiene **65 IDs &uacute;nicos** del 1 al 65, sin huecos ni duplicados. Parsing JS validado (1.052k chars OK). Los nuevos puntos se distribuyen autom&aacute;ticamente en las zonas territoriales mediante `ictGetZona()` (haversiana) y aparecen en mapa Leaflet, ranking, donut, matriz de priorizaci&oacute;n y cat&aacute;logo. Cache SW v61.4 &rarr; v61.5.</div>
@@ -9782,7 +10003,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 18 Mayo 2026 &middot; v44.7</span>
+    <span>Actualizado: 18 Mayo 2026 &middot; v44.9</span>
   </div>
 </footer>
 
@@ -13249,6 +13470,83 @@ function renderAntesDespues(){
 
 // ── QR CODE (Canvas simple) ──
 
+// ── DIAGRAMAS METODOLÓGICOS PLADECO (v44.8) ──
+const DIAGRAMAS = [
+  {src:'diagramas/01_composicion_gobernanza_institucional.jpg',titulo:'Composición de la Gobernanza Institucional',cat:'Gobernanza',desc:'Estructura institucional y articulación de actores del PLADECO Rengo 2025-2035.'},
+  {src:'diagramas/02_composicion_pladeco_2025_2035.jpg',titulo:'Composición del Plan de Desarrollo Comunal 2025-2035',cat:'Estructura',desc:'Esquema general con los seis ejes, objetivos estratégicos y acciones del PLADECO.'},
+  {src:'diagramas/03_composicion_diagnostico_comunal.jpg',titulo:'Composición del Diagnóstico Comunal',cat:'Diagnóstico',desc:'Articulación entre fuentes cuantitativas, cualitativas, censales y territoriales.'},
+  {src:'diagramas/04_etnografia_institucional.jpg',titulo:'Etnografía Institucional',cat:'Etnografía',desc:'Aplicación de la etnografía organizacional al diagnóstico de la municipalidad.'},
+  {src:'diagramas/05_etnografia_social.jpg',titulo:'Etnografía Social',cat:'Etnografía',desc:'Trabajo de campo con 21 unidades vecinales: observación, recorridos y entrevistas.'},
+  {src:'diagramas/06_formulacion_objetivos_estrategicos.jpg',titulo:'Formulación de Objetivos Estratégicos PLADECO 2025-2035',cat:'Planificación',desc:'Ruta lógica desde brechas y problemáticas hacia objetivos estratégicos por eje.'},
+  {src:'diagramas/07_instancias_revision_pladeco.jpg',titulo:'Instancias de revisión de la actualización del PLADECO 2025-2035',cat:'Gobernanza',desc:'Hitos formales de validación interna y externa del proceso PLADECO.'},
+  {src:'diagramas/08_metodologia_etnografia_institucional.jpg',titulo:'Metodología Etnografía Institucional PLADECO 2025-2035',cat:'Metodología',desc:'Diseño metodológico: muestra de 115 funcionarios, técnicas y análisis.'},
+  {src:'diagramas/09_metodologia_etnografia_social.jpg',titulo:'Metodología Etnografía Social PLADECO 2025-2035',cat:'Metodología',desc:'Diseño metodológico: 472 vecinos en 95 organizaciones por unidad vecinal.'},
+  {src:'diagramas/10_metodologia_foda_participacion.jpg',titulo:'Metodología FODA para la Participación Ciudadana PLADECO 2025-2035',cat:'Metodología',desc:'Protocolo participativo para construir 80 elementos FODA con la comunidad.'},
+  {src:'diagramas/11_metodologia_subdere.jpg',titulo:'Metodología SUBDERE',cat:'Marco normativo',desc:'Marco metodológico oficial SUBDERE aplicado al PLADECO comunal.'},
+  {src:'diagramas/12_niveles_participacion_ciudadana.jpg',titulo:'Niveles de Participación Ciudadana PLADECO 2025-2035',cat:'Participación',desc:'Escalera Arnstein adaptada al PLADECO: información, consulta, decisión y co-gestión.'},
+  {src:'diagramas/13_objetivos_pladeco.jpg',titulo:'Objetivos del Plan de Desarrollo Comunal',cat:'Estructura',desc:'Sistema de objetivos generales y específicos del PLADECO Rengo 2025-2035.'},
+  {src:'diagramas/14_proceso_analisis_censo_2024.jpg',titulo:'Proceso de análisis y diagnóstico Censo 2024',cat:'Diagnóstico',desc:'Ruta analítica del Censo INE 2024: 63.620 habitantes, 826 manzanas, ZC.'},
+  {src:'diagramas/15_proceso_formulacion_objetivos.jpg',titulo:'Proceso de formulación de Objetivos Estratégicos PLADECO 2025-2035',cat:'Planificación',desc:'Pasos secuenciales: análisis FODA → ejes → OE → acciones priorizadas.'},
+  {src:'diagramas/16_proceso_diagnostico_mixto.jpg',titulo:'Proceso para el Diagnóstico Mixto',cat:'Diagnóstico',desc:'Diseño metodológico mixto: cuali-cuantitativo integrado por eje y territorio.'}
+];
+let diagLightboxIdx = 0;
+function renderDiagramas(){
+  const el = document.getElementById('diagGrid');
+  if(!el) return;
+  el.innerHTML = DIAGRAMAS.map((d,i) => `
+    <div class="diag-card">
+      <div class="diag-thumb" onclick="openDiagLightbox(${i})" role="button" tabindex="0" aria-label="Ver ${d.titulo}">
+        <img src="${d.src}" alt="${d.titulo}" loading="lazy" decoding="async">
+        <span class="diag-thumb-ico">${String(i+1).padStart(2,'0')}</span>
+      </div>
+      <div class="diag-body">
+        <div class="diag-cat">${d.cat}</div>
+        <div class="diag-title">${d.titulo}</div>
+        <div class="diag-actions">
+          <button type="button" class="diag-btn secondary" onclick="openDiagLightbox(${i})" aria-label="Ver ${d.titulo}">&#128065; Ver</button>
+          <a class="diag-btn primary" href="${d.src}" download="${d.titulo.replace(/[\\/:*?"<>|]/g,'_')}.jpg" aria-label="Descargar ${d.titulo}">&#11015; Descargar</a>
+        </div>
+      </div>
+    </div>`).join('');
+  const counter = document.getElementById('diagCounter');
+  if(counter) counter.textContent = '📂 ' + DIAGRAMAS.length + ' diagramas metodológicos · JPG alta resolución · descarga directa';
+}
+function openDiagLightbox(idx){
+  diagLightboxIdx = idx;
+  const lb = document.getElementById('diagLightbox');
+  const img = document.getElementById('diagLightboxImg');
+  const cap = document.getElementById('diagLightboxCaption');
+  const dl = document.getElementById('diagDlBtn');
+  if(!lb || !img) return;
+  const d = DIAGRAMAS[idx];
+  img.src = d.src;
+  img.alt = d.titulo;
+  if(cap) cap.textContent = d.titulo + ' (' + (idx+1) + '/' + DIAGRAMAS.length + ')';
+  if(dl){
+    dl.href = d.src;
+    dl.setAttribute('download', d.titulo.replace(/[\\/:*?"<>|]/g,'_') + '.jpg');
+  }
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDiagLightbox(e){
+  if(e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+  const lb = document.getElementById('diagLightbox');
+  if(lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function navDiagLightbox(dir){
+  diagLightboxIdx = (diagLightboxIdx + dir + DIAGRAMAS.length) % DIAGRAMAS.length;
+  openDiagLightbox(diagLightboxIdx);
+}
+document.addEventListener('keydown', function(e){
+  const lb = document.getElementById('diagLightbox');
+  if(!lb || !lb.classList.contains('open')) return;
+  if(e.key === 'Escape'){ closeDiagLightbox(); }
+  if(e.key === 'ArrowRight'){ navDiagLightbox(1); }
+  if(e.key === 'ArrowLeft'){ navDiagLightbox(-1); }
+});
+
 // ── ENHANCED DOCS ──
 function renderDocsEnhanced(){
   const el=document.getElementById('docs-grid');
@@ -14621,12 +14919,211 @@ function ictInit(){
 })();
 
 // ══════════════════════════════════════════════════════
+// v44.8 · CARTA GANTT INTERACTIVA PLADECO 2025-2032
+// ══════════════════════════════════════════════════════
+var CG_MONTHS=[
+  {ab:'Ago',num:'2025'},{ab:'Sep',num:'2025'},{ab:'Oct',num:'2025'},
+  {ab:'Nov',num:'2025'},{ab:'Dic',num:'2025'},{ab:'Ene',num:'2026'},
+  {ab:'Feb',num:'2026'},{ab:'Mar',num:'2026'},{ab:'Abr',num:'2026'},
+  {ab:'May',num:'2026'},{ab:'Jun',num:'2026'}
+];
+var CG_DATA=[
+  {id:'P1',num:'1',icon:'\u{1F4CB}',title:'Recopilación de Información y Puesta en Marcha',color1:'#1a3d8f',color2:'#3461b8',start:0,end:1,
+    activities:[
+      {num:'1.1',title:'Composición de equipo Formulación PLADECO 2026-2032',start:0,end:0},
+      {num:'1.2',title:'Recopilación de Instrumentos de Planificación Institucionales',start:0,end:1}
+    ]},
+  {id:'P2',num:'2',icon:'\u{1F4D6}',title:'Análisis Teórico y Análisis de Datos',color1:'#2d9a4d',color2:'#5cb775',start:0,end:2,
+    activities:[
+      {num:'2.1',title:'Preparación Presentación SECPLAN, Alcaldía y Concejales',start:0,end:0},
+      {num:'2.2',title:'Explicar metodología PLADECO 2025-2035',start:1,end:1},
+      {num:'2.3',title:'Análisis Teórico y Análisis de Datos comunales',start:1,end:2},
+      {num:'2.4',title:'Creación de Bases de Datos Comunales y Regionales',start:1,end:2}
+    ]},
+  {id:'P3',num:'3',icon:'\u{1F4CA}',title:'Análisis Cuantitativo y Cualitativo PLADECO 2025-2035',color1:'#f5921d',color2:'#fbb763',start:1,end:3,
+    activities:[
+      {num:'3.1',title:'Formulación análisis de datos basado en Gráficos',start:1,end:2},
+      {num:'3.2',title:'Preparación presentación SECPLAN sobre Datos Cuanti y Cuali',start:2,end:2},
+      {num:'3.3',title:'Proceso de Entrevista de Funcionarios Municipales',start:2,end:3},
+      {num:'3.4',title:'Identificación de Actores según Categorización (Gobernanza Policéntrica)',start:2,end:3}
+    ]},
+  {id:'P4',num:'4',icon:'\u{1F3DB}',title:'Entrevistas Institucionales',color1:'#c0392b',color2:'#e36052',start:2,end:4,
+    activities:[
+      {num:'4.1',title:'Planificación de reuniones Actores Institucionales',start:2,end:2},
+      {num:'4.2',title:'Proceso entrevista a Alcalde, SECPLAN, Directores y Concejales',start:2,end:3},
+      {num:'4.3',title:'Recopilación resultados entrevistas (Acta de Consentimiento)',start:3,end:3},
+      {num:'4.4',title:'Preparación presentación resultados entrevistas N°1',start:3,end:4}
+    ]},
+  {id:'P5',num:'5',icon:'\u{1F91D}',title:'Proceso Entrevista a Sociedad Civil',color1:'#7c3aed',color2:'#9b66f3',start:3,end:5,
+    activities:[
+      {num:'5.1',title:'Solicitud a DIDECO de las OSC y Actores Relevantes',start:3,end:3},
+      {num:'5.2',title:'Identificación de Actores Relevantes (Gobernanza Policéntrica)',start:3,end:5}
+    ]},
+  {id:'P6',num:'6',icon:'\u{1F5E3}',title:'Proceso Entrevista Comunidad',color1:'#0891b2',color2:'#22b4d6',start:4,end:7,
+    activities:[
+      {num:'6.1',title:'Entrevista actores locales (educación, adultos mayores, clubes, OSC)',start:4,end:6},
+      {num:'6.2',title:'Recopilación resultados entrevistas comunitarias',start:5,end:7},
+      {num:'6.3',title:'Acta de Consentimiento firmadas',start:5,end:7},
+      {num:'6.4',title:'Preparación presentación resultados entrevistas N°2',start:6,end:7}
+    ]},
+  {id:'P7',num:'7',icon:'\u{1F4E2}',title:'Proceso de Encuesta Masiva y Recopilación',color1:'#d97706',color2:'#f0a73b',start:0,end:10,
+    activities:[
+      {num:'7.1',title:'Creación Formulario Google Encuesta Masiva',start:0,end:4},
+      {num:'7.2',title:'Publicación y difusión Encuesta Masiva',start:4,end:9},
+      {num:'7.3',title:'Presentación y Votación para la Actualización PLADECO 2025-2035',start:9,end:10}
+    ]}
+];
+var CG_S={openProcs:{},filter:'all'};
+function cgBuildFilters(){
+  var row=document.getElementById('cgFilterRow');if(!row) return;
+  CG_DATA.forEach(function(p){
+    var b=document.createElement('button');
+    b.className='cg-f-btn';
+    b.setAttribute('data-filter',p.id);
+    b.innerHTML='<span class="cg-f-dot" style="background:'+p.color1+'"></span> '+p.num+'. '+p.title.split(' ').slice(0,2).join(' ');
+    b.onclick=function(){cgFilter(p.id,b);};
+    row.appendChild(b);
+  });
+}
+function cgFilter(id,btn){
+  CG_S.filter=id;
+  document.querySelectorAll('#cgFilterRow .cg-f-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  cgRender();
+}
+function cgRender(){
+  var c=document.getElementById('cgChart');if(!c) return;
+  var html='';
+  // Header
+  html+='<div class="cg-h-label">Macroproceso / Actividad</div>';
+  CG_MONTHS.forEach(function(m,i){html+='<div class="cg-h-month">'+m.ab+'<span class="cg-h-num">'+m.num+'</span></div>';});
+  // Rows
+  CG_DATA.forEach(function(p){
+    if(CG_S.filter!=='all'&&CG_S.filter!==p.id) return;
+    var isOpen=!!CG_S.openProcs[p.id];
+    // Process row
+    html+='<div class="cg-row cg-process'+(isOpen?' open':'')+'" data-pid="'+p.id+'">';
+    html+='<div class="cg-label" onclick="cgToggleProcess(\''+p.id+'\')">'
+      +'<span class="cg-pnum" style="background:'+p.color1+'">'+p.num+'</span>'
+      +'<span style="flex:1">'+p.icon+' '+p.title+'</span>'
+      +'<span class="cg-pchev">▶</span>'
+      +'</div>';
+    for(var i=0;i<11;i++){
+      var hasBar=(i===p.start);
+      html+='<div class="cg-cell">';
+      if(hasBar){
+        var span=p.end-p.start+1;
+        var rightP=span===1?'4px':'calc('+(-100*(span-1))+'% + 4px)';
+        html+='<div class="cg-bar cg-bar-process" style="--cg-c1:'+p.color1+';--cg-c2:'+p.color2+';right:'+rightP+'" '
+          +'data-title="'+p.title.replace(/"/g,'&quot;')+'" '
+          +'data-period="'+CG_MONTHS[p.start].ab+' '+CG_MONTHS[p.start].num+' - '+CG_MONTHS[p.end].ab+' '+CG_MONTHS[p.end].num+'" '
+          +'data-meta="Proceso N°'+p.num+' · '+p.activities.length+' actividades · '+span+' meses" '
+          +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">'
+          +p.num+'. '+p.title.split(' ').slice(0,3).join(' ')+(p.title.split(' ').length>3?'...':'')
+          +'</div>';
+      }
+      html+='</div>';
+    }
+    html+='</div>';
+    // Activity rows (only if open)
+    if(isOpen){
+      p.activities.forEach(function(a){
+        html+='<div class="cg-row cg-activity" data-pid="'+p.id+'" data-anum="'+a.num+'">';
+        html+='<div class="cg-label">'
+          +'<span class="cg-anum">'+a.num+'</span>'
+          +'<span style="flex:1">'+a.title+'</span>'
+          +'</div>';
+        for(var j=0;j<11;j++){
+          var hasABar=(j===a.start);
+          html+='<div class="cg-cell">';
+          if(hasABar){
+            var aspan=a.end-a.start+1;
+            var rightA=aspan===1?'4px':'calc('+(-100*(aspan-1))+'% + 4px)';
+            html+='<div class="cg-bar cg-bar-activity" style="--cg-c1:'+p.color1+';right:'+rightA+'" '
+              +'data-title="'+a.num+' — '+a.title.replace(/"/g,'&quot;')+'" '
+              +'data-period="'+CG_MONTHS[a.start].ab+' '+CG_MONTHS[a.start].num+' - '+CG_MONTHS[a.end].ab+' '+CG_MONTHS[a.end].num+'" '
+              +'data-meta="Actividad del Proceso N°'+p.num+' · '+aspan+' mes'+(aspan>1?'es':'')+'" '
+              +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">'
+              +a.num
+              +'</div>';
+          }
+          html+='</div>';
+        }
+        html+='</div>';
+      });
+    }
+  });
+  c.innerHTML=html;
+  cgRenderList();
+}
+function cgToggleProcess(id){
+  CG_S.openProcs[id]=!CG_S.openProcs[id];
+  cgRender();
+}
+function cgRenderList(){
+  var l=document.getElementById('cgList');if(!l) return;
+  var html='';
+  CG_DATA.forEach(function(p){
+    if(CG_S.filter!=='all'&&CG_S.filter!==p.id) return;
+    var span=p.end-p.start+1;
+    html+='<div class="cg-list-card" style="--cg-c1:'+p.color1+'">'
+      +'<div class="cg-list-card-head">'
+      +'<span class="cg-list-card-num" style="background:'+p.color1+'">'+p.num+'</span>'
+      +'<div class="cg-list-card-title">'+p.icon+' '+p.title+'</div>'
+      +'</div>'
+      +'<div class="cg-list-card-period">\u{1F4C5} '+CG_MONTHS[p.start].ab+' '+CG_MONTHS[p.start].num+' → '+CG_MONTHS[p.end].ab+' '+CG_MONTHS[p.end].num+' · '+span+' meses</div>'
+      +'<ul class="cg-list-card-acts">';
+    p.activities.forEach(function(a){
+      html+='<li><strong>'+a.num+'</strong> '+a.title+'</li>';
+    });
+    html+='</ul></div>';
+  });
+  l.innerHTML=html;
+}
+function cgShowTip(e,el){
+  var t=document.getElementById('cgTooltip');if(!t) return;
+  var title=el.getAttribute('data-title')||'';
+  var period=el.getAttribute('data-period')||'';
+  var meta=el.getAttribute('data-meta')||'';
+  t.innerHTML='<strong>'+title+'</strong><div>'+period+'</div><div class="cg-tt-meta"><span>'+meta+'</span></div>';
+  t.classList.add('visible');
+  cgMoveTip(e);
+}
+function cgMoveTip(e){
+  var t=document.getElementById('cgTooltip');if(!t) return;
+  var x=e.clientX+12,y=e.clientY+12;
+  var w=t.offsetWidth||220,h=t.offsetHeight||80;
+  if(x+w>window.innerWidth-12) x=e.clientX-w-12;
+  if(y+h>window.innerHeight-12) y=e.clientY-h-12;
+  t.style.left=x+'px';t.style.top=y+'px';
+}
+function cgHideTip(){
+  var t=document.getElementById('cgTooltip');if(!t) return;
+  t.classList.remove('visible');
+}
+function cgInit(){
+  if(!document.getElementById('cgChart')) return;
+  cgBuildFilters();
+  cgRender();
+}
+// Lazy init when section enters viewport
+(function(){
+  var sec=document.getElementById('cronograma-gantt');
+  if(!sec) return;
+  if(!('IntersectionObserver' in window)){cgInit();return;}
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){cgInit();obs.disconnect();}});
+  },{rootMargin:'200px'});
+  obs.observe(sec);
+})();
+
+// ══════════════════════════════════════════════════════
 // BREADCRUMB, DOT NAV, BACK-TO-TOP %
 // ══════════════════════════════════════════════════════
 function initBreadcrumb(){
   const bc=document.getElementById('sectionBreadcrumb');
   const bcText=document.getElementById('sbText');
-  const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
+  const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo','cronograma-gantt':'Cronograma Gantt PLADECO',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
   _onScroll(function(){
     const scrollY=window.scrollY;
     if(scrollY<200){bc.classList.remove('visible');return;}
@@ -14640,7 +15137,7 @@ function initBreadcrumb(){
 function initDotNav(){
   const container=document.getElementById('dotNav');
   const secs=[];
-  const names={hero:'Inicio',dashboard:'Dashboard',mapa:'Mapa',territorio:'Diagnóstico',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'NNA',voz:'Voz Ciudadana',ejes:'Ejes',resumen:'Resumen',documentos:'Documentos'};
+  const names={hero:'Inicio',dashboard:'Dashboard',mapa:'Mapa',territorio:'Diagnóstico',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'NNA',voz:'Voz Ciudadana',ejes:'Ejes',resumen:'Resumen',documentos:'Documentos',diagramas:'Diagramas'};
   document.querySelectorAll('section[id], .hero[id]').forEach(s=>{
     const id=s.id;if(!id)return;
     secs.push(id);
@@ -14752,7 +15249,7 @@ Chart.defaults.borderColor=getChartGridColor();
 // ═══ RENDER PIPELINE (3-tier deferred loading) ═══
 
 // TIER 1: Immediate — structural HTML + navigation (above-fold)
-renderUV();renderComisiones();renderDocsEnhanced();
+renderUV();renderComisiones();renderDocsEnhanced();try{renderDiagramas();}catch(_){}
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
 renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
 renderTimeline();renderEthnoTabs();
@@ -15862,6 +16359,7 @@ const CMD_SECTIONS=[
   {id:'antes-despues',name:'Antes y Después',icon:'🔄',cat:'Evolución'},
   {id:'galeria',name:'Galería Fotográfica',icon:'📷',cat:'Registro'},
   {id:'documentos',name:'Documentos',icon:'📁',cat:'Documentación'},
+  {id:'diagramas',name:'Diagramas Metodológicos (16)',icon:'📂',cat:'Documentación'},
   {id:'encuesta',name:'Encuesta Ciudadana',icon:'📝',cat:'Participación'}
 ];
 let cmdIdx=-1;
@@ -19972,7 +20470,7 @@ window.meSnaToggleT=function(show){window._meSnaShowT=show;lSel.filter(function(
     {divider:'Planificación Estratégica',sections:['ejes','ods-sec','gestion','argumentario','resumen']},
     {divider:'Análisis Institucional',sections:['equipo','sna','etnografia','comisiones']},
     {divider:'Seguimiento',sections:['cronograma','semaforo','compromisos','financiamiento','antes-despues','graficos']},
-    {divider:'Proceso y Recursos',sections:['galeria','documentos','visitas','graficos-proceso','cartografias']}
+    {divider:'Proceso y Recursos',sections:['galeria','documentos','diagramas','visitas','graficos-proceso','cartografias']}
   ];
   const sidebarGroups=document.querySelectorAll('.sidebar-group');
   const groupTitles=[];

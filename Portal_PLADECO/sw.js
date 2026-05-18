@@ -1,9 +1,10 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.7
+// PLADECO Rengo 2025-2035 · Service Worker v61.9
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.7: v44.7 - eliminados cronogramas y fases (esperando nueva carta gantt)
+// v61.9: v44.9 - Carta Gantt Interactiva PLADECO 2025-2032 + PDF descargable
+// v61.8: v44.8 - agregada sección Diagramas Metodológicos (16 JPG)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.7';
+const CACHE_STATIC='pladeco-static-v61.9';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
