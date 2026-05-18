@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.1
+// PLADECO Rengo 2025-2035 · Service Worker v61.2
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.1: hotfix v44.1 - Pulso del Portal compactado (visit-section/kpi/charts)
+// v61.2: HOTFIX v44.2 - escapados tags HTML en changelog que rompian estructura DOM
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.1';
+const CACHE_STATIC='pladeco-static-v61.2';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
