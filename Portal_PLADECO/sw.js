@@ -1,7 +1,8 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.7
+// PLADECO Rengo 2025-2035 · Service Worker v62.8
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v62.7: v45.7 - Refinamiento visual integral: contrastes WCAG + cards uniformes + tipografía armonizada
+// v62.8: v45.8 - Sección #mapa-proyectos eliminada (HTML + JS + CSS + enlaces)
+// v62.7: v45.7 - Refinamiento visual integral: contrastes WCAG + cards uniformes
 // v62.6: v45.6 - Sidebar comprimido bulletproof + cache invalidation agresivo
 // v62.5: v45.5 - Reorganización Cap. XII→XI + 14 badges uniformados
 // v62.4: v45.4 - ERD movida tras Matriz + botones share/PDF eliminados
@@ -9,7 +10,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.7';
+const CACHE_STATIC='pladeco-static-v62.8';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
