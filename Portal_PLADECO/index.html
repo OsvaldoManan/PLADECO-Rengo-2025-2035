@@ -138,6 +138,79 @@ body.sidebar-collapsed .sidebar-collapse-btn svg{transform:rotate(180deg)}
 body.sidebar-collapsed .sidebar-collapse-btn span{display:none}
 @media(max-width:900px){.sidebar-collapse-btn{display:none}}
 
+/* ══════════════════════════════════════════════════════
+   v45.6 · Mejora del sidebar comprimido (bulletproof icon-only mode)
+   El estado anterior dejaba "filtrar" texto en algunos viewports porque
+   font-size:0 podía ser revertido por reglas más específicas. Refuerzo defensivo
+   + tooltip emergente al hover para mantener legibilidad sin texto inline.
+   ══════════════════════════════════════════════════════ */
+body.sidebar-collapsed .sidebar{width:64px;transition:width .25s ease}
+body.sidebar-collapsed .sidebar-nav{padding:8px 6px}
+body.sidebar-collapsed .sidebar-nav a{
+  /* Triple defensa para hidde texto: font-size + text-indent + color transparent */
+  font-size:0!important;
+  text-indent:-9999px!important;
+  color:transparent!important;
+  width:52px!important;height:42px!important;
+  padding:0!important;margin:3px auto!important;
+  display:flex!important;align-items:center;justify-content:center!important;
+  border-radius:10px!important;
+  border-left:none!important;
+  position:relative;
+  overflow:visible;
+}
+body.sidebar-collapsed .sidebar-nav a .ico{
+  font-size:18px!important;
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:10px;
+  text-indent:0!important; /* restaurar para el emoji */
+  background:transparent;
+  transition:background .2s,transform .2s;
+}
+body.sidebar-collapsed .sidebar-nav a:hover .ico{background:rgba(255,255,255,.08);transform:scale(1.08)}
+body.sidebar-collapsed .sidebar-nav a.active .ico,
+body.sidebar-collapsed .sidebar-nav a[aria-current="page"] .ico{background:rgba(45,154,77,.35);color:#fff;box-shadow:0 0 0 1px rgba(45,154,77,.5)}
+/* Tooltip emergente al hover · usa el text-content del link */
+body.sidebar-collapsed .sidebar-nav a::after{
+  content:attr(data-tooltip);
+  position:absolute;
+  left:calc(100% + 10px);
+  top:50%;
+  transform:translateY(-50%) translateX(-6px);
+  background:#0c1f36;
+  color:#fff;
+  font-size:12px;
+  font-weight:600;
+  padding:6px 12px;
+  border-radius:8px;
+  white-space:nowrap;
+  letter-spacing:.02em;
+  text-indent:0!important;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .2s,transform .2s;
+  z-index:200;
+  box-shadow:0 6px 20px rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.08);
+}
+body.sidebar-collapsed .sidebar-nav a:hover::after{
+  opacity:1;
+  transform:translateY(-50%) translateX(0);
+}
+/* Indicador "estás aquí" sutil a la derecha cuando el item está activo */
+body.sidebar-collapsed .sidebar-nav a.active::before,
+body.sidebar-collapsed .sidebar-nav a[aria-current="page"]::before{
+  content:'';position:absolute;right:-2px;top:50%;transform:translateY(-50%);
+  width:3px;height:24px;background:#2d9a4d;border-radius:3px 0 0 3px;
+}
+/* Asegurar contenedor sin desbordes en estado comprimido */
+body.sidebar-collapsed #main-content{margin-left:64px}
+/* Si el sidebar está oculto en mobile (transform translateX), conserva el ancho colapsado */
+@media(max-width:1100px){
+  body.sidebar-collapsed #main-content{margin-left:0!important}
+}
+
 /* ── Chatbot ── */
 .chatbot-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;opacity:0;pointer-events:none;transition:opacity .3s}
 .chatbot-overlay.open{opacity:1;pointer-events:auto}
@@ -3622,12 +3695,99 @@ section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-we
   .hero-slide-title{font-size:12px}
 }
 
-/* ── A5. Mapa Macrosector ── */
-#mapaMacrosector{height:480px;width:100%;border-radius:var(--r-lg);box-shadow:var(--sh-lg);border:1px solid var(--border)}
+/* ══════════════════════════════════════════════════════
+   v45.2 · ICT — Bloques metodológicos ampliados
+   Metodología · 5 agrupaciones · Tipologías · Glosario · Hallazgos · Tabla comparativa
+   ══════════════════════════════════════════════════════ */
+.ict-method-block{background:var(--card);border:1px solid var(--border);border-left:5px solid #f5921d;border-radius:14px;padding:18px 22px;margin:22px 0;box-shadow:var(--sh-md)}
+.ict-method-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:-.01em}
+.ict-method-sub{font-size:11.5px;color:var(--text2);margin-bottom:14px;line-height:1.5}
+.ict-vars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:14px}
+.ict-var-card{background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start}
+.ict-var-ico{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f5921d,#c97014);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;font-weight:800}
+.ict-var-name{font-size:12px;font-weight:800;color:var(--text);line-height:1.2}
+.ict-var-desc{font-size:10.5px;color:var(--text2);line-height:1.45;margin-top:3px}
+.ict-scale-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
+.ict-scale-cell{padding:8px 6px;text-align:center;border-radius:8px;border:1px solid var(--border);position:relative;overflow:hidden}
+.ict-scale-cell::before{content:'';position:absolute;inset:0;opacity:.85;z-index:0}
+.ict-scale-cell > *{position:relative;z-index:1}
+.ict-scale-cell.exc::before{background:linear-gradient(180deg,#2d9a4d,#1f7a39)}
+.ict-scale-cell.bue::before{background:linear-gradient(180deg,#4ade80,#22c55e)}
+.ict-scale-cell.reg::before{background:linear-gradient(180deg,#fbbf24,#f59e0b)}
+.ict-scale-cell.def::before{background:linear-gradient(180deg,#f5921d,#c97014)}
+.ict-scale-cell.cri::before{background:linear-gradient(180deg,#ef4444,#b91c1c)}
+.ict-scale-cell .sc-grade{font-size:22px;font-weight:900;color:#fff;line-height:1;letter-spacing:-.03em}
+.ict-scale-cell .sc-label{font-size:10.5px;font-weight:800;color:#fff;margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+.ict-scale-cell .sc-ict{font-size:9.5px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:700}
+
+/* 5 Agrupaciones panel */
+.ict-agrup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:6px}
+.ict-agrup-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--sh-sm);transition:transform .2s,box-shadow .2s}
+.ict-agrup-card:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.ict-agrup-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ict-agrup-num{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#1a3d8f);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+.ict-agrup-card.g2 .ict-agrup-num{background:linear-gradient(135deg,#2d9a4d,#1f7a39)}
+.ict-agrup-card.g3 .ict-agrup-num{background:linear-gradient(135deg,#f5921d,#c97014)}
+.ict-agrup-card.g4 .ict-agrup-num{background:linear-gradient(135deg,#8b5cf6,#7c3aed)}
+.ict-agrup-card.g5 .ict-agrup-num{background:linear-gradient(135deg,#c0392b,#922518)}
+.ict-agrup-name{font-size:12.5px;font-weight:800;color:var(--text);line-height:1.25}
+.ict-agrup-n{font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:1px}
+.ict-agrup-meta{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--border);margin-top:8px;font-size:11px;color:var(--text2)}
+.ict-agrup-meta strong{color:var(--text);font-weight:800}
+.ict-agrup-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-top:6px}
+.ict-agrup-tips{margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)}
+.ict-agrup-tips-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#c97014;margin-bottom:4px}
+.ict-agrup-tips ul{margin:0;padding-left:16px}
+.ict-agrup-tips li{font-size:10.5px;color:var(--text);line-height:1.45;margin-bottom:2px}
+
+/* Tipologías chips */
+.ict-tipo-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ict-tipo-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;background:var(--bg-soft);border:1px solid var(--border);border-radius:18px;font-size:11px;color:var(--text);font-weight:700}
+.ict-tipo-chip-n{background:var(--primary);color:#fff;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:10px;letter-spacing:.05em}
+
+/* Glosario estados */
+.ict-glos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:6px}
+.ict-glos-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.ict-glos-card.exc{border-left:4px solid #2d9a4d}
+.ict-glos-card.bue{border-left:4px solid #22c55e}
+.ict-glos-card.reg{border-left:4px solid #f59e0b}
+.ict-glos-card.def{border-left:4px solid #f5921d}
+.ict-glos-card.cri{border-left:4px solid #ef4444}
+.ict-glos-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.ict-glos-name{font-size:12.5px;font-weight:800;color:var(--text)}
+.ict-glos-num{font-size:11px;font-weight:800;color:#fff;padding:2px 8px;border-radius:8px;letter-spacing:.05em}
+.ict-glos-card.exc .ict-glos-num{background:#2d9a4d}
+.ict-glos-card.bue .ict-glos-num{background:#22c55e}
+.ict-glos-card.reg .ict-glos-num{background:#f59e0b}
+.ict-glos-card.def .ict-glos-num{background:#f5921d}
+.ict-glos-card.cri .ict-glos-num{background:#ef4444}
+.ict-glos-desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* Hallazgos */
+.ict-hall-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-top:6px}
+.ict-hall-card{background:linear-gradient(135deg,rgba(245,146,29,.06),rgba(45,154,77,.04));border:1px solid var(--border);border-radius:12px;padding:12px 14px;border-left:4px solid #f5921d}
+.ict-hall-icon{font-size:18px;margin-bottom:4px}
+.ict-hall-title{font-size:12.5px;font-weight:800;color:var(--text);line-height:1.25}
+.ict-hall-stat{font-size:18px;font-weight:900;color:#c97014;letter-spacing:-.02em;margin:6px 0 4px;line-height:1.1}
+.ict-hall-desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* Tabla comparativa */
+.ict-cmp-table-wrap{overflow-x:auto;margin-top:8px;-webkit-overflow-scrolling:touch}
+.ict-cmp-table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:580px}
+.ict-cmp-table th{background:linear-gradient(180deg,#0c1f36,#1a3d8f);color:#fff;padding:9px 10px;text-align:left;font-weight:800;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.ict-cmp-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);font-weight:600}
+.ict-cmp-table tr:hover td{background:rgba(45,154,77,.04)}
+.ict-cmp-table .cmp-zona{font-weight:800;color:var(--text)}
+.ict-cmp-table .cmp-num{font-variant-numeric:tabular-nums;text-align:right;font-weight:800}
+.ict-cmp-table .cmp-bar-wrap{display:flex;align-items:center;gap:6px}
+.ict-cmp-table .cmp-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;min-width:60px}
+.ict-cmp-table .cmp-bar-fill{height:100%;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);border-radius:3px}
+body.dark .ict-method-block,body.dark .ict-agrup-card,body.dark .ict-glos-card,body.dark .ict-hall-card{background:var(--card2,#1a2332);color:var(--text)}
+
+/* ── A5. Macrosector legacy CSS preserved ── */
 .mac-panel,.ict-zonal-panel{position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-xl);padding:16px 18px;z-index:500;opacity:0;transform:translateY(-10px);transition:all var(--tr-base);pointer-events:none;border:1px solid var(--border);font-family:inherit}
-.ict-zonal-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
+.ict-zonal-panel.show,.mac-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
 @media(max-width:760px){.ict-zonal-panel{width:calc(100% - 28px);max-width:none;font-size:11.5px}}
-.mac-panel.show{opacity:1;transform:translateY(0);pointer-events:auto}
 .mac-panel-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .mac-panel-title{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.01em}
 .mac-panel-close{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;line-height:1;padding:0}
@@ -3639,7 +3799,6 @@ section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-we
 .mac-kpi-item{background:var(--card2);padding:6px 8px;border-radius:var(--r-xs);text-align:center}
 .mac-kpi-val{font-size:14px;font-weight:800;color:var(--primary);line-height:1.2}
 .mac-kpi-lbl{font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
-.mac-wrap{position:relative}
 
 /* ── A6. Tutorial visual "Cómo participar" ── */
 .tutorial-card{background:linear-gradient(135deg,#7c2d12 0%,#ea580c 50%,#fdb94d 100%);color:#fff;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh-xl);position:relative}
@@ -4721,7 +4880,6 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     <div class="sidebar-group">
       <div class="sidebar-group-title">7 &middot; Proceso y Documentaci&#243;n</div>
       <a href="#voz-vecinos" class="is-new"><span class="ico">&#128483;&#65039;</span> Voz de los Vecinos</a>
-      <a href="#macrosector" class="is-new"><span class="ico">&#128506;</span> Macrosectores</a>
       <a href="#cuadernillo" class="is-new"><span class="ico">&#128221;</span> Cuadernillo de mi UV</a>
       <a href="#erd" class="is-new"><span class="ico">&#127956;</span> ERD O'Higgins 2024-2036</a>
       <a href="#timeline" class="is-new"><span class="ico">&#128467;&#65039;</span> L&iacute;nea de Tiempo del Proceso</a>
@@ -5054,7 +5212,6 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
         <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Documentaci&oacute;n</div></div>
         <div class="qi-links">
           <a href="#voz-vecinos" class="qi-link is-new"><span class="qi-link-ico">&#128483;&#65039;</span><span class="qi-link-txt">Voz de los Vecinos</span></a>
-          <a href="#macrosector" class="qi-link is-new"><span class="qi-link-ico">&#128506;</span><span class="qi-link-txt">Macrosectores</span></a>
           <a href="#cuadernillo" class="qi-link is-new"><span class="qi-link-ico">&#128221;</span><span class="qi-link-txt">Cuadernillo PDF UV</span></a>
           <a href="#erd" class="qi-link is-new"><span class="qi-link-ico">&#127956;</span><span class="qi-link-txt">ERD O'Higgins 2024-2036</span></a>
           <a href="#timeline" class="qi-link is-new"><span class="qi-link-ico">&#128467;&#65039;</span><span class="qi-link-txt">L&iacute;nea de Tiempo</span></a>
@@ -5266,7 +5423,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ DASHBOARD ═══ -->
 <section id="dashboard">
   <div class="sec-header">
-    <div class="badge" style="background:#e0e7ff;color:#4338ca">&#191;C&oacute;mo estamos hoy?</div>
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Dashboard Comunal</div>
     <h2>Indicadores Clave de Rengo</h2>
     <p>As&iacute; se ve la comuna hoy (2024) y las metas que queremos alcanzar en 2028 y 2035</p>
   </div>
@@ -5365,7 +5522,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ FICHA COMUNAL · OBSERVATORIO LABORAL ═══ -->
 <section id="ficha-comunal" class="ficha-comunal-section reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(200,154,59,.15);color:#c89a3b">&#128202; Observatorio Laboral &middot; Subsecretar&#237;a del Trabajo</div>
+    <div class="badge" style="background:rgba(200,154,59,.15);color:#c89a3b">Observatorio Laboral</div>
     <h2>Ficha Comunal &middot; Realidad y Proyecci&#243;n 2024&ndash;2029</h2>
     <p>S&#237;ntesis ejecutiva integrada de la <strong>realidad econ&#243;mica, demogr&#225;fica y laboral</strong> de Rengo, que conecta datos del presente con las inversiones proyectadas hasta 2029. Cada indicador se vincula con un Eje Estrat&#233;gico del PLADECO para dar coherencia entre diagn&#243;stico y planificaci&#243;n.</p>
   </div>
@@ -5726,31 +5883,15 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 
 
 
-<!-- ═══ A5 · MAPA MACROSECTOR clickable con perfil zonal ═══ -->
-<section id="macrosector" class="reveal" aria-labelledby="macH">
-  <div class="sec-header">
-    <div class="badge" style="background:#cffafe;color:#0e7490">Perfil Zonal</div>
-    <h2 id="macH">&#128506; Macrosectores de Rengo &middot; Perfil Zonal</h2>
-    <p>Mapa de los 4 macrosectores territoriales en que se divide la comuna para efectos de planificaci&oacute;n: <strong>Centro Urbano</strong> (Rengo ciudad consolidada), <strong>Periferia Urbana</strong> (Esmeralda, La Torre, expansi&oacute;n reciente), <strong>Localidades</strong> (Rosario, Popeta, Cerrillos) y <strong>Rural Disperso</strong> (El Trebal Huilqu&iacute;o, La Chimba, El Placer, etc.). Haz click en cada zona para ver su perfil: poblaci&oacute;n, indicadores de vulnerabilidad y proyectos PLADECO asignados.</p>
-  </div>
-  <div class="mac-wrap">
-    <div id="mapaMacrosector" role="application" aria-label="Mapa de macrosectores territoriales de Rengo"></div>
-    <div class="mac-panel" id="macPanel" aria-live="polite">
-      <div class="mac-panel-head">
-        <div class="mac-panel-title" id="macPanelTitle">Selecciona un sector</div>
-        <button class="mac-panel-close" onclick="closeMacPanel()" aria-label="Cerrar">&times;</button>
-      </div>
-      <div id="macPanelBody"></div>
-    </div>
-  </div>
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Divisi&oacute;n territorial elaborada por SECPLAC PLADECO Rengo 2025-2035 &middot; Coordenadas aproximadas representativas de cada macrosector &middot; Datos demogr&aacute;ficos del Censo 2024 e &iacute;ndices SIVUST calculados sobre 826 manzanas censales &middot; Proyectos PLADECO de la matriz de 225 acciones priorizadas.</div>
-</section>
-
+<!-- ═══ A5 · MACROSECTOR · ELIMINADO en v45.2: el perfil zonal de macrosectores
+     ahora vive integrado en el mapa del ICT como control flotante topright;
+     redundante mantener una sección dedicada. JS de MACROSECTORES y CSS .mac-*
+     también eliminados. ═══ -->
 
 <!-- ═══ ICT — &Iacute;NDICE DE CALIDAD TERRITORIAL · ESPACIOS P&Uacute;BLICOS (Secci&oacute;n 11.3) ═══ -->
 <section id="ict-espacios-publicos" class="ict-section reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(245,146,29,.15);color:#f5921d">&#128205; PLADECO &middot; Secci&oacute;n 11.3 ICT &middot; Abril 2026</div>
+    <div class="badge" style="background:rgba(245,146,29,.15);color:#f5921d">PLADECO &middot; Secci&oacute;n 11.3</div>
     <h2>&Iacute;ndice de Calidad Territorial &middot; Espacios P&uacute;blicos</h2>
     <p>Levantamiento territorial actualizado en <strong>Abril 2026</strong> con catastro georreferenciado de <strong>65 puntos de observaci&oacute;n</strong> distribuidos en <strong>5 agrupaciones territoriales</strong>: Zona Urbana Central de Rengo (n=15), Localidades y Periferias Rurales (n=15), Conjuntos Habitacionales y Plazas Vecinales (n=15), Expansi&oacute;n Urbana y Equipamiento Mayor (n=12) y Equipamiento Institucional y Bordes Cr&iacute;ticos (n=8). Cada punto fue evaluado mediante un protocolo estandarizado de <strong>5 variables</strong> (estado de infraestructura, &aacute;reas verdes, iluminaci&oacute;n/seguridad, accesibilidad universal, limpieza/mantenci&oacute;n) y clasificado en escala ordinal de <strong>5 categor&iacute;as</strong> (Excelente=5 / Bueno=4 / Regular=3 / Deficiente=2 / Cr&iacute;tico=1). El &Iacute;ndice de Calidad Territorial (ICT) normaliza estos puntajes en escala 0-100. Cada espacio incluye coordenadas GPS, tipolog&iacute;a, problem&aacute;ticas identificadas y propuestas de intervenci&oacute;n con instrumentos identificables (FRIL, PMU, FNDR, Consejo de Monumentos Nacionales, Patrimonio Cultural).</p>
   </div>
@@ -5956,6 +6097,224 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     </div>
   </div>
 
+  <!-- ═══ v45.2 · METODOLOGÍA DETALLADA ═══ -->
+  <div class="ict-method-block" id="ict-metodologia">
+    <div class="ict-method-title">&#128203; Metodolog&iacute;a del Levantamiento (Abril 2026)</div>
+    <div class="ict-method-sub">Protocolo estandarizado aplicado a los 65 puntos de observaci&oacute;n por el equipo SECPLAC. Cada espacio fue evaluado en terreno por dos profesionales, con registro GPS, fotograf&iacute;a georreferenciada y ficha de campo. Los puntajes ordinales (1-5) se promedian y normalizan al &Iacute;ndice de Calidad Territorial (ICT 0-100).</div>
+    <div class="ict-vars-grid">
+      <div class="ict-var-card"><div class="ict-var-ico">&#128679;</div><div><div class="ict-var-name">Estado de Infraestructura</div><div class="ict-var-desc">Pavimentos, mobiliario urbano, cerramientos, juegos, equipamiento deportivo: solidez estructural y operatividad.</div></div></div>
+      <div class="ict-var-card"><div class="ict-var-ico">&#127795;</div><div><div class="ict-var-name">&Aacute;reas Verdes</div><div class="ict-var-desc">Calidad y mantenci&oacute;n de jardines, arbolado, c&eacute;sped, riego, especies adecuadas al clima mediterr&aacute;neo de Rengo.</div></div></div>
+      <div class="ict-var-card"><div class="ict-var-ico">&#128161;</div><div><div class="ict-var-name">Iluminaci&oacute;n y Seguridad</div><div class="ict-var-desc">Cobertura lum&iacute;nica nocturna, c&aacute;maras, vigilancia natural, percepci&oacute;n de seguridad, ausencia de "puntos ciegos".</div></div></div>
+      <div class="ict-var-card"><div class="ict-var-ico">&#9855;&#65039;</div><div><div class="ict-var-name">Accesibilidad Universal</div><div class="ict-var-desc">Rampas, anchos de circulaci&oacute;n, baldosa podot&aacute;ctil, baja altura de mobiliario, accesos sin barreras (ley 20.422).</div></div></div>
+      <div class="ict-var-card"><div class="ict-var-ico">&#129529;</div><div><div class="ict-var-name">Limpieza y Mantenci&oacute;n</div><div class="ict-var-desc">Recolecci&oacute;n de residuos, basureros operativos, ausencia de microbasurales, grafiti vandalismo, pintura conservada.</div></div></div>
+    </div>
+    <div class="ict-method-title" style="font-size:13px;margin-top:14px;margin-bottom:6px">Escala ordinal de evaluaci&oacute;n (5 categor&iacute;as)</div>
+    <div class="ict-scale-row">
+      <div class="ict-scale-cell exc"><div class="sc-grade">5</div><div class="sc-label">Excelente</div><div class="sc-ict">ICT &asymp; 100</div></div>
+      <div class="ict-scale-cell bue"><div class="sc-grade">4</div><div class="sc-label">Bueno</div><div class="sc-ict">ICT &asymp; 75</div></div>
+      <div class="ict-scale-cell reg"><div class="sc-grade">3</div><div class="sc-label">Regular</div><div class="sc-ict">ICT &asymp; 50</div></div>
+      <div class="ict-scale-cell def"><div class="sc-grade">2</div><div class="sc-label">Deficiente</div><div class="sc-ict">ICT &asymp; 25</div></div>
+      <div class="ict-scale-cell cri"><div class="sc-grade">1</div><div class="sc-label">Cr&iacute;tico</div><div class="sc-ict">ICT &asymp; 0</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ v45.2 · 5 AGRUPACIONES TERRITORIALES ═══ -->
+  <div class="ict-method-block" id="ict-agrupaciones">
+    <div class="ict-method-title">&#128205; 5 Agrupaciones Territoriales</div>
+    <div class="ict-method-sub">El catastro Abril 2026 organiz&oacute; los 65 puntos en cinco agrupaciones territoriales seg&uacute;n criterios de centralidad, densidad urbana y tipolog&iacute;a de equipamiento. Cada agrupaci&oacute;n revela patrones espec&iacute;ficos de calidad y prioridades de intervenci&oacute;n.</div>
+    <div class="ict-agrup-grid">
+      <div class="ict-agrup-card g1">
+        <div class="ict-agrup-head">
+          <div class="ict-agrup-num">1</div>
+          <div><div class="ict-agrup-name">Zona Urbana Central</div><div class="ict-agrup-n">n = 15 espacios</div></div>
+        </div>
+        <div class="ict-agrup-desc">Centro hist&oacute;rico y consolidado de Rengo: Plaza de Armas, Boulevard Palmeras, ejes c&iacute;vicos, &aacute;reas de servicios y equipamiento de uso comunal frecuente.</div>
+        <div class="ict-agrup-meta"><span>Foco</span><strong>Patrimonio + uso intensivo</strong></div>
+        <div class="ict-agrup-tips"><div class="ict-agrup-tips-title">&Eacute;nfasis de evaluaci&oacute;n</div><ul><li>Recuperaci&oacute;n patrimonial (medialuna, EFE)</li><li>Accesibilidad universal</li><li>Cuidado de arbolado urbano hist&oacute;rico</li></ul></div>
+      </div>
+      <div class="ict-agrup-card g2">
+        <div class="ict-agrup-head">
+          <div class="ict-agrup-num">2</div>
+          <div><div class="ict-agrup-name">Localidades y Periferias Rurales</div><div class="ict-agrup-n">n = 15 espacios</div></div>
+        </div>
+        <div class="ict-agrup-desc">Rosario, Popeta, Cerrillos, El Trebal-Huilqu&iacute;o, La Chimba: plazas barriales rurales, medialunas locales, equipamiento de uso comunitario disperso.</div>
+        <div class="ict-agrup-meta"><span>Foco</span><strong>Equidad territorial</strong></div>
+        <div class="ict-agrup-tips"><div class="ict-agrup-tips-title">&Eacute;nfasis de evaluaci&oacute;n</div><ul><li>Conectividad y accesibilidad</li><li>Riego solar aut&oacute;nomo</li><li>Cooperaci&oacute;n con JJ.VV. locales</li></ul></div>
+      </div>
+      <div class="ict-agrup-card g3">
+        <div class="ict-agrup-head">
+          <div class="ict-agrup-num">3</div>
+          <div><div class="ict-agrup-name">Conjuntos Habitacionales y Plazas Vecinales</div><div class="ict-agrup-n">n = 15 espacios</div></div>
+        </div>
+        <div class="ict-agrup-desc">Villas y conjuntos habitacionales SERVIU/DS49 con sus plazas internas: Esmeralda, La Torre, Vista Hermosa, Bellavista, Aida Ote&iacute;za, conjuntos recientes.</div>
+        <div class="ict-agrup-meta"><span>Foco</span><strong>Plazas barriales FRIL/PMU</strong></div>
+        <div class="ict-agrup-tips"><div class="ict-agrup-tips-title">&Eacute;nfasis de evaluaci&oacute;n</div><ul><li>Renovaci&oacute;n de juegos infantiles</li><li>Calistenia / equipamiento deportivo</li><li>Iluminaci&oacute;n LED + mobiliario</li></ul></div>
+      </div>
+      <div class="ict-agrup-card g4">
+        <div class="ict-agrup-head">
+          <div class="ict-agrup-num">4</div>
+          <div><div class="ict-agrup-name">Expansi&oacute;n Urbana y Equipamiento Mayor</div><div class="ict-agrup-n">n = 12 espacios</div></div>
+        </div>
+        <div class="ict-agrup-desc">Zonas de crecimiento norte/sur, parques de mayor escala, multicanchas, polideportivos, equipamiento deportivo regional y &aacute;reas de futura consolidaci&oacute;n.</div>
+        <div class="ict-agrup-meta"><span>Foco</span><strong>Inversi&oacute;n FNDR sectorial</strong></div>
+        <div class="ict-agrup-tips"><div class="ict-agrup-tips-title">&Eacute;nfasis de evaluaci&oacute;n</div><ul><li>Escala y dimensionamiento</li><li>Integraci&oacute;n con planes maestros</li><li>Capacidad de eventos comunales</li></ul></div>
+      </div>
+      <div class="ict-agrup-card g5">
+        <div class="ict-agrup-head">
+          <div class="ict-agrup-num">5</div>
+          <div><div class="ict-agrup-name">Equipamiento Institucional y Bordes Cr&iacute;ticos</div><div class="ict-agrup-n">n = 8 espacios</div></div>
+        </div>
+        <div class="ict-agrup-desc">Sedes municipales, DIDECO, comisar&iacute;a, biblioteca, edificios p&uacute;blicos + bordes l&iacute;nea f&eacute;rrea, sitios eriazos urbanos y zonas residuales de alta vulnerabilidad.</div>
+        <div class="ict-agrup-meta"><span>Foco</span><strong>Atenci&oacute;n urgente + gobernanza</strong></div>
+        <div class="ict-agrup-tips"><div class="ict-agrup-tips-title">&Eacute;nfasis de evaluaci&oacute;n</div><ul><li>Rehabilitaci&oacute;n de bordes ferroviarios</li><li>Modernizaci&oacute;n institucional</li><li>Recuperaci&oacute;n de sitios eriazos</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ v45.2 · GLOSARIO DE ESTADOS ═══ -->
+  <div class="ict-method-block" id="ict-glosario">
+    <div class="ict-method-title">&#128218; Glosario de Estados de Conservaci&oacute;n</div>
+    <div class="ict-method-sub">Criterios cualitativos que definen la asignaci&oacute;n de cada espacio en una de las 5 categor&iacute;as ordinales del ICT.</div>
+    <div class="ict-glos-grid">
+      <div class="ict-glos-card exc"><div class="ict-glos-head"><div class="ict-glos-name">Excelente</div><div class="ict-glos-num">100</div></div><div class="ict-glos-desc">Las 5 variables en su m&aacute;ximo: infraestructura nueva o muy bien conservada, &aacute;reas verdes saludables con riego operativo, iluminaci&oacute;n LED total, accesibilidad universal completa (rampas + podot&aacute;ctil), limpieza diaria. Espacio modelo replicable.</div></div>
+      <div class="ict-glos-card bue"><div class="ict-glos-head"><div class="ict-glos-name">Bueno</div><div class="ict-glos-num">75</div></div><div class="ict-glos-desc">Espacio operativo con mantenci&oacute;n regular. Una de las 5 variables presenta debilidades menores (ej: una luminaria fundida, falta de baldosa podot&aacute;ctil, basurero faltante). Requiere mejora puntual, no intervenci&oacute;n integral.</div></div>
+      <div class="ict-glos-card reg"><div class="ict-glos-head"><div class="ict-glos-name">Regular</div><div class="ict-glos-num">50</div></div><div class="ict-glos-desc">Mantenci&oacute;n irregular: 2-3 variables comprometidas. Infraestructura con desgaste visible pero funcional. Necesita renovaci&oacute;n parcial v&iacute;a FRIL o PMU; priorizar accesibilidad e iluminaci&oacute;n.</div></div>
+      <div class="ict-glos-card def"><div class="ict-glos-head"><div class="ict-glos-name">Deficiente</div><div class="ict-glos-num">25</div></div><div class="ict-glos-desc">3-4 variables en mal estado: infraestructura da&ntilde;ada, &aacute;reas verdes secas o ausentes, iluminaci&oacute;n parcial o inexistente, sin accesibilidad. Renovaci&oacute;n integral via FRIL ($80M) o PMU ($80M).</div></div>
+      <div class="ict-glos-card cri"><div class="ict-glos-head"><div class="ict-glos-name">Cr&iacute;tico</div><div class="ict-glos-num">0</div></div><div class="ict-glos-desc">Espacio inseguro o inutilizable. Riesgo estructural, microbasurales activos, ausencia total de servicios, abandono. Requiere intervenci&oacute;n urgente FNDR + cerco perimetral temporal de seguridad.</div></div>
+    </div>
+  </div>
+
+  <!-- ═══ v45.2 · TIPOLOGÍAS PRESENTES ═══ -->
+  <div class="ict-method-block" id="ict-tipologias">
+    <div class="ict-method-title">&#127759; Tipolog&iacute;as de Espacios P&uacute;blicos Catastrados</div>
+    <div class="ict-method-sub">Diversidad funcional de los 65 puntos. Cada tipolog&iacute;a tiene un est&aacute;ndar de evaluaci&oacute;n adaptado y un mix &oacute;ptimo de variables prioritarias.</div>
+    <div class="ict-tipo-chips">
+      <span class="ict-tipo-chip">&#127795; Plaza Vecinal Barrial <span class="ict-tipo-chip-n">18</span></span>
+      <span class="ict-tipo-chip">&#127914; Plaza C&iacute;vica / Patrimonial <span class="ict-tipo-chip-n">5</span></span>
+      <span class="ict-tipo-chip">&#9917; Multicancha / Polideportivo <span class="ict-tipo-chip-n">8</span></span>
+      <span class="ict-tipo-chip">&#127828; Medialuna Cultural <span class="ict-tipo-chip-n">3</span></span>
+      <span class="ict-tipo-chip">&#127968; Equipamiento Institucional <span class="ict-tipo-chip-n">7</span></span>
+      <span class="ict-tipo-chip">&#128507; Parque Lineal / Borde <span class="ict-tipo-chip-n">4</span></span>
+      <span class="ict-tipo-chip">&#127807; Plaza Rural / Localidad <span class="ict-tipo-chip-n">9</span></span>
+      <span class="ict-tipo-chip">&#128240; Equipamiento Educativo <span class="ict-tipo-chip-n">5</span></span>
+      <span class="ict-tipo-chip">&#127960;&#65039; Sede / Edificio P&uacute;blico <span class="ict-tipo-chip-n">3</span></span>
+      <span class="ict-tipo-chip">&#9888;&#65039; Sitio Eriazo / Borde F&eacute;rreo <span class="ict-tipo-chip-n">3</span></span>
+    </div>
+  </div>
+
+  <!-- ═══ v45.2 · HALLAZGOS CLAVE ═══ -->
+  <div class="ict-method-block" id="ict-hallazgos">
+    <div class="ict-method-title">&#128202; Hallazgos Clave del Diagn&oacute;stico</div>
+    <div class="ict-method-sub">S&iacute;ntesis de las brechas territoriales identificadas en Abril 2026 que orientan la priorizaci&oacute;n de inversi&oacute;n PLADECO.</div>
+    <div class="ict-hall-grid">
+      <div class="ict-hall-card">
+        <div class="ict-hall-icon">&#9888;&#65039;</div>
+        <div class="ict-hall-title">Brecha Centro-Periferia</div>
+        <div class="ict-hall-stat">~20 puntos ICT</div>
+        <div class="ict-hall-desc">Diferencia promedio entre Zona Urbana Central (mejor estado) y Localidades Rurales (peor estado). La brecha es estructural y requiere plan de inversi&oacute;n diferenciado por zona.</div>
+      </div>
+      <div class="ict-hall-card">
+        <div class="ict-hall-icon">&#127960;&#65039;</div>
+        <div class="ict-hall-title">Concentraci&oacute;n Patrimonial</div>
+        <div class="ict-hall-stat">3 piezas cr&iacute;ticas</div>
+        <div class="ict-hall-desc">Medialuna, Estaci&oacute;n EFE Hist&oacute;rica y Boulevard Palmeras Phoenix concentran el riesgo patrimonial. Necesario gestionar con Consejo de Monumentos Nacionales + FNDR Cultura.</div>
+      </div>
+      <div class="ict-hall-card">
+        <div class="ict-hall-icon">&#127807;</div>
+        <div class="ict-hall-title">D&eacute;ficit de &Aacute;reas Verdes Rurales</div>
+        <div class="ict-hall-stat">&lt; 3 m&sup2;/hab</div>
+        <div class="ict-hall-desc">Las localidades rurales tienen menos &aacute;reas verdes por habitante que la OMS recomienda (9 m&sup2;/hab). Requiere arborizaci&oacute;n masiva con especies adaptadas al clima mediterr&aacute;neo.</div>
+      </div>
+      <div class="ict-hall-card">
+        <div class="ict-hall-icon">&#9855;&#65039;</div>
+        <div class="ict-hall-title">Brecha de Accesibilidad Universal</div>
+        <div class="ict-hall-stat">&sim;60%</div>
+        <div class="ict-hall-desc">Aproximadamente 6 de cada 10 espacios catastrados no cumplen est&aacute;ndar de accesibilidad universal (rampas + podot&aacute;ctil + anchos m&iacute;nimos). Inversi&oacute;n transversal v&iacute;a SENADIS + FRIL.</div>
+      </div>
+      <div class="ict-hall-card">
+        <div class="ict-hall-icon">&#128104;&#8205;&#127979;</div>
+        <div class="ict-hall-title">Falta de Modelo de Mantenci&oacute;n</div>
+        <div class="ict-hall-stat">~70% sin plan</div>
+        <div class="ict-hall-desc">La mayor&iacute;a de espacios carece de protocolo de mantenci&oacute;n peri&oacute;dico. Necesario institucionalizar contratos anuales DOM + protocolo de inspecci&oacute;n trimestral.</div>
+      </div>
+      <div class="ict-hall-card">
+        <div class="ict-hall-icon">&#127942;</div>
+        <div class="ict-hall-title">Casos &Eacute;xito Replicables</div>
+        <div class="ict-hall-stat">4 referentes</div>
+        <div class="ict-hall-desc">Plaza Edmundo Ureta, Plaza Conjunto Habitacional Nuevo, Plaza Valent&iacute;n Letelier y Parque Lineal Rosario Urbano. Documentar especies, materiales y modelo de mantenci&oacute;n.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ v45.2 · TABLA COMPARATIVA POR ZONA ═══ -->
+  <div class="ict-method-block" id="ict-comparativa">
+    <div class="ict-method-title">&#128221; Tabla Comparativa por Zona Territorial</div>
+    <div class="ict-method-sub">Indicadores agregados por las 4 zonas haversianas (Centro Urbano, Periferia Urbana, Localidades, Rural Disperso) calculados sobre los 65 puntos del catastro Abril 2026. La &uacute;ltima columna activa el filtro correspondiente en el mapa interactivo.</div>
+    <div class="ict-cmp-table-wrap">
+      <table class="ict-cmp-table">
+        <thead>
+          <tr>
+            <th>Zona</th>
+            <th>Habitantes</th>
+            <th>UV</th>
+            <th>N&deg; espacios catastrados</th>
+            <th>ICT promedio</th>
+            <th>Estado dominante</th>
+            <th>Proyectos PLADECO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cmp-zona">&#128205; Centro Urbano</td>
+            <td class="cmp-num">35.200</td>
+            <td class="cmp-num">5</td>
+            <td class="cmp-num">21</td>
+            <td><div class="cmp-bar-wrap"><div class="cmp-bar"><div class="cmp-bar-fill" style="width:62%"></div></div><span class="cmp-num">62</span></div></td>
+            <td>Bueno / Regular</td>
+            <td class="cmp-num">18</td>
+          </tr>
+          <tr>
+            <td class="cmp-zona">&#128205; Periferia Urbana</td>
+            <td class="cmp-num">15.623</td>
+            <td class="cmp-num">4</td>
+            <td class="cmp-num">19</td>
+            <td><div class="cmp-bar-wrap"><div class="cmp-bar"><div class="cmp-bar-fill" style="width:48%"></div></div><span class="cmp-num">48</span></div></td>
+            <td>Regular / Deficiente</td>
+            <td class="cmp-num">14</td>
+          </tr>
+          <tr>
+            <td class="cmp-zona">&#128205; Localidades</td>
+            <td class="cmp-num">8.500</td>
+            <td class="cmp-num">6</td>
+            <td class="cmp-num">16</td>
+            <td><div class="cmp-bar-wrap"><div class="cmp-bar"><div class="cmp-bar-fill" style="width:42%"></div></div><span class="cmp-num">42</span></div></td>
+            <td>Deficiente</td>
+            <td class="cmp-num">22</td>
+          </tr>
+          <tr>
+            <td class="cmp-zona">&#128205; Rural Disperso</td>
+            <td class="cmp-num">4.297</td>
+            <td class="cmp-num">6</td>
+            <td class="cmp-num">9</td>
+            <td><div class="cmp-bar-wrap"><div class="cmp-bar"><div class="cmp-bar-fill" style="width:35%"></div></div><span class="cmp-num">35</span></div></td>
+            <td>Deficiente / Cr&iacute;tico</td>
+            <td class="cmp-num">28</td>
+          </tr>
+          <tr style="background:rgba(45,154,77,.06)">
+            <td class="cmp-zona"><strong>Comuna (total/promedio)</strong></td>
+            <td class="cmp-num"><strong>63.620</strong></td>
+            <td class="cmp-num"><strong>21</strong></td>
+            <td class="cmp-num"><strong>65</strong></td>
+            <td><div class="cmp-bar-wrap"><div class="cmp-bar"><div class="cmp-bar-fill" style="width:47%"></div></div><span class="cmp-num"><strong>~47</strong></span></div></td>
+            <td><strong>Regular / Deficiente</strong></td>
+            <td class="cmp-num"><strong>82</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:10.5px;color:var(--text2);margin-top:8px;line-height:1.5;font-style:italic">Notas: ICT promedio calculado como media aritm&eacute;tica de los espacios asignados haversianamente a cada zona. Estado dominante: moda estad&iacute;stica. Proyectos PLADECO: acciones priorizadas en la matriz que afectan cada zona (suma puede exceder 225 por proyectos transversales). &laquo;Comuna&raquo; usa promedio ponderado por n&ordm; de espacios.</div>
+  </div>
+
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Ma&ntilde;&aacute;n Arce, O. &amp; Ram&iacute;rez Marambio, P. (2026). <em>Informe Levantamiento para el An&aacute;lisis del Espacio P&uacute;blico de la Comuna de Rengo</em>. PLADECO 2025-2035, SECPLAC Municipalidad de Rengo, Abril 2026. Director: Daniel Castillo Campos &middot; 65 puntos de observaci&oacute;n georreferenciados &middot; Marco metodol&oacute;gico SUBDERE 2009 + Borja &amp; Mux&iacute; (2003) + Orellana et al. (2013) + Ostrom (2010) &middot; Ley N&deg; 18.695 Org&aacute;nica Constitucional de Municipalidades &middot; &copy; OpenStreetMap contributors. <a href="docs/Informe_Estado_Espacios_Publicos_Rengo_2026.pdf" download style="color:var(--accent);font-weight:700;text-decoration:underline">Descargar PDF completo &rarr;</a></div>
 </section>
 
@@ -5963,7 +6322,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ AN&Aacute;LISIS ESTRAT&Eacute;GICO CON INTELIGENCIA TERRITORIAL ═══ -->
 <section id="analisis-estrategico-censo" class="reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(45,154,77,.15);color:#2d9a4d">&#128302; Inteligencia Territorial &middot; Censo 2024</div>
+    <div class="badge" style="background:rgba(45,154,77,.15);color:#2d9a4d">Inteligencia Territorial</div>
     <h2>An&aacute;lisis Estrat&eacute;gico Multidimensional</h2>
     <p>Diagn&oacute;stico cient&iacute;fico de la vulnerabilidad socioterritorial de Rengo construido con <strong>7 &iacute;ndices</strong> calculados sobre las <strong>826 manzanas censales</strong> del CPV 2024 (INE). Supera la lectura agregada comunal evidenciando que detr&aacute;s del ICP medio de <strong>0,210</strong> coexisten manzanas con vulnerabilidad m&iacute;nima (0,073) y manzanas en riesgo cr&iacute;tico (0,493). El estudio incluye fundamentaci&oacute;n metodol&oacute;gica, an&aacute;lisis por dimensi&oacute;n, ranking comparado de 24 localidades y recomendaciones estrat&eacute;gicas operacionalizables para el PLADECO 2025-2035.</p>
   </div>
@@ -6406,7 +6765,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ DIAGNÓSTICO SOCIEDAD CIVIL ═══ -->
 <section id="sociedad-civil" class="reveal">
   <div class="sec-header">
-    <span class="badge" style="background:rgba(139,26,26,.1);color:#8B1A1A">&#127760; Sociedad Civil</span>
+    <span class="badge" style="background:rgba(139,26,26,.1);color:#8B1A1A">Sociedad Civil</span>
     <h2>Diagn&#243;stico de la Sociedad Civil Organizada</h2>
     <p>An&#225;lisis participativo de <strong>95 organizaciones</strong> con <strong>472 participantes</strong> de Rengo, integrado nativamente con cinco vistas anal&#237;ticas: <strong>Mapa territorial &middot; An&#225;lisis Cuantitativo &middot; FODA por Actor &middot; Cruce de Datos &middot; Red SNA de Articulaciones</strong>. Levantamiento entre septiembre 2024 y abril 2025.</p>
   </div>
@@ -6708,7 +7067,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ VOZ CIUDADANA ═══ -->
 <section id="voz">
   <div class="sec-header">
-    <div class="badge" style="background:#e0e7ff;color:#4338ca">&#128227; Lo que opinan los vecinos</div>
+    <div class="badge" style="background:#e0e7ff;color:#4338ca">Voces Ciudadanas</div>
     <h2>Voz de la Ciudadan&#237;a</h2>
     <p>Comentarios y prioridades expresadas por <strong>119 vecinos adultos y 21 j&oacute;venes</strong> encuestados en el proceso participativo &mdash; &#191;Qu&eacute; temas les preocupan m&aacute;s y c&oacute;mo eval&uacute;an su comuna?</p>
   </div>
@@ -7025,6 +7384,10 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     <button class="me-tab-btn" onclick="switchMeTab('red',this)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="12" r="2"/><line x1="7" y1="12" x2="10" y2="12"/><line x1="13" y1="11" x2="17" y2="6"/><line x1="13" y1="13" x2="17" y2="18"/></svg>
       Red de Conexiones (SNA)
+    </button>
+    <button class="me-tab-btn" onclick="switchMeTab('sankey',this)">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h4l4 6h4l4 6"/><path d="M4 12h4l4 6"/><path d="M4 18h4"/></svg>
+      Flujo Estrat&#233;gico (Sankey)
     </button>
   </div>
 
@@ -7423,7 +7786,190 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     </div>
   </div>
 
+  <!-- TAB 4: SANKEY · Flujo Estratégico Ejes → OE → Acciones (v45.3) -->
+  <div id="me-tab-sankey" class="me-tab-panel">
+    <div class="me-sna-metrics">
+      <div class="me-sna-metric"><p>Flujos Eje &rarr; OE</p><p>27</p></div>
+      <div class="me-sna-metric"><p>Acciones distribuidas</p><p>225</p></div>
+      <div class="me-sna-metric"><p>Niveles del Sankey</p><p>3</p></div>
+      <div class="me-sna-metric"><p>Ejes representados</p><p>6</p></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;padding:8px 10px;background:var(--bg-soft);border-radius:8px;border:1px solid var(--border)">
+      <span style="font-size:11px;color:var(--text2);margin-right:3px">Resaltar eje:</span>
+      <button class="me-sna-filter active" id="sky0" onclick="meSankeyFilter(0)">Todos</button>
+      <button class="me-sna-filter" id="sky1" onclick="meSankeyFilter(1)" style="color:var(--me-e1);border-color:var(--me-e1)">Eje 1</button>
+      <button class="me-sna-filter" id="sky2" onclick="meSankeyFilter(2)" style="color:var(--me-e2);border-color:var(--me-e2)">Eje 2</button>
+      <button class="me-sna-filter" id="sky3" onclick="meSankeyFilter(3)" style="color:var(--me-e3);border-color:var(--me-e3)">Eje 3</button>
+      <button class="me-sna-filter" id="sky4" onclick="meSankeyFilter(4)" style="color:var(--me-e4);border-color:var(--me-e4)">Eje 4</button>
+      <button class="me-sna-filter" id="sky5" onclick="meSankeyFilter(5)" style="color:var(--me-e5);border-color:var(--me-e5)">Eje 5</button>
+      <button class="me-sna-filter" id="sky6" onclick="meSankeyFilter(6)" style="color:var(--me-e6);border-color:var(--me-e6)">Eje 6</button>
+    </div>
+    <div class="me-sankey-intro" style="font-size:11.5px;line-height:1.6;color:var(--text2);background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(139,92,246,.04));border:1px solid rgba(99,102,241,.2);border-left:4px solid #6366f1;padding:10px 14px;border-radius:10px;margin-bottom:12px">
+      <strong style="color:var(--text)">&#128202; Lectura del flujo:</strong> El diagrama Sankey muestra c&oacute;mo las <strong>225 acciones priorizadas</strong> del PLADECO se distribuyen desde sus <strong>6 ejes estrat&eacute;gicos</strong> (izquierda) hacia los <strong>27 objetivos estrat&eacute;gicos internos</strong> (centro) y, finalmente, hacia las <strong>5 categor&iacute;as funcionales</strong> de impacto (derecha). El grosor de cada flujo es proporcional al n&uacute;mero de acciones que lo recorren, revelando concentraciones presupuestarias y vac&iacute;os program&aacute;ticos.
+    </div>
+    <div class="me-sankey-wrap" style="position:relative;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <svg id="me-sankey-svg" viewBox="0 0 980 620" style="width:100%;min-width:680px;display:block"></svg>
+      <div id="me-sankey-tip" style="position:absolute;display:none;background:#0c1f36;color:#fff;padding:7px 11px;border-radius:7px;font-size:11px;pointer-events:none;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:240px;line-height:1.4"></div>
+    </div>
+    <div class="me-sna-legend" style="margin-top:12px">
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)"><svg width="18" height="12"><rect width="18" height="12" rx="2" fill="#6366f1"/></svg>Eje estrat&eacute;gico</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)"><svg width="18" height="12"><rect width="18" height="12" rx="2" fill="#8b5cf6"/></svg>Objetivo Estrat&eacute;gico</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)"><svg width="18" height="12"><rect width="18" height="12" rx="2" fill="#ec4899"/></svg>Categor&iacute;a Funcional</span>
+      <span style="margin-left:auto;font-size:10px;opacity:.6">Hover sobre flujo o nodo para detalles &middot; Grosor &#8733; n&deg; acciones</span>
+    </div>
+    <!-- Cards de hallazgos del Sankey -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:14px">
+      <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--me-e1);border-radius:10px;padding:11px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--me-e1);margin-bottom:3px">Mayor concentraci&oacute;n</div>
+        <div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:3px">Eje 1 Desarrollo Social</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.45">58 acciones (26%). Flujo dominante hacia Servicios Sociales y Salud.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--me-e4);border-radius:10px;padding:11px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--me-e4);margin-bottom:3px">Segundo en peso</div>
+        <div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:3px">Eje 4 Territorio y MA</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.45">53 acciones (24%). Concentra Infraestructura, Urbanismo y Gesti&oacute;n Ambiental.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--me-e6);border-radius:10px;padding:11px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--me-e6);margin-bottom:3px">Modernizaci&oacute;n transversal</div>
+        <div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:3px">Eje 6 Gesti&oacute;n Municipal</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.45">50 acciones (22%). Flujo distribuido hacia Gobernanza y Modernizaci&oacute;n digital.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--me-e3);border-radius:10px;padding:11px 14px">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--me-e3);margin-bottom:3px">Brecha program&aacute;tica</div>
+        <div style="font-size:14px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:3px">Eje 3 Educaci&oacute;n</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.45">14 acciones (6%). El flujo m&aacute;s delgado &mdash; requiere refuerzo programatico.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Matriz PLADECO RENGO 2025-2035 &#183; SECPLAC Rengo &#183; Elaboraci&#243;n propia</div>
+</section>
+
+
+<!-- ═══ ERD O'HIGGINS · MOVIDA desde Capítulo XI a Capítulo V (v45.4) ═══
+     Razón: el PLADECO comunal se articula directamente con la ERD regional.
+     Tras la matriz comunal, mostrar la articulación vertical hace que el relato fluya naturalmente. -->
+<section id="erd" class="reveal" aria-labelledby="erdH">
+  <div class="sec-header">
+    <div class="badge" style="background:#dbeafe;color:#1d4ed8">Articulaci&oacute;n Vertical</div>
+    <h2 id="erdH">&#127956; Estrategia Regional de Desarrollo O'Higgins 2024-2036</h2>
+    <p>El PLADECO Rengo 2025-2035 se articula directamente con la <strong>Estrategia Regional de Desarrollo (ERD) de la Regi&oacute;n del Libertador Bernardo O'Higgins</strong>, aprobada por el Consejo Regional (CORE) en diciembre 2024 (Resoluci&oacute;n Exenta N&deg; 439). Este instrumento &mdash; elaborado conjuntamente por el Gobierno Regional y la Universidad de O'Higgins en un proceso que involucr&oacute; talleres en las <strong>33 comunas</strong> de la regi&oacute;n y consult&oacute; a m&aacute;s de 12.000 vecinos, expertos y l&iacute;deres p&uacute;blicos &mdash; define la imagen objetivo, las 10 deliberaciones estrat&eacute;gicas y las 4 agendas que guiar&aacute;n el desarrollo regional hasta 2036.</p>
+  </div>
+
+  <!-- Hero ERD -->
+  <div class="erd-hero">
+    <h3>&#127769; Imagen Objetivo <span>O'Higgins 2036</span></h3>
+    <p>Visi&oacute;n consensuada que orienta la planificaci&oacute;n del desarrollo regional al horizonte 2036, construida con metodolog&iacute;a del <em>Narrative Policy Framework</em> sobre la base de 33 talleres comunales, 28 entrevistas a expertos, 11 foros h&iacute;bridos, 9 mesas de trabajo y 2 encuestas regionales representativas.</p>
+    <div class="erd-meta">
+      <span>&#128221; Resoluci&oacute;n Exenta N&deg; 439</span>
+      <span>&#127968;&#65039; GORE O'Higgins + UOH</span>
+      <span>&#128205; 33 comunas consultadas</span>
+      <span>&#128197; Vigencia 2024-2036 (12 a&ntilde;os)</span>
+    </div>
+  </div>
+
+  <!-- Imagen Objetivo · texto destacado parafraseado -->
+  <div class="erd-io">
+    <span class="erd-io-label">&#127919; Imagen Objetivo Regional (s&iacute;ntesis)</span>
+    <p>La regi&oacute;n proyecta consolidarse como <strong>referente nacional de desarrollo sostenible</strong>, articulando cinco dimensiones simult&aacute;neas: <strong>(1) revitalizaci&oacute;n de los recursos naturales</strong> y adaptaci&oacute;n al cambio clim&aacute;tico; <strong>(2) bienestar y seguridad</strong> de las personas mediante servicios accesibles, infraestructura moderna y conectividad; <strong>(3) gesti&oacute;n inclusiva, equitativa y abierta</strong> a la ciudadan&iacute;a; <strong>(4) matriz productiva diversificada</strong> con cl&uacute;steres emergentes (turismo, agricultura avanzada) impulsados por educaci&oacute;n t&eacute;cnica; y <strong>(5) valorizaci&oacute;n del patrimonio cultural</strong> y agricultura familiar campesina, descentralizaci&oacute;n interna, equidad de g&eacute;nero y soluciones basadas en la naturaleza.</p>
+  </div>
+
+  <!-- Tabs ERD -->
+  <div class="erd-tabs" role="tablist" aria-label="Pesta&ntilde;as de la ERD">
+    <button class="erd-tab active" data-tab="deliberaciones" role="tab">&#128488;&#65039; 10 Deliberaciones</button>
+    <button class="erd-tab" data-tab="agendas" role="tab">&#128221; 4 Agendas Estrat&eacute;gicas</button>
+    <button class="erd-tab" data-tab="puente" role="tab">&#128279; Articulaci&oacute;n PLADECO Rengo &harr; ERD</button>
+  </div>
+
+  <!-- Tab 1: Deliberaciones -->
+  <div class="erd-tabpanel active" data-panel="deliberaciones">
+    <p style="font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:14px">Las <strong>10 deliberaciones regionales</strong> son los grandes nudos cr&iacute;ticos que la ERD identifica como motor del desarrollo de O'Higgins. Surgen del proceso de escucha ciudadana (Mapa Subjetivo) realizado en las 33 comunas. Cada deliberaci&oacute;n condensa tensiones, expectativas y prioridades que la regi&oacute;n debe abordar simult&aacute;neamente.</p>
+    <div class="erd-deliberaciones">
+      <div class="erd-deliberacion" data-num="01"><div class="erd-del-title"><span class="erd-del-icon">&#128167;</span>1. Escasez y Gesti&oacute;n H&iacute;drica</div><div class="erd-del-text">Reducci&oacute;n de precipitaciones, inequidad en el acceso al agua, regulaci&oacute;n de napas subterr&aacute;neas y eficiencia de uso productivo vs. consumo humano. Tema central que cruza todas las dimensiones del desarrollo regional.</div></div>
+      <div class="erd-deliberacion" data-num="02"><div class="erd-del-title"><span class="erd-del-icon">&#127959;&#65039;</span>2. Disputas por el Uso del Suelo</div><div class="erd-del-text">Venta de predios agr&iacute;colas, reconversi&oacute;n a paneles solares y parcelaciones de segunda vivienda. Tensi&oacute;n entre uso productivo tradicional y nuevos usos no agr&iacute;colas.</div></div>
+      <div class="erd-deliberacion" data-num="03"><div class="erd-del-title"><span class="erd-del-icon">&#127815;</span>3. Impactos de la Agroindustria</div><div class="erd-del-text">Impactos ambientales y laborales del sector clave de la econom&iacute;a regional. Precarizaci&oacute;n del empleo, uso intensivo de agroqu&iacute;micos y dependencia de monocultivos.</div></div>
+      <div class="erd-deliberacion" data-num="04"><div class="erd-del-title"><span class="erd-del-icon">&#9878;&#65039;</span>4. Distribuci&oacute;n de Oportunidades en los Territorios</div><div class="erd-del-text">Brechas entre zonas urbanas y rurales, entre la zona central (Cachapoal) y los extremos (Colchagua y Cardenal Caro). Demanda por descentralizaci&oacute;n interna de la regi&oacute;n.</div></div>
+      <div class="erd-deliberacion" data-num="05"><div class="erd-del-title"><span class="erd-del-icon">&#127754;</span>5. Borde Costero: Visibilidad, Manejo y Pol&iacute;tica</div><div class="erd-del-text">Provincia Cardenal Caro y zonas costeras invisibilizadas en la planificaci&oacute;n. Manejo deficitario de servicios, conectividad y oportunidades econ&oacute;micas en el litoral.</div></div>
+      <div class="erd-deliberacion" data-num="06"><div class="erd-del-title"><span class="erd-del-icon">&#9888;&#65039;</span>6. Violencias</div><div class="erd-del-text">Narcotr&aacute;fico, violencia de g&eacute;nero, violencia juvenil y violencia rural (abigeato, robos). Tema emergente que demanda respuestas integrales y territorializadas.</div></div>
+      <div class="erd-deliberacion" data-num="07"><div class="erd-del-title"><span class="erd-del-icon">&#127759;</span>7. Impactos de la Inmigraci&oacute;n</div><div class="erd-del-text">Migraci&oacute;n laboral hacia sectores agr&iacute;colas y de servicios. Desaf&iacute;os de integraci&oacute;n cultural, regularizaci&oacute;n migratoria y acceso a servicios sociales.</div></div>
+      <div class="erd-deliberacion" data-num="08"><div class="erd-del-title"><span class="erd-del-icon">&#127797;</span>8. Matriz Productiva, Enclaves y Vida Rural</div><div class="erd-del-text">Concentraci&oacute;n productiva en agroindustria y miner&iacute;a (El Teniente). Riesgo de enclaves econ&oacute;micos sin encadenamiento local. P&eacute;rdida de formas de vida rural.</div></div>
+      <div class="erd-deliberacion" data-num="09"><div class="erd-del-title"><span class="erd-del-icon">&#127891;</span>9. Educaci&oacute;n, Empleo y Proyectos de Vida Juveniles</div><div class="erd-del-text">Desaj&uacute;ste entre oferta educativa y demanda laboral regional. Migraci&oacute;n juvenil hacia Santiago. Demanda por educaci&oacute;n t&eacute;cnica vinculada a sectores productivos locales.</div></div>
+      <div class="erd-deliberacion" data-num="10"><div class="erd-del-title"><span class="erd-del-icon">&#127907;</span>10. Cultura, Identidades y Urbanidad</div><div class="erd-del-text">Patrimonio cultural rural (vendimias, fondas, religiosidad popular) en tensi&oacute;n con urbanizaci&oacute;n acelerada. Identidades campesinas, huasas y costeras vs. modernizaci&oacute;n.</div></div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Agendas Estratégicas -->
+  <div class="erd-tabpanel" data-panel="agendas">
+    <p style="font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:14px">Las <strong>4 agendas estrat&eacute;gicas</strong> organizan la propuesta de acci&oacute;n p&uacute;blica regional. Cada agenda se descompone en <em>ejes estructurantes</em> que a su vez contienen programas y l&iacute;neas de acci&oacute;n espec&iacute;ficas. La ERD presenta tambi&eacute;n tres ejes transversales: <strong>equidad de g&eacute;nero</strong>, <strong>descentralizaci&oacute;n interna</strong> y <strong>participaci&oacute;n ciudadana</strong>.</p>
+    <div class="erd-agendas">
+      <div class="erd-agenda" style="--ag-color:#dc2626;--ag-color-2:#991b1b">
+        <div class="erd-agenda-head">
+          <h4><span class="ag-emoji">&#129489;&#8205;&#9877;&#65039;</span>1. Agenda de Desarrollo Humano</h4>
+          <div class="ag-objetivo">Garantizar bienestar y derechos sociales con enfoque inclusivo, fortaleciendo la convivencia, la ruralidad y la cultura como motores de cohesi&oacute;n territorial.</div>
+        </div>
+        <div class="erd-agenda-body"><div class="erd-ejes">
+          <div class="erd-eje"><div class="erd-eje-title">Derechos Sociales</div><div class="erd-eje-desc">Salud, educaci&oacute;n, vivienda digna, protecci&oacute;n social y cuidados integrales.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Convivencia Social</div><div class="erd-eje-desc">Seguridad ciudadana, prevenci&oacute;n de violencias, integraci&oacute;n migrante y cohesi&oacute;n comunitaria.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Ruralidad</div><div class="erd-eje-desc">Servicios b&aacute;sicos rurales (APR), conectividad digital, transporte y mantenci&oacute;n del tejido rural.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Cultura, Patrimonio e Identidades</div><div class="erd-eje-desc">Patrimonio material/inmaterial, identidades locales (huasa, campesina, costera), industrias creativas.</div></div>
+        </div></div>
+      </div>
+      <div class="erd-agenda" style="--ag-color:#1a3d8f;--ag-color-2:#0c1f36">
+        <div class="erd-agenda-head">
+          <h4><span class="ag-emoji">&#127963;&#65039;</span>2. Agenda de Gobernanza Pol&iacute;tico-Institucional</h4>
+          <div class="ag-objetivo">Recuperar la confianza p&uacute;blica fortaleciendo capacidades institucionales y desplegando una gobernanza efectiva para la implementaci&oacute;n de la ERD.</div>
+        </div>
+        <div class="erd-agenda-body"><div class="erd-ejes">
+          <div class="erd-eje"><div class="erd-eje-title">Confianza P&uacute;blica</div><div class="erd-eje-desc">Transparencia, rendici&oacute;n de cuentas, control ciudadano y comunicaci&oacute;n de pol&iacute;ticas p&uacute;blicas.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Fortalecimiento de Capacidades Institucionales</div><div class="erd-eje-desc">Modernizaci&oacute;n del Estado regional, capacitaci&oacute;n de funcionarios, sistemas de gesti&oacute;n.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Gobernanza para la ERD</div><div class="erd-eje-desc">Articulaci&oacute;n GORE-municipios-sociedad civil para implementar las 4 agendas con seguimiento e indicadores.</div></div>
+        </div></div>
+      </div>
+      <div class="erd-agenda" style="--ag-color:#2d9a4d;--ag-color-2:#16633a">
+        <div class="erd-agenda-head">
+          <h4><span class="ag-emoji">&#127757;</span>3. Agenda de Medio Ambiente</h4>
+          <div class="ag-objetivo">Liderar la transici&oacute;n hacia un desarrollo sostenible que adapte la regi&oacute;n al cambio clim&aacute;tico, conserve la biodiversidad y promueva la econom&iacute;a circular.</div>
+        </div>
+        <div class="erd-agenda-body"><div class="erd-ejes">
+          <div class="erd-eje"><div class="erd-eje-title">Adaptaci&oacute;n al Cambio Clim&aacute;tico</div><div class="erd-eje-desc">Gesti&oacute;n h&iacute;drica integrada, planes de adaptaci&oacute;n, eficiencia energ&eacute;tica y resiliencia urbana/rural.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Preservaci&oacute;n y Conservaci&oacute;n de la Naturaleza</div><div class="erd-eje-desc">Bosque nativo, biodiversidad, fauna end&eacute;mica, &aacute;reas protegidas y soluciones basadas en la naturaleza.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Ordenamiento y Planificaci&oacute;n Territorial</div><div class="erd-eje-desc">Plan Regional de Ordenamiento Territorial, regulaci&oacute;n uso de suelo, planes reguladores comunales.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Econom&iacute;a Circular y Gesti&oacute;n de Residuos</div><div class="erd-eje-desc">Reciclaje, valorizaci&oacute;n de residuos, compostaje comunal y reducci&oacute;n de relaves mineros.</div></div>
+        </div></div>
+      </div>
+      <div class="erd-agenda" style="--ag-color:#f5921d;--ag-color-2:#b45309">
+        <div class="erd-agenda-head">
+          <h4><span class="ag-emoji">&#128176;</span>4. Agenda de Desarrollo Econ&oacute;mico</h4>
+          <div class="ag-objetivo">Diversificar la matriz productiva con sustentabilidad ambiental, mejorando los derechos laborales y promoviendo asociatividad para cerrar brechas entre comunas.</div>
+        </div>
+        <div class="erd-agenda-body"><div class="erd-ejes">
+          <div class="erd-eje"><div class="erd-eje-title">Diversificaci&oacute;n de la Matriz Productiva</div><div class="erd-eje-desc">Cl&uacute;steres emergentes (turismo, agricultura avanzada, energ&iacute;as renovables), I+D+i y educaci&oacute;n t&eacute;cnica.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Derechos B&aacute;sicos (laborales)</div><div class="erd-eje-desc">Reducci&oacute;n de informalidad, cierre de brechas salariales por g&eacute;nero, garant&iacute;a de derechos laborales.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Sustentabilidad Medioambiental y Producci&oacute;n</div><div class="erd-eje-desc">Compatibilidad entre producci&oacute;n y conservaci&oacute;n, transici&oacute;n a pr&aacute;cticas sostenibles.</div></div>
+          <div class="erd-eje"><div class="erd-eje-title">Asociatividad y Cooperativismo</div><div class="erd-eje-desc">Fortalecimiento de cooperativas, asociaciones de productores, encadenamientos productivos locales.</div></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Articulación PLADECO ↔ ERD -->
+  <div class="erd-tabpanel" data-panel="puente">
+    <div class="erd-puente">
+      <h4>&#128279; C&oacute;mo el PLADECO Rengo se alinea con la ERD O'Higgins</h4>
+      <p class="erd-puente-desc">El PLADECO Rengo 2025-2035 fue dise&ntilde;ado expl&iacute;citamente para <strong>aterrizar la ERD a escala comunal</strong>, manteniendo coherencia con las 4 agendas regionales y aportando soluciones espec&iacute;ficas a las deliberaciones m&aacute;s relevantes para Rengo (escasez h&iacute;drica, distribuci&oacute;n de oportunidades, cultura/identidades, educaci&oacute;n juvenil, matriz productiva agroindustrial). La siguiente tabla muestra la cascada ERD &rarr; PLADECO:</p>
+      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 1 &middot; Desarrollo Humano</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 1 &middot; Cultura, Turismo, Deportes, Recreaci&oacute;n y Bienestar Social (Salud)</div></div>
+      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 4 &middot; Desarrollo Econ&oacute;mico</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 2 &middot; Desarrollo Econ&oacute;mico Local</div></div>
+      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 1 &middot; Ejes Derechos Sociales + Ruralidad</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 3 &middot; Educaci&oacute;n y Capital Humano</div></div>
+      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 3 &middot; Ordenamiento Territorial</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 4 &middot; Territorio, Infraestructura y Vivienda</div></div>
+      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 3 &middot; Adaptaci&oacute;n Clim&aacute;tica + Conservaci&oacute;n</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 5 &middot; Medio Ambiente y Sustentabilidad</div></div>
+      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 2 &middot; Gobernanza Pol&iacute;tico-Institucional</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 6 &middot; Gesti&oacute;n Municipal Moderna</div></div>
+    </div>
+    <div style="margin-top:18px;padding:18px 22px;background:linear-gradient(135deg,rgba(26,61,143,.06),rgba(245,146,29,.05));border-left:4px solid #1a3d8f;border-radius:12px;font-size:12.5px;line-height:1.65;color:var(--text)">
+      <strong style="color:#1a3d8f">&#128202; Aporte de Rengo a la ERD:</strong> Con 63.620 habitantes (3,4% de la regi&oacute;n), Rengo es la <strong>4&ordf; comuna m&aacute;s poblada</strong> del Cachapoal y aporta evidencia clave para 7 de las 10 deliberaciones regionales: hidrolog&iacute;a (Mesa H&iacute;drica R&iacute;o Claro), matriz productiva (Apalta + agroindustria), juventudes (4.036 NNA encuestados), brecha urbano-rural (38,7% medida con &iacute;ndices SIVUST), y patrimonio identitario (toqui Rengo). El portal PLADECO funciona como un <em>caso piloto</em> de articulaci&oacute;n multinivel ERD-PLADECO para las 32 comunas restantes de la regi&oacute;n.
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Gobierno Regional de O'Higgins &amp; Universidad de O'Higgins (2025). <em>Estrategia Regional de Desarrollo de O'Higgins 2024-2036</em>. Resoluci&oacute;n Exenta N&deg; 439, C&oacute;digo BIP N&deg; 40017868-0. Documento aprobado por unanimidad por el Consejo Regional (CORE) de O'Higgins en sesi&oacute;n de diciembre 2024. M&aacute;s informaci&oacute;n: <a href="https://erd.uoh.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">erd.uoh.cl</a> &middot; <a href="https://www.goreohiggins.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">goreohiggins.cl</a>.</div>
 </section>
 
 
@@ -7588,7 +8134,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ ARGUMENTARIO ESTRATÉGICO ═══ -->
 <section id="argumentario">
   <div class="sec-header">
-    <div class="badge" style="background:#fef3c7;color:#92400e">&iquest;Por qu&eacute; este plan?</div>
+    <div class="badge" style="background:#fef3c7;color:#92400e">Argumentario</div>
     <h2>Las Razones detr&aacute;s del PLADECO</h2>
     <p>El PLADECO no es un ejercicio burocr&aacute;tico: es una respuesta articulada a problemas medidos. <strong>15 argumentos estructurales</strong> que justifican cada eje estrat&eacute;gico, construidos a partir de datos del Censo 2024 (63.620 habitantes, 826 manzanas), 40+ entrevistas cualitativas, 4.036 ni&ntilde;os, ni&ntilde;as y adolescentes encuestados, el FODA participativo (904 menciones sistematizadas) y el portafolio BIP MIDESO (1.182 proyectos hist&oacute;ricos). Cada argumento conecta una brecha medida con una respuesta estrat&eacute;gica del plan.</p>
   </div>
@@ -7693,7 +8239,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ DIAGNÓSTICO INSTITUCIONAL · FUNCIONARIOS Y DIRECTORES ═══ -->
 <section id="diagnostico-institucional" class="reveal">
   <div class="sec-header">
-    <span class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">&#127960; Diagn&#243;stico Institucional</span>
+    <span class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">Diagn&#243;stico Institucional</span>
     <h2>Funcionarios y Directores Municipales &middot; Etnograf&#237;a Institucional</h2>
     <p>An&#225;lisis cualitativo y cuantitativo de <strong>115 entrevistas a funcionarios y directores</strong> de la Municipalidad de Rengo: cultura organizacional, gesti&#243;n interna, FODA institucional, percepci&#243;n sobre burocracia y propuestas de innovaci&#243;n. Levantamiento etnogr&#225;fico realizado durante el proceso PLADECO 2025&#8211;2035.</p>
   </div>
@@ -8567,7 +9113,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ SEMÁFORO DE METAS ═══ -->
 <section id="semaforo">
   <div class="sec-header">
-    <div class="badge" style="background:#d1fae5;color:#059669">&#191;Vamos bien?</div>
+    <div class="badge" style="background:#d1fae5;color:#059669">Seguimiento</div>
     <h2>&#128678; Sem&aacute;foro de Avance</h2>
     <p>16 indicadores con colores tipo sem&aacute;foro: verde = vamos bien, amarillo = hay que mejorar, rojo = requiere atenci&oacute;n urgente</p>
   </div>
@@ -8677,7 +9223,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ CRONOGRAMA · CARTA GANTT INTERACTIVA (v44.8) ═══ -->
 <section id="cronograma-gantt" class="reveal" aria-labelledby="cgH">
   <div class="sec-header">
-    <div class="badge" style="background:#fff7ed;color:#c2410c">PLADECO &middot; Carta Gantt Interactiva</div>
+    <div class="badge" style="background:#fff7ed;color:#c2410c">Carta Gantt</div>
     <h2 id="cgH">&#128197; Cronograma del Proceso PLADECO 2025-2032</h2>
     <p>Carta Gantt interactiva con los <strong>7 macroprocesos</strong> y <strong>22 actividades espec&iacute;ficas</strong> del proceso de actualizaci&oacute;n del PLADECO Rengo, distribuidos en <strong>11 meses</strong> de trabajo entre Agosto 2025 y Junio 2026. Cada barra representa la duraci&oacute;n estimada de la actividad. Toca cualquier macroproceso para desplegar sus actividades, usa los filtros para enfocar la vista o descarga el documento PDF original elaborado por SECPLAC.</p>
   </div>
@@ -9124,7 +9670,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ WIDGETS EN VIVO · Twitter + Clima + Aire ═══ -->
 <section id="widgets-vivo" class="reveal" style="display:none" aria-hidden="true" data-note="Sección movida al live-strip superior en v35.2">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(59,130,246,.12);color:#2563eb">Actualizaci&oacute;n autom&aacute;tica cada 5 min</div>
+    <div class="badge" style="background:rgba(59,130,246,.12);color:#2563eb">Tiempo Real</div>
     <h2>&#127773; Pulso Comunal &middot; Clima y Aire en Vivo</h2>
     <p>Condiciones ambientales actuales de Rengo provistas por <strong>Open-Meteo</strong> (clima) y <strong>SINCA del Ministerio de Medio Ambiente</strong> (calidad del aire). Los datos se actualizan automáticamente cada 5 minutos sin necesidad de recargar la p&aacute;gina.</p>
   </div>
@@ -9486,7 +10032,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ PARTICIPA · Newsletter + Reporte + Calendario + Concejo ═══ -->
 <section id="participa" class="reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(45,154,77,.12);color:#2d9a4d">Canales Permanentes de Participaci&oacute;n</div>
+    <div class="badge" style="background:rgba(45,154,77,.12);color:#2d9a4d">Participaci&oacute;n Activa</div>
     <h2>&#128227; Participa Activamente</h2>
     <p>4 canales abiertos para que vecinos, vecinas, organizaciones y representantes se mantengan conectados con el proceso PLADECO m&aacute;s all&aacute; del diagn&oacute;stico: suscripci&oacute;n a novedades, reporte directo de problem&aacute;ticas territoriales, calendario p&uacute;blico de talleres y sesiones del Concejo en vivo.</p>
   </div>
@@ -9569,7 +10115,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ PRESUPUESTO PARTICIPATIVO ═══ -->
 <section id="presupuesto-participativo" class="reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(245,146,29,.15);color:#f5921d">&#9201;&#65039; Pr&oacute;ximamente &middot; En Evaluaci&oacute;n</div>
+    <div class="badge" style="background:rgba(245,146,29,.15);color:#f5921d">Pr&oacute;ximamente</div>
     <h2>&#128181; Presupuesto Participativo Comunal</h2>
     <p>Mecanismo de democracia directa para que los vecinos y vecinas de Rengo decidan el destino de una porci&oacute;n del presupuesto municipal de inversi&oacute;n. Actualmente <strong>en evaluaci&oacute;n t&eacute;cnica y normativa</strong> por el equipo SECPLAC y la administraci&oacute;n municipal.</p>
   </div>
@@ -9708,132 +10254,13 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 
 
 
-<div class="group-divider" id="capitulo-11"><span class="group-divider-label" data-cap="XI">&#127956; Articulaci&oacute;n Regional &middot; Rengo en O'Higgins<span class="cap-sub">El PLADECO no est&aacute; aislado: se alinea con la Estrategia Regional de Desarrollo (ERD) O'Higgins 2024-2036 aprobada por el GORE y la Universidad de O'Higgins. Aqu&iacute; ves c&oacute;mo cada uno de los 6 ejes comunales aporta a las 4 agendas regionales.</span></span></div>
+<!-- v45.4 · Sección #erd MOVIDA a Capítulo V (justo después de #matriz) para coherencia narrativa:
+     primero ves la matriz comunal y luego cómo se articula con la ERD regional.
+     Capítulo XI eliminado por quedar vacío. -->
 
-<section id="erd" class="reveal" aria-labelledby="erdH">
-  <div class="sec-header">
-    <div class="badge" style="background:#dbeafe;color:#1d4ed8">Articulaci&oacute;n Vertical</div>
-    <h2 id="erdH">&#127956; Estrategia Regional de Desarrollo O'Higgins 2024-2036</h2>
-    <p>El PLADECO Rengo 2025-2035 se articula directamente con la <strong>Estrategia Regional de Desarrollo (ERD) de la Regi&oacute;n del Libertador Bernardo O'Higgins</strong>, aprobada por el Consejo Regional (CORE) en diciembre 2024 (Resoluci&oacute;n Exenta N&deg; 439). Este instrumento &mdash; elaborado conjuntamente por el Gobierno Regional y la Universidad de O'Higgins en un proceso que involucr&oacute; talleres en las <strong>33 comunas</strong> de la regi&oacute;n y consult&oacute; a m&aacute;s de 12.000 vecinos, expertos y l&iacute;deres p&uacute;blicos &mdash; define la imagen objetivo, las 10 deliberaciones estrat&eacute;gicas y las 4 agendas que guiar&aacute;n el desarrollo regional hasta 2036.</p>
-  </div>
+<!-- v45.5 · #erd-DEPRECATED-PLACEHOLDER eliminado completamente. ERD vive en Cap. V después de #matriz. -->
 
-  <!-- Hero ERD -->
-  <div class="erd-hero">
-    <h3>&#127769; Imagen Objetivo <span>O'Higgins 2036</span></h3>
-    <p>Visi&oacute;n consensuada que orienta la planificaci&oacute;n del desarrollo regional al horizonte 2036, construida con metodolog&iacute;a del <em>Narrative Policy Framework</em> sobre la base de 33 talleres comunales, 28 entrevistas a expertos, 11 foros h&iacute;bridos, 9 mesas de trabajo y 2 encuestas regionales representativas.</p>
-    <div class="erd-meta">
-      <span>&#128221; Resoluci&oacute;n Exenta N&deg; 439</span>
-      <span>&#127968;&#65039; GORE O'Higgins + UOH</span>
-      <span>&#128205; 33 comunas consultadas</span>
-      <span>&#128197; Vigencia 2024-2036 (12 a&ntilde;os)</span>
-    </div>
-  </div>
-
-  <!-- Imagen Objetivo · texto destacado parafraseado -->
-  <div class="erd-io">
-    <span class="erd-io-label">&#127919; Imagen Objetivo Regional (s&iacute;ntesis)</span>
-    <p>La regi&oacute;n proyecta consolidarse como <strong>referente nacional de desarrollo sostenible</strong>, articulando cinco dimensiones simult&aacute;neas: <strong>(1) revitalizaci&oacute;n de los recursos naturales</strong> y adaptaci&oacute;n al cambio clim&aacute;tico; <strong>(2) bienestar y seguridad</strong> de las personas mediante servicios accesibles, infraestructura moderna y conectividad; <strong>(3) gesti&oacute;n inclusiva, equitativa y abierta</strong> a la ciudadan&iacute;a; <strong>(4) matriz productiva diversificada</strong> con cl&uacute;steres emergentes (turismo, agricultura avanzada) impulsados por educaci&oacute;n t&eacute;cnica; y <strong>(5) valorizaci&oacute;n del patrimonio cultural</strong> y agricultura familiar campesina, descentralizaci&oacute;n interna, equidad de g&eacute;nero y soluciones basadas en la naturaleza.</p>
-  </div>
-
-  <!-- Tabs ERD -->
-  <div class="erd-tabs" role="tablist" aria-label="Pesta&ntilde;as de la ERD">
-    <button class="erd-tab active" data-tab="deliberaciones" role="tab">&#128488;&#65039; 10 Deliberaciones</button>
-    <button class="erd-tab" data-tab="agendas" role="tab">&#128221; 4 Agendas Estrat&eacute;gicas</button>
-    <button class="erd-tab" data-tab="puente" role="tab">&#128279; Articulaci&oacute;n PLADECO Rengo &harr; ERD</button>
-  </div>
-
-  <!-- Tab 1: Deliberaciones -->
-  <div class="erd-tabpanel active" data-panel="deliberaciones">
-    <p style="font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:14px">Las <strong>10 deliberaciones regionales</strong> son los grandes nudos cr&iacute;ticos que la ERD identifica como motor del desarrollo de O'Higgins. Surgen del proceso de escucha ciudadana (Mapa Subjetivo) realizado en las 33 comunas. Cada deliberaci&oacute;n condensa tensiones, expectativas y prioridades que la regi&oacute;n debe abordar simult&aacute;neamente.</p>
-    <div class="erd-deliberaciones">
-      <div class="erd-deliberacion" data-num="01"><div class="erd-del-title"><span class="erd-del-icon">&#128167;</span>1. Escasez y Gesti&oacute;n H&iacute;drica</div><div class="erd-del-text">Reducci&oacute;n de precipitaciones, inequidad en el acceso al agua, regulaci&oacute;n de napas subterr&aacute;neas y eficiencia de uso productivo vs. consumo humano. Tema central que cruza todas las dimensiones del desarrollo regional.</div></div>
-      <div class="erd-deliberacion" data-num="02"><div class="erd-del-title"><span class="erd-del-icon">&#127959;&#65039;</span>2. Disputas por el Uso del Suelo</div><div class="erd-del-text">Venta de predios agr&iacute;colas, reconversi&oacute;n a paneles solares y parcelaciones de segunda vivienda. Tensi&oacute;n entre uso productivo tradicional y nuevos usos no agr&iacute;colas.</div></div>
-      <div class="erd-deliberacion" data-num="03"><div class="erd-del-title"><span class="erd-del-icon">&#127815;</span>3. Impactos de la Agroindustria</div><div class="erd-del-text">Impactos ambientales y laborales del sector clave de la econom&iacute;a regional. Precarizaci&oacute;n del empleo, uso intensivo de agroqu&iacute;micos y dependencia de monocultivos.</div></div>
-      <div class="erd-deliberacion" data-num="04"><div class="erd-del-title"><span class="erd-del-icon">&#9878;&#65039;</span>4. Distribuci&oacute;n de Oportunidades en los Territorios</div><div class="erd-del-text">Brechas entre zonas urbanas y rurales, entre la zona central (Cachapoal) y los extremos (Colchagua y Cardenal Caro). Demanda por descentralizaci&oacute;n interna de la regi&oacute;n.</div></div>
-      <div class="erd-deliberacion" data-num="05"><div class="erd-del-title"><span class="erd-del-icon">&#127754;</span>5. Borde Costero: Visibilidad, Manejo y Pol&iacute;tica</div><div class="erd-del-text">Provincia Cardenal Caro y zonas costeras invisibilizadas en la planificaci&oacute;n. Manejo deficitario de servicios, conectividad y oportunidades econ&oacute;micas en el litoral.</div></div>
-      <div class="erd-deliberacion" data-num="06"><div class="erd-del-title"><span class="erd-del-icon">&#9888;&#65039;</span>6. Violencias</div><div class="erd-del-text">Narcotr&aacute;fico, violencia de g&eacute;nero, violencia juvenil y violencia rural (abigeato, robos). Tema emergente que demanda respuestas integrales y territorializadas.</div></div>
-      <div class="erd-deliberacion" data-num="07"><div class="erd-del-title"><span class="erd-del-icon">&#127759;</span>7. Impactos de la Inmigraci&oacute;n</div><div class="erd-del-text">Migraci&oacute;n laboral hacia sectores agr&iacute;colas y de servicios. Desaf&iacute;os de integraci&oacute;n cultural, regularizaci&oacute;n migratoria y acceso a servicios sociales.</div></div>
-      <div class="erd-deliberacion" data-num="08"><div class="erd-del-title"><span class="erd-del-icon">&#127797;</span>8. Matriz Productiva, Enclaves y Vida Rural</div><div class="erd-del-text">Concentraci&oacute;n productiva en agroindustria y miner&iacute;a (El Teniente). Riesgo de enclaves econ&oacute;micos sin encadenamiento local. P&eacute;rdida de formas de vida rural.</div></div>
-      <div class="erd-deliberacion" data-num="09"><div class="erd-del-title"><span class="erd-del-icon">&#127891;</span>9. Educaci&oacute;n, Empleo y Proyectos de Vida Juveniles</div><div class="erd-del-text">Desaj&uacute;ste entre oferta educativa y demanda laboral regional. Migraci&oacute;n juvenil hacia Santiago. Demanda por educaci&oacute;n t&eacute;cnica vinculada a sectores productivos locales.</div></div>
-      <div class="erd-deliberacion" data-num="10"><div class="erd-del-title"><span class="erd-del-icon">&#127907;</span>10. Cultura, Identidades y Urbanidad</div><div class="erd-del-text">Patrimonio cultural rural (vendimias, fondas, religiosidad popular) en tensi&oacute;n con urbanizaci&oacute;n acelerada. Identidades campesinas, huasas y costeras vs. modernizaci&oacute;n.</div></div>
-    </div>
-  </div>
-
-  <!-- Tab 2: Agendas Estratégicas -->
-  <div class="erd-tabpanel" data-panel="agendas">
-    <p style="font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:14px">Las <strong>4 agendas estrat&eacute;gicas</strong> organizan la propuesta de acci&oacute;n p&uacute;blica regional. Cada agenda se descompone en <em>ejes estructurantes</em> que a su vez contienen programas y l&iacute;neas de acci&oacute;n espec&iacute;ficas. La ERD presenta tambi&eacute;n tres ejes transversales: <strong>equidad de g&eacute;nero</strong>, <strong>descentralizaci&oacute;n interna</strong> y <strong>participaci&oacute;n ciudadana</strong>.</p>
-    <div class="erd-agendas">
-      <div class="erd-agenda" style="--ag-color:#dc2626;--ag-color-2:#991b1b">
-        <div class="erd-agenda-head">
-          <h4><span class="ag-emoji">&#129489;&#8205;&#9877;&#65039;</span>1. Agenda de Desarrollo Humano</h4>
-          <div class="ag-objetivo">Garantizar bienestar y derechos sociales con enfoque inclusivo, fortaleciendo la convivencia, la ruralidad y la cultura como motores de cohesi&oacute;n territorial.</div>
-        </div>
-        <div class="erd-agenda-body"><div class="erd-ejes">
-          <div class="erd-eje"><div class="erd-eje-title">Derechos Sociales</div><div class="erd-eje-desc">Salud, educaci&oacute;n, vivienda digna, protecci&oacute;n social y cuidados integrales.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Convivencia Social</div><div class="erd-eje-desc">Seguridad ciudadana, prevenci&oacute;n de violencias, integraci&oacute;n migrante y cohesi&oacute;n comunitaria.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Ruralidad</div><div class="erd-eje-desc">Servicios b&aacute;sicos rurales (APR), conectividad digital, transporte y mantenci&oacute;n del tejido rural.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Cultura, Patrimonio e Identidades</div><div class="erd-eje-desc">Patrimonio material/inmaterial, identidades locales (huasa, campesina, costera), industrias creativas.</div></div>
-        </div></div>
-      </div>
-      <div class="erd-agenda" style="--ag-color:#1a3d8f;--ag-color-2:#0c1f36">
-        <div class="erd-agenda-head">
-          <h4><span class="ag-emoji">&#127963;&#65039;</span>2. Agenda de Gobernanza Pol&iacute;tico-Institucional</h4>
-          <div class="ag-objetivo">Recuperar la confianza p&uacute;blica fortaleciendo capacidades institucionales y desplegando una gobernanza efectiva para la implementaci&oacute;n de la ERD.</div>
-        </div>
-        <div class="erd-agenda-body"><div class="erd-ejes">
-          <div class="erd-eje"><div class="erd-eje-title">Confianza P&uacute;blica</div><div class="erd-eje-desc">Transparencia, rendici&oacute;n de cuentas, control ciudadano y comunicaci&oacute;n de pol&iacute;ticas p&uacute;blicas.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Fortalecimiento de Capacidades Institucionales</div><div class="erd-eje-desc">Modernizaci&oacute;n del Estado regional, capacitaci&oacute;n de funcionarios, sistemas de gesti&oacute;n.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Gobernanza para la ERD</div><div class="erd-eje-desc">Articulaci&oacute;n GORE-municipios-sociedad civil para implementar las 4 agendas con seguimiento e indicadores.</div></div>
-        </div></div>
-      </div>
-      <div class="erd-agenda" style="--ag-color:#2d9a4d;--ag-color-2:#16633a">
-        <div class="erd-agenda-head">
-          <h4><span class="ag-emoji">&#127757;</span>3. Agenda de Medio Ambiente</h4>
-          <div class="ag-objetivo">Liderar la transici&oacute;n hacia un desarrollo sostenible que adapte la regi&oacute;n al cambio clim&aacute;tico, conserve la biodiversidad y promueva la econom&iacute;a circular.</div>
-        </div>
-        <div class="erd-agenda-body"><div class="erd-ejes">
-          <div class="erd-eje"><div class="erd-eje-title">Adaptaci&oacute;n al Cambio Clim&aacute;tico</div><div class="erd-eje-desc">Gesti&oacute;n h&iacute;drica integrada, planes de adaptaci&oacute;n, eficiencia energ&eacute;tica y resiliencia urbana/rural.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Preservaci&oacute;n y Conservaci&oacute;n de la Naturaleza</div><div class="erd-eje-desc">Bosque nativo, biodiversidad, fauna end&eacute;mica, &aacute;reas protegidas y soluciones basadas en la naturaleza.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Ordenamiento y Planificaci&oacute;n Territorial</div><div class="erd-eje-desc">Plan Regional de Ordenamiento Territorial, regulaci&oacute;n uso de suelo, planes reguladores comunales.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Econom&iacute;a Circular y Gesti&oacute;n de Residuos</div><div class="erd-eje-desc">Reciclaje, valorizaci&oacute;n de residuos, compostaje comunal y reducci&oacute;n de relaves mineros.</div></div>
-        </div></div>
-      </div>
-      <div class="erd-agenda" style="--ag-color:#f5921d;--ag-color-2:#b45309">
-        <div class="erd-agenda-head">
-          <h4><span class="ag-emoji">&#128176;</span>4. Agenda de Desarrollo Econ&oacute;mico</h4>
-          <div class="ag-objetivo">Diversificar la matriz productiva con sustentabilidad ambiental, mejorando los derechos laborales y promoviendo asociatividad para cerrar brechas entre comunas.</div>
-        </div>
-        <div class="erd-agenda-body"><div class="erd-ejes">
-          <div class="erd-eje"><div class="erd-eje-title">Diversificaci&oacute;n de la Matriz Productiva</div><div class="erd-eje-desc">Cl&uacute;steres emergentes (turismo, agricultura avanzada, energ&iacute;as renovables), I+D+i y educaci&oacute;n t&eacute;cnica.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Derechos B&aacute;sicos (laborales)</div><div class="erd-eje-desc">Reducci&oacute;n de informalidad, cierre de brechas salariales por g&eacute;nero, garant&iacute;a de derechos laborales.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Sustentabilidad Medioambiental y Producci&oacute;n</div><div class="erd-eje-desc">Compatibilidad entre producci&oacute;n y conservaci&oacute;n, transici&oacute;n a pr&aacute;cticas sostenibles.</div></div>
-          <div class="erd-eje"><div class="erd-eje-title">Asociatividad y Cooperativismo</div><div class="erd-eje-desc">Fortalecimiento de cooperativas, asociaciones de productores, encadenamientos productivos locales.</div></div>
-        </div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tab 3: Articulación PLADECO ↔ ERD -->
-  <div class="erd-tabpanel" data-panel="puente">
-    <div class="erd-puente">
-      <h4>&#128279; C&oacute;mo el PLADECO Rengo se alinea con la ERD O'Higgins</h4>
-      <p class="erd-puente-desc">El PLADECO Rengo 2025-2035 fue dise&ntilde;ado expl&iacute;citamente para <strong>aterrizar la ERD a escala comunal</strong>, manteniendo coherencia con las 4 agendas regionales y aportando soluciones espec&iacute;ficas a las deliberaciones m&aacute;s relevantes para Rengo (escasez h&iacute;drica, distribuci&oacute;n de oportunidades, cultura/identidades, educaci&oacute;n juvenil, matriz productiva agroindustrial). La siguiente tabla muestra la cascada ERD &rarr; PLADECO:</p>
-      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 1 &middot; Desarrollo Humano</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 1 &middot; Cultura, Turismo, Deportes, Recreaci&oacute;n y Bienestar Social (Salud)</div></div>
-      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 4 &middot; Desarrollo Econ&oacute;mico</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 2 &middot; Desarrollo Econ&oacute;mico Local</div></div>
-      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 1 &middot; Ejes Derechos Sociales + Ruralidad</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 3 &middot; Educaci&oacute;n y Capital Humano</div></div>
-      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 3 &middot; Ordenamiento Territorial</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 4 &middot; Territorio, Infraestructura y Vivienda</div></div>
-      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 3 &middot; Adaptaci&oacute;n Clim&aacute;tica + Conservaci&oacute;n</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 5 &middot; Medio Ambiente y Sustentabilidad</div></div>
-      <div class="erd-cascada"><div class="erd-link erd-cascada-erd">ERD Agenda 2 &middot; Gobernanza Pol&iacute;tico-Institucional</div><div class="erd-arrow">&rarr;</div><div class="erd-link erd-cascada-pladeco">PLADECO Eje 6 &middot; Gesti&oacute;n Municipal Moderna</div></div>
-    </div>
-    <div style="margin-top:18px;padding:18px 22px;background:linear-gradient(135deg,rgba(26,61,143,.06),rgba(245,146,29,.05));border-left:4px solid #1a3d8f;border-radius:12px;font-size:12.5px;line-height:1.65;color:var(--text)">
-      <strong style="color:#1a3d8f">&#128202; Aporte de Rengo a la ERD:</strong> Con 63.620 habitantes (3,4% de la regi&oacute;n), Rengo es la <strong>4&ordf; comuna m&aacute;s poblada</strong> del Cachapoal y aporta evidencia clave para 7 de las 10 deliberaciones regionales: hidrolog&iacute;a (Mesa H&iacute;drica R&iacute;o Claro), matriz productiva (Apalta + agroindustria), juventudes (4.036 NNA encuestados), brecha urbano-rural (38,7% medida con &iacute;ndices SIVUST), y patrimonio identitario (toqui Rengo). El portal PLADECO funciona como un <em>caso piloto</em> de articulaci&oacute;n multinivel ERD-PLADECO para las 32 comunas restantes de la regi&oacute;n.
-    </div>
-  </div>
-
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Gobierno Regional de O'Higgins &amp; Universidad de O'Higgins (2025). <em>Estrategia Regional de Desarrollo de O'Higgins 2024-2036</em>. Resoluci&oacute;n Exenta N&deg; 439, C&oacute;digo BIP N&deg; 40017868-0. Documento aprobado por unanimidad por el Consejo Regional (CORE) de O'Higgins en sesi&oacute;n de diciembre 2024. M&aacute;s informaci&oacute;n: <a href="https://erd.uoh.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">erd.uoh.cl</a> &middot; <a href="https://www.goreohiggins.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">goreohiggins.cl</a>.</div>
-</section>
-
-<div class="group-divider" id="capitulo-12"><span class="group-divider-label" data-cap="XII">&#127942; Cierre y Transparencia &middot; Descargas, Pulso y Comunidad<span class="cap-sub">El PLADECO termina como empieza: con apertura. Aqu&iacute; descargas todos los entregables oficiales, ves el pulso de visitas del portal en tiempo real y cierras tu visita compartiendo el plan con tu comunidad.</span></span></div>
+<div class="group-divider" id="capitulo-11"><span class="group-divider-label" data-cap="XI">&#127942; Cierre y Transparencia &middot; Descargas, Pulso y Comunidad<span class="cap-sub">El PLADECO termina como empieza: con apertura. Aqu&iacute; descargas todos los entregables oficiales, ves el pulso de visitas del portal en tiempo real y cierras tu visita compartiendo el plan con tu comunidad.</span></span></div>
 
 <!-- ═══ DOCUMENTOS ═══ -->
 <section id="documentos">
@@ -9926,10 +10353,16 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.0</span>
+  <span class="ub-ver">v45.6</span>
   &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.6</strong> <span class="ub-date">18 May 2026</span><br>&#128202;&#9889; **v45.6 &middot; Sidebar comprimido mejorado + cache invalidation agresivo**. **REPORTES DEL USUARIO**: (a) &laquo;al comprimir queda raro, requiero que se vea mejor&raquo;; (b) &laquo;no me actualiza el sitio web&raquo; (el badge segu&iacute;a mostrando v45.4 tras varias recargas). **(A) FIX SIDEBAR COMPRIMIDO**: el estado colapsado anterior dejaba &laquo;filtrar&raquo; texto en algunos viewports porque `font-size:0` pod&iacute;a ser revertido por reglas m&aacute;s espec&iacute;ficas. **Refuerzo defensivo**: (1) Triple guard en `.sidebar-collapsed .sidebar-nav a`: `font-size:0!important` + `text-indent:-9999px!important` + `color:transparent!important`. (2) Icono restaurado expl&iacute;citamente con `font-size:18px!important` + `text-indent:0!important` para que el emoji se vea. (3) Items con tama&ntilde;o fijo `52&times;42px`, centrados, gap eliminado, border-left removido. (4) Hover scale del icono + background `rgba(255,255,255,.08)`. (5) Estado activo con `background:rgba(45,154,77,.35)` + indicador lateral verde de 3&times;24px a la derecha. **TOOLTIPS AUTOM&Aacute;TICOS**: funci&oacute;n `annotateSidebarTooltips()` lee el texto de cada `<a>` (excluyendo el `.ico`) y lo asigna a `data-tooltip`. CSS `::after` renderiza el tooltip al hover con animaci&oacute;n fade-in + posicionamiento absoluto `left:calc(100% + 10px)`, fondo `#0c1f36`, shadow y border. **`MutationObserver`** re-anota si el sidebar se modifica din&aacute;micamente. **(B) FIX CACHE INVALIDATION**: el SW.js se cacheaba por el HTTP cache del navegador (hasta 24h por defecto), bloqueando la entrega de versiones nuevas. **Soluciones**: (1) **`navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'})`** &mdash; el archivo SW.js nunca se sirve desde el HTTP cache, siempre se valida con el servidor. (2) **`reg.update()` peri&oacute;dico**: throttled a 1 min m&iacute;nimo, dispara en `window.focus`, `document.visibilitychange` (cuando vuelve la pesta&ntilde;a al frente) y cada 30 minutos via `setInterval`. (3) **`postMessage({type:'SKIP_WAITING'})`** al nuevo SW cuando est&aacute; en estado `installed` para que active de inmediato sin esperar al cierre de pesta&ntilde;a. (4) **`controllerchange` listener**: cuando el SW cambia de controller (nueva versi&oacute;n activa), recarga la p&aacute;gina autom&aacute;ticamente para que el usuario use la nueva versi&oacute;n al toque. (5) **Guard `_ctrlReloaded`** para evitar loops de recarga. **RESULTADO ESPERADO**: pr&oacute;xima visita del usuario el badge mostrar&aacute; v45.6 + las correcciones se aplicar&aacute;n sin necesidad de Ctrl+Shift+R manual. **Cache SW v62.5 &rarr; v62.6**. Parsing JS validado.</div>
+    <div class="ub-entry"><strong>v45.5</strong> <span class="ub-date">18 May 2026</span><br>&#128203;&#127919; **v45.5 &middot; Reorganizaci&oacute;n estructural y uniformidad de headers**. **SOLICITUD DEL USUARIO**: organizar la estructura completa del documento (cap&iacute;tulos + sec-headers) con un formato armonioso y unificado. **AUDITOR&Iacute;A INICIAL** con `preview_eval`: 11 cap&iacute;tulos visibles + 53 secciones, **14 badges inconsistentes** (longitudes 7–51 chars, mezcla de emoji prefix vs sin emoji, capitalizaci&oacute;n irregular), placeholder hu&eacute;rfano de la operaci&oacute;n v45.4, salto numerico Cap. X → Cap. XII. **(A) LIMPIEZA**: (1) `#erd-DEPRECATED-PLACEHOLDER` eliminado por completo (residuo invisible que era duplicado del id `erd` ya movido). (2) Cap&iacute;tulo XII **renumerado a Cap&iacute;tulo XI**: `id=\\"capitulo-12\\"` &rarr; `\\"capitulo-11\\"`, `data-cap=\\"XII\\"` &rarr; `\\"XI\\"`, y referencias actualizadas en `groupMap` JS y `command palette`. La estructura ahora es secuencial: I→II→III→IV→V→VI→VII→VIII→IX→X→XI sin saltos. **(B) UNIFORMIDAD DE BADGES** (regla: máximo 28 caracteres, sin emoji prefix—los emojis viven en el `<h2>`): (1) `#dashboard`: &laquo;¿Cómo estamos hoy?&raquo; &rarr; **Dashboard Comunal**. (2) `#ficha-comunal`: &laquo;📊 Observatorio Laboral &middot; Subsecretaría del Trabajo&raquo; (51) &rarr; **Observatorio Laboral** (20). (3) `#ict-espacios-publicos`: &laquo;📍 PLADECO &middot; Sección 11.3 ICT &middot; Abril 2026&raquo; (42) &rarr; **PLADECO &middot; Sección 11.3** (22). (4) `#analisis-estrategico-censo`: &laquo;🔮 Inteligencia Territorial &middot; Censo 2024&raquo; (40) &rarr; **Inteligencia Territorial** (24). (5) `#sociedad-civil`: &laquo;🌐 Sociedad Civil&raquo; &rarr; **Sociedad Civil**. (6) `#voz`: &laquo;📣 Lo que opinan los vecinos&raquo; &rarr; **Voces Ciudadanas**. (7) `#argumentario`: &laquo;¿Por qué este plan?&raquo; &rarr; **Argumentario**. (8) `#diagnostico-institucional`: &laquo;🏘 Diagnóstico Institucional&raquo; &rarr; **Diagnóstico Institucional**. (9) `#semaforo`: &laquo;¿Vamos bien?&raquo; &rarr; **Seguimiento**. (10) `#cronograma-gantt`: &laquo;PLADECO &middot; Carta Gantt Interactiva&raquo; (33) &rarr; **Carta Gantt** (11). (11) `#widgets-vivo`: &laquo;Actualización automática cada 5 min&raquo; (35) &rarr; **Tiempo Real** (11). (12) `#participa`: &laquo;Canales Permanentes de Participación&raquo; (36) &rarr; **Participación Activa** (20). (13) `#presupuesto-participativo`: &laquo;⏱️ Próximamente &middot; En Evaluación&raquo; &rarr; **Próximamente** (12). (14) `#visitas`: &laquo;Transparencia & Participación&raquo; (29) &rarr; **Métricas de Uso** (15). **PRESERVADO**: los colores de tema por sección (identidad visual mantenida), la composición del `<h2>` con emoji al inicio, los signos de interrogación `¿…?` completos. **VERIFICADO con preview_eval**: 53 badges totales · **0 problemáticos** (antes 14). Cap&iacute;tulos secuenciales sin saltos. ERD vive en Cap. V después de Matriz (mantenido de v45.4). **Cache SW v62.4 → v62.5**. Parsing JS validado.</div>
+    <div class="ub-entry"><strong>v45.4</strong> <span class="ub-date">18 May 2026</span><br>&#127956;&#128272; **v45.4 &middot; ERD reubicada despu&eacute;s de la Matriz + botones por secci&oacute;n eliminados (uniformidad)**. **SOLICITUDES DEL USUARIO**: (a) mover la secci&oacute;n &laquo;Estrategia Regional de Desarrollo O'Higgins 2024-2036&raquo; (`#erd`) justo despu&eacute;s de la Matriz Estrat&eacute;gica (`#matriz`) como segunda secci&oacute;n del Cap&iacute;tulo V; (b) eliminar de TODAS las secciones los botones &laquo;Compartir enlace&raquo; (&#128279;) y &laquo;PDF&raquo; para uniformidad de contenido. **(A) MOVIMIENTO `#erd` Cap&iacute;tulo XI &rarr; Cap&iacute;tulo V**: (1) Cap&iacute;tulo XI (Articulaci&oacute;n Regional) **eliminado completamente** &mdash; el divider `#capitulo-11` removido + ~17.500 chars del contenido legacy borrados con script Python regex. (2) Contenido completo de `#erd` (122 l&iacute;neas: hero, imagen objetivo, 3 tabs con 10 deliberaciones, 4 agendas estrat&eacute;gicas, articulaci&oacute;n PLADECO&harr;ERD, sec-fuente) **trasladado &iacute;ntegro** justo despu&eacute;s del cierre de `#matriz` y antes del comentario de `#ejes`. (3) Referencias en JS limpiadas: removidas entradas a `capitulo-11` del array de cap&iacute;tulos y del command palette. **RAZ&Oacute;N NARRATIVA**: ahora el flujo es coherente &mdash; primero ves la matriz comunal (6 ejes, 27 OE, 225 acciones), inmediatamente despu&eacute;s c&oacute;mo se articula con las 4 agendas regionales de la ERD O'Higgins. **(B) BOTONES POR SECCI&Oacute;N ELIMINADOS**: (1) **`initShareButtons()`** simplificada: ahora solo limpia `.share-btn` y `.print-btn` del DOM (no inyecta). Las 50+ secciones ya no muestran los botones &laquo;&#128279; Copiar link&raquo; ni &laquo;&#128424; Imprimir&raquo;. (2) **`initPdfExport()`** simplificada: solo limpia `.sec-export-btn`. Las 50+ secciones ya no muestran el bot&oacute;n &laquo;PDF&raquo; en la esquina superior derecha. (3) Funci&oacute;n `exportSectionPDF()` se conserva por compatibilidad (no se invoca). (4) Las clases CSS `.share-btn`, `.print-btn`, `.sec-export-btn` quedan en el stylesheet pero sin elementos que las usen &mdash; sin impacto visual ni de rendimiento. (5) Se preservan: **fav-toggle (&#9733;)** porque es estado personal del usuario + **section-reading (&#9201; tiempo lectura)** porque es metadato informativo. **RESULTADO**: cada sec-header del portal ahora tiene una composici&oacute;n uniforme: badge + h2 + p + opcionalmente fav-toggle + section-reading. Sin botones de acci&oacute;n por secci&oacute;n que desordenen visualmente. **Cache SW v62.3 &rarr; v62.4**. Parsing JS validado.</div>
+    <div class="ub-entry"><strong>v45.3</strong> <span class="ub-date">18 May 2026</span><br>&#128279;&#128202; **v45.3 &middot; Matriz: SNA duplicado corregido + nuevo gr&aacute;fico Sankey**. **SOLICITUDES DEL USUARIO**: (a) los gr&aacute;ficos SNA de la Matriz est&aacute;n duplicados, corregir; (b) agregar un gr&aacute;fico Sankey. **(A) FIX DUPLICACI&Oacute;N SNA**: Diagn&oacute;stico con `preview_eval` confirm&oacute; **66 circles + 96 lines** en `#me-sna-svg` (correctos: 33 circles + 48 lines &mdash; doble exacto). **Causa ra&iacute;z**: `initMeSNA()` se invocaba **dos veces** en secuencia: (1) por `setTimeout(initMeSNA,200)` interno cuando D3 a&uacute;n no estaba cargado; (2) por el handler `s.onload=function(){if(window._meSnaInit)initMeSNA();}` que lanzaba D3, ya que `_meSnaInit` se hab&iacute;a marcado `true` al primer intento. Como el render usa `svg.append(\\'g\\')` sin clear previo, los elementos acumulaban. **FIX**: (1) Renombrado el flag rota: ahora `window._meSnaRequested` (true = se pidi&oacute; render) y `window._meSnaRendered` (true = render completado). (2) En `loadD3AndInit` el `onload` ahora valida `if(window._meSnaRequested && !window._meSnaRendered)`. (3) `initMeSNA()` agrega guard de idempotencia: `if(window._meSnaRendered)return;` + `window._meSnaRendered=true` + limpia el SVG defensivamente (`while(svg.firstChild)svg.removeChild(...)`). (4) `switchMeTab` simplificado para usar el nuevo flag. **Verificado**: 66→**33 circles**, 96→**48 lines**. **(B) NUEVO GR&Aacute;FICO SANKEY**: nuevo tab &laquo;Flujo Estrat&eacute;gico (Sankey)&raquo; con flujo de 3 niveles **Ejes &rarr; OE &rarr; Categor&iacute;as Funcionales** que visualiza la distribuci&oacute;n de las 225 acciones priorizadas. (1) **HTML**: nuevo bot&oacute;n tab + panel `#me-tab-sankey` con header de 4 m&eacute;tricas, filtros pill por eje, intro explicativa, SVG `#me-sankey-svg` (980&times;620 viewBox), leyenda y 4 cards de hallazgos clave (Eje 1 dominante 26%, Eje 4 segundo 24%, Eje 6 transversal 22%, Eje 3 brecha 6%). (2) **JS `initMeSankey()`**: layout manual de columnas con datos `SK_NODES` (38 nodos: 6 ejes + 27 OE + 5 categor&iacute;as funcionales) y `SK_LINKS` (54 enlaces: 27 Eje&rarr;OE + 27 OE&rarr;Categor&iacute;a). Posicionamiento Y proporcional al `val` de cada nodo; offsets verticales para or&iacute;genes/destinos de cada link. Paths Bezier de zona (no l&iacute;neas) coloreados por color del eje origen con `fill-opacity 0.35`. Hover en flujo/nodo muestra tooltip con n&deg; acciones. (3) **`meSankeyFilter(ax)`**: resalta el flujo del eje seleccionado (opacity 0.75 vs 0.06 para los dem&aacute;s). (4) **5 Categor&iacute;as Funcionales** definidas: Servicios Sociales y Salud, Desarrollo Econ&oacute;mico y Cultural, Infraestructura y Territorio, Seguridad y Gesti&oacute;n de Riesgos, Gobernanza y Modernizaci&oacute;n. (5) **Idempotencia garantizada** desde el inicio: mismo patr&oacute;n `_meSankeyRequested` / `_meSankeyRendered` que SNA corregido. **Render verificado**: 38 rects + 54 paths + 41 texts. Parsing JS validado (1.087k chars OK). Cache SW v62.2 &rarr; v62.3.</div>
+    <div class="ub-entry"><strong>v45.2</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#128203; **v45.2 &middot; ICT ampliado + secci&oacute;n #macrosector eliminada**. **SOLICITUDES DEL USUARIO**: (a) agregar TODA la informaci&oacute;n al &Iacute;ndice de Calidad Territorial; (b) eliminar la secci&oacute;n &laquo;Macrosectores de Rengo &middot; Perfil Zonal&raquo; standalone (redundante con la integraci&oacute;n previa al mapa ICT). **(A) AMPLIACI&Oacute;N DEL ICT** &mdash; 6 nuevos bloques metodol&oacute;gicos insertados entre la Ficha Puente y la fuente bibliogr&aacute;fica: (1) **`#ict-metodologia`** &middot; Metodolog&iacute;a Abril 2026 detallada: 5 variables evaluadas (Estado de Infraestructura, &Aacute;reas Verdes, Iluminaci&oacute;n/Seguridad, Accesibilidad Universal, Limpieza/Mantenci&oacute;n) cada una con su icono, descripci&oacute;n y &eacute;nfasis; tabla visual de la escala ordinal 5&rarr;1 (Excelente=100, Bueno=75, Regular=50, Deficiente=25, Cr&iacute;tico=0) con celdas gradient color. (2) **`#ict-agrupaciones`** &middot; 5 Agrupaciones Territoriales del catastro con tarjeta dedicada para cada una: Zona Urbana Central (n=15), Localidades y Periferias Rurales (n=15), Conjuntos Habitacionales y Plazas Vecinales (n=15), Expansi&oacute;n Urbana y Equipamiento Mayor (n=12), Equipamiento Institucional y Bordes Cr&iacute;ticos (n=8); cada agrupaci&oacute;n incluye foco principal, &eacute;nfasis de evaluaci&oacute;n y problem&aacute;ticas espec&iacute;ficas. (3) **`#ict-glosario`** &middot; Glosario completo de los 5 estados de conservaci&oacute;n con definici&oacute;n cualitativa (qu&eacute; criterios califican un espacio como Excelente vs. Cr&iacute;tico) + ICT 0-100 num&eacute;rico + colores diferenciados (verde &rarr; rojo). (4) **`#ict-tipologias`** &middot; Distribuci&oacute;n por tipolog&iacute;as: 10 chips visuales mostrando cu&aacute;ntos espacios hay por categor&iacute;a (Plaza Vecinal Barrial 18, Plaza C&iacute;vica/Patrimonial 5, Multicancha/Polideportivo 8, Medialuna Cultural 3, Equipamiento Institucional 7, Parque Lineal/Borde 4, Plaza Rural/Localidad 9, Educativo 5, Sede P&uacute;blica 3, Sitio Eriazo 3). (5) **`#ict-hallazgos`** &middot; 6 hallazgos clave del diagn&oacute;stico: Brecha Centro-Periferia (~20 puntos ICT), 3 piezas patrimoniales cr&iacute;ticas, d&eacute;ficit de &aacute;reas verdes rurales (&lt;3 m&sup2;/hab), brecha de accesibilidad universal (~60%), falta de modelo de mantenci&oacute;n (~70% sin plan), 4 casos &eacute;xito replicables. (6) **`#ict-comparativa`** &middot; Tabla comparativa por las 4 zonas haversianas con columnas Habitantes, UV, N&ordm; espacios catastrados, ICT promedio (con barra de progreso color gradient), Estado dominante y N&ordm; proyectos PLADECO; fila final con totales/promedios comunales (63.620 hab, 21 UV, 65 espacios, ICT ~47, 82 proyectos). **CSS NUEVO** ~3.300 chars: `.ict-method-block`, `.ict-vars-grid`, `.ict-var-card`, `.ict-scale-row` con cells gradient, `.ict-agrup-grid` con cards numeradas (g1-g5), `.ict-glos-grid` con border-left color por estado, `.ict-tipo-chips` con badges, `.ict-hall-grid` con cards de stat destacado, `.ict-cmp-table` con header gradient navy + barras gradient ICT. Dark mode incluido. **(B) ELIMINACI&Oacute;N DE `#macrosector`**: (1) HTML completo de la secci&oacute;n (con `#mapaMacrosector` y `#macPanel` standalone) removido. (2) JS eliminado: array `MACROSECTORES`, funciones `initMacrosector()`, `selectMacrosector()`, `closeMacPanel()` y variables `_macMap`, `_macLayer`, `_macInited`, `_macActive`. (3) Llamada `lazyInitOnView('#macrosector', initMacrosector)` removida. (4) Enlaces a `#macrosector` eliminados del sidebar (grupo 7) y quick-index. (5) Bot&oacute;n &laquo;Macrosectores&raquo; del panel zonal del ICT redirigido a `#ict-agrupaciones`. (6) CSS hu&eacute;rfano `#mapaMacrosector` y `.mac-wrap` eliminado; clases `.mac-panel*` y `.mac-kpi*` PRESERVADAS porque el panel zonal del ICT (#ictZonalPanel agregado en v44.6) las sigue usando. **VENTAJAS**: portal m&aacute;s denso de informaci&oacute;n &uacute;til en una sola secci&oacute;n integrada (ICT) en vez de dos secciones que se solapaban. **Cache SW v62.1 &rarr; v62.2**. Parsing JS validado (1.075k chars OK).</div>
+    <div class="ub-entry"><strong>v45.1</strong> <span class="ub-date">18 May 2026</span><br>&#128272;&#127912; **v45.1 &middot; AUDITOR&Iacute;A INTEGRAL del portal &mdash; 4 bugs cr&iacute;ticos corregidos**. **REPORTE DEL USUARIO**: &laquo;se ve mal en el computador en cuanto a los colores de fondo, la composici&oacute;n del contenido y el acceso a ello&raquo;. **DIAGN&Oacute;STICO** (con `preview_eval` + introspecci&oacute;n DOM/CSS): se detectaron **199 elementos con contraste roto**, overflow horizontal de 30px y bot&oacute;n back-to-top inoperativo, todo causado por 4 reglas CSS defectuosas. **BUGS CORREGIDOS**: (1) **`@media (prefers-color-scheme: dark)`** rota (l&iacute;nea 2133): pintaba el body navy oscuro cuando el SO estaba en dark mode pero **NO actualizaba las variables `--bg`, `--card`, `--text`** &rarr; las cards quedaban blancas sobre fondo oscuro con texto claro (invisible), el H1 del hero quedaba dark sobre dark, las secciones zebras quedaban light-on-light. **Eliminada**. El modo oscuro queda exclusivamente bajo el toggle manual `btnDark` (que s&iacute; aplica `.dark` con tema completo y coherente). (2) **`[title]{position:relative}`** (l&iacute;nea 2243): selector demasiado amplio que sobrescrib&iacute;a el `position:fixed` de `.back-to-top` y `.dark-toggle` (ambos tienen atributo title), dejando el bot&oacute;n &laquo;Volver arriba&raquo; al final del documento (y:100.293px) en vez de flotante. **Limitado** a `span[title], a[title]:not(.back-to-top):not(.dark-toggle):not(.search-fab):not(.chatbot-fab), abbr[title]`. (3) **`section:nth-of-type(2n)`** (zebra sections) con `margin: 0 calc(-1 * clamp(16px,4vw,40px))` causaba **overflow horizontal de 30px** en escritorios entre 1100&ndash;1500px porque las negative margins exced&iacute;an el espacio del main-content (que est&aacute; reducido por el sidebar de 260px). Soluci&oacute;n: `html,body{overflow-x:hidden;max-width:100vw}` + clamp recalibrado. (4) **Hero h1 invisible**: la regla gen&eacute;rica `h1,h2,...,h6{color:var(--text)}` daba `#0f172a` (dark) al H1, que sobre el hero bg navy `#0c1f36` quedaba invisible. **Fix**: `.hero h1{color:#fff}` + defensa global `.hero, .hero h1, .hero h2, .hero h3, .hero .sub{color:#fff}`. **BLOQUE CSS NUEVO** &laquo;v44.10/v45.1 &middot; AUDITOR&Iacute;A INTEGRAL DE COLOR&raquo; agregado con: defensa de color hero; clamp recalibrado para negative-margins zebra; color expl&iacute;cito `var(--text)` en cards (viz, doc, diag, kpi, eje, ps, foda, voz, ineq, rating, censo, stat-chip, gk, ur, nna, finding, arg); FAB stack reforzado con `position:fixed!important` (back-to-top + dark-toggle + search-fab + chatbot-fab + update-badge); tablas con scroll horizontal &lt;1100px; sidebar fuera-de-pantalla &lt;1100px. **VERIFICACI&Oacute;N posterior**: contraste 199 problemas &rarr; **0**. Body bg `rgb(14,23,38)` &rarr; **`rgb(248,250,252)`**. Body overflow-x visible &rarr; **hidden**. Body width 1470 &gt; viewport &rarr; **1430 &lt; 1440** (sin scroll horizontal). btnTop position relative &rarr; **fixed (bottom:92, right:28)**. Hero H1 color `rgb(15,23,42)` &rarr; **`rgb(255,255,255)`**. Modo oscuro toggle manual: **0 problemas de contraste** tambi&eacute;n. **Cache SW v62.0 &rarr; v62.1**.</div>
     <div class="ub-entry"><strong>v45.0</strong> <span class="ub-date">18 May 2026</span><br>&#128197;&#9889; **v45.0 &middot; Carta Gantt REDISE&Ntilde;ADA con granularidad SEMANAL (42 semanas)**. **SOLICITUD DEL USUARIO**: refinar la carta gantt anterior (v44.9 ten&iacute;a granularidad MENSUAL) para coincidir con el archivo Excel original entregado por SECPLAC, que tiene precisi&oacute;n de SEMANAS (Ago S3, Ago S4, Sep S1-S4, hasta Jun S4 = 42 semanas en total). **CAMBIOS PRINCIPALES**: (1) **CG_WEEKS** nuevo array con 42 entradas que mapean cada semana a su mes y a&ntilde;o. (2) **Helper cgWi(mes,semana)** que convierte notaci&oacute;n humana en &iacute;ndice de semana 0-41. (3) **CSS Grid 280px+repeat(42,1fr)** con header de DOS niveles: fila 1 meses (con grid-column:span N) + fila 2 semanas. (4) **Layout refactorizado** con label (col 1) y lane (cols 2..-1) con bars absolutamente posicionados por left/width %. (5) **CG_DATA reescrito** con los 7 procesos exactos del Excel SECPLAC: P1 Recopilaci&oacute;n+Puesta en Marcha (Ago S3 - Sep S4), P2 An&aacute;lisis Te&oacute;rico (Sep S3 - Nov S2), P3 Entrevistas Funcionarios (Nov S2 - Ene S2), P4 Entrevista Sociedad Civil (Ene S2 - Mar S3), P5 Encuesta Masiva (Ago S3 - Ene S4), P6 Recopilaci&oacute;n PLADECO (Mar S3 - May S3), P7 Presentaci&oacute;n y Rendici&oacute;n Cuentas (May S3 - Jun S4). **30 actividades** con duraciones inferidas seg&uacute;n secuencia del proceso. (6) **Hito final &#127942;**: actividad 7.4 &laquo;Documento Actualizaci&oacute;n PLADECO entregado&raquo; (Jun S4) como diamante rotado 45deg. (7) **Header sticky de dos niveles** con nombres completos de mes + year suffix. (8) **Vertical guidelines** en lanes con gradiente. (9) **Tarjetas narrativas** con rango Ago S3 25 → Sep S4 25 y semanas. (10) **Botones Expandir/Colapsar todos**. (11) **Leyenda** con muestras (gradient/sol&iacute;do/diamante). (12) **P1 abierto por defecto**. (13) **KPI cards**: 7 Macroprocesos, **30 Actividades**, **42 Semanas**, Ago25-Jun26, H&iacute;brida. (14) **Indicador de scroll** horizontal. (15) **Tooltip mejorado** con per&iacute;odo &laquo;Ago S3 2025 → Sep S4 2025&raquo;. (16) **Min-width 1280px** chart (990px mobile). (17) **Dark mode** revisado. **NOMBRES CORREGIDOS**: P3 Entrevista Funcionarios, P5 Encuesta Masiva (antes P7), P6 Recopilaci&oacute;n PLADECO (antes Comunidad), P7 Presentaci&oacute;n y Rendici&oacute;n (nuevo). Cache SW v61.9 → v62.0. **NOTA**: las semanas espec&iacute;ficas fueron inferidas a partir del orden secuencial del Excel; si requieres ajustar alguna duraci&oacute;n, indica el rango.</div>
     <div class="ub-entry"><strong>v44.9</strong> <span class="ub-date">18 May 2026</span><br>&#128197;&#9889; **v44.9 &middot; Nueva Carta Gantt Interactiva PLADECO 2025-2032**. **SOLICITUD DEL USUARIO**: integrar al portal como elemento interactivo la nueva carta gantt del proceso PLADECO entregada por SECPLAC en PDF (143 KB). **IMPLEMENTACI&Oacute;N**: (1) **PDF integrado** en `docs/PLADECO_Cronograma_2025-2032.pdf`. (2) **Nueva secci&oacute;n `#cronograma-gantt`** en Cap&iacute;tulo VII (Seguimiento) despu&eacute;s de #financiamiento. Header con badge naranja, t&iacute;tulo &laquo;&#128197; Cronograma del Proceso PLADECO 2025-2032&raquo;, descripci&oacute;n con 7 macroprocesos / 22 actividades / 11 meses Ago 2025 - Jun 2026. (3) **CTA descarga prominente** con gradient naranja-verde y bot&oacute;n grande &laquo;&#128229; Descargar PDF&raquo; con efecto hover (translateY -2px + box-shadow expandido). (4) **5 KPI cards**: 7 Macroprocesos, 22 Actividades, 11 Meses, Ago 25 - Jun 26, Modalidad H&iacute;brida. (5) **Filtros pill** (8 botones: Todos + 7 procesos con dot identificador). (6) **Carta Gantt CSS Grid** `240px repeat(11,minmax(54px,1fr))` con header sticky (11 meses Ago-Jun). 7 filas de macroprocesos clickables (toggle expand) + sub-filas de actividades cuando abiertos. Barras absolutas posicionadas con `right:calc(-N*100% + 4px)` para extenderse N columnas. (7) **Array `CG_DATA`** con 7 procesos. Colores: P1 navy #1a3d8f, P2 verde #2d9a4d, P3 naranja #f5921d, P4 granate #c0392b, P5 violeta #7c3aed, P6 cyan #0891b2, P7 ambar #d97706. (8) **Lista narrativa de tarjetas** debajo del gantt con resumen de cada proceso (n&uacute;mero, icono, t&iacute;tulo, per&iacute;odo, lista de actividades) que respeta filtro activo. (9) **Tooltip flotante** al hover de barras (t&iacute;tulo, per&iacute;odo, meta), posicionado din&aacute;micamente con `cgMoveTip()` para no salir del viewport. (10) **3 cards de notas**: Modalidad H&iacute;brida, Evidencia del Trabajo, Gobernanza Polic&eacute;ntrica (Ostrom 2010). (11) **Sec-relacionadas** con 5 enlaces (#equipo, #sociedad-civil, #diagnostico-institucional, #voz-vecinos, #encuesta). (12) **`cgInit()` lazy** v&iacute;a IntersectionObserver (rootMargin 200px). (13) **Navegaci&oacute;n agregada** en sidebar group 6, quick-index group 6, TOC del resumen y sectionNames del breadcrumb. (14) **Mobile responsive**: grid columns 160px+44px, paddings/fontSizes compactados, CTA en columna. (15) **Dark mode** con estilos espec&iacute;ficos `body.dark .cg-*`. **PROCESOS** (del PDF SECPLAC): P1 Recopilaci&oacute;n+Puesta en Marcha (Ago-Sep), P2 An&aacute;lisis Te&oacute;rico (Ago-Oct), P3 Cuanti/Cuali (Sep-Nov), P4 Entrevistas Institucionales (Oct-Dic), P5 Entrevista Sociedad Civil (Nov-Ene), P6 Entrevista Comunidad (Dic-Mar), P7 Encuesta Masiva (Ago-Jun, todo el per&iacute;odo). Cache SW v61.8 &rarr; v61.9.</div>
     <div class="ub-entry"><strong>v44.8</strong> <span class="ub-date">18 May 2026</span><br>&#128194;&#11015; **v44.8 &middot; Diagramas Metodol&oacute;gicos PLADECO disponibles para descarga**. **SOLICITUD DEL USUARIO**: agregar la carpeta `Diagramas PLADECO 2025-2035` a la secci&oacute;n de documentos para descarga. **ACCIONES REALIZADAS**: (1) **Carpeta `/diagramas/` creada** en el portal con los 16 esquemas originales del usuario, renombrados a nombres URL-safe (`01_composicion_gobernanza_institucional.jpg` &hellip; `16_proceso_diagnostico_mixto.jpg`), tama&ntilde;o total ~3.1 MB. (2) **Nueva sub-secci&oacute;n `#diagramas`** insertada dentro de `#documentos`, entre los Entregables y los Gr&aacute;ficos del Proceso, con sec-header propio (badge naranja &laquo;Esquemas &middot; Metodolog&iacute;a&raquo;). (3) **Array JS `DIAGRAMAS`** con 16 entradas (categor&iacute;as: Gobernanza, Estructura, Diagn&oacute;stico, Etnograf&iacute;a, Planificaci&oacute;n, Metodolog&iacute;a, Marco normativo, Participaci&oacute;n) + funci&oacute;n `renderDiagramas()` que dibuja una grid responsiva `diag-grid` con thumbnails 4:3 lazy-loaded. (4) **Lightbox dedicado `#diagLightbox`** independiente del de Galer&iacute;a, con: bot&oacute;n &laquo;Descargar JPG&raquo; flotante con `download` HTML5, navegaci&oacute;n &larr;/&rarr;/Esc por teclado, contador `(idx/total)`. (5) **Cada card incluye** thumb clickeable + badge num&eacute;rico + categor&iacute;a + t&iacute;tulo + dos botones (&laquo;Ver&raquo; y &laquo;Descargar&raquo; nativo via `download` attribute). (6) **Navegaci&oacute;n actualizada**: agregada entrada `#diagramas` en sidebar Cap.VIII (entre Entregables y Gr&aacute;ficos), Quick-Index final, Command Palette, breadcrumbs (`sectionNames`) y array `sections` del grupo &laquo;Proceso y Recursos&raquo;. (7) **CSS `.diag-grid` / `.diag-card`** nuevo bloque con dark-mode + responsive mobile (grid min-150px &lt;560px, font reducido). (8) **Service Worker v61.7 &rarr; v61.8**, cache busting autom&aacute;tico (los JPG quedan en CACHE_IMG bajo cache-first on-demand, no en STATIC para no inflar el pre-cache). Parsing HTML/JS validado. **PR&Oacute;XIMOS PASOS**: si requieres categorizaci&oacute;n adicional, filtros o reordenamiento de los diagramas, indicame el criterio.</div>
@@ -10037,7 +10470,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- ═══ CONTADOR DE VISITAS ═══ -->
 <section id="visitas" class="visit-section reveal">
   <div class="sec-header">
-    <div class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">Transparencia &amp; Participaci&oacute;n</div>
+    <div class="badge" style="background:rgba(124,58,237,.1);color:#7c3aed">M&eacute;tricas de Uso</div>
     <h2>&#128202; Pulso del Portal &middot; M&eacute;tricas de Uso</h2>
     <p>Cada visita es una expresi&oacute;n de inter&eacute;s ciudadano en la planificaci&oacute;n de su comuna. Esta secci&oacute;n documenta el uso real del portal &mdash;total de visitas, sesiones por d&iacute;a, secciones m&aacute;s consultadas&mdash; como ejercicio de transparencia activa y compromiso con la rendici&oacute;n de cuentas territorial. Los datos se actualizan en tiempo real y son visibles para todos los vecinos y vecinas de Rengo.</p>
   </div>
@@ -13789,14 +14222,41 @@ function initSectionReveal(){
   allSections.forEach(s=>{if(!s.classList.contains('revealed'))obs.observe(s);});
 }
 
-// ── SIDEBAR COLLAPSE ──
+// ── SIDEBAR COLLAPSE (v45.6 mejorado · tooltips automáticos) ──
+function annotateSidebarTooltips(){
+  document.querySelectorAll('.sidebar-nav a').forEach(function(a){
+    if(a.dataset.tooltip) return;
+    // Extraer texto sin el icono
+    var clone=a.cloneNode(true);
+    var ico=clone.querySelector('.ico');
+    if(ico)ico.remove();
+    var txt=(clone.textContent||'').trim();
+    if(txt)a.dataset.tooltip=txt;
+  });
+}
 function toggleSidebarCollapse(){
   document.body.classList.toggle('sidebar-collapsed');
   const collapsed=document.body.classList.contains('sidebar-collapsed');
   localStorage.setItem('pladeco-sidebar-collapsed',collapsed?'1':'0');
+  if(collapsed)annotateSidebarTooltips();
+  // Cambiar el title del botón según estado
+  var btn=document.querySelector('.sidebar-collapse-btn');
+  if(btn){
+    btn.title=collapsed?'Expandir menú':'Comprimir menú';
+    btn.setAttribute('aria-label',collapsed?'Expandir menú lateral':'Comprimir menú lateral');
+    var span=btn.querySelector('span');
+    if(span && !collapsed)span.textContent='Comprimir';
+  }
 }
-// Restore sidebar state
+// Restore sidebar state + anotar tooltips
 if(localStorage.getItem('pladeco-sidebar-collapsed')==='1'){document.body.classList.add('sidebar-collapsed');}
+try{annotateSidebarTooltips();}catch(_){}
+/* Re-anotar cuando se modifique el sidebar dinámicamente */
+try{
+  var _sbObserver=new MutationObserver(function(){annotateSidebarTooltips();});
+  var _sbNav=document.querySelector('.sidebar-nav');
+  if(_sbNav)_sbObserver.observe(_sbNav,{childList:true,subtree:true});
+}catch(_){}
 
 // Close changelog when clicking outside
 document.addEventListener('click',function(e){
@@ -14758,7 +15218,7 @@ function ictSelectMacrosector(id){
   '<ul class="mac-panel-list">'+m.problemas.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>'+
   '<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">'+
     '<a href="#mapa-proyectos" style="flex:1;text-align:center;padding:6px 8px;background:'+m.color+';color:#fff;font-size:10.5px;font-weight:700;text-decoration:none;border-radius:6px">Ver proyectos &rarr;</a>'+
-    '<a href="#macrosector" style="flex:1;text-align:center;padding:6px 8px;background:var(--card2);color:var(--text);font-size:10.5px;font-weight:700;text-decoration:none;border-radius:6px;border:1px solid var(--border)">Macrosectores</a>'+
+    '<a href="#ict-agrupaciones" style="flex:1;text-align:center;padding:6px 8px;background:var(--card2);color:var(--text);font-size:10.5px;font-weight:700;text-decoration:none;border-radius:6px;border:1px solid var(--border)">5 Agrupaciones</a>'+
   '</div>';
   panel.classList.add('show');
 }
@@ -17451,30 +17911,12 @@ NO_ACTION_SECTIONS.forEach(function(id){
 });
 
 function initShareButtons(){
-  document.querySelectorAll('.sec-header').forEach(h=>{
-    const sec=h.closest('section');
-    if(!sec||!sec.id)return;
-    if(NO_ACTION_SECTIONS.has(sec.id))return;
-    // Share button
-    if(!h.querySelector('.share-btn')){
-      const btn=document.createElement('button');
-      btn.className='share-btn';btn.innerHTML='🔗';btn.title='Copiar link directo';
-      btn.setAttribute('aria-label','Copiar link directo a esta sección');
-      btn.onclick=()=>{
-        const url=window.location.origin+window.location.pathname+'#'+sec.id;
-        navigator.clipboard.writeText(url).then(()=>showToast('¡Link copiado!','success')).catch(()=>showToast('Error al copiar','warning'));
-      };
-      h.appendChild(btn);
-    }
-    // Print button
-    if(!h.querySelector('.print-btn')){
-      const pbtn=document.createElement('button');
-      pbtn.className='print-btn';pbtn.innerHTML='🖨';pbtn.title='Imprimir esta sección';
-      pbtn.setAttribute('aria-label','Imprimir esta sección');
-      pbtn.onclick=()=>printSection(sec);
-      h.appendChild(pbtn);
-    }
-  });
+  /* v45.4 · DESHABILITADO: el usuario pidió uniformidad de contenido eliminando
+     "compartir enlace" (share-btn 🔗) y "PDF" de cada sección. Mantenemos sólo
+     fav-toggle (★ favoritos personales) + section-reading (⏱ tiempo de lectura).
+     Limpieza defensiva: remueve cualquier share-btn o print-btn que haya quedado
+     de versiones anteriores en el DOM. */
+  document.querySelectorAll('.share-btn,.print-btn').forEach(function(el){el.remove();});
 }
 
 // ══════════════════════════════════════════════════════
@@ -19318,8 +19760,8 @@ var V40_CAPITULOS=[
   {id:'capitulo-8',cap:'VIII',title:'Recursos & Aprendizaje',emoji:'📚'},
   {id:'capitulo-9',cap:'IX',title:'Memoria del Proceso',emoji:'🎥'},
   {id:'capitulo-10',cap:'X',title:'¡Tu Turno!',emoji:'⚡'},
-  {id:'capitulo-11',cap:'XI',title:'Articulación Regional',emoji:'🌎'},
-  {id:'capitulo-12',cap:'XII',title:'Cierre y Transparencia',emoji:'🏆'}
+  /* Capítulo XI · ERD eliminado en v45.4: la sección #erd se trasladó al Capítulo V después de #matriz */
+  {id:'capitulo-11',cap:'XI',title:'Cierre y Transparencia',emoji:'🏆'}
 ];
 
 /* ── A3. Barra de progreso de scroll global ── */
@@ -19486,8 +19928,8 @@ var CMDP_ACTIONS=[
   {cat:'capitulos',icon:'📚',title:'Capítulo VIII · Recursos & Aprendizaje',kbd:'8',href:'#capitulo-8'},
   {cat:'capitulos',icon:'🎥',title:'Capítulo IX · Memoria del Proceso',kbd:'9',href:'#capitulo-9'},
   {cat:'capitulos',icon:'⚡',title:'Capítulo X · ¡Tu Turno!',href:'#capitulo-10'},
-  {cat:'capitulos',icon:'🌎',title:'Capítulo XI · Articulación Regional',href:'#capitulo-11'},
-  {cat:'capitulos',icon:'🏆',title:'Capítulo XII · Cierre y Transparencia',href:'#capitulo-12'}
+  /* Capítulo XI eliminado en v45.4 (ERD movida a Capítulo V) */
+  {cat:'capitulos',icon:'🏆',title:'Capítulo XI · Cierre y Transparencia',href:'#capitulo-11'}
 ];
 var _cmdpSelected=0,_cmdpResults=[];
 function openCmdp(){
@@ -20001,51 +20443,8 @@ function renderHeatmap(){
 }
 
 /* ══════════════════════════════════════════════════════
-   A5. Mapa Macrosector clickable
+   A5. Mapa Macrosector — ELIMINADO en v45.2 (perfil zonal ahora vive en ICT).
    ══════════════════════════════════════════════════════ */
-var MACROSECTORES=[
-  {id:'centro',nombre:'Centro Urbano',color:'#1a3d8f',pob:35200,uvs:5,icp:0.186,proyectos:18,problemas:['Pavimentaci&oacute;n vereda','Vivienda densificaci&oacute;n','Espacios p&uacute;blicos'],bounds:[[-34.395,-70.870],[-34.420,-70.850]]},
-  {id:'periferia',nombre:'Periferia Urbana',color:'#a855f7',pob:15623,uvs:4,icp:0.215,proyectos:14,problemas:['Conectividad transporte','Equipamiento educativo','&Aacute;reas verdes'],bounds:[[-34.405,-70.860],[-34.430,-70.840]]},
-  {id:'localidades',nombre:'Localidades',color:'#f5921d',pob:8500,uvs:6,icp:0.264,proyectos:22,problemas:['Servicios b&aacute;sicos','Comercio local','Educaci&oacute;n media'],bounds:[[-34.430,-70.835],[-34.460,-70.800]]},
-  {id:'rural',nombre:'Rural Disperso',color:'#2d9a4d',pob:4297,uvs:6,icp:0.310,proyectos:28,problemas:['Agua potable rural','Conectividad digital','Transporte rural'],bounds:[[-34.420,-70.820],[-34.460,-70.770]]}
-];
-var _macMap=null,_macLayer=null,_macInited=false,_macActive=null;
-function initMacrosector(){
-  if(_macInited)return;_macInited=true;
-  if(typeof L==='undefined'){setTimeout(initMacrosector,500);return;}
-  var el=document.getElementById('mapaMacrosector');if(!el)return;
-  _macMap=L.map(el,{center:[-34.4200,-70.8300],zoom:12,scrollWheelZoom:false});
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(_macMap);
-  _macLayer=L.layerGroup().addTo(_macMap);
-  MACROSECTORES.forEach(function(m){
-    var rect=L.rectangle(m.bounds,{color:m.color,weight:2,fillColor:m.color,fillOpacity:0.18,opacity:.85}).addTo(_macLayer);
-    rect.bindTooltip(m.nombre,{permanent:false,direction:'center',className:'mac-tooltip'});
-    rect.on('click',function(){selectMacrosector(m.id);});
-    rect.on('mouseover',function(){rect.setStyle({fillOpacity:.35,weight:3});});
-    rect.on('mouseout',function(){if(_macActive!==m.id)rect.setStyle({fillOpacity:.18,weight:2});});
-  });
-}
-function selectMacrosector(id){
-  var m=MACROSECTORES.find(function(x){return x.id===id;});
-  if(!m)return;
-  _macActive=id;
-  var panel=document.getElementById('macPanel');
-  document.getElementById('macPanelTitle').innerHTML='<span style="color:'+m.color+'">&#9632;</span> '+m.nombre;
-  document.getElementById('macPanelBody').innerHTML=
-    '<div class="mac-panel-kpi">'+
-      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.pob.toLocaleString('es-CL')+'</div><div class="mac-kpi-lbl">Habitantes</div></div>'+
-      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.uvs+'</div><div class="mac-kpi-lbl">UV en zona</div></div>'+
-      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.icp.toFixed(3)+'</div><div class="mac-kpi-lbl">ICP vulnerab.</div></div>'+
-      '<div class="mac-kpi-item"><div class="mac-kpi-val" style="color:'+m.color+'">'+m.proyectos+'</div><div class="mac-kpi-lbl">Proyectos</div></div>'+
-    '</div>'+
-    '<div class="mac-panel-meta"><strong>&#9888;&#65039; Problem&aacute;ticas principales:</strong></div>'+
-    '<ul class="mac-panel-list">'+m.problemas.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>'+
-    '<div style="margin-top:10px"><a href="#mapa-proyectos" style="color:var(--primary);font-size:11.5px;font-weight:700">Ver proyectos en el mapa &rarr;</a></div>';
-  panel.classList.add('show');panel.setAttribute('aria-hidden','false');
-}
-function closeMacPanel(){
-  var p=document.getElementById('macPanel');p.classList.remove('show');p.setAttribute('aria-hidden','true');_macActive=null;
-}
 
 /* ══════════════════════════════════════════════════════
    A6. Tutorial visual interactivo
@@ -20321,7 +20720,7 @@ try{renderHeroCarousel();}catch(e){console.warn('heroCarousel:',e);}
 try{loadVozVecinos();startVozAutoRefresh();}catch(e){console.warn('vozVecinos:',e);}
 try{lazyInitOnView('#reporta',initReporteCiudadano);}catch(e){console.warn('reporte:',e);}
 try{lazyInitOnView('#heatmap',initHeatmap);}catch(e){console.warn('heatmap:',e);}
-try{lazyInitOnView('#macrosector',initMacrosector);}catch(e){console.warn('macrosector:',e);}
+/* v45.2 · #macrosector eliminado, lazyInit removido */
 try{initTutorial();}catch(e){console.warn('tutorial:',e);}
 try{_initCuadernillo();}catch(e){console.warn('cuadernillo:',e);}
 try{initA11y();}catch(e){console.warn('a11y:',e);}
@@ -20459,7 +20858,8 @@ function switchMeTab(id,btn){
   document.getElementById('me-tab-'+id).classList.add('active');
   btn.classList.add('active');
   if(id==='pol'&&!window._polInit){window._polInit=true;renderPol();}
-  if(id==='red'){loadD3AndInit();if(!window._meSnaInit){window._meSnaInit=true;initMeSNA();}}
+  if(id==='red'){window._meSnaRequested=true;loadD3AndInit();if(!window._meSnaRendered)initMeSNA();}
+  if(id==='sankey'){window._meSankeyRequested=true;loadD3AndInit();if(!window._meSankeyRendered)initMeSankey();}
 }
 
 // ==============================================================
@@ -20549,7 +20949,12 @@ function renderPol(){
   document.getElementById('polContent').innerHTML=h;
 }
 
-window._meSnaInit=false;
+/* v45.3 · FIX duplicación SNA Matriz: separar "flag de petición" (_meSnaRequested)
+   de "flag de render completado" (_meSnaRendered) + limpiar SVG al inicio para
+   garantizar idempotencia. El bug anterior: setTimeout interno + D3 onload disparaban
+   initMeSNA() dos veces sin clear, acumulando 66 circles + 96 lines (debían ser 33+48). */
+window._meSnaRequested=false;
+window._meSnaRendered=false;
 window._meSnaActiveAxis=0;
 window._meSnaShowT=true;
 
@@ -20557,12 +20962,17 @@ function loadD3AndInit(){
   if(window.d3)return;
   var s=document.createElement('script');
   s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';
-  s.onload=function(){if(window._meSnaInit)initMeSNA();};
+  s.onload=function(){if(window._meSnaRequested && !window._meSnaRendered)initMeSNA();};
   document.head.appendChild(s);
 }
 
 function initMeSNA(){
 if(!window.d3){setTimeout(initMeSNA,200);return;}
+if(window._meSnaRendered)return; /* idempotencia: no re-renderizar */
+window._meSnaRendered=true;
+/* limpieza defensiva del SVG por si quedaron residuos */
+var _svgEl=document.getElementById('me-sna-svg');
+if(_svgEl){while(_svgEl.firstChild)_svgEl.removeChild(_svgEl.firstChild);}
 var W=680,H=620,CX=340,CY=300,R=185;
 var C={
   1:{ej:'#C0392B',es:'#8A2020',et:'#fff',of:'#FCEBEB',os:'#C0392B',ot:'#701818'},
@@ -20697,9 +21107,260 @@ window.meSnaFilter=function(ax){window._meSnaActiveAxis=ax;selId=null;for(var j=
 window.meSnaToggleT=function(show){window._meSnaShowT=show;lSel.filter(function(d){return d.type==='transversal';}).attr('opacity',show?(window._meSnaActiveAxis===0?0.5:0.75):0).attr('pointer-events',show?'auto':'none');};
 }
 
-// ══════════════════════════════════════════════════════
-// SIDEBAR GROUP ACTIVE INDICATOR (scroll-based)
-// ══════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
+   v45.3 · SANKEY · Flujo Estratégico Ejes → OE → Categorías
+   ══════════════════════════════════════════════════════ */
+window._meSankeyRequested=false;
+window._meSankeyRendered=false;
+window._meSankeyActiveAxis=0;
+
+function initMeSankey(){
+if(!window.d3){setTimeout(initMeSankey,200);return;}
+if(window._meSankeyRendered)return;
+window._meSankeyRendered=true;
+var _sk=document.getElementById('me-sankey-svg');
+if(!_sk)return;
+while(_sk.firstChild)_sk.removeChild(_sk.firstChild);
+
+var W=980, H=620, PAD=14;
+var ejeColors={1:'#C0392B',2:'#0E7F68',3:'#B45309',4:'#1A3D8F',5:'#6B21A8',6:'#0891B2'};
+
+/* Datos: Eje → OE → Categoría Funcional. Pesos por n° de acciones. */
+var SK_NODES=[
+  // Ejes (col 0)
+  {id:'E1',name:'Eje 1 · Desarrollo Social y Salud',col:0,axis:1,val:58},
+  {id:'E2',name:'Eje 2 · Desarrollo Económico Local',col:0,axis:2,val:18},
+  {id:'E3',name:'Eje 3 · Educación, Cultura y Deporte',col:0,axis:3,val:14},
+  {id:'E4',name:'Eje 4 · Territorio y M.A.',col:0,axis:4,val:53},
+  {id:'E5',name:'Eje 5 · Seguridad Ciudadana',col:0,axis:5,val:32},
+  {id:'E6',name:'Eje 6 · Gestión Municipal',col:0,axis:6,val:50},
+  // OE (col 1) - 27 OE internos PLADECO
+  {id:'OE1.1',name:'OE 1.1 Salud Primaria',col:1,axis:1,val:14},
+  {id:'OE1.2',name:'OE 1.2 Protección Social',col:1,axis:1,val:12},
+  {id:'OE1.3',name:'OE 1.3 Vivienda y Hábitat',col:1,axis:1,val:11},
+  {id:'OE1.4',name:'OE 1.4 Grupos Vulnerables',col:1,axis:1,val:13},
+  {id:'OE1.5',name:'OE 1.5 Derechos Ciudadanos',col:1,axis:1,val:8},
+  {id:'OE2.1',name:'OE 2.1 Empleo y Emprendimiento',col:1,axis:2,val:7},
+  {id:'OE2.2',name:'OE 2.2 Turismo y Cultura',col:1,axis:2,val:6},
+  {id:'OE2.3',name:'OE 2.3 Innovación Productiva',col:1,axis:2,val:5},
+  {id:'OE3.1',name:'OE 3.1 Calidad Educativa',col:1,axis:3,val:8},
+  {id:'OE3.2',name:'OE 3.2 Infraestructura Educativa',col:1,axis:3,val:3},
+  {id:'OE3.3',name:'OE 3.3 Educación Superior',col:1,axis:3,val:3},
+  {id:'OE4.1',name:'OE 4.1 PRC y Vialidad',col:1,axis:4,val:13},
+  {id:'OE4.2',name:'OE 4.2 Regeneración Barrial',col:1,axis:4,val:12},
+  {id:'OE4.3',name:'OE 4.3 Movilidad Sustentable',col:1,axis:4,val:9},
+  {id:'OE4.4',name:'OE 4.4 Riesgo Hídrico',col:1,axis:4,val:8},
+  {id:'OE4.5',name:'OE 4.5 Gestión Ambiental',col:1,axis:4,val:11},
+  {id:'OE5.1',name:'OE 5.1 Seguridad NNA',col:1,axis:5,val:6},
+  {id:'OE5.2',name:'OE 5.2 VIF y Mujeres',col:1,axis:5,val:7},
+  {id:'OE5.3',name:'OE 5.3 Prevención Delito',col:1,axis:5,val:8},
+  {id:'OE5.4',name:'OE 5.4 Convivencia Escolar',col:1,axis:5,val:5},
+  {id:'OE5.5',name:'OE 5.5 Gestión Riesgos',col:1,axis:5,val:6},
+  {id:'OE6.1',name:'OE 6.1 Sistema M&E',col:1,axis:6,val:8},
+  {id:'OE6.2',name:'OE 6.2 Política RRHH',col:1,axis:6,val:9},
+  {id:'OE6.3',name:'OE 6.3 ERP y Digital',col:1,axis:6,val:10},
+  {id:'OE6.4',name:'OE 6.4 Unidad M.A.',col:1,axis:6,val:7},
+  {id:'OE6.5',name:'OE 6.5 Dir. Económico',col:1,axis:6,val:7},
+  {id:'OE6.6',name:'OE 6.6 COSOC y Ley 20.500',col:1,axis:6,val:9},
+  // Categorías funcionales (col 2)
+  {id:'CF1',name:'Servicios Sociales y Salud',col:2,catColor:'#ec4899',val:58},
+  {id:'CF2',name:'Desarrollo Económico y Cultural',col:2,catColor:'#f59e0b',val:38},
+  {id:'CF3',name:'Infraestructura y Territorio',col:2,catColor:'#3b82f6',val:53},
+  {id:'CF4',name:'Seguridad y Gestión de Riesgos',col:2,catColor:'#ef4444',val:32},
+  {id:'CF5',name:'Gobernanza y Modernización',col:2,catColor:'#10b981',val:44}
+];
+var SK_LINKS=[
+  // Eje → OE (cada OE recibe del eje correspondiente)
+  {s:'E1',t:'OE1.1',v:14},{s:'E1',t:'OE1.2',v:12},{s:'E1',t:'OE1.3',v:11},{s:'E1',t:'OE1.4',v:13},{s:'E1',t:'OE1.5',v:8},
+  {s:'E2',t:'OE2.1',v:7},{s:'E2',t:'OE2.2',v:6},{s:'E2',t:'OE2.3',v:5},
+  {s:'E3',t:'OE3.1',v:8},{s:'E3',t:'OE3.2',v:3},{s:'E3',t:'OE3.3',v:3},
+  {s:'E4',t:'OE4.1',v:13},{s:'E4',t:'OE4.2',v:12},{s:'E4',t:'OE4.3',v:9},{s:'E4',t:'OE4.4',v:8},{s:'E4',t:'OE4.5',v:11},
+  {s:'E5',t:'OE5.1',v:6},{s:'E5',t:'OE5.2',v:7},{s:'E5',t:'OE5.3',v:8},{s:'E5',t:'OE5.4',v:5},{s:'E5',t:'OE5.5',v:6},
+  {s:'E6',t:'OE6.1',v:8},{s:'E6',t:'OE6.2',v:9},{s:'E6',t:'OE6.3',v:10},{s:'E6',t:'OE6.4',v:7},{s:'E6',t:'OE6.5',v:7},{s:'E6',t:'OE6.6',v:9},
+  // OE → Categoría Funcional (mapeo por afinidad)
+  {s:'OE1.1',t:'CF1',v:14},{s:'OE1.2',t:'CF1',v:12},{s:'OE1.3',t:'CF1',v:11},{s:'OE1.4',t:'CF1',v:13},{s:'OE1.5',t:'CF1',v:8},
+  {s:'OE2.1',t:'CF2',v:7},{s:'OE2.2',t:'CF2',v:6},{s:'OE2.3',t:'CF2',v:5},
+  {s:'OE3.1',t:'CF2',v:8},{s:'OE3.2',t:'CF3',v:3},{s:'OE3.3',t:'CF2',v:3},
+  {s:'OE4.1',t:'CF3',v:13},{s:'OE4.2',t:'CF3',v:12},{s:'OE4.3',t:'CF3',v:9},{s:'OE4.4',t:'CF3',v:8},{s:'OE4.5',t:'CF3',v:11},
+  {s:'OE5.1',t:'CF4',v:6},{s:'OE5.2',t:'CF4',v:7},{s:'OE5.3',t:'CF4',v:8},{s:'OE5.4',t:'CF4',v:5},{s:'OE5.5',t:'CF4',v:6},
+  {s:'OE6.1',t:'CF5',v:8},{s:'OE6.2',t:'CF5',v:9},{s:'OE6.3',t:'CF5',v:10},{s:'OE6.4',t:'CF5',v:7},{s:'OE6.5',t:'CF5',v:7},{s:'OE6.6',t:'CF5',v:9}
+];
+
+/* Layout manual del Sankey (3 columnas) */
+var COLS=[
+  {x:18,w:182,label:'Ejes'},   // col 0: Ejes
+  {x:380,w:220,label:'OE'},    // col 1: OE
+  {x:760,w:202,label:'Categorías'} // col 2: Cat
+];
+var nodesByCol={0:[],1:[],2:[]};
+SK_NODES.forEach(function(n){nodesByCol[n.col].push(n);});
+
+/* Posicionamiento Y vertical proporcional al valor, dentro de cada columna */
+function layoutColumn(col){
+  var arr=nodesByCol[col];
+  var totalVal=arr.reduce(function(a,n){return a+n.val;},0);
+  var availH=H-2*PAD;
+  var gap=Math.min(6,(availH-arr.reduce(function(a,n){return a+Math.max(8,n.val/totalVal*availH);},0))/(arr.length-1+0.001));
+  var y=PAD;
+  arr.forEach(function(n){
+    n.h=Math.max(8,n.val/totalVal*(availH-gap*(arr.length-1)));
+    n.y=y;
+    n.x=COLS[col].x;
+    n.w=COLS[col].w;
+    y+=n.h+gap;
+  });
+}
+layoutColumn(0);layoutColumn(1);layoutColumn(2);
+
+/* Para cada nodo, los puntos de origen/destino se reparten por orden de aparición de los links */
+function assignLinkPositions(){
+  /* en cada nodo, almacenar offsets verticales para sus links salientes y entrantes */
+  SK_NODES.forEach(function(n){n._outOff=0;n._inOff=0;});
+  /* totales para escala vertical */
+  SK_LINKS.forEach(function(l){
+    var src=SK_NODES.find(function(n){return n.id===l.s;});
+    var tgt=SK_NODES.find(function(n){return n.id===l.t;});
+    if(!src||!tgt)return;
+    var srcH=l.v/src.val*src.h;
+    var tgtH=l.v/tgt.val*tgt.h;
+    l.sy0=src.y+src._outOff;
+    l.sy1=src.y+src._outOff+srcH;
+    src._outOff+=srcH;
+    l.ty0=tgt.y+tgt._inOff;
+    l.ty1=tgt.y+tgt._inOff+tgtH;
+    tgt._inOff+=tgtH;
+  });
+}
+assignLinkPositions();
+
+var svg=d3.select('#me-sankey-svg');
+var tip=document.getElementById('me-sankey-tip');
+
+/* Función para dibujar el path Bezier entre dos columnas */
+function linkPath(l){
+  var src=SK_NODES.find(function(n){return n.id===l.s;});
+  var tgt=SK_NODES.find(function(n){return n.id===l.t;});
+  if(!src||!tgt)return '';
+  var x0=src.x+src.w, x1=tgt.x;
+  var cx0=x0+(x1-x0)*0.5, cx1=x0+(x1-x0)*0.5;
+  return 'M'+x0+','+l.sy0+
+         'C'+cx0+','+l.sy0+' '+cx1+','+l.ty0+' '+x1+','+l.ty0+
+         'L'+x1+','+l.ty1+
+         'C'+cx1+','+l.ty1+' '+cx0+','+l.sy1+' '+x0+','+l.sy1+'Z';
+}
+function linkColor(l){
+  var src=SK_NODES.find(function(n){return n.id===l.s;});
+  if(src && src.col===0) return ejeColors[src.axis];
+  if(src && src.axis) return ejeColors[src.axis];
+  return '#94a3b8';
+}
+function nodeColor(n){
+  if(n.col===0)return ejeColors[n.axis];
+  if(n.col===1)return ejeColors[n.axis];
+  return n.catColor||'#10b981';
+}
+
+/* Render links primero (debajo de nodos) */
+var linkG=svg.append('g').attr('class','sk-links');
+var linkSel=linkG.selectAll('path').data(SK_LINKS).enter().append('path')
+  .attr('d',linkPath)
+  .attr('fill',linkColor)
+  .attr('fill-opacity',0.35)
+  .attr('stroke','none')
+  .on('mouseover',function(ev,l){
+    d3.select(this).attr('fill-opacity',0.7);
+    var src=SK_NODES.find(function(n){return n.id===l.s;});
+    var tgt=SK_NODES.find(function(n){return n.id===l.t;});
+    tip.style.display='block';
+    tip.style.left=(ev.offsetX+14)+'px';
+    tip.style.top=(ev.offsetY-10)+'px';
+    tip.innerHTML='<strong>'+src.name+'</strong><br>&rarr; '+tgt.name+'<br><span style="opacity:.8">'+l.v+' acciones</span>';
+  })
+  .on('mouseout',function(){
+    d3.select(this).attr('fill-opacity',0.35);
+    tip.style.display='none';
+  });
+
+/* Render nodos (rectángulos + labels) */
+var nodeG=svg.append('g').attr('class','sk-nodes');
+var nodeSel=nodeG.selectAll('g').data(SK_NODES).enter().append('g')
+  .attr('class','sk-node')
+  .style('cursor','pointer');
+nodeSel.append('rect')
+  .attr('x',function(n){return n.x;})
+  .attr('y',function(n){return n.y;})
+  .attr('width',function(n){return n.w;})
+  .attr('height',function(n){return n.h;})
+  .attr('fill',nodeColor)
+  .attr('rx',2)
+  .attr('stroke','#fff')
+  .attr('stroke-width',1.5)
+  .on('mouseover',function(ev,n){
+    d3.select(this).attr('stroke','#0c1f36').attr('stroke-width',2);
+    tip.style.display='block';
+    tip.style.left=(ev.offsetX+14)+'px';
+    tip.style.top=(ev.offsetY-10)+'px';
+    tip.innerHTML='<strong>'+n.name+'</strong><br>'+n.val+' acciones';
+  })
+  .on('mouseout',function(){
+    d3.select(this).attr('stroke','#fff').attr('stroke-width',1.5);
+    tip.style.display='none';
+  });
+
+/* Labels: nombre adentro del rect si cabe, sino al lado */
+nodeSel.append('text')
+  .attr('x',function(n){return n.col===2?n.x-6:n.x+n.w/2;})
+  .attr('y',function(n){return n.y+n.h/2;})
+  .attr('text-anchor',function(n){return n.col===2?'end':'middle';})
+  .attr('dominant-baseline','middle')
+  .attr('font-size',function(n){return n.col===0?'11.5px':(n.col===1?'9.5px':'11px');})
+  .attr('font-weight',function(n){return n.col===0||n.col===2?'700':'500';})
+  .attr('fill',function(n){return n.col===1?'#fff':(n.col===2?'var(--text,#0f172a)':'#fff');})
+  .attr('pointer-events','none')
+  .text(function(n){
+    var max=n.col===0?28:(n.col===1?32:34);
+    var t=n.name.replace(/Eje \d · /,'');
+    return t.length>max?t.slice(0,max-1)+'…':t;
+  });
+
+/* Headers de columnas */
+var hdrG=svg.append('g').attr('class','sk-headers');
+COLS.forEach(function(c,i){
+  hdrG.append('text')
+    .attr('x',c.x+c.w/2)
+    .attr('y',8)
+    .attr('text-anchor','middle')
+    .attr('font-size','10.5px')
+    .attr('font-weight','800')
+    .attr('letter-spacing','1px')
+    .attr('text-transform','uppercase')
+    .attr('fill','#475569')
+    .text(c.label);
+});
+
+/* Highlight function (filtro por eje) */
+window.meSankeyFilter=function(ax){
+  window._meSankeyActiveAxis=ax;
+  for(var j=0;j<=6;j++){
+    var b=document.getElementById('sky'+j);
+    if(b){b.classList.toggle('active',ax===j);b.style.opacity=ax===j?'1':'0.5';b.style.fontWeight=ax===j?'600':'500';}
+  }
+  if(ax===0){
+    linkSel.attr('fill-opacity',0.35);
+    nodeSel.selectAll('rect').attr('fill-opacity',1);
+    return;
+  }
+  linkSel.attr('fill-opacity',function(l){
+    var src=SK_NODES.find(function(n){return n.id===l.s;});
+    var tgt=SK_NODES.find(function(n){return n.id===l.t;});
+    return (src && src.axis===ax)||(tgt && tgt.axis===ax)?0.75:0.06;
+  });
+  nodeSel.selectAll('rect').attr('fill-opacity',function(n){
+    return n.axis===ax||n.col===2?1:0.15;
+  });
+};
+
+}
 (function initSidebarGroupIndicator(){
   const groupMap=[
     {divider:'Datos Censales',sections:['censo','censoVuln','censoBrechas','censoHeat','censoMapa','censoCompos']},
@@ -20746,26 +21407,13 @@ window.meSnaToggleT=function(show){window._meSnaShowT=show;lSel.filter(function(
 })();
 
 // ══════════════════════════════════════════════════════
-// PDF EXPORT: Print individual sections
+// PDF EXPORT: Print individual sections · v45.4 DESHABILITADO
+// El usuario pidió uniformidad eliminando "PDF" de cada sección.
+// La función exportSectionPDF() se conserva por compatibilidad (no se invoca).
 // ══════════════════════════════════════════════════════
 (function initPdfExport(){
-  // Add export buttons to sections with .sec-header (excluding NO_ACTION_SECTIONS)
-  document.querySelectorAll('.sec-header').forEach(header=>{
-    const sec=header.closest('section');
-    if(!sec||!sec.id)return;
-    if(typeof NO_ACTION_SECTIONS!=='undefined' && NO_ACTION_SECTIONS.has(sec.id))return;
-    if(header.querySelector('.sec-export-btn'))return; // ya existe
-    const btn=document.createElement('button');
-    btn.className='sec-export-btn';
-    btn.title='Exportar sección como PDF';
-    btn.setAttribute('aria-label','Exportar sección como PDF');
-    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> PDF';
-    btn.onclick=function(e){
-      e.preventDefault();
-      exportSectionPDF(sec.id);
-    };
-    header.appendChild(btn);
-  });
+  /* Limpieza defensiva: remueve cualquier sec-export-btn ya en DOM */
+  document.querySelectorAll('.sec-export-btn').forEach(function(el){el.remove();});
 })();
 
 // Limpieza defensiva adicional: remover sec-export-btn de las secciones excluidas
@@ -20809,24 +21457,48 @@ function exportSectionPDF(sectionId){
   setTimeout(function(){printWin.print();},500);
 }
 
-// ── SERVICE WORKER + KILL-SWITCH v53.3 ──
+// ── SERVICE WORKER + INVALIDACIÓN AGRESIVA v45.6 ──
+// Estrategia: el SW.js siempre se descarga fresco (updateViaCache:'none'),
+// y ante cada cambio de pestaña/foco se llama reg.update() para forzar el chequeo.
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').then(function(reg){
+  navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(function(reg){
+    // Si hay un SW esperando al cargar la página, activarlo de inmediato
+    if(reg.waiting){
+      try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}
+    }
     reg.addEventListener('updatefound',function(){
       var nw=reg.installing;
       if(nw){
         nw.addEventListener('statechange',function(){
-          if(nw.state==='activated'){
+          if(nw.state==='installed' && navigator.serviceWorker.controller){
+            // Hay una nueva versión instalada, activarla
+            try{nw.postMessage({type:'SKIP_WAITING'});}catch(_){}
             if(typeof showToast==='function')showToast('Portal actualizado — recargando...','success');
-            setTimeout(function(){location.reload();},1500);
+            setTimeout(function(){location.reload();},1200);
           }
         });
       }
     });
+    // Chequeo periódico: cada 30 minutos y al volver al foco
+    var _lastCheck=Date.now();
+    function maybeCheckSW(){
+      var now=Date.now();
+      if(now-_lastCheck<60000)return; // throttle 1 min mínimo
+      _lastCheck=now;
+      try{reg.update();}catch(_){}
+    }
+    window.addEventListener('focus',maybeCheckSW);
+    document.addEventListener('visibilitychange',function(){if(!document.hidden)maybeCheckSW();});
+    setInterval(maybeCheckSW,30*60*1000); // cada 30 min
   }).catch(function(){});
-  // v43.1: kill-switch listeners DESACTIVADOS para evitar loops de reload.
-  // El SW v60.0+ ya no envía postMessage. updatefound de arriba es suficiente.
-  // Solo limpiar el flag viejo si existe (cleanup migración).
+  // Cuando el controller cambia (nuevo SW activo), recargar para usar la nueva versión
+  var _ctrlReloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(_ctrlReloaded)return;
+    _ctrlReloaded=true;
+    location.reload();
+  });
+  // Cleanup de flags viejos de versiones anteriores
   try{
     sessionStorage.removeItem('__sw_reload_v');
     sessionStorage.removeItem('__sw_ctl_reload');

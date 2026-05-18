@@ -1,11 +1,17 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.0
+// PLADECO Rengo 2025-2035 · Service Worker v62.6
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.6: v45.6 - Sidebar comprimido bulletproof + cache invalidation agresivo (updateViaCache:'none' + reg.update on focus)
+// v62.5: v45.5 - Reorganización estructural: Cap. XII→XI + 14 badges uniformados + placeholder huérfano eliminado
+// v62.4: v45.4 - ERD movida tras Matriz + botones share/PDF eliminados de todas las secciones (uniformidad)
+// v62.3: v45.3 - Matriz: SNA duplicado corregido + nuevo gráfico Sankey (Ejes→OE→Categorías)
+// v62.2: v45.2 - ICT ampliado (6 bloques metodológicos) + #macrosector eliminado
+// v62.1: v45.1 - AUDITORÍA INTEGRAL: 4 bugs críticos corregidos (199 contraste issues → 0)
 // v62.0: v45.0 - Carta Gantt rediseñada con granularidad semanal (42 semanas Ago S3 → Jun S4)
 // v61.9: v44.9 - Carta Gantt Interactiva PLADECO 2025-2032 + PDF descargable
 // v61.8: v44.8 - agregada sección Diagramas Metodológicos (16 JPG)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.0';
+const CACHE_STATIC='pladeco-static-v62.6';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
