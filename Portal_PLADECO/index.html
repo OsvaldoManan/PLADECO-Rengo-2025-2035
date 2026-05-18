@@ -80,8 +80,8 @@
   --blue:#1a3d8f;--blue-light:#2d5dcc;
   --muted:#6b7c94;
 }
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease}
+html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease;overflow-x:hidden;max-width:100vw}
 
 /* ── Sidebar ── */
 .sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:linear-gradient(180deg,#0a1f33 0%,var(--primary) 100%);color:#fff;z-index:100;display:flex;flex-direction:column;transition:transform .3s,width .3s ease}
@@ -241,7 +241,7 @@ canvas{display:block;background:var(--card);border-radius:6px}
 .hero-orb-3{width:80px;height:80px;top:60%;left:25%;background:radial-gradient(circle,rgba(41,128,185,.1),transparent 70%);animation:heroFloat 9s ease-in-out 3s infinite}
 .hero-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
 .hero-content{position:relative;z-index:1;max-width:900px;margin:0 auto}
-.hero h1{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px}
+.hero h1{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px;color:#fff}
 .hero h1 span{background:linear-gradient(90deg,#48c76e,#f5921d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero .sub{font-size:18px;opacity:.7;margin-bottom:36px;font-weight:300}
 .hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
@@ -2130,9 +2130,9 @@ body.dark .sec-header .badge,body.dark .stat-chip .sc-icon{filter:brightness(.75
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--green);outline-offset:2px;box-shadow:0 0 0 4px rgba(45,154,77,.15)}
 .skip-link{position:absolute;top:-100px;left:8px;background:var(--green);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;z-index:10000;font-size:13px;font-family:inherit;transition:top .2s;box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .skip-link:focus{top:8px}
-@media (prefers-color-scheme: dark){
-  body:not(.dark):not(.theme-explicit){background:#0e1726;color:#e2e8f0}
-}
+/* v44.10 · REMOVIDO: regla rota prefers-color-scheme:dark que pintaba body bg navy
+   pero NO actualizaba variables --bg/--card/--text → 199 elementos con contraste roto.
+   El modo oscuro ahora se activa SOLO con el toggle manual (btnDark) que aplica .dark con tema completo. */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
@@ -2240,7 +2240,9 @@ section{position:relative}
 .kpi:active,.viz-card:active,.stat-chip:active,.galeria-card:active,.doc-card-enhanced:active{transform:scale(.98)!important;transition:transform .1s}
 
 /* ── Better tooltip style ── */
-[title]{position:relative}
+/* v44.10 · FIX: regla [title]{position:relative} estaba sobrescribiendo .back-to-top y .dark-toggle
+   que necesitan position:fixed (ambos tienen atributo title). Limitado a elementos inline. */
+span[title],a[title]:not(.back-to-top):not(.dark-toggle):not(.search-fab):not(.chatbot-fab),abbr[title]{position:relative}
 
 /* ── Sidebar link ripple effect ── */
 .sidebar-nav a{position:relative;overflow:hidden}
@@ -3469,6 +3471,73 @@ body.bc-active{padding-top:130px !important}
 html{scroll-padding-top:140px}
 section[id]{scroll-margin-top:140px}
 
+/* ════════════════════════════════════════════════════════════════════
+   v44.10 · AUDITORÍA INTEGRAL DE COLOR / COMPOSICIÓN / ACCESO
+   Reportado por el usuario: «se ve mal en el computador en cuanto a
+   los colores de fondo, la composición del contenido y el acceso a ello».
+   Diagnóstico: 4 bugs críticos detectados con preview_eval:
+   (1) prefers-color-scheme:dark mediaquery rota → fixed arriba (eliminada).
+   (2) [title]{position:relative} tumbaba .back-to-top fixed → fixed arriba.
+   (3) zebra sections con negative margins → overflow horizontal 30px.
+   (4) hero h1 dark sobre hero bg dark → invisible.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Hero: textos siempre claros (defensa ante cualquier cascada) */
+.hero, .hero h1, .hero h2, .hero h3, .hero .sub, .hero p,
+.hero .hero-content, .hero .stat-num, .hero .stat-lbl{color:#fff}
+.hero .sub{color:rgba(255,255,255,.85)}
+.hero h1 span{color:transparent} /* gradient-clip preservado */
+
+/* Zebra sections: limitar negative-margins para no rebasar el contenedor */
+section:nth-of-type(2n){
+  /* max-margin = padding lateral del main-content, evita overflow horizontal */
+  margin-left:max(-40px,calc(-1 * clamp(8px,2vw,40px)))!important;
+  margin-right:max(-40px,calc(-1 * clamp(8px,2vw,40px)))!important;
+}
+
+/* Cards/secciones con texto oscuro: asegurar fondo claro consistente */
+.viz-card, .doc-card-enhanced, .diag-card, .kpi, .eje-card, .ps-card,
+.foda-card, .voz-card, .ineq-card, .rating-card, .censo-kpi, .stat-chip,
+.gk-card, .ur-card, .nna-card, .finding-card, .arg-card{
+  color:var(--text); /* fuerza color oscuro dentro de cards en light-mode */
+}
+body.dark .viz-card, body.dark .doc-card-enhanced, body.dark .diag-card,
+body.dark .kpi, body.dark .eje-card, body.dark .ps-card,
+body.dark .foda-card, body.dark .voz-card, body.dark .ineq-card,
+body.dark .rating-card, body.dark .censo-kpi, body.dark .stat-chip{
+  color:var(--text);
+}
+
+/* Sections con bg-soft asegurar color de texto correcto */
+section:nth-of-type(2n){color:var(--text)}
+section:nth-of-type(2n) p, section:nth-of-type(2n) h1,
+section:nth-of-type(2n) h2, section:nth-of-type(2n) h3,
+section:nth-of-type(2n) h4, section:nth-of-type(2n) li{color:var(--text)}
+
+/* Defensa contra desbordes residuales: cualquier hijo directo de main no excede 100% */
+#main-content > section{max-width:100%;box-sizing:border-box}
+#main-content > section > *{max-width:100%}
+
+/* Wrapper de tablas con scroll horizontal limpio (evita romper layout) */
+section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-webkit-overflow-scrolling:touch}
+@media (min-width:1100px){
+  section table{display:table;width:100%}
+}
+
+/* FAB stack (esquinas inferiores) bien posicionado y no estorba al contenido */
+.back-to-top{position:fixed!important;bottom:92px;right:28px;z-index:99}
+.dark-toggle{position:fixed!important}
+.search-fab{position:fixed!important}
+.chatbot-fab{position:fixed!important}
+.update-badge{position:fixed!important}
+
+/* Asegurar que el sidebar nunca tape contenido en pantallas medianas */
+@media (max-width:1100px){
+  #main-content{margin-left:0!important;padding-left:14px!important;padding-right:14px!important}
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+}
+
 /* ══════════════════════════════════════════════════════════════════
    MAJOR v38.0 · 8 NUEVAS FUNCIONALIDADES
    A1 Reporte georref · A2 Voz Vecinos · A3 Cuadernillo PDF · A4 Hero carrusel
@@ -4394,7 +4463,8 @@ body.dark .pol-meta-box:nth-child(2){background:rgba(219,234,254,.08)}
 body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 
 /* ═══════════════════════════════════════════════════════════════════
-   v44.8 · Carta Gantt Interactiva PLADECO 2025-2032 (#cronograma-gantt)
+   v45.0 · Carta Gantt Interactiva por SEMANAS · PLADECO 2025-2032
+   Granularidad: 42 columnas (Ago S3 → Jun S4)
    ═══════════════════════════════════════════════════════════════════ */
 #cronograma-gantt{padding-top:28px;padding-bottom:32px}
 .cg-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0 18px}
@@ -4403,76 +4473,126 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 .cg-kpi-ico{font-size:18px;line-height:1;margin-bottom:6px}
 .cg-kpi-num{font-size:18px;font-weight:800;color:var(--text);line-height:1.1;letter-spacing:-.02em}
 .cg-kpi-lbl{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
-.cg-filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 16px;padding:10px;background:var(--bg-soft);border-radius:10px;border:1px solid var(--border)}
+.cg-filter-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 12px;padding:10px;background:var(--bg-soft);border-radius:10px;border:1px solid var(--border);align-items:center}
 .cg-f-btn{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 13px;font-size:11.5px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s ease}
 .cg-f-btn:hover{background:rgba(194,65,12,.08);border-color:#c2410c;color:var(--text)}
 .cg-f-btn.active{background:linear-gradient(135deg,#c2410c,#f5921d);border-color:#c2410c;color:#fff;box-shadow:0 3px 10px rgba(194,65,12,.28)}
 .cg-f-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex-shrink:0}
+.cg-actions{display:flex;gap:8px;margin:0 0 14px;flex-wrap:wrap}
+.cg-act-btn{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .15s ease}
+.cg-act-btn:hover{background:rgba(194,65,12,.06);border-color:#c2410c;color:var(--text)}
+.cg-legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 12px;font-size:10.5px;color:var(--text2);padding:8px 12px;background:var(--bg-soft);border-radius:8px;border:1px solid var(--border)}
+.cg-legend-item{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.cg-legend-bar{width:24px;height:10px;border-radius:3px;display:inline-block}
+.cg-legend-bar.cg-l-process{background:linear-gradient(135deg,#1a3d8f,#3461b8);height:14px}
+.cg-legend-bar.cg-l-activity{background:#2d9a4d;opacity:.92}
+.cg-legend-bar.cg-l-milestone{width:14px;height:14px;background:#831843;transform:rotate(45deg);border-radius:2px}
 .cg-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.04)}
-.cg-chart{display:grid;grid-template-columns:240px repeat(11,minmax(54px,1fr));overflow-x:auto;overflow-y:hidden;font-size:12px;position:relative;background:linear-gradient(180deg,var(--bg-soft) 0,var(--card) 44px)}
-.cg-chart::-webkit-scrollbar{height:8px}
-.cg-chart::-webkit-scrollbar-track{background:var(--bg-soft)}
-.cg-chart::-webkit-scrollbar-thumb{background:#c2410c80;border-radius:4px}
-.cg-chart::-webkit-scrollbar-thumb:hover{background:#c2410c}
-.cg-h-label{grid-column:1;background:linear-gradient(135deg,#0c1f36,#1a3d8f);color:#fff;padding:10px 12px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid #c2410c;display:flex;align-items:center;position:sticky;left:0;z-index:3}
-.cg-h-month{background:#0c1f36;color:#fff;padding:8px 4px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-align:center;border-bottom:2px solid #c2410c;border-left:1px solid rgba(255,255,255,.08);text-transform:uppercase}
-.cg-h-month .cg-h-num{display:block;font-size:9px;font-weight:600;opacity:.7;letter-spacing:0;margin-top:2px;text-transform:none}
-.cg-row{display:contents}
-.cg-row .cg-label{grid-column:1;padding:10px 12px;font-weight:700;color:var(--text);background:var(--card);border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:8px;position:sticky;left:0;z-index:2;font-size:12px;line-height:1.3;transition:background .12s ease}
-.cg-row .cg-label:hover{background:var(--bg-soft)}
-.cg-row.cg-process .cg-label{font-weight:800;background:linear-gradient(90deg,var(--bg-soft),var(--card))}
-.cg-row.cg-process .cg-label .cg-pnum{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;border-radius:6px;flex-shrink:0}
-.cg-row.cg-process .cg-label .cg-pchev{margin-left:auto;font-size:11px;color:var(--text2);transition:transform .2s ease;flex-shrink:0}
-.cg-row.cg-process.open .cg-label .cg-pchev{transform:rotate(90deg)}
-.cg-row.cg-activity .cg-label{padding-left:36px;font-weight:500;font-size:11.5px;color:var(--text2);background:var(--card);border-left:3px solid transparent}
-.cg-row.cg-activity .cg-label .cg-anum{font-weight:800;color:var(--text);font-size:10.5px;background:var(--bg-soft);padding:2px 6px;border-radius:4px;margin-right:6px;flex-shrink:0;border:1px solid var(--border)}
-.cg-cell{border-bottom:1px solid var(--border);border-left:1px solid var(--border);min-height:38px;position:relative;background:var(--card)}
-.cg-cell.cg-cell-weekend{background:rgba(0,0,0,.012)}
-.cg-row.cg-activity .cg-cell{background:rgba(0,0,0,.008)}
-.cg-bar{position:absolute;top:50%;transform:translateY(-50%);left:4px;right:4px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:flex-start;padding:0 8px;font-size:10px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;text-shadow:0 1px 2px rgba(0,0,0,.25);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.cg-bar:hover{transform:translateY(-50%) scale(1.04);box-shadow:0 4px 12px rgba(0,0,0,.22);filter:brightness(1.08);z-index:5}
-.cg-bar.cg-bar-process{height:26px;background:linear-gradient(135deg,var(--cg-c1,#c2410c),var(--cg-c2,#f5921d));font-weight:800;font-size:10.5px}
-.cg-bar.cg-bar-activity{height:18px;background:var(--cg-c1,#c2410c);font-size:9.5px;opacity:.92;border:1px solid rgba(255,255,255,.18)}
-.cg-tooltip{position:fixed;background:#0c1f36;color:#fff;padding:10px 14px;border-radius:8px;font-size:11.5px;font-weight:500;line-height:1.5;max-width:320px;box-shadow:0 8px 24px rgba(0,0,0,.32);pointer-events:none;z-index:9999;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease,visibility .15s ease}
+.cg-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.cg-scroll::-webkit-scrollbar{height:10px}
+.cg-scroll::-webkit-scrollbar-track{background:var(--bg-soft)}
+.cg-scroll::-webkit-scrollbar-thumb{background:#c2410c80;border-radius:4px}
+.cg-scroll::-webkit-scrollbar-thumb:hover{background:#c2410c}
+.cg-chart{display:grid;grid-template-columns:280px repeat(42,minmax(22px,1fr));font-size:12px;position:relative;min-width:1280px}
+/* Header row 1 corner + meses (corner ocupa 2 filas) */
+.cg-h-corner{grid-row:1 / 3;grid-column:1;background:linear-gradient(135deg,#0c1f36,#1a3d8f);color:#fff;padding:10px 12px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid #c2410c;border-right:2px solid #c2410c;display:flex;align-items:center;position:sticky;left:0;z-index:4}
+.cg-h-month{grid-row:1;background:#0c1f36;color:#fff;padding:8px 4px;font-size:11px;font-weight:800;letter-spacing:.04em;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);border-left:1px solid rgba(255,255,255,.15);text-transform:uppercase}
+.cg-h-month .cg-h-year{font-size:9px;opacity:.6;font-weight:600;margin-left:2px}
+.cg-h-week{grid-row:2;background:#1a3d8f;color:#fff;padding:5px 0;font-size:9.5px;font-weight:700;text-align:center;border-bottom:2px solid #c2410c;border-left:1px solid rgba(255,255,255,.05)}
+.cg-h-week.cg-h-week-mstart{border-left:2px solid #c2410c}
+/* Body: labels en col 1, lanes en cols 2..-1 */
+.cg-label{grid-column:1;padding:9px 12px;font-weight:700;color:var(--text);background:var(--card);border-bottom:1px solid var(--border);border-right:2px solid var(--border);display:flex;align-items:center;gap:8px;position:sticky;left:0;z-index:2;font-size:11.5px;line-height:1.3;transition:background .12s ease;min-height:38px}
+.cg-label.cg-process{font-weight:800;background:linear-gradient(90deg,var(--bg-soft),var(--card));cursor:pointer}
+.cg-label.cg-process:hover{background:linear-gradient(90deg,rgba(194,65,12,.06),var(--card))}
+.cg-label.cg-process .cg-pnum{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;color:#fff;font-size:10.5px;font-weight:800;border-radius:6px;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,.08)}
+.cg-label.cg-process .cg-ptitle{flex:1;font-size:11.5px;color:var(--text)}
+.cg-label.cg-process .cg-pchev{margin-left:auto;font-size:11px;color:var(--text2);transition:transform .2s ease;flex-shrink:0}
+.cg-label.cg-process.open .cg-pchev{transform:rotate(90deg)}
+.cg-label.cg-activity{padding-left:36px;font-weight:500;font-size:11px;color:var(--text2);background:var(--card);min-height:32px}
+.cg-label.cg-activity .cg-anum{font-weight:800;color:var(--text);font-size:10px;background:var(--bg-soft);padding:2px 7px;border-radius:4px;margin-right:6px;flex-shrink:0;border:1px solid var(--border);min-width:30px;text-align:center}
+.cg-label.cg-activity .cg-atitle{flex:1;font-size:10.5px;line-height:1.35}
+/* Lane: ocupa todas las columnas de semana, posición relativa para bars */
+.cg-lane{grid-column:2 / -1;position:relative;border-bottom:1px solid var(--border);min-height:38px;background-image:
+  linear-gradient(to right,
+    transparent 0, transparent calc(100%*2/42 - 1px), rgba(194,65,12,.18) calc(100%*2/42 - 1px), rgba(194,65,12,.18) calc(100%*2/42),
+    transparent calc(100%*2/42), transparent calc(100%*6/42 - 1px), rgba(194,65,12,.18) calc(100%*6/42 - 1px), rgba(194,65,12,.18) calc(100%*6/42),
+    transparent calc(100%*6/42), transparent calc(100%*10/42 - 1px), rgba(194,65,12,.18) calc(100%*10/42 - 1px), rgba(194,65,12,.18) calc(100%*10/42),
+    transparent calc(100%*10/42), transparent calc(100%*14/42 - 1px), rgba(194,65,12,.18) calc(100%*14/42 - 1px), rgba(194,65,12,.18) calc(100%*14/42),
+    transparent calc(100%*14/42), transparent calc(100%*18/42 - 1px), rgba(194,65,12,.18) calc(100%*18/42 - 1px), rgba(194,65,12,.18) calc(100%*18/42),
+    transparent calc(100%*18/42), transparent calc(100%*22/42 - 1px), rgba(194,65,12,.18) calc(100%*22/42 - 1px), rgba(194,65,12,.18) calc(100%*22/42),
+    transparent calc(100%*22/42), transparent calc(100%*26/42 - 1px), rgba(194,65,12,.18) calc(100%*26/42 - 1px), rgba(194,65,12,.18) calc(100%*26/42),
+    transparent calc(100%*26/42), transparent calc(100%*30/42 - 1px), rgba(194,65,12,.18) calc(100%*30/42 - 1px), rgba(194,65,12,.18) calc(100%*30/42),
+    transparent calc(100%*30/42), transparent calc(100%*34/42 - 1px), rgba(194,65,12,.18) calc(100%*34/42 - 1px), rgba(194,65,12,.18) calc(100%*34/42),
+    transparent calc(100%*34/42), transparent calc(100%*38/42 - 1px), rgba(194,65,12,.18) calc(100%*38/42 - 1px), rgba(194,65,12,.18) calc(100%*38/42),
+    transparent calc(100%*38/42)),
+  repeating-linear-gradient(to right, transparent 0, transparent calc(100%/42 - 1px), rgba(0,0,0,.05) calc(100%/42 - 1px), rgba(0,0,0,.05) calc(100%/42))}
+.cg-lane.cg-lane-activity{background-color:rgba(0,0,0,.012);min-height:32px}
+/* Bars */
+.cg-bar{position:absolute;top:50%;transform:translateY(-50%);height:22px;border-radius:6px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.14);transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;text-shadow:0 1px 2px rgba(0,0,0,.25);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border:1px solid rgba(255,255,255,.18)}
+.cg-bar:hover{transform:translateY(-50%) scale(1.025);box-shadow:0 5px 14px rgba(0,0,0,.24);filter:brightness(1.08);z-index:5}
+.cg-bar.cg-bar-process{height:26px;font-weight:800;font-size:10.5px;border:1px solid rgba(255,255,255,.22)}
+.cg-bar.cg-bar-activity{height:18px;font-size:9px;opacity:.94}
+.cg-bar-txt{overflow:hidden;text-overflow:ellipsis}
+/* Milestone (diamante) */
+.cg-milestone{position:absolute;top:50%;width:24px;height:24px;transform:translate(-50%,-50%) rotate(45deg);border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.22);border:2px solid #fff;transition:transform .15s ease,box-shadow .15s ease;z-index:3}
+.cg-milestone:hover{transform:translate(-50%,-50%) rotate(45deg) scale(1.18);box-shadow:0 4px 14px rgba(0,0,0,.32);z-index:5}
+.cg-milestone>*{transform:rotate(-45deg);display:inline-block}
+/* Tooltip */
+.cg-tooltip{position:fixed;background:#0c1f36;color:#fff;padding:10px 14px;border-radius:8px;font-size:11.5px;font-weight:500;line-height:1.5;max-width:340px;box-shadow:0 8px 24px rgba(0,0,0,.32);pointer-events:none;z-index:9999;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s ease,transform .15s ease,visibility .15s ease}
 .cg-tooltip.visible{opacity:1;visibility:visible;transform:translateY(0)}
-.cg-tooltip strong{color:#f5921d;display:block;font-weight:800;font-size:12px;margin-bottom:4px}
+.cg-tooltip strong{color:#f5921d;display:block;font-weight:800;font-size:12px;margin-bottom:2px}
 .cg-tooltip .cg-tt-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:10px;color:#cbd5e1}
 .cg-tooltip .cg-tt-meta span{background:rgba(255,255,255,.08);padding:2px 8px;border-radius:4px}
-.cg-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:20px}
+/* List narrativa */
+.cg-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:22px}
 .cg-list-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;border-left:4px solid var(--cg-c1,#c2410c);transition:transform .15s ease,box-shadow .15s ease}
 .cg-list-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.06)}
 .cg-list-card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cg-list-card-num{display:inline-flex;width:26px;height:26px;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;border-radius:7px;background:var(--cg-c1,#c2410c);flex-shrink:0}
-.cg-list-card-title{font-size:13.5px;font-weight:800;color:var(--text);line-height:1.3}
-.cg-list-card-period{font-size:10.5px;color:var(--text2);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
-.cg-list-card-acts{font-size:11.5px;color:var(--text2);line-height:1.55}
-.cg-list-card-acts li{margin-bottom:4px}
-.cg-list-card-acts li strong{color:var(--text);font-weight:700}
+.cg-list-card-title{font-size:13px;font-weight:800;color:var(--text);line-height:1.3}
+.cg-list-card-period{font-size:10.5px;color:var(--text2);font-weight:700;margin-bottom:10px;letter-spacing:.02em}
+.cg-list-card-acts{font-size:11.5px;color:var(--text2);line-height:1.55;list-style:none;padding-left:0}
+.cg-list-card-acts li{margin-bottom:8px;padding-left:8px;border-left:2px solid var(--border)}
+.cg-list-card-acts li strong{color:var(--text);font-weight:800;background:var(--bg-soft);padding:1px 5px;border-radius:3px;font-size:10px;margin-right:5px}
+/* Notes */
 .cg-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:18px}
 .cg-note-card{background:linear-gradient(135deg,rgba(45,154,77,.04),rgba(245,146,29,.03));border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:flex-start;border-top:3px solid #2d9a4d}
 .cg-note-ico{font-size:22px;line-height:1;flex-shrink:0}
 .cg-note-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px}
 .cg-note-desc{font-size:11.5px;color:var(--text2);line-height:1.55}
+/* Indicator de scroll horizontal */
+.cg-scroll-hint{font-size:10.5px;color:var(--text2);padding:6px 10px;text-align:center;background:rgba(194,65,12,.05);border-top:1px solid var(--border);font-weight:600;display:none}
+@media(max-width:1100px){.cg-scroll-hint{display:block}}
 @media(max-width:760px){
   .cg-kpis{grid-template-columns:repeat(2,1fr);gap:8px}
   .cg-kpi{padding:10px}
   .cg-kpi-num{font-size:15px}
   .cg-cta-download{flex-direction:column;align-items:stretch!important;text-align:center}
   .cg-cta-download a{justify-content:center}
-  .cg-chart{font-size:10.5px;grid-template-columns:160px repeat(11,minmax(44px,1fr))}
-  .cg-h-label{padding:7px 8px;font-size:9.5px}
-  .cg-h-month{padding:6px 2px;font-size:9.5px}
-  .cg-row .cg-label{padding:8px 9px;font-size:10.5px}
-  .cg-row.cg-activity .cg-label{padding-left:24px;font-size:10px}
-  .cg-bar{height:18px;font-size:9px;padding:0 5px}
+  .cg-chart{font-size:10px;grid-template-columns:180px repeat(42,minmax(18px,1fr));min-width:990px}
+  .cg-h-corner{padding:7px 8px;font-size:9.5px}
+  .cg-h-month{padding:5px 2px;font-size:9.5px}
+  .cg-h-month .cg-h-year{font-size:8px}
+  .cg-h-week{padding:3px 0;font-size:8.5px}
+  .cg-label{padding:8px 9px;font-size:10.5px;min-height:32px}
+  .cg-label.cg-process .cg-pnum{width:20px;height:20px;font-size:9.5px}
+  .cg-label.cg-process .cg-ptitle{font-size:10.5px}
+  .cg-label.cg-activity{padding-left:22px;font-size:9.5px;min-height:28px}
+  .cg-label.cg-activity .cg-anum{font-size:9px;min-width:24px;padding:1px 4px}
+  .cg-bar{height:18px;font-size:8.5px;padding:0 5px}
   .cg-bar.cg-bar-process{height:22px;font-size:9px}
   .cg-bar.cg-bar-activity{height:14px;font-size:8px}
+  .cg-milestone{width:18px;height:18px;font-size:9px}
 }
-body.dark .cg-h-label,body.dark .cg-h-month{background:#1a2332;color:#e2e8f0;border-bottom-color:#f5921d}
-body.dark .cg-row .cg-label{background:#1a2332;color:#e2e8f0}
-body.dark .cg-row.cg-activity .cg-cell{background:rgba(255,255,255,.012)}
-body.dark .cg-cell{background:#1a2332}
-body.dark .cg-row .cg-label:hover{background:#243043}
+body.dark .cg-h-corner{background:linear-gradient(135deg,#020617,#0c1f36)}
+body.dark .cg-h-month{background:#0c1f36;color:#e2e8f0}
+body.dark .cg-h-week{background:#1a2332;color:#cbd5e1}
+body.dark .cg-label{background:#1a2332;color:#e2e8f0;border-right-color:#2d3748}
+body.dark .cg-label.cg-process{background:linear-gradient(90deg,#243043,#1a2332)}
+body.dark .cg-label.cg-process:hover{background:linear-gradient(90deg,rgba(245,146,29,.08),#1a2332)}
+body.dark .cg-label.cg-activity{background:#1a2332;color:#94a3b8}
+body.dark .cg-lane{background-color:#1a2332}
+body.dark .cg-lane.cg-lane-activity{background-color:rgba(255,255,255,.012)}
 body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </style>
 </head>
@@ -4656,7 +4776,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v44.9</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.0</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -4784,7 +4904,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v44.9</span>
+        <span>&#127919; v45.0</span>
         <span>&#128197; 18 Mayo 2026</span>
         <span>&#128202; 55 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -8577,8 +8697,8 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
   <!-- KPIs resumen -->
   <div class="cg-kpis">
     <div class="cg-kpi"><div class="cg-kpi-ico">&#128203;</div><div class="cg-kpi-num">7</div><div class="cg-kpi-lbl">Macroprocesos</div></div>
-    <div class="cg-kpi"><div class="cg-kpi-ico">&#9881;</div><div class="cg-kpi-num">22</div><div class="cg-kpi-lbl">Actividades</div></div>
-    <div class="cg-kpi"><div class="cg-kpi-ico">&#128197;</div><div class="cg-kpi-num">11</div><div class="cg-kpi-lbl">Meses</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#9881;</div><div class="cg-kpi-num">30</div><div class="cg-kpi-lbl">Actividades</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico">&#128197;</div><div class="cg-kpi-num">42</div><div class="cg-kpi-lbl">Semanas</div></div>
     <div class="cg-kpi"><div class="cg-kpi-ico">&#128197;</div><div class="cg-kpi-num">Ago 25 &mdash; Jun 26</div><div class="cg-kpi-lbl">Per&iacute;odo</div></div>
     <div class="cg-kpi"><div class="cg-kpi-ico">&#128104;&#8205;&#128187;</div><div class="cg-kpi-num">H&iacute;brida</div><div class="cg-kpi-lbl">Modalidad</div></div>
   </div>
@@ -8588,9 +8708,26 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     <button class="cg-f-btn active" data-filter="all" onclick="cgFilter('all',this)"><span class="cg-f-dot" style="background:#475569"></span> Todos los procesos</button>
   </div>
 
-  <!-- Carta Gantt -->
+  <!-- Acciones rápidas -->
+  <div class="cg-actions">
+    <button class="cg-act-btn" onclick="cgExpandAll()"><span>&#9660;</span> Expandir todos</button>
+    <button class="cg-act-btn" onclick="cgCollapseAll()"><span>&#9650;</span> Colapsar todos</button>
+  </div>
+
+  <!-- Leyenda -->
+  <div class="cg-legend">
+    <span class="cg-legend-item"><span class="cg-legend-bar cg-l-process"></span> Macroproceso (resumen)</span>
+    <span class="cg-legend-item"><span class="cg-legend-bar cg-l-activity"></span> Actividad espec&iacute;fica</span>
+    <span class="cg-legend-item"><span class="cg-legend-bar cg-l-milestone"></span> Hito / entrega final</span>
+    <span class="cg-legend-item" style="margin-left:auto;font-style:italic">&#128072; Toca un macroproceso para ver sus actividades semana por semana</span>
+  </div>
+
+  <!-- Carta Gantt scrollable -->
   <div class="cg-wrap">
-    <div class="cg-chart" id="cgChart" role="table" aria-label="Carta Gantt PLADECO 2025-2032"></div>
+    <div class="cg-scroll">
+      <div class="cg-chart" id="cgChart" role="table" aria-label="Carta Gantt PLADECO 2025-2032 por semanas"></div>
+    </div>
+    <div class="cg-scroll-hint">&#10132; Desliza horizontalmente para ver las 42 semanas del cronograma</div>
   </div>
 
   <!-- Tooltip -->
@@ -9789,10 +9926,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v44.9</span>
+  <span class="ub-ver">v45.0</span>
   &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.0</strong> <span class="ub-date">18 May 2026</span><br>&#128197;&#9889; **v45.0 &middot; Carta Gantt REDISE&Ntilde;ADA con granularidad SEMANAL (42 semanas)**. **SOLICITUD DEL USUARIO**: refinar la carta gantt anterior (v44.9 ten&iacute;a granularidad MENSUAL) para coincidir con el archivo Excel original entregado por SECPLAC, que tiene precisi&oacute;n de SEMANAS (Ago S3, Ago S4, Sep S1-S4, hasta Jun S4 = 42 semanas en total). **CAMBIOS PRINCIPALES**: (1) **CG_WEEKS** nuevo array con 42 entradas que mapean cada semana a su mes y a&ntilde;o. (2) **Helper cgWi(mes,semana)** que convierte notaci&oacute;n humana en &iacute;ndice de semana 0-41. (3) **CSS Grid 280px+repeat(42,1fr)** con header de DOS niveles: fila 1 meses (con grid-column:span N) + fila 2 semanas. (4) **Layout refactorizado** con label (col 1) y lane (cols 2..-1) con bars absolutamente posicionados por left/width %. (5) **CG_DATA reescrito** con los 7 procesos exactos del Excel SECPLAC: P1 Recopilaci&oacute;n+Puesta en Marcha (Ago S3 - Sep S4), P2 An&aacute;lisis Te&oacute;rico (Sep S3 - Nov S2), P3 Entrevistas Funcionarios (Nov S2 - Ene S2), P4 Entrevista Sociedad Civil (Ene S2 - Mar S3), P5 Encuesta Masiva (Ago S3 - Ene S4), P6 Recopilaci&oacute;n PLADECO (Mar S3 - May S3), P7 Presentaci&oacute;n y Rendici&oacute;n Cuentas (May S3 - Jun S4). **30 actividades** con duraciones inferidas seg&uacute;n secuencia del proceso. (6) **Hito final &#127942;**: actividad 7.4 &laquo;Documento Actualizaci&oacute;n PLADECO entregado&raquo; (Jun S4) como diamante rotado 45deg. (7) **Header sticky de dos niveles** con nombres completos de mes + year suffix. (8) **Vertical guidelines** en lanes con gradiente. (9) **Tarjetas narrativas** con rango Ago S3 25 → Sep S4 25 y semanas. (10) **Botones Expandir/Colapsar todos**. (11) **Leyenda** con muestras (gradient/sol&iacute;do/diamante). (12) **P1 abierto por defecto**. (13) **KPI cards**: 7 Macroprocesos, **30 Actividades**, **42 Semanas**, Ago25-Jun26, H&iacute;brida. (14) **Indicador de scroll** horizontal. (15) **Tooltip mejorado** con per&iacute;odo &laquo;Ago S3 2025 → Sep S4 2025&raquo;. (16) **Min-width 1280px** chart (990px mobile). (17) **Dark mode** revisado. **NOMBRES CORREGIDOS**: P3 Entrevista Funcionarios, P5 Encuesta Masiva (antes P7), P6 Recopilaci&oacute;n PLADECO (antes Comunidad), P7 Presentaci&oacute;n y Rendici&oacute;n (nuevo). Cache SW v61.9 → v62.0. **NOTA**: las semanas espec&iacute;ficas fueron inferidas a partir del orden secuencial del Excel; si requieres ajustar alguna duraci&oacute;n, indica el rango.</div>
     <div class="ub-entry"><strong>v44.9</strong> <span class="ub-date">18 May 2026</span><br>&#128197;&#9889; **v44.9 &middot; Nueva Carta Gantt Interactiva PLADECO 2025-2032**. **SOLICITUD DEL USUARIO**: integrar al portal como elemento interactivo la nueva carta gantt del proceso PLADECO entregada por SECPLAC en PDF (143 KB). **IMPLEMENTACI&Oacute;N**: (1) **PDF integrado** en `docs/PLADECO_Cronograma_2025-2032.pdf`. (2) **Nueva secci&oacute;n `#cronograma-gantt`** en Cap&iacute;tulo VII (Seguimiento) despu&eacute;s de #financiamiento. Header con badge naranja, t&iacute;tulo &laquo;&#128197; Cronograma del Proceso PLADECO 2025-2032&raquo;, descripci&oacute;n con 7 macroprocesos / 22 actividades / 11 meses Ago 2025 - Jun 2026. (3) **CTA descarga prominente** con gradient naranja-verde y bot&oacute;n grande &laquo;&#128229; Descargar PDF&raquo; con efecto hover (translateY -2px + box-shadow expandido). (4) **5 KPI cards**: 7 Macroprocesos, 22 Actividades, 11 Meses, Ago 25 - Jun 26, Modalidad H&iacute;brida. (5) **Filtros pill** (8 botones: Todos + 7 procesos con dot identificador). (6) **Carta Gantt CSS Grid** `240px repeat(11,minmax(54px,1fr))` con header sticky (11 meses Ago-Jun). 7 filas de macroprocesos clickables (toggle expand) + sub-filas de actividades cuando abiertos. Barras absolutas posicionadas con `right:calc(-N*100% + 4px)` para extenderse N columnas. (7) **Array `CG_DATA`** con 7 procesos. Colores: P1 navy #1a3d8f, P2 verde #2d9a4d, P3 naranja #f5921d, P4 granate #c0392b, P5 violeta #7c3aed, P6 cyan #0891b2, P7 ambar #d97706. (8) **Lista narrativa de tarjetas** debajo del gantt con resumen de cada proceso (n&uacute;mero, icono, t&iacute;tulo, per&iacute;odo, lista de actividades) que respeta filtro activo. (9) **Tooltip flotante** al hover de barras (t&iacute;tulo, per&iacute;odo, meta), posicionado din&aacute;micamente con `cgMoveTip()` para no salir del viewport. (10) **3 cards de notas**: Modalidad H&iacute;brida, Evidencia del Trabajo, Gobernanza Polic&eacute;ntrica (Ostrom 2010). (11) **Sec-relacionadas** con 5 enlaces (#equipo, #sociedad-civil, #diagnostico-institucional, #voz-vecinos, #encuesta). (12) **`cgInit()` lazy** v&iacute;a IntersectionObserver (rootMargin 200px). (13) **Navegaci&oacute;n agregada** en sidebar group 6, quick-index group 6, TOC del resumen y sectionNames del breadcrumb. (14) **Mobile responsive**: grid columns 160px+44px, paddings/fontSizes compactados, CTA en columna. (15) **Dark mode** con estilos espec&iacute;ficos `body.dark .cg-*`. **PROCESOS** (del PDF SECPLAC): P1 Recopilaci&oacute;n+Puesta en Marcha (Ago-Sep), P2 An&aacute;lisis Te&oacute;rico (Ago-Oct), P3 Cuanti/Cuali (Sep-Nov), P4 Entrevistas Institucionales (Oct-Dic), P5 Entrevista Sociedad Civil (Nov-Ene), P6 Entrevista Comunidad (Dic-Mar), P7 Encuesta Masiva (Ago-Jun, todo el per&iacute;odo). Cache SW v61.8 &rarr; v61.9.</div>
     <div class="ub-entry"><strong>v44.8</strong> <span class="ub-date">18 May 2026</span><br>&#128194;&#11015; **v44.8 &middot; Diagramas Metodol&oacute;gicos PLADECO disponibles para descarga**. **SOLICITUD DEL USUARIO**: agregar la carpeta `Diagramas PLADECO 2025-2035` a la secci&oacute;n de documentos para descarga. **ACCIONES REALIZADAS**: (1) **Carpeta `/diagramas/` creada** en el portal con los 16 esquemas originales del usuario, renombrados a nombres URL-safe (`01_composicion_gobernanza_institucional.jpg` &hellip; `16_proceso_diagnostico_mixto.jpg`), tama&ntilde;o total ~3.1 MB. (2) **Nueva sub-secci&oacute;n `#diagramas`** insertada dentro de `#documentos`, entre los Entregables y los Gr&aacute;ficos del Proceso, con sec-header propio (badge naranja &laquo;Esquemas &middot; Metodolog&iacute;a&raquo;). (3) **Array JS `DIAGRAMAS`** con 16 entradas (categor&iacute;as: Gobernanza, Estructura, Diagn&oacute;stico, Etnograf&iacute;a, Planificaci&oacute;n, Metodolog&iacute;a, Marco normativo, Participaci&oacute;n) + funci&oacute;n `renderDiagramas()` que dibuja una grid responsiva `diag-grid` con thumbnails 4:3 lazy-loaded. (4) **Lightbox dedicado `#diagLightbox`** independiente del de Galer&iacute;a, con: bot&oacute;n &laquo;Descargar JPG&raquo; flotante con `download` HTML5, navegaci&oacute;n &larr;/&rarr;/Esc por teclado, contador `(idx/total)`. (5) **Cada card incluye** thumb clickeable + badge num&eacute;rico + categor&iacute;a + t&iacute;tulo + dos botones (&laquo;Ver&raquo; y &laquo;Descargar&raquo; nativo via `download` attribute). (6) **Navegaci&oacute;n actualizada**: agregada entrada `#diagramas` en sidebar Cap.VIII (entre Entregables y Gr&aacute;ficos), Quick-Index final, Command Palette, breadcrumbs (`sectionNames`) y array `sections` del grupo &laquo;Proceso y Recursos&raquo;. (7) **CSS `.diag-grid` / `.diag-card`** nuevo bloque con dark-mode + responsive mobile (grid min-150px &lt;560px, font reducido). (8) **Service Worker v61.7 &rarr; v61.8**, cache busting autom&aacute;tico (los JPG quedan en CACHE_IMG bajo cache-first on-demand, no en STATIC para no inflar el pre-cache). Parsing HTML/JS validado. **PR&Oacute;XIMOS PASOS**: si requieres categorizaci&oacute;n adicional, filtros o reordenamiento de los diagramas, indicame el criterio.</div>
     <div class="ub-entry"><strong>v44.7</strong> <span class="ub-date">18 May 2026</span><br>&#10060;&#128197; **v44.7 &middot; Eliminado todo lo relacionado con cronogramas y fases**. **SOLICITUD DEL USUARIO**: remover toda la informaci&oacute;n de cronogramas y fases del PLADECO en el sitio web porque est&aacute; elaborando una nueva carta gantt y procesos que se agregar&aacute;n m&aacute;s adelante. **ACCIONES REALIZADAS**: (1) **Secci&oacute;n `#cronograma` eliminada**: removida la secci&oacute;n &laquo;Hoja de Ruta &amp; Proceso PLADECO&raquo; completa (1.112 chars) con sus dos tabs (Hoja de Ruta 2025-2035 + Proceso PLADECO). (2) **Funciones JS eliminadas**: `renderTimelinePladeco()` (1.561 chars, render del timeline horizontal) y `switchCronoTab()` (336 chars, conmutador de pesta&ntilde;as del cronograma). (3) **Llamadas de init removidas**: la llamada `renderTimelinePladeco()` del init principal del portal. (4) **Enlaces de navegaci&oacute;n limpiados**: 7 enlaces a `#cronograma` eliminados del sidebar, quick-index, sec-relacionadas y dem&aacute;s lugares. Entrada del buscador full-text removida. (5) **CSS hu&eacute;rfano eliminado**: bloque `.tl-pladeco*` (Timeline Horizontal Hoja de Ruta) de ~3.186 chars y `.crono-tab*` (Cronograma Tab Switcher) de ~914 chars. (6) **Viz-card &laquo;Hoja de Ruta PLADECO 2025-2035&raquo;** eliminada de #viz. (7) **Item de galer&iacute;a `G06_Gantt_2026_2035.png`** removido del array `GRAFICOS` de descargas. (8) **Item `MX04_Hoja_Ruta_Metas.png`** removido del array de gr&aacute;ficos matriciales. (9) **Referencia `cronograma:'Hoja de Ruta'`** removida del objeto `sectionNames` usado por el sistema de breadcrumbs. **TOTAL REDUCCI&Oacute;N**: ~8.600 chars (-0.4%) eliminados del HTML. Parsing JS validado (1.057k chars OK). **PR&Oacute;XIMOS PASOS**: el usuario integrar&aacute; en futuras versiones su nueva carta gantt y procesos del PLADECO. Cache SW v61.6 &rarr; v61.7.</div>
@@ -10003,7 +10141,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 18 Mayo 2026 &middot; v44.9</span>
+    <span>Actualizado: 18 Mayo 2026 &middot; v45.0</span>
   </div>
 </footer>
 
@@ -14919,68 +15057,153 @@ function ictInit(){
 })();
 
 // ══════════════════════════════════════════════════════
-// v44.8 · CARTA GANTT INTERACTIVA PLADECO 2025-2032
+// v45.0 · CARTA GANTT INTERACTIVA POR SEMANAS · PLADECO 2025-2032
+// Granularidad: 42 semanas (Ago S3 → Jun S4)
 // ══════════════════════════════════════════════════════
-var CG_MONTHS=[
-  {ab:'Ago',num:'2025'},{ab:'Sep',num:'2025'},{ab:'Oct',num:'2025'},
-  {ab:'Nov',num:'2025'},{ab:'Dic',num:'2025'},{ab:'Ene',num:'2026'},
-  {ab:'Feb',num:'2026'},{ab:'Mar',num:'2026'},{ab:'Abr',num:'2026'},
-  {ab:'May',num:'2026'},{ab:'Jun',num:'2026'}
+var CG_MONTHS_DEF=[
+  {ab:'Ago',name:'Agosto',year:'2025',weeks:[3,4]},
+  {ab:'Sep',name:'Septiembre',year:'2025',weeks:[1,2,3,4]},
+  {ab:'Oct',name:'Octubre',year:'2025',weeks:[1,2,3,4]},
+  {ab:'Nov',name:'Noviembre',year:'2025',weeks:[1,2,3,4]},
+  {ab:'Dic',name:'Diciembre',year:'2025',weeks:[1,2,3,4]},
+  {ab:'Ene',name:'Enero',year:'2026',weeks:[1,2,3,4]},
+  {ab:'Feb',name:'Febrero',year:'2026',weeks:[1,2,3,4]},
+  {ab:'Mar',name:'Marzo',year:'2026',weeks:[1,2,3,4]},
+  {ab:'Abr',name:'Abril',year:'2026',weeks:[1,2,3,4]},
+  {ab:'May',name:'Mayo',year:'2026',weeks:[1,2,3,4]},
+  {ab:'Jun',name:'Junio',year:'2026',weeks:[1,2,3,4]}
 ];
+var CG_WEEKS=[];
+CG_MONTHS_DEF.forEach(function(m,mi){
+  m.weeks.forEach(function(w){
+    CG_WEEKS.push({month:m.ab,monthName:m.name,monthIdx:mi,week:w,year:m.year});
+  });
+});
+var CG_TOTAL_WEEKS=CG_WEEKS.length; // 42
+function cgWi(monthAb,week){
+  for(var i=0;i<CG_WEEKS.length;i++){
+    if(CG_WEEKS[i].month===monthAb&&CG_WEEKS[i].week===week) return i;
+  }
+  return 0;
+}
+function cgPeriodLabel(s,e){
+  var a=CG_WEEKS[s],b=CG_WEEKS[e];
+  return a.month+' S'+a.week+' '+a.year+' → '+b.month+' S'+b.week+' '+b.year;
+}
+// Helper alias compatibilidad con código antiguo de tarjetas (lista narrativa)
+var CG_MONTHS=CG_MONTHS_DEF.map(function(m){return {ab:m.ab,num:m.year};});
+
 var CG_DATA=[
-  {id:'P1',num:'1',icon:'\u{1F4CB}',title:'Recopilación de Información y Puesta en Marcha',color1:'#1a3d8f',color2:'#3461b8',start:0,end:1,
+  {id:'P1',num:'1',icon:'\u{1F4CB}',title:'Recopilación de Información y Puesta en Marcha',
+    color1:'#1a3d8f',color2:'#3461b8',
+    start:cgWi('Ago',3),end:cgWi('Sep',4),
     activities:[
-      {num:'1.1',title:'Composición de equipo Formulación PLADECO 2026-2032',start:0,end:0},
-      {num:'1.2',title:'Recopilación de Instrumentos de Planificación Institucionales',start:0,end:1}
+      {num:'1',  title:'Composición de equipo Formulación PLADECO 2025-2035',
+        start:cgWi('Ago',3),end:cgWi('Ago',4)},
+      {num:'1.1',title:'Recopilación de Instrumentos de Planificación Institucionales (Matriz PLADECO, Participación Ciudadana, Ordenanzas)',
+        start:cgWi('Ago',4),end:cgWi('Sep',2)},
+      {num:'1.2',title:'Formulación documento (oficial) de Metodología PLADECO y Presentación',
+        start:cgWi('Sep',2),end:cgWi('Sep',3)},
+      {num:'1.3',title:'Preparación Presentación para SECPLAN, ALCALDÍA y CONCEJALES sobre instrumentos de planificación',
+        start:cgWi('Sep',3),end:cgWi('Sep',4)}
     ]},
-  {id:'P2',num:'2',icon:'\u{1F4D6}',title:'Análisis Teórico y Análisis de Datos',color1:'#2d9a4d',color2:'#5cb775',start:0,end:2,
+  {id:'P2',num:'2',icon:'\u{1F4D6}',title:'Análisis Teórico y Análisis de Datos',
+    color1:'#2d9a4d',color2:'#5cb775',
+    start:cgWi('Sep',3),end:cgWi('Nov',2),
     activities:[
-      {num:'2.1',title:'Preparación Presentación SECPLAN, Alcaldía y Concejales',start:0,end:0},
-      {num:'2.2',title:'Explicar metodología PLADECO 2025-2035',start:1,end:1},
-      {num:'2.3',title:'Análisis Teórico y Análisis de Datos comunales',start:1,end:2},
-      {num:'2.4',title:'Creación de Bases de Datos Comunales y Regionales',start:1,end:2}
+      {num:'2',  title:'Creación de Bases de Datos Comunales y Regionales',
+        start:cgWi('Sep',3),end:cgWi('Oct',1)},
+      {num:'2.1',title:'Análisis Cuantitativo PLADECO 2025-2035',
+        start:cgWi('Oct',1),end:cgWi('Oct',3)},
+      {num:'2.2',title:'Análisis Cualitativo PLADECO 2025-2035',
+        start:cgWi('Oct',2),end:cgWi('Oct',4)},
+      {num:'2.3',title:'Formulación análisis de datos basado en Gráficos, Explicación y Ejercicios de Planificación',
+        start:cgWi('Oct',4),end:cgWi('Nov',1)},
+      {num:'2.4',title:'Preparación presentación SECPLAN, ALCALDÍA y CONCEJALES sobre Datos Cuanti y Cuali (Presentar Concejo)',
+        start:cgWi('Nov',1),end:cgWi('Nov',2)}
     ]},
-  {id:'P3',num:'3',icon:'\u{1F4CA}',title:'Análisis Cuantitativo y Cualitativo PLADECO 2025-2035',color1:'#f5921d',color2:'#fbb763',start:1,end:3,
+  {id:'P3',num:'3',icon:'\u{1F3DB}',title:'Proceso de Entrevista de Funcionarios Municipales',
+    color1:'#c0392b',color2:'#e36052',
+    start:cgWi('Nov',2),end:cgWi('Ene',2),
     activities:[
-      {num:'3.1',title:'Formulación análisis de datos basado en Gráficos',start:1,end:2},
-      {num:'3.2',title:'Preparación presentación SECPLAN sobre Datos Cuanti y Cuali',start:2,end:2},
-      {num:'3.3',title:'Proceso de Entrevista de Funcionarios Municipales',start:2,end:3},
-      {num:'3.4',title:'Identificación de Actores según Categorización (Gobernanza Policéntrica)',start:2,end:3}
+      {num:'3',  title:'Identificación de Actores según Categorización (Gobernanza Policéntrica)',
+        start:cgWi('Nov',2),end:cgWi('Nov',3)},
+      {num:'3.1',title:'Planificación de reuniones Actores Institucionales',
+        start:cgWi('Nov',3),end:cgWi('Nov',4)},
+      {num:'3.2',title:'Proceso de entrevista a Alcalde, SECPLAN, DIRECTORES, CONCEJALES y Funcionarios Públicos',
+        start:cgWi('Nov',4),end:cgWi('Dic',3)},
+      {num:'3.3',title:'Recopilación resultados entrevistas basado en datos cuanti/cuali (Acta de Consentimiento)',
+        start:cgWi('Dic',3),end:cgWi('Ene',1)},
+      {num:'3.4',title:'Preparación presentación SECPLAN, ALCALDÍA y CONCEJALES sobre resultados entrevistas N°1',
+        start:cgWi('Ene',1),end:cgWi('Ene',2)}
     ]},
-  {id:'P4',num:'4',icon:'\u{1F3DB}',title:'Entrevistas Institucionales',color1:'#c0392b',color2:'#e36052',start:2,end:4,
+  {id:'P4',num:'4',icon:'\u{1F91D}',title:'Proceso Entrevista a Sociedad Civil',
+    color1:'#7c3aed',color2:'#9b66f3',
+    start:cgWi('Ene',2),end:cgWi('Mar',3),
     activities:[
-      {num:'4.1',title:'Planificación de reuniones Actores Institucionales',start:2,end:2},
-      {num:'4.2',title:'Proceso entrevista a Alcalde, SECPLAN, Directores y Concejales',start:2,end:3},
-      {num:'4.3',title:'Recopilación resultados entrevistas (Acta de Consentimiento)',start:3,end:3},
-      {num:'4.4',title:'Preparación presentación resultados entrevistas N°1',start:3,end:4}
+      {num:'4',  title:'Solicitud a DIDECO de las OSC y Actores Relevantes de interés',
+        start:cgWi('Ene',2),end:cgWi('Ene',3)},
+      {num:'4.1',title:'Identificación de Actores Relevantes según Categorización (Gobernanza Policéntrica)',
+        start:cgWi('Ene',3),end:cgWi('Feb',1)},
+      {num:'4.2',title:'Proceso entrevista actores locales: educación básica/media/universitaria, adultos mayores, clubes deportivos, actores económicos, agrupaciones',
+        start:cgWi('Feb',1),end:cgWi('Mar',1)},
+      {num:'4.3',title:'Recopilación resultados entrevistas basado en datos cuanti/cuali (Acta de Consentimiento)',
+        start:cgWi('Mar',1),end:cgWi('Mar',2)},
+      {num:'4.4',title:'Preparación presentación SECPLAN, ALCALDÍA y CONCEJALES sobre resultados entrevistas N°2',
+        start:cgWi('Mar',2),end:cgWi('Mar',3)}
     ]},
-  {id:'P5',num:'5',icon:'\u{1F91D}',title:'Proceso Entrevista a Sociedad Civil',color1:'#7c3aed',color2:'#9b66f3',start:3,end:5,
+  {id:'P5',num:'5',icon:'\u{1F4E2}',title:'Proceso de Encuesta Masiva',
+    color1:'#d97706',color2:'#f0a73b',
+    start:cgWi('Ago',3),end:cgWi('Ene',4),
     activities:[
-      {num:'5.1',title:'Solicitud a DIDECO de las OSC y Actores Relevantes',start:3,end:3},
-      {num:'5.2',title:'Identificación de Actores Relevantes (Gobernanza Policéntrica)',start:3,end:5}
+      {num:'5',  title:'Creación de Formulario Google para Encuesta Masiva (Ago - Dic)',
+        start:cgWi('Ago',3),end:cgWi('Sep',2)},
+      {num:'5.1',title:'Publicación Encuesta Masiva (Ago - Dic)',
+        start:cgWi('Sep',2),end:cgWi('Dic',4)},
+      {num:'5.2',title:'Recopilación resultados encuesta basado en datos cuanti/cuali (Acta de Consentimiento)',
+        start:cgWi('Ene',1),end:cgWi('Ene',4)}
     ]},
-  {id:'P6',num:'6',icon:'\u{1F5E3}',title:'Proceso Entrevista Comunidad',color1:'#0891b2',color2:'#22b4d6',start:4,end:7,
+  {id:'P6',num:'6',icon:'\u{1F5C3}',title:'Proceso de Recopilación de Información PLADECO',
+    color1:'#0891b2',color2:'#22b4d6',
+    start:cgWi('Mar',3),end:cgWi('May',3),
     activities:[
-      {num:'6.1',title:'Entrevista actores locales (educación, adultos mayores, clubes, OSC)',start:4,end:6},
-      {num:'6.2',title:'Recopilación resultados entrevistas comunitarias',start:5,end:7},
-      {num:'6.3',title:'Acta de Consentimiento firmadas',start:5,end:7},
-      {num:'6.4',title:'Preparación presentación resultados entrevistas N°2',start:6,end:7}
+      {num:'6',  title:'Recopilación de la documentación de los procesos anteriores en un solo documento',
+        start:cgWi('Mar',3),end:cgWi('Abr',1)},
+      {num:'6.1',title:'Mapeo de Zonas de Participación, Identificación Áreas de interés (frecuencia) y Conexión de Áreas Claves',
+        start:cgWi('Abr',1),end:cgWi('Abr',2)},
+      {num:'6.2',title:'Mantener Coherencia de Objetivos Estratégicos · Resultados Cuanti/Cuali y Entrevistas',
+        start:cgWi('Abr',2),end:cgWi('Abr',3)},
+      {num:'6.3',title:'Formulación de documento PLADECO preliminar',
+        start:cgWi('Abr',3),end:cgWi('May',1)},
+      {num:'6.X',title:'Elaboración de Panel Abierto de Datos Comunales y Resultados Preliminares PLADECO',
+        start:cgWi('May',1),end:cgWi('May',2)},
+      {num:'6.4',title:'Preparación presentación SECPLAN & Alcaldía: Llamar Comisiones de Trabajo Concejo Municipal',
+        start:cgWi('May',2),end:cgWi('May',3)}
     ]},
-  {id:'P7',num:'7',icon:'\u{1F4E2}',title:'Proceso de Encuesta Masiva y Recopilación',color1:'#d97706',color2:'#f0a73b',start:0,end:10,
+  {id:'P7',num:'7',icon:'\u{1F4DA}',title:'Proceso de Presentación y Rendición de Cuentas Documento Final',
+    color1:'#831843',color2:'#be185d',
+    start:cgWi('May',3),end:cgWi('Jun',4),
     activities:[
-      {num:'7.1',title:'Creación Formulario Google Encuesta Masiva',start:0,end:4},
-      {num:'7.2',title:'Publicación y difusión Encuesta Masiva',start:4,end:9},
-      {num:'7.3',title:'Presentación y Votación para la Actualización PLADECO 2025-2035',start:9,end:10}
+      {num:'7',  title:'Delta para realizar procesos de correcciones o mejoras según feedback de Stakeholders',
+        start:cgWi('May',3),end:cgWi('May',4)},
+      {num:'7.2',title:'Revisión Matriz PLADECO 2025-2035: Realizar Comisiones de Trabajo Concejo Municipal',
+        start:cgWi('May',4),end:cgWi('Jun',2)},
+      {num:'7.3',title:'Presentación y Votación para la Actualización PLADECO 2025-2035',
+        start:cgWi('Jun',2),end:cgWi('Jun',3)},
+      {num:'7.4',title:'\u{1F3C6} Hito · Documento de Actualización PLADECO 2025-2035 entregado',
+        start:cgWi('Jun',4),end:cgWi('Jun',4),milestone:true}
     ]}
 ];
 var CG_S={openProcs:{},filter:'all'};
 function cgBuildFilters(){
   var row=document.getElementById('cgFilterRow');if(!row) return;
+  // limpiar previas (excepto el botón "Todos")
+  Array.prototype.slice.call(row.querySelectorAll('.cg-f-btn[data-filter]:not([data-filter="all"])')).forEach(function(b){b.remove();});
   CG_DATA.forEach(function(p){
     var b=document.createElement('button');
     b.className='cg-f-btn';
     b.setAttribute('data-filter',p.id);
-    b.innerHTML='<span class="cg-f-dot" style="background:'+p.color1+'"></span> '+p.num+'. '+p.title.split(' ').slice(0,2).join(' ');
+    b.innerHTML='<span class="cg-f-dot" style="background:'+p.color1+'"></span> '+p.num+'. '+p.title.split(' ').slice(0,3).join(' ');
     b.onclick=function(){cgFilter(p.id,b);};
     row.appendChild(b);
   });
@@ -14991,65 +15214,69 @@ function cgFilter(id,btn){
   if(btn) btn.classList.add('active');
   cgRender();
 }
+function cgPctL(s){return (s/CG_TOTAL_WEEKS*100).toFixed(4);}
+function cgPctW(s,e){return ((e-s+1)/CG_TOTAL_WEEKS*100).toFixed(4);}
 function cgRender(){
   var c=document.getElementById('cgChart');if(!c) return;
   var html='';
-  // Header
-  html+='<div class="cg-h-label">Macroproceso / Actividad</div>';
-  CG_MONTHS.forEach(function(m,i){html+='<div class="cg-h-month">'+m.ab+'<span class="cg-h-num">'+m.num+'</span></div>';});
-  // Rows
+  // Header row 1: corner + months (each spans its weeks)
+  html+='<div class="cg-h-corner">Macroproceso / Actividad</div>';
+  CG_MONTHS_DEF.forEach(function(m){
+    html+='<div class="cg-h-month" style="grid-column:span '+m.weeks.length+'">'+m.name+' <span class="cg-h-year">'+m.year.slice(-2)+'</span></div>';
+  });
+  // Header row 2: weeks
+  CG_WEEKS.forEach(function(w,i){
+    var isFirstWeekOfMonth=(i===0)||(CG_WEEKS[i-1].monthIdx!==w.monthIdx);
+    html+='<div class="cg-h-week'+(isFirstWeekOfMonth?' cg-h-week-mstart':'')+'">'+w.week+'</div>';
+  });
+  // Body
   CG_DATA.forEach(function(p){
     if(CG_S.filter!=='all'&&CG_S.filter!==p.id) return;
     var isOpen=!!CG_S.openProcs[p.id];
-    // Process row
-    html+='<div class="cg-row cg-process'+(isOpen?' open':'')+'" data-pid="'+p.id+'">';
-    html+='<div class="cg-label" onclick="cgToggleProcess(\''+p.id+'\')">'
+    var span=p.end-p.start+1;
+    // Process row label
+    html+='<div class="cg-label cg-process'+(isOpen?' open':'')+'" onclick="cgToggleProcess(\''+p.id+'\')">'
       +'<span class="cg-pnum" style="background:'+p.color1+'">'+p.num+'</span>'
-      +'<span style="flex:1">'+p.icon+' '+p.title+'</span>'
+      +'<span class="cg-ptitle">'+p.icon+' '+p.title+'</span>'
       +'<span class="cg-pchev">▶</span>'
       +'</div>';
-    for(var i=0;i<11;i++){
-      var hasBar=(i===p.start);
-      html+='<div class="cg-cell">';
-      if(hasBar){
-        var span=p.end-p.start+1;
-        var rightP=span===1?'4px':'calc('+(-100*(span-1))+'% + 4px)';
-        html+='<div class="cg-bar cg-bar-process" style="--cg-c1:'+p.color1+';--cg-c2:'+p.color2+';right:'+rightP+'" '
-          +'data-title="'+p.title.replace(/"/g,'&quot;')+'" '
-          +'data-period="'+CG_MONTHS[p.start].ab+' '+CG_MONTHS[p.start].num+' - '+CG_MONTHS[p.end].ab+' '+CG_MONTHS[p.end].num+'" '
-          +'data-meta="Proceso N°'+p.num+' · '+p.activities.length+' actividades · '+span+' meses" '
-          +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">'
-          +p.num+'. '+p.title.split(' ').slice(0,3).join(' ')+(p.title.split(' ').length>3?'...':'')
-          +'</div>';
-      }
-      html+='</div>';
-    }
-    html+='</div>';
-    // Activity rows (only if open)
+    // Process row lane
+    html+='<div class="cg-lane cg-lane-process">'
+      +'<div class="cg-bar cg-bar-process" style="left:'+cgPctL(p.start)+'%;width:'+cgPctW(p.start,p.end)+'%;background:linear-gradient(135deg,'+p.color1+','+p.color2+')" '
+      +'data-title="'+p.title.replace(/"/g,'&quot;')+'" '
+      +'data-period="'+cgPeriodLabel(p.start,p.end)+'" '
+      +'data-meta="Proceso N°'+p.num+' · '+p.activities.length+' actividades · '+span+' semanas" '
+      +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">'
+      +'<span class="cg-bar-txt">'+p.num+'. '+p.title.split(' ').slice(0,4).join(' ')+(p.title.split(' ').length>4?'…':'')+'</span>'
+      +'</div>'
+      +'</div>';
+    // Activities (only if expanded)
     if(isOpen){
       p.activities.forEach(function(a){
-        html+='<div class="cg-row cg-activity" data-pid="'+p.id+'" data-anum="'+a.num+'">';
-        html+='<div class="cg-label">'
+        var aspan=a.end-a.start+1;
+        html+='<div class="cg-label cg-activity">'
           +'<span class="cg-anum">'+a.num+'</span>'
-          +'<span style="flex:1">'+a.title+'</span>'
+          +'<span class="cg-atitle">'+a.title+'</span>'
           +'</div>';
-        for(var j=0;j<11;j++){
-          var hasABar=(j===a.start);
-          html+='<div class="cg-cell">';
-          if(hasABar){
-            var aspan=a.end-a.start+1;
-            var rightA=aspan===1?'4px':'calc('+(-100*(aspan-1))+'% + 4px)';
-            html+='<div class="cg-bar cg-bar-activity" style="--cg-c1:'+p.color1+';right:'+rightA+'" '
-              +'data-title="'+a.num+' — '+a.title.replace(/"/g,'&quot;')+'" '
-              +'data-period="'+CG_MONTHS[a.start].ab+' '+CG_MONTHS[a.start].num+' - '+CG_MONTHS[a.end].ab+' '+CG_MONTHS[a.end].num+'" '
-              +'data-meta="Actividad del Proceso N°'+p.num+' · '+aspan+' mes'+(aspan>1?'es':'')+'" '
-              +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">'
-              +a.num
-              +'</div>';
-          }
-          html+='</div>';
+        if(a.milestone){
+          html+='<div class="cg-lane cg-lane-activity">'
+            +'<div class="cg-milestone" style="left:'+cgPctL(a.start)+'%;background:'+p.color1+'" '
+            +'data-title="'+a.num+' — '+a.title.replace(/"/g,'&quot;')+'" '
+            +'data-period="'+cgPeriodLabel(a.start,a.end)+'" '
+            +'data-meta="\u{1F3C6} Hito final · Proceso N°'+p.num+'" '
+            +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">\u{1F3C6}</div>'
+            +'</div>';
+        } else {
+          html+='<div class="cg-lane cg-lane-activity">'
+            +'<div class="cg-bar cg-bar-activity" style="left:'+cgPctL(a.start)+'%;width:'+cgPctW(a.start,a.end)+'%;background:'+p.color1+'" '
+            +'data-title="'+a.num+' — '+a.title.replace(/"/g,'&quot;')+'" '
+            +'data-period="'+cgPeriodLabel(a.start,a.end)+'" '
+            +'data-meta="Actividad del Proceso N°'+p.num+' · '+aspan+' semana'+(aspan>1?'s':'')+'" '
+            +'onmouseenter="cgShowTip(event,this)" onmouseleave="cgHideTip()" onmousemove="cgMoveTip(event)">'
+            +'<span class="cg-bar-txt">'+a.num+'</span>'
+            +'</div>'
+            +'</div>';
         }
-        html+='</div>';
       });
     }
   });
@@ -15058,6 +15285,14 @@ function cgRender(){
 }
 function cgToggleProcess(id){
   CG_S.openProcs[id]=!CG_S.openProcs[id];
+  cgRender();
+}
+function cgExpandAll(){
+  CG_DATA.forEach(function(p){CG_S.openProcs[p.id]=true;});
+  cgRender();
+}
+function cgCollapseAll(){
+  CG_S.openProcs={};
   cgRender();
 }
 function cgRenderList(){
@@ -15071,10 +15306,11 @@ function cgRenderList(){
       +'<span class="cg-list-card-num" style="background:'+p.color1+'">'+p.num+'</span>'
       +'<div class="cg-list-card-title">'+p.icon+' '+p.title+'</div>'
       +'</div>'
-      +'<div class="cg-list-card-period">\u{1F4C5} '+CG_MONTHS[p.start].ab+' '+CG_MONTHS[p.start].num+' → '+CG_MONTHS[p.end].ab+' '+CG_MONTHS[p.end].num+' · '+span+' meses</div>'
+      +'<div class="cg-list-card-period">\u{1F4C5} '+cgPeriodLabel(p.start,p.end)+' · '+span+' semanas</div>'
       +'<ul class="cg-list-card-acts">';
     p.activities.forEach(function(a){
-      html+='<li><strong>'+a.num+'</strong> '+a.title+'</li>';
+      var as=cgPeriodLabel(a.start,a.end);
+      html+='<li><strong>'+a.num+'</strong> '+a.title+(a.milestone?' <span style="background:'+p.color1+';color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;margin-left:4px;font-weight:800">HITO</span>':'')+'<div style="font-size:10px;color:var(--text2);margin-top:2px;font-weight:600">\u{1F551} '+as+'</div></li>';
     });
     html+='</ul></div>';
   });
@@ -15085,7 +15321,7 @@ function cgShowTip(e,el){
   var title=el.getAttribute('data-title')||'';
   var period=el.getAttribute('data-period')||'';
   var meta=el.getAttribute('data-meta')||'';
-  t.innerHTML='<strong>'+title+'</strong><div>'+period+'</div><div class="cg-tt-meta"><span>'+meta+'</span></div>';
+  t.innerHTML='<strong>'+title+'</strong><div style="margin-top:4px"><span style="color:#fbbf24">\u{1F551}</span> '+period+'</div><div class="cg-tt-meta"><span>'+meta+'</span></div>';
   t.classList.add('visible');
   cgMoveTip(e);
 }
@@ -15104,6 +15340,8 @@ function cgHideTip(){
 function cgInit(){
   if(!document.getElementById('cgChart')) return;
   cgBuildFilters();
+  // Por defecto expandir P1 para que se vea ejemplo de actividades
+  CG_S.openProcs={P1:true};
   cgRender();
 }
 // Lazy init when section enters viewport
