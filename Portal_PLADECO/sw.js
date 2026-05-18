@@ -1,9 +1,9 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v61.0
+// PLADECO Rengo 2025-2035 · Service Worker v61.1
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v61.0: MAJOR v44.0 - auditoria + eliminacion trofeos + paleta tablas/graficos unificada
+// v61.1: hotfix v44.1 - Pulso del Portal compactado (visit-section/kpi/charts)
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v61.0';
+const CACHE_STATIC='pladeco-static-v61.1';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
