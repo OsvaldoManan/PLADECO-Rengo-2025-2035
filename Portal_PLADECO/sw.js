@@ -1,21 +1,16 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.13
+// PLADECO Rengo 2025-2035 · Service Worker v62.8
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v62.13: v45.13 - HOTFIX: reload race del SW corregido (eliminado setTimeout duplicado)
-// v62.12: v45.12 - HOTFIX: toast falso-alarmista removido
-// v62.11: v45.11 - SW endurecido: fetch con timeout 10s + fallback robusto
-// v62.10: v45.10 - MBHT armonizada al sistema de diseño del portal (overrides v2)
-// v62.9: v45.9 - Sección #mbht integrada (UAI-SUBDERE 2021) en Cap. III
-// v62.8: v45.8 - Sección #mapa-proyectos eliminada
-// v62.7: v45.7 - Refinamiento visual integral
-// v62.6: v45.6 - Sidebar comprimido bulletproof + cache invalidation
+// v62.8: v45.8 - Sección #mapa-proyectos eliminada (HTML + JS + CSS + enlaces)
+// v62.7: v45.7 - Refinamiento visual integral: contrastes WCAG + cards uniformes
+// v62.6: v45.6 - Sidebar comprimido bulletproof + cache invalidation agresivo
 // v62.5: v45.5 - Reorganización Cap. XII→XI + 14 badges uniformados
 // v62.4: v45.4 - ERD movida tras Matriz + botones share/PDF eliminados
 // v62.3: v45.3 - SNA duplicado corregido + nuevo gráfico Sankey
-// v62.2: v45.2 - ICT ampliado
+// v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.13';
+const CACHE_STATIC='pladeco-static-v62.8';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -104,42 +99,13 @@ function isHTML(req,url){
   return false;
 }
 
-/* ── Helper: fetch con timeout (network-first robusto) ── */
-function fetchWithTimeout(req, ms){
-  ms = ms || 10000;
-  return new Promise(function(resolve, reject){
-    var timer = setTimeout(function(){ reject(new Error('SW fetch timeout')); }, ms);
-    fetch(req).then(function(r){ clearTimeout(timer); resolve(r); })
-              .catch(function(e){ clearTimeout(timer); reject(e); });
-  });
-}
-
-/* ── Helper: fallback genérico cuando todo falla ── */
-function fallbackResponse(req, url, isHtmlReq){
-  if(isHtmlReq){
-    return caches.match('./index.html').then(function(idx){
-      if(idx) return idx;
-      return caches.match(OFFLINE_URL).then(function(off){
-        return off || new Response('<!DOCTYPE html><html><body style="font-family:system-ui;padding:40px;text-align:center"><h1>Portal PLADECO offline</h1><p>No hay conexión y la página aún no está cacheada. Reintenta en un momento.</p></body></html>',{
-          status:503,
-          headers:{'Content-Type':'text/html;charset=utf-8'}
-        });
-      });
-    });
-  }
-  return Promise.resolve(new Response('', {status: 504, statusText: 'Gateway Timeout (SW)'}));
-}
-
-/* ── Fetch: estrategia por tipo de recurso · v45.11 endurecido ── */
+/* ── Fetch: estrategia por tipo de recurso ── */
 self.addEventListener('fetch',function(e){
   var req=e.request;
   var url;
   try{url=new URL(req.url);}catch(err){return;}
 
   if(req.method!=='GET') return;
-  /* No interceptar requests cross-origin no-conocidos (ej: analytics, backends externos)
-     que podrían fallar y romper la página */
-  if(url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
   /* 1. OSM map tiles → cache-first, runtime cache */
   if(url.hostname.indexOf('tile.openstreetmap.org')>=0){
@@ -152,11 +118,11 @@ self.addEventListener('fetch',function(e){
             caches.open(CACHE_TILES).then(function(c){
               c.put(req,cl);
               trimCache(CACHE_TILES,MAX_TILE_CACHE);
-            }).catch(function(){/* cache full o error: ignore */});
+            });
           }
           return res;
         }).catch(function(){return new Response('',{status:404,statusText:'Tile offline'});});
-      }).catch(function(){return new Response('',{status:503,statusText:'Tile error'});})
+      })
     );
     return;
   }
@@ -173,40 +139,41 @@ self.addEventListener('fetch',function(e){
             caches.open(CACHE_IMG).then(function(c){
               c.put(req,cl);
               trimCache(CACHE_IMG,MAX_IMG_CACHE);
-            }).catch(function(){/* ignore cache errors */});
+            });
           }
           return res;
         }).catch(function(){
           // Si es una imagen crítica del portal y falla, devolver placeholder SVG
           return new Response('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="#e5e7eb"/><text x="50" y="55" text-anchor="middle" fill="#9ca3af" font-size="12" font-family="sans-serif">Offline</text></svg>',{status:200,headers:{'Content-Type':'image/svg+xml'}});
         });
-      }).catch(function(){
-        return new Response('',{status:503,statusText:'Image error'});
       })
     );
     return;
   }
 
-  /* 3. HTML / Navegación → NETWORK-FIRST con timeout + fallback robusto */
+  /* 3. HTML / Navegación → NETWORK-FIRST con fallback a offline.html */
   if(isHTML(req,url)){
     e.respondWith(
-      fetchWithTimeout(req, 10000).then(function(res){
+      fetch(req).then(function(res){
         if(res && res.ok){
           var cl=res.clone();
-          caches.open(CACHE_STATIC).then(function(c){c.put(req,cl);}).catch(function(){});
+          caches.open(CACHE_STATIC).then(function(c){c.put(req,cl);});
         }
         return res;
       }).catch(function(){
         return caches.match(req).then(function(r){
           if(r) return r;
-          return fallbackResponse(req, url, true);
+          return caches.match('./index.html').then(function(idx){
+            if(idx) return idx;
+            return caches.match(OFFLINE_URL);
+          });
         });
       })
     );
     return;
   }
 
-  /* 4. CSS / JS / Fuentes → stale-while-revalidate con fallback final */
+  /* 4. CSS / JS / Fuentes → stale-while-revalidate */
   e.respondWith(
     caches.match(req).then(function(cached){
       var networkPromise=fetch(req).then(function(res){
@@ -215,21 +182,13 @@ self.addEventListener('fetch',function(e){
           caches.open(CACHE_RUNTIME).then(function(c){
             c.put(req,cl);
             trimCache(CACHE_RUNTIME,MAX_RUNTIME_CACHE);
-          }).catch(function(){});
+          });
         }
         return res;
-      }).catch(function(){return cached || fallbackResponse(req, url, false);});
+      }).catch(function(){return cached;});
       return cached || networkPromise;
-    }).catch(function(){
-      return fallbackResponse(req, url, false);
     })
   );
-});
-
-/* ── Detección de SW errores → no debe romper navegación ── */
-self.addEventListener('error', function(e){
-  /* SW interno error: log a consola (visible en DevTools > Application > SW) */
-  try{ console.warn('[SW] runtime error:', e.message || e); }catch(_){}
 });
 
 /* ── Mensajes desde la página ── */
