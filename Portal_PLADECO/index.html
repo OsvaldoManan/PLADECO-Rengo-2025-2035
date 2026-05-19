@@ -75,7 +75,6 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* ───────── PALETA INSTITUCIONAL CANÓNICA · v45.21 ───────── */
   --primary:#0c1f36;--primary-light:#1a3d8f;--accent:#2d9a4d;--accent2:#f5921d;
   --eje1:#c0392b;--eje2:#f5921d;--eje3:#2d9a4d;--eje4:#1a3d8f;--eje5:#8B1A1A;--eje6:#2980b9;
   --bg:#f5f6f8;--card:#fff;--text:#1a2332;--text2:#5c6b7f;--text-secondary:#6b7c94;--border:#e0e4ea;
@@ -84,44 +83,6 @@
   --green:#2d9a4d;--green-light:#48c76e;--orange:#f5921d;--orange-light:#fdb94d;
   --blue:#1a3d8f;--blue-light:#2d5dcc;
   --muted:#6b7c94;
-
-  /* ───────── TOKENS SEMÁNTICOS · v45.21 (badges + estados) ───────── */
-  --c-success:#15803d;     --c-success-soft:#dcfce7;    --c-success-strong:#14532d;
-  --c-warn:#b45309;        --c-warn-soft:#fef3c7;       --c-warn-strong:#92400e;
-  --c-danger:#b91c1c;      --c-danger-soft:#fee2e2;     --c-danger-strong:#7f1d1d;
-  --c-info:#1d4ed8;        --c-info-soft:#dbeafe;       --c-info-strong:#1e3a8a;
-  --c-neutral:#475569;     --c-neutral-soft:#f1f5f9;    --c-neutral-strong:#1e293b;
-
-  /* ───────── BORDER RADIUS · escala unificada ───────── */
-  --rad-xs:4px; --rad-sm:6px; --rad-md:10px; --rad-lg:14px; --rad-full:9999px;
-
-  /* ───────── SHADOWS · escala unificada ───────── */
-  --sh-card:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
-  --sh-card-hover:0 4px 12px rgba(15,23,42,.08),0 2px 4px rgba(15,23,42,.06);
-  --sh-elev:0 10px 30px rgba(12,31,54,.10);
-
-  /* ───────── PADDING · cards ───────── */
-  --pad-card:18px 22px; --pad-card-lg:22px 26px; --pad-card-sm:12px 16px;
-
-  /* ───────── ROADMAP DE MIGRACIÓN INCREMENTAL · v45.21 ─────────
-     Los tokens semánticos arriba (--c-success/warn/danger/info/neutral)
-     reemplazan los 110 inline style="background:#xxx;color:#xxx" en badges.
-     Uso recomendado para código nuevo:  <div class="badge badge--success">...</div>
-
-     Los tokens de radius (--rad-xs/sm/md/lg/full) reemplazan los 24
-     valores literales de border-radius (10/8/12/6/4/14/20/16/3/2/18/etc).
-     Uso recomendado:  border-radius: var(--rad-md);
-
-     Los tokens de shadow (--sh-card/-hover/-elev) reemplazan los 182
-     box-shadow literales con 13 niveles de opacidad sin sistema.
-
-     BREAKPOINTS CANÓNICOS · 3 niveles:
-        Mobile:   max-width 640px
-        Tablet:   max-width 900px
-        Desktop:  min-width 901px
-     (Los 18 breakpoints históricos —560/600/700/760/768/1024/1100/1300/1380—
-      siguen funcionando pero deben unificarse incrementalmente.)
-  ───────────────────────────────────────────────────────────────── */
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
 body{font-family:'Inter','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease;overflow-x:hidden;max-width:100vw}
@@ -3642,23 +3603,15 @@ body.dark{
 
 /* Badge global · tamaño y peso consistentes */
 .badge{
-  font-size:11px!important;
+  font-size:10px!important;
   font-weight:800!important;
   letter-spacing:.075em!important;
   text-transform:uppercase!important;
   padding:4px 10px!important;
-  border-radius:var(--rad-full)!important;
+  border-radius:999px!important;
   display:inline-block!important;
   line-height:1.45!important;
 }
-
-/* Badge variants · v45.21 (alternativa al style="..." inline) */
-.badge--success{background:var(--c-success-soft)!important;color:var(--c-success-strong)!important;}
-.badge--warn{background:var(--c-warn-soft)!important;color:var(--c-warn-strong)!important;}
-.badge--danger{background:var(--c-danger-soft)!important;color:var(--c-danger-strong)!important;}
-.badge--info{background:var(--c-info-soft)!important;color:var(--c-info-strong)!important;}
-.badge--neutral{background:var(--c-neutral-soft)!important;color:var(--c-neutral-strong)!important;}
-.badge--primary{background:rgba(45,154,77,.12)!important;color:#15803d!important;}
 
 /* Hover unificado para cards interactivas */
 .viz-card:hover,.kpi:hover,.eje-card:hover,.foda-card:hover,
@@ -5112,7 +5065,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.21</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.19</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5240,7 +5193,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.21</span>
+        <span>&#127919; v45.19</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 50 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -10370,13 +10323,10 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.21</span>
+  <span class="ub-ver">v45.17</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
-    <div class="ub-entry"><strong>v45.21</strong> <span class="ub-date">19 May 2026</span><br>&#128737;&#65039;&#127912; **v45.21 &middot; FASE C: Sistema de tokens canonizado + variantes de badge**. **CONTEXTO**: tras auditor&iacute;a completa (estructura + composici&oacute;n) se detectaron 4 sistemas de tokens CSS paralelos sin migrar, 441 colores hex &uacute;nicos, 628 border-radius literales y 110 badges con inline-style. Fase C consolida el sistema de dise&ntilde;o como fundaci&oacute;n para migraciones incrementales seguras. **CAMBIOS APLICADOS**: (1) Bloque `:root` ampliado con **tokens sem&aacute;nticos canonizados**: `--c-success/warn/danger/info/neutral` con 3 shades cada uno (base/soft/strong), 15 tokens nuevos sem&aacute;nticamente nombrados. (2) **Escala unificada de border-radius**: `--rad-xs:4 / --rad-sm:6 / --rad-md:10 / --rad-lg:14 / --rad-full:9999px` (5 niveles canonizados vs 24 literales actuales). (3) **Escala unificada de shadows**: `--sh-card / --sh-card-hover / --sh-elev` (3 niveles vs 13 opacidades sin sistema). (4) **Escala unificada de padding**: `--pad-card / --pad-card-lg / --pad-card-sm`. (5) **Variantes de badge utilitarias**: `.badge--success`, `.badge--warn`, `.badge--danger`, `.badge--info`, `.badge--neutral`, `.badge--primary` &mdash; reemplazan progresivamente los 110 `style="background:#xxx;color:#xxx"` inline en HTML. (6) **Roadmap de migraci&oacute;n documentado en CSS** dentro de `:root` para que el equipo siga migrando incrementalmente. (7) Badge global font-size de 10px &rarr; 11px (legibilidad). (8) Breakpoints can&oacute;nicos documentados: 640px mobile / 900px tablet / desktop &mdash;los 18 breakpoints hist&oacute;ricos siguen funcionando pero deben unificarse en el futuro. **ESTRATEGIA**: en vez de migraci&oacute;n masiva de 441 colores + 628 radius + 182 shadows (alto riesgo de parser-break tras lecci&oacute;n v45.9/v45.18), se proporciona la fundaci&oacute;n de tokens y se permite migraci&oacute;n incremental por componente. **VERIFICADO**: `function renderUV` intacta (count=1), parser sano.</div>
-    <div class="ub-entry"><strong>v45.20</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#127939; **v45.20 &middot; FASE B: Coherencia visual + accesibilidad**. **ACENTO INSTITUCIONAL UNIFICADO**: mbht.html y analisis-territorial.html migran `--c-accent` de rojo `#b91c1c` a verde Rengo `#2d9a4d` (decisi&oacute;n del usuario, mantener identidad hist&oacute;rica del index). Cambio quir&uacute;rgico solo en 3 variables (`--c-accent`, `--c-accent-soft`, `--c-accent-hover`); los rojos sem&aacute;nticos de data-viz (heat cells, severidad rural, deltas negativos) se preservan. **CONFLICTO TIPOGR&Aacute;FICO RESUELTO**: body font-family pasa de Segoe UI a Inter como primary; removido el override `!important` duplicado; Inter ahora carga v&iacute;a `<link>` no-bloqueante en `<head>` (en vez del `@import` bloqueante anterior); preconnect a fonts.googleapis.com y fonts.gstatic.com agregados para acelerar primer paint. **CONTRASTES WCAG MEJORADOS**: `.ficha-inv-big` color `#fdb94d` (ratio 2.0:1 fallo AA) &rarr; `#b45309` (ratio 7.1:1 AAA); 7 selectores del sidebar con texto inactivo en `rgba(255,255,255,.25 a .35)` elevados a `.55-.7` (cumple WCAG AA). **LEGIBILIDAD MEJORADA**: 4 reemplazos masivos `font-size: 8px/8.5px/9px/9.5px &rarr; 11px` &mdash; eliminados los textos casi-ilegibles del portal.</div>
-    <div class="ub-entry"><strong>v45.19</strong> <span class="ub-date">19 May 2026</span><br>&#129529;&#9989; **v45.19 &middot; FASE A: Limpieza estructural**. **AUDITOR&Iacute;A ESTRUCTURAL APLICADA**: (1) Versi&oacute;n hardcoded sidebar+hero `v45.0` &rarr; `v45.19` (desfase de 17 minor-bumps resuelto). (2) Secci&oacute;n `#viz` Panel Estrat&eacute;gico (14 gr&aacute;ficos clave) rescatada del sidebar grupo 6 &mdash;antes era hu&eacute;rfana del nav. (3) Eliminadas 2 secciones ocultas muertas: `#ejes` (display:none desde v35.1, ~92 l&iacute;neas) y `#widgets-vivo` (display:none desde v35.2, ~38 l&iacute;neas). (4) 5 anclas falsas del subnav censo convertidas a IDs reales sobre wrappers: `#censoVuln`, `#censoBrechas`, `#censoHeat`, `#censoMapa`, `#censoCompos` &mdash;removido el `onclick` JS-scrolled, ahora navegaci&oacute;n nativa, font-size promovido de 11.5px half-pixel a 12px. (5) Enlace `#encuesta` reubicado de sidebar grupo 1 (Introducci&oacute;n) a grupo 7 (Proceso) para coincidir con su posici&oacute;n en Cap X del DOM. (6) Copy fix: &laquo;4 visualizaciones&raquo; &rarr; &laquo;3 visualizaciones&raquo; en `#datos-vivo` (la 4&deg; promesa BIP 1997-2025 nunca existi&oacute;). (7) Copy fix global: &laquo;55 secciones&raquo; &rarr; &laquo;50 secciones&raquo; (4 ocurrencias). (8) Asset duplicado eliminado: `image-removebg-preview (31).png`. **Total**: ~130 l&iacute;neas removidas + 8 mejoras estructurales.</div>
     <div class="ub-entry"><strong>v45.17</strong> <span class="ub-date">19 May 2026</span><br>&#128200;&#127909; **v45.17 &middot; &sect;11.5 An&aacute;lisis Territorial Censo 2024 integrado al portal**. **SOLICITUD DEL USUARIO**: integrar al portal el documento `Analisis_Territorial_Rengo_2024.docx` (21.6 MB, 192 p&aacute;rrafos, 5 tablas, 23 referencias) extra&iacute;do del Censo CPV 2024 con enfoque de inteligencia territorial. **ESTRATEGIA SEGURA aplicada** (mismo patr&oacute;n que MBHT post-rollback v45.16): p&aacute;gina standalone `analisis-territorial.html` (no inline en index.html para evitar regresi&oacute;n del bug parser que rompi&oacute; v45.9). **CONTENIDO INTEGRADO**: (1) Hero institucional con 6 KPIs (63.620 hab &middot; 826 manzanas &middot; 50.823 urbano / 12.797 rural &middot; ICP medio 0,210 &middot; brecha R/U +38,7%). (2) **&sect;1 Introducci&oacute;n y Contexto Territorial**: marco de inteligencia territorial Girardot 2009 + Fuenzalida et al. 2015. (3) **&sect;2 Marco Metodol&oacute;gico**: enfoque conceptual SIVUST/ISMT-OCUC + Tabla 1 con 23 componentes ponderados de los 6 &iacute;ndices (IVSH, IDDC, IBDT, IVFT, ICHT, IPSB) + clasificaci&oacute;n cuat&iacute;l 0,25/0,50/0,75. (4) **&sect;3 Resultados Generales**: Tabla 2 estad&iacute;sticas descriptivas + Gr&aacute;fico Chart.js de medias y m&aacute;ximos + Tabla 3 quintiles + bar chart de poblaci&oacute;n + Tabla 4 brecha urbano-rural + bar chart comparativo. (5) **&sect;4 An&aacute;lisis por &Iacute;ndice**: grid de 6 cards (una por &iacute;ndice) con descripci&oacute;n, localidades cr&iacute;ticas y hallazgo clave; scatter plot bivariado ICHT_VUL vs IPSB con bubble size proporcional a poblaci&oacute;n. (6) **&sect;5 ICP Ranking**: Tabla 5 Top-15 localidades con heat-cells por valor + horizontal bar chart + stacked bar de composici&oacute;n por dimensi&oacute;n + 4 perfiles de vulnerabilidad identificados. (7) **&sect;6 Discusi&oacute;n**: 5 ejes argumentativos (multidimensionalidad, brecha urbano-rural, transici&oacute;n demogr&aacute;fica, inclusi&oacute;n digital, capital humano). (8) **&sect;7 Conclusiones y Recomendaciones**: 5 conclusiones + 6 recomendaciones estrat&eacute;gicas numeradas. (9) **&sect;8 Bibliograf&iacute;a**: 23 referencias acad&eacute;micas e institucionales en `<details>` colapsable (CEPAL, PNUD, INE, OCUC, etc.). **DISE&Ntilde;O INSTITUCIONAL**: sticky-nav gradient navy &rarr; blue (mismo header que mbht.html); TOC navegable con 8 anchors; tipograf&iacute;a Inter 400-800; paleta dimensional por &iacute;ndice (IVSH magenta &middot; IDDC azul &middot; IBDT violeta &middot; IVFT &aacute;mbar &middot; ICHT verde &middot; IPSB naranja &middot; ICP navy); tablas con sticky headers + heat-cells; cards con border-top de color dimensional; print-friendly. **CHARTS**: 6 visualizaciones Chart.js v4.4.4 (bar &middot; horizontal bar &middot; stacked &middot; bubble) con tooltips localizados es-CL, defaults Inter, sin animaciones agresivas. **SIDEBAR**: nuevo enlace `<a href="analisis-territorial.html" target="_blank" rel="noopener" class="is-new">` bajo MBHT con badge is-new + emoji &#128200;. **SW.js v62.8 &rarr; v62.9**: agregado `./analisis-territorial.html` y `./mbht.html` a STATIC_ASSETS. **ARCHIVO GENERADO**: ~58 KB de HTML standalone, ~700 l&iacute;neas de CSS scoped, 6 gr&aacute;ficos interactivos, totalmente offline-cacheable. **EXTRACCI&Oacute;N FUENTE**: `python-docx` 1.2.0 + lxml &rarr; document.xml &rarr; 192 p&aacute;rrafos + 5 tablas estructuradas.</div>
     <div class="ub-entry"><strong>v45.8</strong> <span class="ub-date">18 May 2026</span><br>&#10060;&#128205; **v45.8 &middot; Secci&oacute;n &laquo;Mapa Interactivo de Proyectos PLADECO&raquo; eliminada**. **SOLICITUD DEL USUARIO**: &laquo;elimina esta secci&oacute;n, no debe estar&raquo; (refiri&eacute;ndose a `#mapa-proyectos`). **ACCIONES REALIZADAS**: (1) **HTML completo** de la secci&oacute;n removido (~1.900 chars): badge &laquo;Geo-referenciado&raquo;, h2, descripci&oacute;n, controles `mp-filters` (Todos + E1..E6), stats `mpCount/mpMonto`, contenedor `#mapaProyectos` Leaflet, leyenda `mp-legend` con 6 dots de colores + indicador de tama&ntilde;o, sec-fuente. (2) **JS eliminado** (~8.700 chars): array `PROYECTOS_PLADECO` con 50 proyectos georreferenciados, diccionarios `MP_EJE_COLORS` + `MP_EJE_NAMES`, funciones `initMapaProyectos()`, `_initMapaProyectos()`, `renderMapaProyectos()`, variables `_mpMap`, `_mpLayer`, `_mpInited`. (3) **CSS eliminado** (~1.100 chars): `#mapaProyectos`, `.mp-controls`, `.mp-filters`, `.mp-stats`, `.mp-legend`, `.mp-legend-item`, `.mp-legend-dot` y todos sus `data-eje` selectors. (4) **Enlaces limpiados**: sidebar grupo 7 (`#mapa-proyectos`), quick-index final, lazyInit `lazyInitOnView('#mapa-proyectos',initMapaProyectos)` removido. (5) **Bot&oacute;n &laquo;Ver proyectos&raquo;** del panel zonal ICT (creado en v44.6) redirigido a `#matriz`. (6) **Atajo de teclado** `m` reasignado de `mapa-proyectos` a `matriz`. **TOTAL REDUCIDO**: ~11.700 chars del archivo. Parsing JS validado (1.090k chars OK). Cache SW v62.7 &rarr; v62.8.</div>
     <div class="ub-entry"><strong>v45.7</strong> <span class="ub-date">18 May 2026</span><br>&#127912;&#128064; **v45.7 &middot; Refinamiento visual integral &middot; contrastes WCAG + composición uniforme**. **SOLICITUD DEL USUARIO**: auditar contrastes pensando en el ojo humano + mejorar dimensiones, colores y tamaños del contenido. **AUDITORÍA con `preview_eval`** (82 elementos muestreados): (1) **Light mode**: 75/82 pasan WCAG AA (91%). El issue principal real: badge &laquo;Observatorio Laboral&raquo; con `color:#c89a3b` sobre fondo light gris &mdash; ratio 2.47 (necesita 4.5 mínimo). (2) **Cards inconsistentes**: border-radius mezclado 10/12/14/16px sin lógica; `.viz-card` con padding 28/32px desproporcionado vs el resto (14-18px); `.voz-card` outlier con br 16. (3) **Tipografía**: jerarquía sin sistema coherente, line-heights variables. **CORRECCIONES APLICADAS**: **(A) FIX DE CONTRASTE**: Badge `#ficha-comunal`: `background:rgba(200,154,59,.15);color:#c89a3b` (cr 2.47) &rarr; `background:rgba(180,83,9,.12);color:#8a4a07` (cr ~7.2, pasa AAA). **(B) SISTEMA DE DISEÑO UNIFICADO** mediante variables CSS: **Radius**: `--rad-xs:6 / --rad-sm:8 / --rad-md:12 / --rad-lg:14 / --rad-xl:18px`. **Shadows**: `--sh-card` (sutil), `--sh-card-hover` (elevado), `--sh-elev` (contenedores grandes), con variantes ajustadas para dark mode. **Padding**: `--pad-card / --pad-card-lg / --pad-card-sm`. **(C) ARMONIZACIÓN DE CARDS**: Border-radius unificado: 13 tipos de cards forzados a `var(--rad-md)` (12px). Outliers `.voz-card`, `.ict-method-block`, `.ict-agrup-card`, `.ict-hall-card` &rarr; `var(--rad-lg)` (14px). Stat chips &rarr; píldoras (radius 999px). `.viz-card` padding reducido de **28/32px &rarr; 18/22px** (alineado con el resto). **(D) TIPOGRAFÍA REFINADA**: `.viz-card h3` 14.5px/700/letter-spacing -.012em; `.viz-sub` 11.5px/500/text2; `.kpi-value` 22px/800/letter-spacing -.018em; `.kpi-label` 10.5px/700/uppercase. Badges globales: 10px/800/uppercase/letter-spacing .075em/padding 4px 10px/píldora. `.sec-header h2`: `clamp(1.25rem, 1.05rem + 1vw, 1.7rem)` con line-height 1.2. `.sec-header p`: 13.5px/line-height 1.65/max-width 78ch. **(E) INTERACTIVIDAD**: Hover unificado `translateY(-2px)` + sombra elevada con transición .25s; transform reset cuando no hay hover. **(F) ACCESIBILIDAD**: Focus rings con `outline:2px solid var(--green)`, `outline-offset:2px`, `box-shadow:0 0 0 4px rgba(45,154,77,.18)` para tab navigation. **(G) DARK MODE**: Defensa específica para `.kpi-value` y similares (forzar `color:var(--text)` cuando body.dark). Border colors transparentados a `rgba(255,255,255,.08)`. **VERIFICADO**: composición uniforme en las 53 secciones, cards visualmente cohesivas, contraste WCAG AA cumplido en todos los elementos críticos. **Cache SW v62.6 &rarr; v62.7**.</div>
