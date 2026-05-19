@@ -5094,7 +5094,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.39</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.40</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5222,7 +5222,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.39</span>
+        <span>&#127919; v45.40</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -12381,10 +12381,11 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.39</span>
+  <span class="ub-ver">v45.40</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.40</strong> <span class="ub-date">19 May 2026</span><br>&#129532;&#10024; **v45.40 &middot; Restaurar imagen del hero + mejora resoluci&oacute;n global**. Solicitud del usuario: ten&iacute;amos una imagen en la portada que no perdamos + mejorar la resoluci&oacute;n completa del portal. **BUG FIX DETECTADO**: en v45.39 el watermark del escudo se aplic&oacute; en `.hero::before`, que sobrescrib&iacute;a accidentalmente el `::before` original del hero (l&iacute;nea 332) que conten&iacute;a el gradient navy 88/78/72/85 opacidad principal. Esto rompi&oacute; el overlay del hero. **FIX APLICADO**: removido `.hero::before` de v45.39. Watermark del escudo ahora se aplica v&iacute;a multi-layer background-image en `.hero-bg` (div existente) sin tocar el gradient. **HERO-BG VISIBLE**: opacidad subida de .12 a .45 (3.75x m&aacute;s visible la fotograf&iacute;a de Rengo), filtros refinados blur 1.2px + saturate .78 + brightness .82 para profundidad sin opacar el texto. Dark mode con valores .32/.55/.55. **MEJORA RESOLUCI&Oacute;N GLOBAL**: (1) text-rendering optimizeLegibility en html + body + headers; (2) -webkit-font-smoothing antialiased + -moz-osx-font-smoothing grayscale; (3) font-feature-settings con ss01, cv11, calt, ss02, kern, liga, clig; (4) font-kerning normal + font-variant-ligatures common-ligatures contextual. **IM&Aacute;GENES PREMIUM**: image-rendering high-quality para fotos, crisp-edges para SVGs, geometricPrecision en shape-rendering. **GPU LAYERS** en elementos cr&iacute;ticos: hero, sidebar, mbht-hero, banner-strip, viz-card con transform translateZ(0) + backface-visibility hidden + perspective 1000. **HIGH-DPI / RETINA queries**: @media (-webkit-min-device-pixel-ratio:2) y (min-resolution:192dpi) con bordes .5px en cards y filtros refinados en hero-bg. Refuerzo para 3x con blur .5px. **HERO TEXTO M&Aacute;S LE&Iacute;BLE**: text-shadow 0 2px 12px en h1, 0 1px 4px en p y stats sobre fotograf&iacute;a. Drop-shadow en hero-logo-contigo y sidebar-logo. **HERO STATS CON GLASSMORPHISM**: background rgba(255,255,255,.08) + backdrop-filter blur(8px) saturate(140%) + hover translateY(-2px) + border verde Rengo al hover. Num clamp 20-28px peso 800 con shadow. **BACKDROP FILTERS** finos: blur 12px saturate 180% en chips + tooltips + glassmorphic elements (con @supports check). **FOCUS RING** uniforme 2px verde Rengo offset 3px en todos los elementos interactivos. **ANIMACIONES** respetan prefers-reduced-motion (hero orbs sin animar). **PRINT** con image-rendering high-quality + print-color-adjust exact. **TOTAL**: ~150 l&iacute;neas CSS de optimizaci&oacute;n perceptiva sin JS adicional.</div>
     <div class="ub-entry"><strong>v45.39</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#10024; **v45.39 &middot; MEGA EST&Eacute;TICA: Paquetes B+C+D+E+F completos**. Solicitud del usuario: hacer todos los paquetes restantes. **(F) COLOR POR CAP&Iacute;TULO**: 11 accent colors (Cap I navy &middot; II azul &middot; III verde Rengo &middot; IV violeta &middot; V magenta &middot; VI &aacute;mbar &middot; VII verde oscuro &middot; VIII cyan &middot; IX naranja &middot; X naranja claro &middot; XI gris). Cada `.group-divider#capitulo-N` toma su `--cap-accent` y aplica color al borde, gradient de fondo, color del label y c&iacute;rculo num&eacute;rico con gradient + sombra. Usa `color-mix(in srgb)` para tintes y bordes con misma identidad. **(C) WATERMARK Escudo Rengo**: pseudo-element `::before` en `.hero` con background-image del escudo institucional 520x520px en .05 opacidad esquina inferior derecha. Variante `.sec-watermark::after` para otras secciones. **(E) DISPLAY FONT**: Playfair Display cargada v&iacute;a Google Fonts (pesos 600/700/800 + it&aacute;licas), aplicada a `.hero h1`, `.mbht-hero-title`, `.pull-quote`, `.group-divider-label`, `h2.display`, `.display-font`. Letter-spacing -.022em. Provee elegancia editorial institucional. **(E) KICKER TITLES**: clase `.kicker` con barrita decorativa 24x2px + texto Inter 11px tracking widest uppercase. Variantes `.kicker-navy/amber/magenta`. **(E) MULTI-COLUMN**: clase `.multi-col` con 2 columnas + gap 40px + column-rule + hyphens auto + text-align justify. Responsive a 1 col en &le;780px. **(B) ICON SYSTEM SVG**: 12 iconos line-style (Feather/Lucide inspired) como CSS data URIs: map, chart, users, target, doc, pin, trending, shield, leaf, book, check, layers, clock. Clase `.svg-icon` + `.sec-icon` wrapper con bg verde-claro + radius. Usables en cualquier elemento con clase modifier. **(D) TOOLTIPS CONTEXTUALES**: cualquier elemento `[data-tooltip]` muestra burbuja navy al hover/focus con max-width 260px y arrow. Aplicado a t&eacute;rminos t&eacute;cnicos clave en MBHT (UAI, manzana censal, INE, Objetivos Estrat&eacute;gicos). Subrayado punteado verde como affordance. **(D) PROGRESS RINGS**: 5 anillos circulares de progreso instalados en MBHT (Acc, Amb, Soc, Seg + BHT Global). SVG con stroke-dasharray animado v&iacute;a IntersectionObserver. Cada anillo con `--ring-color` y drop-shadow. Valor central tabular + nombre uppercase. **(D) SPARKLINES**: utility `.sparkline[data-points]` que genera SVG inline path desde array de puntos, variantes con y sin &aacute;rea rellena. **HARDENING**: try-catch por initializer, prefers-reduced-motion respetado en todas las animaciones. Dark mode con overrides espec&iacute;ficos. **TOTAL**: 9 features nuevas + 11 colors temá ticos + 12 iconos SVG inline = portal con identidad editorial completa.</div>
     <div class="ub-entry"><strong>v45.38</strong> <span class="ub-date">19 May 2026</span><br>&#127902;&#10024; **v45.38 &middot; Paquete A: Storytelling Visual completo**. Solicitud del usuario: paquete A enfocado y profundo (sin combinar con otros). **5 features implementadas**: (1) **Contadores animados al viewport**: IntersectionObserver detecta `.kpi-value`, `.mbht-kpi-value`, `.mbht-chip-val`, `.censo-kpi-value`, `.hero-stat .num`, `.viz-num`, `.stat-num`, `[data-counter]` y los hace tick desde 0 hasta el valor final con easing cubic-out. Parser inteligente para formato es-CL (decimal coma, miles punto, sufijos %, prefijos +). Duraci&oacute;n adaptativa seg&uacute;n magnitud del n&uacute;mero (700-1800ms). Format preservado (decimales originales, sufijos, prefijos). (2) **Scroll Reveals refinados**: clase `.reveal` (ya existente en HTML) ahora con `opacity:0 + translateY(28px)` inicial y `is-visible` al entrar al viewport con transition cubic-bezier(.16,1,.3,1) 850ms. Cascade `.reveal-stagger > *` con stagger de 80ms entre hijos. (3) **Drop Caps editoriales**: primera letra de p&aacute;rrafos clave en Georgia serif 64px con gradient verde Rengo via background-clip text. Auto-aplicado a `.mbht-intro p:first-child`, `#analisis-estrategico-censo > .sec-header + p`, `#contexto > p:first-of-type`. Versi&oacute;n m&oacute;vil 48px. (4) **Pull Quotes** con dos variantes: **default** (border-left verde 5px + comilla decorativa 80px verde .30 esquina superior + cite con guion largo); **centered** (sin border, top/bottom borders, texto centrado con comilla arriba centrada). Tipograf&iacute;a Georgia clamp(18-24px) it&aacute;lica. Aplicado un pull-quote centered con la **tesis central MBHT** (&laquo;Rengo no es comuna deficitaria sino con activos territoriales desigualmente distribuidos&raquo;) con highlight stripe verde sobre &laquo;activos territoriales desigualmente distribuidos&raquo;. (5) **Parallax sutil en hero MBHT**: pattern SVG y territory SVG se mueven con scroll a velocidad 0.5x y 1.2x respectivamente (transform CSS variables, requestAnimationFrame throttled). **TODOS LOS EFECTOS** respetan `prefers-reduced-motion: reduce`. **JS DEFENSIVO**: try-catch por cada initializer, fallbacks si IntersectionObserver no existe. **RIESGO PARSER**: nulo, CSS+JS puros sin etiquetas literales.</div>
     <div class="ub-entry"><strong>v45.37</strong> <span class="ub-date">19 May 2026</span><br>&#127919;&#10024; **v45.37 &middot; Banner MBHT inmersivo nivel institucional**. Solicitud del usuario: no quiere un banner gen&eacute;rico sino potenciarlo m&aacute;s. **REEMPLAZO COMPLETO del sec-header MBHT** por un hero institucional inmersivo. **LAYOUT MULTI-COLUMNA**: grid 1.4fr + 1fr (responsive 1 col en m&oacute;vil). **CONTENIDO COLUMNA IZQUIERDA**: (a) Eyebrow pill con dot animado verde + texto Inteligencia Territorial; (b) T&iacute;tulo con gradient verde-&aacute;mbar en la parte clave (Humano Territorial) usando background-clip text; (c) Lead descriptivo blanco 88%; (d) **5 chips de datos** glass-morphic con backdrop-blur: 665 manzanas, 58.570 habitantes, 583 km&sup2;, 4 dimensiones, BHT &micro; 0,627 (este &uacute;ltimo con tratamiento feature: gradient verde + glow). **CONTENIDO COLUMNA DERECHA**: mini-viz inline glass-morphic con t&iacute;tulo &laquo;Composici&oacute;n del Bienestar&raquo; + 4 barras horizontales con gradient propio por dimensi&oacute;n (Acc azul, Amb verde, Soc magenta, Seg &aacute;mbar), shimmer al final + animaci&oacute;n scaleX al cargar. **CAPAS DE FONDO**: (1) gradient radial multi-stop navy-azul-verde con animaci&oacute;n drift de 18s (background-position infinite alternate); (2) Patr&oacute;n SVG con grid l&iacute;neas + dots blancos translucidos + fade horizontal; (3) Silueta SVG abstracta de 9 manzanas con luces verdes en esquina inferior derecha .65 opacidad; (4) L&iacute;nea vertical decorativa superior izquierda verde-claro fade out. **EFECTOS**: backdrop-filter blur 10-12px en chips y viz, border-radius 18px global, sombra 25px navy + glow verde sutil, animaci&oacute;n bar fill cubic-bezier al entrar al viewport. **RESPONSIVE**: 1 columna en &le;900px, padding reducido en &le;540px, chips m&aacute;s peque&ntilde;os. **ACCESIBILIDAD**: aria-hidden en SVG decorativos, respeta prefers-reduced-motion. **TIPOGRAF&Iacute;A**: t&iacute;tulo clamp 26-42px peso 800 letter-spacing -.025em con text-shadow sutil; eyebrow 11px tracking widest; chips numerals tabulares. **RIESGO PARSER**: nulo, todo SVG inline est&aacute;ndar + CSS puro, sin tags HTML literales en el changelog.</div>
@@ -23499,6 +23500,262 @@ if('serviceWorker' in navigator){
 }
 </script>
 
+<!-- ═══ v45.40 · MEJORA DE RESOLUCIÓN GLOBAL + HERO IMAGE RECOVERY ═══ -->
+<style>
+/* ═══════════════════════════════════════════════════════
+   v45.40 · RESOLUCIÓN GLOBAL · text + images + GPU layers
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── Renderizado de texto premium ─── */
+html{
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  -webkit-text-size-adjust:100%;
+  font-feature-settings:'ss01','cv11','calt','ss02','kern','liga';
+  font-kerning:normal;
+}
+body{
+  text-rendering:optimizeLegibility;
+  font-feature-settings:'kern','liga','clig','calt';
+  font-variant-ligatures:common-ligatures contextual;
+}
+
+/* Headers con renderizado fino */
+h1, h2, h3, h4, h5, h6,
+.hero-title, .mbht-hero-title,
+.group-divider-label{
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:'kern','liga','calt','ss01';
+  font-kerning:normal;
+}
+
+/* ─── Renderizado de imágenes premium ─── */
+img{
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  -ms-interpolation-mode:bicubic;
+}
+/* Para fotos: usar mejor algoritmo */
+img.photo, .hero img, .footer img, picture img{
+  image-rendering:auto;
+  image-rendering:high-quality;
+}
+/* Para SVG: crisp edges */
+img[src$=".svg"], svg{
+  image-rendering:auto;
+  shape-rendering:geometricPrecision;
+  text-rendering:geometricPrecision;
+}
+
+/* ─── GPU layers para elementos críticos ─── */
+.hero, .hero-bg, .hero-content,
+.sidebar, .menu-toggle,
+.mbht-hero, .mbht-hero-pattern, .mbht-hero-territory,
+.banner-strip, #backToTop,
+.viz-card, .mbht-rec-card{
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  perspective:1000;
+  -webkit-perspective:1000;
+}
+
+/* ─── High-DPI / Retina · refuerzo ─── */
+@media (-webkit-min-device-pixel-ratio:2),
+       (min-resolution:192dpi){
+  html{
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  img:not([src$=".svg"]){
+    image-rendering:high-quality;
+  }
+  .hero-bg{
+    filter:blur(.8px) saturate(.85) brightness(.85)!important;
+  }
+  /* Bordes más sutiles en retina */
+  .viz-card, .kpi, .mbht-kpi, .mbht-dim-card,
+  .mbht-rec-card, .glosario-term, .doc-card-enhanced{
+    border-width:.5px;
+  }
+}
+
+/* Ultra-HD (3x+) */
+@media (-webkit-min-device-pixel-ratio:3),
+       (min-resolution:288dpi){
+  .hero-bg{
+    filter:blur(.5px) saturate(.85) brightness(.85)!important;
+  }
+}
+
+/* ─── Smooth scrolling refinado ─── */
+html{
+  scroll-behavior:smooth;
+  overscroll-behavior-y:none;
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+
+/* ─── Anti-aliasing para botones y CTAs ─── */
+button, .btn, a.btn, .badge,
+.hero-stat .num, .mbht-kpi-value{
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* ─── Backdrop blurs más finos ─── */
+@supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+  .mbht-chip,
+  .mbht-hero-eyebrow,
+  .mbht-hero-viz,
+  .glosario-toolbar,
+  .infographic-strip{
+    backdrop-filter:blur(12px) saturate(180%);
+    -webkit-backdrop-filter:blur(12px) saturate(180%);
+  }
+}
+
+/* ─── Hero refinado · MÁS VISIBLE LA IMAGEN ─── */
+.hero{
+  padding:80px 40px 90px!important;
+  min-height:auto;
+}
+.hero h1, .hero-title{
+  text-shadow:0 2px 12px rgba(0,0,0,.30);
+}
+.hero p, .hero .sub{
+  text-shadow:0 1px 4px rgba(0,0,0,.25);
+}
+.hero-stat .num{
+  text-shadow:0 2px 8px rgba(0,0,0,.30);
+}
+
+/* ─── Logo y banner del hero · renderizado HD ─── */
+.hero-logo-contigo,
+.hero img{
+  image-rendering:high-quality;
+  filter:drop-shadow(0 4px 16px rgba(0,0,0,.30));
+  transition:filter .3s ease;
+}
+.hero-logo-contigo:hover{
+  filter:drop-shadow(0 6px 24px rgba(0,0,0,.40));
+}
+
+/* ─── Logo principal del sidebar ─── */
+.sidebar-logo-contigo,
+.sidebar-brand img{
+  image-rendering:high-quality;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.20));
+}
+
+/* ─── KPIs del hero más leíbles ─── */
+.hero-stats{
+  gap:24px!important;
+  padding:0 16px;
+}
+.hero-stat{
+  padding:14px 18px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(8px) saturate(140%);
+  -webkit-backdrop-filter:blur(8px) saturate(140%);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  transition:transform .25s, background .25s, border-color .25s;
+}
+.hero-stat:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.14);
+  border-color:rgba(45,154,77,.35);
+}
+.hero-stat .num{
+  font-size:clamp(20px, 1.8vw + 10px, 28px)!important;
+  font-weight:800!important;
+  color:#ffffff!important;
+  letter-spacing:-.02em!important;
+  line-height:1.1!important;
+}
+.hero-stat .lbl{
+  font-size:10.5px!important;
+  font-weight:700!important;
+  letter-spacing:.06em!important;
+  text-transform:uppercase!important;
+  color:rgba(255,255,255,.85)!important;
+  margin-top:4px!important;
+  line-height:1.3!important;
+}
+
+/* ─── Infographic strip del hero refinado ─── */
+.infographic-strip{
+  backdrop-filter:blur(10px) saturate(160%)!important;
+  -webkit-backdrop-filter:blur(10px) saturate(160%)!important;
+  background:rgba(255,255,255,.10)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+}
+.infographic-strip .ig-value{
+  text-shadow:0 1px 4px rgba(0,0,0,.20);
+}
+
+/* ─── Selección de texto mejorada ─── */
+::selection{
+  background:rgba(45,154,77,.30);
+  color:#ffffff;
+  text-shadow:none;
+}
+body.dark ::selection{
+  background:rgba(72,199,110,.45);
+  color:#ffffff;
+}
+
+/* ─── Focus visible ultra crisp ─── */
+*:focus-visible{
+  outline:2px solid #2d9a4d;
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* ─── Cards · resolución mejorada ─── */
+.viz-card, .kpi, .mbht-kpi, .mbht-dim-card,
+.mbht-rec-card, .glosario-term, .doc-card-enhanced{
+  will-change:transform;
+  contain:layout style;
+}
+
+/* ─── Tablas con mejor antialiasing ─── */
+table{
+  -webkit-font-smoothing:antialiased;
+  border-collapse:separate!important;
+  border-spacing:0;
+}
+table th, table td{
+  font-feature-settings:'tnum','lnum','kern';
+}
+
+/* ─── Print optimization ─── */
+@media print{
+  *{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+    color-adjust:exact!important;
+  }
+  img{
+    image-rendering:high-quality;
+    max-width:100%;
+    height:auto;
+  }
+}
+
+/* ─── Reduce motion sensible ─── */
+@media (prefers-reduced-motion:reduce){
+  .hero-orb, .hero-orb-1, .hero-orb-2, .hero-orb-3,
+  .hero-mesh, .hero-dots{
+    animation:none!important;
+  }
+}
+</style>
+
 <!-- ═══ v45.39 · MEGA ESTÉTICA · B+C+D+E+F ═══ -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
 <style>
@@ -23550,23 +23807,46 @@ if('serviceWorker' in navigator){
 }
 
 /* ═══════════════════════════════════════════════════════
-   v45.39 · PAQUETE C · WATERMARK Escudo de Rengo
+   v45.40 · WATERMARK Escudo de Rengo (FIX v45.39)
+   No usar ::before del .hero (ya tiene gradient original).
+   En su lugar: nueva clase .hero-watermark (HTML div) o
+   background-image en .hero-bg con multi-layer.
    ═══════════════════════════════════════════════════════ */
-.hero{position:relative;overflow:hidden}
-.hero::before{
+/* Watermark via .hero-bg multi-layer · preserva gradient navy del hero */
+.hero-bg{
+  background:
+    url('escudo-rengo-blanco.svg') right -80px bottom -80px / 480px no-repeat,
+    url('hero-bg.jpg') center/cover no-repeat!important;
+  opacity:.45!important;
+  filter:blur(1.2px) saturate(.78) brightness(.82)!important;
+}
+body.dark .hero-bg{
+  opacity:.32!important;
+  filter:blur(1.5px) saturate(.55) brightness(.55)!important;
+}
+@media (max-width:640px){
+  .hero-bg{
+    background:
+      url('escudo-rengo-blanco.svg') right -60px bottom -60px / 280px no-repeat,
+      url('hero-bg.jpg') center/cover no-repeat!important;
+  }
+}
+
+/* sec-watermark variant para otras secciones */
+.sec-watermark{
+  position:relative;
+  overflow:hidden;
+}
+.sec-watermark::after{
   content:"";
   position:absolute;
-  right:-100px;bottom:-100px;
-  width:520px;height:520px;
-  background:url('escudo-rengo-blanco.svg') center/contain no-repeat;
-  opacity:.05;
+  top:50%;right:-40px;
+  transform:translateY(-50%);
+  width:280px;height:280px;
+  background:url('escudo-rengo.svg') center/contain no-repeat;
+  opacity:.04;
   pointer-events:none;
-  filter:blur(.3px);
   z-index:0;
-}
-.hero > *{position:relative;z-index:1}
-@media (max-width:640px){
-  .hero::before{width:340px;height:340px;right:-80px;bottom:-80px;opacity:.04}
 }
 
 /* Watermark variante para sec-headers gigantes */
