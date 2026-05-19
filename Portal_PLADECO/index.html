@@ -5046,6 +5046,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
       <a href="#participa"><span class="ico">&#128227;</span> Participa &middot; Newsletter / Reporte</a>
       <a href="#faq"><span class="ico">&#10067;</span> Preguntas Frecuentes</a>
+      <a href="#glosario" class="is-new"><span class="ico">&#128214;</span> Glosario PLADECO (45 t&eacute;rminos)</a>
       <a href="#educacion"><span class="ico">&#127891;</span> Aprende sobre tu Comuna</a>
       <a href="#institucional"><span class="ico">&#127960;&#65039;</span> Acerca del Portal</a>
       <a href="#documentos"><span class="ico">&#128193;</span> Entregables Finales</a>
@@ -5091,7 +5092,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.23</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.24</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5219,9 +5220,9 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.23</span>
+        <span>&#127919; v45.24</span>
         <span>&#128197; 19 Mayo 2026</span>
-        <span>&#128202; 50 secciones</span>
+        <span>&#128202; 51 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
       </div>
@@ -9523,6 +9524,413 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Preguntas sistematizadas a partir de consultas frecuentes recibidas durante el proceso participativo PLADECO 2025-2035 &middot; Equipo SECPLAC.</div>
 </section>
 
+<!-- ═══ §11.6 GLOSARIO PLADECO · 45 términos en 5 categorías (v45.24) ═══ -->
+<style>
+/* Glosario · estilos scoped */
+.glosario-toolbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:18px 0 22px;padding:14px 18px;background:var(--c-success-soft);border:1px solid rgba(45,154,77,.2);border-radius:var(--rad-md)}
+.glosario-search-wrap{flex:1;min-width:260px;position:relative}
+.glosario-search-wrap::before{content:"\1F50D";position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.5;pointer-events:none}
+#glosarioSearch{width:100%;padding:9px 14px 9px 36px;border:1px solid var(--border);border-radius:var(--rad-sm);font-family:inherit;font-size:13.5px;color:var(--text);background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+#glosarioSearch:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,154,77,.15)}
+.glosario-filters{display:flex;flex-wrap:wrap;gap:6px}
+.glosario-filters button{padding:6px 12px;border:1px solid var(--border);background:#fff;border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .15s;letter-spacing:.02em}
+.glosario-filters button:hover{background:var(--c-success-soft);border-color:var(--accent);color:var(--accent)}
+.glosario-filters button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.glosario-filters button .gf-count{opacity:.6;font-weight:500;margin-left:4px}
+.glosario-filters button.active .gf-count{opacity:.85}
+.glosario-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:0 0 22px}
+.glosario-term{background:#fff;border:1px solid var(--border);border-radius:var(--rad-md);padding:14px 16px 16px;box-shadow:var(--sh-card);transition:transform .2s,box-shadow .2s,border-color .2s}
+.glosario-term:hover{transform:translateY(-2px);box-shadow:var(--sh-card-hover);border-color:rgba(45,154,77,.4)}
+.glosario-term header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.glosario-acronym{font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;font-size:15px;font-weight:800;color:var(--primary);letter-spacing:.01em}
+.glosario-term h3{font-size:13px;font-weight:700;color:var(--text);margin:0 0 6px;line-height:1.3;letter-spacing:-.005em}
+.glosario-term p{font-size:12.5px;color:var(--text2);line-height:1.5;margin:0}
+.glosario-term p strong{color:var(--text);font-weight:600}
+.glosario-empty{grid-column:1/-1;padding:24px;text-align:center;font-size:13px;color:var(--text2);font-style:italic;background:var(--c-neutral-soft);border-radius:var(--rad-md)}
+.glosario-stats{text-align:right;font-size:11.5px;color:var(--text2);margin-bottom:14px;font-weight:600}
+.glosario-stats strong{color:var(--accent)}
+@media (max-width:640px){
+  .glosario-grid{grid-template-columns:1fr}
+  .glosario-filters{width:100%;justify-content:flex-start}
+}
+</style>
+
+<section id="glosario" class="reveal">
+  <div class="sec-header">
+    <div class="badge badge--info">&sect;11.6 &middot; Recurso de Referencia</div>
+    <h2>&#128214; Glosario PLADECO</h2>
+    <p>Diccionario de los <strong>45 t&eacute;rminos t&eacute;cnicos m&aacute;s usados</strong> en el plan, organizados en 5 categor&iacute;as: instituciones del Estado, &iacute;ndices y m&eacute;tricas, instrumentos de planificaci&oacute;n, conceptos territoriales y fondos de financiamiento. Pensado para que cualquier vecino o vecina pueda comprender el lenguaje del PLADECO sin necesidad de formaci&oacute;n previa. Usa la b&uacute;squeda o los filtros para encontrar lo que necesites.</p>
+  </div>
+
+  <div class="glosario-toolbar">
+    <div class="glosario-search-wrap">
+      <input type="search" id="glosarioSearch" placeholder="Buscar t&eacute;rmino, sigla o concepto..." autocomplete="off">
+    </div>
+    <div class="glosario-filters" id="glosarioFilters">
+      <button class="active" data-cat="all">Todos <span class="gf-count">45</span></button>
+      <button data-cat="inst">Instituciones <span class="gf-count">9</span></button>
+      <button data-cat="ind">&Iacute;ndices <span class="gf-count">13</span></button>
+      <button data-cat="plan">Planificaci&oacute;n <span class="gf-count">8</span></button>
+      <button data-cat="terr">Territoriales <span class="gf-count">8</span></button>
+      <button data-cat="fondo">Fondos <span class="gf-count">7</span></button>
+    </div>
+  </div>
+
+  <div class="glosario-stats" id="glosarioStats">Mostrando <strong>45</strong> de 45 t&eacute;rminos</div>
+
+  <div class="glosario-grid" id="glosarioGrid">
+
+    <!-- A. INSTITUCIONES (9) -->
+    <article class="glosario-term" data-cat="inst" data-keys="pladeco plan desarrollo comunal">
+      <header><span class="glosario-acronym">PLADECO</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Plan de Desarrollo Comunal</h3>
+      <p>Instrumento normativo de planificaci&oacute;n municipal a 10 a&ntilde;os, definido por la Ley Org&aacute;nica Constitucional de Municipalidades (Art. 6 y 7, Ley 18.695).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="secplac secretaria planificacion">
+      <header><span class="glosario-acronym">SECPLAC</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Secretar&iacute;a Comunal de Planificaci&oacute;n</h3>
+      <p>Asesora al alcalde en planificaci&oacute;n estrat&eacute;gica. Lidera la formulaci&oacute;n, actualizaci&oacute;n y seguimiento del PLADECO.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="dideco direccion desarrollo comunitario">
+      <header><span class="glosario-acronym">DIDECO</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Direcci&oacute;n de Desarrollo Comunitario</h3>
+      <p>Vincula la gesti&oacute;n municipal con organizaciones sociales, juntas de vecinos y la sociedad civil organizada.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="dom direccion obras municipales">
+      <header><span class="glosario-acronym">DOM</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Direcci&oacute;n de Obras Municipales</h3>
+      <p>Otorga permisos de edificaci&oacute;n, certificados urbanos y supervisa la aplicaci&oacute;n del Plan Regulador Comunal.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="daem departamento administracion educacion">
+      <header><span class="glosario-acronym">DAEM</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Departamento de Administraci&oacute;n de Educaci&oacute;n Municipal</h3>
+      <p>Administra los establecimientos educacionales municipalizados de la comuna.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="cosoc consejo sociedad civil">
+      <header><span class="glosario-acronym">COSOC</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Consejo Comunal de Sociedad Civil</h3>
+      <p>&Oacute;rgano consultivo de car&aacute;cter representativo de la sociedad civil organizada (Ley 20.500 de Participaci&oacute;n Ciudadana).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="core consejo regional">
+      <header><span class="glosario-acronym">CORE</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Consejo Regional</h3>
+      <p>Aprueba inversiones regionales y la distribuci&oacute;n del Fondo Nacional de Desarrollo Regional (FNDR).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="gore gobierno regional">
+      <header><span class="glosario-acronym">GORE</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Gobierno Regional</h3>
+      <p>Coordina pol&iacute;ticas regionales y administra el FNDR. En este caso, GORE O'Higgins.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="inst" data-keys="subdere subsecretaria desarrollo regional">
+      <header><span class="glosario-acronym">SUBDERE</span><span class="badge badge--warn">Instituciones</span></header>
+      <h3>Subsecretar&iacute;a de Desarrollo Regional y Administrativo</h3>
+      <p>Apoya t&eacute;cnica y financieramente a los gobiernos subnacionales chilenos (regionales y municipales).</p>
+    </article>
+
+    <!-- B. ÍNDICES Y MÉTRICAS (13) -->
+    <article class="glosario-term" data-cat="ind" data-keys="icvu calidad vida urbana">
+      <header><span class="glosario-acronym">ICVU</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Calidad de Vida Urbana</h3>
+      <p>Indicador compuesto que mide la calidad de vida en ciudades chilenas. Elaborado por PUC y CChC. Rengo: 38,9 (ranking 84&deg; de 99).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="idh desarrollo humano">
+      <header><span class="glosario-acronym">IDH</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Desarrollo Humano</h3>
+      <p>Compuesto por tres dimensiones: salud, educaci&oacute;n e ingresos. Metodolog&iacute;a PNUD. Rengo: 0,704 (medio-alto).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="ict calidad territorial espacios publicos">
+      <header><span class="glosario-acronym">ICT</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Calidad Territorial</h3>
+      <p>Aplicado a 65 espacios p&uacute;blicos de Rengo. Eval&uacute;a accesibilidad, conectividad, mantenimiento, seguridad y paisaje.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="mbht matriz bienestar humano territorial">
+      <header><span class="glosario-acronym">MBHT</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>Matriz de Bienestar Humano Territorial</h3>
+      <p>Metodolog&iacute;a UAI/SUBDERE para evaluar bienestar territorial multidimensional combinando 4 dimensiones: socioecon&oacute;mica, ambiental, seguridad y accesibilidad.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="erd estrategia regional desarrollo">
+      <header><span class="glosario-acronym">ERD</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>Estrategia Regional de Desarrollo</h3>
+      <p>Instrumento de planificaci&oacute;n del GORE a 12 a&ntilde;os. O'Higgins 2024-2036, aprobada por CORE en diciembre 2024.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="ods objetivos desarrollo sostenible">
+      <header><span class="glosario-acronym">ODS</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>Objetivos de Desarrollo Sostenible</h3>
+      <p>17 objetivos globales de la ONU dentro de la Agenda 2030. Las 225 acciones del PLADECO se alinean con 13 ODS.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="ivsh vulnerabilidad socioeconomica habitacional">
+      <header><span class="glosario-acronym">IVSH</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Vulnerabilidad Socioecon&oacute;mica Habitacional</h3>
+      <p>Mide hacinamiento (30%), materialidad precaria (25%), saneamiento (25%) y d&eacute;ficit habitacional (20%). Rengo: 0,084 medio.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="iddc dependencia cuidados envejecimiento">
+      <header><span class="glosario-acronym">IDDC</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Dependencia de Cuidados</h3>
+      <p>Mide envejecimiento, primera infancia y carga de cuidados en los hogares. Rengo: 0,270 medio.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="ibdt brecha digital territorial">
+      <header><span class="glosario-acronym">IBDT</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Brecha Digital Territorial</h3>
+      <p>Mide acceso a internet (40%), equipamiento (35%) y tel&eacute;fono celular (25%) en los hogares. Rengo: 0,204 medio.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="ivft vulnerabilidad funcional discapacidad">
+      <header><span class="glosario-acronym">IVFT</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Vulnerabilidad Funcional Territorial</h3>
+      <p>Mide prevalencia de discapacidad y dificultades funcionales en la poblaci&oacute;n. Rengo: 0,125 medio.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="icht capital humano escolaridad">
+      <header><span class="glosario-acronym">ICHT</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Capital Humano Territorial</h3>
+      <p>Mide escolaridad (30%), alfabetismo (15%), participaci&oacute;n laboral (30%) y calificaci&oacute;n ocupacional (25%). Rengo: 0,562 medio-alto.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="ipsb precariedad servicios basicos agua">
+      <header><span class="glosario-acronym">IPSB</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice de Precariedad de Servicios B&aacute;sicos</h3>
+      <p>Mide acceso a agua, alcantarillado, energ&iacute;a limpia y gesti&oacute;n de residuos. Brecha rural/urbano: 2,74&times;.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="ind" data-keys="icp indice compuesto ponderado vulnerabilidad">
+      <header><span class="glosario-acronym">ICP</span><span class="badge badge--info">&Iacute;ndices</span></header>
+      <h3>&Iacute;ndice Compuesto Ponderado</h3>
+      <p>Promedio simple de los 6 &iacute;ndices anteriores. Valores 0-1 (0 = bajo, 1 = muy alto riesgo). ICP medio Rengo: 0,210.</p>
+    </article>
+
+    <!-- C. PLANIFICACIÓN (8) -->
+    <article class="glosario-term" data-cat="plan" data-keys="foda fortalezas oportunidades debilidades amenazas">
+      <header><span class="glosario-acronym">FODA</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>An&aacute;lisis FODA</h3>
+      <p>M&eacute;todo de diagn&oacute;stico estrat&eacute;gico. Fortalezas, Oportunidades, Debilidades y Amenazas. Rengo: 610 fortalezas + 249 debilidades sistematizadas.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="oe objetivo estrategico meta">
+      <header><span class="glosario-acronym">OE</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>Objetivo Estrat&eacute;gico</h3>
+      <p>Meta general derivada de cada eje. El PLADECO Rengo 2025-2035 tiene 27 OE distribuidos en 6 ejes.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="eje estrategico linea principal">
+      <header><span class="glosario-acronym">EJE</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>Eje Estrat&eacute;gico</h3>
+      <p>L&iacute;nea principal del PLADECO. Rengo tiene 6 ejes: Social y Salud, Econ&oacute;mico, Educaci&oacute;n-Cultura-Deporte, Territorio, Seguridad y Gesti&oacute;n Municipal.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="prc plan regulador comunal urbano">
+      <header><span class="glosario-acronym">PRC</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>Plan Regulador Comunal</h3>
+      <p>Norma el uso del suelo urbano: zonificaci&oacute;n, alturas, densidades, usos permitidos. Instrumento del Ministerio de Vivienda y Urbanismo.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="padem plan anual desarrollo educativo">
+      <header><span class="glosario-acronym">PADEM</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>Plan Anual de Desarrollo Educativo Municipal</h3>
+      <p>Planifica anualmente los establecimientos educacionales municipalizados. Aprobado por el Concejo Municipal.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="cpv censo poblacion vivienda ine">
+      <header><span class="glosario-acronym">CPV</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>Censo de Poblaci&oacute;n y Vivienda</h3>
+      <p>Levantamiento estad&iacute;stico nacional cada 10 a&ntilde;os. Realizado por el INE. CPV 2024: 63.620 habitantes en Rengo.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="sna analisis redes sociales actores">
+      <header><span class="glosario-acronym">SNA</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>An&aacute;lisis de Redes Sociales</h3>
+      <p><em>Social Network Analysis</em>: m&eacute;todo para mapear interacciones entre actores institucionales y sociales en el territorio.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="plan" data-keys="diagnostico participativo participacion ciudadana">
+      <header><span class="glosario-acronym">DP</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
+      <h3>Diagn&oacute;stico Participativo</h3>
+      <p>M&eacute;todo de identificaci&oacute;n de problemas territoriales con participaci&oacute;n ciudadana. Base del PLADECO Rengo: 472 firmas, 95 organizaciones, 8 cuadernillos.</p>
+    </article>
+
+    <!-- D. CONCEPTOS TERRITORIALES (8) -->
+    <article class="glosario-term" data-cat="terr" data-keys="manzana censal unidad estadistica ine">
+      <header><span class="glosario-acronym">MZ</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Manzana Censal</h3>
+      <p>Unidad m&iacute;nima territorial para an&aacute;lisis estad&iacute;stico INE. Rengo tiene 826 manzanas (634 urbanas, 192 rurales).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="unidad vecinal uv junta vecinos">
+      <header><span class="glosario-acronym">UV</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Unidad Vecinal</h3>
+      <p>Divisi&oacute;n territorial-administrativa comunal. Cada UV tiene Junta de Vecinos. Rengo tiene 21 UV (9 urbanas + 12 rurales).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="brecha urbano rural diferencia">
+      <header><span class="glosario-acronym">BUR</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Brecha Urbano-Rural</h3>
+      <p>Diferencia en indicadores socioecon&oacute;micos entre &aacute;reas urbanas y rurales. En Rengo: ICP rural +38,7% sobre el urbano.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="apr agua potable rural comunitario">
+      <header><span class="glosario-acronym">APR</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Agua Potable Rural</h3>
+      <p>Sistema comunitario de provisi&oacute;n de agua potable en zonas rurales. Gesti&oacute;n vecinal con apoyo del Estado.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="ciuo clasificacion ocupaciones oit trabajo">
+      <header><span class="glosario-acronym">CIUO</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Clasificaci&oacute;n Internacional Uniforme de Ocupaciones</h3>
+      <p>Est&aacute;ndar de la OIT para clasificar trabajos por nivel de calificaci&oacute;n. Usado en el c&aacute;lculo del ICHT.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="eaqi calidad aire europeo indice contaminacion">
+      <header><span class="glosario-acronym">EAQI</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>&Iacute;ndice Europeo de Calidad del Aire</h3>
+      <p>Escala est&aacute;ndar 0-100+: muy bueno (0-20), bueno (21-40), moderado (41-60), pobre (61-80), muy pobre (81-100), extremo (100+).</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="quintil division datos estadistica">
+      <header><span class="glosario-acronym">Q1-Q5</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Quintil</h3>
+      <p>Divisi&oacute;n de un conjunto de datos en 5 partes iguales (20% cada una). Q1 = m&aacute;s favorable, Q5 = menos favorable.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="terr" data-keys="lisa cluster local indicators spatial association">
+      <header><span class="glosario-acronym">LISA</span><span class="badge badge--neutral">Territorial</span></header>
+      <h3>Cluster LISA</h3>
+      <p>Agrupaci&oacute;n espacial estad&iacute;stica (<em>Local Indicators of Spatial Association</em>). Identifica zonas HH (alta-alta), LL (baja-baja), HL y LH.</p>
+    </article>
+
+    <!-- E. FONDOS Y PROGRAMAS (7) -->
+    <article class="glosario-term" data-cat="fondo" data-keys="fndr fondo nacional desarrollo regional inversion">
+      <header><span class="glosario-acronym">FNDR</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Fondo Nacional de Desarrollo Regional</h3>
+      <p>Principal fuente de financiamiento de inversi&oacute;n p&uacute;blica regional. Administrado por el GORE, aprobado por el CORE.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="fondo" data-keys="bip banco integrado proyectos mideso">
+      <header><span class="glosario-acronym">BIP</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Banco Integrado de Proyectos</h3>
+      <p>Sistema nacional de evaluaci&oacute;n social de proyectos de inversi&oacute;n p&uacute;blica. Administrado por MIDESO. Rengo: 142 proyectos vigentes.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="fondo" data-keys="fril fondo regional iniciativa local gore">
+      <header><span class="glosario-acronym">FRIL</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Fondo Regional de Iniciativa Local</h3>
+      <p>Financia peque&ntilde;as obras de mejoramiento comunal v&iacute;a GORE. Postulaci&oacute;n directa de las municipalidades.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="fondo" data-keys="pmu programa mejoramiento urbano subdere">
+      <header><span class="glosario-acronym">PMU</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Programa de Mejoramiento Urbano</h3>
+      <p>Financia mejoramiento de espacios p&uacute;blicos urbanos (plazas, multicanchas, sedes). Administrado por SUBDERE.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="fondo" data-keys="pmb programa mejoramiento barrios urbanizacion">
+      <header><span class="glosario-acronym">PMB</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Programa de Mejoramiento de Barrios</h3>
+      <p>Financia urbanizaci&oacute;n b&aacute;sica y saneamiento (agua, alcantarillado, electrificaci&oacute;n) en sectores precarios. Administrado por SUBDERE.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="fondo" data-keys="minvu ministerio vivienda urbanismo habitacional">
+      <header><span class="glosario-acronym">MINVU</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Ministerio de Vivienda y Urbanismo</h3>
+      <p>Pol&iacute;tica habitacional nacional, subsidios habitacionales, planes maestros urbanos y normativa de uso del suelo.</p>
+    </article>
+
+    <article class="glosario-term" data-cat="fondo" data-keys="mideso ministerio desarrollo social familia">
+      <header><span class="glosario-acronym">MIDESO</span><span class="badge badge--warn">Fondos</span></header>
+      <h3>Ministerio de Desarrollo Social y Familia</h3>
+      <p>Coordina la pol&iacute;tica social nacional, los programas de protecci&oacute;n social y administra el BIP.</p>
+    </article>
+
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Glosario elaborado por SECPLAC Rengo con base en normativa vigente (Ley 18.695 Org&aacute;nica de Municipalidades, Ley 20.500 de Participaci&oacute;n Ciudadana), documentaci&oacute;n metodol&oacute;gica del INE, SUBDERE, MIDESO, GORE O'Higgins y bibliograf&iacute;a acad&eacute;mica del PLADECO 2025-2035.</div>
+</section>
+
+<script>
+/* Glosario · b&uacute;squeda + filtros · v45.24 */
+(function(){
+  function _init(){
+    var search = document.getElementById('glosarioSearch');
+    var grid = document.getElementById('glosarioGrid');
+    var stats = document.getElementById('glosarioStats');
+    var filters = document.getElementById('glosarioFilters');
+    if(!search || !grid || !stats || !filters) return;
+
+    var terms = grid.querySelectorAll('.glosario-term');
+    var total = terms.length;
+    var activeCat = 'all';
+    var activeQuery = '';
+
+    function norm(s){
+      return (s||'').toString().toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g,'');
+    }
+
+    function applyFilter(){
+      var q = norm(activeQuery);
+      var visible = 0;
+      terms.forEach(function(t){
+        var cat = t.getAttribute('data-cat')||'';
+        var keys = norm(t.getAttribute('data-keys')||'');
+        var text = norm(t.textContent||'');
+        var catMatch = (activeCat === 'all' || cat === activeCat);
+        var qMatch = (!q || keys.indexOf(q) >= 0 || text.indexOf(q) >= 0);
+        var show = catMatch && qMatch;
+        t.style.display = show ? '' : 'none';
+        if(show) visible++;
+      });
+      stats.innerHTML = 'Mostrando <strong>' + visible + '</strong> de ' + total + ' t&eacute;rminos';
+      var existingEmpty = grid.querySelector('.glosario-empty');
+      if(visible === 0){
+        if(!existingEmpty){
+          var empty = document.createElement('div');
+          empty.className = 'glosario-empty';
+          empty.textContent = 'No se encontraron términos. Intenta con otra palabra clave.';
+          grid.appendChild(empty);
+        }
+      } else if(existingEmpty){
+        existingEmpty.remove();
+      }
+    }
+
+    search.addEventListener('input', function(e){
+      activeQuery = e.target.value;
+      applyFilter();
+    });
+
+    filters.addEventListener('click', function(e){
+      var btn = e.target.closest('button[data-cat]');
+      if(!btn) return;
+      filters.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeCat = btn.getAttribute('data-cat');
+      applyFilter();
+    });
+
+    console.log('[Glosario] inicializado:', total, 'terminos');
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', _init);
+  } else {
+    _init();
+  }
+})();
+</script>
+
 <!-- ═══ INSTITUCIONAL · Qui&eacute;nes somos + Privacidad + Open Data + Trust ═══ -->
 <section id="institucional" class="reveal">
   <div class="sec-header">
@@ -10349,10 +10757,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.23</span>
+  <span class="ub-ver">v45.24</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.24</strong> <span class="ub-date">19 May 2026</span><br>&#128214;&#128302; **v45.24 &middot; Glosario PLADECO (Cap VIII)**. **NUEVA SECCI&Oacute;N `#glosario`** con 45 t&eacute;rminos t&eacute;cnicos en lenguaje claro para accesibilidad ciudadana. **5 CATEGOR&Iacute;AS**: (A) Instituciones (9): PLADECO, SECPLAC, DIDECO, DOM, DAEM, COSOC, CORE, GORE, SUBDERE. (B) &Iacute;ndices y M&eacute;tricas (13): ICVU, IDH, ICT, MBHT, ERD, ODS, IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, ICP. (C) Planificaci&oacute;n (8): FODA, OE, EJE, PRC, PADEM, CPV, SNA, Diagn&oacute;stico Participativo. (D) Territoriales (8): Manzana Censal, UV, Brecha Urbano-Rural, APR, CIUO, EAQI, Quintil, LISA. (E) Fondos y Programas (7): FNDR, BIP, FRIL, PMU, PMB, MINVU, MIDESO. **FEATURES**: b&uacute;squeda en vivo (con normalizaci&oacute;n de acentos), filtros por categor&iacute;a con contadores, mensaje &laquo;no encontrado&raquo; cuando aplica, contador de t&eacute;rminos visibles. **DISE&Ntilde;O**: grid responsive auto-fill min 280px, cards con header (acr&oacute;nimo monospace + badge sem&aacute;ntico), nombre completo + descripci&oacute;n. Usa tokens canonizados de v45.22 (`--rad-md`, `--sh-card`, badges utilitarias `.badge--success/warn/danger/info/neutral`). **SIDEBAR**: enlace agregado en grupo 7 (Proceso y Documentaci&oacute;n) entre FAQ y Educaci&oacute;n. **CONTADOR**: 50 &rarr; 51 secciones. **RIESGO PARSER**: NULO &mdash; todo el HTML del glosario usa entidades HTML escapadas; el script JS est&aacute; fuera de la secci&oacute;n para no interferir con el parser; no se mencionan tags HTML como texto en el changelog.</div>
     <div class="ub-entry"><strong>v45.23</strong> <span class="ub-date">19 May 2026</span><br>&#10060;&#128202; **v45.23 &middot; Secci&oacute;n MBHT eliminada del portal**. **SOLICITUD DEL USUARIO**: &laquo;elimina la secci&oacute;n mbht ya que lo trabajaremos de otra forma&raquo;. **ACCIONES**: (1) Enlace `mbht.html` removido del sidebar (grupo 3, Diagn&oacute;stico Territorial). (2) Archivo `mbht.html` eliminado del directorio Portal_PLADECO (137 KB liberados). (3) `sw.js` actualizado: `./mbht.html` removido de STATIC_ASSETS, cache version v62.9 &rarr; v62.11. **PRESERVADO**: las 10 cartograf&iacute;as MBHT del directorio `Cartograf&iacute;a/MBHT/` permanecen disponibles en la galer&iacute;a del Cap&iacute;tulo IX (secci&oacute;n `#galeria`), pues son artefactos cartogr&aacute;ficos del proceso, separados de la implementaci&oacute;n de la p&aacute;gina interactiva. **NOTA**: La Matriz de Bienestar Humano Territorial se retomar&aacute; m&aacute;s adelante con un enfoque distinto, una vez se definan los criterios de integraci&oacute;n.</div>
     <div class="ub-entry"><strong>v45.22</strong> <span class="ub-date">19 May 2026</span><br>&#128737;&#65039; **v45.22 &middot; FASE C: Sistema de tokens canonizado + variantes de badge**. Tras auditor&iacute;a completa se detectaron 4 sistemas de tokens CSS paralelos, 441 colores hex y 110 badges con estilo inline. Esta versi&oacute;n consolida el sistema de dise&ntilde;o. **CAMBIOS**: (1) Bloque `:root` ampliado con 15 tokens sem&aacute;nticos can&oacute;nicos: `--c-success/warn/danger/info/neutral` cada uno con 3 shades (base/soft/strong). (2) Escala unificada de border-radius: `--rad-xs/sm/md/lg/full` (5 niveles vs 24 literales). (3) Escala unificada de shadows: `--sh-card/-hover/-elev` (3 niveles vs 13 sin sistema). (4) Variantes utilitarias de badge: `.badge--success`, `--warn`, `--danger`, `--info`, `--neutral`, `--primary`. (5) Badge global font-size 10px &rarr; 11px (legibilidad). (6) Roadmap de migraci&oacute;n documentado en CSS para que el equipo siga usando tokens en c&oacute;digo nuevo. **ESTRATEGIA**: en vez de migraci&oacute;n masiva (alto riesgo de parser-break), se proporciona la fundaci&oacute;n y se migra incrementalmente.</div>
     <div class="ub-entry"><strong>v45.20</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#127939; **v45.20 &middot; FASE B: Coherencia visual + accesibilidad**. **ACENTO INSTITUCIONAL UNIFICADO**: mbht.html y analisis-territorial.html migran su variable de acento de rojo `#b91c1c` a verde Rengo `#2d9a4d` (decisi&oacute;n del usuario, mantener identidad hist&oacute;rica del index). Cambio quir&uacute;rgico solo en 3 variables; los rojos sem&aacute;nticos de data-viz (heat cells, severidad rural, deltas negativos) se preservan. **CONFLICTO TIPOGR&Aacute;FICO RESUELTO**: body font-family pasa de Segoe UI a Inter como primary; removido el override duplicado; Inter ahora carga v&iacute;a etiqueta de stylesheet no-bloqueante en el head (en vez del import bloqueante anterior); preconnect a fonts.googleapis.com y fonts.gstatic.com agregados. **CONTRASTES WCAG MEJORADOS**: `.ficha-inv-big` color `#fdb94d` (ratio 2.0:1 fallo AA) &rarr; `#b45309` (ratio 7.1:1 AAA); 7 selectores del sidebar con texto inactivo en rgba blanco con alpha .25 a .35 elevados a .55-.7 (cumple WCAG AA). **LEGIBILIDAD**: 4 reemplazos masivos font-size 8px/8.5px/9px/9.5px &rarr; 11px &mdash; eliminados los textos casi-ilegibles del portal.</div>
