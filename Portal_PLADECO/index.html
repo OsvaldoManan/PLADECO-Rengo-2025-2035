@@ -4988,6 +4988,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <a href="#visualizaciones-avanzadas" class="is-new"><span class="ico">&#128202;</span> Visualizaciones Avanzadas</a>
       <a href="#analisis-estrategico-censo"><span class="ico">&#128302;</span> An&aacute;lisis Estrat&eacute;gico Censal</a>
       <a href="#ict-espacios-publicos"><span class="ico">&#128205;</span> ICT &middot; Espacios P&uacute;blicos</a>
+      <a href="#mbht-bienestar" class="is-new"><span class="ico">&#127960;&#65039;</span> MBHT &middot; Bienestar Territorial</a>
       <a href="analisis-territorial.html" target="_blank" rel="noopener" class="is-new"><span class="ico">&#128200;</span> An&aacute;lisis Censo 2024 &middot; &sect;11.5</a>
       <a href="#mapa"><span class="ico">&#128506;</span> Mapa Interactivo Comunal</a>
       <a href="#territorio"><span class="ico">&#127963;</span> 21 Unidades Vecinales</a>
@@ -5093,7 +5094,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.30</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.31</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5221,9 +5222,9 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.30</span>
+        <span>&#127919; v45.31</span>
         <span>&#128197; 19 Mayo 2026</span>
-        <span>&#128202; 52 secciones</span>
+        <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
       </div>
@@ -6866,6 +6867,460 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Ma&ntilde;&aacute;n Arce, O. &amp; Ram&iacute;rez Marambio, P. (2026). <em>Informe Levantamiento para el An&aacute;lisis del Espacio P&uacute;blico de la Comuna de Rengo</em>. PLADECO 2025-2035, SECPLAC Municipalidad de Rengo, Abril 2026. Director: Daniel Castillo Campos &middot; 65 puntos de observaci&oacute;n georreferenciados &middot; Marco metodol&oacute;gico SUBDERE 2009 + Borja &amp; Mux&iacute; (2003) + Orellana et al. (2013) + Ostrom (2010) &middot; Ley N&deg; 18.695 Org&aacute;nica Constitucional de Municipalidades &middot; &copy; OpenStreetMap contributors. <a href="docs/Informe_Estado_Espacios_Publicos_Rengo_2026.pdf" download style="color:var(--accent);font-weight:700;text-decoration:underline">Descargar PDF completo &rarr;</a></div>
 </section>
+
+
+<!-- ═══ §11.4 MBHT · MATRIZ DE BIENESTAR HUMANO TERRITORIAL (v45.31 integrada al portal) ═══ -->
+<style>
+/* Scope: .mbht-* · usa tokens canonizados y verde Rengo */
+.mbht-intro{
+  margin:18px 0 22px;
+  padding:18px 22px;
+  background:linear-gradient(135deg,rgba(45,154,77,.06) 0%,rgba(26,61,143,.04) 100%);
+  border:1px solid rgba(45,154,77,.18);
+  border-left:4px solid var(--accent);
+  border-radius:var(--rad-md);
+  font-size:13.5px;line-height:1.6;color:var(--text2);
+}
+.mbht-intro strong{color:var(--text)}
+.mbht-intro p{margin:0 0 10px}
+.mbht-intro p:last-child{margin:0}
+
+/* KPIs comunales */
+.mbht-kpis{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+  margin:0 0 22px;
+}
+@media (max-width:900px){.mbht-kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:540px){.mbht-kpis{grid-template-columns:repeat(2,1fr)}}
+.mbht-kpi{
+  padding:14px 16px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--rad-md);
+  box-shadow:var(--sh-card);
+  text-align:center;
+  border-top:3px solid var(--c-neutral);
+  transition:transform .2s,box-shadow .2s;
+}
+.mbht-kpi:hover{transform:translateY(-2px);box-shadow:var(--sh-card-hover)}
+.mbht-kpi.dim-acc{border-top-color:#0369a1}
+.mbht-kpi.dim-amb{border-top-color:#15803d}
+.mbht-kpi.dim-soc{border-top-color:#be185d}
+.mbht-kpi.dim-seg{border-top-color:#b45309}
+.mbht-kpi.dim-bht{border-top-color:var(--accent);background:linear-gradient(180deg,rgba(45,154,77,.04),#fff)}
+.mbht-kpi-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text2);margin-bottom:4px;
+}
+.mbht-kpi-value{
+  font-size:22px;font-weight:800;color:var(--text);
+  line-height:1.1;letter-spacing:-.015em;font-variant-numeric:tabular-nums;
+}
+.mbht-kpi-foot{
+  font-size:10.5px;color:var(--text-secondary);margin-top:4px;line-height:1.3;
+}
+
+/* Cards de las 4 dimensiones */
+.mbht-dim-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+  margin:0 0 22px;
+}
+@media (max-width:780px){.mbht-dim-grid{grid-template-columns:1fr}}
+.mbht-dim-card{
+  padding:16px 18px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--rad-md);
+  box-shadow:var(--sh-card);
+  border-top:4px solid var(--c-neutral);
+}
+.mbht-dim-card.dim-acc{border-top-color:#0369a1}
+.mbht-dim-card.dim-amb{border-top-color:#15803d}
+.mbht-dim-card.dim-soc{border-top-color:#be185d}
+.mbht-dim-card.dim-seg{border-top-color:#b45309}
+.mbht-dim-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:10px;flex-wrap:wrap;
+}
+.mbht-dim-title{
+  font-size:14.5px;font-weight:700;color:var(--text);
+  margin:0;letter-spacing:-.005em;
+  display:flex;align-items:center;gap:8px;
+}
+.mbht-dim-emoji{font-size:18px}
+.mbht-dim-score{
+  display:inline-flex;align-items:baseline;gap:4px;
+  padding:4px 10px;background:var(--c-neutral-soft);
+  border-radius:var(--rad-full);
+  font-size:12px;font-weight:700;color:var(--text);
+}
+.mbht-dim-score-val{font-size:14px;font-weight:800;color:var(--accent)}
+.mbht-dim-desc{
+  font-size:12.5px;color:var(--text2);line-height:1.55;margin:0 0 12px;
+}
+.mbht-dim-indicators{
+  display:grid;gap:6px;
+}
+.mbht-ind{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:6px 10px;border-radius:var(--rad-sm);
+  background:var(--c-neutral-soft);
+  font-size:12px;
+}
+.mbht-ind-name{color:var(--text2);font-weight:600;flex:1}
+.mbht-ind-val{
+  font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;
+  padding:2px 8px;background:#fff;border-radius:var(--rad-xs);min-width:54px;text-align:right;
+}
+
+/* Gráficos */
+.mbht-chart-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  margin:0 0 22px;
+}
+@media (max-width:900px){.mbht-chart-row{grid-template-columns:1fr}}
+.mbht-chart-card{
+  padding:14px 16px;background:#fff;
+  border:1px solid var(--border);border-radius:var(--rad-md);
+  box-shadow:var(--sh-card);
+}
+.mbht-chart-card h4{
+  font-size:13px;font-weight:700;color:var(--text);
+  margin:0 0 4px;letter-spacing:-.005em;
+}
+.mbht-chart-card .mbht-chart-sub{
+  font-size:11.5px;color:var(--text2);margin:0 0 12px;line-height:1.5;
+}
+.mbht-canvas-wrap{position:relative;width:100%;height:300px}
+
+/* Descargas */
+.mbht-downloads{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+  margin:0 0 12px;
+}
+@media (max-width:780px){.mbht-downloads{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.mbht-downloads{grid-template-columns:1fr}}
+.mbht-dl{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:#fff;
+  border:1px solid var(--border);border-radius:var(--rad-sm);
+  color:var(--text);text-decoration:none;
+  font-size:12px;font-weight:600;
+  transition:all .15s;
+}
+.mbht-dl:hover{
+  background:var(--c-success-soft);
+  border-color:var(--accent);
+  color:var(--accent);
+  transform:translateY(-1px);
+}
+.mbht-dl-ico{font-size:18px}
+.mbht-dl-meta{display:flex;flex-direction:column;line-height:1.25;flex:1}
+.mbht-dl-name{font-weight:700;font-size:12.5px}
+.mbht-dl-ext{font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em}
+
+/* Top/bottom */
+.mbht-rank{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 22px;
+}
+@media (max-width:780px){.mbht-rank{grid-template-columns:1fr}}
+.mbht-rank-card{
+  padding:14px 16px;background:#fff;
+  border:1px solid var(--border);border-radius:var(--rad-md);
+  box-shadow:var(--sh-card);
+}
+.mbht-rank-card h4{
+  font-size:13px;font-weight:700;color:var(--text);
+  margin:0 0 8px;display:flex;align-items:center;gap:6px;
+}
+.mbht-rank-list{display:flex;flex-direction:column;gap:5px}
+.mbht-rank-item{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 10px;border-radius:var(--rad-sm);
+  background:var(--c-neutral-soft);font-size:12px;
+}
+.mbht-rank-rank{
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+  background:var(--primary);color:#fff;border-radius:var(--rad-full);
+  font-size:10.5px;font-weight:800;flex-shrink:0;
+}
+.mbht-rank-card.top .mbht-rank-rank{background:var(--accent)}
+.mbht-rank-card.bot .mbht-rank-rank{background:#b91c1c}
+.mbht-rank-id{font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace;font-size:11px;color:var(--text2);flex:1}
+.mbht-rank-val{font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.mbht-rank-pop{font-size:10.5px;color:var(--text-secondary);min-width:48px;text-align:right}
+
+/* Dark mode */
+body.dark .mbht-kpi,body.dark .mbht-dim-card,
+body.dark .mbht-chart-card,body.dark .mbht-rank-card,
+body.dark .mbht-dl{background:var(--card);border-color:var(--border)}
+body.dark .mbht-ind,body.dark .mbht-rank-item{background:rgba(255,255,255,.04)}
+body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba(26,61,143,.06))}
+</style>
+
+<section id="mbht-bienestar" class="reveal">
+  <div class="sec-header">
+    <div class="badge badge--success">&sect;11.4 &middot; Bienestar Humano Territorial</div>
+    <h2>&#127960;&#65039; Matriz de Bienestar Humano Territorial (MBHT)</h2>
+    <p>Diagn&oacute;stico territorial multidimensional del bienestar humano en Rengo, calculado a nivel de <strong>manzana censal</strong> (n=665) con metodolog&iacute;a UAI/SUBDERE/SUBSECRETAR&Iacute;A DE PREVENCI&Oacute;N DEL DELITO. La MBHT integra <strong>4 dimensiones complementarias</strong> &mdash;Accesibilidad, Ambiental, Socioecon&oacute;mica y Seguridad&mdash; en un &iacute;ndice global <strong>BHT</strong> (0-1) que permite identificar zonas de mayor y menor bienestar dentro del territorio comunal. A diferencia de los &iacute;ndices del Censo (Cap II), la MBHT incorpora variables ambientales (cobertura vegetal, temperatura) y de seguridad (garant&iacute;as personales y procesales), entregando una lectura m&aacute;s completa de las condiciones de vida.</p>
+  </div>
+
+  <div class="mbht-intro">
+    <p><strong>&iquest;Qu&eacute; es la MBHT?</strong> Una herramienta metodol&oacute;gica desarrollada por la Universidad Adolfo Ib&aacute;&ntilde;ez para evaluar el bienestar humano territorial agregando indicadores objetivos en cuatro dimensiones. Cada manzana censal recibe un puntaje 0&ndash;1 en cada dimensi&oacute;n, donde valores cercanos a 1 indican mayor bienestar (mejor acceso, mejor ambiente, mejor situaci&oacute;n socioecon&oacute;mica, mayor seguridad).</p>
+    <p><strong>&iquest;Para qu&eacute; sirve?</strong> Para focalizar la inversi&oacute;n municipal en territorios espec&iacute;ficos, complementar el diagn&oacute;stico censal con dimensiones que los &iacute;ndices INE no capturan (ambiente, seguridad), y dar seguimiento a la evoluci&oacute;n del bienestar comunal en el tiempo. Articulada con los <strong>27 Objetivos Estrat&eacute;gicos</strong> del PLADECO Rengo 2025-2035.</p>
+  </div>
+
+  <!-- KPIs COMUNALES -->
+  <div class="mbht-kpis">
+    <div class="mbht-kpi dim-bht">
+      <div class="mbht-kpi-label">BHT Global</div>
+      <div class="mbht-kpi-value">0,627</div>
+      <div class="mbht-kpi-foot">media comunal &middot; 665 manzanas</div>
+    </div>
+    <div class="mbht-kpi dim-acc">
+      <div class="mbht-kpi-label">Accesibilidad</div>
+      <div class="mbht-kpi-value">0,528</div>
+      <div class="mbht-kpi-foot">rango 0,06 &ndash; 0,66</div>
+    </div>
+    <div class="mbht-kpi dim-amb">
+      <div class="mbht-kpi-label">Ambiental</div>
+      <div class="mbht-kpi-value">0,462</div>
+      <div class="mbht-kpi-foot">rango 0,23 &ndash; 0,97</div>
+    </div>
+    <div class="mbht-kpi dim-soc">
+      <div class="mbht-kpi-label">Socioecon&oacute;mica</div>
+      <div class="mbht-kpi-value">0,621</div>
+      <div class="mbht-kpi-foot">rango 0,02 &ndash; 0,97</div>
+    </div>
+    <div class="mbht-kpi dim-seg">
+      <div class="mbht-kpi-label">Seguridad</div>
+      <div class="mbht-kpi-value">0,864</div>
+      <div class="mbht-kpi-foot">rango 0,59 &ndash; 1,00</div>
+    </div>
+  </div>
+
+  <!-- GRÁFICOS PRINCIPALES -->
+  <div class="mbht-chart-row">
+    <div class="mbht-chart-card">
+      <h4>Radar Comunal &middot; 4 Dimensiones</h4>
+      <p class="mbht-chart-sub">Promedios de las 665 manzanas en cada dimensi&oacute;n. Mayor &aacute;rea = mayor bienestar promedio.</p>
+      <div class="mbht-canvas-wrap"><canvas id="mbhtRadar"></canvas></div>
+    </div>
+    <div class="mbht-chart-card">
+      <h4>Distribuci&oacute;n del BHT Global &middot; Quintiles</h4>
+      <p class="mbht-chart-sub">Cantidad de manzanas en cada quintil del &iacute;ndice BHT. Q1=menor bienestar, Q5=mayor bienestar.</p>
+      <div class="mbht-canvas-wrap"><canvas id="mbhtQuintiles"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CARDS DE 4 DIMENSIONES -->
+  <div class="mbht-dim-grid">
+    <div class="mbht-dim-card dim-acc">
+      <div class="mbht-dim-head">
+        <h3 class="mbht-dim-title"><span class="mbht-dim-emoji">&#128739;&#65039;</span> Accesibilidad</h3>
+        <div class="mbht-dim-score">&micro; = <span class="mbht-dim-score-val">0,528</span></div>
+      </div>
+      <p class="mbht-dim-desc">Cercan&iacute;a y disponibilidad de servicios urbanos esenciales: salud, educaci&oacute;n, cultura, deporte, servicios y conectividad vial. Mide la facilidad de los habitantes para acceder a la infraestructura comunal.</p>
+      <div class="mbht-dim-indicators">
+        <div class="mbht-ind"><span class="mbht-ind-name">IAV &middot; Acceso vial</span><span class="mbht-ind-val">4,17</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ICUL &middot; Acceso cultural</span><span class="mbht-ind-val">0,27</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">IDEP &middot; Acceso deportivo</span><span class="mbht-ind-val">3,05</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ISAL &middot; Acceso salud</span><span class="mbht-ind-val">0,62</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ISER &middot; Acceso servicios</span><span class="mbht-ind-val">2,29</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ISE &middot; Acceso educacional</span><span class="mbht-ind-val">1,03</span></div>
+      </div>
+    </div>
+
+    <div class="mbht-dim-card dim-amb">
+      <div class="mbht-dim-head">
+        <h3 class="mbht-dim-title"><span class="mbht-dim-emoji">&#127795;</span> Ambiental</h3>
+        <div class="mbht-dim-score">&micro; = <span class="mbht-dim-score-val">0,462</span></div>
+      </div>
+      <p class="mbht-dim-desc">Calidad del entorno natural: temperatura ambiente media y cobertura vegetal. Es la dimensi&oacute;n con mayor varianza territorial (rango 0,23&ndash;0,97), reflejando las diferencias entre el casco urbano denso y los sectores con &aacute;reas verdes.</p>
+      <div class="mbht-dim-indicators">
+        <div class="mbht-ind"><span class="mbht-ind-name">IATA &middot; Temperatura ambiente (&deg;C)</span><span class="mbht-ind-val">16,1</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ICV &middot; Cobertura vegetal (%)</span><span class="mbht-ind-val">30,1</span></div>
+      </div>
+      <p style="font-size:11px;color:var(--text-secondary);margin:8px 0 0;font-style:italic">Nota: la cobertura vegetal var&iacute;a desde 0% (manzanas urbanas centrales) hasta 100% (sectores rurales perif&eacute;ricos).</p>
+    </div>
+
+    <div class="mbht-dim-card dim-soc">
+      <div class="mbht-dim-head">
+        <h3 class="mbht-dim-title"><span class="mbht-dim-emoji">&#128202;</span> Socioecon&oacute;mica</h3>
+        <div class="mbht-dim-score">&micro; = <span class="mbht-dim-score-val">0,621</span></div>
+      </div>
+      <p class="mbht-dim-desc">Condiciones materiales y de capital humano: calidad de la vivienda, servicios b&aacute;sicos domiciliarios, escolaridad de la jefatura de hogar, recursos humanos, empleo y pertenencia comunitaria. Es la segunda dimensi&oacute;n m&aacute;s alta de la comuna.</p>
+      <div class="mbht-dim-indicators">
+        <div class="mbht-ind"><span class="mbht-ind-name">IVI &middot; Vivienda (calidad)</span><span class="mbht-ind-val">0,95</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ISV &middot; Servicios b&aacute;sicos</span><span class="mbht-ind-val">0,94</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">IEJ &middot; Escolaridad jefatura (a&ntilde;os)</span><span class="mbht-ind-val">9,69</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">IRH &middot; Recursos humanos</span><span class="mbht-ind-val">0,88</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">IEM &middot; Empleo</span><span class="mbht-ind-val">0,94</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">IPJ &middot; Pertenencia jefatura</span><span class="mbht-ind-val">0,84</span></div>
+      </div>
+    </div>
+
+    <div class="mbht-dim-card dim-seg">
+      <div class="mbht-dim-head">
+        <h3 class="mbht-dim-title"><span class="mbht-dim-emoji">&#128737;&#65039;</span> Seguridad</h3>
+        <div class="mbht-dim-score">&micro; = <span class="mbht-dim-score-val">0,864</span></div>
+      </div>
+      <p class="mbht-dim-desc">Niveles de garant&iacute;a y libertad personal y procesal. Es la dimensi&oacute;n m&aacute;s alta de la comuna, lo que refleja un entorno relativamente seguro &mdash;aunque con focos de mejora en garant&iacute;as personales.</p>
+      <div class="mbht-dim-indicators">
+        <div class="mbht-ind"><span class="mbht-ind-name">IGPE &middot; Garant&iacute;as personales</span><span class="mbht-ind-val">0,84</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">IGPR &middot; Garant&iacute;as procesales</span><span class="mbht-ind-val">0,91</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ILPE &middot; Libertad personal</span><span class="mbht-ind-val">0,87</span></div>
+        <div class="mbht-ind"><span class="mbht-ind-name">ILPR &middot; Libertad procesal</span><span class="mbht-ind-val">0,94</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP / BOTTOM RANKINGS -->
+  <div class="mbht-rank">
+    <div class="mbht-rank-card top">
+      <h4>&#127942; Top 5 Manzanas &middot; Mayor Bienestar</h4>
+      <div class="mbht-rank-list">
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">1</div><span class="mbht-rank-id">6115092001002001</span><span class="mbht-rank-val">0,823</span><span class="mbht-rank-pop">9 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">2</div><span class="mbht-rank-id">6115022003008001</span><span class="mbht-rank-val">0,793</span><span class="mbht-rank-pop">31 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">3</div><span class="mbht-rank-id">6115041009017001</span><span class="mbht-rank-val">0,787</span><span class="mbht-rank-pop">21 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">4</div><span class="mbht-rank-id">6115102015052001</span><span class="mbht-rank-val">0,786</span><span class="mbht-rank-pop">14 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">5</div><span class="mbht-rank-id">6115082901901002</span><span class="mbht-rank-val">0,771</span><span class="mbht-rank-pop">15 hab.</span></div>
+      </div>
+    </div>
+    <div class="mbht-rank-card bot">
+      <h4>&#9888;&#65039; Bottom 5 Manzanas &middot; Menor Bienestar</h4>
+      <div class="mbht-rank-list">
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">1</div><span class="mbht-rank-id">6115052022076001</span><span class="mbht-rank-val">0,248</span><span class="mbht-rank-pop">0 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">2</div><span class="mbht-rank-id">6115041001005001</span><span class="mbht-rank-val">0,299</span><span class="mbht-rank-pop">51 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">3</div><span class="mbht-rank-id">6115111001502001</span><span class="mbht-rank-val">0,303</span><span class="mbht-rank-pop">0 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">4</div><span class="mbht-rank-id">6115041006054001</span><span class="mbht-rank-val">0,336</span><span class="mbht-rank-pop">0 hab.</span></div>
+        <div class="mbht-rank-item"><div class="mbht-rank-rank">5</div><span class="mbht-rank-id">6115041001022001</span><span class="mbht-rank-val">0,354</span><span class="mbht-rank-pop">0 hab.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESCARGAS -->
+  <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:18px 0 8px;letter-spacing:-.005em">&#128190; Descargas &middot; Dataset MBHT Comuna de Rengo</h3>
+  <div class="mbht-downloads">
+    <a class="mbht-dl" href="MBHT/Accesibilidad.xlsx" download>
+      <span class="mbht-dl-ico" style="color:#0369a1">&#128202;</span>
+      <span class="mbht-dl-meta"><span class="mbht-dl-name">Accesibilidad</span><span class="mbht-dl-ext">XLSX &middot; 332 KB</span></span>
+    </a>
+    <a class="mbht-dl" href="MBHT/Ambiental.xlsx" download>
+      <span class="mbht-dl-ico" style="color:#15803d">&#127795;</span>
+      <span class="mbht-dl-meta"><span class="mbht-dl-name">Ambiental</span><span class="mbht-dl-ext">XLSX &middot; 226 KB</span></span>
+    </a>
+    <a class="mbht-dl" href="MBHT/Socioeconómica.xlsx" download>
+      <span class="mbht-dl-ico" style="color:#be185d">&#128181;</span>
+      <span class="mbht-dl-meta"><span class="mbht-dl-name">Socioecon&oacute;mica</span><span class="mbht-dl-ext">XLSX &middot; 298 KB</span></span>
+    </a>
+    <a class="mbht-dl" href="MBHT/Seguridad.xlsx" download>
+      <span class="mbht-dl-ico" style="color:#b45309">&#128737;&#65039;</span>
+      <span class="mbht-dl-meta"><span class="mbht-dl-name">Seguridad</span><span class="mbht-dl-ext">XLSX &middot; 256 KB</span></span>
+    </a>
+    <a class="mbht-dl" href="MBHT/notas-metodologicas.pdf" download>
+      <span class="mbht-dl-ico" style="color:#b91c1c">&#128218;</span>
+      <span class="mbht-dl-meta"><span class="mbht-dl-name">Metodolog&iacute;a</span><span class="mbht-dl-ext">PDF &middot; 613 KB</span></span>
+    </a>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Matriz de Bienestar Humano Territorial (MBHT) &middot; Metodolog&iacute;a Universidad Adolfo Ib&aacute;&ntilde;ez (UAI) y SUBDERE/Subsecretar&iacute;a de Prevenci&oacute;n del Delito. C&aacute;lculos sobre 665 manzanas censales de Rengo (CUT 6115) &middot; Datasets descargables m&aacute;s arriba &middot; Articulado con los 27 OE del PLADECO Rengo 2025-2035.</div>
+</section>
+
+<script>
+/* MBHT charts · v45.31 · lazy via IntersectionObserver */
+(function(){
+  function _renderRadar(){
+    var ctx = document.getElementById('mbhtRadar');
+    if(!ctx || typeof Chart === 'undefined'){ setTimeout(_renderRadar, 250); return; }
+    try{
+      new Chart(ctx, {
+        type:'radar',
+        data:{
+          labels:['Accesibilidad','Ambiental','Socioeconomica','Seguridad'],
+          datasets:[{
+            label:'BHT promedio comunal',
+            data:[0.528, 0.462, 0.621, 0.864],
+            backgroundColor:'rgba(45,154,77,.18)',
+            borderColor:'#2d9a4d',
+            borderWidth:2.5,
+            pointBackgroundColor:['#0369a1','#15803d','#be185d','#b45309'],
+            pointBorderColor:'#fff',
+            pointBorderWidth:1.5,
+            pointRadius:5
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          scales:{
+            r:{
+              suggestedMin:0,suggestedMax:1,
+              ticks:{stepSize:0.25,font:{size:10},color:'#94a3b8',backdropColor:'transparent'},
+              grid:{color:'rgba(0,0,0,.06)'},
+              angleLines:{color:'rgba(0,0,0,.08)'},
+              pointLabels:{font:{size:11.5,weight:'600'},color:'#475569'}
+            }
+          },
+          plugins:{
+            legend:{display:true,position:'bottom',labels:{font:{size:11,weight:'600'},padding:10,boxWidth:14}},
+            tooltip:{callbacks:{label:function(c){return c.label + ': ' + c.parsed.r.toFixed(3);}}}
+          }
+        }
+      });
+      console.log('[MBHT] Radar renderizado');
+    }catch(e){ console.warn('[MBHT] radar error', e); }
+  }
+
+  function _renderQuintiles(){
+    var ctx = document.getElementById('mbhtQuintiles');
+    if(!ctx || typeof Chart === 'undefined'){ setTimeout(_renderQuintiles, 250); return; }
+    try{
+      new Chart(ctx, {
+        type:'bar',
+        data:{
+          labels:['Q1\n0,25 - 0,58','Q2\n0,58 - 0,62','Q3\n0,62 - 0,65','Q4\n0,65 - 0,69','Q5\n0,69 - 0,82'],
+          datasets:[{
+            label:'Manzanas',
+            data:[133, 133, 133, 133, 133],
+            backgroundColor:['#b91c1c','#c2410c','#b45309','#65a30d','#15803d'],
+            borderRadius:6,
+            borderWidth:0
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,
+          scales:{
+            x:{grid:{display:false},ticks:{font:{size:10},color:'#475569',maxRotation:0}},
+            y:{beginAtZero:true,grid:{color:'rgba(0,0,0,.06)'},ticks:{font:{size:10.5},color:'#94a3b8'},title:{display:true,text:'Cantidad de manzanas',font:{size:10.5,weight:'600'},color:'#475569'}}
+          },
+          plugins:{
+            legend:{display:false},
+            tooltip:{callbacks:{label:function(c){return c.parsed.y + ' manzanas';},title:function(c){return 'Quintil ' + (c[0].dataIndex + 1);}}}
+          }
+        }
+      });
+      console.log('[MBHT] Quintiles renderizado');
+    }catch(e){ console.warn('[MBHT] quintiles error', e); }
+  }
+
+  function _init(){
+    var sec = document.getElementById('mbht-bienestar');
+    if(!sec) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          _renderRadar();
+          _renderQuintiles();
+          io.disconnect();
+        }
+      });
+    }, {threshold:0.05, rootMargin:'150px'});
+    io.observe(sec);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', _init);
+  } else {
+    _init();
+  }
+})();
+</script>
 
 
 <!-- ═══ AN&Aacute;LISIS ESTRAT&Eacute;GICO CON INTELIGENCIA TERRITORIAL ═══ -->
@@ -11149,10 +11604,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.30</span>
+  <span class="ub-ver">v45.31</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.31</strong> <span class="ub-date">19 May 2026</span><br>&#127960;&#65039;&#128202; **v45.31 &middot; MBHT integrada como secci&oacute;n nativa del portal (&sect;11.4)**. **SOLICITUD DEL USUARIO**: integrar carpeta `D:\MBHT` al portal y desarrollar una secci&oacute;n &laquo;similar a lo que hemos ido trabajando&raquo; con coherencia visual. **DIFERENCIA CLAVE CON v45.18-v45.23**: esta vez la MBHT vive DENTRO de index.html como secci&oacute;n nativa `#mbht-bienestar`, no como p&aacute;gina separada. **ARCHIVOS COPIADOS**: 5 archivos a `Portal_PLADECO/MBHT/`: Accesibilidad.xlsx (332 KB), Ambiental.xlsx (226 KB), Socioecon&oacute;mica.xlsx (298 KB), Seguridad.xlsx (256 KB), notas-metodologicas.pdf (613 KB). **CONTENIDO DE LA SECCI&Oacute;N**: (1) header con badge sem&aacute;ntico verde Rengo + h2 + descripci&oacute;n metodol&oacute;gica. (2) bloque introductorio con 2 p&aacute;rrafos &laquo;&iquest;Qu&eacute; es?&raquo; y &laquo;&iquest;Para qu&eacute; sirve?&raquo; con border-left verde. (3) 5 KPIs comunales: BHT Global (0,627) + 4 dimensiones con valores μ y rangos. (4) 2 gr&aacute;ficos Chart.js lazy-loaded: radar comunal de 4 dimensiones y barras de distribuci&oacute;n por quintiles. (5) Grid de 4 cards de dimensiones (Accesibilidad/Ambiental/Socioecon&oacute;mica/Seguridad) cada una con score destacado, descripci&oacute;n y lista de 2-6 sub-indicadores con valores. (6) Rankings: Top 5 y Bottom 5 manzanas con ID/BHT/poblaci&oacute;n. (7) Bloque de descargas: 5 enlaces a los datasets crudos (4 XLSX + 1 PDF metodol&oacute;gico). **DATOS REALES**: 665 manzanas censales del CUT 6115 Rengo, calculados con metodolog&iacute;a UAI/SUBDERE. Total de 58.570 habitantes en 583 km². **PALETA DIMENSIONAL**: cada dimensi&oacute;n con border-top de color sem&aacute;ntico (acc=#0369a1 azul, amb=#15803d verde, soc=#be185d magenta, seg=#b45309 &aacute;mbar) sobre fondo blanco/dark consistent. **COHERENCIA VISUAL**: usa todos los tokens canonizados de v45.22 (`--rad-md`, `--sh-card`, `--c-success-soft`, badges utilitarias), responsive con grids auto-fit, dark mode soportado, hover micro-lifts, transici&oacute;n a verde Rengo en los download chips. **SIDEBAR**: nuevo enlace entre ICT y An&aacute;lisis Censo 2024 con badge is-new. **SW**: cache v62.11 &rarr; v62.12. **CONTADOR**: 52 &rarr; 53 secciones. **CHARTS**: lazy-load v&iacute;a IntersectionObserver con rootMargin 150px para optimizar first-load. **RIESGO PARSER**: NULO &mdash; todo el HTML usa entidades para chars especiales, todo el JS est&aacute; en script separado fuera de la secci&oacute;n, sin menciones literales de etiquetas en texto del changelog.</div>
     <div class="ub-entry"><strong>v45.30</strong> <span class="ub-date">19 May 2026</span><br>&#9728;&#65039;&#127769; **v45.30 &middot; Hardening del theme switcher**. 7 fixes al selector de tema Apariencia (Claro/Oscuro) tras auditor&iacute;a completa. **BUGS POTENCIALES CORREGIDOS**: (1) Init script referenciaba `Chart.defaults` sin guard &mdash;si Chart.js no cargaba (red bloqueada), lanzaba ReferenceError y romp&iacute;a todos los scripts siguientes; ahora con `if(typeof Chart !== undefined && Chart.defaults)` y try-catch. (2) Atajo de teclado `D` llamaba `getElementById(btnDark).click()` sin null-check; ahora con fallback a `toggleDark()` directo. **MEJORAS DE CALIDAD**: (3) Detecci&oacute;n de `prefers-color-scheme` del sistema en primera visita &mdash;si nunca has guardado preferencia y tu OS est&aacute; en oscuro, el portal abre oscuro autom&aacute;ticamente. (4) Listener `matchMedia.addEventListener(change)` para que el portal responda en vivo si cambias el tema del sistema (con fallback Safari `addListener`). (5) Multi-tab sync v&iacute;a `storage` event &mdash;si cambias el tema en una pesta&ntilde;a, las otras pesta&ntilde;as abiertas se actualizan al instante. (6) Active state m&aacute;s visible: verde Rengo de `rgba(.18)` a `rgba(.35)` con borde m&aacute;s grueso 1.5px, font-weight 800, sombra exterior suave de 6px; dark variant igualmente realzado a `rgba(.42)` con indigo `#818cf8`. (7) **TRANSICI&Oacute;N SUAVE** del cambio de tema: cuando haces clic en Claro/Oscuro, una clase transitoria `body.theme-transitioning` aplica transition `.35s cubic-bezier(.4,0,.2,1)` a background, border, color, fill, stroke y box-shadow de TODOS los elementos no-canvas/svg durante 420ms, eliminando el salto visual brusco. Respeta `prefers-reduced-motion`. **TODO PROTEGIDO**: cada operaci&oacute;n cr&iacute;tica con try-catch o guards, ning&uacute;n acceso DOM sin validaci&oacute;n previa.</div>
     <div class="ub-entry"><strong>v45.29</strong> <span class="ub-date">19 May 2026</span><br>&#128202;&#127919; **v45.29 &middot; 3 Visualizaciones Avanzadas** (Pir&aacute;mide poblacional + Sankey financiero + Funnel participaci&oacute;n). Nueva secci&oacute;n `#visualizaciones-avanzadas` (&sect;11.7) abre el Cap&iacute;tulo III con 3 lecturas profundas de datos clave del PLADECO. **(A) PIR&Aacute;MIDE POBLACIONAL CENSO 2024**: gr&aacute;fico bidireccional Chart.js con 17 cohortes quinquenales (0-4 a 80+) sumando 63.620 hab. Hombres en azul corporativo (izquierda) y mujeres en verde Rengo (derecha). Ejes con escala bilateral en miles, tooltip que muestra valor absoluto. Permite visualizar bono demogr&aacute;fico actual (cohortes 20-39) y transici&oacute;n al envejecimiento. **(B) SANKEY DE FINANCIAMIENTO**: diagrama D3.js+d3-sankey con 4 fuentes (Municipal 64%, FNDR 18%, Sectorial 12%, Otros 6%) fluyendo a 6 ejes estrat&eacute;gicos (E1-E6) en grosores proporcionales al peso de sus 225 acciones priorizadas. Tooltip al hover con valor exacto del flujo (fuente &rarr; eje + porcentaje). Colores por nodo, opacidad de flujos .42 base &mdash;.75 al hover. **D3 + d3-sankey cargados lazy** v&iacute;a IntersectionObserver con rootMargin 200px para no impactar first-load. **(C) FUNNEL DE PARTICIPACI&Oacute;N**: visualizaci&oacute;n CSS-only con 6 etapas en gradiente progresivo (azul &rarr; verde &rarr; &aacute;mbar &rarr; rojo), cada una con ancho proporcional decreciente (100% &rarr; 40%), mostrando la cadena: 472 firmas &rarr; 95 organizaciones &rarr; 21 UV &rarr; 859 insumos sistematizados &rarr; 27 OE &rarr; 225 acciones. Hover con micro-lift, flechas conectoras entre etapas. **LAZY LOADING**: ambas visualizaciones (pir&aacute;mide y Sankey) se inicializan solo cuando entran al viewport, optimizando rendimiento. **SIDEBAR**: nuevo enlace agregado bajo &laquo;Composici&oacute;n ICP&raquo; con badge is-new. **CONTADOR**: 51 &rarr; 52 secciones.</div>
     <div class="ub-entry"><strong>v45.28</strong> <span class="ub-date">19 May 2026</span><br>&#128241;&#128187; **v45.28 &middot; Mejoras visuales integrales · Web + M&oacute;vil**. Paquete comprensivo de polish UX para elevar la calidad percibida en todos los dispositivos. **(M&Oacute;VIL ≤900px)**: drawer del sidebar mejorado con sombra m&aacute;s pronunciada y body-scroll-lock al abrir (sin saltos de scroll); overlay con backdrop blur sutil; menu-toggle ampliado a 48x48px con sombra navy; touch targets m&iacute;nimo 44px en sidebar-nav; tipograf&iacute;a escalada con clamp para hero y h2; iframes con altura adaptada (5800px en m&oacute;vil para §11.5); group-divider compacto; cards con padding 14x16px; grids forzados a una columna en pantallas chicas. **(M&Oacute;VIL ≤640px)**: hero ultra compacto (28px de padding superior); KPIs en columna; sec-header h2 con clamp(18px,5.5vw,22px); botones flotantes pegados al borde (14px); glosario en columna con filtros scrolleables; footer en columna; eliminados los hovers en touch (anti-jank). **(iPhone SE ≤380px)**: ajustes adicionales para pantallas muy chicas. **(DESKTOP &gt;900px)**: card hovers refinados con cubic-bezier (.4,0,.2,1) y sombra escalonada; focus-visible con outline verde Rengo 2px offset 3px (a11y teclado); section spacing 56px entre cap&iacute;tulos; scroll-margin-top en anchors. **(UNIVERSAL)**: smooth scroll respetando prefers-reduced-motion; selecci&oacute;n de texto con verde Rengo 25%; scrollbar custom con thumb verde Rengo; enlaces de texto en p&aacute;rrafos con subrayado elegante; im&aacute;genes lazy con fade-in; inputs con focus verde Rengo + box-shadow; tablas con zebra suave; reading progress bar con sombra de marca; badge con micro-lift al hover. **JS**: cerrar sidebar al hacer click en link interno (mobile); cerrar con ESC (a11y); cerrar autom&aacute;ticamente si se resize de mobile a desktop con sidebar abierto. **RIESGO**: nulo &mdash; todo el CSS y JS se inserta al final del body, despu&eacute;s de todos los scripts existentes; las reglas tienen mayor especificidad y !important para asegurar que sobrescriban al CSS legacy sin romper nada.</div>
