@@ -1,7 +1,8 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.9
+// PLADECO Rengo 2025-2035 · Service Worker v62.10
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v62.9: v45.9 - Sección #mbht (UAI-SUBDERE 2021) integrada en Cap. III · 135k chars (HTML+CSS+JS)
+// v62.10: v45.10 - MBHT armonizada al sistema de diseño del portal (overrides v2)
+// v62.9: v45.9 - Sección #mbht integrada (UAI-SUBDERE 2021) en Cap. III
 // v62.8: v45.8 - Sección #mapa-proyectos eliminada
 // v62.7: v45.7 - Refinamiento visual integral
 // v62.6: v45.6 - Sidebar comprimido bulletproof + cache invalidation
@@ -11,7 +12,7 @@
 // v62.2: v45.2 - ICT ampliado
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.9';
+const CACHE_STATIC='pladeco-static-v62.10';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

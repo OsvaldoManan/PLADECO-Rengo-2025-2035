@@ -7836,6 +7836,520 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 
 </style>
 
+<!-- ════════════════════════════════════════════════════════════════
+     v45.10 · OVERRIDES MBHT · armonización con paleta y composición del portal
+     - Border-radius: 6px → 12px (uniforme con cards portal)
+     - Tipografía hero/títulos: escala más prominente con clamp() fluido
+     - Sombras: sutiles, consistentes con --sh-card del portal
+     - Colores dimensiones: refinados a paleta institucional Rengo
+     - Spacing entre sub-secciones: respiración consistente
+     - Dropzone: estilo institucional sobrio
+     - Charts/Indicator cards: misma composición que .viz-card del portal
+     ════════════════════════════════════════════════════════════════ -->
+<style data-mbht-css="v2-overrides">
+.mbht-section{
+  /* Redefinir paleta institucional Rengo */
+  --c-bg-soft:#f8fafc;
+  --c-text:#0f172a;
+  --c-text-soft:#334155;
+  --c-text-mute:#475569;
+  --c-text-faint:#64748b;
+  --c-border:#e2e8f0;
+  --c-accent:#c0392b;
+  --c-accent-hover:#922518;
+  --c-accent-soft:rgba(192,57,43,.08);
+  /* Dimensiones: tonos sintonizados al portal sin perder distinción semántica */
+  --dim-acc:#1d4ed8;   /* Accesibilidad · azul institucional más vibrante */
+  --dim-amb:#2d9a4d;   /* Ambiental · verde portal accent */
+  --dim-soc:#a82158;   /* Socioeconómica · granate menos saturado */
+  --dim-seg:#c2410c;   /* Seguridad · naranja-tierra más institucional */
+  /* Radius armonizado */
+  --radius:12px;
+  --radius-sm:8px;
+  padding:32px 22px 40px;
+  font-size:14.5px;
+}
+@media(min-width:1024px){.mbht-section{padding:48px 32px 56px}}
+
+/* ===== HERO refinado ===== */
+.mbht-section .mbht-hero{
+  padding-bottom:22px;
+  margin-bottom:28px;
+  border-bottom:2px solid var(--c-border);
+}
+.mbht-section .mbht-eyebrow{
+  font-size:10.5px;
+  font-weight:800;
+  letter-spacing:.12em;
+  color:var(--c-accent);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:5px 12px;
+  background:var(--c-accent-soft);
+  border-radius:999px;
+  margin-bottom:14px;
+}
+.mbht-section .mbht-eyebrow-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--c-accent);
+  display:inline-block;
+}
+.mbht-section .mbht-title{
+  font-size:clamp(1.6rem,1.2rem + 1.6vw,2.4rem)!important;
+  font-weight:800!important;
+  line-height:1.15!important;
+  letter-spacing:-.025em!important;
+  color:var(--c-text)!important;
+  margin-bottom:14px!important;
+}
+.mbht-section .mbht-title em{
+  font-style:italic;
+  color:var(--c-accent);
+  font-weight:800;
+}
+.mbht-section .mbht-title-sub{
+  display:block;
+  font-size:0.5em;
+  font-weight:600;
+  font-style:normal;
+  letter-spacing:.08em;
+  color:var(--c-text-mute);
+  text-transform:uppercase;
+  margin-top:8px;
+}
+.mbht-section .mbht-lead{
+  font-size:13.5px;
+  line-height:1.7;
+  color:var(--c-text-soft);
+  max-width:82ch;
+}
+.mbht-section .mbht-lead strong{color:var(--c-text);font-weight:700}
+
+/* ===== METRICS uniformes con KPI del portal ===== */
+.mbht-section .mbht-metrics{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  margin:0 0 32px;
+  padding:0;
+  background:transparent;
+  border:none;
+}
+.mbht-section .mbht-metric{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  transition:transform .2s,box-shadow .2s;
+}
+.mbht-section .mbht-metric:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(15,23,42,.1);
+}
+.mbht-section .mbht-metric-label{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--c-text-mute);
+}
+.mbht-section .mbht-metric-value{
+  font-size:22px!important;
+  font-weight:800!important;
+  letter-spacing:-.02em!important;
+  color:var(--c-text)!important;
+  line-height:1.15!important;
+}
+.mbht-section .mbht-metric-value.small{font-size:18px!important}
+.mbht-section .mbht-metric-meta{
+  font-size:10.5px;
+  color:var(--c-text-mute);
+  font-weight:500;
+}
+
+/* ===== DROPZONE institucional ===== */
+.mbht-section .mbht-dropzone{
+  background:var(--c-bg-soft);
+  border:2px dashed var(--c-border-strong,#cbd5e1);
+  border-radius:var(--radius);
+  padding:28px 24px;
+  text-align:center;
+  margin:0 0 36px;
+  transition:border-color .2s,background .2s;
+  cursor:pointer;
+}
+.mbht-section .mbht-dropzone:hover{
+  border-color:var(--c-accent);
+  background:var(--c-accent-soft);
+}
+.mbht-section .mbht-dropzone-icon{
+  font-size:30px;
+  margin-bottom:10px;
+  opacity:.7;
+}
+.mbht-section .mbht-dropzone-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--c-text);
+  margin-bottom:6px;
+}
+.mbht-section .mbht-dropzone-sub{
+  font-size:12px;
+  color:var(--c-text-mute);
+  line-height:1.55;
+}
+.mbht-section .mbht-dropzone-sub code{
+  background:rgba(15,23,42,.05);
+  padding:1px 6px;
+  border-radius:4px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:10.5px;
+  color:var(--c-accent);
+  font-weight:600;
+}
+
+/* ===== SECTION HEADS refinados ===== */
+.mbht-section .mbht-section-head{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:18px;
+  align-items:flex-start;
+  margin:40px 0 18px;
+  padding-bottom:14px;
+  border-bottom:1px solid var(--c-border);
+}
+.mbht-section .mbht-section-num{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  color:var(--c-accent);
+  background:var(--c-accent-soft);
+  padding:6px 10px;
+  border-radius:6px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  white-space:nowrap;
+  align-self:flex-start;
+}
+.mbht-section .mbht-section-num::before{content:""}
+.mbht-section .mbht-section-title{
+  font-size:clamp(1.05rem,.95rem + .5vw,1.35rem)!important;
+  font-weight:800!important;
+  letter-spacing:-.02em!important;
+  color:var(--c-text)!important;
+  line-height:1.25!important;
+  margin:0 0 6px!important;
+}
+.mbht-section .mbht-section-desc{
+  font-size:12.5px!important;
+  color:var(--c-text-soft)!important;
+  line-height:1.65!important;
+  max-width:82ch;
+}
+.mbht-section .mbht-section-desc strong{color:var(--c-text);font-weight:700}
+.mbht-section .mbht-section-tag{
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--c-text-mute);
+  background:var(--c-bg-soft);
+  padding:5px 10px;
+  border-radius:999px;
+  white-space:nowrap;
+  align-self:flex-start;
+}
+
+/* ===== INDICATOR CARDS ===== */
+.mbht-section .mbht-ind-card{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-left:4px solid var(--card-color,var(--c-accent));
+  border-radius:var(--radius);
+  padding:14px 16px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+  transition:transform .2s,box-shadow .2s;
+}
+.mbht-section .mbht-ind-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(15,23,42,.1);
+}
+.mbht-section .mbht-ind-code{
+  font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:10.5px;
+  font-weight:800;
+  color:var(--card-color,var(--c-accent));
+  background:color-mix(in srgb,var(--card-color,var(--c-accent)) 10%,transparent);
+  padding:3px 8px;
+  border-radius:5px;
+  letter-spacing:.05em;
+}
+.mbht-section .mbht-ind-unit{
+  font-size:9.5px;
+  font-weight:600;
+  color:var(--c-text-mute);
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.mbht-section .mbht-ind-name{
+  font-size:13px;
+  font-weight:700;
+  color:var(--c-text);
+  margin:8px 0 4px;
+  line-height:1.3;
+}
+.mbht-section .mbht-ind-desc{
+  font-size:11.5px;
+  color:var(--c-text-mute);
+  line-height:1.5;
+  margin-bottom:10px;
+}
+
+/* ===== CHARTS ===== */
+.mbht-section .mbht-chart-card{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius);
+  padding:18px 22px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+}
+.mbht-section .mbht-chart-title{
+  font-size:13.5px!important;
+  font-weight:800!important;
+  color:var(--c-text)!important;
+  letter-spacing:-.01em;
+}
+.mbht-section .mbht-chart-sub{
+  font-size:11.5px;
+  color:var(--c-text-mute);
+  margin-top:2px;
+  line-height:1.45;
+}
+.mbht-section .mbht-chart-badge{
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--c-text-mute);
+  background:var(--c-bg-soft);
+  padding:4px 9px;
+  border-radius:999px;
+}
+
+/* ===== TABS ===== */
+.mbht-section .mbht-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:6px;
+  background:var(--c-bg-soft);
+  border-radius:var(--radius);
+  margin-bottom:16px;
+}
+.mbht-section .mbht-tab{
+  flex:1;
+  min-width:120px;
+  padding:9px 12px;
+  background:transparent;
+  border:none;
+  border-radius:var(--radius-sm);
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.03em;
+  color:var(--c-text-mute);
+  cursor:pointer;
+  transition:all .2s;
+  font-family:inherit;
+}
+.mbht-section .mbht-tab:hover{color:var(--c-text);background:rgba(15,23,42,.04)}
+.mbht-section .mbht-tab.active{
+  background:var(--c-bg);
+  color:var(--c-text);
+  box-shadow:0 1px 3px rgba(15,23,42,.08);
+}
+
+/* ===== OBSERVATORY ===== */
+.mbht-section .mbht-observatory{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  margin-bottom:24px;
+}
+.mbht-section .mbht-obs-toolbar{
+  background:var(--c-bg-soft);
+  border-bottom:1px solid var(--c-border);
+  padding:12px 16px;
+  gap:12px;
+}
+.mbht-section .mbht-obs-toolbar-label{
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--c-text-mute);
+}
+.mbht-section .mbht-seg-control{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius-sm);
+  padding:2px;
+  display:inline-flex;
+}
+.mbht-section .mbht-seg-control button{
+  background:transparent;
+  border:none;
+  color:var(--c-text-mute);
+  padding:5px 10px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.02em;
+  border-radius:4px;
+  cursor:pointer;
+  transition:all .2s;
+  font-family:inherit;
+}
+.mbht-section .mbht-seg-control button.active{
+  background:var(--seg-color,var(--c-accent));
+  color:#fff;
+}
+
+/* ===== STAT/COMPARATOR CARDS ===== */
+.mbht-section .mbht-stat-card,
+.mbht-section .mbht-comparator,
+.mbht-section .mbht-comp-card{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-radius:var(--radius);
+  box-shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+}
+.mbht-section .mbht-stat-title,
+.mbht-section .mbht-filter-title{
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  color:var(--c-text-mute)!important;
+}
+
+/* ===== LINK CARDS (articulación) ===== */
+.mbht-section .mbht-link-card{
+  background:var(--c-bg);
+  border:1px solid var(--c-border);
+  border-left:4px solid var(--link-color,var(--c-accent));
+  border-radius:var(--radius);
+  padding:16px 18px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06);
+  transition:transform .2s,box-shadow .2s;
+  text-decoration:none;
+}
+.mbht-section .mbht-link-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(15,23,42,.1);
+  border-left-width:6px;
+}
+.mbht-section .mbht-link-tag{
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--link-color,var(--c-accent));
+  margin-bottom:6px;
+}
+.mbht-section .mbht-link-title{
+  font-size:14px;
+  font-weight:800;
+  color:var(--c-text);
+  letter-spacing:-.01em;
+  margin-bottom:6px;
+}
+.mbht-section .mbht-link-body{
+  font-size:11.5px;
+  color:var(--c-text-soft);
+  line-height:1.55;
+}
+.mbht-section .mbht-link-foot{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--c-text-mute);
+  margin-top:10px;
+  padding-top:8px;
+  border-top:1px solid var(--c-border);
+}
+
+/* ===== TABLE ===== */
+.mbht-section .mbht-table{font-size:12px}
+.mbht-section .mbht-table thead th{
+  background:linear-gradient(180deg,#0c1f36,#1a3d8f);
+  color:#fff;
+  font-size:10.5px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:10px 12px;
+  text-align:left;
+}
+.mbht-section .mbht-table tbody td{
+  padding:9px 12px;
+  border-bottom:1px solid var(--c-border);
+  color:var(--c-text);
+}
+.mbht-section .mbht-table tbody tr:hover{background:rgba(45,154,77,.04)}
+
+/* ===== FOOTNOTE ===== */
+.mbht-section .mbht-footnote{
+  font-size:11.5px;
+  color:var(--c-text-mute);
+  line-height:1.7;
+  background:var(--c-bg-soft);
+  padding:16px 20px;
+  border-radius:var(--radius);
+  border-left:4px solid var(--c-accent);
+}
+.mbht-section .mbht-footnote strong{color:var(--c-text);font-weight:700}
+.mbht-section .mbht-footnote em{font-style:italic;color:var(--c-text-soft)}
+.mbht-section .mbht-divider{
+  border:none;
+  border-top:1px solid var(--c-border);
+  margin:32px 0;
+}
+
+/* ===== DARK MODE ===== */
+body.dark .mbht-section{
+  --c-bg:#1a2332;
+  --c-bg-soft:#0c1825;
+  --c-text:#f1f5f9;
+  --c-text-soft:#cbd5e1;
+  --c-text-mute:#94a3b8;
+  --c-text-faint:#64748b;
+  --c-border:rgba(255,255,255,.08);
+  --c-border-strong:rgba(255,255,255,.16);
+  background:var(--c-bg-soft);
+}
+body.dark .mbht-section .mbht-metric,
+body.dark .mbht-section .mbht-ind-card,
+body.dark .mbht-section .mbht-chart-card,
+body.dark .mbht-section .mbht-observatory,
+body.dark .mbht-section .mbht-link-card,
+body.dark .mbht-section .mbht-stat-card,
+body.dark .mbht-section .mbht-comparator,
+body.dark .mbht-section .mbht-comp-card,
+body.dark .mbht-section .mbht-footnote{
+  background:var(--c-bg);
+  box-shadow:0 1px 3px rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.2);
+}
+body.dark .mbht-section .mbht-dropzone{background:var(--c-bg);border-color:var(--c-border-strong)}
+body.dark .mbht-section .mbht-dropzone-sub code{background:rgba(255,255,255,.06)}
+body.dark .mbht-section .mbht-tabs{background:var(--c-bg)}
+body.dark .mbht-section .mbht-tab.active{background:var(--c-bg-soft)}
+</style>
+
 <section id="mbht" class="mbht-section">
   <div class="mbht-container">
 
@@ -13912,10 +14426,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.9</span>
+  <span class="ub-ver">v45.10</span>
   &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.10</strong> <span class="ub-date">18 May 2026</span><br>&#127912;&#9889; **v45.10 &middot; MBHT armonizada al sistema de diseño del portal**. **SOLICITUD DEL USUARIO**: mejorar el diseño de la MBHT (colores, composición, fuentes) respecto a lo aplicado en v45.9 para que se integre mejor con el resto del portal. **AUDITOR&Iacute;A** con `preview_eval` detectó divergencias: border-radius `6px` (sharp) vs portal `12px`; hero title `23px` débil vs h2 portal `clamp(1.25-1.7rem)` fluido; padding inconsistente; sombras simples vs sistema `--sh-card` del portal; colores dimensiones UAI estridentes en contraste con paleta institucional. **OVERRIDES APLICADOS** (`<style data-mbht-css="v2-overrides">` insertado tras el block v1 para preservar el original): **(A) PALETA INSTITUCIONAL**: `--c-text` `#1e293b` &rarr; `#0f172a` (alineado al `--text` del portal). `--c-bg-soft` `#f5f7fa` &rarr; `#f8fafc`. Dimensiones refinadas: Acc `#0369a1` &rarr; `#1d4ed8` (azul más vibrante institucional), Amb `#15803d` &rarr; `#2d9a4d` (verde portal --accent), Soc `#be185d` &rarr; `#a82158` (granate menos saturado), Seg `#b45309` &rarr; `#c2410c` (naranja-tierra más institucional). **(B) RADIUS UNIFORME**: `--radius:6px` &rarr; `12px` (alineado a `--rad-md` del portal); `--radius-sm:4px` &rarr; `8px`. Todos los cards (.mbht-metric, .mbht-ind-card, .mbht-chart-card, .mbht-observatory, .mbht-stat-card, .mbht-link-card, .mbht-comparator, .mbht-comp-card, .mbht-footnote) ahora con radius 12px. **(C) TIPOGRAFÍA REFINADA**: `.mbht-title` con `clamp(1.6rem,1.2rem + 1.6vw,2.4rem)` + 800 weight + line-height 1.15 + letter-spacing -.025em (era 23px estático). `.mbht-section-title` con `clamp(1.05rem,.95rem + .5vw,1.35rem)` + 800 weight (era ~19px estático). `.mbht-eyebrow` con badge píldora bg `--c-accent-soft` + dot indicador. `.mbht-lead` 13.5px line-height 1.7 max-width 82ch. `.mbht-section-desc` 12.5px line-height 1.65. **(D) SOMBRAS ARMONIZADAS**: todas las cards con `box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04)` (idéntico a `--sh-card` del portal) + hover `translateY(-2px)` + sombra elevada `0 6px 16px rgba(15,23,42,.1)`. **(E) METRICS ALINEADOS** con KPI del portal: grid auto-fit min-150px, padding 14px 16px, value 22px/800/letter-spacing -.02em, label 10px/700/uppercase. **(F) DROPZONE INSTITUCIONAL SOBRIO**: bg `--c-bg-soft`, border 2px dashed `--c-border-strong`, hover con `--c-accent-soft`, icon más sutil. **(G) SECTION-HEADS REFINADOS**: grid `auto 1fr auto`, num badge `--c-accent-soft` píldora monospace, tag con bg `--c-bg-soft` píldora uppercase. **(H) TABS UNIFORMES**: estilo segmented control con `--c-bg-soft` background, active con shadow sutil. **(I) LINK-CARDS PLADECO** con border-left coloreado por dimensión + hover engrosa border (4px&rarr;6px) + shadow elevada. **(J) TABLA UV** con header gradient navy idéntico al portal (`#0c1f36 → #1a3d8f`). **(K) FOOTNOTE INSTITUCIONAL**: bg `--c-bg-soft`, border-left 4px accent, padding 16x20. **(L) DARK MODE COMPLETO**: bg `#0c1825`, cards `#1a2332`, todos los componentes con sombras adaptadas. **VENTAJA**: el bloque original `data-mbht-css="v1"` se conserva intacto por trazabilidad; los overrides son aditivos y removibles. Cache SW v62.9 &rarr; v62.10. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.9</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#128202; **v45.9 &middot; Matriz de Bienestar Humano Territorial (MBHT) integrada**. **SOLICITUD DEL USUARIO**: agregar la secci&oacute;n MBHT del archivo `mbht-section-v5.html` respetando fuente y colores del portal. **INTEGRACI&Oacute;N COMPLETA**: (1) **HTML**: 55k chars de la secci&oacute;n `#mbht` insertada en el Cap&iacute;tulo III (Diagn&oacute;stico Territorial) entre `#ict-espacios-publicos` y `#analisis-estrategico-censo`, manteniendo el flujo anal&iacute;tico ICT &rarr; MBHT &rarr; An&aacute;lisis Estrat&eacute;gico. Contenido: hero institucional UAI-SUBDERE 2021, 6 KPI metrics (4 dim, 18 ind, 826 mz, μ comunal, zonas LISA, brecha U/R), dropzone para 5 XLSX, &sect;11.4.1 diagrama SVG de arquitectura conceptual (4 dim + 18 ind con conectores), &sect;11.4.2 tabs con 18 indicator cards (Acc 6 / Amb 2 / Soc 6 / Seg 4), &sect;11.4.3 3 charts Chart.js (radar U/R, histograma 826 mz, ranking 18 ind), &sect;11.4.4 observatorio espacial Leaflet con multi-capa (puntos/heatmap/clusters) + multi-base (oscura/clara/sat/topo) + filtros LISA + spotlight + export CSV + fullscreen, &sect;11.4.4b tabla 21 UV agregadas, &sect;11.4.4c comparador pareado UV con radar, &sect;11.4.5 articulaci&oacute;n con los 6 ejes PLADECO, footnote SUBDERE/UAI. (2) **CSS** (28k chars): scoped 100% a `.mbht-section` con variables propias `--c-bg/text/accent/dim-*/zona-*`. **Adaptaci&oacute;n al portal**: fuente `Inter` &rarr; `'Segoe UI', system-ui, -apple-system, Roboto, sans-serif`; central accent `#b91c1c` &rarr; `#c0392b` (color portal Eje 5 Social) + variante hover `#991b1b` &rarr; `#922518`; rgba(185,28,28,...) &rarr; rgba(192,57,43,...) en gradientes/borders/shadows. Colores can&oacute;nicos de las 4 dimensiones UAI preservados: Acc `#0369a1`, Amb `#15803d`, Soc `#be185d`, Seg `#b45309`. Tipograf&iacute;a SVG `Fraunces`/`Manrope` &rarr; `Segoe UI`. (3) **JS** (50k chars): IIFE completo con datos demo de las 21 UV reales de Rengo (Centro/Isla/Oriente/Poniente/Sur + Rosario/Esmeralda + 14 rurales), generaci&oacute;n estoc&aacute;stica por distribuci&oacute;n LISA por UV, manejo XLSX dropzone, render Leaflet con markercluster + heatmap, comparador UV con radar Chart.js, export CSV, fullscreen. (4) **Librer&iacute;as externas a&ntilde;adidas**: `leaflet.markercluster@1.5.3` (CSS + JS) y `xlsx@0.18.5` (script defer). Leaflet 1.9.4 + leaflet.heat 0.2.0 ya en portal. (5) **Navegaci&oacute;n**: agregada entrada al sidebar grupo 2 entre ICT y Mapa Interactivo, al `sectionNames` (breadcrumbs Cap. III) y al objeto del scrollspy. **Total HTML+JS+CSS a&ntilde;adido**: ~135k chars. **Cache SW v62.8 &rarr; v62.9**. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.8</strong> <span class="ub-date">18 May 2026</span><br>&#10060;&#128205; **v45.8 &middot; Secci&oacute;n &laquo;Mapa Interactivo de Proyectos PLADECO&raquo; eliminada**. **SOLICITUD DEL USUARIO**: &laquo;elimina esta secci&oacute;n, no debe estar&raquo; (refiri&eacute;ndose a `#mapa-proyectos`). **ACCIONES REALIZADAS**: (1) **HTML completo** de la secci&oacute;n removido (~1.900 chars): badge &laquo;Geo-referenciado&raquo;, h2, descripci&oacute;n, controles `mp-filters` (Todos + E1..E6), stats `mpCount/mpMonto`, contenedor `#mapaProyectos` Leaflet, leyenda `mp-legend` con 6 dots de colores + indicador de tama&ntilde;o, sec-fuente. (2) **JS eliminado** (~8.700 chars): array `PROYECTOS_PLADECO` con 50 proyectos georreferenciados, diccionarios `MP_EJE_COLORS` + `MP_EJE_NAMES`, funciones `initMapaProyectos()`, `_initMapaProyectos()`, `renderMapaProyectos()`, variables `_mpMap`, `_mpLayer`, `_mpInited`. (3) **CSS eliminado** (~1.100 chars): `#mapaProyectos`, `.mp-controls`, `.mp-filters`, `.mp-stats`, `.mp-legend`, `.mp-legend-item`, `.mp-legend-dot` y todos sus `data-eje` selectors. (4) **Enlaces limpiados**: sidebar grupo 7 (`#mapa-proyectos`), quick-index final, lazyInit `lazyInitOnView('#mapa-proyectos',initMapaProyectos)` removido. (5) **Bot&oacute;n &laquo;Ver proyectos&raquo;** del panel zonal ICT (creado en v44.6) redirigido a `#matriz`. (6) **Atajo de teclado** `m` reasignado de `mapa-proyectos` a `matriz`. **TOTAL REDUCIDO**: ~11.700 chars del archivo. Parsing JS validado (1.090k chars OK). Cache SW v62.7 &rarr; v62.8.</div>
     <div class="ub-entry"><strong>v45.7</strong> <span class="ub-date">18 May 2026</span><br>&#127912;&#128064; **v45.7 &middot; Refinamiento visual integral &middot; contrastes WCAG + composición uniforme**. **SOLICITUD DEL USUARIO**: auditar contrastes pensando en el ojo humano + mejorar dimensiones, colores y tamaños del contenido. **AUDITORÍA con `preview_eval`** (82 elementos muestreados): (1) **Light mode**: 75/82 pasan WCAG AA (91%). El issue principal real: badge &laquo;Observatorio Laboral&raquo; con `color:#c89a3b` sobre fondo light gris &mdash; ratio 2.47 (necesita 4.5 mínimo). (2) **Cards inconsistentes**: border-radius mezclado 10/12/14/16px sin lógica; `.viz-card` con padding 28/32px desproporcionado vs el resto (14-18px); `.voz-card` outlier con br 16. (3) **Tipografía**: jerarquía sin sistema coherente, line-heights variables. **CORRECCIONES APLICADAS**: **(A) FIX DE CONTRASTE**: Badge `#ficha-comunal`: `background:rgba(200,154,59,.15);color:#c89a3b` (cr 2.47) &rarr; `background:rgba(180,83,9,.12);color:#8a4a07` (cr ~7.2, pasa AAA). **(B) SISTEMA DE DISEÑO UNIFICADO** mediante variables CSS: **Radius**: `--rad-xs:6 / --rad-sm:8 / --rad-md:12 / --rad-lg:14 / --rad-xl:18px`. **Shadows**: `--sh-card` (sutil), `--sh-card-hover` (elevado), `--sh-elev` (contenedores grandes), con variantes ajustadas para dark mode. **Padding**: `--pad-card / --pad-card-lg / --pad-card-sm`. **(C) ARMONIZACIÓN DE CARDS**: Border-radius unificado: 13 tipos de cards forzados a `var(--rad-md)` (12px). Outliers `.voz-card`, `.ict-method-block`, `.ict-agrup-card`, `.ict-hall-card` &rarr; `var(--rad-lg)` (14px). Stat chips &rarr; píldoras (radius 999px). `.viz-card` padding reducido de **28/32px &rarr; 18/22px** (alineado con el resto). **(D) TIPOGRAFÍA REFINADA**: `.viz-card h3` 14.5px/700/letter-spacing -.012em; `.viz-sub` 11.5px/500/text2; `.kpi-value` 22px/800/letter-spacing -.018em; `.kpi-label` 10.5px/700/uppercase. Badges globales: 10px/800/uppercase/letter-spacing .075em/padding 4px 10px/píldora. `.sec-header h2`: `clamp(1.25rem, 1.05rem + 1vw, 1.7rem)` con line-height 1.2. `.sec-header p`: 13.5px/line-height 1.65/max-width 78ch. **(E) INTERACTIVIDAD**: Hover unificado `translateY(-2px)` + sombra elevada con transición .25s; transform reset cuando no hay hover. **(F) ACCESIBILIDAD**: Focus rings con `outline:2px solid var(--green)`, `outline-offset:2px`, `box-shadow:0 0 0 4px rgba(45,154,77,.18)` para tab navigation. **(G) DARK MODE**: Defensa específica para `.kpi-value` y similares (forzar `color:var(--text)` cuando body.dark). Border colors transparentados a `rgba(255,255,255,.08)`. **VERIFICADO**: composición uniforme en las 53 secciones, cards visualmente cohesivas, contraste WCAG AA cumplido en todos los elementos críticos. **Cache SW v62.6 &rarr; v62.7**.</div>
