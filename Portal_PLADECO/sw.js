@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.9
+// PLADECO Rengo 2025-2035 · Service Worker v62.11
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.11: v45.23 - Sección MBHT eliminada (se trabajará de otra forma posteriormente)
 // v62.9: v45.17 - §11.5 Análisis Territorial Censo 2024 standalone (analisis-territorial.html)
 // v62.8: v45.8 - Sección #mapa-proyectos eliminada (HTML + JS + CSS + enlaces)
 // v62.7: v45.7 - Refinamiento visual integral: contrastes WCAG + cards uniformes
@@ -11,7 +12,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.9';
+const CACHE_STATIC='pladeco-static-v62.11';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -24,7 +25,6 @@ const OFFLINE_URL='./offline.html';
 const STATIC_ASSETS=[
   './',
   './index.html',
-  './mbht.html',
   './analisis-territorial.html',
   './offline.html',
   './manifest.json',
