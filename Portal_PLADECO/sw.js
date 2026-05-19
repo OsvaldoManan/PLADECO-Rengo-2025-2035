@@ -1,7 +1,8 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.12
+// PLADECO Rengo 2025-2035 · Service Worker v62.13
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
-// v62.12: v45.12 - HOTFIX: toast falso-alarmista del resilience block removido
+// v62.13: v45.13 - HOTFIX: reload race del SW corregido (eliminado setTimeout duplicado)
+// v62.12: v45.12 - HOTFIX: toast falso-alarmista removido
 // v62.11: v45.11 - SW endurecido: fetch con timeout 10s + fallback robusto
 // v62.10: v45.10 - MBHT armonizada al sistema de diseño del portal (overrides v2)
 // v62.9: v45.9 - Sección #mbht integrada (UAI-SUBDERE 2021) en Cap. III
@@ -14,7 +15,7 @@
 // v62.2: v45.2 - ICT ampliado
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.12';
+const CACHE_STATIC='pladeco-static-v62.13';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

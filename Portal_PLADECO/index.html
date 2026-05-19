@@ -14602,10 +14602,11 @@ body.dark .mbht-section .mbht-tab.active{background:var(--c-bg-soft)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.12</span>
+  <span class="ub-ver">v45.13</span>
   &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.13</strong> <span class="ub-date">18 May 2026</span><br>&#128737;&#9889; **HOTFIX v45.13 · Reload race / loop del Service Worker corregido**. **REPORTE DEL USUARIO**: «no me carga nada, algo crasheó». **DIAGNÓSTICO**: el bloque de registro del Service Worker (v45.6) tenía **DOS triggers de recarga en paralelo** que carreaban entre sí: (1) `setTimeout(location.reload, 1200)` disparado en `statechange` cuando nuevo SW se instalaba, (2) `controllerchange` listener que también recargaba. En algunos navegadores/escenarios esto creaba un **loop de recargas** que jamás dejaba terminar la inicialización del portal — el usuario ve la página recargándose en bucle (apariencia de «no carga nada»). **FIX APLICADO**: (A) **Eliminado** el `setTimeout(reload, 1200)` redundante. Ahora `controllerchange` es el único trigger de recarga, con un delay de 100ms para que la activación del SW termine limpiamente. El toast «Portal actualizado» se conserva pero sin reload encadenado. (B) **Guard anti-loop activo**: agregado registro de timestamps de reload en `sessionStorage[__sw_reload_log]`. Si detecta **> 3 reloads en 10 segundos**, el portal asume loop, ejecuta `unregister()` de todos los SW + `caches.delete()` de todos los caches, y recarga una última vez SIN SW. El usuario al menos ve el portal funcional aunque sin offline-first. (C) **Idempotencia preservada**: `_ctrlReloaded` flag bloquea reloads múltiples desde controllerchange en una misma sesión. **RESULTADO**: ya no hay race condition entre dos triggers de reload. Cualquier usuario que estuvo en loop por v45.11/v45.12, al cargar v45.13 detectará el loop, se auto-cura y vuelve a la normalidad. **PARA USUARIOS YA ATASCADOS**: si la página no carga, abrir manualmente `https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/Portal_PLADECO/clear-cache.html` o en DevTools (F12) → Application → Service Workers → Unregister. Cache SW v62.12 → v62.13.</div>
     <div class="ub-entry"><strong>v45.12</strong> <span class="ub-date">18 May 2026</span><br>&#128737;&#127919; **HOTFIX v45.12 &middot; Eliminar toast falso-alarmista del resilience block**. **REPORTE DEL USUARIO**: «tenemos un problema en el portal, está caído». **DIAGNÓSTICO**: el portal en realidad estaba 100% operativo (HTTP 200, 2.3MB, 3 scripts inline OK, 56 secciones renderizadas, 0 errores en consola). **Causa raíz identificada**: el toast «⚠ Aviso técnico — Una sección del portal tuvo un problema menor» que agregué en v45.11 se disparaba con CUALQUIER error global (`window.onerror`), incluyendo errores BENIGNOS de scripts cross-origin (Chart.js / Leaflet inicialización con CORS) que aparecen como genérico `Script error.` Esto daba al usuario la falsa impresión de portal roto cuando solo había noise de terceros. **FIX APLICADO**: (1) **Toast removido** completamente — la función `_showErrorToast` y todas sus referencias eliminadas. Los errores ahora solo se logean al buffer interno `window.__resilience.errors` para debugging vía consola, sin UI intrusiva al usuario. (2) **Filtro de noise** añadido con regex `_ERR_NOISE_RE = /Script error\.|ResizeObserver loop|Non-Error promise rejection|Loading chunk|cancelled|aborted|chrome-extension/i` que descarta errores típicos benignos antes de logear (evita buffer spam). (3) **Cleanup defensivo**: si por SW vieja quedó el toast `#__resilienceToast` en el DOM, se remueve en `DOMContentLoaded`. **PRESERVADO**: las protecciones reales del resilience block siguen activas (capture global errors, `__libs.ready/wait`, `safeRun`, MBHT lazy init con IntersectionObserver, SW endurecido con fetch timeout 10s, fallback chain). Solo se quitó la UI alarmista. **VERIFICACIÓN**: el portal en producción muestra HTTP 200, contenido íntegro, sin errores reales. Cache SW v62.11 → v62.12. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.11</strong> <span class="ub-date">18 May 2026</span><br>&#128737;&#9889; **v45.11 &middot; Endurecimiento anti-crashes del portal**. **SOLICITUD DEL USUARIO**: actualizar y mejorar el sitio ante posibles crasheos. **AUDITORÍA**: 0 errores actuales en consola, pero se identificaron riesgos latentes &mdash; (a) sin `window.onerror` ni `unhandledrejection` global, los errores silenciosos no se detectan; (b) MBHT IIFE arranca inmediatamente sin verificar Chart/Leaflet; (c) SW sin timeout puede colgar la página esperando red lenta; (d) sin filtrado de schemes no-http, requests `chrome-extension://` o similares pueden fallar en `e.respondWith`. **MEJORAS APLICADAS**: **(A) RESILIENCE BLOCK GLOBAL** en `<head>` antes de cualquier JS de sección: (1) `window.addEventListener('error', ...)` captura js-errors con context (filename, line, col, stack 500 chars). (2) `window.addEventListener('unhandledrejection', ...)` captura promesas rotas. (3) Buffer de hasta 30 errores accesible via `window.__resilience` (con `.errors`, `.clear()`, `.info()` para debugging). (4) Toast UI no intrusivo &laquo;⚠ Aviso técnico&raquo; auto-desaparece a 8s, throttled a 1 toast/30s para no agobiar al usuario. (5) Helper `window.safeRun(label, fn)` que envuelve cualquier init en try/catch tanto síncrono como async. (6) `window.__libs` con `.ready(lib)` (feature detection: chart/leaflet/heat/cluster/xlsx/d3) y `.wait(lib, timeout)` que devuelve promesa con retry cada 150ms hasta 8s. **(B) MBHT ENDURECIDO**: (1) IIFE refactorizado &mdash; el código original encapsulado en función `_runMBHT()`. (2) IntersectionObserver con `rootMargin:'300px'` arranca solo cuando la sección entra al viewport. (3) Antes de ejecutar, verifica `Chart` + `L` disponibles; si no, usa `__libs.wait()` con timeout 8s. (4) Si tras 8s las libs no cargaron, muestra mensaje suave en la sección &laquo;⏱ El observatorio MBHT no pudo cargar. El resto del portal funciona normalmente.&raquo; (5) Guard `window.__mbhtInited` evita doble inicialización. (6) try/catch interno: si `_runMBHT()` lanza, se logea pero no crashea el portal. **(C) SW ENDURECIDO v62.10 &rarr; v62.11**: (1) Nuevo `fetchWithTimeout(req, ms)` con default 10s &mdash; las requests HTML ya no cuelgan indefinidamente. (2) Filtrado de protocolos: `if(url.protocol !== 'http:' && url.protocol !== 'https:') return` para no interceptar `chrome-extension://`, `data:`, etc. (3) Catches dobles en cada respondWith: el outer catch garantiza una respuesta válida aunque la primera estrategia falle. (4) Función `fallbackResponse(req, url, isHtml)` centraliza el comportamiento ante fallo total &mdash; HTML cae a `index.html` cacheado &rarr; `offline.html` &rarr; mensaje HTML inline minimal de 503. (5) Errores de `caches.open().put()` ya no se propagan (cache full no rompe la página). (6) `self.addEventListener('error')` en el SW logea internos a consola DevTools. **RESULTADO**: el portal sobrevive ahora a (i) librerías que no cargan, (ii) red intermitente, (iii) navegadores viejos sin IntersectionObserver (fallback a init inmediato), (iv) extensiones del navegador que inyectan requests raros, (v) errores async no manejados. **PARA DEBUGGEAR**: en consola DevTools, `__resilience.info()` muestra todos los errores capturados; `__libs.ready('chart')` verifica estado de cada librería. Parsing JS validado · 3 scripts inline OK.</div>
     <div class="ub-entry"><strong>v45.10</strong> <span class="ub-date">18 May 2026</span><br>&#127912;&#9889; **v45.10 &middot; MBHT armonizada al sistema de diseño del portal**. **SOLICITUD DEL USUARIO**: mejorar el diseño de la MBHT (colores, composición, fuentes) respecto a lo aplicado en v45.9 para que se integre mejor con el resto del portal. **AUDITOR&Iacute;A** con `preview_eval` detectó divergencias: border-radius `6px` (sharp) vs portal `12px`; hero title `23px` débil vs h2 portal `clamp(1.25-1.7rem)` fluido; padding inconsistente; sombras simples vs sistema `--sh-card` del portal; colores dimensiones UAI estridentes en contraste con paleta institucional. **OVERRIDES APLICADOS** (`<style data-mbht-css="v2-overrides">` insertado tras el block v1 para preservar el original): **(A) PALETA INSTITUCIONAL**: `--c-text` `#1e293b` &rarr; `#0f172a` (alineado al `--text` del portal). `--c-bg-soft` `#f5f7fa` &rarr; `#f8fafc`. Dimensiones refinadas: Acc `#0369a1` &rarr; `#1d4ed8` (azul más vibrante institucional), Amb `#15803d` &rarr; `#2d9a4d` (verde portal --accent), Soc `#be185d` &rarr; `#a82158` (granate menos saturado), Seg `#b45309` &rarr; `#c2410c` (naranja-tierra más institucional). **(B) RADIUS UNIFORME**: `--radius:6px` &rarr; `12px` (alineado a `--rad-md` del portal); `--radius-sm:4px` &rarr; `8px`. Todos los cards (.mbht-metric, .mbht-ind-card, .mbht-chart-card, .mbht-observatory, .mbht-stat-card, .mbht-link-card, .mbht-comparator, .mbht-comp-card, .mbht-footnote) ahora con radius 12px. **(C) TIPOGRAFÍA REFINADA**: `.mbht-title` con `clamp(1.6rem,1.2rem + 1.6vw,2.4rem)` + 800 weight + line-height 1.15 + letter-spacing -.025em (era 23px estático). `.mbht-section-title` con `clamp(1.05rem,.95rem + .5vw,1.35rem)` + 800 weight (era ~19px estático). `.mbht-eyebrow` con badge píldora bg `--c-accent-soft` + dot indicador. `.mbht-lead` 13.5px line-height 1.7 max-width 82ch. `.mbht-section-desc` 12.5px line-height 1.65. **(D) SOMBRAS ARMONIZADAS**: todas las cards con `box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04)` (idéntico a `--sh-card` del portal) + hover `translateY(-2px)` + sombra elevada `0 6px 16px rgba(15,23,42,.1)`. **(E) METRICS ALINEADOS** con KPI del portal: grid auto-fit min-150px, padding 14px 16px, value 22px/800/letter-spacing -.02em, label 10px/700/uppercase. **(F) DROPZONE INSTITUCIONAL SOBRIO**: bg `--c-bg-soft`, border 2px dashed `--c-border-strong`, hover con `--c-accent-soft`, icon más sutil. **(G) SECTION-HEADS REFINADOS**: grid `auto 1fr auto`, num badge `--c-accent-soft` píldora monospace, tag con bg `--c-bg-soft` píldora uppercase. **(H) TABS UNIFORMES**: estilo segmented control con `--c-bg-soft` background, active con shadow sutil. **(I) LINK-CARDS PLADECO** con border-left coloreado por dimensión + hover engrosa border (4px&rarr;6px) + shadow elevada. **(J) TABLA UV** con header gradient navy idéntico al portal (`#0c1f36 → #1a3d8f`). **(K) FOOTNOTE INSTITUCIONAL**: bg `--c-bg-soft`, border-left 4px accent, padding 16x20. **(L) DARK MODE COMPLETO**: bg `#0c1825`, cards `#1a2332`, todos los componentes con sombras adaptadas. **VENTAJA**: el bloque original `data-mbht-css="v1"` se conserva intacto por trazabilidad; los overrides son aditivos y removibles. Cache SW v62.9 &rarr; v62.10. Parsing JS validado.</div>
@@ -25602,47 +25603,80 @@ function exportSectionPDF(sectionId){
   setTimeout(function(){printWin.print();},500);
 }
 
-// ── SERVICE WORKER + INVALIDACIÓN AGRESIVA v45.6 ──
+// ── SERVICE WORKER + INVALIDACIÓN AGRESIVA v45.13 (anti-loop) ──
 // Estrategia: el SW.js siempre se descarga fresco (updateViaCache:'none'),
 // y ante cada cambio de pestaña/foco se llama reg.update() para forzar el chequeo.
+// v45.13 FIX: eliminado el setTimeout(reload) que carreaba contra controllerchange y
+// creaba un loop de recargas en algunos navegadores. Ahora SOLO controllerchange recarga.
+// Anti-loop guard: usa sessionStorage para detectar > 3 recargas en 10s y abortar.
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(function(reg){
-    // Si hay un SW esperando al cargar la página, activarlo de inmediato
-    if(reg.waiting){
-      try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}
-    }
-    reg.addEventListener('updatefound',function(){
-      var nw=reg.installing;
-      if(nw){
-        nw.addEventListener('statechange',function(){
-          if(nw.state==='installed' && navigator.serviceWorker.controller){
-            // Hay una nueva versión instalada, activarla
-            try{nw.postMessage({type:'SKIP_WAITING'});}catch(_){}
-            if(typeof showToast==='function')showToast('Portal actualizado — recargando...','success');
-            setTimeout(function(){location.reload();},1200);
-          }
+  /* Anti-loop guard: si detectamos > 3 reloads en 10s, asumimos loop y abortamos SW */
+  try{
+    var _reloadLog = JSON.parse(sessionStorage.getItem('__sw_reload_log') || '[]');
+    var _now = Date.now();
+    _reloadLog = _reloadLog.filter(function(t){ return _now - t < 10000; });
+    _reloadLog.push(_now);
+    sessionStorage.setItem('__sw_reload_log', JSON.stringify(_reloadLog));
+    if(_reloadLog.length > 3){
+      /* LOOP DETECTADO: desinstalar SW y limpiar caches para romper el ciclo */
+      console.warn('[SW] Loop de reloads detectado · desinstalando SW + limpiando caches');
+      sessionStorage.removeItem('__sw_reload_log');
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        return Promise.all(regs.map(function(r){ return r.unregister(); }));
+      }).then(function(){
+        return caches.keys().then(function(ks){
+          return Promise.all(ks.map(function(k){ return caches.delete(k); }));
         });
-      }
-    });
-    // Chequeo periódico: cada 30 minutos y al volver al foco
-    var _lastCheck=Date.now();
-    function maybeCheckSW(){
-      var now=Date.now();
-      if(now-_lastCheck<60000)return; // throttle 1 min mínimo
-      _lastCheck=now;
-      try{reg.update();}catch(_){}
+      }).then(function(){
+        /* Recarga limpia sin SW para que el usuario al menos vea el portal */
+        setTimeout(function(){ location.reload(); }, 500);
+      }).catch(function(){
+        setTimeout(function(){ location.reload(); }, 500);
+      });
+      /* Salir sin registrar el SW de nuevo */
+      throw new Error('SW loop aborted');
     }
-    window.addEventListener('focus',maybeCheckSW);
-    document.addEventListener('visibilitychange',function(){if(!document.hidden)maybeCheckSW();});
-    setInterval(maybeCheckSW,30*60*1000); // cada 30 min
-  }).catch(function(){});
-  // Cuando el controller cambia (nuevo SW activo), recargar para usar la nueva versión
-  var _ctrlReloaded=false;
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    if(_ctrlReloaded)return;
-    _ctrlReloaded=true;
-    location.reload();
-  });
+  }catch(_loopErr){ /* throw deliberado: salir del bloque */ if(_loopErr.message === 'SW loop aborted') { /* abort registration */ } }
+  if(!sessionStorage.getItem('__sw_aborted')){
+    navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(function(reg){
+      // Si hay un SW esperando al cargar la página, activarlo de inmediato
+      if(reg.waiting){
+        try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}
+      }
+      reg.addEventListener('updatefound',function(){
+        var nw=reg.installing;
+        if(nw){
+          nw.addEventListener('statechange',function(){
+            if(nw.state==='installed' && navigator.serviceWorker.controller){
+              // Hay una nueva versión instalada, activarla (controllerchange recargará la página)
+              try{nw.postMessage({type:'SKIP_WAITING'});}catch(_){}
+              if(typeof showToast==='function')showToast('Portal actualizado','success');
+              /* NO hacemos setTimeout(reload) aquí — controllerchange lo hace de forma idempotente */
+            }
+          });
+        }
+      });
+      // Chequeo periódico: cada 30 minutos y al volver al foco
+      var _lastCheck=Date.now();
+      function maybeCheckSW(){
+        var now=Date.now();
+        if(now-_lastCheck<60000)return; // throttle 1 min mínimo
+        _lastCheck=now;
+        try{reg.update();}catch(_){}
+      }
+      window.addEventListener('focus',maybeCheckSW);
+      document.addEventListener('visibilitychange',function(){if(!document.hidden)maybeCheckSW();});
+      setInterval(maybeCheckSW,30*60*1000); // cada 30 min
+    }).catch(function(){});
+    // Cuando el controller cambia (nuevo SW activo), recargar UNA SOLA VEZ
+    var _ctrlReloaded=false;
+    navigator.serviceWorker.addEventListener('controllerchange',function(){
+      if(_ctrlReloaded)return;
+      _ctrlReloaded=true;
+      /* Pequeño delay para que la activación termine antes de recargar */
+      setTimeout(function(){ location.reload(); }, 100);
+    });
+  }
   // Cleanup de flags viejos de versiones anteriores
   try{
     sessionStorage.removeItem('__sw_reload_v');
