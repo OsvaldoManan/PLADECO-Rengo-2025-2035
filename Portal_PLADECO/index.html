@@ -40,14 +40,21 @@
 <script>
 (function(){
   'use strict';
-  /* === A. Global error handlers · capturan errores sin trabar UI === */
+  /* === A. Global error handlers · v45.12 HOTFIX
+     Solo logean a buffer interno (sin toast intrusivo). El toast de v45.11
+     se mostraba con cualquier error benigno de librerías externas y daba
+     impresión falsa de portal caído. */
   var _errBuffer = [];
-  var _errOverlayShown = false;
+  /* Lista de mensajes BENIGNOS que se ignoran (CORS, third-party noise, etc.) */
+  var _ERR_NOISE_RE = /Script error\.|ResizeObserver loop|Non-Error promise rejection|Loading chunk|cancelled|aborted|chrome-extension/i;
   function _logError(kind, msg, source, line, col, err){
     try{
+      var msgStr = String(msg || '');
+      /* Filtrar ruido de librerías cross-origin/extensions */
+      if(_ERR_NOISE_RE.test(msgStr)) return;
       var item = {
         kind: kind || 'error',
-        msg: String(msg || '').slice(0, 300),
+        msg: msgStr.slice(0, 300),
         src: (source || '').split('/').pop().slice(0, 60),
         line: line || 0,
         col: col || 0,
@@ -56,35 +63,10 @@
       };
       _errBuffer.push(item);
       if(_errBuffer.length > 30) _errBuffer.shift();
-      // No spam: throttle al usuario, max 1 toast cada 30s
-      if(!_errOverlayShown){
-        _errOverlayShown = true;
-        setTimeout(function(){ _errOverlayShown = false; }, 30000);
-        _showErrorToast(item);
-      }
-      // Debug accesible desde consola del navegador
+      /* Solo log a consola para developers; NO mostrar toast al usuario */
       if(typeof console !== 'undefined' && console.warn){
         console.warn('[Resilience]', kind, item);
       }
-    }catch(_){}
-  }
-  function _showErrorToast(item){
-    try{
-      if(typeof document === 'undefined' || !document.body) return;
-      var existing = document.getElementById('__resilienceToast');
-      if(existing) existing.remove();
-      var t = document.createElement('div');
-      t.id = '__resilienceToast';
-      t.style.cssText = 'position:fixed;bottom:20px;right:20px;max-width:340px;background:#1f2937;color:#fff;padding:12px 14px;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.3);font-family:system-ui,-apple-system,sans-serif;font-size:12.5px;line-height:1.5;z-index:99999;border-left:4px solid #f5921d;opacity:0;transition:opacity .3s,transform .3s;transform:translateY(10px)';
-      t.innerHTML = '<div style="font-weight:700;margin-bottom:4px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#fbbf24">⚠ Aviso técnico</div>' +
-        '<div style="opacity:.9">Una sección del portal tuvo un problema menor (puede seguir navegando). El equipo SECPLAC ha sido notificado.</div>' +
-        '<button style="margin-top:8px;background:transparent;color:#94a3b8;border:1px solid #475569;padding:4px 10px;border-radius:6px;font-size:10.5px;cursor:pointer;font-family:inherit" onclick="this.parentElement.style.opacity=0;setTimeout(()=>this.parentElement.remove(),250)">Cerrar</button>';
-      document.body.appendChild(t);
-      requestAnimationFrame(function(){
-        t.style.opacity = '1';
-        t.style.transform = 'translateY(0)';
-      });
-      setTimeout(function(){ try{ t.style.opacity='0'; setTimeout(function(){t.remove();},300); }catch(_){} }, 8000);
     }catch(_){}
   }
   window.addEventListener('error', function(e){
@@ -93,6 +75,13 @@
   window.addEventListener('unhandledrejection', function(e){
     _logError('promise', (e.reason && e.reason.message) || String(e.reason || 'unknown'), '', 0, 0, e.reason);
   });
+  /* Cleanup defensivo: si quedó un toast de v45.11 en DOM por SW vieja, removerlo */
+  try{
+    document.addEventListener('DOMContentLoaded', function(){
+      var oldToast = document.getElementById('__resilienceToast');
+      if(oldToast) oldToast.remove();
+    });
+  }catch(_){}
   // Acceso público para debugging
   window.__resilience = {
     errors: _errBuffer,
@@ -14613,10 +14602,11 @@ body.dark .mbht-section .mbht-tab.active{background:var(--c-bg-soft)}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.11</span>
+  <span class="ub-ver">v45.12</span>
   &#218;ltima actualizaci&#243;n: 18 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.12</strong> <span class="ub-date">18 May 2026</span><br>&#128737;&#127919; **HOTFIX v45.12 &middot; Eliminar toast falso-alarmista del resilience block**. **REPORTE DEL USUARIO**: «tenemos un problema en el portal, está caído». **DIAGNÓSTICO**: el portal en realidad estaba 100% operativo (HTTP 200, 2.3MB, 3 scripts inline OK, 56 secciones renderizadas, 0 errores en consola). **Causa raíz identificada**: el toast «⚠ Aviso técnico — Una sección del portal tuvo un problema menor» que agregué en v45.11 se disparaba con CUALQUIER error global (`window.onerror`), incluyendo errores BENIGNOS de scripts cross-origin (Chart.js / Leaflet inicialización con CORS) que aparecen como genérico `Script error.` Esto daba al usuario la falsa impresión de portal roto cuando solo había noise de terceros. **FIX APLICADO**: (1) **Toast removido** completamente — la función `_showErrorToast` y todas sus referencias eliminadas. Los errores ahora solo se logean al buffer interno `window.__resilience.errors` para debugging vía consola, sin UI intrusiva al usuario. (2) **Filtro de noise** añadido con regex `_ERR_NOISE_RE = /Script error\.|ResizeObserver loop|Non-Error promise rejection|Loading chunk|cancelled|aborted|chrome-extension/i` que descarta errores típicos benignos antes de logear (evita buffer spam). (3) **Cleanup defensivo**: si por SW vieja quedó el toast `#__resilienceToast` en el DOM, se remueve en `DOMContentLoaded`. **PRESERVADO**: las protecciones reales del resilience block siguen activas (capture global errors, `__libs.ready/wait`, `safeRun`, MBHT lazy init con IntersectionObserver, SW endurecido con fetch timeout 10s, fallback chain). Solo se quitó la UI alarmista. **VERIFICACIÓN**: el portal en producción muestra HTTP 200, contenido íntegro, sin errores reales. Cache SW v62.11 → v62.12. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.11</strong> <span class="ub-date">18 May 2026</span><br>&#128737;&#9889; **v45.11 &middot; Endurecimiento anti-crashes del portal**. **SOLICITUD DEL USUARIO**: actualizar y mejorar el sitio ante posibles crasheos. **AUDITORÍA**: 0 errores actuales en consola, pero se identificaron riesgos latentes &mdash; (a) sin `window.onerror` ni `unhandledrejection` global, los errores silenciosos no se detectan; (b) MBHT IIFE arranca inmediatamente sin verificar Chart/Leaflet; (c) SW sin timeout puede colgar la página esperando red lenta; (d) sin filtrado de schemes no-http, requests `chrome-extension://` o similares pueden fallar en `e.respondWith`. **MEJORAS APLICADAS**: **(A) RESILIENCE BLOCK GLOBAL** en `<head>` antes de cualquier JS de sección: (1) `window.addEventListener('error', ...)` captura js-errors con context (filename, line, col, stack 500 chars). (2) `window.addEventListener('unhandledrejection', ...)` captura promesas rotas. (3) Buffer de hasta 30 errores accesible via `window.__resilience` (con `.errors`, `.clear()`, `.info()` para debugging). (4) Toast UI no intrusivo &laquo;⚠ Aviso técnico&raquo; auto-desaparece a 8s, throttled a 1 toast/30s para no agobiar al usuario. (5) Helper `window.safeRun(label, fn)` que envuelve cualquier init en try/catch tanto síncrono como async. (6) `window.__libs` con `.ready(lib)` (feature detection: chart/leaflet/heat/cluster/xlsx/d3) y `.wait(lib, timeout)` que devuelve promesa con retry cada 150ms hasta 8s. **(B) MBHT ENDURECIDO**: (1) IIFE refactorizado &mdash; el código original encapsulado en función `_runMBHT()`. (2) IntersectionObserver con `rootMargin:'300px'` arranca solo cuando la sección entra al viewport. (3) Antes de ejecutar, verifica `Chart` + `L` disponibles; si no, usa `__libs.wait()` con timeout 8s. (4) Si tras 8s las libs no cargaron, muestra mensaje suave en la sección &laquo;⏱ El observatorio MBHT no pudo cargar. El resto del portal funciona normalmente.&raquo; (5) Guard `window.__mbhtInited` evita doble inicialización. (6) try/catch interno: si `_runMBHT()` lanza, se logea pero no crashea el portal. **(C) SW ENDURECIDO v62.10 &rarr; v62.11**: (1) Nuevo `fetchWithTimeout(req, ms)` con default 10s &mdash; las requests HTML ya no cuelgan indefinidamente. (2) Filtrado de protocolos: `if(url.protocol !== 'http:' && url.protocol !== 'https:') return` para no interceptar `chrome-extension://`, `data:`, etc. (3) Catches dobles en cada respondWith: el outer catch garantiza una respuesta válida aunque la primera estrategia falle. (4) Función `fallbackResponse(req, url, isHtml)` centraliza el comportamiento ante fallo total &mdash; HTML cae a `index.html` cacheado &rarr; `offline.html` &rarr; mensaje HTML inline minimal de 503. (5) Errores de `caches.open().put()` ya no se propagan (cache full no rompe la página). (6) `self.addEventListener('error')` en el SW logea internos a consola DevTools. **RESULTADO**: el portal sobrevive ahora a (i) librerías que no cargan, (ii) red intermitente, (iii) navegadores viejos sin IntersectionObserver (fallback a init inmediato), (iv) extensiones del navegador que inyectan requests raros, (v) errores async no manejados. **PARA DEBUGGEAR**: en consola DevTools, `__resilience.info()` muestra todos los errores capturados; `__libs.ready('chart')` verifica estado de cada librería. Parsing JS validado · 3 scripts inline OK.</div>
     <div class="ub-entry"><strong>v45.10</strong> <span class="ub-date">18 May 2026</span><br>&#127912;&#9889; **v45.10 &middot; MBHT armonizada al sistema de diseño del portal**. **SOLICITUD DEL USUARIO**: mejorar el diseño de la MBHT (colores, composición, fuentes) respecto a lo aplicado en v45.9 para que se integre mejor con el resto del portal. **AUDITOR&Iacute;A** con `preview_eval` detectó divergencias: border-radius `6px` (sharp) vs portal `12px`; hero title `23px` débil vs h2 portal `clamp(1.25-1.7rem)` fluido; padding inconsistente; sombras simples vs sistema `--sh-card` del portal; colores dimensiones UAI estridentes en contraste con paleta institucional. **OVERRIDES APLICADOS** (`<style data-mbht-css="v2-overrides">` insertado tras el block v1 para preservar el original): **(A) PALETA INSTITUCIONAL**: `--c-text` `#1e293b` &rarr; `#0f172a` (alineado al `--text` del portal). `--c-bg-soft` `#f5f7fa` &rarr; `#f8fafc`. Dimensiones refinadas: Acc `#0369a1` &rarr; `#1d4ed8` (azul más vibrante institucional), Amb `#15803d` &rarr; `#2d9a4d` (verde portal --accent), Soc `#be185d` &rarr; `#a82158` (granate menos saturado), Seg `#b45309` &rarr; `#c2410c` (naranja-tierra más institucional). **(B) RADIUS UNIFORME**: `--radius:6px` &rarr; `12px` (alineado a `--rad-md` del portal); `--radius-sm:4px` &rarr; `8px`. Todos los cards (.mbht-metric, .mbht-ind-card, .mbht-chart-card, .mbht-observatory, .mbht-stat-card, .mbht-link-card, .mbht-comparator, .mbht-comp-card, .mbht-footnote) ahora con radius 12px. **(C) TIPOGRAFÍA REFINADA**: `.mbht-title` con `clamp(1.6rem,1.2rem + 1.6vw,2.4rem)` + 800 weight + line-height 1.15 + letter-spacing -.025em (era 23px estático). `.mbht-section-title` con `clamp(1.05rem,.95rem + .5vw,1.35rem)` + 800 weight (era ~19px estático). `.mbht-eyebrow` con badge píldora bg `--c-accent-soft` + dot indicador. `.mbht-lead` 13.5px line-height 1.7 max-width 82ch. `.mbht-section-desc` 12.5px line-height 1.65. **(D) SOMBRAS ARMONIZADAS**: todas las cards con `box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04)` (idéntico a `--sh-card` del portal) + hover `translateY(-2px)` + sombra elevada `0 6px 16px rgba(15,23,42,.1)`. **(E) METRICS ALINEADOS** con KPI del portal: grid auto-fit min-150px, padding 14px 16px, value 22px/800/letter-spacing -.02em, label 10px/700/uppercase. **(F) DROPZONE INSTITUCIONAL SOBRIO**: bg `--c-bg-soft`, border 2px dashed `--c-border-strong`, hover con `--c-accent-soft`, icon más sutil. **(G) SECTION-HEADS REFINADOS**: grid `auto 1fr auto`, num badge `--c-accent-soft` píldora monospace, tag con bg `--c-bg-soft` píldora uppercase. **(H) TABS UNIFORMES**: estilo segmented control con `--c-bg-soft` background, active con shadow sutil. **(I) LINK-CARDS PLADECO** con border-left coloreado por dimensión + hover engrosa border (4px&rarr;6px) + shadow elevada. **(J) TABLA UV** con header gradient navy idéntico al portal (`#0c1f36 → #1a3d8f`). **(K) FOOTNOTE INSTITUCIONAL**: bg `--c-bg-soft`, border-left 4px accent, padding 16x20. **(L) DARK MODE COMPLETO**: bg `#0c1825`, cards `#1a2332`, todos los componentes con sombras adaptadas. **VENTAJA**: el bloque original `data-mbht-css="v1"` se conserva intacto por trazabilidad; los overrides son aditivos y removibles. Cache SW v62.9 &rarr; v62.10. Parsing JS validado.</div>
     <div class="ub-entry"><strong>v45.9</strong> <span class="ub-date">18 May 2026</span><br>&#128205;&#128202; **v45.9 &middot; Matriz de Bienestar Humano Territorial (MBHT) integrada**. **SOLICITUD DEL USUARIO**: agregar la secci&oacute;n MBHT del archivo `mbht-section-v5.html` respetando fuente y colores del portal. **INTEGRACI&Oacute;N COMPLETA**: (1) **HTML**: 55k chars de la secci&oacute;n `#mbht` insertada en el Cap&iacute;tulo III (Diagn&oacute;stico Territorial) entre `#ict-espacios-publicos` y `#analisis-estrategico-censo`, manteniendo el flujo anal&iacute;tico ICT &rarr; MBHT &rarr; An&aacute;lisis Estrat&eacute;gico. Contenido: hero institucional UAI-SUBDERE 2021, 6 KPI metrics (4 dim, 18 ind, 826 mz, μ comunal, zonas LISA, brecha U/R), dropzone para 5 XLSX, &sect;11.4.1 diagrama SVG de arquitectura conceptual (4 dim + 18 ind con conectores), &sect;11.4.2 tabs con 18 indicator cards (Acc 6 / Amb 2 / Soc 6 / Seg 4), &sect;11.4.3 3 charts Chart.js (radar U/R, histograma 826 mz, ranking 18 ind), &sect;11.4.4 observatorio espacial Leaflet con multi-capa (puntos/heatmap/clusters) + multi-base (oscura/clara/sat/topo) + filtros LISA + spotlight + export CSV + fullscreen, &sect;11.4.4b tabla 21 UV agregadas, &sect;11.4.4c comparador pareado UV con radar, &sect;11.4.5 articulaci&oacute;n con los 6 ejes PLADECO, footnote SUBDERE/UAI. (2) **CSS** (28k chars): scoped 100% a `.mbht-section` con variables propias `--c-bg/text/accent/dim-*/zona-*`. **Adaptaci&oacute;n al portal**: fuente `Inter` &rarr; `'Segoe UI', system-ui, -apple-system, Roboto, sans-serif`; central accent `#b91c1c` &rarr; `#c0392b` (color portal Eje 5 Social) + variante hover `#991b1b` &rarr; `#922518`; rgba(185,28,28,...) &rarr; rgba(192,57,43,...) en gradientes/borders/shadows. Colores can&oacute;nicos de las 4 dimensiones UAI preservados: Acc `#0369a1`, Amb `#15803d`, Soc `#be185d`, Seg `#b45309`. Tipograf&iacute;a SVG `Fraunces`/`Manrope` &rarr; `Segoe UI`. (3) **JS** (50k chars): IIFE completo con datos demo de las 21 UV reales de Rengo (Centro/Isla/Oriente/Poniente/Sur + Rosario/Esmeralda + 14 rurales), generaci&oacute;n estoc&aacute;stica por distribuci&oacute;n LISA por UV, manejo XLSX dropzone, render Leaflet con markercluster + heatmap, comparador UV con radar Chart.js, export CSV, fullscreen. (4) **Librer&iacute;as externas a&ntilde;adidas**: `leaflet.markercluster@1.5.3` (CSS + JS) y `xlsx@0.18.5` (script defer). Leaflet 1.9.4 + leaflet.heat 0.2.0 ya en portal. (5) **Navegaci&oacute;n**: agregada entrada al sidebar grupo 2 entre ICT y Mapa Interactivo, al `sectionNames` (breadcrumbs Cap. III) y al objeto del scrollspy. **Total HTML+JS+CSS a&ntilde;adido**: ~135k chars. **Cache SW v62.8 &rarr; v62.9**. Parsing JS validado.</div>
