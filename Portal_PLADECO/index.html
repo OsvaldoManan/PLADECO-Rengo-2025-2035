@@ -5094,7 +5094,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.36</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.37</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5222,7 +5222,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.36</span>
+        <span>&#127919; v45.37</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -7055,10 +7055,128 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </style>
 
 <section id="mbht-bienestar" class="reveal">
-  <div class="sec-header">
-    <div class="badge badge--success">&sect;11.4 &middot; Bienestar Humano Territorial</div>
-    <h2>&#127960;&#65039; Matriz de Bienestar Humano Territorial (MBHT)</h2>
-    <p>Diagn&oacute;stico territorial multidimensional del bienestar humano en Rengo, calculado a nivel de <strong>manzana censal</strong> (n=665) con metodolog&iacute;a UAI/SUBDERE/SUBSECRETAR&Iacute;A DE PREVENCI&Oacute;N DEL DELITO. La MBHT integra <strong>4 dimensiones complementarias</strong> &mdash;Accesibilidad, Ambiental, Socioecon&oacute;mica y Seguridad&mdash; en un &iacute;ndice global <strong>BHT</strong> (0-1) que permite identificar zonas de mayor y menor bienestar dentro del territorio comunal. A diferencia de los &iacute;ndices del Censo (Cap II), la MBHT incorpora variables ambientales (cobertura vegetal, temperatura) y de seguridad (garant&iacute;as personales y procesales), entregando una lectura m&aacute;s completa de las condiciones de vida.</p>
+  <!-- ═══ BANNER INMERSIVO MBHT v45.37 ═══ -->
+  <div class="mbht-hero sec-header">
+    <!-- Patrón SVG decorativo de fondo · grid territorial -->
+    <svg class="mbht-hero-pattern" viewBox="0 0 600 400" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="mbht-dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,.12)"/>
+        </pattern>
+        <pattern id="mbht-grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+        </pattern>
+        <linearGradient id="mbht-fade" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,.08)"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="400" fill="url(#mbht-grid)"/>
+      <rect width="600" height="400" fill="url(#mbht-dots)"/>
+      <rect width="600" height="400" fill="url(#mbht-fade)"/>
+    </svg>
+
+    <!-- Ornamento territorial: silueta abstracta de manzanas -->
+    <svg class="mbht-hero-territory" viewBox="0 0 200 160" aria-hidden="true">
+      <g fill="rgba(255,255,255,.06)">
+        <rect x="20" y="30" width="36" height="28" rx="2"/>
+        <rect x="62" y="22" width="44" height="38" rx="2"/>
+        <rect x="112" y="36" width="32" height="24" rx="2"/>
+        <rect x="20" y="68" width="28" height="32" rx="2"/>
+        <rect x="54" y="68" width="40" height="32" rx="2"/>
+        <rect x="100" y="68" width="44" height="36" rx="2"/>
+        <rect x="20" y="110" width="48" height="30" rx="2"/>
+        <rect x="74" y="110" width="36" height="34" rx="2"/>
+        <rect x="116" y="110" width="28" height="32" rx="2"/>
+      </g>
+      <g fill="rgba(72,199,110,.30)">
+        <circle cx="40" cy="44" r="2.5"/>
+        <circle cx="84" cy="40" r="2.5"/>
+        <circle cx="128" cy="48" r="2.5"/>
+        <circle cx="36" cy="86" r="2.5"/>
+        <circle cx="74" cy="86" r="2.5"/>
+        <circle cx="122" cy="86" r="2.5"/>
+        <circle cx="44" cy="125" r="2.5"/>
+        <circle cx="92" cy="127" r="2.5"/>
+        <circle cx="130" cy="126" r="2.5"/>
+      </g>
+    </svg>
+
+    <!-- Grid de 2 columnas: texto + minividata -->
+    <div class="mbht-hero-grid">
+      <div class="mbht-hero-content">
+        <span class="mbht-hero-eyebrow">
+          <span class="mbht-hero-eyebrow-dot"></span>
+          &sect;11.4 &middot; Inteligencia Territorial
+        </span>
+        <h2 class="mbht-hero-title">Matriz de Bienestar <em>Humano Territorial</em></h2>
+        <p class="mbht-hero-lead">Diagn&oacute;stico multidimensional del bienestar a nivel de <strong>manzana censal</strong>. Construido con metodolog&iacute;a UAI &middot; SUBDERE &middot; Subsecretar&iacute;a de Prevenci&oacute;n del Delito, integra cuatro dimensiones complementarias en un &iacute;ndice global <strong>BHT</strong> (0&ndash;1) que revela las geograf&iacute;as del bienestar de Rengo.</p>
+
+        <!-- Chips de datos clave -->
+        <div class="mbht-hero-chips">
+          <div class="mbht-chip">
+            <div class="mbht-chip-val">665</div>
+            <div class="mbht-chip-label">Manzanas</div>
+          </div>
+          <div class="mbht-chip">
+            <div class="mbht-chip-val">58.570</div>
+            <div class="mbht-chip-label">Habitantes</div>
+          </div>
+          <div class="mbht-chip">
+            <div class="mbht-chip-val">583<span class="mbht-chip-unit">km&sup2;</span></div>
+            <div class="mbht-chip-label">Superficie</div>
+          </div>
+          <div class="mbht-chip">
+            <div class="mbht-chip-val">4</div>
+            <div class="mbht-chip-label">Dimensiones</div>
+          </div>
+          <div class="mbht-chip mbht-chip-feature">
+            <div class="mbht-chip-val">0,627</div>
+            <div class="mbht-chip-label">BHT &micro; Comunal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini-viz inline · 4 dimensiones con barras -->
+      <div class="mbht-hero-viz">
+        <div class="mbht-hero-viz-title">Composici&oacute;n del Bienestar</div>
+        <div class="mbht-hero-viz-sub">Promedios comunales por dimensi&oacute;n &middot; escala 0&ndash;1</div>
+        <div class="mbht-hero-dim-list">
+          <div class="mbht-hero-dim">
+            <div class="mbht-hero-dim-head">
+              <span class="mbht-hero-dim-emoji">&#128739;&#65039;</span>
+              <span class="mbht-hero-dim-name">Accesibilidad</span>
+              <span class="mbht-hero-dim-val">0,528</span>
+            </div>
+            <div class="mbht-hero-dim-bar"><span style="width:52.8%;background:linear-gradient(90deg,#0369a1,#0ea5e9)"></span></div>
+          </div>
+          <div class="mbht-hero-dim">
+            <div class="mbht-hero-dim-head">
+              <span class="mbht-hero-dim-emoji">&#127795;</span>
+              <span class="mbht-hero-dim-name">Ambiental</span>
+              <span class="mbht-hero-dim-val">0,462</span>
+            </div>
+            <div class="mbht-hero-dim-bar"><span style="width:46.2%;background:linear-gradient(90deg,#15803d,#22c55e)"></span></div>
+          </div>
+          <div class="mbht-hero-dim">
+            <div class="mbht-hero-dim-head">
+              <span class="mbht-hero-dim-emoji">&#128202;</span>
+              <span class="mbht-hero-dim-name">Socioecon&oacute;mica</span>
+              <span class="mbht-hero-dim-val">0,621</span>
+            </div>
+            <div class="mbht-hero-dim-bar"><span style="width:62.1%;background:linear-gradient(90deg,#be185d,#ec4899)"></span></div>
+          </div>
+          <div class="mbht-hero-dim">
+            <div class="mbht-hero-dim-head">
+              <span class="mbht-hero-dim-emoji">&#128737;&#65039;</span>
+              <span class="mbht-hero-dim-name">Seguridad</span>
+              <span class="mbht-hero-dim-val">0,864</span>
+            </div>
+            <div class="mbht-hero-dim-bar"><span style="width:86.4%;background:linear-gradient(90deg,#b45309,#f59e0b)"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="mbht-intro">
@@ -12204,10 +12322,11 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.36</span>
+  <span class="ub-ver">v45.37</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.37</strong> <span class="ub-date">19 May 2026</span><br>&#127919;&#10024; **v45.37 &middot; Banner MBHT inmersivo nivel institucional**. Solicitud del usuario: no quiere un banner gen&eacute;rico sino potenciarlo m&aacute;s. **REEMPLAZO COMPLETO del sec-header MBHT** por un hero institucional inmersivo. **LAYOUT MULTI-COLUMNA**: grid 1.4fr + 1fr (responsive 1 col en m&oacute;vil). **CONTENIDO COLUMNA IZQUIERDA**: (a) Eyebrow pill con dot animado verde + texto Inteligencia Territorial; (b) T&iacute;tulo con gradient verde-&aacute;mbar en la parte clave (Humano Territorial) usando background-clip text; (c) Lead descriptivo blanco 88%; (d) **5 chips de datos** glass-morphic con backdrop-blur: 665 manzanas, 58.570 habitantes, 583 km&sup2;, 4 dimensiones, BHT &micro; 0,627 (este &uacute;ltimo con tratamiento feature: gradient verde + glow). **CONTENIDO COLUMNA DERECHA**: mini-viz inline glass-morphic con t&iacute;tulo &laquo;Composici&oacute;n del Bienestar&raquo; + 4 barras horizontales con gradient propio por dimensi&oacute;n (Acc azul, Amb verde, Soc magenta, Seg &aacute;mbar), shimmer al final + animaci&oacute;n scaleX al cargar. **CAPAS DE FONDO**: (1) gradient radial multi-stop navy-azul-verde con animaci&oacute;n drift de 18s (background-position infinite alternate); (2) Patr&oacute;n SVG con grid l&iacute;neas + dots blancos translucidos + fade horizontal; (3) Silueta SVG abstracta de 9 manzanas con luces verdes en esquina inferior derecha .65 opacidad; (4) L&iacute;nea vertical decorativa superior izquierda verde-claro fade out. **EFECTOS**: backdrop-filter blur 10-12px en chips y viz, border-radius 18px global, sombra 25px navy + glow verde sutil, animaci&oacute;n bar fill cubic-bezier al entrar al viewport. **RESPONSIVE**: 1 columna en &le;900px, padding reducido en &le;540px, chips m&aacute;s peque&ntilde;os. **ACCESIBILIDAD**: aria-hidden en SVG decorativos, respeta prefers-reduced-motion. **TIPOGRAF&Iacute;A**: t&iacute;tulo clamp 26-42px peso 800 letter-spacing -.025em con text-shadow sutil; eyebrow 11px tracking widest; chips numerals tabulares. **RIESGO PARSER**: nulo, todo SVG inline est&aacute;ndar + CSS puro, sin tags HTML literales en el changelog.</div>
     <div class="ub-entry"><strong>v45.36</strong> <span class="ub-date">19 May 2026</span><br>&#127960;&#65039;&#127912; **v45.36 &middot; Fix integral colores MBHT + banner identitario**. Solicitud del usuario: los colores del texto y banner de MBHT son fundamentales mejorarlos. **DIAGN&Oacute;STICO**: el CSS original de MBHT (v45.31) us&oacute; tokens legacy (--text, --text2, --text-secondary) que tras el polish de v45.35 (que introdujo --text-1/2/3/4/5) crearon inconsistencias de contraste. Adem&aacute;s, el banner principal era gen&eacute;rico sin identidad visual. **BANNER IDENTITARIO MBHT** (sec-header): gradient hero institucional Rengo navy-verde-verde-claro (135deg #0c1f36 &rarr; #15803d &rarr; #2d9a4d), padding 32x36px, sombra 4px 20px navy .18, decoraci&oacute;n radial blanca translucida en esquina superior derecha + emoji edificio institucional gigante .08 opacidad en esquina inferior derecha, h2 blanco peso 800 con clamp 22-32px y text-shadow sutil, badge con backdrop-filter blur + borde blanco translucido, p&aacute;rrafo blanco 92% con strong en chip blanco translucido. Responsive con padding 22x18px en m&oacute;vil. **FIXES DE CONTRASTE LIGHT MODE**: todos los textos MBHT con colores hex expl&iacute;citos en lugar de variables (-#0c1f36 t&iacute;tulos, #1e293b body principal, #334155 body secundario, #475569 captions, #64748b meta, #94a3b8 placeholders). KPIs/cards con fondo expl&iacute;cito blanco, borders #e2e8f0. Tablas distritos con thead bg verde-claro .10 + texto navy. **FIXES DARK MODE**: cada componente MBHT con override `body.dark #mbht-bienestar` para cards bg #132035, texto #f1f5f9 (titulos) / #e2e8f0 (body) / #cbd5e1 (secondary) / #94a3b8 (meta), bordes #334155. Valores destacados con verde claro #48c76e en dark. **NUEVOS DETALLES VISUALES**: (1) H3 subsecciones internas con barrita decorativa verde 4x18px al inicio. (2) Botones de filtro mapa con estados light/dark + sombra activa. (3) Cards de recomendaciones con border-left verde Rengo prominente. (4) Bloques de evidencia con border-left azul navy. (5) Bloques de marco conceptual con border-left morado en cursiva. (6) Sec-fuente con background tonal + ícono en chip verde. **ALCANCE**: ~250 líneas de CSS específico bajo selector `#mbht-bienestar` con prefijos para evitar contaminar otras secciones. **RIESGO PARSER**: nulo, CSS puro sin etiquetas literales en texto.</div>
     <div class="ub-entry"><strong>v45.35</strong> <span class="ub-date">19 May 2026</span><br>&#128221;&#127912; **v45.35 &middot; Distribuci&oacute;n integral: spacing + tipograf&iacute;a + colores + composici&oacute;n**. Pulido total del portal aplicando un sistema de dise&ntilde;o profesional consistente en toda la composici&oacute;n visual. **SISTEMA DE SPACING CAN&Oacute;NICO**: 11 tokens de espaciado (--space-3xs 2px hasta --space-5xl 96px) con escala armoniosa 1.5, m&aacute;s 5 tokens de gap (--gap-xs/sm/md/lg/xl) para grids y flex. **CONTENEDORES**: 4 anchos can&oacute;nicos (narrow 720px, base 1100px, wide 1280px, full 1440px). **PESOS TIPOGR&Aacute;FICOS**: 6 tokens (--fw-regular 400 a --fw-black 900). **PALETA DE COLORES JER&Aacute;RQUICA**: (a) Superficies (--surface-1/2/3/elev) para cards y bg. (b) Texto jer&aacute;rquico (--text-1/2/3/4/5) de t&iacute;tulos a placeholders. (c) Borders escalados (--border-1/2/3/4) sutiles a fuertes. (d) Estados interactivos (--c-hover-bg, --c-active-bg, --c-focus-ring). (e) Gradientes institucionales (--grad-rengo, --grad-rengo-soft, --grad-navy, --grad-navy-warm, --grad-divider). **DARK MODE COMPLETO** con tokens reescritos para todos los grupos. **GRIDS UTILITARIOS**: .grid-auto-sm/md/lg (auto-fit responsive) + .grid-2/3/4 fijos con breakpoints. **TIPOGRAF&Iacute;A FINA**: font-feature-settings ss01+cv11+calt+ss02 globalmente; numerals tabulares forzados en KPIs, tablas, acr&oacute;nimos y stats; optical sizing 32 en hero titles. **KPI CARDS UNIFICADAS**: .kpi/.censo-kpi/.mbht-kpi con bg surface-1, border-2, padding lg, hover translateY(-3px) + border verde Rengo + barra superior 2px verde Rengo. **VIZ-CARDS REFINADAS**: .viz-card/.doc-card-enhanced/.foda-card/.eje-card con padding xl, transition cubic-bezier, hover border verde sutil; h3 con escala 16px peso 800 + viz-sub 12.5px peso 500. **TABLAS UNIFORMES**: border-collapse separate + border-radius con overflow hidden, thead bg surface-3 con uppercase tracking wider, tbody con hover surface-2. **FOOTER REFINADO**: padding 48px, h4 con ts-sm + tracking widest uppercase, links con line-height relaxed + hover blanco. **BOTONES UNIFICADOS**: .btn primary con gradient Rengo + shadow + transition cubic-bezier; .btn-secondary outline; focus-visible con outline 2px verde + offset 3px. **SIDEBAR REFINADO**: nav-a con padding sm/lg + font-size ts-sm + hover bg white .06; group-title con tracking widest. **BLOCKQUOTES**: nuevo patr&oacute;n con border-left verde + bg surface-2 + cite con guion. **SELECCI&Oacute;N**: verde Rengo .28 light / .45 dark. **SMOOTH SCROLL**: scroll-padding 32px, scroll-margin 24px. **IMG NO-LOGOS**: border-radius md + box-shadow card. **PRINT**: spacing tokens reducidos a points para A4. **TOTAL**: ~340 l&iacute;neas de CSS estructurado al final del body, sobreescribe legacy con !important controlado.</div>
     <div class="ub-entry"><strong>v45.34</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#128221; **v45.34 &middot; Polish de Composici&oacute;n Integral**. Reorganizaci&oacute;n visual completa del portal con foco en jerarqu&iacute;a, ritmo y coherencia. **ESCALA TIPOGR&Aacute;FICA CAN&Oacute;NICA**: 9 niveles `--ts-xs` (11px) hasta `--ts-4xl` (49px) con ratio 1.25 (escala mayor segunda); line-heights `--lh-tight/snug/normal/relaxed`; letter-spacing `--ls-tight/snug/normal/wide/wider/widest`. **HERO REFINADO**: H1 con clamp(28-48px) escalable, peso 800, letter-spacing -.022em; eyebrow y subtitle a 11px con tracking .08em uppercase; lead a 16px max-width 72ch; pseudo-elemento `::after` con gradiente radial verde Rengo sutil en esquina superior derecha (depth). **GROUP DIVIDERS (cap&iacute;tulos) elegantes**: gradient horizontal verde-azul-transparente; doble border-top/bottom con verde Rengo .20 opacidad; barra superior decorativa centrada 80x3px verde Rengo; n&uacute;meros romanos en c&iacute;rculos 48x48px con gradiente verde-oscuro Georgia serif + sombra; cap-sub indentada con padding-left 64px en desktop, sin indent en m&oacute;vil. **SEC-HEADERS UNIFORMES**: borde inferior 2px verde-claro + barrita underline 60x2px verde Rengo; h2 con clamp(20-28px) peso 800; p body con line-height 1.7 max-width 78ch; badges con margen inferior 8px. **NUEVOS PATRONES UTILITARIOS**: (1) `.callout` con variantes info/warn/danger/neutral (border-left + bg sem&aacute;ntico, &iacute;cono opcional). (2) `.stat-inline` para n&uacute;meros destacados inline en texto (chip verde Rengo). (3) `.banner-strip` con gradiente navy-blue-verde para CTAs/destacados, con &iacute;cono + eyebrow + title + sub + bot&oacute;n. (4) `.anchor-title` para anclas grandes con n&uacute;meros romanos Georgia. **SEC-FUENTE REFINADA**: background sutil + border-left navy + &iacute;cono en chip verde-claro 22x22px + tipograf&iacute;a tabular. **RITMO VERTICAL**: section margin-bottom 32px universal; jerarqu&iacute;a h3 (16px/700) y h4 (14px/700) consistente. **DARK MODE**: coherencia en todos los nuevos componentes. **RESPONSIVE**: ajustes espec&iacute;ficos &le;640px en padding, font-size y gaps. **TODO !important judicialmente** para sobrescribir CSS legacy sin romper layouts. **RIESGO PARSER**: NULO &mdash; CSS puro al final del body, sin JS, sin etiquetas literales en texto.</div>
@@ -23318,6 +23437,321 @@ if('serviceWorker' in navigator){
   }catch(_){}
 }
 </script>
+
+<!-- ═══ v45.37 · BANNER MBHT INMERSIVO · nivel institucional con mini-viz ═══ -->
+<style>
+/* ═══════════════════════════════════════════════════════
+   ANULAR el banner v45.36 (vamos con uno nuevo y más rico)
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar > .sec-header::before,
+#mbht-bienestar > .sec-header::after{content:none!important}
+
+/* ═══════════════════════════════════════════════════════
+   BANNER HERO INMERSIVO v45.37
+   ═══════════════════════════════════════════════════════ */
+.mbht-hero{
+  position:relative;
+  margin:0 0 36px!important;
+  padding:36px 40px!important;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(72,199,110,.18) 0%, transparent 45%),
+    radial-gradient(circle at 92% 90%, rgba(45,154,77,.22) 0%, transparent 50%),
+    linear-gradient(135deg, #061328 0%, #0c1f36 30%, #1a3d8f 65%, #15803d 100%)!important;
+  background-size:auto, auto, 200% 200%!important;
+  animation:mbhtHeroDrift 18s ease-in-out infinite alternate;
+  border:none!important;
+  border-radius:18px!important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.10) inset,
+    0 25px 50px -12px rgba(12,31,54,.35),
+    0 0 0 1px rgba(45,154,77,.08)!important;
+  overflow:hidden;
+  isolation:isolate;
+}
+@keyframes mbhtHeroDrift{
+  0%{background-position:0% 0%, 0% 0%, 0% 50%}
+  100%{background-position:0% 0%, 0% 0%, 100% 50%}
+}
+@media (prefers-reduced-motion:reduce){
+  .mbht-hero{animation:none}
+}
+
+/* SVG patron grid + dots de fondo */
+.mbht-hero-pattern{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  z-index:0;
+  pointer-events:none;
+  opacity:.85;
+}
+
+/* SVG territorial (silueta abstracta de manzanas) */
+.mbht-hero-territory{
+  position:absolute;
+  bottom:-12px;right:-12px;
+  width:220px;height:180px;
+  z-index:0;
+  pointer-events:none;
+  opacity:.65;
+}
+
+/* Decoración: línea vertical superior izquierda */
+.mbht-hero::before{
+  content:""!important;
+  position:absolute;
+  top:0;left:40px;
+  width:3px;height:48px;
+  background:linear-gradient(180deg, #48c76e 0%, transparent 100%);
+  z-index:1;
+  border-radius:0 0 3px 3px;
+}
+
+/* Grid de 2 columnas */
+.mbht-hero-grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);
+  gap:32px;
+  align-items:center;
+}
+@media (max-width:900px){
+  .mbht-hero{padding:28px 24px!important}
+  .mbht-hero-grid{grid-template-columns:1fr;gap:22px}
+  .mbht-hero-territory{width:140px;height:120px;opacity:.4}
+}
+@media (max-width:540px){
+  .mbht-hero{padding:24px 18px!important;margin:0 0 24px!important}
+  .mbht-hero::before{left:18px;height:36px}
+}
+
+/* ═══ COLUMNA IZQUIERDA: contenido textual ═══ */
+.mbht-hero-content{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.mbht-hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  align-self:flex-start;
+  padding:6px 14px;
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(72,199,110,.40);
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#48c76e;
+}
+.mbht-hero-eyebrow-dot{
+  display:inline-block;
+  width:6px;height:6px;
+  background:#48c76e;
+  border-radius:50%;
+  box-shadow:0 0 0 3px rgba(72,199,110,.30);
+  animation:mbhtPulse 2.4s ease-in-out infinite;
+}
+@keyframes mbhtPulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(72,199,110,.30)}
+  50%{box-shadow:0 0 0 6px rgba(72,199,110,.05)}
+}
+@media (prefers-reduced-motion:reduce){
+  .mbht-hero-eyebrow-dot{animation:none}
+}
+
+.mbht-hero-title{
+  font-size:clamp(26px, 3vw + 14px, 42px)!important;
+  font-weight:800!important;
+  color:#ffffff!important;
+  line-height:1.08!important;
+  letter-spacing:-.025em!important;
+  margin:0!important;
+  text-shadow:0 2px 8px rgba(0,0,0,.20);
+}
+.mbht-hero-title em{
+  font-style:normal;
+  background:linear-gradient(135deg, #48c76e 0%, #fbbf24 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+  display:inline-block;
+}
+
+.mbht-hero-lead{
+  font-size:14.5px!important;
+  line-height:1.65!important;
+  color:rgba(255,255,255,.88)!important;
+  margin:0!important;
+  max-width:60ch;
+  font-weight:400;
+}
+.mbht-hero-lead strong{
+  color:#ffffff!important;
+  font-weight:700;
+}
+
+/* ═══ CHIPS de datos clave ═══ */
+.mbht-hero-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+.mbht-chip{
+  display:flex;flex-direction:column;
+  padding:10px 14px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;
+  min-width:80px;
+  transition:transform .2s, background .2s, border-color .2s;
+}
+.mbht-chip:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.12);
+  border-color:rgba(72,199,110,.40);
+}
+.mbht-chip-val{
+  font-size:18px;
+  font-weight:800;
+  color:#ffffff;
+  line-height:1.1;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+}
+.mbht-chip-unit{
+  font-size:10px;
+  font-weight:600;
+  color:rgba(255,255,255,.65);
+  margin-left:2px;
+  letter-spacing:0;
+}
+.mbht-chip-label{
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.70);
+  margin-top:3px;
+}
+.mbht-chip-feature{
+  background:linear-gradient(135deg, rgba(72,199,110,.20) 0%, rgba(45,154,77,.15) 100%);
+  border-color:rgba(72,199,110,.50);
+  box-shadow:0 0 0 1px rgba(72,199,110,.20), 0 4px 12px rgba(45,154,77,.20);
+}
+.mbht-chip-feature .mbht-chip-val{color:#48c76e}
+.mbht-chip-feature .mbht-chip-label{color:rgba(72,199,110,.85)}
+
+/* ═══ COLUMNA DERECHA: mini-viz ═══ */
+.mbht-hero-viz{
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  padding:18px 20px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.06) inset,
+    0 10px 30px rgba(0,0,0,.20);
+}
+.mbht-hero-viz-title{
+  font-size:13px;
+  font-weight:800;
+  color:#ffffff;
+  letter-spacing:-.005em;
+  margin-bottom:2px;
+}
+.mbht-hero-viz-sub{
+  font-size:10.5px;
+  color:rgba(255,255,255,.65);
+  letter-spacing:.05em;
+  margin-bottom:14px;
+  text-transform:uppercase;
+}
+.mbht-hero-dim-list{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.mbht-hero-dim{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.mbht-hero-dim-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+}
+.mbht-hero-dim-emoji{
+  font-size:14px;
+  line-height:1;
+}
+.mbht-hero-dim-name{
+  flex:1;
+  color:rgba(255,255,255,.92);
+  font-weight:600;
+  letter-spacing:-.005em;
+}
+.mbht-hero-dim-val{
+  font-weight:800;
+  color:#ffffff;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.01em;
+}
+.mbht-hero-dim-bar{
+  width:100%;
+  height:6px;
+  background:rgba(255,255,255,.10);
+  border-radius:999px;
+  overflow:hidden;
+  position:relative;
+}
+.mbht-hero-dim-bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  position:relative;
+  box-shadow:0 0 8px rgba(255,255,255,.15);
+  animation:mbhtBarFill 1.4s cubic-bezier(.65,.05,.36,1) both;
+  transform-origin:left;
+}
+.mbht-hero-dim-bar span::after{
+  content:"";
+  position:absolute;
+  top:0;right:0;bottom:0;
+  width:8px;
+  background:rgba(255,255,255,.50);
+  filter:blur(4px);
+}
+@keyframes mbhtBarFill{
+  from{transform:scaleX(0)}
+  to{transform:scaleX(1)}
+}
+@media (prefers-reduced-motion:reduce){
+  .mbht-hero-dim-bar span{animation:none}
+}
+
+/* ═══ RESPONSIVE FINAL DEL HERO ═══ */
+@media (max-width:540px){
+  .mbht-hero-title{font-size:clamp(20px, 6vw, 28px)!important}
+  .mbht-hero-lead{font-size:13px!important}
+  .mbht-hero-chips{gap:6px}
+  .mbht-chip{padding:8px 11px;min-width:68px}
+  .mbht-chip-val{font-size:15px}
+  .mbht-chip-label{font-size:9px}
+  .mbht-hero-viz{padding:14px 16px}
+}
+
+</style>
 
 <!-- ═══ v45.36 · FIX INTEGRAL MBHT · banner identitario + colores coherentes light/dark ═══ -->
 <style>
