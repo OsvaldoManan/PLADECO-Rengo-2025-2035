@@ -310,9 +310,9 @@ body.sidebar-collapsed #main-content{margin-left:64px}
 .sidebar-theme-switch .ts-toggle{display:flex;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:3px;gap:2px}
 .sidebar-theme-switch .ts-opt{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;border:none;background:transparent;color:rgba(255,255,255,.55);font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;border-radius:7px;transition:all .2s;letter-spacing:.02em}
 .sidebar-theme-switch .ts-opt:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
-.sidebar-theme-switch .ts-opt.active{background:rgba(45,154,77,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(45,154,77,.4)}
+.sidebar-theme-switch .ts-opt.active{background:rgba(45,154,77,.35);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(45,154,77,.7),0 1px 6px rgba(45,154,77,.25);font-weight:800}
 .sidebar-theme-switch .ts-opt .ts-ico{font-size:13px;line-height:1}
-.sidebar-theme-switch .ts-opt[data-theme="dark"].active{background:rgba(99,102,241,.22);box-shadow:inset 0 0 0 1px rgba(99,102,241,.5)}
+.sidebar-theme-switch .ts-opt[data-theme="dark"].active{background:rgba(129,140,248,.42);box-shadow:inset 0 0 0 1.5px rgba(129,140,248,.75),0 1px 6px rgba(99,102,241,.25)}
 body.sidebar-collapsed .sidebar-theme-switch{display:none}
 @media(max-width:900px){.sidebar-theme-switch .ts-opt{padding:8px 6px;font-size:10.5px}}
 .menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer;transition:transform .2s}
@@ -5093,7 +5093,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.29</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.30</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5221,7 +5221,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.29</span>
+        <span>&#127919; v45.30</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 52 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -11149,10 +11149,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.29</span>
+  <span class="ub-ver">v45.30</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.30</strong> <span class="ub-date">19 May 2026</span><br>&#9728;&#65039;&#127769; **v45.30 &middot; Hardening del theme switcher**. 7 fixes al selector de tema Apariencia (Claro/Oscuro) tras auditor&iacute;a completa. **BUGS POTENCIALES CORREGIDOS**: (1) Init script referenciaba `Chart.defaults` sin guard &mdash;si Chart.js no cargaba (red bloqueada), lanzaba ReferenceError y romp&iacute;a todos los scripts siguientes; ahora con `if(typeof Chart !== undefined && Chart.defaults)` y try-catch. (2) Atajo de teclado `D` llamaba `getElementById(btnDark).click()` sin null-check; ahora con fallback a `toggleDark()` directo. **MEJORAS DE CALIDAD**: (3) Detecci&oacute;n de `prefers-color-scheme` del sistema en primera visita &mdash;si nunca has guardado preferencia y tu OS est&aacute; en oscuro, el portal abre oscuro autom&aacute;ticamente. (4) Listener `matchMedia.addEventListener(change)` para que el portal responda en vivo si cambias el tema del sistema (con fallback Safari `addListener`). (5) Multi-tab sync v&iacute;a `storage` event &mdash;si cambias el tema en una pesta&ntilde;a, las otras pesta&ntilde;as abiertas se actualizan al instante. (6) Active state m&aacute;s visible: verde Rengo de `rgba(.18)` a `rgba(.35)` con borde m&aacute;s grueso 1.5px, font-weight 800, sombra exterior suave de 6px; dark variant igualmente realzado a `rgba(.42)` con indigo `#818cf8`. (7) **TRANSICI&Oacute;N SUAVE** del cambio de tema: cuando haces clic en Claro/Oscuro, una clase transitoria `body.theme-transitioning` aplica transition `.35s cubic-bezier(.4,0,.2,1)` a background, border, color, fill, stroke y box-shadow de TODOS los elementos no-canvas/svg durante 420ms, eliminando el salto visual brusco. Respeta `prefers-reduced-motion`. **TODO PROTEGIDO**: cada operaci&oacute;n cr&iacute;tica con try-catch o guards, ning&uacute;n acceso DOM sin validaci&oacute;n previa.</div>
     <div class="ub-entry"><strong>v45.29</strong> <span class="ub-date">19 May 2026</span><br>&#128202;&#127919; **v45.29 &middot; 3 Visualizaciones Avanzadas** (Pir&aacute;mide poblacional + Sankey financiero + Funnel participaci&oacute;n). Nueva secci&oacute;n `#visualizaciones-avanzadas` (&sect;11.7) abre el Cap&iacute;tulo III con 3 lecturas profundas de datos clave del PLADECO. **(A) PIR&Aacute;MIDE POBLACIONAL CENSO 2024**: gr&aacute;fico bidireccional Chart.js con 17 cohortes quinquenales (0-4 a 80+) sumando 63.620 hab. Hombres en azul corporativo (izquierda) y mujeres en verde Rengo (derecha). Ejes con escala bilateral en miles, tooltip que muestra valor absoluto. Permite visualizar bono demogr&aacute;fico actual (cohortes 20-39) y transici&oacute;n al envejecimiento. **(B) SANKEY DE FINANCIAMIENTO**: diagrama D3.js+d3-sankey con 4 fuentes (Municipal 64%, FNDR 18%, Sectorial 12%, Otros 6%) fluyendo a 6 ejes estrat&eacute;gicos (E1-E6) en grosores proporcionales al peso de sus 225 acciones priorizadas. Tooltip al hover con valor exacto del flujo (fuente &rarr; eje + porcentaje). Colores por nodo, opacidad de flujos .42 base &mdash;.75 al hover. **D3 + d3-sankey cargados lazy** v&iacute;a IntersectionObserver con rootMargin 200px para no impactar first-load. **(C) FUNNEL DE PARTICIPACI&Oacute;N**: visualizaci&oacute;n CSS-only con 6 etapas en gradiente progresivo (azul &rarr; verde &rarr; &aacute;mbar &rarr; rojo), cada una con ancho proporcional decreciente (100% &rarr; 40%), mostrando la cadena: 472 firmas &rarr; 95 organizaciones &rarr; 21 UV &rarr; 859 insumos sistematizados &rarr; 27 OE &rarr; 225 acciones. Hover con micro-lift, flechas conectoras entre etapas. **LAZY LOADING**: ambas visualizaciones (pir&aacute;mide y Sankey) se inicializan solo cuando entran al viewport, optimizando rendimiento. **SIDEBAR**: nuevo enlace agregado bajo &laquo;Composici&oacute;n ICP&raquo; con badge is-new. **CONTADOR**: 51 &rarr; 52 secciones.</div>
     <div class="ub-entry"><strong>v45.28</strong> <span class="ub-date">19 May 2026</span><br>&#128241;&#128187; **v45.28 &middot; Mejoras visuales integrales · Web + M&oacute;vil**. Paquete comprensivo de polish UX para elevar la calidad percibida en todos los dispositivos. **(M&Oacute;VIL ≤900px)**: drawer del sidebar mejorado con sombra m&aacute;s pronunciada y body-scroll-lock al abrir (sin saltos de scroll); overlay con backdrop blur sutil; menu-toggle ampliado a 48x48px con sombra navy; touch targets m&iacute;nimo 44px en sidebar-nav; tipograf&iacute;a escalada con clamp para hero y h2; iframes con altura adaptada (5800px en m&oacute;vil para §11.5); group-divider compacto; cards con padding 14x16px; grids forzados a una columna en pantallas chicas. **(M&Oacute;VIL ≤640px)**: hero ultra compacto (28px de padding superior); KPIs en columna; sec-header h2 con clamp(18px,5.5vw,22px); botones flotantes pegados al borde (14px); glosario en columna con filtros scrolleables; footer en columna; eliminados los hovers en touch (anti-jank). **(iPhone SE ≤380px)**: ajustes adicionales para pantallas muy chicas. **(DESKTOP &gt;900px)**: card hovers refinados con cubic-bezier (.4,0,.2,1) y sombra escalonada; focus-visible con outline verde Rengo 2px offset 3px (a11y teclado); section spacing 56px entre cap&iacute;tulos; scroll-margin-top en anchors. **(UNIVERSAL)**: smooth scroll respetando prefers-reduced-motion; selecci&oacute;n de texto con verde Rengo 25%; scrollbar custom con thumb verde Rengo; enlaces de texto en p&aacute;rrafos con subrayado elegante; im&aacute;genes lazy con fade-in; inputs con focus verde Rengo + box-shadow; tablas con zebra suave; reading progress bar con sombra de marca; badge con micro-lift al hover. **JS**: cerrar sidebar al hacer click en link interno (mobile); cerrar con ESC (a11y); cerrar autom&aacute;ticamente si se resize de mobile a desktop con sidebar abierto. **RIESGO**: nulo &mdash; todo el CSS y JS se inserta al final del body, despu&eacute;s de todos los scripts existentes; las reglas tienen mayor especificidad y !important para asegurar que sobrescriban al CSS legacy sin romper nada.</div>
     <div class="ub-entry"><strong>v45.27</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#9989; **v45.27 &middot; Migraci&oacute;n de badges inline a variantes utilitarias**. Aplicaci&oacute;n sistem&aacute;tica del sistema de tokens canonizado en v45.22. **34 de 51 badges migrados** (66%): atributo `style="background:#xxx;color:#xxx"` reemplazado por la clase sem&aacute;ntica correspondiente. **DISTRIBUCI&Oacute;N**: (1) Verdes (10 badges): `--success` para fondos `#d1fae5`/`#dcfce7`. (2) Verde Rengo institucional (3 badges): `--primary` para los rgba con #2d9a4d. (3) Azules (8 badges): `--info` para `#dbeafe`, `#e0e7ff`, `#cffafe` con sus variantes de texto. (4) Amarillos/&aacute;mbar (8 badges): `--warn` para `#fef3c7`, `#fff7ed`, rgba(180,83,9). (5) Rojos (3 badges): `--danger` para `#fee2e2` y rgba con #8B1A1A. (6) Neutrales (2 badges): `--neutral` para grises. **NO MIGRADOS (17)**: badges con identidad decorativa &uacute;nica (morados de &laquo;proceso&raquo;, rosas de &laquo;voz ciudadana&raquo;, naranjas Rengo) se conservan con su style inline porque no mapean a las 6 variantes sem&aacute;nticas. **BENEFICIOS**: c&oacute;digo m&aacute;s limpio, mantenimiento centralizado (cambiar la paleta sem&aacute;ntica afecta todos los badges al instante), preparado para dark mode futuro (las variantes responden a media queries autom&aacute;ticamente). **RIESGO**: nulo &mdash; cada badge ahora usa la misma combinaci&oacute;n bg+color que ten&iacute;a, solo que v&iacute;a clase en vez de inline.</div>
@@ -15092,36 +15093,45 @@ function setTheme(mode){
   syncThemeSwitcher(wantDark);
 }
 function toggleDark(){
+  // (7) Transición suave temporal: activa transitions durante 400ms
+  document.body.classList.add('theme-transitioning');
+  setTimeout(function(){ document.body.classList.remove('theme-transitioning'); }, 420);
+
   document.body.classList.toggle('dark');
   const isDark = document.body.classList.contains('dark');
-  const btn=document.getElementById('btnDark');
-  if(btn){btn.classList.add('spin');setTimeout(()=>btn.classList.remove('spin'),500);}
-  syncThemeSwitcher(isDark);
-  localStorage.setItem('pladeco-dark', isDark ? '1' : '0');
-  // Update theme-color meta for mobile browser bar
-  document.querySelector('meta[name="theme-color"]').content=isDark?'#0b1624':'#0c1f36';
-  // Update Chart.js defaults for new theme
-  Chart.defaults.color=getChartTextColor();
-  Chart.defaults.borderColor=getChartGridColor();
-  // Update all existing charts
-  Object.values(Chart.instances).forEach(chart=>{
-    if(chart.options.scales){
-      Object.values(chart.options.scales).forEach(scale=>{
-        if(scale.ticks)scale.ticks.color=getChartTextColor();
-        if(scale.grid)scale.grid.color=getChartGridColor();
-        if(scale.title)scale.title.color=getChartTextColor();
-      });
-    }
-    if(chart.options.plugins&&chart.options.plugins.legend&&chart.options.plugins.legend.labels){
-      chart.options.plugins.legend.labels.color=getChartTextColor();
-    }
-    // Update donut/pie borderColor for theme
-    const cardColor=getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff';
-    if(chart.config.type==='doughnut'||chart.config.type==='pie'){
-      chart.data.datasets.forEach(ds=>{if(ds.borderColor)ds.borderColor=cardColor;});
-    }
-    chart.update('none');
-  });
+  const btn = document.getElementById('btnDark');
+  if(btn){ btn.classList.add('spin'); setTimeout(()=>btn.classList.remove('spin'), 500); }
+  if(typeof syncThemeSwitcher === 'function') syncThemeSwitcher(isDark);
+  try{ localStorage.setItem('pladeco-dark', isDark ? '1' : '0'); }catch(_){}
+  // Update theme-color meta for mobile browser bar (con guard)
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.content = isDark ? '#0b1624' : '#0c1f36';
+  // (5) Update Chart.js defaults · guard si Chart no se cargó
+  if(typeof Chart === 'undefined' || !Chart.defaults){ return; }
+  try{
+    Chart.defaults.color = getChartTextColor();
+    Chart.defaults.borderColor = getChartGridColor();
+    // Update all existing charts
+    Object.values(Chart.instances || {}).forEach(function(chart){
+      if(!chart) return;
+      if(chart.options && chart.options.scales){
+        Object.values(chart.options.scales).forEach(function(scale){
+          if(scale.ticks) scale.ticks.color = getChartTextColor();
+          if(scale.grid)  scale.grid.color  = getChartGridColor();
+          if(scale.title) scale.title.color = getChartTextColor();
+        });
+      }
+      if(chart.options && chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels){
+        chart.options.plugins.legend.labels.color = getChartTextColor();
+      }
+      // Update donut/pie borderColor for theme
+      const cardColor = getComputedStyle(document.documentElement).getPropertyValue('--card').trim() || '#fff';
+      if(chart.config && (chart.config.type === 'doughnut' || chart.config.type === 'pie')){
+        chart.data.datasets.forEach(function(ds){ if(ds.borderColor) ds.borderColor = cardColor; });
+      }
+      try{ chart.update('none'); }catch(_){}
+    });
+  }catch(e){ console.warn('[toggleDark] Chart update error:', e); }
 }
 
 // ── ANIMATED HERO COUNTERS ──
@@ -16684,9 +16694,11 @@ document.addEventListener('keydown',e=>{
     if(window.innerWidth<=900){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
     if(chatOpen)toggleChatbot();
   }
-  // D key = toggle dark mode
+  // D key = toggle dark mode (v45.30 con null-check)
   if(e.key==='d'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){
-    document.getElementById('btnDark').click();
+    var bd = document.getElementById('btnDark');
+    if(bd) bd.click();
+    else if(typeof toggleDark === 'function') toggleDark();
   }
   // / key = focus sidebar search
   if(e.key==='/'&&!e.ctrlKey){
@@ -16740,18 +16752,59 @@ document.getElementById('chatInput').addEventListener('keydown',e=>{
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMessage();}
 });
 
-// ── INIT ──
-// Restore dark mode preference (also syncs sidebar theme switcher)
+// ── INIT THEME · v45.30 hardened ──
+// (1) prefers-color-scheme detection en primera visita
+// (2) listener de cambios del sistema en tiempo real
+// (3) multi-tab sync vía storage event
+// (4) guards de Chart.js (sobrevive si no se carga)
 (function(){
-  var savedDark = localStorage.getItem('pladeco-dark')==='1';
-  if(savedDark){document.body.classList.add('dark');}
-  syncThemeSwitcher(savedDark);
-  var meta=document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.content = savedDark?'#0b1624':'#0c1f36';
+  var stored = localStorage.getItem('pladeco-dark');
+  var prefersDark = false;
+  try {
+    prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  } catch(_) {}
+  // Si no hay preferencia explícita guardada, usa la del sistema
+  var isDark = stored !== null ? (stored === '1') : prefersDark;
+  if(isDark){ document.body.classList.add('dark'); }
+  if(typeof syncThemeSwitcher === 'function') syncThemeSwitcher(isDark);
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.content = isDark ? '#0b1624' : '#0c1f36';
+
+  // (2) Listener: si el sistema cambia su preferencia Y el usuario no fijó manualmente
+  try {
+    var mql = window.matchMedia('(prefers-color-scheme: dark)');
+    var sysHandler = function(e){
+      if(localStorage.getItem('pladeco-dark') === null){
+        var wantDark = e.matches;
+        if(document.body.classList.contains('dark') !== wantDark){
+          document.body.classList.toggle('dark', wantDark);
+          if(typeof syncThemeSwitcher === 'function') syncThemeSwitcher(wantDark);
+          if(meta) meta.content = wantDark ? '#0b1624' : '#0c1f36';
+        }
+      }
+    };
+    if(mql.addEventListener) mql.addEventListener('change', sysHandler);
+    else if(mql.addListener) mql.addListener(sysHandler); // Safari < 14 fallback
+  } catch(_) { /* silencioso */ }
+
+  // (3) Multi-tab sync: si cambia el localStorage en otra pestaña, sincronizar
+  window.addEventListener('storage', function(e){
+    if(e.key !== 'pladeco-dark' || e.newValue === null) return;
+    var wantDark = e.newValue === '1';
+    if(document.body.classList.contains('dark') !== wantDark){
+      document.body.classList.toggle('dark', wantDark);
+      if(typeof syncThemeSwitcher === 'function') syncThemeSwitcher(wantDark);
+      if(meta) meta.content = wantDark ? '#0b1624' : '#0c1f36';
+    }
+  });
 })();
-// Re-sync Chart.js defaults after dark mode restore
-Chart.defaults.color=getChartTextColor();
-Chart.defaults.borderColor=getChartGridColor();
+// (4) Re-sync Chart.js defaults con guard (sobrevive si Chart.js no se cargó)
+if(typeof Chart !== 'undefined' && Chart.defaults){
+  try{
+    Chart.defaults.color = getChartTextColor();
+    Chart.defaults.borderColor = getChartGridColor();
+  }catch(e){ console.warn('[theme] Chart defaults sync error:', e); }
+}
 
 // ═══ RENDER PIPELINE (3-tier deferred loading) ═══
 
@@ -22500,6 +22553,16 @@ input[type="email"]:focus,textarea:focus,select:focus{
   transform:translateY(-1px);
 }
 .badge{transition:transform .15s}
+
+/* v45.30 · Transición suave del cambio de tema · solo durante el switch */
+@media (prefers-reduced-motion:no-preference){
+  body.theme-transitioning,
+  body.theme-transitioning *:not(canvas):not(svg):not(.ts-ico){
+    transition-property:background-color,border-color,color,fill,stroke,box-shadow!important;
+    transition-duration:.35s!important;
+    transition-timing-function:cubic-bezier(.4,0,.2,1)!important;
+  }
+}
 </style>
 
 <script>
