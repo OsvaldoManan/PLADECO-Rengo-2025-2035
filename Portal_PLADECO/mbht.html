@@ -1,0 +1,3493 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBHT · PLADECO Rengo 2025-2035</title>
+
+<!-- ============================================================
+     PLADECO RENGO 2025-2035 · MÓDULO MBHT v5.0 (Sobrio)
+     Matriz de Bienestar Humano Territorial
+     Estilo institucional municipal: paleta clara, sin gradientes,
+     tipografía estándar Inter, sin animaciones decorativas.
+     Mantiene toda la funcionalidad (mapa multi-capa, filtros,
+     búsqueda, comparador UV) y la distribución territorial real
+     de 21 localidades de la comuna de Rengo.
+     Autor: Osvaldo Mañán Arce · SECPLAC Rengo · Mayo 2026
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<style>
+/* ============================================================
+   PLADECO RENGO 2025-2035 · MBHT v5 · Estilo institucional sobrio
+   Scope: .mbht-section
+   ============================================================ */
+
+.mbht-section {
+  /* Paleta institucional sobria */
+  --c-bg: #ffffff;
+  --c-bg-soft: #f5f7fa;
+  --c-bg-card: #ffffff;
+  --c-bg-hover: #f8fafc;
+  --c-border: #e2e8f0;
+  --c-border-strong: #cbd5e1;
+  --c-text: #1e293b;
+  --c-text-soft: #475569;
+  --c-text-mute: #64748b;
+  --c-text-faint: #94a3b8;
+
+  /* Acento institucional Rengo */
+  --c-accent: #b91c1c;
+  --c-accent-soft: #fef2f2;
+  --c-accent-hover: #991b1b;
+
+  /* Dimensiones MBHT (sobrias) */
+  --dim-acc: #0369a1;
+  --dim-amb: #15803d;
+  --dim-soc: #be185d;
+  --dim-seg: #b45309;
+
+  /* Zonas LISA */
+  --zona-hh: #15803d;
+  --zona-ll: #b91c1c;
+  --zona-hl: #ca8a04;
+  --zona-lh: #c2410c;
+  --zona-ns: #6b7280;
+
+  --radius: 6px;
+  --radius-sm: 4px;
+
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.mbht-section *, .mbht-section *::before, .mbht-section *::after {
+  box-sizing: border-box;
+}
+
+.mbht-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ============== HEADER ============== */
+.mbht-hero {
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--c-accent);
+  margin-bottom: 0.75rem;
+}
+
+.mbht-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--c-text);
+  margin: 0 0 0.75rem;
+}
+
+.mbht-title em {
+  font-style: normal;
+  color: var(--c-accent);
+}
+
+.mbht-title-sub {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-text-mute);
+  margin-top: 0.5rem;
+}
+
+.mbht-lead {
+  max-width: 78ch;
+  color: var(--c-text-soft);
+  margin: 0;
+}
+
+.mbht-lead strong { color: var(--c-text); font-weight: 600; }
+
+/* Quitar hero-visual para look más sobrio */
+.mbht-hero-visual,
+.mbht-hero-svg,
+.mbht-bg-numeral,
+.mbht-monumental,
+.mbht-callout,
+.mbht-howto { display: none !important; }
+
+/* ============== KPI CARDS ============== */
+.mbht-metrics {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 900px){
+  .mbht-metrics { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 540px){
+  .mbht-metrics { grid-template-columns: repeat(2, 1fr); }
+}
+
+.mbht-metric {
+  padding: 1rem 1.1rem;
+  background: var(--c-bg-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.mbht-metric-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+  margin-bottom: 0.4rem;
+}
+
+.mbht-metric-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--c-text);
+}
+
+.mbht-metric-value.small { font-size: 1.35rem; }
+
+.mbht-metric-meta {
+  font-size: 0.72rem;
+  color: var(--c-text-mute);
+  margin-top: 0.2rem;
+}
+
+.mbht-metric-trend { display: none; }
+
+/* ============== SECTION HEADERS ============== */
+.mbht-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1rem;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-section-num {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--c-accent);
+}
+.mbht-section-num::before { content: "§ "; }
+
+.mbht-section-head > div {
+  flex: 1;
+  min-width: 280px;
+}
+
+.mbht-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 0.4rem;
+}
+
+.mbht-section-desc {
+  font-size: 0.92rem;
+  color: var(--c-text-soft);
+  margin: 0;
+  max-width: 78ch;
+  line-height: 1.55;
+}
+
+.mbht-section-desc strong { color: var(--c-text); font-weight: 600; }
+
+.mbht-section-tag {
+  font-size: 0.7rem;
+  color: var(--c-text-mute);
+  background: var(--c-bg-soft);
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* ============== DROPZONE ============== */
+.mbht-dropzone {
+  background: var(--c-bg-soft);
+  border: 1.5px dashed var(--c-border-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  margin: 1.5rem 0 2.5rem;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+
+.mbht-dropzone:hover,
+.mbht-dropzone.dragover {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+}
+
+.mbht-dropzone-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+
+.mbht-dropzone-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--c-text);
+}
+
+.mbht-dropzone-sub {
+  font-size: 0.85rem;
+  color: var(--c-text-mute);
+  line-height: 1.5;
+}
+
+.mbht-dropzone code {
+  background: white;
+  border: 1px solid var(--c-border);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.78em;
+  color: var(--c-accent);
+}
+
+.mbht-dropzone input[type="file"] { display: none; }
+
+.mbht-dropzone-status {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.mbht-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.mbht-file-chip.err {
+  background: #fef2f2;
+  color: var(--c-accent);
+  border-color: #fecaca;
+}
+
+/* ============== DIAGRAMA SVG ============== */
+.mbht-diagram-wrap {
+  background: var(--c-bg-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 1.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.mbht-diagram-svg {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* ============== TABS ============== */
+.mbht-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 1rem 0;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-tab {
+  background: transparent;
+  border: none;
+  color: var(--c-text-mute);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mbht-tab:hover { color: var(--c-text); }
+
+.mbht-tab.active {
+  color: var(--c-text);
+  font-weight: 600;
+  border-bottom-color: var(--tab-color, var(--c-accent));
+}
+
+.mbht-tab-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--tab-color, var(--c-accent));
+}
+
+.mbht-tab-count {
+  font-size: 0.7rem;
+  color: var(--c-text-mute);
+  background: var(--c-bg-soft);
+  padding: 0.05rem 0.4rem;
+  border-radius: 3px;
+}
+
+.mbht-tab-panel { display: none; }
+.mbht-tab-panel.active { display: block; }
+
+/* ============== INDICATOR CARDS ============== */
+.mbht-ind-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.mbht-ind-card {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  border-left: 3px solid var(--card-color, var(--c-accent));
+  transition: background 0.15s;
+}
+
+.mbht-ind-card:hover { background: var(--c-bg-hover); }
+
+.mbht-ind-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.mbht-ind-code {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--card-color, var(--c-accent));
+  letter-spacing: 0.05em;
+}
+
+.mbht-ind-unit {
+  font-size: 0.7rem;
+  color: var(--c-text-faint);
+  font-weight: 500;
+}
+
+.mbht-ind-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 0 0 0.4rem;
+  line-height: 1.25;
+}
+
+.mbht-ind-desc {
+  font-size: 0.8rem;
+  color: var(--c-text-soft);
+  line-height: 1.5;
+  margin: 0 0 0.75rem;
+}
+
+.mbht-ind-bar {
+  height: 6px;
+  background: var(--c-bg-soft);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+.mbht-ind-bar-fill {
+  height: 100%;
+  background: var(--card-color, var(--c-accent));
+  width: 0%;
+  transition: width 0.5s ease;
+  border-radius: 3px;
+}
+
+.mbht-ind-stats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.72rem;
+  color: var(--c-text-mute);
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--c-border);
+}
+
+.mbht-ind-stats strong {
+  color: var(--c-text);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+/* ============== CHARTS ============== */
+.mbht-chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 900px) {
+  .mbht-chart-grid { grid-template-columns: 1fr; }
+}
+
+.mbht-chart-card {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.mbht-chart-card.full { grid-column: 1 / -1; }
+
+.mbht-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.mbht-chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 0 0 0.25rem;
+}
+
+.mbht-chart-sub {
+  font-size: 0.8rem;
+  color: var(--c-text-mute);
+  margin: 0;
+}
+
+.mbht-chart-badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--c-text-mute);
+  background: var(--c-bg-soft);
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.mbht-chart-canvas-wrap { position: relative; height: 280px; }
+.mbht-chart-canvas-wrap.tall { height: 400px; }
+
+/* ============== OBSERVATORIO MAPA ============== */
+.mbht-observatory {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.mbht-obs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--c-bg-soft);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-obs-toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mbht-obs-toolbar-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+}
+
+.mbht-seg-control {
+  display: inline-flex;
+  background: white;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.mbht-seg-control button {
+  background: white;
+  border: none;
+  color: var(--c-text-mute);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  white-space: nowrap;
+  border-right: 1px solid var(--c-border);
+}
+
+.mbht-seg-control button:last-child { border-right: none; }
+.mbht-seg-control button:hover { background: var(--c-bg-soft); color: var(--c-text); }
+
+.mbht-seg-control button.active {
+  background: var(--c-accent);
+  color: white;
+}
+
+.mbht-seg-control.dim button.active {
+  background: var(--seg-color, var(--c-accent));
+  color: white;
+}
+
+.mbht-obs-actions {
+  display: inline-flex;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+.mbht-action-btn {
+  background: white;
+  border: 1px solid var(--c-border);
+  color: var(--c-text-soft);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.4rem 0.65rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.1s;
+}
+
+.mbht-action-btn:hover {
+  background: var(--c-accent-soft);
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+.mbht-action-btn.spotlight-active {
+  background: var(--c-accent);
+  color: white;
+  border-color: var(--c-accent);
+}
+
+/* Búsqueda */
+.mbht-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 260px;
+  min-width: 160px;
+}
+
+.mbht-search-input {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.7rem 0.4rem 1.85rem;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.mbht-search-input::placeholder { color: var(--c-text-faint); }
+
+.mbht-search-input:focus {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 2px rgba(185,28,28,0.1);
+}
+
+.mbht-search-icon {
+  position: absolute;
+  left: 0.55rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--c-text-faint);
+  pointer-events: none;
+}
+
+.mbht-search-results {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0; right: 0;
+  background: white;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.mbht-search-results.active { display: block; }
+
+.mbht-search-result {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--c-border);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.mbht-search-result:hover { background: var(--c-bg-soft); }
+.mbht-search-result:last-child { border-bottom: none; }
+
+.mbht-search-result-meta {
+  font-size: 0.72rem;
+  color: var(--c-text-mute);
+}
+
+/* Layout 3 columnas */
+.mbht-obs-body {
+  display: grid;
+  grid-template-columns: 220px 1fr 260px;
+  min-height: 540px;
+}
+
+@media (max-width: 1100px){
+  .mbht-obs-body { grid-template-columns: 200px 1fr; }
+  .mbht-obs-stats { display: none; }
+}
+
+@media (max-width: 760px){
+  .mbht-obs-body { grid-template-columns: 1fr; }
+  .mbht-obs-filters { border-right: none; border-bottom: 1px solid var(--c-border); }
+}
+
+.mbht-obs-filters {
+  padding: 1rem 1rem 1.25rem;
+  border-right: 1px solid var(--c-border);
+  background: var(--c-bg-soft);
+  overflow-y: auto;
+  max-height: 640px;
+}
+
+.mbht-filter-group {
+  margin-bottom: 1.25rem;
+}
+
+.mbht-filter-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+  margin: 0 0 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-filter-zona {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.85rem;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.mbht-filter-zona:hover { background: white; }
+.mbht-filter-zona input { display: none; }
+
+.mbht-filter-zona-swatch {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.mbht-filter-zona input:checked + .mbht-filter-zona-swatch::after {
+  content: "✓";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.mbht-filter-zona input:not(:checked) + .mbht-filter-zona-swatch {
+  opacity: 0.3;
+}
+
+.mbht-filter-zona-label {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.mbht-filter-zona-name {
+  color: var(--c-text-soft);
+  font-weight: 500;
+}
+
+.mbht-filter-zona-count {
+  font-size: 0.72rem;
+  color: var(--c-text-mute);
+}
+
+/* Range slider */
+.mbht-range-wrap { margin-top: 0.3rem; }
+
+.mbht-range-display {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--c-text-soft);
+  margin-bottom: 0.3rem;
+}
+
+.mbht-range-display strong { color: var(--c-text); font-weight: 600; }
+
+.mbht-range-input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--c-border);
+  border-radius: 2px;
+  outline: none;
+}
+
+.mbht-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  background: var(--c-accent);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.mbht-range-input::-moz-range-thumb {
+  width: 14px; height: 14px;
+  background: var(--c-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* Mapa */
+.mbht-obs-map-wrap {
+  position: relative;
+  background: var(--c-bg-soft);
+}
+
+#mbht-map {
+  width: 100%;
+  height: 100%;
+  min-height: 540px;
+  background: var(--c-bg-soft);
+}
+
+.mbht-map-legend {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  background: white;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.85rem;
+  font-size: 0.75rem;
+  z-index: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.mbht-map-legend-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+  margin-bottom: 0.4rem;
+}
+
+.mbht-map-legend-grad {
+  height: 8px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #b91c1c 0%, #c2410c 33%, #ca8a04 66%, #15803d 100%);
+  margin: 0.4rem 0 0.3rem;
+  width: 180px;
+}
+
+.mbht-map-legend-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--c-text-mute);
+}
+
+/* Mini-mapa: simplificado, oculto en v5 para look sobrio */
+.mbht-minimap { display: none; }
+
+/* Spotlight */
+.mbht-obs-map-wrap.spotlight #mbht-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 0%, transparent 35%, rgba(255,255,255,0.55) 75%);
+  pointer-events: none;
+  z-index: 400;
+}
+
+/* Stats panel */
+.mbht-obs-stats {
+  padding: 1rem 1rem 1.25rem;
+  border-left: 1px solid var(--c-border);
+  background: var(--c-bg-soft);
+  overflow-y: auto;
+  max-height: 640px;
+}
+
+.mbht-stat-card { margin-bottom: 1.25rem; }
+
+.mbht-stat-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+  margin: 0 0 0.55rem;
+}
+
+.mbht-stat-big {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--c-text);
+  line-height: 1.1;
+}
+
+.mbht-stat-meta {
+  font-size: 0.76rem;
+  color: var(--c-text-mute);
+  margin-top: 0.2rem;
+}
+
+.mbht-stat-zonas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.mbht-zona-mini {
+  padding: 0.5rem 0.6rem;
+  background: white;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--z-color);
+}
+
+.mbht-zona-mini-code {
+  font-size: 0.7rem;
+  color: var(--z-color);
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+}
+
+.mbht-zona-mini-count {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+.mbht-zona-mini-pct {
+  font-size: 0.72rem;
+  color: var(--c-text-mute);
+}
+
+.mbht-toplist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mbht-toplist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--c-border);
+  font-size: 0.82rem;
+}
+
+.mbht-toplist li:last-child { border-bottom: none; }
+
+.mbht-toplist-name {
+  color: var(--c-text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.mbht-toplist-val {
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+/* Sparkline simplificado */
+.mbht-stat-spark { height: 32px; margin: 0.4rem 0; }
+.mbht-stat-spark svg { width: 100%; height: 100%; }
+
+.mbht-stat-spark-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--c-text-faint);
+  margin-top: 0.2rem;
+}
+
+/* Viewport vs comuna */
+.mbht-vp-compare {
+  padding: 0.5rem 0.65rem;
+  background: white;
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--vp-color, var(--zona-hl));
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+}
+
+.mbht-vp-compare-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+  margin-bottom: 0.15rem;
+}
+
+.mbht-vp-compare-val {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--c-text);
+}
+
+.mbht-vp-compare-val .delta {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--vp-color, var(--c-text-mute));
+  margin-left: 0.4rem;
+}
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper {
+  background: white !important;
+  color: var(--c-text) !important;
+  border-radius: var(--radius-sm) !important;
+  border: 1px solid var(--c-border-strong);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+.leaflet-popup-tip { background: white !important; }
+.leaflet-popup-content { margin: 0.7rem 0.9rem !important; font-family: inherit !important; }
+
+.mbht-popup-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-popup-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.2rem 0;
+  font-size: 0.8rem;
+}
+
+.mbht-popup-row span:first-child { color: var(--c-text-mute); }
+.mbht-popup-row span:last-child { font-weight: 600; }
+
+.mbht-popup-pill {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+}
+
+.mbht-popup-radar {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--c-border);
+}
+
+.mbht-popup-radar svg {
+  display: block;
+  margin: 0 auto;
+  width: 120px;
+  height: 120px;
+}
+
+/* Cluster icons sobrios */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: rgba(185,28,28,0.25) !important;
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background: var(--c-accent) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  border: 2px solid white;
+}
+
+/* Leaflet attribution */
+.leaflet-control-attribution {
+  background: rgba(255,255,255,0.9) !important;
+  color: var(--c-text-mute) !important;
+  font-size: 0.65rem !important;
+}
+
+/* ============== TABLA ============== */
+.mbht-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  margin: 1.25rem 0;
+}
+
+.mbht-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+  background: white;
+}
+
+.mbht-table thead th {
+  background: var(--c-bg-soft);
+  text-align: left;
+  padding: 0.7rem 0.85rem;
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-mute);
+  border-bottom: 1px solid var(--c-border-strong);
+  white-space: nowrap;
+}
+
+.mbht-table tbody td {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-text);
+  vertical-align: middle;
+}
+
+.mbht-table tbody tr:nth-child(even) { background: var(--c-bg-soft); }
+.mbht-table tbody tr:hover { background: var(--c-bg-hover); }
+.mbht-table tbody tr:last-child td { border-bottom: none; }
+
+.mbht-pill {
+  display: inline-block;
+  padding: 0.18rem 0.55rem;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.mbht-pill.q1 { background: #d1fae5; color: #047857; }
+.mbht-pill.q2 { background: #fef3c7; color: #b45309; }
+.mbht-pill.q3 { background: #fed7aa; color: #c2410c; }
+.mbht-pill.q4 { background: #fee2e2; color: #b91c1c; }
+
+.mbht-mini-bar-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-width: 85px;
+}
+
+.mbht-mini-bar {
+  flex: 1;
+  height: 5px;
+  background: var(--c-bg-soft);
+  border-radius: 2.5px;
+  overflow: hidden;
+}
+
+.mbht-mini-bar-fill {
+  height: 100%;
+  border-radius: 2.5px;
+}
+
+.mbht-mini-bar-val {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--c-text);
+  min-width: 35px;
+  text-align: right;
+}
+
+/* ============== COMPARADOR UV ============== */
+.mbht-comparator {
+  background: white;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem 1.5rem;
+  margin: 1.25rem 0;
+}
+
+.mbht-comp-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-comp-selectors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.mbht-comp-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mbht-comp-selector-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--c-text-mute);
+}
+
+.mbht-comp-select {
+  background: white;
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  min-width: 150px;
+}
+
+.mbht-comp-select:focus { border-color: var(--c-accent); }
+
+.mbht-comp-select.uv-a { border-left: 3px solid var(--dim-acc); }
+.mbht-comp-select.uv-b { border-left: 3px solid var(--c-accent); }
+
+.mbht-comp-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.3fr;
+  gap: 1rem;
+}
+
+@media (max-width: 980px) {
+  .mbht-comp-body { grid-template-columns: 1fr 1fr; }
+  .mbht-comp-radar { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  .mbht-comp-body { grid-template-columns: 1fr; }
+}
+
+.mbht-comp-card {
+  padding: 0.85rem 1rem;
+  background: var(--c-bg-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--comp-color);
+}
+
+.mbht-comp-card-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--comp-color);
+  margin-bottom: 0.25rem;
+}
+
+.mbht-comp-card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 0.55rem;
+}
+
+.mbht-comp-card-rows {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+}
+
+.mbht-comp-card-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mbht-comp-card-row:last-child { border-bottom: none; }
+
+.mbht-comp-card-row-key { color: var(--c-text-soft); font-size: 0.78rem; }
+.mbht-comp-card-row-val { font-weight: 600; color: var(--c-text); }
+.mbht-comp-card-row-val .delta { font-size: 0.72rem; font-weight: 500; margin-left: 0.3rem; }
+
+.mbht-comp-radar {
+  background: var(--c-bg-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mbht-comp-radar canvas { max-height: 260px; }
+
+/* ============== LINK CARDS (Articulación PLADECO) ============== */
+.mbht-link-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.mbht-link-card {
+  background: var(--c-bg-card);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--link-color, var(--c-accent));
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background 0.15s;
+}
+
+.mbht-link-card:hover { background: var(--c-bg-hover); }
+
+.mbht-link-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--link-color, var(--c-accent));
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+.mbht-link-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--c-text);
+  margin: 0 0 0.35rem;
+}
+
+.mbht-link-body {
+  font-size: 0.82rem;
+  color: var(--c-text-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.mbht-link-foot {
+  margin-top: 0.65rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--c-border);
+  font-size: 0.72rem;
+  color: var(--c-text-mute);
+  display: flex;
+  justify-content: space-between;
+}
+
+.mbht-link-foot::after {
+  content: "→";
+  color: var(--link-color, var(--c-accent));
+  font-weight: 700;
+}
+
+/* ============== FOOTNOTE ============== */
+.mbht-footnote {
+  background: var(--c-bg-soft);
+  border-left: 3px solid var(--dim-acc);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--c-text-soft);
+  margin-top: 2.5rem;
+}
+
+.mbht-footnote strong { color: var(--c-text); font-weight: 600; }
+.mbht-footnote em { color: var(--c-text); font-style: italic; }
+
+/* Divider */
+.mbht-divider {
+  height: 1px;
+  background: var(--c-border);
+  margin: 2.5rem 0;
+  border: none;
+}
+
+/* Ocultar fullscreen complejo en v5 (mantener funcional pero simple) */
+.mbht-observatory.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  margin: 0;
+  border-radius: 0;
+  max-width: none;
+  background: white;
+}
+
+.mbht-observatory.fullscreen .mbht-obs-body {
+  grid-template-columns: 240px 1fr 280px;
+  height: calc(100vh - 50px);
+}
+
+.mbht-observatory.fullscreen #mbht-map {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+</style>
+</head>
+<body>
+
+<!-- v45.16 · BARRA DE NAVEGACIÓN: regresar al portal principal -->
+<header style="position:sticky;top:0;z-index:1000;background:linear-gradient(135deg,#0c1f36 0%,#1a3d8f 100%);color:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.15);font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif">
+  <div style="display:flex;align-items:center;gap:14px">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.02em;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.18)'" onmouseout="this.style.background='rgba(255,255,255,.1)'">← Volver al Portal PLADECO</a>
+    <span style="font-size:11px;opacity:.7;letter-spacing:.08em;text-transform:uppercase;font-weight:700">Capítulo III · Análisis Territorial · §11.4</span>
+  </div>
+  <div style="font-size:12px;font-weight:700;letter-spacing:.05em">📊 MBHT · Bienestar Territorial</div>
+</header>
+
+<section id="mbht" class="mbht-section">
+  <div class="mbht-container">
+
+    <!-- ============ HERO ============ -->
+    <header class="mbht-hero">
+      <div>
+        <div class="mbht-eyebrow">
+          <span class="mbht-eyebrow-dot"></span>
+          OBSERVATORIO TERRITORIAL · PLADECO 2025-2035 · §11.4
+        </div>
+        <h2 class="mbht-title">
+          Matriz de Bienestar<br>
+          Humano <em>Territorial</em>
+          <span class="mbht-title-sub">UAI · SUBDERE · 2021</span>
+        </h2>
+        <p class="mbht-lead">
+          Sistema de inteligencia territorial multidimensional que opera a escala de <strong>manzana censal y entidad rural</strong>, integrando 4 dimensiones (Accesibilidad, Ambiental, Socioeconómica, Seguridad) y <strong>18 indicadores base</strong> en un puntaje sintético normalizado 0–1. La autocorrelación espacial (I de Moran local) identifica las <strong>Zonas BHT</strong> como clústeres significativos, configurando el sustrato técnico para focalización geográfica de la inversión pública comunal. En Rengo, articula con el ICP censal y el ICT de espacios públicos, configurando una <strong>triangulación diagnóstica</strong> inédita.
+        </p>
+
+      </div>
+
+    </header>
+
+    <!-- ============ METRICS BAR ============ -->
+    <div class="mbht-metrics">
+      <div class="mbht-metric">
+        <div class="mbht-metric-label">Dimensiones</div>
+        <div class="mbht-metric-value">4</div>
+        <div class="mbht-metric-meta">Acc · Amb · Soc · Seg</div>
+      </div>
+      <div class="mbht-metric">
+        <div class="mbht-metric-label">Indicadores Base</div>
+        <div class="mbht-metric-value">18</div>
+        <div class="mbht-metric-meta">Normalizados 0–1</div>
+      </div>
+      <div class="mbht-metric">
+        <div class="mbht-metric-label">Manzanas Censales</div>
+        <div class="mbht-metric-value">826</div>
+        <div class="mbht-metric-meta">CPV 2024 · Rengo</div>
+      </div>
+      <div class="mbht-metric" data-bind="mbht-mean">
+        <div class="mbht-metric-label">
+          <span class="mbht-metric-trend warn"></span>MBHT μ comunal
+        </div>
+        <div class="mbht-metric-value">0,—</div>
+        <div class="mbht-metric-meta">Rango bajo-moderado</div>
+      </div>
+      <div class="mbht-metric" data-bind="mbht-zonas">
+        <div class="mbht-metric-label">
+          <span class="mbht-metric-trend crit"></span>Zonas BHT
+        </div>
+        <div class="mbht-metric-value">—</div>
+        <div class="mbht-metric-meta">Clústeres LISA p&lt;0.05</div>
+      </div>
+      <div class="mbht-metric" data-bind="mbht-gap">
+        <div class="mbht-metric-label">
+          <span class="mbht-metric-trend crit"></span>Brecha U/R
+        </div>
+        <div class="mbht-metric-value small">—×</div>
+        <div class="mbht-metric-meta">Razón urbano/rural</div>
+      </div>
+    </div>
+
+    <!-- ============ DROPZONE ============ -->
+    <div class="mbht-dropzone" id="mbht-dropzone">
+      <div class="mbht-dropzone-icon">📂</div>
+      <div class="mbht-dropzone-title">Cargar los 5 archivos de la MBHT</div>
+      <div class="mbht-dropzone-sub">
+        Arrastra los <code>.xlsx</code> aquí o haz clic para seleccionar.<br>
+        Esperado: 1 hoja por dimensión + 1 hoja agregada de Zonas BHT con columnas <code>manzana_id, uv, lat, lon, indicadores</code>
+      </div>
+      <input type="file" id="mbht-file-input" multiple accept=".xlsx,.xls,.csv">
+      <div class="mbht-dropzone-status" id="mbht-files-status"></div>
+    </div>
+
+    <div class="mbht-section-head">
+      <div class="mbht-section-num">11.4.1</div>
+      <div>
+        <h3 class="mbht-section-title">Arquitectura conceptual de la MBHT</h3>
+        <p class="mbht-section-desc">
+          Estructura jerárquica de 4 dimensiones y 18 indicadores agregados mediante análisis multicriterio. Cada indicador se normaliza en escala 0–1 (1 = mejor condición). La autocorrelación espacial sobre el puntaje agregado identifica las <strong>Zonas BHT</strong> como clústeres significativos vía estadístico Local I de Moran.
+        </p>
+      </div>
+      <span class="mbht-section-tag">UAI · SUBDERE 2021</span>
+    </div>
+
+    <div class="mbht-diagram-wrap">
+      <svg class="mbht-diagram-svg" viewBox="0 0 1100 580" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#b91c1c" stop-opacity="0.95"/>
+            <stop offset="80%" stop-color="#c5202c" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#a4242c" stop-opacity="0.85"/>
+          </radialGradient>
+          <filter id="diagGlow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <linearGradient id="connAcc" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0369a1" stop-opacity="0.6"/><stop offset="100%" stop-color="#0369a1" stop-opacity="0.1"/></linearGradient>
+          <linearGradient id="connAmb" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#15803d" stop-opacity="0.6"/><stop offset="100%" stop-color="#15803d" stop-opacity="0.1"/></linearGradient>
+          <linearGradient id="connSoc" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#be185d" stop-opacity="0.6"/><stop offset="100%" stop-color="#be185d" stop-opacity="0.1"/></linearGradient>
+          <linearGradient id="connSeg" x1="100%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#b45309" stop-opacity="0.6"/><stop offset="100%" stop-color="#b45309" stop-opacity="0.1"/></linearGradient>
+        </defs>
+
+        <!-- Conectores -->
+        <g stroke-width="2" fill="none">
+          <path d="M 550 290 Q 400 200 250 130" stroke="url(#connAcc)"/>
+          <path d="M 550 290 Q 700 200 850 130" stroke="url(#connAmb)"/>
+          <path d="M 550 290 Q 400 380 250 460" stroke="url(#connSoc)"/>
+          <path d="M 550 290 Q 700 380 850 460" stroke="url(#connSeg)"/>
+        </g>
+
+        <!-- Centro MBHT -->
+        <circle cx="550" cy="290" r="90" fill="url(#centerGrad)" filter="url(#diagGlow)" opacity="0.85"/>
+        <circle cx="550" cy="290" r="65" fill="#06101e" stroke="#b91c1c" stroke-width="2"/>
+        <text x="550" y="282" text-anchor="middle" fill="#fff" font-family="Fraunces, serif" font-size="20" font-weight="600" font-style="italic">MBHT</text>
+        <text x="550" y="300" text-anchor="middle" fill="#b91c1c" font-family="JetBrains Mono, monospace" font-size="8" letter-spacing="2">PUNTAJE 0–1</text>
+        <text x="550" y="316" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="JetBrains Mono, monospace" font-size="7" letter-spacing="1">+ Zonas BHT</text>
+
+        <!-- Anillo decorativo del centro -->
+        <circle cx="550" cy="290" r="105" fill="none" stroke="rgba(185,28,28,0.2)" stroke-dasharray="4 6"/>
+
+        <!-- Dim Accesibilidad -->
+        <g>
+          <circle cx="250" cy="130" r="50" fill="rgba(3,105,161,0.06)" stroke="#0369a1" stroke-width="2"/>
+          <circle cx="250" cy="130" r="50" fill="none" stroke="#0369a1" stroke-opacity="0.3" stroke-width="6"/>
+          <text x="250" y="124" text-anchor="middle" fill="#0369a1" font-family="Fraunces, serif" font-size="14" font-weight="600">Accesibilidad</text>
+          <text x="250" y="142" text-anchor="middle" fill="#0369a1" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.7">06 indicadores</text>
+
+          <g font-family="Manrope, sans-serif" font-size="10">
+            <g transform="translate(35 40)">
+              <rect width="150" height="20" rx="4" fill="rgba(3,105,161,0.08)" stroke="rgba(3,105,161,0.25)"/>
+              <text x="10" y="14" fill="#0369a1"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IAV</tspan> · Áreas Verdes</text>
+            </g>
+            <g transform="translate(35 64)">
+              <rect width="150" height="20" rx="4" fill="rgba(3,105,161,0.08)" stroke="rgba(3,105,161,0.25)"/>
+              <text x="10" y="14" fill="#0369a1"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IDEP</tspan> · Eq. Deportivos</text>
+            </g>
+            <g transform="translate(35 88)">
+              <rect width="150" height="20" rx="4" fill="rgba(3,105,161,0.08)" stroke="rgba(3,105,161,0.25)"/>
+              <text x="10" y="14" fill="#0369a1"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ICUL</tspan> · Eq. Culturales</text>
+            </g>
+            <g transform="translate(35 112)">
+              <rect width="150" height="20" rx="4" fill="rgba(3,105,161,0.08)" stroke="rgba(3,105,161,0.25)"/>
+              <text x="10" y="14" fill="#0369a1"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ISAL</tspan> · Eq. Salud</text>
+            </g>
+            <g transform="translate(35 136)">
+              <rect width="150" height="20" rx="4" fill="rgba(3,105,161,0.08)" stroke="rgba(3,105,161,0.25)"/>
+              <text x="10" y="14" fill="#0369a1"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ISER</tspan> · Servicios Públicos</text>
+            </g>
+            <g transform="translate(35 160)">
+              <rect width="150" height="20" rx="4" fill="rgba(3,105,161,0.08)" stroke="rgba(3,105,161,0.25)"/>
+              <text x="10" y="14" fill="#0369a1"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ISE</tspan> · Serv. Educación</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Dim Ambiental -->
+        <g>
+          <circle cx="850" cy="130" r="50" fill="rgba(21,128,61,0.06)" stroke="#15803d" stroke-width="2"/>
+          <circle cx="850" cy="130" r="50" fill="none" stroke="#15803d" stroke-opacity="0.3" stroke-width="6"/>
+          <text x="850" y="124" text-anchor="middle" fill="#15803d" font-family="Fraunces, serif" font-size="14" font-weight="600">Ambiental</text>
+          <text x="850" y="142" text-anchor="middle" fill="#15803d" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.7">02 indicadores</text>
+
+          <g font-family="Manrope, sans-serif" font-size="10">
+            <g transform="translate(915 100)">
+              <rect width="150" height="20" rx="4" fill="rgba(21,128,61,0.08)" stroke="rgba(21,128,61,0.25)"/>
+              <text x="10" y="14" fill="#15803d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IATA</tspan> · Amplitud Térmica</text>
+            </g>
+            <g transform="translate(915 124)">
+              <rect width="150" height="20" rx="4" fill="rgba(21,128,61,0.08)" stroke="rgba(21,128,61,0.25)"/>
+              <text x="10" y="14" fill="#15803d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ICV</tspan> · Cobertura Vegetal</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Dim Socioeconómica -->
+        <g>
+          <circle cx="250" cy="460" r="50" fill="rgba(190,24,93,0.06)" stroke="#be185d" stroke-width="2"/>
+          <circle cx="250" cy="460" r="50" fill="none" stroke="#be185d" stroke-opacity="0.3" stroke-width="6"/>
+          <text x="250" y="454" text-anchor="middle" fill="#be185d" font-family="Fraunces, serif" font-size="14" font-weight="600">Socioeconómica</text>
+          <text x="250" y="472" text-anchor="middle" fill="#be185d" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.7">06 indicadores</text>
+
+          <g font-family="Manrope, sans-serif" font-size="10">
+            <g transform="translate(35 395)">
+              <rect width="150" height="20" rx="4" fill="rgba(190,24,93,0.08)" stroke="rgba(190,24,93,0.25)"/>
+              <text x="10" y="14" fill="#be185d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IVI</tspan> · Calidad Vivienda</text>
+            </g>
+            <g transform="translate(35 419)">
+              <rect width="150" height="20" rx="4" fill="rgba(190,24,93,0.08)" stroke="rgba(190,24,93,0.25)"/>
+              <text x="10" y="14" fill="#be185d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ISV</tspan> · Suficiencia Vivienda</text>
+            </g>
+            <g transform="translate(35 443)">
+              <rect width="150" height="20" rx="4" fill="rgba(190,24,93,0.08)" stroke="rgba(190,24,93,0.25)"/>
+              <text x="10" y="14" fill="#be185d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IEJ</tspan> · Escolaridad Jefe</text>
+            </g>
+            <g transform="translate(35 467)">
+              <rect width="150" height="20" rx="4" fill="rgba(190,24,93,0.08)" stroke="rgba(190,24,93,0.25)"/>
+              <text x="10" y="14" fill="#be185d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IRH</tspan> · Resiliencia Hogares</text>
+            </g>
+            <g transform="translate(35 491)">
+              <rect width="150" height="20" rx="4" fill="rgba(190,24,93,0.08)" stroke="rgba(190,24,93,0.25)"/>
+              <text x="10" y="14" fill="#be185d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IEM</tspan> · Empleo</text>
+            </g>
+            <g transform="translate(35 515)">
+              <rect width="150" height="20" rx="4" fill="rgba(190,24,93,0.08)" stroke="rgba(190,24,93,0.25)"/>
+              <text x="10" y="14" fill="#be185d"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IPJ</tspan> · Particip. Juvenil</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Dim Seguridad -->
+        <g>
+          <circle cx="850" cy="460" r="50" fill="rgba(180,83,9,0.06)" stroke="#b45309" stroke-width="2"/>
+          <circle cx="850" cy="460" r="50" fill="none" stroke="#b45309" stroke-opacity="0.3" stroke-width="6"/>
+          <text x="850" y="454" text-anchor="middle" fill="#b45309" font-family="Fraunces, serif" font-size="14" font-weight="600">Seguridad</text>
+          <text x="850" y="472" text-anchor="middle" fill="#b45309" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.7">04 indicadores</text>
+
+          <g font-family="Manrope, sans-serif" font-size="10">
+            <g transform="translate(915 419)">
+              <rect width="150" height="20" rx="4" fill="rgba(180,83,9,0.08)" stroke="rgba(180,83,9,0.25)"/>
+              <text x="10" y="14" fill="#b45309"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IGPE</tspan> · Delitos G. Personas</text>
+            </g>
+            <g transform="translate(915 443)">
+              <rect width="150" height="20" rx="4" fill="rgba(180,83,9,0.08)" stroke="rgba(180,83,9,0.25)"/>
+              <text x="10" y="14" fill="#b45309"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">IGPR</tspan> · Delitos G. Propiedad</text>
+            </g>
+            <g transform="translate(915 467)">
+              <rect width="150" height="20" rx="4" fill="rgba(180,83,9,0.08)" stroke="rgba(180,83,9,0.25)"/>
+              <text x="10" y="14" fill="#b45309"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ILPE</tspan> · Delitos L. Personas</text>
+            </g>
+            <g transform="translate(915 491)">
+              <rect width="150" height="20" rx="4" fill="rgba(180,83,9,0.08)" stroke="rgba(180,83,9,0.25)"/>
+              <text x="10" y="14" fill="#b45309"><tspan font-family="JetBrains Mono, monospace" font-weight="700" font-size="8">ILPR</tspan> · Delitos L. Propiedad</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Output: Zonas BHT -->
+        <g transform="translate(550 540)">
+          <rect x="-130" y="-18" width="260" height="36" rx="18" fill="rgba(185,28,28,0.08)" stroke="rgba(185,28,28,0.5)" stroke-dasharray="5 3"/>
+          <text x="0" y="6" text-anchor="middle" fill="#b91c1c" font-family="JetBrains Mono, monospace" font-size="10" font-weight="700" letter-spacing="2">→ ZONAS BHT · CLÚSTERES I MORAN ←</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- ============ §2 INDICADORES ============ -->
+    <div class="mbht-section-head">
+      <div class="mbht-section-num">11.4.2</div>
+      <div>
+        <h3 class="mbht-section-title">Indicadores por dimensión · Resultados Rengo</h3>
+        <p class="mbht-section-desc">
+          Detalle metodológico, media comunal y desviación de los 18 indicadores. Las barras de progreso reflejan el valor medio (μ) en escala 0–1. Los valores se actualizan al cargar los Excel correspondientes en la dropzone superior.
+        </p>
+      </div>
+      <span class="mbht-section-tag">Escala 0–1 normalizada</span>
+    </div>
+
+    <div class="mbht-tabs" role="tablist">
+      <button class="mbht-tab active" style="--tab-color:#0369a1" data-tab="acc"><span class="mbht-tab-dot"></span> Accesibilidad <span class="mbht-tab-count">6</span></button>
+      <button class="mbht-tab" style="--tab-color:#15803d" data-tab="amb"><span class="mbht-tab-dot"></span> Ambiental <span class="mbht-tab-count">2</span></button>
+      <button class="mbht-tab" style="--tab-color:#be185d" data-tab="soc"><span class="mbht-tab-dot"></span> Socioeconómica <span class="mbht-tab-count">6</span></button>
+      <button class="mbht-tab" style="--tab-color:#b45309" data-tab="seg"><span class="mbht-tab-dot"></span> Seguridad <span class="mbht-tab-count">4</span></button>
+    </div>
+
+    <!-- ACC -->
+    <div class="mbht-tab-panel active" data-panel="acc">
+      <div class="mbht-ind-grid">
+        <article class="mbht-ind-card" style="--card-color:#0369a1" data-ind="IAV">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IAV</span><span class="mbht-ind-unit">m²/hab</span></div>
+          <h4 class="mbht-ind-name">Áreas Verdes</h4>
+          <p class="mbht-ind-desc">Superficie de áreas verdes locales e intercomunales accesibles por habitante. OMS: 9–10 m²/hab. Rengo dashboard: 1,96 m²/hab.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IAV"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IAV-mean">—</strong></span><span>σ <strong data-stat="IAV-sd">—</strong></span><span>n <strong data-stat="IAV-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#0369a1" data-ind="IDEP">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IDEP</span><span class="mbht-ind-unit">m²/hab</span></div>
+          <h4 class="mbht-ind-name">Equipamientos Deportivos</h4>
+          <p class="mbht-ind-desc">Multicanchas (local) y estadios (intercomunal). Tasa m² por habitante.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IDEP"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IDEP-mean">—</strong></span><span>σ <strong data-stat="IDEP-sd">—</strong></span><span>n <strong data-stat="IDEP-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#0369a1" data-ind="ICUL">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ICUL</span><span class="mbht-ind-unit">m²/hab</span></div>
+          <h4 class="mbht-ind-name">Equipamientos Culturales</h4>
+          <p class="mbht-ind-desc">Superficie cultural (local + intercomunal) por habitante. Insumo Eje 1.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ICUL"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ICUL-mean">—</strong></span><span>σ <strong data-stat="ICUL-sd">—</strong></span><span>n <strong data-stat="ICUL-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#0369a1" data-ind="ISAL">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ISAL</span><span class="mbht-ind-unit">m²/hab</span></div>
+          <h4 class="mbht-ind-name">Equipamientos de Salud</h4>
+          <p class="mbht-ind-desc">Tasa m²/hab; distingue atención primaria/secundaria (local) vs terciaria (intercomunal). Excluye especialidades.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ISAL"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ISAL-mean">—</strong></span><span>σ <strong data-stat="ISAL-sd">—</strong></span><span>n <strong data-stat="ISAL-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#0369a1" data-ind="ISER">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ISER</span><span class="mbht-ind-unit">eq./1000h</span></div>
+          <h4 class="mbht-ind-name">Servicios Públicos</h4>
+          <p class="mbht-ind-desc">Servicios estatales (administrados, fiscalizados o concesionados) por 1.000 habitantes.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ISER"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ISER-mean">—</strong></span><span>σ <strong data-stat="ISER-sd">—</strong></span><span>n <strong data-stat="ISER-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#0369a1" data-ind="ISE">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ISE</span><span class="mbht-ind-unit">matr./NNA</span></div>
+          <h4 class="mbht-ind-name">Servicio de Educación</h4>
+          <p class="mbht-ind-desc">Disponibilidad de matrículas por NNA en edad escolar (4–18 años) por manzana.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ISE"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ISE-mean">—</strong></span><span>σ <strong data-stat="ISE-sd">—</strong></span><span>n <strong data-stat="ISE-n">—</strong></span></div>
+        </article>
+      </div>
+    </div>
+
+    <!-- AMB -->
+    <div class="mbht-tab-panel" data-panel="amb">
+      <div class="mbht-ind-grid">
+        <article class="mbht-ind-card" style="--card-color:#15803d" data-ind="IATA">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IATA</span><span class="mbht-ind-unit">°C</span></div>
+          <h4 class="mbht-ind-name">Amplitud Térmica Anual</h4>
+          <p class="mbht-ind-desc">Diferencia de TST (Temp. Superficial Terrestre) entre periodos fríos y cálidos. Detecta efecto isla de calor.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IATA"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IATA-mean">—</strong></span><span>σ <strong data-stat="IATA-sd">—</strong></span><span>n <strong data-stat="IATA-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#15803d" data-ind="ICV">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ICV</span><span class="mbht-ind-unit">%</span></div>
+          <h4 class="mbht-ind-name">Cobertura Vegetal</h4>
+          <p class="mbht-ind-desc">Proporción porcentual de superficie con vegetación (vinculado a PACCC Eje 4).</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ICV"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ICV-mean">—</strong></span><span>σ <strong data-stat="ICV-sd">—</strong></span><span>n <strong data-stat="ICV-n">—</strong></span></div>
+        </article>
+      </div>
+    </div>
+
+    <!-- SOC -->
+    <div class="mbht-tab-panel" data-panel="soc">
+      <div class="mbht-ind-grid">
+        <article class="mbht-ind-card" style="--card-color:#be185d" data-ind="IVI">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IVI</span><span class="mbht-ind-unit">0–1</span></div>
+          <h4 class="mbht-ind-name">Calidad de Vivienda</h4>
+          <p class="mbht-ind-desc">Variable sintética de materialidad (paredes + suelo + techo). Normalización invertida.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IVI"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IVI-mean">—</strong></span><span>σ <strong data-stat="IVI-sd">—</strong></span><span>n <strong data-stat="IVI-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#be185d" data-ind="ISV">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ISV</span><span class="mbht-ind-unit">0–1</span></div>
+          <h4 class="mbht-ind-name">Suficiencia de Vivienda</h4>
+          <p class="mbht-ind-desc">Hacinamiento estándar y severo. Normalizado 0–1 invertido.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ISV"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ISV-mean">—</strong></span><span>σ <strong data-stat="ISV-sd">—</strong></span><span>n <strong data-stat="ISV-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#be185d" data-ind="IEJ">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IEJ · ESC</span><span class="mbht-ind-unit">años</span></div>
+          <h4 class="mbht-ind-name">Escolaridad Jefe de Hogar</h4>
+          <p class="mbht-ind-desc">Promedio de años de estudio del jefe de hogar. Único indicador no invertido.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IEJ"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IEJ-mean">—</strong></span><span>σ <strong data-stat="IEJ-sd">—</strong></span><span>n <strong data-stat="IEJ-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#be185d" data-ind="IRH">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IRH</span><span class="mbht-ind-unit">0–1</span></div>
+          <h4 class="mbht-ind-name">Resiliencia de Hogares</h4>
+          <p class="mbht-ind-desc">Inverso aditivo de hogares monoparentales. Proxy de vulnerabilidad.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IRH"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IRH-mean">—</strong></span><span>σ <strong data-stat="IRH-sd">—</strong></span><span>n <strong data-stat="IRH-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#be185d" data-ind="IEM">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IEM</span><span class="mbht-ind-unit">0–1</span></div>
+          <h4 class="mbht-ind-name">Empleo</h4>
+          <p class="mbht-ind-desc">PEA con empleo sobre total en condiciones de trabajar. Detecta brechas barriales.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IEM"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IEM-mean">—</strong></span><span>σ <strong data-stat="IEM-sd">—</strong></span><span>n <strong data-stat="IEM-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#be185d" data-ind="IPJ">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IPJ</span><span class="mbht-ind-unit">0–1</span></div>
+          <h4 class="mbht-ind-name">Participación Juvenil</h4>
+          <p class="mbht-ind-desc">Jóvenes 15–24 que trabajan o estudian. Mide riesgo NEET y deserción.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IPJ"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IPJ-mean">—</strong></span><span>σ <strong data-stat="IPJ-sd">—</strong></span><span>n <strong data-stat="IPJ-n">—</strong></span></div>
+        </article>
+      </div>
+    </div>
+
+    <!-- SEG -->
+    <div class="mbht-tab-panel" data-panel="seg">
+      <div class="mbht-ind-grid">
+        <article class="mbht-ind-card" style="--card-color:#b45309" data-ind="IGPE">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IGPE</span><span class="mbht-ind-unit">KDE</span></div>
+          <h4 class="mbht-ind-name">Delitos Graves contra Personas</h4>
+          <p class="mbht-ind-desc">Abusos sexuales, drogas, homicidios, lesiones graves, tráfico, violaciones. KDE 500×500m.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IGPE"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IGPE-mean">—</strong></span><span>σ <strong data-stat="IGPE-sd">—</strong></span><span>n <strong data-stat="IGPE-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#b45309" data-ind="IGPR">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">IGPR</span><span class="mbht-ind-unit">KDE</span></div>
+          <h4 class="mbht-ind-name">Delitos Graves contra la Propiedad</h4>
+          <p class="mbht-ind-desc">Robo vehículos, robo habitado, robo frustrado, robos con violencia o intimidación.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="IGPR"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="IGPR-mean">—</strong></span><span>σ <strong data-stat="IGPR-sd">—</strong></span><span>n <strong data-stat="IGPR-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#b45309" data-ind="ILPE">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ILPE</span><span class="mbht-ind-unit">KDE</span></div>
+          <h4 class="mbht-ind-name">Delitos Leves contra Personas</h4>
+          <p class="mbht-ind-desc">Amenazas, daños, lesiones leves, VIF, riñas, vulneración de derechos.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ILPE"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ILPE-mean">—</strong></span><span>σ <strong data-stat="ILPE-sd">—</strong></span><span>n <strong data-stat="ILPE-n">—</strong></span></div>
+        </article>
+        <article class="mbht-ind-card" style="--card-color:#b45309" data-ind="ILPR">
+          <div class="mbht-ind-header"><span class="mbht-ind-code">ILPR</span><span class="mbht-ind-unit">KDE</span></div>
+          <h4 class="mbht-ind-name">Delitos Leves contra la Propiedad</h4>
+          <p class="mbht-ind-desc">Comercio irregular, hurto/robo de vehículos, robo no habitado, robo por sorpresa.</p>
+          <div class="mbht-ind-bar"><div class="mbht-ind-bar-fill" data-bar="ILPR"></div></div>
+          <div class="mbht-ind-stats"><span>μ <strong data-stat="ILPR-mean">—</strong></span><span>σ <strong data-stat="ILPR-sd">—</strong></span><span>n <strong data-stat="ILPR-n">—</strong></span></div>
+        </article>
+      </div>
+    </div>
+
+    <!-- ============ §3 CHARTS ============ -->
+    <div class="mbht-section-head">
+      <div class="mbht-section-num">11.4.3</div>
+      <div>
+        <h3 class="mbht-section-title">Análisis comparativo multidimensional</h3>
+        <p class="mbht-section-desc">
+          Tres lecturas complementarias del puntaje MBHT en Rengo: <strong>radar dimensional urbano-rural</strong> (brecha estructural), <strong>histograma de distribución</strong> por manzana (heterogeneidad interna) y <strong>ranking ordenado</strong> de los 18 indicadores (priorización analítica). La codificación cromática preserva la trazabilidad visual entre todas las visualizaciones.
+        </p>
+      </div>
+      <span class="mbht-section-tag">Chart.js · interactivo</span>
+    </div>
+
+    <div class="mbht-chart-grid">
+      <div class="mbht-chart-card">
+        <div class="mbht-chart-head">
+          <div>
+            <h4 class="mbht-chart-title">Radar dimensional · Urbano vs Rural</h4>
+            <p class="mbht-chart-sub">Media normalizada 0–1 por dimensión territorial</p>
+          </div>
+          <span class="mbht-chart-badge">μ por dim</span>
+        </div>
+        <div class="mbht-chart-canvas-wrap"><canvas id="mbht-chart-radar"></canvas></div>
+      </div>
+
+      <div class="mbht-chart-card">
+        <div class="mbht-chart-head">
+          <div>
+            <h4 class="mbht-chart-title">Distribución MBHT por manzana</h4>
+            <p class="mbht-chart-sub">Histograma · 826 manzanas · rangos cromáticos Q1–Q4</p>
+          </div>
+          <span class="mbht-chart-badge">N = 826</span>
+        </div>
+        <div class="mbht-chart-canvas-wrap"><canvas id="mbht-chart-hist"></canvas></div>
+      </div>
+
+      <div class="mbht-chart-card full">
+        <div class="mbht-chart-head">
+          <div>
+            <h4 class="mbht-chart-title">Ranking de 18 indicadores · Media comunal</h4>
+            <p class="mbht-chart-sub">Ordenado descendente · Color = dimensión</p>
+          </div>
+          <span class="mbht-chart-badge">18 indicadores</span>
+        </div>
+        <div class="mbht-chart-canvas-wrap tall"><canvas id="mbht-chart-bars"></canvas></div>
+      </div>
+    </div>
+
+
+    <!-- ============ §4 ★ OBSERVATORIO MAPA POTENCIADO ★ ============ -->
+    <div class="mbht-section-head">
+      <div class="mbht-section-num">11.4.4</div>
+      <div>
+        <h3 class="mbht-section-title">Observatorio espacial · Zonas BHT</h3>
+        <p class="mbht-section-desc">
+          Sistema interactivo de exploración espacial con autocorrelación local (I de Moran) sobre la geografía real de Rengo: <strong>ciudad capital al centro-suroeste</strong> (5 sectores), <strong>núcleos urbanos de Rosario y Esmeralda en el valle norte</strong>, <strong>zona vitivinícola Apalta al oeste</strong>, <strong>angostura de Pelequén al sur</strong>, y <strong>precordillera-cordillera oriental</strong> (Popeta a 7 km, El Cerrillo, Chanqueahue, Las Nieves a 22 km y faldas de la Cordillera de los Andes). Cambia entre vistas (puntos / heatmap / clusters), capa base (oscura / clara / satelital / topográfica) e indicador. Cambia entre dimensiones para detectar patrones específicos: <strong>amplitud térmica</strong> (IATA) revela isla de calor urbano; <strong>cobertura vegetal</strong> (ICV) invierte el gradiente — alta en precordillera, baja en centro consolidado.
+        </p>
+      </div>
+      <span class="mbht-section-tag">LISA · I Moran · p&lt;0.05</span>
+    </div>
+
+    <div class="mbht-observatory" id="mbht-observatory">
+      <!-- Toolbar superior -->
+      <div class="mbht-obs-toolbar">
+        <div class="mbht-obs-toolbar-group">
+          <span class="mbht-obs-toolbar-label">Vista</span>
+          <div class="mbht-seg-control" id="mbht-viz-control">
+            <button class="active" data-viz="points">Puntos</button>
+            <button data-viz="heat">Heatmap</button>
+            <button data-viz="cluster">Clusters</button>
+          </div>
+        </div>
+
+        <div class="mbht-obs-toolbar-group">
+          <span class="mbht-obs-toolbar-label">Capa</span>
+          <div class="mbht-seg-control" id="mbht-base-control">
+            <button class="active" data-base="dark">Oscura</button>
+            <button data-base="light">Clara</button>
+            <button data-base="sat">Satélite</button>
+            <button data-base="terrain">Topo</button>
+          </div>
+        </div>
+
+        <div class="mbht-obs-toolbar-group">
+          <span class="mbht-obs-toolbar-label">Indicador</span>
+          <div class="mbht-seg-control dim" id="mbht-dim-control" style="--seg-color:#b91c1c">
+            <button class="active" data-dim="mbht" style="--seg-color:#b91c1c">MBHT</button>
+            <button data-dim="acc" style="--seg-color:#0369a1">Acc</button>
+            <button data-dim="amb" style="--seg-color:#15803d">Amb</button>
+            <button data-dim="soc" style="--seg-color:#be185d">Soc</button>
+            <button data-dim="seg" style="--seg-color:#b45309">Seg</button>
+          </div>
+        </div>
+
+        <div class="mbht-search-wrap">
+          <span class="mbht-search-icon">⌕</span>
+          <input type="text" class="mbht-search-input" id="mbht-search" placeholder="Buscar UV, localidad o ID...">
+          <div class="mbht-search-results" id="mbht-search-results"></div>
+        </div>
+
+        <div class="mbht-obs-actions">
+          <button class="mbht-action-btn" id="mbht-btn-spotlight" title="Resalta solo manzanas filtradas, oscurece el resto">
+            ◉ Spotlight
+          </button>
+          <button class="mbht-action-btn" id="mbht-btn-critical" title="Encuadra la vista en los clústeres LL">
+            ▦ Críticas
+          </button>
+          <button class="mbht-action-btn" id="mbht-btn-export" title="Descargar CSV de manzanas visibles">
+            ↓ Export
+          </button>
+          <button class="mbht-action-btn" id="mbht-btn-fullscreen" title="Pantalla completa (Esc para salir)">
+            ⤢ Full
+          </button>
+        </div>
+      </div>
+
+      <!-- Body 3 columnas -->
+      <div class="mbht-obs-body">
+
+        <!-- Panel izquierdo: Filtros -->
+        <aside class="mbht-obs-filters">
+          <div class="mbht-filter-group">
+            <h5 class="mbht-filter-title">Clústeres LISA</h5>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-zona-filter="HH" checked>
+              <span class="mbht-filter-zona-swatch" style="background:#15803d"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">Alto-Alto</span>
+                <span class="mbht-filter-zona-count" data-count="HH">—</span>
+              </span>
+            </label>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-zona-filter="HL" checked>
+              <span class="mbht-filter-zona-swatch" style="background:#b45309"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">Alto-Bajo</span>
+                <span class="mbht-filter-zona-count" data-count="HL">—</span>
+              </span>
+            </label>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-zona-filter="LH" checked>
+              <span class="mbht-filter-zona-swatch" style="background:#c2410c"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">Bajo-Alto</span>
+                <span class="mbht-filter-zona-count" data-count="LH">—</span>
+              </span>
+            </label>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-zona-filter="LL" checked>
+              <span class="mbht-filter-zona-swatch" style="background:#b91c1c"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">Bajo-Bajo</span>
+                <span class="mbht-filter-zona-count" data-count="LL">—</span>
+              </span>
+            </label>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-zona-filter="NS">
+              <span class="mbht-filter-zona-swatch" style="background:#6b7280"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">No signif.</span>
+                <span class="mbht-filter-zona-count" data-count="NS">—</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="mbht-filter-group">
+            <h5 class="mbht-filter-title">Rango MBHT</h5>
+            <div class="mbht-range-wrap">
+              <div class="mbht-range-display">
+                <span>Mín: <strong id="mbht-range-min">0.00</strong></span>
+                <span><strong id="mbht-range-max">1.00</strong> :Máx</span>
+              </div>
+              <input type="range" min="0" max="100" value="0" class="mbht-range-input" id="mbht-range-input-min">
+              <input type="range" min="0" max="100" value="100" class="mbht-range-input" id="mbht-range-input-max" style="margin-top:6px">
+            </div>
+          </div>
+
+          <div class="mbht-filter-group">
+            <h5 class="mbht-filter-title">Tipo territorial</h5>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-tipo-filter="urbano" checked>
+              <span class="mbht-filter-zona-swatch" style="background:#0369a1"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">Urbano</span>
+                <span class="mbht-filter-zona-count">7 UV</span>
+              </span>
+            </label>
+            <label class="mbht-filter-zona">
+              <input type="checkbox" data-tipo-filter="rural" checked>
+              <span class="mbht-filter-zona-swatch" style="background:#15803d"></span>
+              <span class="mbht-filter-zona-label">
+                <span class="mbht-filter-zona-name">Rural</span>
+                <span class="mbht-filter-zona-count">14 UV</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="mbht-filter-group">
+            <h5 class="mbht-filter-title">Acciones</h5>
+            <button onclick="window.mbhtResetView && window.mbhtResetView()" style="
+              width:100%; background:rgba(185,28,28,0.1); border:1px solid rgba(185,28,28,0.3); color:#b91c1c;
+              padding:0.5rem; border-radius:6px; font-family:JetBrains Mono,monospace; font-size:0.72rem; font-weight:600;
+              cursor:pointer; text-transform:uppercase; letter-spacing:0.08em; transition:all 0.15s;
+            " onmouseover="this.style.background='rgba(185,28,28,0.2)'" onmouseout="this.style.background='rgba(185,28,28,0.1)'">↻ Restablecer vista</button>
+          </div>
+        </aside>
+
+        <!-- Centro: Mapa -->
+        <div class="mbht-obs-map-wrap" id="mbht-map-wrap">
+          <div id="mbht-map"></div>
+          <div class="mbht-map-legend">
+            <div class="mbht-map-legend-title" id="mbht-legend-title">Puntaje MBHT</div>
+            <div class="mbht-map-legend-grad"></div>
+            <div class="mbht-map-legend-labels">
+              <span>0.00 · crítico</span>
+              <span>1.00 · óptimo</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Derecha: Stats del viewport -->
+        <aside class="mbht-obs-stats">
+          <div class="mbht-stat-card">
+            <h5 class="mbht-stat-title">En vista actual</h5>
+            <div class="mbht-stat-big" id="mbht-stat-n">—</div>
+            <div class="mbht-stat-meta">manzanas dentro del viewport</div>
+          </div>
+
+          <div class="mbht-stat-card">
+            <h5 class="mbht-stat-title">MBHT promedio</h5>
+            <div class="mbht-stat-big" id="mbht-stat-mean" style="color:#b45309">—</div>
+            <div class="mbht-stat-meta" id="mbht-stat-mean-meta">desv. típica σ = —</div>
+
+            <!-- Sparkline distribución del viewport -->
+            <div class="mbht-stat-spark">
+              <svg viewBox="0 0 200 38" preserveAspectRatio="none" id="mbht-spark-svg">
+                <defs>
+                  <linearGradient id="sparkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#b91c1c" stop-opacity="0.4"/>
+                    <stop offset="100%" stop-color="#b91c1c" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path id="mbht-spark-area" d="M 0 38 L 200 38 Z" fill="url(#sparkGrad)"/>
+                <path id="mbht-spark-line" d="" fill="none" stroke="#b91c1c" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="mbht-stat-spark-label">
+              <span>0.0</span>
+              <span>distribución viewport</span>
+              <span>1.0</span>
+            </div>
+          </div>
+
+          <div class="mbht-stat-card">
+            <h5 class="mbht-stat-title">Viewport vs Comuna</h5>
+            <div class="mbht-vp-compare" id="mbht-vp-compare" style="--vp-color:#b45309">
+              <div class="mbht-vp-compare-label">Diferencia MBHT</div>
+              <div class="mbht-vp-compare-val">
+                <span id="mbht-vp-delta-val">—</span>
+                <span class="delta" id="mbht-vp-delta-pct">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mbht-stat-card">
+            <h5 class="mbht-stat-title">Distribución LISA</h5>
+            <div class="mbht-stat-zonas">
+              <div class="mbht-zona-mini" style="--z-color:#15803d">
+                <div class="mbht-zona-mini-code">HH</div>
+                <div class="mbht-zona-mini-count" id="vp-hh">0</div>
+                <div class="mbht-zona-mini-pct" id="vp-hh-pct">0%</div>
+              </div>
+              <div class="mbht-zona-mini" style="--z-color:#b91c1c">
+                <div class="mbht-zona-mini-code">LL</div>
+                <div class="mbht-zona-mini-count" id="vp-ll">0</div>
+                <div class="mbht-zona-mini-pct" id="vp-ll-pct">0%</div>
+              </div>
+              <div class="mbht-zona-mini" style="--z-color:#b45309">
+                <div class="mbht-zona-mini-code">HL</div>
+                <div class="mbht-zona-mini-count" id="vp-hl">0</div>
+                <div class="mbht-zona-mini-pct" id="vp-hl-pct">0%</div>
+              </div>
+              <div class="mbht-zona-mini" style="--z-color:#c2410c">
+                <div class="mbht-zona-mini-code">LH</div>
+                <div class="mbht-zona-mini-count" id="vp-lh">0</div>
+                <div class="mbht-zona-mini-pct" id="vp-lh-pct">0%</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mbht-stat-card">
+            <h5 class="mbht-stat-title">Top 5 manzanas críticas</h5>
+            <ol class="mbht-toplist" id="mbht-toplist">
+              <li><span class="mbht-toplist-name">Cargando...</span><span class="mbht-toplist-val">—</span></li>
+            </ol>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- ============ TABLA UV ============ -->
+    <div class="mbht-section-head" style="margin-top:3rem">
+      <div class="mbht-section-num">11.4.4·b</div>
+      <div>
+        <h3 class="mbht-section-title">MBHT agregado por Unidad Vecinal</h3>
+        <p class="mbht-section-desc">
+          Agregación a las <strong>21 unidades vecinales</strong> (7 urbanas + 14 rurales). El listado refleja la geografía real de Rengo: ciudad capital (5 sectores), núcleo urbano de Rosario y Esmeralda, valle vitivinícola (Apalta), localidades del valle (Lo Cartagena, Lo de Lobo, Pelequén, Pataguas, Requegua, El Trebal, Pueblo de Indios) y precordillera-cordillera (Popeta, El Cerrillo, Las Nieves, Chanqueahue, Rinconada Malambo, Baluarte). Muestra puntaje MBHT promedio, medias por dimensión y porcentaje de manzanas en clúster Bajo-Bajo (LL) — indicador focal de prioridad para intervención territorial.
+        </p>
+      </div>
+      <span class="mbht-section-tag">21 UV agregadas</span>
+    </div>
+
+    <div class="mbht-table-wrap">
+      <table class="mbht-table" id="mbht-table-uv">
+        <thead>
+          <tr>
+            <th>UV</th>
+            <th>Localidad</th>
+            <th>Tipo</th>
+            <th>n Manz.</th>
+            <th>MBHT μ</th>
+            <th>Acc</th>
+            <th>Amb</th>
+            <th>Soc</th>
+            <th>Seg</th>
+            <th>Zona dom.</th>
+            <th>% LL</th>
+          </tr>
+        </thead>
+        <tbody id="mbht-table-body">
+          <tr><td colspan="11" style="text-align:center;color:var(--mbht-text-mute);padding:2.5rem">
+            ⏳ Esperando carga de <code>data__4_.xlsx</code> (ZonasBHT) para poblar agregación por UV
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ============ COMPARADOR DE UV (V3) ============ -->
+    <div class="mbht-section-head" style="margin-top:3rem">
+      <div class="mbht-section-num">11.4.4·c</div>
+      <div>
+        <h3 class="mbht-section-title">Comparador de Unidades Vecinales</h3>
+        <p class="mbht-section-desc">
+          Herramienta de análisis pareado para comparar dos UV en simultáneo y visualizar sus brechas dimensionales. Útil para diseño de intervenciones diferenciadas y argumentación de focalización ante el COSOC, el CORE y las instancias técnicas regionales.
+        </p>
+      </div>
+      <span class="mbht-section-tag">Comparativa pareada</span>
+    </div>
+
+    <div class="mbht-comparator">
+      <div class="mbht-comp-head">
+        <div class="mbht-comp-selectors">
+          <div class="mbht-comp-selector">
+            <span class="mbht-comp-selector-label">Unidad A</span>
+            <select class="mbht-comp-select uv-a" id="mbht-comp-a">
+              <option value="">— Seleccionar UV —</option>
+            </select>
+          </div>
+          <div class="mbht-comp-selector">
+            <span class="mbht-comp-selector-label">Unidad B</span>
+            <select class="mbht-comp-select uv-b" id="mbht-comp-b">
+              <option value="">— Seleccionar UV —</option>
+            </select>
+          </div>
+        </div>
+        <span class="mbht-chart-badge" id="mbht-comp-badge">Selecciona dos UV</span>
+      </div>
+
+      <div class="mbht-comp-body">
+        <div class="mbht-comp-card" id="mbht-comp-card-a" style="--comp-color:#0369a1">
+          <div class="mbht-comp-card-label">Unidad A</div>
+          <h4 class="mbht-comp-card-title" id="mbht-comp-title-a">—</h4>
+          <div class="mbht-comp-card-rows" id="mbht-comp-rows-a">
+            <div class="mbht-comp-card-row"><span class="mbht-comp-card-row-key">Sin selección</span><span class="mbht-comp-card-row-val">—</span></div>
+          </div>
+        </div>
+
+        <div class="mbht-comp-card" id="mbht-comp-card-b" style="--comp-color:#b91c1c">
+          <div class="mbht-comp-card-label">Unidad B</div>
+          <h4 class="mbht-comp-card-title" id="mbht-comp-title-b">—</h4>
+          <div class="mbht-comp-card-rows" id="mbht-comp-rows-b">
+            <div class="mbht-comp-card-row"><span class="mbht-comp-card-row-key">Sin selección</span><span class="mbht-comp-card-row-val">—</span></div>
+          </div>
+        </div>
+
+        <div class="mbht-comp-radar">
+          <canvas id="mbht-comp-radar-canvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ §5 ARTICULACIÓN ============ -->
+    <div class="mbht-section-head">
+      <div class="mbht-section-num">11.4.5</div>
+      <div>
+        <h3 class="mbht-section-title">De la matriz a la inversión territorial</h3>
+        <p class="mbht-section-desc">
+          Cada dimensión MBHT activa líneas de inversión específicas del PLADECO 2025-2035 con trazabilidad explícita hacia los <strong>6 ejes estratégicos</strong> y los instrumentos de financiamiento disponibles (FNDR, FRIL, PMU, PMB, DS49/27, INDAP, SENCE, SUBDERE). El indicador es el <em>insumo</em>; la Zona BHT, el <em>focalizador territorial</em>.
+        </p>
+      </div>
+      <span class="mbht-section-tag">→ Matriz Estratégica</span>
+    </div>
+
+    <div class="mbht-link-grid">
+      <a class="mbht-link-card" style="--link-color:#0369a1" href="#matriz">
+        <div class="mbht-link-tag">Dim. Accesibilidad → Eje 4</div>
+        <h5 class="mbht-link-title">Cierre de brechas en equipamiento</h5>
+        <p class="mbht-link-body">IAV bajo (1,96 m²/hab vs OMS 9–10) e ISE deficitario en rurales activan inversión FNDR + DOM en áreas verdes, multicanchas y matrícula preescolar.</p>
+        <div class="mbht-link-foot"><span>Eje 4 · Espacios Públicos</span></div>
+      </a>
+
+      <a class="mbht-link-card" style="--link-color:#15803d" href="#matriz">
+        <div class="mbht-link-tag">Dim. Ambiental → Eje 4/5</div>
+        <h5 class="mbht-link-title">Adaptación climática local</h5>
+        <p class="mbht-link-body">IATA alto e ICV bajo definen prioridades del PACCC Rengo y arborización urbana focalizada en manzanas con efecto isla de calor.</p>
+        <div class="mbht-link-foot"><span>PACCC · Eje 4</span></div>
+      </a>
+
+      <a class="mbht-link-card" style="--link-color:#be185d" href="#matriz">
+        <div class="mbht-link-tag">Dim. Socioec. → Ejes 1, 2, 3</div>
+        <h5 class="mbht-link-title">Política social focalizada</h5>
+        <p class="mbht-link-body">IVI + ISV bajos coordinan DS49/DS27. IEJ bajo activa DAEM + SENCE. IPJ bajo gatilla programas de retención escolar y empleabilidad juvenil OMIL.</p>
+        <div class="mbht-link-foot"><span>Ejes 1, 2, 3 · Desarrollo Humano</span></div>
+      </a>
+
+      <a class="mbht-link-card" style="--link-color:#b45309" href="#matriz">
+        <div class="mbht-link-tag">Dim. Seguridad → Eje 5</div>
+        <h5 class="mbht-link-title">Prevención situacional CPTED</h5>
+        <p class="mbht-link-body">IGPE + IGPR bajos identifican manzanas para televigilancia, iluminación LED, recuperación de sitios eriazos y plan comunal de seguridad.</p>
+        <div class="mbht-link-foot"><span>Eje 5 · Seguridad</span></div>
+      </a>
+
+      <a class="mbht-link-card" style="--link-color:#b91c1c" href="#censoVuln">
+        <div class="mbht-link-tag">Triangulación diagnóstica</div>
+        <h5 class="mbht-link-title">ICP × MBHT × ICT</h5>
+        <p class="mbht-link-body">Superposición de vulnerabilidad censal (ICP), matriz UAI-SUBDERE (MBHT) y catastro de espacios públicos (ICT) configura un sistema de inteligencia territorial inédito para una comuna de tamaño medio.</p>
+        <div class="mbht-link-foot"><span>Diagnóstico integrado</span></div>
+      </a>
+
+      <a class="mbht-link-card" style="--link-color:#b91c1c" href="#sna">
+        <div class="mbht-link-tag">Gobernanza → Eje 6</div>
+        <h5 class="mbht-link-title">Observatorio MBHT comunal</h5>
+        <p class="mbht-link-body">Institucionalización del puntaje MBHT como indicador de seguimiento bienal en el sistema M&E PLADECO, con tablero abierto y rendición territorial por UV.</p>
+        <div class="mbht-link-foot"><span>Eje 6 · Gobernanza</span></div>
+      </a>
+    </div>
+
+    <hr class="mbht-divider">
+
+    <!-- ============ FOOTNOTE ============ -->
+    <p class="mbht-footnote">
+      📚 <strong>Fuente metodológica:</strong> Subsecretaría de Desarrollo Regional y Administrativo &amp; Universidad Adolfo Ibáñez. (2021). <em>Matriz de Bienestar Humano Territorial (MBHT) · Programa de Fortalecimiento de Capacidades Regionales en Análisis de Información Territorial para la Toma de Decisiones</em>. Centro de Inteligencia Territorial UAI · Design.LAB · Santiago de Chile.<br><br>
+      <strong>Aplicación en Rengo:</strong> Elaboración SECPLAC PLADECO 2025-2035 sobre la base del Censo Nacional de Población y Vivienda 2024 (INE), Carabineros de Chile (KDE 500×500 m sobre casos policiales 2023-2024), Catastro de equipamientos DEIS-MINSAL, IDE-Chile, datos satelitales Landsat-8 TST y NDVI (período 2023-2024). Triangulado con: SIVUST (MDSF, 2025), ISMT (Observatorio de Ciudades UC, 2022), Inteligencia Territorial (Girardot, 2009), Análisis socioespacial con SIG (Fuenzalida et al., 2015). <strong>Director del estudio:</strong> Daniel Castillo Campos · <strong>Equipo técnico SECPLAC:</strong> O. Mañán Arce, P. Ramírez Marambio. Mayo 2026.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================================================================
+     SCRIPT
+     ================================================================ -->
+<script>
+(function(){
+  'use strict';
+
+  // ==========================================================
+  // CONFIG
+  // ==========================================================
+  const INDICADORES = {
+    acc: ['IAV','IDEP','ICUL','ISAL','ISER','ISE'],
+    amb: ['IATA','ICV'],
+    soc: ['IVI','ISV','IEJ','IRH','IEM','IPJ'],
+    seg: ['IGPE','IGPR','ILPE','ILPR']
+  };
+  const COLOR_DIM = { acc:'#0369a1', amb:'#15803d', soc:'#be185d', seg:'#b45309', mbht:'#b91c1c' };
+  const COLOR_ZONA = { HH:'#15803d', LL:'#b91c1c', HL:'#ca8a04', LH:'#c2410c', NS:'#6b7280' };
+  const NOMBRE_DIM = { acc:'Accesibilidad', amb:'Ambiental', soc:'Socioeconómica', seg:'Seguridad', mbht:'MBHT Global' };
+
+  // Estado global
+  const state = {
+    data: null,             // array de features {lat, lon, mbht, acc, amb, soc, seg, zona, uv, tipo, ...}
+    raw: { acc:null, amb:null, soc:null, seg:null, zonas:null },
+    summary: null,
+    filters: {
+      zonas: new Set(['HH','HL','LH','LL']),
+      mbhtMin: 0, mbhtMax: 1,
+      tipos: new Set(['urbano','rural'])
+    },
+    viz: 'points',          // points | heat | cluster
+    base: 'dark',           // dark | light | sat
+    dim: 'mbht'             // mbht | acc | amb | soc | seg
+  };
+
+  // ==========================================================
+  // DEMO DATA · BASADO EN GEOGRAFÍA REAL DE RENGO
+  //
+  // Fuentes: Wikipedia ES (Rengo, Las Nieves), Enciclopedia
+  // Colchagüina, Municipalidad de Rengo, IDE Chile, INE CPV 2017+.
+  // Coordenadas centro Rengo: 34°25′00″S 70°52′00″O = -34.4167, -70.8667.
+  // Estructura morfoestructural: depresión intermedia (valle 570 msnm) +
+  // precordillera + cerros islas hacia angostura de Pelequén.
+  // Ruta 5 Sur articula linealmente Rosario - Rengo - Pelequén (eje N-S).
+  // Ruta H-50 conecta Rosario - Esmeralda - Quinta de Tilcoco.
+  // ==========================================================
+
+  const LOCALIDADES_RENGO = [
+    // ===== CIUDAD DE RENGO (430 mz · 5 sectores urbanos) =====
+    // Centro consolidado: comercio, servicios, equipamiento intercomunal
+    { name: 'Rengo Centro',     uv: 'UV-01', tipo: 'urbano', lat: -34.4167, lon: -70.8667, n: 150, spread: 0.0070,
+      dist: { HH:0.50, HL:0.20, NS:0.20, LL:0.05, LH:0.05 } },
+    // La Isla: sector norte, CESFAM Rengo, sello rural mantenido
+    { name: 'La Isla',          uv: 'UV-02', tipo: 'urbano', lat: -34.4055, lon: -70.8605, n: 70,  spread: 0.0050,
+      dist: { HH:0.30, HL:0.30, NS:0.30, LL:0.05, LH:0.05 } },
+    // Oriente: expansión reciente, sector con licitación nuevo CESFAM 2016
+    { name: 'Rengo Oriente',    uv: 'UV-03', tipo: 'urbano', lat: -34.4180, lon: -70.8530, n: 80,  spread: 0.0060,
+      dist: { HH:0.25, HL:0.25, NS:0.35, LL:0.10, LH:0.05 } },
+    // Poniente: sector residencial mixto
+    { name: 'Rengo Poniente',   uv: 'UV-04', tipo: 'urbano', lat: -34.4195, lon: -70.8760, n: 70,  spread: 0.0060,
+      dist: { HH:0.15, HL:0.25, NS:0.40, LL:0.15, LH:0.05 } },
+    // Sur: periferia con mayor vulnerabilidad
+    { name: 'Rengo Sur',        uv: 'UV-05', tipo: 'urbano', lat: -34.4290, lon: -70.8660, n: 60,  spread: 0.0060,
+      dist: { HH:0.10, HL:0.20, NS:0.35, LL:0.30, LH:0.05 } },
+
+    // ===== URBANO VALLE (80 mz · 2 localidades) =====
+    // Rosario: 2da ciudad urbana, CESFAM (1995), eje Ruta 5 Sur
+    { name: 'Rosario',          uv: 'UV-06', tipo: 'urbano', lat: -34.3430, lon: -70.8530, n: 55,  spread: 0.0075,
+      dist: { HH:0.30, HL:0.25, NS:0.30, LL:0.10, LH:0.05 } },
+    // Esmeralda: zona urbana declarada PRC 2009, estación médica rural
+    { name: 'Esmeralda',        uv: 'UV-07', tipo: 'urbano', lat: -34.3330, lon: -70.7950, n: 25,  spread: 0.0055,
+      dist: { HH:0.20, HL:0.30, NS:0.30, LL:0.15, LH:0.05 } },
+
+    // ===== RURAL VALLE (202 mz · 8 localidades) =====
+    // Lo Cartagena: posta rural (2000), valle norte
+    { name: 'Lo Cartagena',     uv: 'UV-08', tipo: 'rural',  lat: -34.3600, lon: -70.9180, n: 30,  spread: 0.0140,
+      dist: { HH:0.05, HL:0.10, NS:0.45, LL:0.20, LH:0.20 } },
+    // Lo de Lobo: posta rural (2001)
+    { name: 'Lo de Lobo',       uv: 'UV-09', tipo: 'rural',  lat: -34.3710, lon: -70.8800, n: 22,  spread: 0.0110,
+      dist: { HH:0.05, HL:0.10, NS:0.50, LL:0.20, LH:0.15 } },
+    // Apalta: zona vitivinícola (Ruta del Vino), capilla colonial
+    // Mayor valor productivo → más LH (bajo rodeado de alto valor)
+    { name: 'Apalta',           uv: 'UV-10', tipo: 'rural',  lat: -34.4225, lon: -70.9480, n: 32,  spread: 0.0170,
+      dist: { HH:0.10, HL:0.10, NS:0.35, LL:0.15, LH:0.30 } },
+    // Pelequén Rengo: angostura sur, borde San Fernando
+    { name: 'Pelequén',         uv: 'UV-11', tipo: 'rural',  lat: -34.4755, lon: -70.9100, n: 28,  spread: 0.0125,
+      dist: { HH:0.05, HL:0.10, NS:0.30, LL:0.45, LH:0.10 } },
+    // Pataguas Cerro: rural valle suroeste
+    { name: 'Pataguas Cerro',   uv: 'UV-12', tipo: 'rural',  lat: -34.4360, lon: -70.9100, n: 18,  spread: 0.0120,
+      dist: { HH:0.05, HL:0.10, NS:0.30, LL:0.45, LH:0.10 } },
+    // Requegua: distrito censal INE (18,7 km²)
+    { name: 'Requegua',         uv: 'UV-13', tipo: 'rural',  lat: -34.3870, lon: -70.9100, n: 28,  spread: 0.0130,
+      dist: { HH:0.05, HL:0.10, NS:0.35, LL:0.35, LH:0.15 } },
+    // El Trebal: rural sur-oriente valle
+    { name: 'El Trebal',        uv: 'UV-14', tipo: 'rural',  lat: -34.4500, lon: -70.8350, n: 22,  spread: 0.0130,
+      dist: { HH:0.05, HL:0.10, NS:0.40, LL:0.30, LH:0.15 } },
+    // Pueblo de Indios: pequeño asentamiento periurbano
+    { name: 'Pueblo de Indios', uv: 'UV-15', tipo: 'rural',  lat: -34.3850, lon: -70.8300, n: 22,  spread: 0.0100,
+      dist: { HH:0.10, HL:0.15, NS:0.45, LL:0.20, LH:0.10 } },
+
+    // ===== PRECORDILLERA Y CORDILLERA (114 mz · 6 localidades) =====
+    // Popeta: 7 km suroriente, balneario, posta rural (1998), 983 hab CPV 2017
+    { name: 'Popeta',           uv: 'UV-16', tipo: 'rural',  lat: -34.4480, lon: -70.7850, n: 35,  spread: 0.0120,
+      dist: { HH:0.05, HL:0.05, NS:0.25, LL:0.50, LH:0.15 } },
+    // El Cerrillo: 6 km norte de Rengo, 4.5 km norte de Popeta, posta rural
+    { name: 'El Cerrillo',      uv: 'UV-17', tipo: 'rural',  lat: -34.4080, lon: -70.7850, n: 18,  spread: 0.0115,
+      dist: { HH:0.05, HL:0.05, NS:0.30, LL:0.45, LH:0.15 } },
+    // Las Nieves: 22 km de Rengo, faldas Cordillera Andes, estación médica
+    // Aislamiento severo: 90% LL
+    { name: 'Las Nieves',       uv: 'UV-18', tipo: 'rural',  lat: -34.4895, lon: -70.6600, n: 15,  spread: 0.0220,
+      dist: { HH:0.00, HL:0.05, NS:0.10, LL:0.80, LH:0.05 } },
+    // Chanqueahue: precordillera, estación médica rural, capilla colonial
+    { name: 'Chanqueahue',      uv: 'UV-19', tipo: 'rural',  lat: -34.3970, lon: -70.7200, n: 18,  spread: 0.0140,
+      dist: { HH:0.00, HL:0.05, NS:0.20, LL:0.65, LH:0.10 } },
+    // Rinconada de Malambo: distrito censal Rinconada (131 km², 2.377 hab CPV 2017)
+    { name: 'Rinconada Malambo',uv: 'UV-20', tipo: 'rural',  lat: -34.4200, lon: -70.7000, n: 16,  spread: 0.0250,
+      dist: { HH:0.00, HL:0.05, NS:0.15, LL:0.75, LH:0.05 } },
+    // Baluarte: pequeño caserío precordillera
+    { name: 'Baluarte',         uv: 'UV-21', tipo: 'rural',  lat: -34.4400, lon: -70.7350, n: 12,  spread: 0.0120,
+      dist: { HH:0.00, HL:0.05, NS:0.25, LL:0.60, LH:0.10 } }
+  ];
+
+  // MBHT base por tipo de zona BHT (1 = mejor, 0 = peor)
+  const MBHT_RANGES = {
+    HH: [0.62, 0.85],  // Alto-Alto: bienestar consolidado
+    HL: [0.48, 0.66],  // Alto-Bajo: alto MBHT rodeado de bajo (borde crítico)
+    LH: [0.32, 0.50],  // Bajo-Alto: bajo MBHT rodeado de alto (borde crítico)
+    LL: [0.08, 0.30],  // Bajo-Bajo: vulnerabilidad concentrada · PRIORIDAD
+    NS: [0.32, 0.62]   // No significativo: variabilidad amplia
+  };
+
+  function randInRange([a, b]){ return a + Math.random() * (b - a); }
+
+  // Pequeño desplazamiento gaussiano para evitar grid uniforme
+  function gaussianOffset(spread){
+    // Aproximación Box-Muller para distribución más natural
+    let u1 = Math.random(), u2 = Math.random();
+    return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2) * spread * 0.4;
+  }
+
+  function pickZonaFromDist(dist){
+    const r = Math.random();
+    let acc = 0;
+    for(const [z, p] of Object.entries(dist)){
+      acc += p;
+      if(r <= acc) return z;
+    }
+    return 'NS';
+  }
+
+  function generateDemo(){
+    const features = [];
+    let id = 0;
+
+    LOCALIDADES_RENGO.forEach(loc => {
+      for(let i = 0; i < loc.n; i++){
+        // Distribución gaussiana en torno al centro de la localidad
+        const lat = loc.lat + gaussianOffset(loc.spread);
+        const lon = loc.lon + gaussianOffset(loc.spread);
+        const zona = pickZonaFromDist(loc.dist);
+        const mbht = randInRange(MBHT_RANGES[zona]);
+
+        // Sub-dimensiones correlacionadas con MBHT pero con ruido independiente
+        const noise = () => (Math.random() - 0.5) * 0.28;
+        const clamp = v => Math.max(0, Math.min(1, v));
+
+        // Modulación por morfoestructura territorial:
+        // - Precordillera (Popeta, Las Nieves, Chanqueahue): mayor ICV (vegetación) pero menor ISER/ISE
+        // - Vitivinícolas (Apalta): mayor acc (caminos pavimentados) pero menor amb por estrés hídrico
+        // - Urbano centro: mayor acc/soc, menor amb (efecto isla de calor)
+        const isPrecord = ['Popeta','Las Nieves','El Cerrillo','Chanqueahue','Rinconada Malambo','Baluarte'].includes(loc.name);
+        const isUrbCentro = loc.name === 'Rengo Centro' || loc.name === 'Rosario';
+        const isVitivinic = loc.name === 'Apalta';
+
+        const acc = clamp(mbht + noise() - (isPrecord ? 0.15 : 0) + (isUrbCentro ? 0.10 : 0));
+        const amb = clamp(mbht + noise() + (isPrecord ? 0.20 : 0) - (isUrbCentro ? 0.15 : 0) - (isVitivinic ? 0.08 : 0));
+        const soc = clamp(mbht + noise() - (isPrecord ? 0.05 : 0) + (isUrbCentro ? 0.05 : 0));
+        const seg = clamp(mbht + noise() + (isPrecord ? 0.08 : 0) - (isUrbCentro ? 0.05 : 0));
+
+        features.push({
+          id: ++id,
+          manzana_id: `06115-${String(id).padStart(4, '0')}`,
+          lat, lon, mbht, acc, amb, soc, seg, zona,
+          tipo: loc.tipo,
+          uv: loc.uv,
+          localidad: loc.name
+        });
+      }
+    });
+
+    return features;
+  }
+
+  function computeSummary(features){
+    const meanBy = (arr, key) => arr.reduce((a,b) => a + b[key], 0) / arr.length;
+    const stdBy = (arr, key) => {
+      const m = meanBy(arr, key);
+      return Math.sqrt(arr.reduce((a,b) => a + (b[key]-m)**2, 0) / arr.length);
+    };
+
+    const urbano = features.filter(f => f.tipo === 'urbano');
+    const rural = features.filter(f => f.tipo === 'rural');
+
+    const indStats = {};
+    [...INDICADORES.acc, ...INDICADORES.amb, ...INDICADORES.soc, ...INDICADORES.seg].forEach(ind => {
+      // Demo: simular medias variadas
+      const m = 0.30 + Math.random()*0.45;
+      indStats[ind] = { mean: m, sd: 0.08+Math.random()*0.12, n: features.length };
+    });
+
+    // Histograma 20 bins
+    const hist = Array(20).fill(0);
+    features.forEach(f => {
+      const idx = Math.min(19, Math.floor(f.mbht * 20));
+      hist[idx]++;
+    });
+
+    // Conteo de zonas
+    const zonaCounts = { HH:0, HL:0, LH:0, LL:0, NS:0 };
+    features.forEach(f => { zonaCounts[f.zona]++; });
+
+    return {
+      n: features.length,
+      mbhtMean: meanBy(features, 'mbht'),
+      mbhtSd: stdBy(features, 'mbht'),
+      dimUrbano: { acc: meanBy(urbano,'acc'), amb: meanBy(urbano,'amb'), soc: meanBy(urbano,'soc'), seg: meanBy(urbano,'seg') },
+      dimRural:  { acc: meanBy(rural,'acc'), amb: meanBy(rural,'amb'), soc: meanBy(rural,'soc'), seg: meanBy(rural,'seg') },
+      gapUR: meanBy(urbano,'mbht') / meanBy(rural,'mbht'),
+      indStats,
+      hist,
+      zonaCounts
+    };
+  }
+
+  // ==========================================================
+  // RENDER METRICS & CARDS
+  // ==========================================================
+  function renderMetrics(s){
+    const fmt = (n, d=3) => n.toFixed(d).replace('.', ',');
+    document.querySelector('[data-bind="mbht-mean"] .mbht-metric-value').textContent = fmt(s.mbhtMean);
+    const totalSig = s.zonaCounts.HH + s.zonaCounts.HL + s.zonaCounts.LH + s.zonaCounts.LL;
+    document.querySelector('[data-bind="mbht-zonas"] .mbht-metric-value').textContent = totalSig;
+    document.querySelector('[data-bind="mbht-gap"] .mbht-metric-value').textContent = s.gapUR.toFixed(2) + '×';
+  }
+
+  function renderIndicatorStats(s){
+    Object.entries(s.indStats).forEach(([ind, st]) => {
+      const m = document.querySelector(`[data-stat="${ind}-mean"]`);
+      const sd = document.querySelector(`[data-stat="${ind}-sd"]`);
+      const n = document.querySelector(`[data-stat="${ind}-n"]`);
+      if(m) m.textContent = st.mean.toFixed(3);
+      if(sd) sd.textContent = st.sd.toFixed(3);
+      if(n) n.textContent = st.n.toLocaleString('es-CL');
+      const bar = document.querySelector(`[data-bar="${ind}"]`);
+      if(bar) setTimeout(() => bar.style.width = (st.mean*100).toFixed(1) + '%', 100);
+    });
+  }
+
+  function renderZonaCounts(s){
+    Object.entries(s.zonaCounts).forEach(([z, n]) => {
+      const el = document.querySelector(`[data-count="${z}"]`);
+      if(el) el.textContent = n;
+    });
+  }
+
+  // ==========================================================
+  // CHARTS
+  // ==========================================================
+  Chart.defaults.color = '#b6c2d4';
+  Chart.defaults.font.family = "'Manrope', system-ui, sans-serif";
+  Chart.defaults.borderColor = 'rgba(255,255,255,0.08)';
+
+  let cR, cH, cB;
+
+  function renderRadar(s){
+    if(cR) cR.destroy();
+    cR = new Chart(document.getElementById('mbht-chart-radar'), {
+      type: 'radar',
+      data: {
+        labels: ['Accesibilidad','Ambiental','Socioeconómica','Seguridad'],
+        datasets: [
+          { label:'Urbano',
+            data: [s.dimUrbano.acc, s.dimUrbano.amb, s.dimUrbano.soc, s.dimUrbano.seg],
+            backgroundColor:'rgba(3,105,161,0.18)', borderColor:'#0369a1', borderWidth:2,
+            pointBackgroundColor:'#0369a1', pointBorderColor:'#fff', pointBorderWidth:1.5, pointRadius:5 },
+          { label:'Rural',
+            data: [s.dimRural.acc, s.dimRural.amb, s.dimRural.soc, s.dimRural.seg],
+            backgroundColor:'rgba(185,28,28,0.18)', borderColor:'#b91c1c', borderWidth:2,
+            pointBackgroundColor:'#b91c1c', pointBorderColor:'#fff', pointBorderWidth:1.5, pointRadius:5 }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        scales: { r: {
+          beginAtZero:true, max:1, min:0,
+          ticks: { backdropColor:'transparent', color:'#76849b', stepSize:0.2, font:{size:9} },
+          grid: { color:'rgba(255,255,255,0.06)' },
+          angleLines: { color:'rgba(255,255,255,0.08)' },
+          pointLabels: { color:'#e8eef7', font:{size:11, weight:'600', family:'Manrope'} }
+        }},
+        plugins: {
+          legend: { position:'bottom', labels:{ padding:16, usePointStyle:true, font:{size:12} } }
+        }
+      }
+    });
+  }
+
+  function renderHist(s){
+    if(cH) cH.destroy();
+    const labels = Array(20).fill(0).map((_,i) => (i*0.05).toFixed(2));
+    const colors = s.hist.map((_,i) => {
+      const v = i*0.05;
+      if(v < 0.25) return '#b91c1c';
+      if(v < 0.50) return '#c2410c';
+      if(v < 0.75) return '#b45309';
+      return '#15803d';
+    });
+    cH = new Chart(document.getElementById('mbht-chart-hist'), {
+      type: 'bar',
+      data: { labels, datasets: [{ data: s.hist, backgroundColor: colors, borderRadius: 3, borderSkipped: false }] },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        scales: {
+          x: { grid:{display:false}, ticks:{color:'#76849b', font:{size:9, family:'JetBrains Mono'}}, title:{display:true, text:'Puntaje MBHT (0–1)', color:'#b6c2d4', font:{size:11}} },
+          y: { grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#76849b'}, title:{display:true, text:'N° manzanas', color:'#b6c2d4', font:{size:11}} }
+        },
+        plugins: {
+          legend: { display:false },
+          tooltip: { callbacks: { title: items => `MBHT ${items[0].label}–${(parseFloat(items[0].label)+0.05).toFixed(2)}` }}
+        }
+      }
+    });
+  }
+
+  function renderBars(s){
+    if(cB) cB.destroy();
+    const all = [];
+    Object.entries(INDICADORES).forEach(([dim, inds]) => {
+      inds.forEach(ind => all.push({ ind, dim, mean: s.indStats[ind].mean }));
+    });
+    all.sort((a,b) => b.mean - a.mean);
+    cB = new Chart(document.getElementById('mbht-chart-bars'), {
+      type: 'bar',
+      data: {
+        labels: all.map(x => x.ind),
+        datasets: [{
+          data: all.map(x => x.mean),
+          backgroundColor: all.map(x => COLOR_DIM[x.dim]),
+          borderRadius: 4,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive:true, maintainAspectRatio:false,
+        scales: {
+          x: { max:1, min:0, grid:{color:'rgba(255,255,255,0.05)'}, ticks:{color:'#76849b', font:{size:10}} },
+          y: { grid:{display:false}, ticks:{color:'#e8eef7', font:{weight:'600', family:'JetBrains Mono', size:11}} }
+        },
+        plugins: {
+          legend: { display:false },
+          tooltip: { callbacks: {
+            label: ctx => `${NOMBRE_DIM[all[ctx.dataIndex].dim]}: ${ctx.parsed.x.toFixed(3)}`
+          }}
+        }
+      }
+    });
+  }
+
+  // ==========================================================
+  // MAP — Observatorio
+  // ==========================================================
+  let map, baseLayers, currentBase, layers = {}, currentLayer = null;
+
+  const BASES = {
+    dark: { url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', attr: '© CARTO · © OpenStreetMap' },
+    light: { url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', attr: '© CARTO · © OpenStreetMap' },
+    sat: { url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', attr: '© Esri · WorldImagery' },
+    terrain: { url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', attr: '© OpenTopoMap · © OpenStreetMap', subdomains: 'abc' }
+  };
+
+  function colorScale(v){
+    // 0 → rojo, 0.5 → amarillo, 1 → verde
+    if(v < 0.25) return '#b91c1c';
+    if(v < 0.50) return '#c2410c';
+    if(v < 0.75) return '#b45309';
+    return '#15803d';
+  }
+
+  function colorByDim(f){
+    if(state.dim === 'mbht') return colorScale(f.mbht);
+    return colorScale(f[state.dim] || 0);
+  }
+
+  function initMap(){
+    // Centro oficial Rengo: 34°25′00″S 70°52′00″O
+    // Zoom 11 permite ver toda la comuna (valle norte + precordillera oriental)
+    map = L.map('mbht-map', {
+      zoomControl: true,
+      scrollWheelZoom: true,
+      preferCanvas: true
+    }).setView([-34.4167, -70.8667], 11);
+
+    // Posicionar control de zoom
+    map.zoomControl.setPosition('topright');
+
+    currentBase = L.tileLayer(BASES.dark.url, { attribution: BASES.dark.attr, maxZoom: 19 }).addTo(map);
+
+    // Layers para los diferentes tipos de visualización
+    layers.points = L.layerGroup();
+    layers.heat = null; // se crea on-the-fly
+    layers.cluster = L.markerClusterGroup({
+      chunkedLoading: true,
+      maxClusterRadius: 50,
+      iconCreateFunction: function(cluster){
+        const count = cluster.getChildCount();
+        const markers = cluster.getAllChildMarkers();
+        const avg = markers.reduce((a,m) => a + m.feature.mbht, 0) / markers.length;
+        const color = colorScale(avg);
+        return L.divIcon({
+          html: `<div style="background:${color}cc; color:white; width:40px; height:40px;
+                  border-radius:50%; display:flex; align-items:center; justify-content:center;
+                  font-family:JetBrains Mono,monospace; font-weight:700; font-size:12px;
+                  border:2px solid white; box-shadow: 0 0 20px ${color}66;">${count}</div>`,
+          className: 'mbht-cluster-icon',
+          iconSize: L.point(40,40)
+        });
+      }
+    });
+
+    renderLayer();
+
+    map.on('moveend', updateViewportStats);
+  }
+
+  function switchBase(name){
+    if(state.base === name) return;
+    state.base = name;
+    map.removeLayer(currentBase);
+    currentBase = L.tileLayer(BASES[name].url, { attribution: BASES[name].attr, maxZoom: 19 }).addTo(map);
+    document.querySelectorAll('#mbht-base-control button').forEach(b => b.classList.toggle('active', b.dataset.base === name));
+  }
+
+  function switchViz(name){
+    if(state.viz === name) return;
+    state.viz = name;
+    renderLayer();
+    document.querySelectorAll('#mbht-viz-control button').forEach(b => b.classList.toggle('active', b.dataset.viz === name));
+  }
+
+  function switchDim(name){
+    if(state.dim === name) return;
+    state.dim = name;
+    document.querySelectorAll('#mbht-dim-control button').forEach(b => b.classList.toggle('active', b.dataset.dim === name));
+    document.getElementById('mbht-legend-title').textContent = state.dim === 'mbht' ? 'Puntaje MBHT' : `Dim. ${NOMBRE_DIM[state.dim]}`;
+    renderLayer();
+  }
+
+  function getFilteredData(){
+    if(!state.data) return [];
+    return state.data.filter(f =>
+      state.filters.zonas.has(f.zona) &&
+      f.mbht >= state.filters.mbhtMin &&
+      f.mbht <= state.filters.mbhtMax &&
+      state.filters.tipos.has(f.tipo)
+    );
+  }
+
+  function renderLayer(){
+    // Limpiar todas las capas
+    Object.values(layers).forEach(l => { if(l && map.hasLayer(l)) map.removeLayer(l); });
+    if(currentLayer && map.hasLayer(currentLayer)) map.removeLayer(currentLayer);
+    layers.points.clearLayers();
+    layers.cluster.clearLayers();
+
+    const data = getFilteredData();
+
+    if(state.viz === 'points'){
+      data.forEach(f => {
+        const v = state.dim === 'mbht' ? f.mbht : f[state.dim];
+        const marker = L.circleMarker([f.lat, f.lon], {
+          radius: 5,
+          fillColor: colorByDim(f),
+          color: '#fff',
+          weight: 0.5,
+          opacity: 0.95,
+          fillOpacity: 0.75
+        });
+        marker.feature = f;
+        marker.bindPopup(buildPopup(f));
+        layers.points.addLayer(marker);
+      });
+      layers.points.addTo(map);
+      currentLayer = layers.points;
+    }
+    else if(state.viz === 'heat'){
+      const heatData = data.map(f => {
+        const v = state.dim === 'mbht' ? f.mbht : f[state.dim];
+        return [f.lat, f.lon, 1 - v]; // invertido: alto valor = baja necesidad
+      });
+      layers.heat = L.heatLayer(heatData, {
+        radius: 22, blur: 28, maxZoom: 17, max: 1,
+        gradient: { 0.2:'#15803d', 0.45:'#b45309', 0.65:'#c2410c', 0.85:'#b91c1c' }
+      });
+      layers.heat.addTo(map);
+      currentLayer = layers.heat;
+    }
+    else if(state.viz === 'cluster'){
+      data.forEach(f => {
+        const marker = L.circleMarker([f.lat, f.lon], {
+          radius: 5, fillColor: colorByDim(f),
+          color: '#fff', weight: 0.5, opacity:0.9, fillOpacity: 0.75
+        });
+        marker.feature = f;
+        marker.bindPopup(buildPopup(f));
+        layers.cluster.addLayer(marker);
+      });
+      layers.cluster.addTo(map);
+      currentLayer = layers.cluster;
+    }
+
+    updateViewportStats();
+  }
+
+  function buildPopup(f){
+    const v = (n) => n.toFixed(3);
+    // Construir mini-radar SVG inline
+    const dims = ['acc','amb','soc','seg'];
+    const colors = ['#0369a1','#15803d','#be185d','#b45309'];
+    const labels = ['Acc','Amb','Soc','Seg'];
+    const cx = 70, cy = 70, R = 50;
+    const angle = (i) => -Math.PI/2 + (i * 2*Math.PI/4);
+    const pt = (i, r) => `${cx + Math.cos(angle(i))*r},${cy + Math.sin(angle(i))*r}`;
+    // Polígono de valores
+    const poly = dims.map((d,i) => pt(i, R * f[d])).join(' ');
+    // Rejilla 0.25, 0.50, 0.75, 1.00
+    const grid = [0.25, 0.5, 0.75, 1].map(r =>
+      `<polygon points="${dims.map((_,i) => pt(i, R*r)).join(' ')}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>`
+    ).join('');
+    // Ejes
+    const axes = dims.map((_,i) =>
+      `<line x1="${cx}" y1="${cy}" x2="${pt(i, R).split(',')[0]}" y2="${pt(i, R).split(',')[1]}" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>`
+    ).join('');
+    // Puntos
+    const points = dims.map((d,i) => `<circle cx="${pt(i, R*f[d]).split(',')[0]}" cy="${pt(i, R*f[d]).split(',')[1]}" r="2.5" fill="${colors[i]}" stroke="#06101e" stroke-width="0.5"/>`).join('');
+    // Labels axiales
+    const lbls = labels.map((lb, i) => {
+      const [x,y] = pt(i, R+10).split(',').map(Number);
+      return `<text x="${x}" y="${y+2}" text-anchor="middle" fill="${colors[i]}" font-family="JetBrains Mono, monospace" font-size="7" font-weight="700">${lb}</text>`;
+    }).join('');
+
+    const miniRadar = `
+      <div class="mbht-popup-radar">
+        <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+          ${grid}
+          ${axes}
+          <polygon points="${poly}" fill="${COLOR_ZONA[f.zona]}33" stroke="${COLOR_ZONA[f.zona]}" stroke-width="1.5"/>
+          ${points}
+          ${lbls}
+        </svg>
+      </div>`;
+
+    return `
+      <div class="mbht-popup-title">${f.localidad || 'Manzana'} · ${f.uv || ''}</div>
+      <div class="mbht-popup-row"><span>ID</span><span>${f.manzana_id}</span></div>
+      <div class="mbht-popup-row"><span>MBHT</span><span style="font-weight:700;color:${colorScale(f.mbht)}">${v(f.mbht)}</span></div>
+      <div class="mbht-popup-pill" style="background:${COLOR_ZONA[f.zona]}22; color:${COLOR_ZONA[f.zona]}; border:1px solid ${COLOR_ZONA[f.zona]}66">Zona ${f.zona}</div>
+      ${miniRadar}
+    `;
+  }
+
+  function updateViewportStats(){
+    if(!map || !state.data) return;
+    const bounds = map.getBounds();
+    const data = getFilteredData();
+    const inView = data.filter(f => bounds.contains([f.lat, f.lon]));
+
+    document.getElementById('mbht-stat-n').textContent = inView.length;
+
+    const sparkLine = document.getElementById('mbht-spark-line');
+    const sparkArea = document.getElementById('mbht-spark-area');
+
+    if(inView.length === 0){
+      document.getElementById('mbht-stat-mean').textContent = '—';
+      document.getElementById('mbht-stat-mean-meta').textContent = 'sin manzanas en viewport';
+      ['hh','ll','hl','lh'].forEach(z => {
+        document.getElementById(`vp-${z}`).textContent = '0';
+        document.getElementById(`vp-${z}-pct`).textContent = '0%';
+      });
+      document.getElementById('mbht-vp-delta-val').textContent = '—';
+      document.getElementById('mbht-vp-delta-pct').textContent = '—';
+      if(sparkLine) sparkLine.setAttribute('d','');
+      if(sparkArea) sparkArea.setAttribute('d','M 0 38 L 200 38 Z');
+      return;
+    }
+
+    const mean = inView.reduce((a,b) => a + b.mbht, 0) / inView.length;
+    const sd = Math.sqrt(inView.reduce((a,b) => a + (b.mbht-mean)**2, 0) / inView.length);
+    const meanEl = document.getElementById('mbht-stat-mean');
+    meanEl.textContent = mean.toFixed(3).replace('.',',');
+    meanEl.style.color = colorScale(mean);
+    document.getElementById('mbht-stat-mean-meta').textContent = `desv. típica σ = ${sd.toFixed(3)} · n = ${inView.length}`;
+
+    // Sparkline: histograma de 20 bins
+    const bins = Array(20).fill(0);
+    inView.forEach(f => { bins[Math.min(19, Math.floor(f.mbht*20))]++; });
+    const maxBin = Math.max(...bins, 1);
+    const w = 200, h = 38;
+    const pts = bins.map((c, i) => {
+      const x = (i / (bins.length - 1)) * w;
+      const y = h - (c / maxBin) * (h - 4) - 2;
+      return [x, y];
+    });
+    // Suavizado con curvas
+    let path = `M ${pts[0][0]} ${pts[0][1]}`;
+    for(let i = 1; i < pts.length; i++){
+      const [x0, y0] = pts[i-1];
+      const [x1, y1] = pts[i];
+      const cx = (x0 + x1) / 2;
+      path += ` Q ${cx} ${y0} ${cx} ${(y0+y1)/2} T ${x1} ${y1}`;
+    }
+    if(sparkLine) sparkLine.setAttribute('d', path);
+    if(sparkArea){
+      const areaPath = path + ` L ${w} ${h} L 0 ${h} Z`;
+      sparkArea.setAttribute('d', areaPath);
+    }
+
+    // Comparativa viewport vs comuna
+    const meanComuna = state.summary.mbhtMean;
+    const delta = mean - meanComuna;
+    const deltaPct = (delta / meanComuna) * 100;
+    const vpEl = document.getElementById('mbht-vp-compare');
+    const deltaVal = document.getElementById('mbht-vp-delta-val');
+    const deltaPctEl = document.getElementById('mbht-vp-delta-pct');
+    if(deltaVal){
+      const sign = delta >= 0 ? '+' : '';
+      deltaVal.textContent = `${sign}${delta.toFixed(3).replace('.',',')}`;
+      deltaPctEl.textContent = `(${sign}${deltaPct.toFixed(1)}%)`;
+      const c = delta >= 0.05 ? '#15803d' : delta <= -0.05 ? '#b91c1c' : '#b45309';
+      vpEl.style.setProperty('--vp-color', c);
+      deltaPctEl.style.color = c;
+    }
+
+    // Conteo zonas
+    const counts = { HH:0, LL:0, HL:0, LH:0 };
+    inView.forEach(f => { if(counts[f.zona] !== undefined) counts[f.zona]++; });
+    Object.entries(counts).forEach(([z, n]) => {
+      document.getElementById(`vp-${z.toLowerCase()}`).textContent = n;
+      document.getElementById(`vp-${z.toLowerCase()}-pct`).textContent = ((n/inView.length)*100).toFixed(1) + '%';
+    });
+
+    // Top 5 críticas
+    const top = [...inView].sort((a,b) => a.mbht - b.mbht).slice(0,5);
+    document.getElementById('mbht-toplist').innerHTML = top.map(f => `
+      <li>
+        <span class="mbht-toplist-name">${f.localidad} · ${f.uv}</span>
+        <span class="mbht-toplist-val" style="color:${colorScale(f.mbht)}">${f.mbht.toFixed(3)}</span>
+      </li>
+    `).join('');
+  }
+
+  // Restore view
+  window.mbhtResetView = function(){
+    if(map) map.setView([-34.4167, -70.8667], 11);
+    document.querySelectorAll('[data-zona-filter]').forEach(c => { c.checked = c.dataset.zonaFilter !== 'NS'; });
+    document.querySelectorAll('[data-tipo-filter]').forEach(c => c.checked = true);
+    state.filters.zonas = new Set(['HH','HL','LH','LL']);
+    state.filters.tipos = new Set(['urbano','rural']);
+    state.filters.mbhtMin = 0; state.filters.mbhtMax = 1;
+    document.getElementById('mbht-range-input-min').value = 0;
+    document.getElementById('mbht-range-input-max').value = 100;
+    document.getElementById('mbht-range-min').textContent = '0.00';
+    document.getElementById('mbht-range-max').textContent = '1.00';
+    renderLayer();
+  };
+
+  // ==========================================================
+  // TABS
+  // ==========================================================
+  function initTabs(){
+    document.querySelectorAll('.mbht-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        const id = t.dataset.tab;
+        document.querySelectorAll('.mbht-tab').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.mbht-tab-panel').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        document.querySelector(`[data-panel="${id}"]`).classList.add('active');
+      });
+    });
+  }
+
+  // ==========================================================
+  // TOOLBAR
+  // ==========================================================
+  function initToolbar(){
+    document.querySelectorAll('#mbht-viz-control button').forEach(b => {
+      b.addEventListener('click', () => switchViz(b.dataset.viz));
+    });
+    document.querySelectorAll('#mbht-base-control button').forEach(b => {
+      b.addEventListener('click', () => switchBase(b.dataset.base));
+    });
+    document.querySelectorAll('#mbht-dim-control button').forEach(b => {
+      b.addEventListener('click', () => switchDim(b.dataset.dim));
+    });
+  }
+
+  // ==========================================================
+  // FILTERS
+  // ==========================================================
+  function initFilters(){
+    document.querySelectorAll('[data-zona-filter]').forEach(c => {
+      c.addEventListener('change', () => {
+        const z = c.dataset.zonaFilter;
+        if(c.checked) state.filters.zonas.add(z);
+        else state.filters.zonas.delete(z);
+        renderLayer();
+      });
+    });
+    document.querySelectorAll('[data-tipo-filter]').forEach(c => {
+      c.addEventListener('change', () => {
+        const t = c.dataset.tipoFilter;
+        if(c.checked) state.filters.tipos.add(t);
+        else state.filters.tipos.delete(t);
+        renderLayer();
+      });
+    });
+
+    const minIn = document.getElementById('mbht-range-input-min');
+    const maxIn = document.getElementById('mbht-range-input-max');
+    const minLbl = document.getElementById('mbht-range-min');
+    const maxLbl = document.getElementById('mbht-range-max');
+
+    const update = () => {
+      let mn = parseInt(minIn.value);
+      let mx = parseInt(maxIn.value);
+      if(mn > mx) { [mn, mx] = [mx, mn]; minIn.value = mn; maxIn.value = mx; }
+      state.filters.mbhtMin = mn / 100;
+      state.filters.mbhtMax = mx / 100;
+      minLbl.textContent = (mn/100).toFixed(2);
+      maxLbl.textContent = (mx/100).toFixed(2);
+      renderLayer();
+    };
+    minIn.addEventListener('input', update);
+    maxIn.addEventListener('input', update);
+  }
+
+  // ==========================================================
+  // EXCEL LOADER
+  // ==========================================================
+  function initDropzone(){
+    const dz = document.getElementById('mbht-dropzone');
+    const fi = document.getElementById('mbht-file-input');
+    const st = document.getElementById('mbht-files-status');
+
+    dz.addEventListener('click', () => fi.click());
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+    fi.addEventListener('change', e => handleFiles(e.target.files));
+
+    function handleFiles(fl){
+      st.innerHTML = '';
+      Array.from(fl).forEach(file => {
+        const r = new FileReader();
+        r.onload = ev => {
+          try {
+            const wb = XLSX.read(ev.target.result, { type:'array' });
+            const sheet = wb.Sheets[wb.SheetNames[0]];
+            const json = XLSX.utils.sheet_to_json(sheet);
+            processSheet(file.name, json);
+            const chip = document.createElement('span');
+            chip.className = 'mbht-file-chip';
+            chip.innerHTML = `✓ ${file.name} <span style="opacity:0.6">(${json.length} filas)</span>`;
+            st.appendChild(chip);
+          } catch(err){
+            const chip = document.createElement('span');
+            chip.className = 'mbht-file-chip err';
+            chip.innerHTML = `✗ ${file.name}`;
+            st.appendChild(chip);
+          }
+        };
+        r.readAsArrayBuffer(file);
+      });
+    }
+
+    function processSheet(name, rows){
+      if(!rows.length) return;
+      const cols = Object.keys(rows[0]).map(c => c.toUpperCase());
+      let dim = null;
+      if(INDICADORES.acc.some(i => cols.includes(i))) dim = 'acc';
+      else if(INDICADORES.amb.some(i => cols.includes(i))) dim = 'amb';
+      else if(INDICADORES.soc.some(i => cols.includes(i))) dim = 'soc';
+      else if(INDICADORES.seg.some(i => cols.includes(i))) dim = 'seg';
+      else if(cols.includes('ZONA') || cols.includes('ZONA_BHT') || cols.includes('LISA') || cols.includes('MBHT')) dim = 'zonas';
+
+      if(!dim) return;
+      state.raw[dim] = rows;
+      mergeData();
+    }
+
+    function mergeData(){
+      // Si llegaron las zonas, las usamos como base
+      if(!state.raw.zonas) return;
+
+      const features = state.raw.zonas.map(r => ({
+        id: r.id || r.ID || r.manzana_id,
+        manzana_id: r.manzana_id || r.MANZANA_ID || r.id,
+        lat: parseFloat(r.lat || r.LAT),
+        lon: parseFloat(r.lon || r.LON || r.lng),
+        mbht: parseFloat(r.mbht || r.MBHT || 0),
+        acc: parseFloat(r.acc || r.ACC || 0),
+        amb: parseFloat(r.amb || r.AMB || 0),
+        soc: parseFloat(r.soc || r.SOC || 0),
+        seg: parseFloat(r.seg || r.SEG || 0),
+        zona: (r.zona || r.ZONA || r.lisa || 'NS').toUpperCase(),
+        tipo: (r.tipo || r.TIPO || 'urbano').toLowerCase(),
+        uv: r.uv || r.UV || '',
+        localidad: r.localidad || r.LOCALIDAD || ''
+      })).filter(f => !isNaN(f.lat) && !isNaN(f.lon));
+
+      if(!features.length) return;
+
+      state.data = features;
+      state.summary = computeSummary(features);
+      renderMetrics(state.summary);
+      renderZonaCounts(state.summary);
+      renderIndicatorStats(state.summary);
+      renderRadar(state.summary);
+      renderHist(state.summary);
+      renderBars(state.summary);
+      renderLayer();
+      renderTablaUV();
+      populateCompSelects();
+    }
+  }
+
+  // ==========================================================
+  // TABLA UV
+  // ==========================================================
+  function renderTablaUV(){
+    if(!state.data) return;
+    const byUV = {};
+    state.data.forEach(f => {
+      if(!f.uv) return;
+      if(!byUV[f.uv]) byUV[f.uv] = { rows:[], localidad: f.localidad, tipo: f.tipo };
+      byUV[f.uv].rows.push(f);
+    });
+
+    const rows = Object.entries(byUV).sort((a,b) => a[0].localeCompare(b[0])).map(([uv, d]) => {
+      const n = d.rows.length;
+      const mean = (k) => d.rows.reduce((a,r) => a+r[k], 0)/n;
+      const m = mean('mbht');
+      const zonas = { HH:0, HL:0, LH:0, LL:0, NS:0 };
+      d.rows.forEach(r => { zonas[r.zona]++; });
+      const dom = Object.entries(zonas).sort((a,b) => b[1]-a[1])[0][0];
+      const pctLL = ((zonas.LL || 0) / n * 100).toFixed(1);
+      const cls = m >= 0.75 ? 'q1' : m >= 0.50 ? 'q2' : m >= 0.25 ? 'q3' : 'q4';
+      const barFill = (val, col) => `<span class="mbht-mini-bar-wrap"><span class="mbht-mini-bar"><span class="mbht-mini-bar-fill" style="width:${(val*100).toFixed(0)}%;background:${col}"></span></span><span class="mbht-mini-bar-val">${val.toFixed(2)}</span></span>`;
+
+      return `<tr>
+        <td><strong>${uv}</strong></td>
+        <td>${d.localidad}</td>
+        <td>${d.tipo === 'urbano' ? '🏙️ Urbano' : '🌾 Rural'}</td>
+        <td style="font-family:JetBrains Mono">${n}</td>
+        <td><span class="mbht-pill ${cls}">${m.toFixed(3)}</span></td>
+        <td>${barFill(mean('acc'), '#0369a1')}</td>
+        <td>${barFill(mean('amb'), '#15803d')}</td>
+        <td>${barFill(mean('soc'), '#be185d')}</td>
+        <td>${barFill(mean('seg'), '#b45309')}</td>
+        <td><span class="mbht-pill ${dom==='HH'?'q1':dom==='LL'?'q4':dom==='HL'?'q2':'q3'}">${dom}</span></td>
+        <td style="font-family:JetBrains Mono;font-weight:600">${pctLL}%</td>
+      </tr>`;
+    });
+    document.getElementById('mbht-table-body').innerHTML = rows.join('');
+  }
+
+  // Para datos demo: poblamos la tabla con los demo features
+  function renderTablaDemoFromData(){
+    if(state.data) renderTablaUV();
+  }
+
+  // ==========================================================
+  // ★ V3 · SEARCH
+  // ==========================================================
+  function initSearch(){
+    const input = document.getElementById('mbht-search');
+    const results = document.getElementById('mbht-search-results');
+    if(!input || !results) return;
+
+    const showResults = (query) => {
+      if(!state.data || query.length < 2){
+        results.classList.remove('active');
+        return;
+      }
+      const q = query.toLowerCase();
+      // Buscar por uv, localidad, manzana_id
+      const seen = new Set();
+      const matches = [];
+      for(const f of state.data){
+        const key = `${f.uv}|${f.localidad}`;
+        if(seen.has(key)) continue;
+        if((f.uv || '').toLowerCase().includes(q) ||
+           (f.localidad || '').toLowerCase().includes(q) ||
+           (f.manzana_id || '').toLowerCase().includes(q)){
+          seen.add(key);
+          matches.push(f);
+          if(matches.length >= 8) break;
+        }
+      }
+      if(!matches.length){
+        results.innerHTML = `<div class="mbht-search-result"><span style="color:var(--mbht-text-mute);font-style:italic">Sin resultados para "${query}"</span></div>`;
+        results.classList.add('active');
+        return;
+      }
+      results.innerHTML = matches.map(f => `
+        <div class="mbht-search-result" data-lat="${f.lat}" data-lon="${f.lon}" data-uv="${f.uv}">
+          <span><strong>${f.uv}</strong> · ${f.localidad}</span>
+          <span class="mbht-search-result-meta">${f.tipo === 'urbano' ? '🏙️' : '🌾'} MBHT ${f.mbht.toFixed(2)}</span>
+        </div>
+      `).join('');
+      results.classList.add('active');
+
+      results.querySelectorAll('.mbht-search-result').forEach(el => {
+        el.addEventListener('click', () => {
+          const lat = parseFloat(el.dataset.lat);
+          const lon = parseFloat(el.dataset.lon);
+          if(!isNaN(lat) && !isNaN(lon)){
+            map.flyTo([lat, lon], 15, { duration: 1.2 });
+            results.classList.remove('active');
+            input.value = '';
+          }
+        });
+      });
+    };
+
+    let debTimer;
+    input.addEventListener('input', e => {
+      clearTimeout(debTimer);
+      debTimer = setTimeout(() => showResults(e.target.value), 180);
+    });
+    input.addEventListener('blur', () => setTimeout(() => results.classList.remove('active'), 200));
+    input.addEventListener('focus', () => { if(input.value.length >= 2) showResults(input.value); });
+  }
+
+  // ==========================================================
+  // ★ V3 · SPOTLIGHT MODE
+  // ==========================================================
+  function initSpotlight(){
+    const btn = document.getElementById('mbht-btn-spotlight');
+    if(!btn) return;
+    btn.addEventListener('click', () => {
+      const wrap = document.getElementById('mbht-map-wrap');
+      const isActive = wrap.classList.toggle('spotlight');
+      btn.classList.toggle('spotlight-active', isActive);
+    });
+  }
+
+  // ==========================================================
+  // ★ V3 · FIT TO CRITICAL (LL)
+  // ==========================================================
+  function initFitCritical(){
+    const btn = document.getElementById('mbht-btn-critical');
+    if(!btn) return;
+    btn.addEventListener('click', () => {
+      if(!state.data) return;
+      const critical = state.data.filter(f => f.zona === 'LL');
+      if(!critical.length){
+        alert('No hay manzanas en clúster LL (Bajo-Bajo).');
+        return;
+      }
+      const lats = critical.map(f => f.lat);
+      const lons = critical.map(f => f.lon);
+      const bounds = [[Math.min(...lats), Math.min(...lons)], [Math.max(...lats), Math.max(...lons)]];
+      map.flyToBounds(bounds, { padding: [50, 50], duration: 1.4 });
+    });
+  }
+
+  // ==========================================================
+  // ★ V3 · EXPORT CSV
+  // ==========================================================
+  function initExport(){
+    const btn = document.getElementById('mbht-btn-export');
+    if(!btn) return;
+    btn.addEventListener('click', () => {
+      if(!state.data) return;
+      const bounds = map.getBounds();
+      const inView = getFilteredData().filter(f => bounds.contains([f.lat, f.lon]));
+      if(!inView.length){ alert('No hay manzanas en el viewport actual.'); return; }
+      const headers = ['manzana_id','uv','localidad','tipo','lat','lon','mbht','acc','amb','soc','seg','zona'];
+      const rows = [headers.join(',')];
+      inView.forEach(f => {
+        rows.push(headers.map(h => {
+          const v = f[h];
+          if(typeof v === 'number') return v.toFixed(4);
+          return `"${(v || '').toString().replace(/"/g,'""')}"`;
+        }).join(','));
+      });
+      const csv = rows.join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `mbht_rengo_viewport_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // ==========================================================
+  // ★ V3 · FULLSCREEN
+  // ==========================================================
+  function initFullscreen(){
+    const btn = document.getElementById('mbht-btn-fullscreen');
+    const obs = document.getElementById('mbht-observatory');
+    if(!btn || !obs) return;
+    btn.addEventListener('click', () => {
+      obs.classList.toggle('fullscreen');
+      setTimeout(() => { if(map) map.invalidateSize(); }, 300);
+    });
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && obs.classList.contains('fullscreen')){
+        obs.classList.remove('fullscreen');
+        setTimeout(() => { if(map) map.invalidateSize(); }, 300);
+      }
+    });
+  }
+
+  // ==========================================================
+  // ★ V3 · COMPARADOR DE UV
+  // ==========================================================
+  let chartComp;
+
+  function aggregateByUV(){
+    if(!state.data) return {};
+    const byUV = {};
+    state.data.forEach(f => {
+      if(!f.uv) return;
+      if(!byUV[f.uv]) byUV[f.uv] = { rows:[], localidad: f.localidad, tipo: f.tipo };
+      byUV[f.uv].rows.push(f);
+    });
+    const out = {};
+    Object.entries(byUV).forEach(([uv, d]) => {
+      const n = d.rows.length;
+      const mean = (k) => d.rows.reduce((a,r) => a + r[k], 0) / n;
+      const zonas = { HH:0, HL:0, LH:0, LL:0, NS:0 };
+      d.rows.forEach(r => zonas[r.zona]++);
+      const dom = Object.entries(zonas).sort((a,b) => b[1]-a[1])[0][0];
+      out[uv] = {
+        uv, localidad: d.localidad, tipo: d.tipo, n,
+        mbht: mean('mbht'), acc: mean('acc'), amb: mean('amb'), soc: mean('soc'), seg: mean('seg'),
+        zonaDom: dom, pctLL: (zonas.LL / n * 100)
+      };
+    });
+    return out;
+  }
+
+  function populateCompSelects(){
+    const agg = aggregateByUV();
+    const sortedUVs = Object.keys(agg).sort();
+    const selA = document.getElementById('mbht-comp-a');
+    const selB = document.getElementById('mbht-comp-b');
+    if(!selA || !selB) return;
+    const buildOpts = () => '<option value="">— Seleccionar UV —</option>' +
+      sortedUVs.map(uv => `<option value="${uv}">${uv} · ${agg[uv].localidad}</option>`).join('');
+    selA.innerHTML = buildOpts();
+    selB.innerHTML = buildOpts();
+    // Defaults
+    if(sortedUVs.length >= 2){
+      // Buscar la mejor y la peor para defaults llamativos
+      const sortedByMBHT = sortedUVs.slice().sort((a,b) => agg[b].mbht - agg[a].mbht);
+      selA.value = sortedByMBHT[0];
+      selB.value = sortedByMBHT[sortedByMBHT.length - 1];
+      renderComparator();
+    }
+    selA.addEventListener('change', renderComparator);
+    selB.addEventListener('change', renderComparator);
+  }
+
+  function renderComparator(){
+    const agg = aggregateByUV();
+    const selA = document.getElementById('mbht-comp-a').value;
+    const selB = document.getElementById('mbht-comp-b').value;
+    const a = agg[selA], b = agg[selB];
+
+    if(!a || !b){
+      document.getElementById('mbht-comp-badge').textContent = 'Selecciona dos UV';
+      return;
+    }
+
+    document.getElementById('mbht-comp-badge').textContent = `${selA} ↔ ${selB}`;
+
+    const fmtRows = (x, ref) => {
+      const dim = ['mbht','acc','amb','soc','seg'];
+      const lbl = { mbht:'MBHT global', acc:'Accesibilidad', amb:'Ambiental', soc:'Socioeconómica', seg:'Seguridad' };
+      return dim.map(d => {
+        const delta = ref ? x[d] - ref[d] : 0;
+        const sign = delta >= 0 ? '+' : '';
+        const deltaStr = ref ? ` <span class="delta" style="color:${delta >= 0 ? '#15803d' : '#b91c1c'}">${sign}${delta.toFixed(2)}</span>` : '';
+        return `<div class="mbht-comp-card-row">
+          <span class="mbht-comp-card-row-key">${lbl[d]}</span>
+          <span class="mbht-comp-card-row-val">${x[d].toFixed(3)}${deltaStr}</span>
+        </div>`;
+      }).join('') + `
+        <div class="mbht-comp-card-row">
+          <span class="mbht-comp-card-row-key">Zona dom. · %LL</span>
+          <span class="mbht-comp-card-row-val">${x.zonaDom} · ${x.pctLL.toFixed(1)}%</span>
+        </div>
+        <div class="mbht-comp-card-row">
+          <span class="mbht-comp-card-row-key">N manzanas · tipo</span>
+          <span class="mbht-comp-card-row-val">${x.n} · ${x.tipo}</span>
+        </div>`;
+    };
+
+    document.getElementById('mbht-comp-title-a').textContent = `${a.uv} · ${a.localidad}`;
+    document.getElementById('mbht-comp-rows-a').innerHTML = fmtRows(a, b);
+    document.getElementById('mbht-comp-title-b').textContent = `${b.uv} · ${b.localidad}`;
+    document.getElementById('mbht-comp-rows-b').innerHTML = fmtRows(b, a);
+
+    // Radar
+    if(chartComp) chartComp.destroy();
+    chartComp = new Chart(document.getElementById('mbht-comp-radar-canvas'), {
+      type: 'radar',
+      data: {
+        labels: ['Accesibilidad','Ambiental','Socioec.','Seguridad'],
+        datasets: [
+          { label: `${a.uv} · ${a.localidad}`,
+            data: [a.acc, a.amb, a.soc, a.seg],
+            backgroundColor: 'rgba(3,105,161,0.20)',
+            borderColor: '#0369a1', borderWidth: 2,
+            pointBackgroundColor: '#0369a1', pointBorderColor: '#fff', pointBorderWidth: 1.5, pointRadius: 4 },
+          { label: `${b.uv} · ${b.localidad}`,
+            data: [b.acc, b.amb, b.soc, b.seg],
+            backgroundColor: 'rgba(185,28,28,0.20)',
+            borderColor: '#b91c1c', borderWidth: 2,
+            pointBackgroundColor: '#b91c1c', pointBorderColor: '#fff', pointBorderWidth: 1.5, pointRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: true,
+        scales: { r: {
+          beginAtZero: true, max: 1, min: 0,
+          ticks: { backdropColor: 'transparent', color: '#76849b', stepSize: 0.25, font:{size:8} },
+          grid: { color: 'rgba(255,255,255,0.06)' },
+          angleLines: { color: 'rgba(255,255,255,0.08)' },
+          pointLabels: { color: '#e8eef7', font:{size:10, weight:'600'} }
+        }},
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { size: 10 }, padding: 10, usePointStyle: true } }
+        }
+      }
+    });
+  }
+
+  // ==========================================================
+  // INIT
+  // ==========================================================
+  function init(){
+    // Generar demo
+    state.data = generateDemo();
+    state.summary = computeSummary(state.data);
+
+    renderMetrics(state.summary);
+    renderZonaCounts(state.summary);
+    renderIndicatorStats(state.summary);
+    renderRadar(state.summary);
+    renderHist(state.summary);
+    renderBars(state.summary);
+    initTabs();
+    initToolbar();
+    initFilters();
+    initDropzone();
+    setTimeout(() => {
+      initMap();
+      renderTablaUV();
+      // V3 features (necesitan map y datos)
+      initSearch();
+      initSpotlight();
+      initFitCritical();
+      initExport();
+      initFullscreen();
+      populateCompSelects();
+    }, 100);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+
+})();
+</script>
+
+</body>
+</html>
