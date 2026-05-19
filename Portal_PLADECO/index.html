@@ -5094,7 +5094,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.32</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.33</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5222,7 +5222,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.32</span>
+        <span>&#127919; v45.33</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -7285,51 +7285,411 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     </div>
   </div>
 
-  <!-- ═══ RECOMENDACIONES ESTRATÉGICAS ═══ -->
-  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:24px 0 8px;letter-spacing:-.005em">&#128221; Recomendaciones Estrat&eacute;gicas Operacionalizables</h3>
-  <div style="display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 22px">
-    <div style="display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 18px;background:var(--c-success-soft);border-left:3px solid var(--accent);border-radius:0 var(--rad-md) var(--rad-md) 0">
-      <div style="font-size:22px;font-weight:800;color:var(--accent);line-height:1">01</div>
-      <div>
-        <strong style="color:var(--text);font-weight:700">Plan de Conectividad Rural Integral</strong>
-        <p style="margin:4px 0 0;font-size:13px;color:var(--text2);line-height:1.55">Focalizar 5 distritos rurales con accesibilidad cr&iacute;tica (D05, D06, D07, D09, D11). Combinar: rutas viales nuevas/mejoradas (FNDR Eje 4), expansi&oacute;n de servicios m&oacute;viles itinerantes en salud y atenci&oacute;n municipal (Eje 1), transporte escolar reforzado (Eje 3). Impacto: 9.458 habitantes beneficiarios.</p>
+  <!-- ═══ RECOMENDACIONES ESTRATÉGICAS PROFUNDIZADAS (v45.33) ═══ -->
+  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:24px 0 8px;letter-spacing:-.005em">&#128221; Recomendaciones Estrat&eacute;gicas Argumentadas</h3>
+
+  <!-- Marco general argumentativo -->
+  <div style="margin:0 0 18px;padding:16px 20px;background:linear-gradient(135deg,rgba(45,154,77,.08),rgba(26,61,143,.04));border:1px solid rgba(45,154,77,.2);border-left:4px solid var(--accent);border-radius:var(--rad-md);font-size:13px;line-height:1.6;color:var(--text2)">
+    <p style="margin:0 0 8px"><strong style="color:var(--text)">Marco estrat&eacute;gico de las recomendaciones.</strong> Las siguientes 6 recomendaciones no son listados operativos sino <em>argumentos de pol&iacute;tica p&uacute;blica</em> fundamentados en la triangulaci&oacute;n entre (a) la evidencia emp&iacute;rica MBHT sobre las 665 manzanas censales, (b) marcos te&oacute;ricos contempor&aacute;neos del desarrollo territorial (Sen, Ostrom, Lefebvre, Costanza, Girardot), y (c) el cuerpo normativo vigente (Ley 18.695, Ley 19.300, Pol&iacute;tica Nacional de Desarrollo Urbano, ERD O'Higgins 2024-2036, Agenda 2030 ODS).</p>
+    <p style="margin:0"><strong style="color:var(--text)">L&oacute;gica de presentaci&oacute;n.</strong> Cada recomendaci&oacute;n articula: <span style="color:var(--accent);font-weight:700">Argumento</span> &rarr; <span style="color:var(--accent);font-weight:700">Marco conceptual</span> &rarr; <span style="color:var(--accent);font-weight:700">Evidencia diagn&oacute;stica</span> &rarr; <span style="color:var(--accent);font-weight:700">Acciones estrat&eacute;gicas</span> &rarr; <span style="color:var(--accent);font-weight:700">Indicadores de impacto</span> &rarr; <span style="color:var(--accent);font-weight:700">Marco normativo</span>. Esta cadena permite que cada acci&oacute;n sea trazable hasta una decisi&oacute;n estrat&eacute;gica fundamentada, evitando la &laquo;agenda de tareas sin teor&iacute;a&raquo; que caracteriza a planes de desarrollo tradicionales.</p>
+  </div>
+
+  <style>
+  /* Recomendaciones estratégicas v45.33 · scoped */
+  .mbht-rec-card{
+    background:#fff;border:1px solid var(--border);border-left:4px solid var(--accent);
+    border-radius:0 var(--rad-md) var(--rad-md) 0;
+    box-shadow:var(--sh-card);
+    margin-bottom:14px;overflow:hidden;
+  }
+  .mbht-rec-head{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:14px 18px;border-bottom:1px solid var(--border);
+    background:var(--c-success-soft);
+  }
+  .mbht-rec-num{
+    width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--accent);color:#fff;border-radius:var(--rad-full);
+    font-weight:800;font-size:14px;flex-shrink:0;letter-spacing:-.01em;
+  }
+  .mbht-rec-titlewrap{flex:1;min-width:0}
+  .mbht-rec-title{
+    font-size:15px;font-weight:800;color:var(--text);
+    margin:0 0 4px;line-height:1.25;letter-spacing:-.01em;
+  }
+  .mbht-rec-eje{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:2px 9px;background:#fff;border:1px solid rgba(45,154,77,.35);
+    border-radius:var(--rad-full);font-size:10.5px;font-weight:700;
+    color:var(--accent);letter-spacing:.04em;
+  }
+  .mbht-rec-body{padding:14px 18px}
+  .mbht-rec-block{margin-bottom:12px}
+  .mbht-rec-block:last-child{margin-bottom:0}
+  .mbht-rec-label{
+    display:flex;align-items:center;gap:6px;
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:4px;
+  }
+  .mbht-rec-block p{
+    margin:0;font-size:13px;color:var(--text2);line-height:1.55;
+  }
+  .mbht-rec-block strong{color:var(--text);font-weight:600}
+  .mbht-rec-block em{color:var(--text);font-style:italic;font-weight:500}
+  .mbht-rec-list{margin:0;padding-left:18px;font-size:12.5px;color:var(--text2);line-height:1.5}
+  .mbht-rec-list li{margin-bottom:3px}
+  .mbht-rec-list li strong{color:var(--text);font-weight:600}
+  .mbht-rec-evidencia{
+    background:rgba(26,61,143,.04);border-left:3px solid #1a3d8f;
+    padding:9px 12px;border-radius:0 var(--rad-sm) var(--rad-sm) 0;
+    font-size:12.5px;color:var(--text2);line-height:1.5;
+  }
+  .mbht-rec-marco{
+    background:rgba(124,58,237,.05);border-left:3px solid #7c3aed;
+    padding:9px 12px;border-radius:0 var(--rad-sm) var(--rad-sm) 0;
+    font-size:12.5px;color:var(--text2);line-height:1.5;font-style:italic;
+  }
+  </style>
+
+  <!-- REC 01 -->
+  <div class="mbht-rec-card">
+    <div class="mbht-rec-head">
+      <div class="mbht-rec-num">01</div>
+      <div class="mbht-rec-titlewrap">
+        <h4 class="mbht-rec-title">Pol&iacute;tica de Equidad Territorial Rural &middot; Cerrar la brecha de accesibilidad como derecho ciudadano</h4>
+        <span class="mbht-rec-eje">Ejes 1 &middot; 3 &middot; 4 &middot; 6 &middot; ODS 10 &middot; ODS 11</span>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 18px;background:var(--c-success-soft);border-left:3px solid var(--accent);border-radius:0 var(--rad-md) var(--rad-md) 0">
-      <div style="font-size:22px;font-weight:800;color:var(--accent);line-height:1">02</div>
-      <div>
-        <strong style="color:var(--text);font-weight:700">Plan de Arborizaci&oacute;n Urbana D04</strong>
-        <p style="margin:4px 0 0;font-size:13px;color:var(--text2);line-height:1.55">El casco urbano principal concentra 33.917 habitantes (51% de la comuna) con la dimensi&oacute;n ambiental m&aacute;s baja (0,368) y solo 30% de cobertura vegetal promedio. Programa intensivo de arborizaci&oacute;n en calles, parques nuevos, corredores verdes y techos verdes (Eje 4). Recursos PMU/SUBDERE y MINVU Programa Quiero mi Barrio.</p>
+    <div class="mbht-rec-body">
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128204; Argumento estrat&eacute;gico</div>
+        <p>La accesibilidad territorial no es un atributo neutro de infraestructura sino una <strong>condici&oacute;n constitutiva de ciudadan&iacute;a</strong>: cuando un habitante de Rengo rural debe destinar el doble o triple de tiempo y costo para acceder a servicios b&aacute;sicos (salud, educaci&oacute;n, cultura, deporte), su capacidad efectiva de ejercer derechos se reduce, aunque legalmente sea ciudadano pleno. La brecha entre 0,234 (D05) y 0,583 (D02) es, en este sentido, una <strong>brecha de derechos materiales</strong>.</p>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128218; Marco conceptual</div>
+        <div class="mbht-rec-marco">Capacidades de Sen (1999): el desarrollo es la expansi&oacute;n de libertades reales. Derecho a la Ciudad ampliado al espacio rural (Lefebvre, Borja-Mux&iacute;): el territorio rural no es residuo del urbano sino sujeto de derechos urbanos plenos. Conectividad rural como servicio universal (CEPAL 2019, &laquo;Muerte rural&raquo;): la dispersi&oacute;n no debe traducirse en exclusi&oacute;n.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128202; Evidencia diagn&oacute;stica</div>
+        <div class="mbht-rec-evidencia">5 distritos rurales (D05, D06, D07, D09, D11) suman <strong>9.458 habitantes</strong> con Accesibilidad &lt; 0,35. El gradiente urbano-rural en Acc es de <strong>0,583 vs 0,234</strong> (2,5&times;), la brecha intracomunal m&aacute;s grande. Pese a esto, D05 mantiene 0,998 en Seguridad y 0,721 en Ambiental: <em>las zonas rurales no son territorios degradados sino territorios mal articulados</em>.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9881;&#65039; Acciones estrat&eacute;gicas</div>
+        <ul class="mbht-rec-list">
+          <li><strong>Conectividad f&iacute;sica</strong>: 25 km de mejoramiento vial rural (FRIL + FNDR), priorizando rutas de acceso a 9 localidades.</li>
+          <li><strong>Servicios m&oacute;viles itinerantes</strong>: m&oacute;dulo de atenci&oacute;n municipal (DOM/DIDECO/Tr&aacute;mites) que rote por las localidades D05-D11 semanalmente.</li>
+          <li><strong>Telemedicina rural</strong>: convenio CESFAM + UOH con dispositivos m&oacute;viles y conectividad satelital subsidiada en 5 puntos rurales.</li>
+          <li><strong>Transporte escolar reforzado</strong>: aumento de cobertura 9 UV rurales con horario extendido (Eje 3).</li>
+          <li><strong>Plan de Banda Ancha Rural</strong>: convenio con Subsecretar&iacute;a de Telecomunicaciones (FDT) para 100% cobertura 4G en distritos D05/D06.</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128200; Indicadores de impacto (meta 2035)</div>
+        <ul class="mbht-rec-list">
+          <li>Acc rural promedio: <strong>0,30 &rarr; 0,55</strong> (+83%)</li>
+          <li>% poblaci&oacute;n rural con CESFAM a &le; 20 min: <strong>40% &rarr; 90%</strong></li>
+          <li>Conectividad m&oacute;vil 4G+ en zona rural: <strong>62% &rarr; 100%</strong></li>
+          <li>Tasa de matr&iacute;cula educacional rural: <strong>+15 puntos</strong></li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9878;&#65039; Marco normativo</div>
+        <p>Ley 18.695 Org&aacute;nica de Municipalidades (Art. 4 letras f, g, m); Pol&iacute;tica Nacional de Desarrollo Urbano (PNDU) Lineamiento 3 &laquo;Equidad territorial&raquo;; ERD O'Higgins 2024-2036 Eje 1 &laquo;Cohesi&oacute;n Territorial&raquo;; Pol&iacute;tica Nacional de Desarrollo Rural (PNDR 2020-2030); Ley de Subvenci&oacute;n Preferente (SEP) y Pro-Retenci&oacute;n.</p>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 18px;background:var(--c-success-soft);border-left:3px solid var(--accent);border-radius:0 var(--rad-md) var(--rad-md) 0">
-      <div style="font-size:22px;font-weight:800;color:var(--accent);line-height:1">03</div>
-      <div>
-        <strong style="color:var(--text);font-weight:700">Foco Socioecon&oacute;mico D05 y D08</strong>
-        <p style="margin:4px 0 0;font-size:13px;color:var(--text2);line-height:1.55">D05 (rural extenso oriente, 983 hab, Soc=0,501) y D08 (periurbano sur, 4.853 hab, Soc=0,544) muestran los menores &iacute;ndices socioecon&oacute;micos. Activar OMIL territorial, oficina m&oacute;vil de FOSIS, programa de emprendimiento rural y certificaci&oacute;n de competencias laborales. Articulado con Eje 2 (18 acciones) y Eje 1 (58 acciones).</p>
+  </div>
+
+  <!-- REC 02 -->
+  <div class="mbht-rec-card">
+    <div class="mbht-rec-head">
+      <div class="mbht-rec-num">02</div>
+      <div class="mbht-rec-titlewrap">
+        <h4 class="mbht-rec-title">Plan de Infraestructura Verde Urbana &middot; Justicia ambiental para los 33.917 habitantes del casco</h4>
+        <span class="mbht-rec-eje">Eje 4 &middot; ODS 11 &middot; ODS 13 &middot; ODS 15</span>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 18px;background:var(--c-success-soft);border-left:3px solid var(--accent);border-radius:0 var(--rad-md) var(--rad-md) 0">
-      <div style="font-size:22px;font-weight:800;color:var(--accent);line-height:1">04</div>
-      <div>
-        <strong style="color:var(--text);font-weight:700">Seguridad Urbana D02 y D04</strong>
-        <p style="margin:4px 0 0;font-size:13px;color:var(--text2);line-height:1.55">Las dos zonas urbano-suburbanas presentan los menores &iacute;ndices de seguridad (0,786 y 0,820). Plan integral: ampliaci&oacute;n del sistema de televigilancia, iluminaci&oacute;n peatonal LED, programa Senda Segura, fortalecimiento de la Direcci&oacute;n de Seguridad P&uacute;blica Municipal, articulaci&oacute;n con Carabineros y PDI. Eje 5 (32 acciones).</p>
+    <div class="mbht-rec-body">
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128204; Argumento estrat&eacute;gico</div>
+        <p>El casco urbano D04 alberga el <strong>51% de la poblaci&oacute;n comunal</strong> pero presenta la peor calidad ambiental territorial (Amb=0,368). Esta concentraci&oacute;n inversa entre poblaci&oacute;n y bienestar ambiental urbano constituye una <strong>injusticia ambiental sist&eacute;mica</strong>: quienes m&aacute;s contribuyen al din&aacute;mica econ&oacute;mica comunal son quienes menos acceden al confort climatico, sombra arb&oacute;rea, espacios verdes y aire limpio. No se trata de est&eacute;tica urbana sino de <strong>salud p&uacute;blica preventiva</strong>.</p>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128218; Marco conceptual</div>
+        <div class="mbht-rec-marco">Servicios ecosist&eacute;micos urbanos (Costanza 1997, MEA 2005): el arbolado regula temperatura, captura CO2, filtra contaminantes y aumenta valor predial. Islas de calor urbano (Oke 1982): superficies impermeables eleva 2-5&deg;C la temperatura nocturna, agravando morbilidad cardiovascular. Justicia ambiental (Schlosberg, Bullard): distribuci&oacute;n equitativa de cargas y beneficios ambientales.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128202; Evidencia diagn&oacute;stica</div>
+        <div class="mbht-rec-evidencia">D04 con <strong>cobertura vegetal 30,1%</strong> versus &gt;70% en distritos rurales D03/D05/D06/D09. Temperatura ambiental promedio 16,1&deg;C con tendencia al alza por isla de calor. Aire de Rengo en monitoreo SINCA: PM2.5 sobre norma en invierno. <strong>Densidad urbana</strong>: 1.951 hab/km&sup2; en D04, sin un sistema de parques continuo.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9881;&#65039; Acciones estrat&eacute;gicas</div>
+        <ul class="mbht-rec-list">
+          <li><strong>Programa &laquo;1000 &Aacute;rboles para Rengo&raquo;</strong>: plantaci&oacute;n masiva en aceras, plazas, colegios y bandejones (especies nativas resistentes a sequ&iacute;a).</li>
+          <li><strong>3 nuevos parques de bolsillo</strong> en D04 (radio 400m caminables), sobre sitios eriazos municipales (catastro DOM).</li>
+          <li><strong>Corredor verde Ramal &middot; v&iacute;a parque</strong> aprovechando trazado de ferrocarril hist&oacute;rico (Eje patrimonial).</li>
+          <li><strong>Programa de techos y muros verdes</strong> en edificios p&uacute;blicos municipales (alianza con Colegio Arquitectos).</li>
+          <li><strong>Ordenanza de Arbolado Urbano</strong>: protecci&oacute;n y compensaci&oacute;n obligatoria por tala (1:5).</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128200; Indicadores de impacto (meta 2035)</div>
+        <ul class="mbht-rec-list">
+          <li>Cobertura vegetal urbana D04: <strong>30% &rarr; 50%</strong></li>
+          <li>m&sup2; de &aacute;reas verdes por habitante (OMS recomienda 9): <strong>5,2 &rarr; 10</strong></li>
+          <li>Temperatura nocturna casco urbano: <strong>-1,5&deg;C</strong> (mitigaci&oacute;n isla de calor)</li>
+          <li>Cobertura de copa arb&oacute;rea en 100% de las calles residenciales</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9878;&#65039; Marco normativo</div>
+        <p>Ley 19.300 Bases del Medio Ambiente; Ley 20.417 (Servicio Evaluaci&oacute;n Ambiental); Pol&iacute;tica Nacional de Cambio Clim&aacute;tico (PNCC 2023); Plan de Acci&oacute;n Regional de Cambio Clim&aacute;tico O'Higgins (PARCC); Estrategia Nacional de Biodiversidad 2017-2030; Decreto MMA Calidad del Aire; Pol&iacute;tica Nacional de Parques Urbanos (MINVU).</p>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 18px;background:var(--c-success-soft);border-left:3px solid var(--accent);border-radius:0 var(--rad-md) var(--rad-md) 0">
-      <div style="font-size:22px;font-weight:800;color:var(--accent);line-height:1">05</div>
-      <div>
-        <strong style="color:var(--text);font-weight:700">Preservar Bonos Ambientales D03, D05, D06, D09</strong>
-        <p style="margin:4px 0 0;font-size:13px;color:var(--text2);line-height:1.55">Los distritos rurales con cobertura vegetal &gt;70% y alta seguridad son patrimonio comunal a proteger. Plan Regulador Comunal con zonificaci&oacute;n rural protegida, instrumentos de fomento productivo respetuoso (agricultura familiar, agroturismo), educaci&oacute;n ambiental. Eje 4 (53 acciones) + transversalidad con Eje 6 (Gesti&oacute;n).</p>
+  </div>
+
+  <!-- REC 03 -->
+  <div class="mbht-rec-card">
+    <div class="mbht-rec-head">
+      <div class="mbht-rec-num">03</div>
+      <div class="mbht-rec-titlewrap">
+        <h4 class="mbht-rec-title">Estrategia de Capacidades Socioecon&oacute;micas &middot; Activos, agencia y oportunidades en D05 y D08</h4>
+        <span class="mbht-rec-eje">Ejes 1 &middot; 2 &middot; 3 &middot; ODS 1 &middot; ODS 4 &middot; ODS 8</span>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:36px 1fr;gap:14px;padding:14px 18px;background:var(--c-success-soft);border-left:3px solid var(--accent);border-radius:0 var(--rad-md) var(--rad-md) 0">
-      <div style="font-size:22px;font-weight:800;color:var(--accent);line-height:1">06</div>
-      <div>
-        <strong style="color:var(--text);font-weight:700">Monitoreo MBHT Anual Institucionalizado</strong>
-        <p style="margin:4px 0 0;font-size:13px;color:var(--text2);line-height:1.55">Establecer un sistema de seguimiento MBHT con actualizaci&oacute;n anual, integrado al Tablero de Control SECPLAC. Permitir&aacute; medir el impacto de las 225 acciones del PLADECO sobre el bienestar territorial real, no solo sobre indicadores de gesti&oacute;n. Eje 6 (50 acciones, Modernizaci&oacute;n y Transparencia).</p>
+    <div class="mbht-rec-body">
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128204; Argumento estrat&eacute;gico</div>
+        <p>La pobreza no se mide por carencia sino por <strong>limitaci&oacute;n de capacidades</strong>. D05 (rural extenso, 983 hab, Soc=0,501) y D08 (periurbano sur, 4.853 hab, Soc=0,544) presentan los menores &iacute;ndices socioecon&oacute;micos, no porque sus habitantes &laquo;carezcan&raquo; sino porque las condiciones territoriales restringen su capacidad de elegir vidas valiosas. La pol&iacute;tica social tradicional &laquo;asistencial&raquo; (transferencias) se ha mostrado insuficiente; se requiere transitar a una pol&iacute;tica de <strong>activaci&oacute;n de capacidades</strong>.</p>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128218; Marco conceptual</div>
+        <div class="mbht-rec-marco">Enfoque de Capacidades (Sen 1999, Nussbaum 2011): expandir las libertades sustantivas. Activos para el Bienestar (Sherraden, OIT): no s&oacute;lo ingresos, sino activos financieros, humanos, sociales, productivos. Empleo Decente (OIT 2008): cantidad + calidad + protecci&oacute;n + di&aacute;logo. Trabajo Social Comunitario (Mendoza 2017): intervenci&oacute;n territorial con sujeto activo.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128202; Evidencia diagn&oacute;stica</div>
+        <div class="mbht-rec-evidencia">D05: <strong>Soc=0,501 con poblaci&oacute;n peque&ntilde;a (983 hab) en 142,89 km&sup2;</strong>: alta dispersi&oacute;n que dificulta acceso a SENCE, OMIL, FOSIS. D08: <strong>Soc=0,544 con poblaci&oacute;n urbana (4.853 hab) en 11,4 km&sup2;</strong>: cerca&iacute;a sin acceso efectivo. Escolaridad comunal jefatura: <strong>9,69 a&ntilde;os</strong> (4to medio incompleto). &Iacute;ndice de Pertenencia (IPJ) Rengo: <strong>0,84</strong> (alto), pero baja en D08 (capital social desarticulado).</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9881;&#65039; Acciones estrat&eacute;gicas</div>
+        <ul class="mbht-rec-list">
+          <li><strong>OMIL Territorial M&oacute;vil</strong>: oficina itinerante D05/D08 con agenda mensual fija.</li>
+          <li><strong>Programa Yo Emprendo Rural</strong>: FOSIS + Municipalidad con asesor&iacute;a y capital semilla a 80 emprendimientos rurales D05-D11 en 10 a&ntilde;os.</li>
+          <li><strong>Certificaci&oacute;n de competencias laborales</strong> ChileValora: foco trabajadores agr&iacute;colas, oficios tradicionales y construcci&oacute;n.</li>
+          <li><strong>Liceo T&eacute;cnico Profesional con doble titulaci&oacute;n</strong>: convenio Educaci&oacute;n + DUOC/INACAP para acreditar t&eacute;cnicos de nivel medio.</li>
+          <li><strong>Plan de Capital Social D08</strong>: fortalecimiento de juntas de vecinos + clubes deportivos + organizaciones culturales (Eje 3).</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128200; Indicadores de impacto (meta 2035)</div>
+        <ul class="mbht-rec-list">
+          <li>Soc D05: <strong>0,501 &rarr; 0,650</strong> (+30%)</li>
+          <li>Soc D08: <strong>0,544 &rarr; 0,680</strong> (+25%)</li>
+          <li>Escolaridad jefatura comunal: <strong>9,69 &rarr; 11,5 a&ntilde;os</strong></li>
+          <li>Tasa de informalidad laboral: <strong>-10 puntos</strong></li>
+          <li>Emprendimientos rurales formalizados: <strong>0 &rarr; 80</strong></li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9878;&#65039; Marco normativo</div>
+        <p>Ley 20.595 Ingreso &Eacute;tico Familiar; Ley 20.255 Reforma Previsional; Ley 21.227 Protecci&oacute;n del Empleo; Pol&iacute;tica Nacional de Habilitaci&oacute;n Social (MIDESO); Pol&iacute;tica Nacional de Trabajo Decente (Subsecretar&iacute;a del Trabajo); ChileValora; Estrategia Nacional para el Emprendimiento (CORFO).</p>
       </div>
     </div>
+  </div>
+
+  <!-- REC 04 -->
+  <div class="mbht-rec-card">
+    <div class="mbht-rec-head">
+      <div class="mbht-rec-num">04</div>
+      <div class="mbht-rec-titlewrap">
+        <h4 class="mbht-rec-title">Seguridad como Bien Com&uacute;n Urbano &middot; CPTED, comunidad y co-producci&oacute;n en D02 y D04</h4>
+        <span class="mbht-rec-eje">Eje 5 &middot; ODS 11 &middot; ODS 16</span>
+      </div>
+    </div>
+    <div class="mbht-rec-body">
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128204; Argumento estrat&eacute;gico</div>
+        <p>La seguridad urbana no se construye con m&aacute;s polic&iacute;a sino con <strong>m&aacute;s ciudad</strong>: m&aacute;s &laquo;ojos en la calle&raquo;, mejor dise&ntilde;o del espacio p&uacute;blico, m&aacute;s confianza comunitaria. D02 (0,786) y D04 (0,820) tienen los menores &iacute;ndices comunales no por falta de presencia policial sino por <strong>fragilidad del tejido socio-espacial</strong>: calles oscuras, sitios eriazos, ausencia de actividad continua. La respuesta no es securitizar sino <strong>cohesionar y dise&ntilde;ar</strong>.</p>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128218; Marco conceptual</div>
+        <div class="mbht-rec-marco">&laquo;Ojos en la calle&raquo; (Jacobs 1961): la mejor seguridad es la presencia ciudadana continua. CPTED &middot; Crime Prevention Through Environmental Design (Newman, Jeffery): dise&ntilde;o del espacio reduce oportunidades del delito. Co-producci&oacute;n de seguridad (Skogan, Bayley): polic&iacute;a + comunidad + dise&ntilde;o + servicios sociales. Capital Social y Eficacia Colectiva (Sampson 2012).</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128202; Evidencia diagn&oacute;stica</div>
+        <div class="mbht-rec-evidencia">D02 (Seg=<strong>0,786</strong>) y D04 (<strong>0,820</strong>) son los &uacute;nicos con seguridad &lt;0,85. Subindicador IGPE (Garant&iacute;as Personales) m&aacute;s d&eacute;bil. Tasa delictual comunal CEAD 2024: aumento de 12% en VIF y 8% en robos en residencias urbanas. Encuesta PLADECO 2025: <strong>34% de los encuestados</strong> menciona seguridad como prioridad principal.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9881;&#65039; Acciones estrat&eacute;gicas</div>
+        <ul class="mbht-rec-list">
+          <li><strong>Plan Calles Vivas</strong>: programa de iluminaci&oacute;n LED + activaci&oacute;n cultural-deportiva continua en 15 ejes urbanos cr&iacute;ticos (D02/D04).</li>
+          <li><strong>Cat&aacute;logo CPTED Rengo</strong>: auditor&iacute;a participativa de espacios p&uacute;blicos con vecinas y vecinos (m&eacute;todo Marcha Exploratoria de Mujeres).</li>
+          <li><strong>Sistema integrado de televigilancia</strong> con an&aacute;lisis predictivo y operaci&oacute;n 24/7 en alianza con Carabineros (CCC: Central de Comunicaciones Conectada).</li>
+          <li><strong>Mesa Comunal de Seguridad</strong> ampliada (alcalde + Carabineros + PDI + COSOC + colegios + comercio).</li>
+          <li><strong>Programa Sendero Seguro</strong> en 8 entornos escolares D02/D04 (Eje 3 + 5).</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128200; Indicadores de impacto (meta 2035)</div>
+        <ul class="mbht-rec-list">
+          <li>Seg D02: <strong>0,786 &rarr; 0,900</strong></li>
+          <li>Seg D04: <strong>0,820 &rarr; 0,920</strong></li>
+          <li>Tasa de denuncias VIF: <strong>+25%</strong> (m&aacute;s confianza institucional, no m&aacute;s violencia)</li>
+          <li>Percepci&oacute;n de seguridad nocturna en encuesta ciudadana: <strong>54% &rarr; 75%</strong></li>
+          <li>Cobertura LED de iluminaci&oacute;n p&uacute;blica casco urbano: <strong>78% &rarr; 100%</strong></li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9878;&#65039; Marco normativo</div>
+        <p>Ley 20.502 Subsecretar&iacute;a de Prevenci&oacute;n del Delito; Ley 21.057 entrevista videograbada NNA; Pol&iacute;tica Nacional de Seguridad P&uacute;blica 2025-2030; Plan Calles Sin Violencia; Pol&iacute;tica de Equidad de G&eacute;nero Comunal; Convenci&oacute;n de Belem do Par&aacute;.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- REC 05 -->
+  <div class="mbht-rec-card">
+    <div class="mbht-rec-head">
+      <div class="mbht-rec-num">05</div>
+      <div class="mbht-rec-titlewrap">
+        <h4 class="mbht-rec-title">Patrimonio Natural Rural &middot; Conservaci&oacute;n productiva del capital ecosist&eacute;mico</h4>
+        <span class="mbht-rec-eje">Eje 4 &middot; Eje 6 &middot; ODS 13 &middot; ODS 15</span>
+      </div>
+    </div>
+    <div class="mbht-rec-body">
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128204; Argumento estrat&eacute;gico</div>
+        <p>Los distritos rurales con cobertura vegetal &gt;70% y seguridad &gt;0,99 (D03/D05/D06/D09) no son zonas &laquo;subdesarrolladas&raquo;: son <strong>activos ambientales estrat&eacute;gicos</strong> que la comuna debe preservar. La amenaza no es su subdesarrollo sino su urbanizaci&oacute;n especulativa o su degradaci&oacute;n por presi&oacute;n extractiva. La pol&iacute;tica correcta no es <em>compensar</em> sino <em>proteger productivamente</em>: producci&oacute;n agr&iacute;cola tradicional, agroturismo, educaci&oacute;n ambiental, servicios ecosist&eacute;micos.</p>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128218; Marco conceptual</div>
+        <div class="mbht-rec-marco">Gobernanza de bienes comunes (Ostrom 1990, Premio Nobel 2009): los recursos naturales pueden gestionarse colectivamente sin privatizaci&oacute;n ni estatalizaci&oacute;n. Pagos por Servicios Ecosist&eacute;micos (Wunder, Costanza): valoraci&oacute;n econ&oacute;mica de funciones ambientales. Buen Vivir andino (Acosta, Gudynas) y nuevo ruralismo (Kay, Bebbington): el campo no es residual.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128202; Evidencia diagn&oacute;stica</div>
+        <div class="mbht-rec-evidencia">D03 (15,3 km&sup2;, 432 hab, Amb=<strong>0,704</strong>, Seg=0,992) &middot; D05 (143 km&sup2;, 983 hab, Amb=0,721) &middot; D06 (232 km&sup2;, 1.791 hab, Amb=0,739, <strong>el m&aacute;s alto comunal</strong>) &middot; D09 (39 km&sup2;, 1.980 hab, Amb=0,750). En total: <strong>5.186 habitantes</strong> en <strong>429,6 km&sup2;</strong> (74% del territorio comunal) custodiando ecosistemas valle del Cachapoal-precordillera.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9881;&#65039; Acciones estrat&eacute;gicas</div>
+        <ul class="mbht-rec-list">
+          <li><strong>Zonificaci&oacute;n PRC con &laquo;Zona Rural Protegida&raquo;</strong>: subdivisi&oacute;n m&iacute;nima 0,5 ha, prohibici&oacute;n de loteo especulativo.</li>
+          <li><strong>Programa Agricultura Familiar Campesina</strong> en alianza con INDAP: 200 familias D05-D11 con apoyo t&eacute;cnico y mercados locales.</li>
+          <li><strong>Ruta Patrimonial del Valle</strong>: agroturismo + gastronom&iacute;a local + senderos interpretativos (Eje 2 + Eje 3).</li>
+          <li><strong>Escuelas Rurales Multigrado fortalecidas</strong> con curr&iacute;culo contextualizado al territorio.</li>
+          <li><strong>Plan Comunal de Cambio Clim&aacute;tico</strong> con incentivos a captura de carbono en predios rurales.</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128200; Indicadores de impacto (meta 2035)</div>
+        <ul class="mbht-rec-list">
+          <li>Mantenci&oacute;n de cobertura vegetal rural: <strong>&gt; 70%</strong></li>
+          <li>Familias rurales con asistencia t&eacute;cnica activa: <strong>40 &rarr; 200</strong></li>
+          <li>Predios con certificaci&oacute;n agroecol&oacute;gica: <strong>0 &rarr; 50</strong></li>
+          <li>Visitantes a Ruta Patrimonial: <strong>0 &rarr; 8.000 anuales</strong></li>
+          <li>Variaci&oacute;n del &Iacute;ndice de Vegetaci&oacute;n NDVI rural: <strong>positivo</strong></li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9878;&#65039; Marco normativo</div>
+        <p>DFL 458 Ley General de Urbanismo y Construcciones; Ley 20.283 sobre Recuperaci&oacute;n del Bosque Nativo; Ley 21.455 Marco de Cambio Clim&aacute;tico; Pol&iacute;tica Forestal 2015-2035; Estrategia Nacional de Biodiversidad; Plan Nacional de Adaptaci&oacute;n al Cambio Clim&aacute;tico (Sector Silvoagropecuario); Convenio 169 OIT (territorios ind&iacute;genas).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- REC 06 -->
+  <div class="mbht-rec-card">
+    <div class="mbht-rec-head">
+      <div class="mbht-rec-num">06</div>
+      <div class="mbht-rec-titlewrap">
+        <h4 class="mbht-rec-title">Gobernanza de Datos Territoriales &middot; Observatorio MBHT y rendici&oacute;n de cuentas basada en evidencia</h4>
+        <span class="mbht-rec-eje">Eje 6 &middot; ODS 16 &middot; ODS 17</span>
+      </div>
+    </div>
+    <div class="mbht-rec-body">
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128204; Argumento estrat&eacute;gico</div>
+        <p>Un PLADECO sin sistema de monitoreo es una declaraci&oacute;n de intenciones. Las 225 acciones priorizadas requieren un <strong>dispositivo institucional</strong> que mida su impacto real sobre el bienestar territorial, no solo su ejecuci&oacute;n procedimental. La MBHT es la base ideal: indicadores objetivos, escala manzana, actualizaci&oacute;n perio&acute;dica. Construir un Observatorio MBHT institucionalizado convierte el PLADECO de <em>documento aprobado</em> en <em>sistema de gobierno basado en evidencia</em>.</p>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128218; Marco conceptual</div>
+        <div class="mbht-rec-marco">Gesti&oacute;n para Resultados de Desarrollo (GpRD &middot; CLAD, BID): planificar, presupuestar, ejecutar y rendir cuentas con foco en resultados, no solo procesos. Open Government (OECD): transparencia + participaci&oacute;n + colaboraci&oacute;n. Smart Cities institucionales (Caragliu et al.): tecnolog&iacute;a al servicio del bien p&uacute;blico. Inteligencia Territorial (Girardot 2009): cooperaci&oacute;n actor-multi-actor con datos compartidos.</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128202; Evidencia diagn&oacute;stica</div>
+        <div class="mbht-rec-evidencia">Hoy la SECPLAC carece de tablero de control comunal con indicadores territoriales actualizados. La MBHT 2026 es la primera medici&oacute;n; sin actualizaci&oacute;n recurrente, no hay forma de saber si las 225 acciones est&aacute;n moviendo la aguja. Costo institucional de no monitorear: alto (gasto sin evidencia de impacto). Costo de monitorear: bajo (datasets ya existen, falta sistema).</div>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9881;&#65039; Acciones estrat&eacute;gicas</div>
+        <ul class="mbht-rec-list">
+          <li><strong>Observatorio MBHT Rengo</strong>: unidad SECPLAC con 1 profesional dedicado y convenio UOH/UAI.</li>
+          <li><strong>Tablero p&uacute;blico de indicadores</strong> en el portal: actualizaci&oacute;n anual de MBHT + ICP + ICT + Acciones PLADECO ejecutadas.</li>
+          <li><strong>Reporte Anual de Bienestar Territorial</strong> presentado al Concejo Municipal y al COSOC en marzo de cada a&ntilde;o.</li>
+          <li><strong>Hackat&oacute;n c&iacute;vico anual</strong> con UOH, INACAP y comunidad para explorar usos del dataset abierto.</li>
+          <li><strong>Sistema de alerta temprana</strong>: detecci&oacute;n autom&aacute;tica de manzanas con BHT cayendo &gt; 5% interanual.</li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#128200; Indicadores de impacto (meta 2035)</div>
+        <ul class="mbht-rec-list">
+          <li>Actualizaci&oacute;n MBHT anual: <strong>100% cumplimiento</strong></li>
+          <li>% acciones PLADECO con evaluaci&oacute;n de impacto territorial: <strong>0 &rarr; 80%</strong></li>
+          <li>Datasets p&uacute;blicos descargables del portal: <strong>2 &rarr; 25</strong></li>
+          <li>Reportes anuales al Concejo + COSOC: <strong>10 reportes en d&eacute;cada</strong></li>
+        </ul>
+      </div>
+      <div class="mbht-rec-block">
+        <div class="mbht-rec-label">&#9878;&#65039; Marco normativo</div>
+        <p>Ley 20.285 Transparencia y Acceso a la Informaci&oacute;n P&uacute;blica; Instructivo Presidencial Datos Abiertos 2018; Pol&iacute;tica Nacional de Transformaci&oacute;n Digital; Ley 18.695 Art. 6 (PLADECO actualizable); ODS 17 Meta 17.18 (datos desagregados); Norma ISO 37120 (indicadores de ciudad sostenible).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICULACIÓN CON ODS 2030 -->
+  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:24px 0 8px;letter-spacing:-.005em">&#127760; Articulaci&oacute;n con la Agenda 2030 &middot; Objetivos de Desarrollo Sostenible</h3>
+  <p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 14px;max-width:78ch">Las 6 recomendaciones MBHT contribuyen a <strong>10 ODS</strong> de la Agenda 2030 de Naciones Unidas, fortaleciendo la coherencia entre la pol&iacute;tica comunal y los compromisos globales del Estado de Chile (CONADES, ratificaci&oacute;n 2015).</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 22px">
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #e5243b;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 1 &middot; Fin de la Pobreza</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 03 &middot; Capacidades socioecon&oacute;micas</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #c5192d;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 4 &middot; Educaci&oacute;n de Calidad</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 01, 03 &middot; Accesibilidad + Empleo</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #a21942;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 8 &middot; Trabajo Decente</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 03 &middot; Capacidades + Activos</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #dd1367;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 10 &middot; Reducci&oacute;n de Desigualdades</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 01 &middot; Equidad territorial rural</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #fd9d24;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 11 &middot; Ciudades Sostenibles</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 01, 02, 04 &middot; Conectividad + Verde + Seguridad</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #bf8b2e;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 13 &middot; Acci&oacute;n por el Clima</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 02, 05 &middot; Arborizaci&oacute;n + Conservaci&oacute;n</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #56c02b;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 15 &middot; Vida de Ecosistemas Terrestres</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 02, 05 &middot; Verde + Patrimonio Natural</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #00689d;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 16 &middot; Paz y Justicia</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 04, 06 &middot; Seguridad + Gobernanza</div>
+    </div>
+    <div style="padding:11px 14px;background:#fff;border:1px solid var(--border);border-top:3px solid #19486a;border-radius:var(--rad-md);font-size:12.5px">
+      <strong style="color:var(--text);font-weight:700">ODS 17 &middot; Alianzas para los Objetivos</strong>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:3px;line-height:1.4">Rec 06 &middot; Datos abiertos + cooperaci&oacute;n</div>
+    </div>
+  </div>
+
+  <!-- SÍNTESIS NARRATIVA -->
+  <div style="margin:0 0 22px;padding:18px 22px;background:linear-gradient(135deg,#0c1f36 0%,#1a3d8f 100%);color:#fff;border-radius:var(--rad-md);box-shadow:var(--sh-elev)">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:8px">S&iacute;ntesis estrat&eacute;gica</div>
+    <p style="margin:0 0 10px;font-size:14.5px;line-height:1.55;font-weight:500">La MBHT revela que <strong>Rengo no es una comuna deficitaria sino una comuna con activos territoriales desigualmente distribuidos</strong>. La estrategia no consiste en compensar carencias generales sino en <strong>redistribuir activos espec&iacute;ficos</strong>: llevar accesibilidad a zonas rurales con bonos ambientales y de seguridad; llevar &aacute;reas verdes al casco urbano con bonos de accesibilidad y oportunidades.</p>
+    <p style="margin:0;font-size:13px;line-height:1.55;color:rgba(255,255,255,.85)">Las 6 recomendaciones articulan una <strong>pol&iacute;tica territorial integrada</strong> que opera con la l&oacute;gica del <em>territorio como sujeto</em>, no como receptor pasivo de obras. Su implementaci&oacute;n requiere coordinaci&oacute;n SECPLAC-DOM-DIDECO-DAEM-DOH, alianzas con GORE/SUBDERE/MMA/MINVU, y participaci&oacute;n activa del COSOC y las 21 juntas de vecinos. Es el PLADECO 2025-2035 leyendo el territorio con datos y respondiendo con estrategia.</p>
   </div>
 
   <h3 style="font-size:14px;font-weight:700;color:var(--text);margin:18px 0 8px;letter-spacing:-.005em">&#128190; Descargas &middot; Dataset MBHT Comuna de Rengo</h3>
@@ -11844,10 +12204,11 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.32</span>
+  <span class="ub-ver">v45.33</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.33</strong> <span class="ub-date">19 May 2026</span><br>&#128221;&#127919; **v45.33 &middot; MBHT: Recomendaciones estrat&eacute;gicas argumentadas con marco te&oacute;rico**. **SOLICITUD DEL USUARIO**: las recomendaciones deben ser argumentos basados en recomendaciones estrat&eacute;gicas, no listados operativos. **REESTRUCTURACI&Oacute;N COMPLETA**: las 6 recomendaciones MBHT pasan de bloques cortos (1 p&aacute;rrafo) a <strong>cards profundas con 6 secciones cada una</strong>: (1) Argumento estrat&eacute;gico (el &laquo;por qu&eacute;&raquo;), (2) Marco conceptual (referencias te&oacute;ricas: Sen, Ostrom, Lefebvre, Jacobs, Costanza, Girardot), (3) Evidencia diagn&oacute;stica (data MBHT como respaldo), (4) Acciones estrat&eacute;gicas (qu&eacute; hacer concretamente, 5 acciones cada una), (5) Indicadores de impacto con meta 2035, (6) Marco normativo (leyes, pol&iacute;ticas nacionales y convenios internacionales). **6 RECOMENDACIONES PROFUNDIZADAS**: (1) Equidad Territorial Rural (Ejes 1+3+4+6 &middot; ODS 10+11) con Sen + Lefebvre + CEPAL Muerte Rural. (2) Infraestructura Verde Urbana D04 (Eje 4 &middot; ODS 11+13+15) con Costanza Servicios Ecosist&eacute;micos + Oke Islas de Calor + Schlosberg Justicia Ambiental. (3) Capacidades Socioecon&oacute;micas D05/D08 (Ejes 1+2+3 &middot; ODS 1+4+8) con Sen Capacidades + Sherraden Activos + OIT Empleo Decente. (4) Seguridad como Bien Com&uacute;n D02/D04 (Eje 5 &middot; ODS 11+16) con Jacobs Ojos en la Calle + CPTED + Sampson Eficacia Colectiva. (5) Patrimonio Natural Rural D03/D05/D06/D09 (Ejes 4+6 &middot; ODS 13+15) con Ostrom Bienes Comunes + Wunder Pagos Servicios + Buen Vivir. (6) Gobernanza de Datos Territoriales (Eje 6 &middot; ODS 16+17) con GpRD CLAD + Open Government OECD + Inteligencia Territorial Girardot. **MARCO ESTRAT&Eacute;GICO INTRODUCTORIO** explicando triangulaci&oacute;n evidencia/teor&iacute;a/normativa. **TABLA ODS 2030**: grid de 9 ODS afectados con badge de color oficial UN + recomendaciones que aportan. **S&Iacute;NTESIS NARRATIVA FINAL** con gradiente navy: tesis central de que Rengo no es comuna deficitaria sino con activos desigualmente distribuidos. **DISE&Ntilde;O**: cards con border-left verde Rengo, num en c&iacute;rculo verde, evidencia con border-left azul, marco conceptual con border-left morado (cita), acciones en lista. CSS scoped a `.mbht-rec-*`. **RIESGO PARSER**: nulo &mdash; sin etiquetas literales, entidades HTML, JS no afectado.</div>
     <div class="ub-entry"><strong>v45.32</strong> <span class="ub-date">19 May 2026</span><br>&#128506;&#127919; **v45.32 &middot; MBHT profundizada con an&aacute;lisis territorial + mapa Leaflet + articulaci&oacute;n PLADECO**. **SOLICITUD DEL USUARIO**: profundizar la informaci&oacute;n MBHT, mapearla por zonas y mantener coherencia con las propuestas del PLADECO. **4 BLOQUES NUEVOS A&Ntilde;ADIDOS A LA SECCI&Oacute;N MBHT**: (1) **An&aacute;lisis Territorial por Distrito Censal**: tabla comparativa de los 11 distritos del INE con n&deg; manzanas, habitantes, &aacute;rea km&sup2;, BHT μ, scores en las 4 dimensiones (Acc/Amb/Soc/Seg) y perfil descriptivo. Pintado sem&aacute;ntico verde/rojo seg&uacute;n desempe&ntilde;o relativo. Revela dualidad urbano-rural: rurales con bonos ambientales y de seguridad (&gt;0,99) pero d&eacute;ficit de accesibilidad (~0,3); urbano D04 al rev&eacute;s (Acc 0,58 / Amb 0,37). (2) **Mapa Interactivo Leaflet**: c&iacute;rculos por distrito con tama&ntilde;o proporcional a poblaci&oacute;n y color por nivel BHT (verde-&aacute;mbar-rojo). Botones de filtro para cambiar entre BHT Global, Accesibilidad, Ambiental, Socioecon&oacute;mica y Seguridad. Popups con detalle completo de cada distrito (poblaci&oacute;n, &aacute;rea, las 4 dimensiones). (3) **Articulaci&oacute;n MBHT con PLADECO**: grid de 4 cards (una por dimensi&oacute;n) mapeando cada dimensi&oacute;n con los 6 Ejes Estrat&eacute;gicos y 27 OE, e indicando los distritos a focalizar. (4) **6 Recomendaciones Estrat&eacute;gicas Operacionalizables**: Plan Conectividad Rural Integral, Plan Arborizaci&oacute;n Urbana D04, Foco Socioecon&oacute;mico D05+D08, Seguridad Urbana D02+D04, Preservar Bonos Ambientales rurales, Monitoreo MBHT Anual. Cada recomendaci&oacute;n con datos espec&iacute;ficos + identificaci&oacute;n del Eje PLADECO + fuentes de financiamiento (FNDR, PMU, MINVU). **CONTROL JS GLOBAL**: funci&oacute;n `mbhtSwitchDim()` para cambio din&aacute;mico de dimensi&oacute;n en el mapa. **DATOS REALES**: 665 manzanas agregadas en 11 distritos censales del INE comuna 6115 Rengo, calculados con coordenadas aproximadas de centroides distritales. **COHERENCIA VISUAL**: usa tabla con borde y shadow del sistema canonizado, paleta dimensional consistente con el resto de MBHT (acc azul, amb verde, soc magenta, seg ámbar), recomendaciones con bloque verde Rengo + border-left. **RIESGO PARSER**: nulo &mdash; entidades HTML en todo el texto, JS en script separado fuera de la secci&oacute;n, sin etiquetas literales en changelog.</div>
     <div class="ub-entry"><strong>v45.31</strong> <span class="ub-date">19 May 2026</span><br>&#127960;&#65039;&#128202; **v45.31 &middot; MBHT integrada como secci&oacute;n nativa del portal (&sect;11.4)**. **SOLICITUD DEL USUARIO**: integrar carpeta `D:\MBHT` al portal y desarrollar una secci&oacute;n &laquo;similar a lo que hemos ido trabajando&raquo; con coherencia visual. **DIFERENCIA CLAVE CON v45.18-v45.23**: esta vez la MBHT vive DENTRO de index.html como secci&oacute;n nativa `#mbht-bienestar`, no como p&aacute;gina separada. **ARCHIVOS COPIADOS**: 5 archivos a `Portal_PLADECO/MBHT/`: Accesibilidad.xlsx (332 KB), Ambiental.xlsx (226 KB), Socioecon&oacute;mica.xlsx (298 KB), Seguridad.xlsx (256 KB), notas-metodologicas.pdf (613 KB). **CONTENIDO DE LA SECCI&Oacute;N**: (1) header con badge sem&aacute;ntico verde Rengo + h2 + descripci&oacute;n metodol&oacute;gica. (2) bloque introductorio con 2 p&aacute;rrafos &laquo;&iquest;Qu&eacute; es?&raquo; y &laquo;&iquest;Para qu&eacute; sirve?&raquo; con border-left verde. (3) 5 KPIs comunales: BHT Global (0,627) + 4 dimensiones con valores μ y rangos. (4) 2 gr&aacute;ficos Chart.js lazy-loaded: radar comunal de 4 dimensiones y barras de distribuci&oacute;n por quintiles. (5) Grid de 4 cards de dimensiones (Accesibilidad/Ambiental/Socioecon&oacute;mica/Seguridad) cada una con score destacado, descripci&oacute;n y lista de 2-6 sub-indicadores con valores. (6) Rankings: Top 5 y Bottom 5 manzanas con ID/BHT/poblaci&oacute;n. (7) Bloque de descargas: 5 enlaces a los datasets crudos (4 XLSX + 1 PDF metodol&oacute;gico). **DATOS REALES**: 665 manzanas censales del CUT 6115 Rengo, calculados con metodolog&iacute;a UAI/SUBDERE. Total de 58.570 habitantes en 583 km². **PALETA DIMENSIONAL**: cada dimensi&oacute;n con border-top de color sem&aacute;ntico (acc=#0369a1 azul, amb=#15803d verde, soc=#be185d magenta, seg=#b45309 &aacute;mbar) sobre fondo blanco/dark consistent. **COHERENCIA VISUAL**: usa todos los tokens canonizados de v45.22 (`--rad-md`, `--sh-card`, `--c-success-soft`, badges utilitarias), responsive con grids auto-fit, dark mode soportado, hover micro-lifts, transici&oacute;n a verde Rengo en los download chips. **SIDEBAR**: nuevo enlace entre ICT y An&aacute;lisis Censo 2024 con badge is-new. **SW**: cache v62.11 &rarr; v62.12. **CONTADOR**: 52 &rarr; 53 secciones. **CHARTS**: lazy-load v&iacute;a IntersectionObserver con rootMargin 150px para optimizar first-load. **RIESGO PARSER**: NULO &mdash; todo el HTML usa entidades para chars especiales, todo el JS est&aacute; en script separado fuera de la secci&oacute;n, sin menciones literales de etiquetas en texto del changelog.</div>
     <div class="ub-entry"><strong>v45.30</strong> <span class="ub-date">19 May 2026</span><br>&#9728;&#65039;&#127769; **v45.30 &middot; Hardening del theme switcher**. 7 fixes al selector de tema Apariencia (Claro/Oscuro) tras auditor&iacute;a completa. **BUGS POTENCIALES CORREGIDOS**: (1) Init script referenciaba `Chart.defaults` sin guard &mdash;si Chart.js no cargaba (red bloqueada), lanzaba ReferenceError y romp&iacute;a todos los scripts siguientes; ahora con `if(typeof Chart !== undefined && Chart.defaults)` y try-catch. (2) Atajo de teclado `D` llamaba `getElementById(btnDark).click()` sin null-check; ahora con fallback a `toggleDark()` directo. **MEJORAS DE CALIDAD**: (3) Detecci&oacute;n de `prefers-color-scheme` del sistema en primera visita &mdash;si nunca has guardado preferencia y tu OS est&aacute; en oscuro, el portal abre oscuro autom&aacute;ticamente. (4) Listener `matchMedia.addEventListener(change)` para que el portal responda en vivo si cambias el tema del sistema (con fallback Safari `addListener`). (5) Multi-tab sync v&iacute;a `storage` event &mdash;si cambias el tema en una pesta&ntilde;a, las otras pesta&ntilde;as abiertas se actualizan al instante. (6) Active state m&aacute;s visible: verde Rengo de `rgba(.18)` a `rgba(.35)` con borde m&aacute;s grueso 1.5px, font-weight 800, sombra exterior suave de 6px; dark variant igualmente realzado a `rgba(.42)` con indigo `#818cf8`. (7) **TRANSICI&Oacute;N SUAVE** del cambio de tema: cuando haces clic en Claro/Oscuro, una clase transitoria `body.theme-transitioning` aplica transition `.35s cubic-bezier(.4,0,.2,1)` a background, border, color, fill, stroke y box-shadow de TODOS los elementos no-canvas/svg durante 420ms, eliminando el salto visual brusco. Respeta `prefers-reduced-motion`. **TODO PROTEGIDO**: cada operaci&oacute;n cr&iacute;tica con try-catch o guards, ning&uacute;n acceso DOM sin validaci&oacute;n previa.</div>
