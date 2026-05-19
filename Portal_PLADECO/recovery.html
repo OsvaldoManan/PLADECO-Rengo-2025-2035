@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🚑 Rescate Portal PLADECO Rengo</title>
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+  background:linear-gradient(135deg,#0c1f36 0%,#0d3a26 100%);
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  line-height:1.55;
+}
+.card{
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  padding:32px 28px;
+  max-width:560px;
+  width:100%;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);
+}
+h1{font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+h1 .accent{color:#f5921d}
+.subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:24px}
+.status{
+  padding:14px 16px;
+  border-radius:10px;
+  background:rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.08);
+  font-size:12.5px;
+  font-family:'Cascadia Code',Consolas,Menlo,monospace;
+  line-height:1.7;
+  margin-bottom:20px;
+  max-height:280px;
+  overflow-y:auto;
+  text-align:left;
+}
+.status div{margin:2px 0}
+.ok{color:#4ade80;font-weight:600}
+.err{color:#f87171;font-weight:600}
+.info{color:#60a5fa}
+.warn{color:#fbbf24}
+.dim{color:rgba(255,255,255,.5)}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:14px 24px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  border:none;
+  font-family:inherit;
+  transition:transform .2s,box-shadow .2s;
+  margin:4px;
+  min-width:200px;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{
+  background:linear-gradient(135deg,#2d9a4d,#1f7a39);
+  color:#fff;
+  box-shadow:0 4px 16px rgba(45,154,77,.4);
+}
+.btn-primary:hover{box-shadow:0 8px 24px rgba(45,154,77,.55)}
+.btn-secondary{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.15);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.16)}
+.actions{margin-bottom:18px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.help{
+  margin-top:20px;
+  padding:14px 16px;
+  background:rgba(245,146,29,.1);
+  border-left:3px solid #f5921d;
+  border-radius:8px;
+  font-size:12.5px;
+  line-height:1.6;
+  text-align:left;
+}
+.help strong{color:#fdb94d}
+.help kbd{
+  background:rgba(255,255,255,.12);
+  padding:2px 6px;
+  border-radius:4px;
+  font-size:11px;
+  font-family:inherit;
+  font-weight:600;
+}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.title-icon{font-size:32px;display:block;margin-bottom:10px}
+</style>
+</head>
+<body>
+<main class="card" role="main">
+  <span class="title-icon" aria-hidden="true">🚑</span>
+  <h1>Rescate <span class="accent">Portal PLADECO</span></h1>
+  <p class="subtitle">Esta página de emergencia limpia el navegador y te lleva al portal funcional. Sin dependencias externas, garantía de carga.</p>
+
+  <div class="status" id="log" aria-live="polite">
+    <div class="info">› Iniciando diagnóstico automático...</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="btnFix" type="button">🔥 Limpiar y abrir portal</button>
+    <a class="btn btn-secondary" href="./" id="lnkPortal">🏠 Ir al portal directo</a>
+  </div>
+
+  <div class="help">
+    <strong>💡 Si nada funciona:</strong>
+    <ol style="padding-left:20px;margin-top:6px">
+      <li>Presiona <kbd>F12</kbd> (abre DevTools)</li>
+      <li>Pestaña <strong>Application</strong> (Chrome/Edge) o <strong>Storage</strong> (Firefox)</li>
+      <li>Click en <strong>"Clear site data"</strong></li>
+      <li>Recarga con <kbd>F5</kbd></li>
+    </ol>
+  </div>
+</main>
+
+<script>
+// Pure-JS, no dependencies, no SW interaction unless we explicitly opt-in
+(function(){
+  'use strict';
+  var log = document.getElementById('log');
+  function L(msg, cls){
+    cls = cls || 'info';
+    var d = document.createElement('div');
+    d.className = cls;
+    d.textContent = '› ' + msg;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+  }
+  function spinner(){
+    var d = document.createElement('div');
+    d.innerHTML = '<span class="spinner"></span> <span class="dim">Trabajando...</span>';
+    log.appendChild(d);
+    return d;
+  }
+  /* Diagnóstico automático al cargar */
+  async function diagnose(){
+    L('Navegador detectado: ' + (navigator.userAgent || 'desconocido').split(' ').slice(-2).join(' '), 'dim');
+    /* SW */
+    if('serviceWorker' in navigator){
+      try{
+        var regs = await navigator.serviceWorker.getRegistrations();
+        if(regs.length){
+          L('⚠ ' + regs.length + ' Service Worker(s) registrado(s) interceptando el portal', 'warn');
+        } else {
+          L('✓ Sin Service Workers (limpio)', 'ok');
+        }
+      }catch(e){ L('Sin acceso a SW: ' + e.message, 'err'); }
+    } else {
+      L('⚠ Navegador sin soporte SW (raro pero ok)', 'warn');
+    }
+    /* Caches */
+    if('caches' in window){
+      try{
+        var keys = await caches.keys();
+        if(keys.length){
+          L('⚠ ' + keys.length + ' cache(s) Cache Storage acumulado(s)', 'warn');
+        } else {
+          L('✓ Sin caches (limpio)', 'ok');
+        }
+      }catch(e){}
+    }
+    /* localStorage */
+    try{
+      L((localStorage.length ? '⚠ ' : '✓ ') + localStorage.length + ' items en localStorage', localStorage.length ? 'warn' : 'ok');
+    }catch(e){}
+    L('', 'dim');
+    L('LISTO — presiona el botón verde para limpiar y abrir portal', 'info');
+  }
+  /* Limpieza nuclear automática */
+  async function nuclearReset(){
+    var btn = document.getElementById('btnFix');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Limpiando...';
+    /* Log de proceso */
+    log.innerHTML = '';
+    L('🔥 INICIANDO LIMPIEZA COMPLETA', 'warn');
+    /* 1. Unregister all SWs */
+    if('serviceWorker' in navigator){
+      try{
+        var regs = await navigator.serviceWorker.getRegistrations();
+        for(var i=0;i<regs.length;i++){
+          var ok = await regs[i].unregister();
+          L('SW unregister · ' + regs[i].scope + ': ' + (ok?'OK':'falló'), ok?'ok':'err');
+        }
+        if(!regs.length) L('Sin SWs que eliminar', 'dim');
+      }catch(e){ L('Error SW: ' + e.message, 'err'); }
+    }
+    /* 2. Clear all caches */
+    if('caches' in window){
+      try{
+        var keys = await caches.keys();
+        for(var j=0;j<keys.length;j++){
+          await caches.delete(keys[j]);
+          L('Cache eliminada · ' + keys[j], 'ok');
+        }
+        if(!keys.length) L('Sin caches que eliminar', 'dim');
+      }catch(e){ L('Error cache: ' + e.message, 'err'); }
+    }
+    /* 3. Clear localStorage */
+    try{ var n = localStorage.length; localStorage.clear(); L('localStorage limpiado (' + n + ' items)', 'ok'); }catch(e){}
+    /* 4. Clear sessionStorage */
+    try{ sessionStorage.clear(); L('sessionStorage limpiado', 'ok'); }catch(e){}
+    /* 5. Clear IndexedDB if available */
+    if('indexedDB' in window && indexedDB.databases){
+      try{
+        var dbs = await indexedDB.databases();
+        for(var k=0;k<dbs.length;k++){
+          if(dbs[k].name){
+            try{ indexedDB.deleteDatabase(dbs[k].name); }catch(_){}
+          }
+        }
+        if(dbs.length) L('IndexedDB limpiado (' + dbs.length + ' DBs)', 'ok');
+      }catch(e){}
+    }
+    L('', 'dim');
+    L('✅ LIMPIEZA COMPLETA · Redirigiendo al portal en 3 segundos...', 'ok');
+    btn.innerHTML = '✅ Listo · Redirigiendo...';
+    setTimeout(function(){
+      /* Redirect con hard-bust de cache HTTP */
+      window.location.href = './?cleanstart=' + Date.now();
+    }, 3000);
+  }
+  /* Inicializar */
+  diagnose().catch(function(e){
+    L('Error diagnóstico: ' + e.message, 'err');
+    L('Pero puedes presionar el botón igual', 'info');
+  });
+  document.getElementById('btnFix').addEventListener('click', function(){
+    nuclearReset().catch(function(e){
+      L('Error limpieza: ' + e.message, 'err');
+      L('Intenta el método manual de DevTools (abajo)', 'warn');
+    });
+  });
+})();
+</script>
+</body>
+</html>
