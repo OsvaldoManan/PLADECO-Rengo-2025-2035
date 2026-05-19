@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Territorial Censo 2024 · PLADECO Rengo 2025-2035</title>
+<meta name="description" content="Análisis Estratégico con Inteligencia Territorial · Diagnóstico Multidimensional de Vulnerabilidad Socioterritorial · Comuna de Rengo · Censo 2024">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+<style>
+/* ============================================================
+   PLADECO RENGO 2025-2035 · ANÁLISIS TERRITORIAL CENSO 2024
+   Estilo institucional sobrio · Paleta alineada con portal/MBHT
+   ============================================================ */
+
+:root {
+  --c-bg: #ffffff;
+  --c-bg-soft: #f5f7fa;
+  --c-bg-card: #ffffff;
+  --c-bg-alt: #f8fafc;
+  --c-border: #e2e8f0;
+  --c-border-strong: #cbd5e1;
+  --c-text: #1e293b;
+  --c-text-soft: #475569;
+  --c-text-mute: #64748b;
+  --c-text-faint: #94a3b8;
+  --c-accent: #b91c1c;
+  --c-accent-soft: #fef2f2;
+  --c-navy: #0c1f36;
+  --c-blue: #1a3d8f;
+
+  /* Colores por índice (paleta dimensional) */
+  --idx-ivsh: #be185d;
+  --idx-iddc: #0369a1;
+  --idx-ibdt: #7c3aed;
+  --idx-ivft: #b45309;
+  --idx-icht: #15803d;
+  --idx-ipsb: #c2410c;
+  --idx-icp:  #0c1f36;
+
+  /* Riesgo */
+  --r-low: #15803d;
+  --r-mod: #ca8a04;
+  --r-high: #c2410c;
+  --r-very: #b91c1c;
+
+  --radius: 8px;
+  --radius-sm: 4px;
+  --shadow-card: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============== STICKY NAV HEADER ============== */
+.at-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, var(--c-navy) 0%, var(--c-blue) 100%);
+  color: #fff;
+  padding: 12px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+.at-nav a.at-back {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.at-nav a.at-back:hover { background: rgba(255,255,255,0.1); }
+
+.at-nav-eyebrow {
+  flex: 1;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.04em;
+}
+
+.at-nav-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ============== TABLE OF CONTENTS ============== */
+.at-toc {
+  background: var(--c-bg-soft);
+  border-bottom: 1px solid var(--c-border);
+  padding: 14px 24px;
+  font-size: 13px;
+}
+
+.at-toc-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
+}
+
+.at-toc-label {
+  font-weight: 600;
+  color: var(--c-text-mute);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  margin-right: 6px;
+}
+
+.at-toc a {
+  color: var(--c-text-soft);
+  text-decoration: none;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid var(--c-border);
+  background: #fff;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.at-toc a:hover {
+  background: var(--c-accent);
+  color: #fff;
+  border-color: var(--c-accent);
+}
+
+/* ============== MAIN CONTAINER ============== */
+.at-main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ============== HERO ============== */
+.at-hero {
+  padding: 2rem 0 1.75rem;
+  border-bottom: 2px solid var(--c-border);
+  margin-bottom: 2rem;
+}
+
+.at-hero-eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-accent);
+  margin-bottom: 0.85rem;
+}
+
+.at-hero-title {
+  font-size: clamp(1.65rem, 3.2vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.18;
+  color: var(--c-text);
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.at-hero-title em {
+  font-style: normal;
+  color: var(--c-accent);
+}
+
+.at-hero-subtitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--c-text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.25rem;
+}
+
+.at-hero-lead {
+  max-width: 82ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--c-text-soft);
+  margin: 0;
+}
+
+.at-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 1.25rem;
+  font-size: 12.5px;
+  color: var(--c-text-mute);
+}
+.at-hero-meta span { display: inline-flex; align-items: center; gap: 4px; }
+.at-hero-meta strong { color: var(--c-text-soft); font-weight: 600; }
+
+/* ============== KPI METRICS ============== */
+.at-metrics {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.6rem;
+  margin: 2rem 0 2.5rem;
+}
+
+@media (max-width: 900px) { .at-metrics { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 540px) { .at-metrics { grid-template-columns: repeat(2, 1fr); } }
+
+.at-metric {
+  padding: 1.05rem 1.1rem;
+  background: var(--c-bg-soft);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--c-accent);
+}
+
+.at-metric-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-text-mute);
+  margin-bottom: 0.45rem;
+}
+
+.at-metric-value {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--c-text);
+  letter-spacing: -0.01em;
+}
+.at-metric-value.sm { font-size: 1.25rem; }
+
+.at-metric-meta {
+  font-size: 11.5px;
+  color: var(--c-text-mute);
+  margin-top: 0.3rem;
+}
+
+/* ============== SECTIONS ============== */
+.at-section {
+  margin: 3rem 0 1rem;
+  padding-top: 1rem;
+}
+
+.at-section-head {
+  border-bottom: 2px solid var(--c-text);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.at-section-number {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--c-accent);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.at-section-title {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  margin: 0;
+  color: var(--c-text);
+  letter-spacing: -0.005em;
+}
+
+.at-subsection {
+  margin: 2rem 0 0.5rem;
+}
+
+.at-subsection-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0 0 0.85rem;
+  padding-left: 12px;
+  border-left: 3px solid var(--c-accent);
+}
+
+/* ============== PARAGRAPHS ============== */
+.at-main p {
+  margin: 0 0 1rem;
+  color: var(--c-text-soft);
+  max-width: 78ch;
+}
+
+.at-main p strong, .at-main p b { color: var(--c-text); font-weight: 600; }
+.at-main p em, .at-main p i { color: var(--c-text); font-style: italic; }
+
+/* ============== TABLES ============== */
+.at-table-wrap {
+  margin: 1.25rem 0 1.5rem;
+  overflow-x: auto;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.at-table-caption {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 14px;
+  background: var(--c-bg-soft);
+  border-bottom: 1px solid var(--c-border);
+}
+
+table.at-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+table.at-table th {
+  background: var(--c-bg-soft);
+  color: var(--c-text);
+  font-weight: 700;
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 2px solid var(--c-border-strong);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  position: sticky;
+  top: 0;
+}
+
+table.at-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-text-soft);
+  vertical-align: top;
+}
+
+table.at-table tbody tr:nth-child(even) { background: var(--c-bg-alt); }
+table.at-table tbody tr:hover { background: #fffaf5; }
+
+table.at-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.at-table td.rank { font-weight: 700; color: var(--c-text); text-align: center; }
+table.at-table td.locality { font-weight: 600; color: var(--c-text); }
+
+table.at-table tr.brecha td {
+  background: #fef2f2 !important;
+  font-weight: 600;
+  color: var(--c-accent);
+}
+
+/* Heat cells por valor */
+.heat-l { background: rgba(21,128,61,0.12); color: #15803d; font-weight: 600; }
+.heat-m { background: rgba(202,138,4,0.15); color: #92400e; font-weight: 600; }
+.heat-h { background: rgba(194,65,12,0.15); color: #c2410c; font-weight: 600; }
+.heat-v { background: rgba(185,28,28,0.18); color: #991b1b; font-weight: 700; }
+
+/* ============== LISTS ============== */
+.at-list {
+  margin: 0 0 1.25rem;
+  padding-left: 1.2rem;
+}
+.at-list li {
+  margin-bottom: 0.55rem;
+  color: var(--c-text-soft);
+  line-height: 1.55;
+}
+.at-list li strong { color: var(--c-text); font-weight: 600; }
+
+/* ============== INDEX CARDS ============== */
+.at-index-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 768px) { .at-index-grid { grid-template-columns: 1fr; } }
+
+.at-index-card {
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 1.25rem 1.35rem;
+  box-shadow: var(--shadow-card);
+  border-top: 3px solid var(--idx-icp);
+}
+
+.at-index-card.ivsh { border-top-color: var(--idx-ivsh); }
+.at-index-card.iddc { border-top-color: var(--idx-iddc); }
+.at-index-card.ibdt { border-top-color: var(--idx-ibdt); }
+.at-index-card.ivft { border-top-color: var(--idx-ivft); }
+.at-index-card.icht { border-top-color: var(--idx-icht); }
+.at-index-card.ipsb { border-top-color: var(--idx-ipsb); }
+
+.at-index-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.at-index-card-code {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--c-text-mute);
+}
+
+.at-index-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 0;
+}
+
+.at-index-card-mean {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--c-bg-soft);
+  color: var(--c-text);
+}
+
+.at-index-card p { font-size: 13.5px; line-height: 1.55; margin: 0 0 0.75rem; }
+
+.at-finding {
+  background: #fef2f2;
+  border-left: 3px solid var(--c-accent);
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--c-text);
+  margin: 0.75rem 0 0;
+}
+.at-finding strong { color: var(--c-accent); }
+
+/* ============== CHART CONTAINER ============== */
+.at-chart-wrap {
+  margin: 1.5rem 0 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+.at-chart-caption {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-text-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.85rem;
+}
+
+.at-chart-canvas-wrap {
+  position: relative;
+  height: 340px;
+}
+
+.at-chart-canvas-wrap.tall { height: 460px; }
+
+/* ============== RECOMMENDATIONS ============== */
+.at-recommendations {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  margin: 1.25rem 0;
+}
+
+.at-rec {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 14px;
+  padding: 1rem 1.25rem;
+  background: var(--c-bg-soft);
+  border-left: 3px solid var(--c-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.at-rec-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--c-accent);
+  line-height: 1;
+}
+
+.at-rec-body strong { color: var(--c-text); font-weight: 700; }
+.at-rec-body p { margin: 0.25rem 0 0; font-size: 13.5px; color: var(--c-text-soft); }
+
+/* ============== BIBLIOGRAPHY ============== */
+.at-bib {
+  margin: 1.5rem 0 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--c-bg-alt);
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+}
+
+.at-bib summary {
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--c-text);
+  list-style: none;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+.at-bib summary::before {
+  content: "▸ ";
+  font-size: 12px;
+  color: var(--c-accent);
+  transition: transform 0.15s;
+  display: inline-block;
+}
+
+.at-bib[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.at-bib-list {
+  margin: 1rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--c-text-soft);
+}
+
+.at-bib-list li {
+  margin-bottom: 0.6rem;
+  padding-left: 6px;
+}
+
+/* ============== FIGURE PLACEHOLDER ============== */
+.at-figure {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--c-bg-alt);
+  border: 1px dashed var(--c-border-strong);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--c-text-mute);
+  text-align: center;
+  font-style: italic;
+}
+.at-figure strong { color: var(--c-text-soft); font-style: normal; }
+
+/* ============== FOOTER ============== */
+.at-footer {
+  margin-top: 4rem;
+  padding: 1.75rem 0;
+  border-top: 2px solid var(--c-border);
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--c-text-mute);
+}
+
+.at-footer strong { color: var(--c-text-soft); }
+
+/* ============== PRINT ============== */
+@media print {
+  .at-nav, .at-toc { display: none; }
+  .at-main { max-width: 100%; padding: 0; }
+  body { font-size: 11pt; }
+  .at-section { page-break-inside: avoid; }
+  .at-chart-wrap, .at-table-wrap { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============== STICKY NAV ============== -->
+<header class="at-nav">
+  <a href="index.html" class="at-back">← Volver al Portal PLADECO</a>
+  <span class="at-nav-eyebrow">Capítulo III · Análisis Territorial · §11.5</span>
+  <div class="at-nav-title">📊 Análisis Censo 2024</div>
+</header>
+
+<!-- ============== TABLE OF CONTENTS ============== -->
+<nav class="at-toc">
+  <div class="at-toc-wrap">
+    <span class="at-toc-label">Secciones</span>
+    <a href="#sec-1">1 · Introducción</a>
+    <a href="#sec-2">2 · Marco Metodológico</a>
+    <a href="#sec-3">3 · Resultados Generales</a>
+    <a href="#sec-4">4 · Análisis por Índice</a>
+    <a href="#sec-5">5 · ICP · Ranking</a>
+    <a href="#sec-6">6 · Discusión</a>
+    <a href="#sec-7">7 · Conclusiones</a>
+    <a href="#sec-8">8 · Bibliografía</a>
+  </div>
+</nav>
+
+<!-- ============== MAIN CONTENT ============== -->
+<main class="at-main">
+
+  <!-- HERO -->
+  <section class="at-hero">
+    <span class="at-hero-eyebrow">Análisis Estratégico con Inteligencia Territorial</span>
+    <h1 class="at-hero-title">Diagnóstico Multidimensional de <em>Vulnerabilidad Socioterritorial</em></h1>
+    <div class="at-hero-subtitle">Comuna de Rengo · Región del Libertador Bernardo O'Higgins</div>
+    <p class="at-hero-lead">
+      Análisis estratégico con enfoque de inteligencia territorial elaborado a partir del Censo de Población y Vivienda 2024 (CPV 2024) del INE, en el marco de la actualización del PLADECO 2025-2035. Diagnóstico multidimensional de la vulnerabilidad socioterritorial a nivel de manzana censal, mediante siete índices: <strong>IVSH · IDDC · IBDT · IVFT · ICHT · IPSB · ICP</strong>.
+    </p>
+    <div class="at-hero-meta">
+      <span>📅 <strong>Marzo 2026</strong></span>
+      <span>🏛️ <strong>Ilustre Municipalidad de Rengo</strong></span>
+      <span>📊 <strong>826 manzanas censales</strong></span>
+      <span>👥 <strong>63.620 habitantes</strong></span>
+      <span>📚 <strong>23 referencias académicas</strong></span>
+    </div>
+  </section>
+
+  <!-- KPI METRICS -->
+  <div class="at-metrics">
+    <div class="at-metric">
+      <div class="at-metric-label">Población total</div>
+      <div class="at-metric-value">63.620</div>
+      <div class="at-metric-meta">habitantes (CPV 2024)</div>
+    </div>
+    <div class="at-metric">
+      <div class="at-metric-label">Manzanas censales</div>
+      <div class="at-metric-value">826</div>
+      <div class="at-metric-meta">634 urbanas · 192 rurales</div>
+    </div>
+    <div class="at-metric">
+      <div class="at-metric-label">Población urbana</div>
+      <div class="at-metric-value sm">50.823</div>
+      <div class="at-metric-meta">79,9% del total</div>
+    </div>
+    <div class="at-metric">
+      <div class="at-metric-label">Población rural</div>
+      <div class="at-metric-value sm">12.797</div>
+      <div class="at-metric-meta">20,1% del total</div>
+    </div>
+    <div class="at-metric">
+      <div class="at-metric-label">ICP medio comunal</div>
+      <div class="at-metric-value">0,210</div>
+      <div class="at-metric-meta">Vulnerabilidad moderada-baja</div>
+    </div>
+    <div class="at-metric">
+      <div class="at-metric-label">Brecha rural/urbano</div>
+      <div class="at-metric-value">+38,7%</div>
+      <div class="at-metric-meta">ICP rural 0,269 vs. 0,194</div>
+    </div>
+  </div>
+
+  <!-- ============== §1 INTRODUCCIÓN ============== -->
+  <section class="at-section" id="sec-1">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 1</div>
+      <h2 class="at-section-title">Introducción y Contexto Territorial</h2>
+    </div>
+
+    <p>El presente documento constituye un análisis estratégico con enfoque de inteligencia territorial para la comuna de Rengo, Región del Libertador Bernardo O'Higgins, elaborado a partir de los datos del <strong>Censo de Población y Vivienda 2024 (CPV 2024)</strong> del Instituto Nacional de Estadísticas de Chile. Este estudio se inscribe en el marco de la actualización del Plan de Desarrollo Comunal (PLADECO) 2025-2035, proporcionando un diagnóstico multidimensional de la vulnerabilidad socioterritorial a nivel de manzana censal.</p>
+
+    <p>La <strong>inteligencia territorial</strong>, entendida como un enfoque científico orientado a la comprensión de las dinámicas de vulnerabilidad mediante diagnósticos multiactor y multidimensionales (Girardot, 2009), permite superar las lecturas agregadas del territorio y avanzar hacia una planificación que reconoce la heterogeneidad interna de las comunas. Como señalan Fuenzalida et al. (2015), la integración de datos censales con sistemas de información geográfica (SIG) posibilita un análisis socio-espacial a escala submunicipal, revelando patrones de desigualdad que los promedios comunales ocultan.</p>
+
+    <p>La comuna de Rengo, con una población total de <strong>63.620 personas distribuidas en 826 manzanas censales</strong>, presenta una estructura territorial dual: un área urbana concentrada (50.823 habitantes en 634 manzanas, 79,9% de la población) y un área rural dispersa (12.797 habitantes en 192 manzanas, 20,1%). Esta configuración demográfico-espacial genera dinámicas diferenciadas de vulnerabilidad que este estudio busca identificar, medir y territorializar.</p>
+
+    <p>El análisis se estructura a partir de <strong>seis índices temáticos y un índice compuesto ponderado (ICP)</strong>, construidos con variables del CPV 2024, normalizados en escala 0-1 (donde 1 indica máxima vulnerabilidad) y clasificados en quintiles para su representación cartográfica.</p>
+  </section>
+
+  <!-- ============== §2 MARCO METODOLÓGICO ============== -->
+  <section class="at-section" id="sec-2">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 2</div>
+      <h2 class="at-section-title">Marco Metodológico</h2>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">2.1 Enfoque conceptual</h3>
+      <p>La construcción de índices territoriales de vulnerabilidad se fundamenta en la tradición de análisis multidimensional de la pobreza y la exclusión social desarrollada por organismos como CEPAL y PNUD. Según el <strong>Sistema de Indicadores de Vulnerabilidad Socioterritorial (SIVUST)</strong> del Ministerio de Desarrollo Social de Chile (2025), la vulnerabilidad territorial se mide integrando dimensiones de ingreso, empleo, salud, educación, vivienda, accesibilidad y seguridad, superando el enfoque exclusivamente monetario.</p>
+      <p>En esta línea, Hernández-Guerrero (2025) demuestra cómo variables censales permiten construir índices de vulnerabilidad social (IVS) a nivel de manzana urbana, mientras que el <strong>Índice Socio Material Territorial (ISMT)</strong> del Observatorio de Ciudades UC (2022) ha consolidado una metodología de caracterización territorial a partir de cuatro variables censales básicas. El presente estudio amplió ese alcance incorporando seis dimensiones complementarias.</p>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">2.2 Sistema de índices</h3>
+      <p>Se construyeron <strong>seis índices unidimensionales</strong> y un <strong>índice compuesto ponderado (ICP)</strong>, calculados a nivel de manzana censal. La siguiente tabla detalla los componentes y ponderaciones de cada índice.</p>
+
+      <div class="at-table-wrap">
+        <div class="at-table-caption">Tabla 1 · Metodología de construcción de índices de vulnerabilidad territorial</div>
+        <table class="at-table">
+          <thead>
+            <tr><th>Índice</th><th>Componente</th><th class="num">Pond.</th><th>Descripción</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>IVSH</strong></td><td>Hacinamiento</td><td class="num">30%</td><td>% viviendas con hacinamiento crítico</td></tr>
+            <tr><td>IVSH</td><td>Materialidad precaria</td><td class="num">25%</td><td>% viviendas con paredes o techo precarios</td></tr>
+            <tr><td>IVSH</td><td>Saneamiento básico</td><td class="num">25%</td><td>Sin agua pública + sin alcantarillado + sin electricidad</td></tr>
+            <tr><td>IVSH</td><td>Déficit cuantitativo</td><td class="num">20%</td><td>% déficit habitacional cuantitativo</td></tr>
+            <tr><td><strong>IDDC</strong></td><td>Envejecimiento</td><td class="num">30%</td><td>% personas de 60 y más años</td></tr>
+            <tr><td>IDDC</td><td>Primera infancia</td><td class="num">20%</td><td>% menores de 5 años</td></tr>
+            <tr><td>IDDC</td><td>Razón dependencia</td><td class="num">25%</td><td>Razón clásica de dependencia demográfica</td></tr>
+            <tr><td>IDDC</td><td>Hogares cuidados</td><td class="num">25%</td><td>% hogares con menores o mayores de 60</td></tr>
+            <tr><td><strong>IBDT</strong></td><td>Sin internet</td><td class="num">40%</td><td>% hogares sin acceso a internet</td></tr>
+            <tr><td>IBDT</td><td>Sin equipamiento</td><td class="num">35%</td><td>% hogares sin computador ni tablet</td></tr>
+            <tr><td>IBDT</td><td>Sin celular</td><td class="num">25%</td><td>% hogares sin teléfono móvil</td></tr>
+            <tr><td><strong>IVFT</strong></td><td>Prevalencia discap.</td><td class="num">30%</td><td>% personas con discapacidad</td></tr>
+            <tr><td>IVFT</td><td>Intensidad dific.</td><td class="num">25%</td><td>Índice de intensidad de dificultades funcionales</td></tr>
+            <tr><td>IVFT</td><td>Interacción envej.</td><td class="num">25%</td><td>Interacción discapacidad × envejecimiento</td></tr>
+            <tr><td>IVFT</td><td>Carga funcional</td><td class="num">20%</td><td>Carga promedio de dificultades</td></tr>
+            <tr><td><strong>ICHT</strong></td><td>Escolaridad</td><td class="num">30%</td><td>Promedio años de escolaridad (18+)</td></tr>
+            <tr><td>ICHT</td><td>Alfabetización</td><td class="num">15%</td><td>Tasa de alfabetismo</td></tr>
+            <tr><td>ICHT</td><td>Participación lab.</td><td class="num">30%</td><td>Tasa de participación fuerza de trabajo</td></tr>
+            <tr><td>ICHT</td><td>Calificación ocup.</td><td class="num">25%</td><td>% ocupados alta calificación CIUO</td></tr>
+            <tr><td><strong>IPSB</strong></td><td>Agua y saneamiento</td><td class="num">35%</td><td>Sin agua potable + sin alcantarillado formal</td></tr>
+            <tr><td>IPSB</td><td>Energía contaminante</td><td class="num">30%</td><td>Uso de combustibles contaminantes</td></tr>
+            <tr><td>IPSB</td><td>Basura informal</td><td class="num">15%</td><td>Eliminación informal de residuos</td></tr>
+            <tr><td>IPSB</td><td>Múltiple carencia</td><td class="num">20%</td><td>Combinación de 3 carencias críticas</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Índice Compuesto Ponderado (ICP):</strong> promedio simple de los seis índices <em>(IVSH + IDDC + IBDT + IVFT + ICHT_VUL + IPSB) / 6</em>. La variable ICHT se invierte (ICHT_VUL = 1 − ICHT) para que todos los índices mantengan la misma dirección: valores altos = mayor vulnerabilidad.</p>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">2.3 Clasificación y representación cartográfica</h3>
+      <p>Los resultados se clasifican en cuatro rangos para su representación en coropletas:</p>
+      <ul class="at-list">
+        <li><strong style="color:var(--r-low)">Verde (0,00–0,25):</strong> Bajo riesgo</li>
+        <li><strong style="color:var(--r-mod)">Amarillo (0,25–0,50):</strong> Riesgo moderado</li>
+        <li><strong style="color:var(--r-high)">Naranja (0,50–0,75):</strong> Riesgo alto</li>
+        <li><strong style="color:var(--r-very)">Rojo (0,75–1,00):</strong> Riesgo muy alto</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== §3 RESULTADOS GENERALES ============== -->
+  <section class="at-section" id="sec-3">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 3</div>
+      <h2 class="at-section-title">Resultados Generales</h2>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">3.1 Estadísticas descriptivas por índice</h3>
+      <p>La siguiente tabla presenta las estadísticas descriptivas de los siete índices calculados sobre las 826 manzanas censales de Rengo:</p>
+
+      <div class="at-table-wrap">
+        <div class="at-table-caption">Tabla 2 · Estadísticas descriptivas por índice de vulnerabilidad</div>
+        <table class="at-table">
+          <thead>
+            <tr><th>Índice</th><th class="num">Mínimo</th><th class="num">Máximo</th><th class="num">Media</th><th class="num">Mediana</th><th class="num">Desv. Est.</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>IVSH</strong></td><td class="num">0,004</td><td class="num">0,676</td><td class="num">0,084</td><td class="num">0,068</td><td class="num">0,065</td></tr>
+            <tr><td><strong>IDDC</strong></td><td class="num">0,030</td><td class="num">0,692</td><td class="num">0,270</td><td class="num">0,264</td><td class="num">0,070</td></tr>
+            <tr><td><strong>IBDT</strong></td><td class="num">0,009</td><td class="num">0,969</td><td class="num">0,204</td><td class="num">0,188</td><td class="num">0,128</td></tr>
+            <tr><td><strong>IVFT</strong></td><td class="num">0,006</td><td class="num">0,978</td><td class="num">0,125</td><td class="num">0,101</td><td class="num">0,096</td></tr>
+            <tr><td><strong>ICHT_VUL</strong></td><td class="num">0,083</td><td class="num">0,850</td><td class="num heat-m">0,438</td><td class="num">0,447</td><td class="num">0,109</td></tr>
+            <tr><td><strong>IPSB</strong></td><td class="num">0,022</td><td class="num">0,707</td><td class="num">0,184</td><td class="num">0,127</td><td class="num">0,139</td></tr>
+            <tr><td><strong>ICP</strong></td><td class="num">0,073</td><td class="num">0,493</td><td class="num">0,210</td><td class="num">0,207</td><td class="num">0,065</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Los datos revelan que la vulnerabilidad en Rengo es <strong>predominantemente moderada-baja</strong>, con un ICP medio de 0,210 y mediana de 0,207, situando a la mayoría del territorio en el rango de bajo riesgo. Sin embargo, la dispersión es significativa en algunos índices: el IBDT alcanza valores máximos de 0,969 (brecha digital prácticamente total), el IVFT llega a 0,978 y el ICHT_VUL a 0,850, evidenciando que existen manzanas con condiciones de extrema vulnerabilidad en dimensiones específicas.</p>
+
+      <p>El índice con mayor nivel promedio es <strong>ICHT_VUL (0,438)</strong>, indicando que el déficit de capital humano es la dimensión de vulnerabilidad más generalizada en la comuna. Le sigue IDDC (0,270), reflejando una presión demográfica por dependencia de cuidados extendida territorialmente.</p>
+
+      <div class="at-chart-wrap">
+        <div class="at-chart-caption">Gráfico 1 · Comparación de medias y máximos por índice</div>
+        <div class="at-chart-canvas-wrap">
+          <canvas id="chartIndicesMean"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">3.2 Distribución por quintiles del ICP</h3>
+
+      <div class="at-table-wrap">
+        <div class="at-table-caption">Tabla 3 · Distribución poblacional por quintil de vulnerabilidad (ICP)</div>
+        <table class="at-table">
+          <thead>
+            <tr><th>Quintil ICP</th><th class="num">Manzanas</th><th class="num">Población</th><th class="num">% Población</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong style="color:var(--r-low)">Q1 · Bajo</strong></td><td class="num">166</td><td class="num">11.638</td><td class="num">18,3%</td></tr>
+            <tr><td><strong>Q2</strong></td><td class="num">165</td><td class="num">12.799</td><td class="num">20,1%</td></tr>
+            <tr><td><strong>Q3</strong></td><td class="num">165</td><td class="num">14.121</td><td class="num">22,2%</td></tr>
+            <tr><td><strong>Q4</strong></td><td class="num">165</td><td class="num">13.495</td><td class="num">21,2%</td></tr>
+            <tr><td><strong style="color:var(--r-very)">Q5 · Alto</strong></td><td class="num">165</td><td class="num">11.567</td><td class="num">18,2%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>La distribución poblacional por quintiles muestra un patrón <strong>relativamente equilibrado</strong>, con el quintil Q3 concentrando la mayor proporción de población (22,2%). Los quintiles extremos (Q1-Bajo y Q5-Alto) contienen proporciones similares (18,3% y 18,2% respectivamente), sugiriendo una distribución simétrica.</p>
+
+      <div class="at-chart-wrap">
+        <div class="at-chart-caption">Gráfico 2 · Distribución de la población por quintil ICP</div>
+        <div class="at-chart-canvas-wrap">
+          <canvas id="chartQuintiles"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">3.3 Brecha urbano-rural</h3>
+
+      <div class="at-table-wrap">
+        <div class="at-table-caption">Tabla 4 · Comparación urbano-rural de índices de vulnerabilidad</div>
+        <table class="at-table">
+          <thead>
+            <tr><th>Área</th><th class="num">Población</th><th class="num">IVSH</th><th class="num">IDDC</th><th class="num">IBDT</th><th class="num">IVFT</th><th class="num">ICHT_VUL</th><th class="num">IPSB</th><th class="num">ICP</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Urbano</strong></td><td class="num">50.823</td><td class="num">0,070</td><td class="num">0,262</td><td class="num">0,180</td><td class="num">0,112</td><td class="num">0,424</td><td class="num">0,135</td><td class="num">0,194</td></tr>
+            <tr><td><strong>Rural</strong></td><td class="num">12.797</td><td class="num">0,132</td><td class="num">0,275</td><td class="num">0,236</td><td class="num">0,123</td><td class="num">0,484</td><td class="num">0,370</td><td class="num">0,269</td></tr>
+            <tr class="brecha"><td><strong>Brecha (R/U)</strong></td><td>—</td><td class="num">1,89×</td><td class="num">1,05×</td><td class="num">1,31×</td><td class="num">1,10×</td><td class="num">1,14×</td><td class="num">2,74×</td><td class="num">1,39×</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>La <strong>brecha urbano-rural constituye el hallazgo estructural más relevante</strong> del análisis. El ICP rural (0,269) supera al urbano (0,194) en un <strong>38,7%</strong>, confirmando la tesis de que la vulnerabilidad territorial se intensifica en los espacios rurales. Esta diferencia es consistente con la evidencia académica: Fuenzalida y Quiroz (2012) documentaron que aproximadamente el 45% del territorio chileno presenta alta vulnerabilidad social, concentrándose predominantemente en comunas con alta ruralidad.</p>
+
+      <p>Las mayores brechas se concentran en dos dimensiones críticas:</p>
+      <ul class="at-list">
+        <li><strong>Precariedad de Servicios Básicos (IPSB):</strong> brecha de 2,74 veces (rural 0,370 vs. urbano 0,135). Consistente con Fundación Amulén (2019), que identificó que el 47,2% de la población rural chilena carece de acceso formal a servicios de agua potable.</li>
+        <li><strong>Vulnerabilidad Socioeconómica (IVSH):</strong> brecha de 1,89 veces (rural 0,132 vs. urbano 0,070), evidenciando mayor hacinamiento, materialidad precaria y déficit habitacional en zonas rurales.</li>
+        <li><strong>Brecha Digital (IBDT):</strong> brecha de 1,31 veces (rural 0,236 vs. urbano 0,180). Bustamante y Sánchez-Torres (2016) documentaron brechas superiores a 20 puntos porcentuales entre conectividad urbana y rural en Chile.</li>
+        <li><strong>Capital Humano (ICHT_VUL):</strong> brecha de 1,14 veces (rural 0,484 vs. urbano 0,424), indicando menor escolaridad, participación laboral y calificación ocupacional en el sector rural.</li>
+      </ul>
+
+      <div class="at-chart-wrap">
+        <div class="at-chart-caption">Gráfico 3 · Brecha urbano-rural por índice de vulnerabilidad</div>
+        <div class="at-chart-canvas-wrap">
+          <canvas id="chartUrbRur"></canvas>
+        </div>
+      </div>
+
+      <p>El IPSB destaca como la dimensión de mayor contraste territorial: la barra rural (0,370) prácticamente triplica a la urbana (0,135), visualizando de manera contundente el déficit de infraestructura de servicios básicos en el sector rural de Rengo. Este contraste es especialmente relevante para la priorización de inversión pública, pues revela que mientras el casco urbano ha alcanzado niveles razonables de cobertura de agua, saneamiento y energía limpia, las localidades rurales mantienen carencias propias de una etapa anterior de desarrollo.</p>
+
+      <p>El ICHT_VUL presenta un patrón interesante: aunque la brecha relativa es menor (1,14×), ambas barras se sitúan en el rango moderado-alto (0,42–0,48), lo que indica que el <strong>déficit de capital humano no es solo un problema rural sino una limitante estructural de toda la comuna</strong>. Esta observación es crítica para el PLADECO, pues sugiere que las inversiones en educación, formación laboral y calificación profesional deben tener alcance comunal, no exclusivamente rural.</p>
+    </div>
+  </section>
+
+  <!-- ============== §4 ANÁLISIS POR ÍNDICE ============== -->
+  <section class="at-section" id="sec-4">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 4</div>
+      <h2 class="at-section-title">Análisis por Índice Territorial</h2>
+    </div>
+
+    <div class="at-index-grid">
+
+      <!-- IVSH -->
+      <div class="at-index-card ivsh">
+        <div class="at-index-card-header">
+          <div>
+            <div class="at-index-card-code">§4.1 · IVSH</div>
+            <h3 class="at-index-card-title">Vulnerabilidad Socioeconómica</h3>
+          </div>
+          <div class="at-index-card-mean">μ = 0,084</div>
+        </div>
+        <p>Integra hacinamiento (30%), materialidad precaria (25%), saneamiento básico (25%) y déficit cuantitativo (20%). Rengo presenta niveles generalmente bajos, aunque con focos de alerta.</p>
+        <p>La cartografía revela un patrón <strong>gradiente centro-periferia</strong>: casco urbano con valores bajos, periferia rural con valores moderados. Localidades críticas: <strong>Rosario Oriente (0,255), Los Césares (0,256) y Chapetón (0,221)</strong>.</p>
+        <div class="at-finding"><strong>Hallazgo clave:</strong> El 79,9% de la población urbana habita en condiciones adecuadas (IVSH &lt; 0,10), pero hay bolsones de precariedad intraurbana y rural donde el índice supera 0,20. Priorizar focos rurales más críticos y microterritorios de precariedad intraurbana (mayor eficiencia de inversión).</div>
+      </div>
+
+      <!-- IDDC -->
+      <div class="at-index-card iddc">
+        <div class="at-index-card-header">
+          <div>
+            <div class="at-index-card-code">§4.2 · IDDC</div>
+            <h3 class="at-index-card-title">Dependencia de Cuidados</h3>
+          </div>
+          <div class="at-index-card-mean">μ = 0,270</div>
+        </div>
+        <p>Mide envejecimiento (30%), primera infancia (20%), razón de dependencia (25%) y hogares con cuidados (25%). Es el <strong>segundo índice más elevado</strong> después de ICHT_VUL.</p>
+        <p>Distribución <strong>relativamente homogénea</strong> en el territorio, sin patrón centro-periferia típico. Sectores con mayor dependencia: corredor sur rural (<strong>La Chimba, El Placer 0,406, La Ariana 0,384</strong>).</p>
+        <div class="at-finding"><strong>Hallazgo clave:</strong> Dependencia de cuidados es vulnerabilidad transversal (0,262 urbano vs. 0,275 rural). Adoptar enfoque dual: infraestructura fija (centros diurnos) en casco urbano + servicios itinerantes/domiciliarios en corredor rural sur.</div>
+      </div>
+
+      <!-- IBDT -->
+      <div class="at-index-card ibdt">
+        <div class="at-index-card-header">
+          <div>
+            <div class="at-index-card-code">§4.3 · IBDT</div>
+            <h3 class="at-index-card-title">Brecha Digital Territorial</h3>
+          </div>
+          <div class="at-index-card-mean">μ = 0,204</div>
+        </div>
+        <p>Combina ausencia de internet (40%), falta de equipamiento (35%) y carencia de celular (25%). Distribución asimétrica con cola hacia valores altos.</p>
+        <p>Patrón <strong>centro-periferia muy marcado</strong>. Localidades críticas que superan el umbral moderado-alto: <strong>La Chimba (0,416), Apalta (0,395) y El Placer (0,387)</strong>. Heterogeneidad rural según accesibilidad vial.</p>
+        <div class="at-finding"><strong>Hallazgo clave:</strong> La brecha digital sigue el patrón de accesibilidad vial: las localidades más desconectadas digitalmente son también las más aisladas físicamente. Desplegar infraestructura de telecomunicaciones a lo largo de corredores viales existentes.</div>
+      </div>
+
+      <!-- IVFT -->
+      <div class="at-index-card ivft">
+        <div class="at-index-card-header">
+          <div>
+            <div class="at-index-card-code">§4.4 · IVFT</div>
+            <h3 class="at-index-card-title">Vulnerabilidad Funcional</h3>
+          </div>
+          <div class="at-index-card-mean">μ = 0,125</div>
+        </div>
+        <p>Mide prevalencia de discapacidad (30%), intensidad de dificultades (25%), interacción discapacidad-envejecimiento (25%) y carga funcional (20%). Valores más bajos pero con dispersión elevada.</p>
+        <p>Distribución <strong>fragmentada</strong>, con puntos altos dispersos. Mayor concentración rural norte. Localidades críticas: <strong>La Ariana (0,229), El Trebal Huilquío (0,214) y El Delirio (0,189)</strong>.</p>
+        <div class="at-finding"><strong>Hallazgo clave:</strong> La vulnerabilidad funcional opera como multiplicador de otras carencias. Implementar programas de rehabilitación basada en comunidad (RBC) y servicios itinerantes de salud para localidades del sector norte rural.</div>
+      </div>
+
+      <!-- ICHT -->
+      <div class="at-index-card icht">
+        <div class="at-index-card-header">
+          <div>
+            <div class="at-index-card-code">§4.5 · ICHT</div>
+            <h3 class="at-index-card-title">Capital Humano Territorial</h3>
+          </div>
+          <div class="at-index-card-mean">μ = 0,438</div>
+        </div>
+        <p>Mide escolaridad (30%), alfabetismo (15%), participación laboral (30%) y calificación ocupacional (25%). Para el ICP se usa ICHT_VUL = 1 − ICHT.</p>
+        <p>El <strong>déficit de capital humano es la dimensión más extendida</strong>. Patrón centrípeto: casco urbano con mayor ICHT, periferia rural con menor. Localidades críticas: <strong>Las Nieves (ICHT_VUL=0,652), El Placer (0,596), El Trebal Huilquío (0,583)</strong>.</p>
+        <div class="at-finding"><strong>Hallazgo clave:</strong> Vulnerabilidad más generalizada y de mayor magnitud. Políticas diferenciadas: calificación técnica/profesional urbana; educación de adultos, formación agrícola tecnificada y emprendimiento rural.</div>
+      </div>
+
+      <!-- IPSB -->
+      <div class="at-index-card ipsb">
+        <div class="at-index-card-header">
+          <div>
+            <div class="at-index-card-code">§4.6 · IPSB</div>
+            <h3 class="at-index-card-title">Precariedad de Servicios Básicos</h3>
+          </div>
+          <div class="at-index-card-mean">μ = 0,184</div>
+        </div>
+        <p>Integra agua y saneamiento (35%), energía contaminante (30%), basura informal (15%) y múltiple carencia (20%). Presenta <strong>la mayor brecha urbano-rural (2,74×)</strong>.</p>
+        <p>Mayor contraste territorial. Tres corredores de alta precariedad (IPSB &gt; 0,40): <strong>suroeste (El Baluarte 0,644, Rosario Poniente 0,540), sur (Chapetón 0,556, Camarico 0,528), noreste (El Trebal Huilquío 0,441, El Placer 0,444)</strong>.</p>
+        <div class="at-finding"><strong>Hallazgo clave:</strong> Mayor desigualdad territorial y mayor riesgo sanitario directo. Estrategias diferenciadas: ampliación de redes formales donde la densidad lo permite, fortalecimiento de APR existentes y programas de sustitución de combustibles contaminantes.</div>
+      </div>
+
+    </div>
+
+    <div class="at-chart-wrap">
+      <div class="at-chart-caption">Gráfico 4 · Relación entre déficit de capital humano (ICHT_VUL) y precariedad de servicios básicos (IPSB)</div>
+      <div class="at-chart-canvas-wrap tall">
+        <canvas id="chartScatter"></canvas>
+      </div>
+    </div>
+
+    <p>El gráfico anterior visualiza la relación bivariada entre las dos dimensiones más relevantes. Las manzanas urbanas (azul) se concentran en el cuadrante inferior izquierdo con IPSB consistentemente bajo independiente del capital humano (la línea de tendencia urbana es casi horizontal). En contraste, las manzanas rurales (rojo) muestran <strong>correlación positiva moderada</strong>: a mayor déficit de capital humano, mayor precariedad de servicios básicos. La separación vertical entre ambas nubes visualiza la brecha estructural que no se cierra con educación o empleo: requiere inversión directa en infraestructura.</p>
+  </section>
+
+  <!-- ============== §5 ICP RANKING ============== -->
+  <section class="at-section" id="sec-5">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 5</div>
+      <h2 class="at-section-title">Índice Compuesto Ponderado (ICP) · Ranking</h2>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">5.1 Ranking de localidades</h3>
+      <p>El ICP sintetiza las seis dimensiones de vulnerabilidad en un indicador único. La siguiente tabla presenta las <strong>15 localidades más vulnerables</strong> de Rengo:</p>
+
+      <div class="at-table-wrap">
+        <div class="at-table-caption">Tabla 5 · Ranking de localidades por vulnerabilidad compuesta (ICP)</div>
+        <table class="at-table">
+          <thead>
+            <tr>
+              <th class="num">#</th><th>Localidad</th><th>Área</th><th class="num">Pob.</th>
+              <th class="num">IVSH</th><th class="num">IDDC</th><th class="num">IBDT</th>
+              <th class="num">IVFT</th><th class="num">ICHT_VUL</th><th class="num">IPSB</th><th class="num">ICP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="rank">1</td><td class="locality">El Trebal Huilquío</td><td>Rural</td><td class="num">198</td><td class="num">0,173</td><td class="num">0,335</td><td class="num heat-m">0,343</td><td class="num">0,214</td><td class="num heat-h">0,583</td><td class="num heat-m">0,441</td><td class="num heat-h"><strong>0,348</strong></td></tr>
+            <tr><td class="rank">2</td><td class="locality">El Placer</td><td>Rural</td><td class="num">15</td><td class="num">0,114</td><td class="num heat-m">0,406</td><td class="num heat-m">0,387</td><td class="num">0,133</td><td class="num heat-h">0,596</td><td class="num heat-m">0,444</td><td class="num heat-h"><strong>0,347</strong></td></tr>
+            <tr><td class="rank">3</td><td class="locality">Apalta</td><td>Rural</td><td class="num">24</td><td class="num">0,207</td><td class="num">0,330</td><td class="num heat-m">0,395</td><td class="num">0,185</td><td class="num heat-m">0,433</td><td class="num heat-m">0,458</td><td class="num heat-h"><strong>0,335</strong></td></tr>
+            <tr><td class="rank">4</td><td class="locality">Las Nieves</td><td>Rural</td><td class="num">127</td><td class="num">0,096</td><td class="num">0,298</td><td class="num">0,308</td><td class="num">0,130</td><td class="num heat-h">0,652</td><td class="num heat-m">0,454</td><td class="num heat-h"><strong>0,323</strong></td></tr>
+            <tr><td class="rank">5</td><td class="locality">Chapetón</td><td>Rural</td><td class="num">115</td><td class="num">0,221</td><td class="num">0,276</td><td class="num">0,310</td><td class="num">0,070</td><td class="num heat-m">0,497</td><td class="num heat-h">0,556</td><td class="num heat-h"><strong>0,322</strong></td></tr>
+            <tr><td class="rank">6</td><td class="locality">La Chimba</td><td>Rural</td><td class="num">600</td><td class="num">0,148</td><td class="num">0,287</td><td class="num heat-m">0,416</td><td class="num">0,092</td><td class="num heat-h">0,557</td><td class="num">0,331</td><td class="num heat-m"><strong>0,305</strong></td></tr>
+            <tr><td class="rank">7</td><td class="locality">Camarico</td><td>Rural</td><td class="num">183</td><td class="num">0,183</td><td class="num">0,247</td><td class="num">0,234</td><td class="num">0,116</td><td class="num heat-m">0,483</td><td class="num heat-h">0,528</td><td class="num heat-m"><strong>0,298</strong></td></tr>
+            <tr><td class="rank">8</td><td class="locality">Rosario Oriente</td><td>Rural</td><td class="num">117</td><td class="num heat-m">0,255</td><td class="num">0,324</td><td class="num">0,168</td><td class="num">0,079</td><td class="num">0,379</td><td class="num heat-h">0,579</td><td class="num heat-m"><strong>0,297</strong></td></tr>
+            <tr><td class="rank">9</td><td class="locality">La Ariana</td><td>Rural</td><td class="num">58</td><td class="num">0,109</td><td class="num">0,384</td><td class="num">0,220</td><td class="num">0,229</td><td class="num heat-m">0,442</td><td class="num">0,376</td><td class="num heat-m"><strong>0,293</strong></td></tr>
+            <tr><td class="rank">10</td><td class="locality">Pueblo Hundido</td><td>Rural</td><td class="num">661</td><td class="num">0,125</td><td class="num">0,261</td><td class="num">0,292</td><td class="num">0,137</td><td class="num heat-h">0,539</td><td class="num">0,391</td><td class="num heat-m"><strong>0,291</strong></td></tr>
+            <tr><td class="rank">11</td><td class="locality">Las Pataguas</td><td>Rural</td><td class="num">216</td><td class="num">0,136</td><td class="num">0,265</td><td class="num">0,293</td><td class="num">0,146</td><td class="num heat-m">0,507</td><td class="num">0,385</td><td class="num heat-m"><strong>0,289</strong></td></tr>
+            <tr><td class="rank">12</td><td class="locality">Naicura</td><td>Rural</td><td class="num">97</td><td class="num">0,138</td><td class="num">0,317</td><td class="num">0,237</td><td class="num">0,084</td><td class="num heat-m">0,466</td><td class="num heat-m">0,487</td><td class="num heat-m"><strong>0,288</strong></td></tr>
+            <tr><td class="rank">13</td><td class="locality">Cóbil</td><td>Rural</td><td class="num">668</td><td class="num">0,146</td><td class="num">0,286</td><td class="num">0,213</td><td class="num">0,168</td><td class="num heat-m">0,471</td><td class="num">0,418</td><td class="num heat-m"><strong>0,283</strong></td></tr>
+            <tr><td class="rank">14</td><td class="locality">El Delirio</td><td>Rural</td><td class="num">81</td><td class="num">0,086</td><td class="num">0,264</td><td class="num">0,260</td><td class="num">0,189</td><td class="num heat-h">0,530</td><td class="num">0,366</td><td class="num heat-m"><strong>0,282</strong></td></tr>
+            <tr><td class="rank">15</td><td class="locality">Cerrillos</td><td>Rural</td><td class="num">830</td><td class="num">0,125</td><td class="num">0,303</td><td class="num">0,261</td><td class="num">0,148</td><td class="num heat-m">0,495</td><td class="num">0,363</td><td class="num heat-m"><strong>0,282</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Las <strong>15 localidades más vulnerables son todas rurales</strong>, confirmando el patrón estructural de desigualdad territorial. El Trebal Huilquío lidera con un ICP de 0,348, impulsado por alta precariedad de servicios básicos (IPSB=0,441), déficit de capital humano (ICHT_VUL=0,583) y brecha digital (IBDT=0,343). En contraste, la ciudad de Rengo (ICP=0,186) y Rosario urbano (ICP=0,215) se sitúan en el extremo opuesto.</p>
+
+      <div class="at-chart-wrap">
+        <div class="at-chart-caption">Gráfico 5 · Top 15 localidades por ICP — Vulnerabilidad compuesta</div>
+        <div class="at-chart-canvas-wrap tall">
+          <canvas id="chartRanking"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">5.2 Perfiles de vulnerabilidad por localidad</h3>
+      <p>El análisis detallado permite identificar <strong>patrones diferenciados</strong> que requieren respuestas específicas:</p>
+      <ul class="at-list">
+        <li><strong>Patrón de precariedad de servicios:</strong> Chapetón (IPSB=0,556), Camarico (IPSB=0,528) y Rosario Oriente (IPSB=0,579) requieren inversión en infraestructura básica como prioridad.</li>
+        <li><strong>Patrón de exclusión digital:</strong> La Chimba (IBDT=0,416), Apalta (IBDT=0,395) y El Placer (IBDT=0,387) presentan niveles de desconectividad que limitan el acceso a oportunidades.</li>
+        <li><strong>Patrón de vulnerabilidad demográfica:</strong> El Placer (IDDC=0,406) y La Ariana (IDDC=0,384) presentan alta dependencia de cuidados combinada con aislamiento territorial.</li>
+        <li><strong>Patrón de déficit habitacional:</strong> Rosario Oriente (IVSH=0,255) y Los Césares (IVSH=0,256) requieren programas de mejoramiento y construcción de vivienda social.</li>
+      </ul>
+
+      <div class="at-chart-wrap">
+        <div class="at-chart-caption">Gráfico 6 · Composición del ICP por dimensión — Top 10 localidades</div>
+        <div class="at-chart-canvas-wrap tall">
+          <canvas id="chartComposition"></canvas>
+        </div>
+      </div>
+
+      <p>Se identifican al menos tres perfiles-tipo entre las localidades más vulnerables: (i) <strong>perfil de carencia infraestructural</strong> (Chapetón, Camarico), donde la barra de IPSB domina la composición; (ii) <strong>perfil de exclusión múltiple equilibrada</strong> (El Trebal Huilquío, Apalta), con las seis dimensiones contribuyendo proporcionalmente; y (iii) <strong>perfil demográfico-digital</strong> (El Placer, La Ariana), donde IDDC e IBDT representan proporción desproporcionada. En todas, el segmento de ICHT_VUL constituye una proporción significativa, confirmando que el déficit de capital humano es un denominador común que amplifica todas las demás dimensiones.</p>
+    </div>
+  </section>
+
+  <!-- ============== §6 DISCUSIÓN ============== -->
+  <section class="at-section" id="sec-6">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 6</div>
+      <h2 class="at-section-title">Discusión · Argumentos para la Planificación Estratégica</h2>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">6.1 La multidimensionalidad como imperativo de política</h3>
+      <p>Los resultados confirman que la vulnerabilidad territorial en Rengo <strong>no puede reducirse a una sola dimensión</strong>. Lampis (2010) argumenta que la vulnerabilidad social debe entenderse como la intersección de libertades instrumentales y fundamentales, donde el déficit en una dimensión amplifica la vulnerabilidad en otras. En Rengo, esta interacción se manifiesta claramente: las localidades con mayor IPSB tienden a presentar también mayor ICHT_VUL y IBDT, configurando <strong>tríadas de exclusión</strong> que las intervenciones sectoriales aisladas no pueden resolver.</p>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">6.2 La brecha urbano-rural como desafío estructural</h3>
+      <p>La evidencia de Rengo es consistente con la literatura regional. Fuenzalida y Quiroz (2012) identificaron que el 45% del territorio chileno presenta alta vulnerabilidad social, concentrada en comunas con alta ruralidad. En Rengo, la magnitud de la brecha varía drásticamente según la dimensión: <strong>desde un 5% en IDDC hasta un 174% en IPSB</strong>.</p>
+      <p>Esta heterogeneidad tiene implicancias directas para la política pública: mientras la dependencia de cuidados requiere una respuesta comunal integrada, la precariedad de servicios básicos exige una focalización territorial radical en el sector rural.</p>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">6.3 Transición demográfica y economía del cuidado</h3>
+      <p>El IDDC promedio de 0,270, con valores superiores a 0,40 en localidades como El Placer, evidencia una <strong>transición demográfica avanzada</strong>. Huenchuan (2023) documenta cómo la reducción del tamaño familiar y la incorporación femenina al mercado laboral están erosionando las estructuras de cuidado informal.</p>
+      <p>Para Rengo, esto implica desarrollar infraestructura territorial de cuidados: centros diurnos para adultos mayores, programas de apoyo a cuidadores informales y servicios de atención domiciliaria en las localidades rurales más envejecidas.</p>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">6.4 Inclusión digital como condición habilitante</h3>
+      <p>Pávez Soto y García-González (2022) demuestran que la desconectividad rural reduce el acceso a protección social digital, educación remota y servicios de telemedicina. En Rengo, la intersección entre brecha digital y envejecimiento (Sunkel y Ullmann, 2019) genera una <strong>doble exclusión</strong> en localidades como El Placer (IBDT=0,387, IDDC=0,406).</p>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">6.5 Capital humano y desarrollo endógeno</h3>
+      <p>El déficit de capital humano (ICHT_VUL=0,438) como dimensión más extendida tiene consecuencias de largo plazo. El PNUD (2024) documenta que las comunas con menor índice de desarrollo humano presentan <strong>trayectorias de desarrollo más lentas</strong> y mayor dependencia de transferencias fiscales.</p>
+    </div>
+  </section>
+
+  <!-- ============== §7 CONCLUSIONES Y RECOMENDACIONES ============== -->
+  <section class="at-section" id="sec-7">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 7</div>
+      <h2 class="at-section-title">Conclusiones y Recomendaciones Estratégicas</h2>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">7.1 Conclusiones principales</h3>
+      <ul class="at-list">
+        <li>La vulnerabilidad en Rengo es <strong>predominantemente moderada-baja</strong> (ICP medio = 0,210), pero con alta heterogeneidad interna: el rango del ICP va de 0,073 a 0,493.</li>
+        <li>La <strong>brecha urbano-rural</strong> es el principal eje de desigualdad territorial, con un ICP rural 38,7% superior al urbano. Esta brecha se concentra en IPSB (2,74×) y IVSH (1,89×).</li>
+        <li>Las <strong>15 localidades más vulnerables son todas rurales</strong>, con perfiles diferenciados que requieren respuestas específicas.</li>
+        <li>El <strong>déficit de capital humano</strong> (ICHT_VUL=0,438) es la vulnerabilidad más generalizada, afectando tanto áreas urbanas como rurales.</li>
+        <li>La <strong>dependencia de cuidados</strong> (IDDC=0,270) es la vulnerabilidad más homogénea territorialmente, requiriendo una respuesta comunal integrada.</li>
+      </ul>
+    </div>
+
+    <div class="at-subsection">
+      <h3 class="at-subsection-title">7.2 Recomendaciones estratégicas</h3>
+      <div class="at-recommendations">
+        <div class="at-rec">
+          <div class="at-rec-num">01</div>
+          <div class="at-rec-body">
+            <strong>Inversión prioritaria en infraestructura rural</strong>
+            <p>Focalizar recursos en agua potable, saneamiento, energía limpia y gestión de residuos en localidades con IPSB &gt; 0,40: <em>El Baluarte, Rosario Oriente, Chapetón, Camarico, Rosario Poniente</em>.</p>
+          </div>
+        </div>
+        <div class="at-rec">
+          <div class="at-rec-num">02</div>
+          <div class="at-rec-body">
+            <strong>Plan comunal de conectividad digital</strong>
+            <p>Programa integral de inclusión digital (infraestructura + equipamiento + alfabetización), priorizando <em>La Chimba, Apalta, El Placer y El Trebal Huilquío</em>.</p>
+          </div>
+        </div>
+        <div class="at-rec">
+          <div class="at-rec-num">03</div>
+          <div class="at-rec-body">
+            <strong>Sistema comunal de cuidados</strong>
+            <p>Red territorial: centros diurnos, apoyo a cuidadores y atención domiciliaria, con cobertura comunal e intensificada en localidades con IDDC &gt; 0,35.</p>
+          </div>
+        </div>
+        <div class="at-rec">
+          <div class="at-rec-num">04</div>
+          <div class="at-rec-body">
+            <strong>Formación de capital humano diferenciada</strong>
+            <p>Programas adaptados: <em>calificación técnica urbana</em> + <em>formación agrícola, emprendimiento y alfabetización rural</em>.</p>
+          </div>
+        </div>
+        <div class="at-rec">
+          <div class="at-rec-num">05</div>
+          <div class="at-rec-body">
+            <strong>Política habitacional focalizada</strong>
+            <p>Programas de mejoramiento habitacional en localidades con IVSH &gt; 0,20, particularmente <em>Rosario Oriente, Los Césares y Chapetón</em>.</p>
+          </div>
+        </div>
+        <div class="at-rec">
+          <div class="at-rec-num">06</div>
+          <div class="at-rec-body">
+            <strong>Monitoreo territorial permanente</strong>
+            <p>Institucionalizar un sistema de indicadores de vulnerabilidad socioterritorial con seguimiento periódico y evaluación de impacto.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== §8 BIBLIOGRAFÍA ============== -->
+  <section class="at-section" id="sec-8">
+    <div class="at-section-head">
+      <div class="at-section-number">SECCIÓN 8</div>
+      <h2 class="at-section-title">Bibliografía</h2>
+    </div>
+
+    <details class="at-bib" open>
+      <summary>23 referencias académicas e institucionales</summary>
+      <ol class="at-bib-list">
+        <li>Bravo-Segal, S. y Villar, F. (2020). Prevalence and correlates of disability in Latin America and the Caribbean: Evidence from 8 national censuses. <em>PLOS ONE</em>, 16(10), e0258825.</li>
+        <li>Bustamante, A. y Sánchez-Torres, A. (2016). Hacia un modelo de inclusión digital rural: una mirada sobre América Latina y el caso de Chile. <em>Nueva Sociedad</em>, (262).</li>
+        <li>Cheix Diéguez, M. C., Herrera Ponce, M. S., Fernández Lorca, M. B. y Barros Lezaeta, C. (2015). Factores de riesgo de la dependencia funcional en las personas mayores chilenas. <em>América Latina Hoy</em>, 71, 17-36.</li>
+        <li>Fuenzalida, M., Buzai, G. D., Moreno Jiménez, A. y García de León, A. (2015). <em>Geografía, Geotecnología y Análisis Espacial: Tendencias, Métodos y Aplicaciones</em>. Editorial Triángulo.</li>
+        <li>Fuenzalida, M. y Quiroz, R. (2012). La dimensión espacial de los conflictos ambientales en Chile. <em>Polis. Revista Latinoamericana</em>, 11(31), 157-168.</li>
+        <li>Fundación Amulén. (2019). <em>Pobres de Agua: Radiografía del Agua Rural de Chile</em>. Fundación Amulén / Centro UC Derecho y Gestión de Aguas.</li>
+        <li>Girardot, J.-J. (2009). Evolution of the concept of Territorial Intelligence. <em>Res-Ricerca e Sviluppo per le Politiche Sociali</em>, 1(2), 11-29.</li>
+        <li>Hernández-Guerrero, J. A. (2025). Análisis territorial de la vulnerabilidad social en ciudades de Quintana Roo, México. <em>Investigaciones Geográficas</em>.</li>
+        <li>Huenchuan, S. (Ed.). (2018). <em>Envejecimiento, personas mayores y Agenda 2030 para el Desarrollo Sostenible</em> (Libros de la CEPAL, N° 154). CEPAL.</li>
+        <li>Huenchuan, S. (2023). <em>Cuidados de largo plazo para personas mayores</em>. CEPAL.</li>
+        <li>Instituto Nacional de Estadísticas (INE). (2025). <em>Manual Censal CPV 2024</em>. INE Chile.</li>
+        <li>Jiménez-García, W. G., Manzano-Chávez, L. y Mohor-Bellalta, A. (2021). Medición de la vulnerabilidad social: propuesta de un índice para barrios vulnerables. <em>Papers. Revista de Sociología</em>, 106(3), 381-412.</li>
+        <li>Lampis, A. (2010). ¿Qué ha pasado con la vulnerabilidad social en Colombia? <em>Sociedad y Economía</em>, (19), 229-261.</li>
+        <li>Matus-López, M. y Cid Pedraza, C. (2019). Is aging a problem?: Dependency, long-term care, and public policies in Chile. <em>Revista de Ciencia Política</em>, 39(1).</li>
+        <li>Ministerio de Desarrollo Social y Familia de Chile. (2025). <em>Sistema de Indicadores de Vulnerabilidad Socioterritorial (SIVUST)</em>. Gobierno de Chile.</li>
+        <li>Observatorio de Ciudades UC (OCUC). (2022). <em>Índice Socio Material Territorial (ISMT): Actualización Metodológica 2022</em>. Pontificia Universidad Católica de Chile.</li>
+        <li>Pávez Soto, M. I. y García-González, M. (2022). Desconectados: causas y remedios de la brecha digital. <em>e-Revista Internacional de la Protección Social</em>, 7(2).</li>
+        <li>Pflieger, G. (2023). Universalización de acceso a agua potable y alcantarillado en Chile, c. 1880-2020. <em>Historia</em>, 56(1), 320-355.</li>
+        <li>PNUD. (2024). <em>El Desarrollo Humano de las Comunas de Chile</em>. Programa de las Naciones Unidas para el Desarrollo.</li>
+        <li>Romero-Toledo, H. (2016). Las organizaciones comunitarias de agua potable rural en América Latina. <em>Polis. Revista Latinoamericana</em>, 15(45).</li>
+        <li>Sunkel, G. y Ullmann, H. (2019). <em>Las personas mayores de América Latina en la era digital: superación de la brecha digital</em>. CEPAL.</li>
+      </ol>
+    </details>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="at-footer">
+    <p><strong>Análisis Territorial Censo 2024 · PLADECO Rengo 2025-2035</strong></p>
+    <p>Capítulo III · Análisis Territorial · §11.5 · Marzo 2026</p>
+    <p>Elaborado por SECPLAC · Ilustre Municipalidad de Rengo</p>
+    <p style="margin-top:10px"><a href="index.html" style="color:var(--c-accent);text-decoration:none;font-weight:600">← Volver al Portal PLADECO</a></p>
+  </footer>
+
+</main>
+
+<!-- ============== CHART.JS RENDERING ============== -->
+<script>
+(function(){
+  // Wait for Chart.js
+  function whenReady(cb){
+    if (typeof Chart !== 'undefined') return cb();
+    setTimeout(function(){ whenReady(cb); }, 60);
+  }
+
+  whenReady(function(){
+    // Common style
+    Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+    Chart.defaults.font.size = 12;
+    Chart.defaults.color = '#475569';
+    Chart.defaults.plugins.legend.labels.boxWidth = 14;
+    Chart.defaults.plugins.legend.labels.padding = 12;
+
+    var COLORS = {
+      ivsh: '#be185d', iddc: '#0369a1', ibdt: '#7c3aed',
+      ivft: '#b45309', icht: '#15803d', ipsb: '#c2410c', icp: '#0c1f36',
+      urban: '#1e40af', rural: '#b91c1c'
+    };
+
+    // ============== GRÁFICO 1: Medias y Máximos por Índice ==============
+    var ctx1 = document.getElementById('chartIndicesMean');
+    if (ctx1) new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: ['IVSH', 'IDDC', 'IBDT', 'IVFT', 'ICHT_VUL', 'IPSB', 'ICP'],
+        datasets: [
+          { label: 'Media', data: [0.084, 0.270, 0.204, 0.125, 0.438, 0.184, 0.210],
+            backgroundColor: [COLORS.ivsh, COLORS.iddc, COLORS.ibdt, COLORS.ivft, COLORS.icht, COLORS.ipsb, COLORS.icp],
+            borderRadius: 4 },
+          { label: 'Máximo', data: [0.676, 0.692, 0.969, 0.978, 0.850, 0.707, 0.493],
+            backgroundColor: 'rgba(100,116,139,0.25)', borderColor: '#94a3b8', borderWidth: 1, borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, max: 1.0, grid: { color: '#e2e8f0' },
+               title: { display: true, text: 'Valor del índice (0–1)' } },
+          x: { grid: { display: false } }
+        },
+        plugins: { legend: { position: 'top' } }
+      }
+    });
+
+    // ============== GRÁFICO 2: Distribución por Quintiles ==============
+    var ctx2 = document.getElementById('chartQuintiles');
+    if (ctx2) new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: ['Q1 · Bajo', 'Q2', 'Q3', 'Q4', 'Q5 · Alto'],
+        datasets: [
+          { label: 'Población', data: [11638, 12799, 14121, 13495, 11567],
+            backgroundColor: ['#15803d', '#65a30d', '#ca8a04', '#c2410c', '#b91c1c'],
+            borderRadius: 6 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, grid: { color: '#e2e8f0' },
+               title: { display: true, text: 'Habitantes' } },
+          x: { grid: { display: false } }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function(c){ return c.parsed.y.toLocaleString('es-CL') + ' habitantes'; } } }
+        }
+      }
+    });
+
+    // ============== GRÁFICO 3: Brecha Urbano-Rural ==============
+    var ctx3 = document.getElementById('chartUrbRur');
+    if (ctx3) new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: ['IVSH', 'IDDC', 'IBDT', 'IVFT', 'ICHT_VUL', 'IPSB', 'ICP'],
+        datasets: [
+          { label: 'Urbano', data: [0.070, 0.262, 0.180, 0.112, 0.424, 0.135, 0.194],
+            backgroundColor: COLORS.urban, borderRadius: 4 },
+          { label: 'Rural', data: [0.132, 0.275, 0.236, 0.123, 0.484, 0.370, 0.269],
+            backgroundColor: COLORS.rural, borderRadius: 4 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, max: 0.6, grid: { color: '#e2e8f0' },
+               title: { display: true, text: 'Valor del índice (0–1)' } },
+          x: { grid: { display: false } }
+        },
+        plugins: { legend: { position: 'top' } }
+      }
+    });
+
+    // ============== GRÁFICO 4: Scatter ICHT_VUL vs IPSB ==============
+    var ctx4 = document.getElementById('chartScatter');
+    if (ctx4) {
+      // Datos por localidad: [ICHT_VUL, IPSB, pob, nombre]
+      var urbanos = [
+        { x: 0.350, y: 0.085, r: 14, label: 'Rengo ciudad' },
+        { x: 0.395, y: 0.155, r: 8, label: 'Rosario' },
+        { x: 0.460, y: 0.220, r: 6, label: 'Esmeralda' }
+      ];
+      var rurales = [
+        { x: 0.583, y: 0.441, r: 5, label: 'El Trebal Huilquío' },
+        { x: 0.596, y: 0.444, r: 4, label: 'El Placer' },
+        { x: 0.433, y: 0.458, r: 4, label: 'Apalta' },
+        { x: 0.652, y: 0.454, r: 5, label: 'Las Nieves' },
+        { x: 0.497, y: 0.556, r: 5, label: 'Chapetón' },
+        { x: 0.557, y: 0.331, r: 7, label: 'La Chimba' },
+        { x: 0.483, y: 0.528, r: 5, label: 'Camarico' },
+        { x: 0.379, y: 0.579, r: 5, label: 'Rosario Oriente' },
+        { x: 0.442, y: 0.376, r: 4, label: 'La Ariana' },
+        { x: 0.539, y: 0.391, r: 7, label: 'Pueblo Hundido' },
+        { x: 0.507, y: 0.385, r: 6, label: 'Las Pataguas' },
+        { x: 0.466, y: 0.487, r: 5, label: 'Naicura' },
+        { x: 0.471, y: 0.418, r: 7, label: 'Cóbil' },
+        { x: 0.530, y: 0.366, r: 5, label: 'El Delirio' },
+        { x: 0.495, y: 0.363, r: 7, label: 'Cerrillos' },
+        { x: 0.610, y: 0.644, r: 3, label: 'El Baluarte' },
+        { x: 0.500, y: 0.540, r: 5, label: 'Rosario Poniente' }
+      ];
+      new Chart(ctx4, {
+        type: 'bubble',
+        data: {
+          datasets: [
+            { label: 'Urbano', data: urbanos, backgroundColor: 'rgba(30,64,175,0.6)', borderColor: COLORS.urban, borderWidth: 1.5 },
+            { label: 'Rural', data: rurales, backgroundColor: 'rgba(185,28,28,0.6)', borderColor: COLORS.rural, borderWidth: 1.5 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: {
+            x: { min: 0.2, max: 0.75, title: { display: true, text: 'ICHT_VUL · Déficit de capital humano' }, grid: { color: '#e2e8f0' } },
+            y: { min: 0.0, max: 0.75, title: { display: true, text: 'IPSB · Precariedad de servicios básicos' }, grid: { color: '#e2e8f0' } }
+          },
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: { callbacks: { label: function(c){
+              var d = c.raw;
+              return d.label + ' · ICHT_VUL=' + d.x.toFixed(3) + ' · IPSB=' + d.y.toFixed(3);
+            } } }
+          }
+        }
+      });
+    }
+
+    // ============== GRÁFICO 5: Ranking Top 15 ==============
+    var ctx5 = document.getElementById('chartRanking');
+    if (ctx5) new Chart(ctx5, {
+      type: 'bar',
+      data: {
+        labels: ['El Trebal Huilquío','El Placer','Apalta','Las Nieves','Chapetón','La Chimba','Camarico','Rosario Oriente','La Ariana','Pueblo Hundido','Las Pataguas','Naicura','Cóbil','El Delirio','Cerrillos'],
+        datasets: [{
+          label: 'ICP',
+          data: [0.348, 0.347, 0.335, 0.323, 0.322, 0.305, 0.298, 0.297, 0.293, 0.291, 0.289, 0.288, 0.283, 0.282, 0.282],
+          backgroundColor: COLORS.rural,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { beginAtZero: true, max: 0.4, grid: { color: '#e2e8f0' },
+               title: { display: true, text: 'ICP · Vulnerabilidad compuesta' } },
+          y: { grid: { display: false } }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function(c){ return 'ICP = ' + c.parsed.x.toFixed(3); } } }
+        }
+      }
+    });
+
+    // ============== GRÁFICO 6: Composición ICP por dimensión ==============
+    var ctx6 = document.getElementById('chartComposition');
+    if (ctx6) {
+      var localidades = ['El Trebal Huilquío','El Placer','Apalta','Las Nieves','Chapetón','La Chimba','Camarico','Rosario Oriente','La Ariana','Pueblo Hundido'];
+      // Cada array es [IVSH, IDDC, IBDT, IVFT, ICHT_VUL, IPSB]
+      var datos = {
+        IVSH: [0.173,0.114,0.207,0.096,0.221,0.148,0.183,0.255,0.109,0.125],
+        IDDC: [0.335,0.406,0.330,0.298,0.276,0.287,0.247,0.324,0.384,0.261],
+        IBDT: [0.343,0.387,0.395,0.308,0.310,0.416,0.234,0.168,0.220,0.292],
+        IVFT: [0.214,0.133,0.185,0.130,0.070,0.092,0.116,0.079,0.229,0.137],
+        ICHT_VUL: [0.583,0.596,0.433,0.652,0.497,0.557,0.483,0.379,0.442,0.539],
+        IPSB: [0.441,0.444,0.458,0.454,0.556,0.331,0.528,0.579,0.376,0.391]
+      };
+      new Chart(ctx6, {
+        type: 'bar',
+        data: {
+          labels: localidades,
+          datasets: [
+            { label: 'IVSH', data: datos.IVSH, backgroundColor: COLORS.ivsh },
+            { label: 'IDDC', data: datos.IDDC, backgroundColor: COLORS.iddc },
+            { label: 'IBDT', data: datos.IBDT, backgroundColor: COLORS.ibdt },
+            { label: 'IVFT', data: datos.IVFT, backgroundColor: COLORS.ivft },
+            { label: 'ICHT_VUL', data: datos.ICHT_VUL, backgroundColor: COLORS.icht },
+            { label: 'IPSB', data: datos.IPSB, backgroundColor: COLORS.ipsb }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true, maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { color: '#e2e8f0' },
+                 title: { display: true, text: 'Suma de dimensiones de vulnerabilidad' } },
+            y: { stacked: true, grid: { display: false } }
+          },
+          plugins: { legend: { position: 'top' } }
+        }
+      });
+    }
+
+    console.log('[Análisis Territorial] Charts rendered ✓');
+  });
+})();
+</script>
+
+</body>
+</html>
