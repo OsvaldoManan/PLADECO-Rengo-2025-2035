@@ -5094,7 +5094,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.35</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.36</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5222,7 +5222,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.35</span>
+        <span>&#127919; v45.36</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -12204,10 +12204,11 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.35</span>
+  <span class="ub-ver">v45.36</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.36</strong> <span class="ub-date">19 May 2026</span><br>&#127960;&#65039;&#127912; **v45.36 &middot; Fix integral colores MBHT + banner identitario**. Solicitud del usuario: los colores del texto y banner de MBHT son fundamentales mejorarlos. **DIAGN&Oacute;STICO**: el CSS original de MBHT (v45.31) us&oacute; tokens legacy (--text, --text2, --text-secondary) que tras el polish de v45.35 (que introdujo --text-1/2/3/4/5) crearon inconsistencias de contraste. Adem&aacute;s, el banner principal era gen&eacute;rico sin identidad visual. **BANNER IDENTITARIO MBHT** (sec-header): gradient hero institucional Rengo navy-verde-verde-claro (135deg #0c1f36 &rarr; #15803d &rarr; #2d9a4d), padding 32x36px, sombra 4px 20px navy .18, decoraci&oacute;n radial blanca translucida en esquina superior derecha + emoji edificio institucional gigante .08 opacidad en esquina inferior derecha, h2 blanco peso 800 con clamp 22-32px y text-shadow sutil, badge con backdrop-filter blur + borde blanco translucido, p&aacute;rrafo blanco 92% con strong en chip blanco translucido. Responsive con padding 22x18px en m&oacute;vil. **FIXES DE CONTRASTE LIGHT MODE**: todos los textos MBHT con colores hex expl&iacute;citos en lugar de variables (-#0c1f36 t&iacute;tulos, #1e293b body principal, #334155 body secundario, #475569 captions, #64748b meta, #94a3b8 placeholders). KPIs/cards con fondo expl&iacute;cito blanco, borders #e2e8f0. Tablas distritos con thead bg verde-claro .10 + texto navy. **FIXES DARK MODE**: cada componente MBHT con override `body.dark #mbht-bienestar` para cards bg #132035, texto #f1f5f9 (titulos) / #e2e8f0 (body) / #cbd5e1 (secondary) / #94a3b8 (meta), bordes #334155. Valores destacados con verde claro #48c76e en dark. **NUEVOS DETALLES VISUALES**: (1) H3 subsecciones internas con barrita decorativa verde 4x18px al inicio. (2) Botones de filtro mapa con estados light/dark + sombra activa. (3) Cards de recomendaciones con border-left verde Rengo prominente. (4) Bloques de evidencia con border-left azul navy. (5) Bloques de marco conceptual con border-left morado en cursiva. (6) Sec-fuente con background tonal + ícono en chip verde. **ALCANCE**: ~250 líneas de CSS específico bajo selector `#mbht-bienestar` con prefijos para evitar contaminar otras secciones. **RIESGO PARSER**: nulo, CSS puro sin etiquetas literales en texto.</div>
     <div class="ub-entry"><strong>v45.35</strong> <span class="ub-date">19 May 2026</span><br>&#128221;&#127912; **v45.35 &middot; Distribuci&oacute;n integral: spacing + tipograf&iacute;a + colores + composici&oacute;n**. Pulido total del portal aplicando un sistema de dise&ntilde;o profesional consistente en toda la composici&oacute;n visual. **SISTEMA DE SPACING CAN&Oacute;NICO**: 11 tokens de espaciado (--space-3xs 2px hasta --space-5xl 96px) con escala armoniosa 1.5, m&aacute;s 5 tokens de gap (--gap-xs/sm/md/lg/xl) para grids y flex. **CONTENEDORES**: 4 anchos can&oacute;nicos (narrow 720px, base 1100px, wide 1280px, full 1440px). **PESOS TIPOGR&Aacute;FICOS**: 6 tokens (--fw-regular 400 a --fw-black 900). **PALETA DE COLORES JER&Aacute;RQUICA**: (a) Superficies (--surface-1/2/3/elev) para cards y bg. (b) Texto jer&aacute;rquico (--text-1/2/3/4/5) de t&iacute;tulos a placeholders. (c) Borders escalados (--border-1/2/3/4) sutiles a fuertes. (d) Estados interactivos (--c-hover-bg, --c-active-bg, --c-focus-ring). (e) Gradientes institucionales (--grad-rengo, --grad-rengo-soft, --grad-navy, --grad-navy-warm, --grad-divider). **DARK MODE COMPLETO** con tokens reescritos para todos los grupos. **GRIDS UTILITARIOS**: .grid-auto-sm/md/lg (auto-fit responsive) + .grid-2/3/4 fijos con breakpoints. **TIPOGRAF&Iacute;A FINA**: font-feature-settings ss01+cv11+calt+ss02 globalmente; numerals tabulares forzados en KPIs, tablas, acr&oacute;nimos y stats; optical sizing 32 en hero titles. **KPI CARDS UNIFICADAS**: .kpi/.censo-kpi/.mbht-kpi con bg surface-1, border-2, padding lg, hover translateY(-3px) + border verde Rengo + barra superior 2px verde Rengo. **VIZ-CARDS REFINADAS**: .viz-card/.doc-card-enhanced/.foda-card/.eje-card con padding xl, transition cubic-bezier, hover border verde sutil; h3 con escala 16px peso 800 + viz-sub 12.5px peso 500. **TABLAS UNIFORMES**: border-collapse separate + border-radius con overflow hidden, thead bg surface-3 con uppercase tracking wider, tbody con hover surface-2. **FOOTER REFINADO**: padding 48px, h4 con ts-sm + tracking widest uppercase, links con line-height relaxed + hover blanco. **BOTONES UNIFICADOS**: .btn primary con gradient Rengo + shadow + transition cubic-bezier; .btn-secondary outline; focus-visible con outline 2px verde + offset 3px. **SIDEBAR REFINADO**: nav-a con padding sm/lg + font-size ts-sm + hover bg white .06; group-title con tracking widest. **BLOCKQUOTES**: nuevo patr&oacute;n con border-left verde + bg surface-2 + cite con guion. **SELECCI&Oacute;N**: verde Rengo .28 light / .45 dark. **SMOOTH SCROLL**: scroll-padding 32px, scroll-margin 24px. **IMG NO-LOGOS**: border-radius md + box-shadow card. **PRINT**: spacing tokens reducidos a points para A4. **TOTAL**: ~340 l&iacute;neas de CSS estructurado al final del body, sobreescribe legacy con !important controlado.</div>
     <div class="ub-entry"><strong>v45.34</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#128221; **v45.34 &middot; Polish de Composici&oacute;n Integral**. Reorganizaci&oacute;n visual completa del portal con foco en jerarqu&iacute;a, ritmo y coherencia. **ESCALA TIPOGR&Aacute;FICA CAN&Oacute;NICA**: 9 niveles `--ts-xs` (11px) hasta `--ts-4xl` (49px) con ratio 1.25 (escala mayor segunda); line-heights `--lh-tight/snug/normal/relaxed`; letter-spacing `--ls-tight/snug/normal/wide/wider/widest`. **HERO REFINADO**: H1 con clamp(28-48px) escalable, peso 800, letter-spacing -.022em; eyebrow y subtitle a 11px con tracking .08em uppercase; lead a 16px max-width 72ch; pseudo-elemento `::after` con gradiente radial verde Rengo sutil en esquina superior derecha (depth). **GROUP DIVIDERS (cap&iacute;tulos) elegantes**: gradient horizontal verde-azul-transparente; doble border-top/bottom con verde Rengo .20 opacidad; barra superior decorativa centrada 80x3px verde Rengo; n&uacute;meros romanos en c&iacute;rculos 48x48px con gradiente verde-oscuro Georgia serif + sombra; cap-sub indentada con padding-left 64px en desktop, sin indent en m&oacute;vil. **SEC-HEADERS UNIFORMES**: borde inferior 2px verde-claro + barrita underline 60x2px verde Rengo; h2 con clamp(20-28px) peso 800; p body con line-height 1.7 max-width 78ch; badges con margen inferior 8px. **NUEVOS PATRONES UTILITARIOS**: (1) `.callout` con variantes info/warn/danger/neutral (border-left + bg sem&aacute;ntico, &iacute;cono opcional). (2) `.stat-inline` para n&uacute;meros destacados inline en texto (chip verde Rengo). (3) `.banner-strip` con gradiente navy-blue-verde para CTAs/destacados, con &iacute;cono + eyebrow + title + sub + bot&oacute;n. (4) `.anchor-title` para anclas grandes con n&uacute;meros romanos Georgia. **SEC-FUENTE REFINADA**: background sutil + border-left navy + &iacute;cono en chip verde-claro 22x22px + tipograf&iacute;a tabular. **RITMO VERTICAL**: section margin-bottom 32px universal; jerarqu&iacute;a h3 (16px/700) y h4 (14px/700) consistente. **DARK MODE**: coherencia en todos los nuevos componentes. **RESPONSIVE**: ajustes espec&iacute;ficos &le;640px en padding, font-size y gaps. **TODO !important judicialmente** para sobrescribir CSS legacy sin romper layouts. **RIESGO PARSER**: NULO &mdash; CSS puro al final del body, sin JS, sin etiquetas literales en texto.</div>
     <div class="ub-entry"><strong>v45.33</strong> <span class="ub-date">19 May 2026</span><br>&#128221;&#127919; **v45.33 &middot; MBHT: Recomendaciones estrat&eacute;gicas argumentadas con marco te&oacute;rico**. **SOLICITUD DEL USUARIO**: las recomendaciones deben ser argumentos basados en recomendaciones estrat&eacute;gicas, no listados operativos. **REESTRUCTURACI&Oacute;N COMPLETA**: las 6 recomendaciones MBHT pasan de bloques cortos (1 p&aacute;rrafo) a <strong>cards profundas con 6 secciones cada una</strong>: (1) Argumento estrat&eacute;gico (el &laquo;por qu&eacute;&raquo;), (2) Marco conceptual (referencias te&oacute;ricas: Sen, Ostrom, Lefebvre, Jacobs, Costanza, Girardot), (3) Evidencia diagn&oacute;stica (data MBHT como respaldo), (4) Acciones estrat&eacute;gicas (qu&eacute; hacer concretamente, 5 acciones cada una), (5) Indicadores de impacto con meta 2035, (6) Marco normativo (leyes, pol&iacute;ticas nacionales y convenios internacionales). **6 RECOMENDACIONES PROFUNDIZADAS**: (1) Equidad Territorial Rural (Ejes 1+3+4+6 &middot; ODS 10+11) con Sen + Lefebvre + CEPAL Muerte Rural. (2) Infraestructura Verde Urbana D04 (Eje 4 &middot; ODS 11+13+15) con Costanza Servicios Ecosist&eacute;micos + Oke Islas de Calor + Schlosberg Justicia Ambiental. (3) Capacidades Socioecon&oacute;micas D05/D08 (Ejes 1+2+3 &middot; ODS 1+4+8) con Sen Capacidades + Sherraden Activos + OIT Empleo Decente. (4) Seguridad como Bien Com&uacute;n D02/D04 (Eje 5 &middot; ODS 11+16) con Jacobs Ojos en la Calle + CPTED + Sampson Eficacia Colectiva. (5) Patrimonio Natural Rural D03/D05/D06/D09 (Ejes 4+6 &middot; ODS 13+15) con Ostrom Bienes Comunes + Wunder Pagos Servicios + Buen Vivir. (6) Gobernanza de Datos Territoriales (Eje 6 &middot; ODS 16+17) con GpRD CLAD + Open Government OECD + Inteligencia Territorial Girardot. **MARCO ESTRAT&Eacute;GICO INTRODUCTORIO** explicando triangulaci&oacute;n evidencia/teor&iacute;a/normativa. **TABLA ODS 2030**: grid de 9 ODS afectados con badge de color oficial UN + recomendaciones que aportan. **S&Iacute;NTESIS NARRATIVA FINAL** con gradiente navy: tesis central de que Rengo no es comuna deficitaria sino con activos desigualmente distribuidos. **DISE&Ntilde;O**: cards con border-left verde Rengo, num en c&iacute;rculo verde, evidencia con border-left azul, marco conceptual con border-left morado (cita), acciones en lista. CSS scoped a `.mbht-rec-*`. **RIESGO PARSER**: nulo &mdash; sin etiquetas literales, entidades HTML, JS no afectado.</div>
@@ -23317,6 +23318,458 @@ if('serviceWorker' in navigator){
   }catch(_){}
 }
 </script>
+
+<!-- ═══ v45.36 · FIX INTEGRAL MBHT · banner identitario + colores coherentes light/dark ═══ -->
+<style>
+/* ═══════════════════════════════════════════════════════
+   MBHT · BANNER IDENTITARIO con gradiente Rengo
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar > .sec-header{
+  position:relative;
+  margin:0 0 28px!important;
+  padding:32px 36px!important;
+  background:linear-gradient(135deg, #0c1f36 0%, #15803d 50%, #2d9a4d 100%)!important;
+  border:none!important;
+  border-radius:var(--rad-md)!important;
+  box-shadow:0 4px 20px rgba(12,31,54,.18)!important;
+  overflow:hidden;
+}
+#mbht-bienestar > .sec-header::before{
+  content:"";
+  position:absolute;
+  top:-20px;right:-20px;
+  width:200px;height:200px;
+  background:radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+#mbht-bienestar > .sec-header::after{
+  content:"\1F3DB\FE0F";
+  position:absolute;
+  bottom:-30px;right:24px;
+  font-size:160px;
+  opacity:.08;
+  line-height:1;
+  pointer-events:none;
+  filter:grayscale(.5);
+}
+#mbht-bienestar > .sec-header .badge{
+  background:rgba(255,255,255,.18)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.30);
+  backdrop-filter:blur(4px);
+  font-size:11px!important;
+  letter-spacing:.10em!important;
+  padding:5px 14px!important;
+}
+#mbht-bienestar > .sec-header h2{
+  color:#ffffff!important;
+  font-size:clamp(22px, 2.2vw + 14px, 32px)!important;
+  font-weight:800!important;
+  letter-spacing:-.02em!important;
+  line-height:1.18!important;
+  margin:10px 0 12px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+#mbht-bienestar > .sec-header p{
+  color:rgba(255,255,255,.92)!important;
+  font-size:14.5px!important;
+  line-height:1.65!important;
+  max-width:78ch;
+  margin:0!important;
+  font-weight:400;
+}
+#mbht-bienestar > .sec-header p strong{
+  color:#fff!important;
+  font-weight:700;
+  background:rgba(255,255,255,.10);
+  padding:1px 6px;
+  border-radius:3px;
+}
+
+/* Remover el underline decorativo del v45.34 en este caso */
+#mbht-bienestar > .sec-header::after{
+  /* el ::after ya redefinido arriba, anular el de polish v45.34 */
+}
+
+@media (max-width:640px){
+  #mbht-bienestar > .sec-header{padding:22px 18px!important}
+  #mbht-bienestar > .sec-header::after{font-size:110px;bottom:-20px}
+}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · INTRO BLOCK · más contraste + dark mode
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-intro{
+  background:linear-gradient(135deg, rgba(45,154,77,.08) 0%, rgba(26,61,143,.05) 100%)!important;
+  border:1px solid rgba(45,154,77,.22)!important;
+  border-left:4px solid #2d9a4d!important;
+  color:#334155!important;
+}
+#mbht-bienestar .mbht-intro p{
+  color:#334155!important;
+  line-height:1.65!important;
+}
+#mbht-bienestar .mbht-intro strong{
+  color:#0c1f36!important;
+  font-weight:700;
+}
+body.dark #mbht-bienestar .mbht-intro{
+  background:linear-gradient(135deg, rgba(45,154,77,.14) 0%, rgba(26,61,143,.10) 100%)!important;
+  color:#e2e8f0!important;
+}
+body.dark #mbht-bienestar .mbht-intro p{color:#e2e8f0!important}
+body.dark #mbht-bienestar .mbht-intro strong{color:#fff!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · KPIs · contraste forzado
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-kpi{
+  background:#ffffff!important;
+  border:1px solid #e2e8f0!important;
+  border-top-width:3px!important;
+}
+#mbht-bienestar .mbht-kpi-label{
+  color:#64748b!important;
+  font-weight:700!important;
+  font-size:11px!important;
+}
+#mbht-bienestar .mbht-kpi-value{
+  color:#0c1f36!important;
+  font-weight:800!important;
+}
+#mbht-bienestar .mbht-kpi-foot{
+  color:#64748b!important;
+  font-size:11px!important;
+}
+body.dark #mbht-bienestar .mbht-kpi{
+  background:#132035!important;
+  border-color:#334155!important;
+}
+body.dark #mbht-bienestar .mbht-kpi-label{color:#94a3b8!important}
+body.dark #mbht-bienestar .mbht-kpi-value{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-kpi-foot{color:#94a3b8!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · DIM CARDS · texto coherente
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-dim-card{
+  background:#ffffff!important;
+  border:1px solid #e2e8f0!important;
+  border-top-width:4px!important;
+}
+#mbht-bienestar .mbht-dim-title{
+  color:#0c1f36!important;
+  font-size:15px!important;
+  font-weight:800!important;
+}
+#mbht-bienestar .mbht-dim-desc{
+  color:#475569!important;
+  font-size:13px!important;
+  line-height:1.6!important;
+}
+#mbht-bienestar .mbht-dim-score{
+  background:#f1f5f9!important;
+  color:#0c1f36!important;
+}
+#mbht-bienestar .mbht-dim-score-val{
+  color:#15803d!important;
+  font-weight:900!important;
+}
+#mbht-bienestar .mbht-ind{
+  background:#f8fafb!important;
+  color:#475569!important;
+}
+#mbht-bienestar .mbht-ind-name{color:#475569!important}
+#mbht-bienestar .mbht-ind-val{
+  background:#fff!important;
+  color:#0c1f36!important;
+  font-weight:800!important;
+}
+body.dark #mbht-bienestar .mbht-dim-card{
+  background:#132035!important;
+  border-color:#334155!important;
+}
+body.dark #mbht-bienestar .mbht-dim-title{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-dim-desc{color:#cbd5e1!important}
+body.dark #mbht-bienestar .mbht-dim-score{background:rgba(255,255,255,.06)!important;color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-dim-score-val{color:#48c76e!important}
+body.dark #mbht-bienestar .mbht-ind{background:rgba(255,255,255,.04)!important;color:#cbd5e1!important}
+body.dark #mbht-bienestar .mbht-ind-name{color:#cbd5e1!important}
+body.dark #mbht-bienestar .mbht-ind-val{background:#0c1f36!important;color:#f1f5f9!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · CHART CARDS · headers limpios
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-chart-card{
+  background:#ffffff!important;
+  border:1px solid #e2e8f0!important;
+}
+#mbht-bienestar .mbht-chart-card h4{
+  color:#0c1f36!important;
+  font-size:14px!important;
+  font-weight:800!important;
+}
+#mbht-bienestar .mbht-chart-card .mbht-chart-sub{
+  color:#64748b!important;
+  font-size:12px!important;
+}
+body.dark #mbht-bienestar .mbht-chart-card{
+  background:#132035!important;
+  border-color:#334155!important;
+}
+body.dark #mbht-bienestar .mbht-chart-card h4{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-chart-card .mbht-chart-sub{color:#94a3b8!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · TABLE DISTRITOS · contraste corregido
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-distrito-wrap{
+  background:#ffffff!important;
+  border-color:#e2e8f0!important;
+}
+#mbht-bienestar .mbht-distrito-table thead tr{
+  background:rgba(45,154,77,.10)!important;
+}
+#mbht-bienestar .mbht-distrito-table thead th{
+  color:#0c1f36!important;
+  font-weight:700!important;
+  font-size:12px!important;
+  letter-spacing:.04em!important;
+  border-bottom:2px solid rgba(45,154,77,.30)!important;
+}
+#mbht-bienestar .mbht-distrito-table tbody td{
+  color:#1e293b!important;
+  border-bottom:1px solid #f1f5f9!important;
+}
+#mbht-bienestar .mbht-distrito-table tbody tr:hover td{
+  background:rgba(45,154,77,.05)!important;
+}
+body.dark #mbht-bienestar .mbht-distrito-wrap{
+  background:#132035!important;
+  border-color:#334155!important;
+}
+body.dark #mbht-bienestar .mbht-distrito-table thead tr{background:rgba(45,154,77,.18)!important}
+body.dark #mbht-bienestar .mbht-distrito-table thead th{color:#f1f5f9!important;border-bottom-color:rgba(45,154,77,.45)!important}
+body.dark #mbht-bienestar .mbht-distrito-table tbody td{color:#e2e8f0!important;border-bottom-color:#1e293b!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · DIM BUTTONS (filtros del mapa) · estados claros
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-dim-btn{
+  background:#ffffff!important;
+  color:#475569!important;
+  border:1px solid #e2e8f0!important;
+}
+#mbht-bienestar .mbht-dim-btn:hover{
+  background:rgba(45,154,77,.08)!important;
+  color:#15803d!important;
+  border-color:rgba(45,154,77,.35)!important;
+}
+#mbht-bienestar .mbht-dim-btn.active{
+  background:#2d9a4d!important;
+  color:#ffffff!important;
+  border-color:#2d9a4d!important;
+  box-shadow:0 2px 6px rgba(45,154,77,.30);
+}
+body.dark #mbht-bienestar .mbht-dim-btn{
+  background:#132035!important;
+  color:#cbd5e1!important;
+  border-color:#334155!important;
+}
+body.dark #mbht-bienestar .mbht-dim-btn:hover{
+  background:rgba(45,154,77,.15)!important;
+  color:#48c76e!important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · RECOMENDACIONES CARDS · texto + bloques
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-rec-card{
+  background:#ffffff!important;
+  border:1px solid #e2e8f0!important;
+  border-left:4px solid #2d9a4d!important;
+}
+#mbht-bienestar .mbht-rec-head{
+  background:rgba(45,154,77,.06)!important;
+  border-bottom:1px solid rgba(45,154,77,.18)!important;
+}
+#mbht-bienestar .mbht-rec-title{
+  color:#0c1f36!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  letter-spacing:-.01em!important;
+}
+#mbht-bienestar .mbht-rec-eje{
+  background:#ffffff!important;
+  color:#15803d!important;
+  border:1px solid rgba(45,154,77,.40)!important;
+  font-weight:800!important;
+}
+#mbht-bienestar .mbht-rec-label{
+  color:#15803d!important;
+  font-weight:800!important;
+}
+#mbht-bienestar .mbht-rec-block p{
+  color:#334155!important;
+  font-size:13px!important;
+  line-height:1.6!important;
+}
+#mbht-bienestar .mbht-rec-block strong{
+  color:#0c1f36!important;
+  font-weight:700;
+}
+#mbht-bienestar .mbht-rec-block em{
+  color:#0c1f36!important;
+  font-style:italic;
+  font-weight:500;
+}
+#mbht-bienestar .mbht-rec-list{
+  color:#334155!important;
+  font-size:13px!important;
+}
+#mbht-bienestar .mbht-rec-list li strong{color:#0c1f36!important}
+#mbht-bienestar .mbht-rec-evidencia{
+  background:rgba(26,61,143,.06)!important;
+  border-left:3px solid #1a3d8f!important;
+  color:#1e293b!important;
+}
+#mbht-bienestar .mbht-rec-evidencia strong{color:#0c1f36!important}
+#mbht-bienestar .mbht-rec-marco{
+  background:rgba(124,58,237,.07)!important;
+  border-left:3px solid #7c3aed!important;
+  color:#1e293b!important;
+  font-style:italic;
+}
+body.dark #mbht-bienestar .mbht-rec-card{
+  background:#132035!important;
+  border-color:#334155!important;
+  border-left-color:#2d9a4d!important;
+}
+body.dark #mbht-bienestar .mbht-rec-head{
+  background:rgba(45,154,77,.14)!important;
+  border-bottom-color:rgba(45,154,77,.30)!important;
+}
+body.dark #mbht-bienestar .mbht-rec-title{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-rec-eje{
+  background:#0c1f36!important;
+  color:#48c76e!important;
+  border-color:rgba(72,199,110,.50)!important;
+}
+body.dark #mbht-bienestar .mbht-rec-label{color:#48c76e!important}
+body.dark #mbht-bienestar .mbht-rec-block p{color:#cbd5e1!important}
+body.dark #mbht-bienestar .mbht-rec-block strong{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-rec-list{color:#cbd5e1!important}
+body.dark #mbht-bienestar .mbht-rec-list li strong{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-rec-evidencia{
+  background:rgba(26,61,143,.20)!important;
+  color:#e2e8f0!important;
+}
+body.dark #mbht-bienestar .mbht-rec-evidencia strong{color:#fff!important}
+body.dark #mbht-bienestar .mbht-rec-marco{
+  background:rgba(124,58,237,.18)!important;
+  color:#e2e8f0!important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · RANK CARDS Top/Bottom
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-rank-card{
+  background:#ffffff!important;
+  border:1px solid #e2e8f0!important;
+}
+#mbht-bienestar .mbht-rank-card h4{
+  color:#0c1f36!important;
+  font-size:14px!important;
+  font-weight:800!important;
+}
+#mbht-bienestar .mbht-rank-item{
+  background:#f8fafb!important;
+}
+#mbht-bienestar .mbht-rank-id{color:#475569!important}
+#mbht-bienestar .mbht-rank-val{color:#0c1f36!important;font-weight:800!important}
+#mbht-bienestar .mbht-rank-pop{color:#64748b!important}
+body.dark #mbht-bienestar .mbht-rank-card{
+  background:#132035!important;
+  border-color:#334155!important;
+}
+body.dark #mbht-bienestar .mbht-rank-card h4{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-rank-item{background:rgba(255,255,255,.04)!important}
+body.dark #mbht-bienestar .mbht-rank-id{color:#cbd5e1!important}
+body.dark #mbht-bienestar .mbht-rank-val{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-rank-pop{color:#94a3b8!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · DOWNLOADS · cards limpias
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .mbht-dl{
+  background:#ffffff!important;
+  border:1px solid #e2e8f0!important;
+  color:#0c1f36!important;
+}
+#mbht-bienestar .mbht-dl:hover{
+  background:rgba(45,154,77,.06)!important;
+  border-color:rgba(45,154,77,.40)!important;
+  color:#15803d!important;
+}
+#mbht-bienestar .mbht-dl-name{color:#0c1f36!important;font-weight:800!important}
+#mbht-bienestar .mbht-dl-ext{color:#64748b!important;font-weight:500}
+body.dark #mbht-bienestar .mbht-dl{
+  background:#132035!important;
+  border-color:#334155!important;
+  color:#f1f5f9!important;
+}
+body.dark #mbht-bienestar .mbht-dl-name{color:#f1f5f9!important}
+body.dark #mbht-bienestar .mbht-dl-ext{color:#94a3b8!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · SEC-FUENTE específica
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar .sec-fuente{
+  color:#475569!important;
+  background:rgba(12,31,54,.04)!important;
+  border-left:3px solid rgba(12,31,54,.25)!important;
+}
+#mbht-bienestar .sec-fuente strong{color:#0c1f36!important}
+body.dark #mbht-bienestar .sec-fuente{
+  color:#cbd5e1!important;
+  background:rgba(255,255,255,.04)!important;
+  border-left-color:rgba(255,255,255,.20)!important;
+}
+body.dark #mbht-bienestar .sec-fuente strong{color:#fff!important}
+
+/* ═══════════════════════════════════════════════════════
+   MBHT · HEADERS internos (h3 subsecciones)
+   ═══════════════════════════════════════════════════════ */
+#mbht-bienestar h3:not(.mbht-rec-title):not(.mbht-dim-title){
+  color:#0c1f36!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  letter-spacing:-.01em!important;
+  margin-top:28px!important;
+}
+#mbht-bienestar h3:not(.mbht-rec-title):not(.mbht-dim-title)::before{
+  content:"";
+  display:inline-block;
+  width:4px;height:18px;
+  background:#2d9a4d;
+  border-radius:2px;
+  margin-right:10px;
+  vertical-align:middle;
+}
+body.dark #mbht-bienestar h3:not(.mbht-rec-title):not(.mbht-dim-title){color:#f1f5f9!important}
+
+#mbht-bienestar > p,
+#mbht-bienestar > div > p:not(.mbht-rec-block p):not(.mbht-dim-desc):not(.mbht-chart-sub){
+  color:#475569!important;
+  font-size:13px!important;
+  line-height:1.6!important;
+}
+body.dark #mbht-bienestar > p,
+body.dark #mbht-bienestar > div > p{color:#cbd5e1!important}
+
+#mbht-bienestar p strong{color:#0c1f36!important;font-weight:700}
+body.dark #mbht-bienestar p strong{color:#fff!important}
+</style>
 
 <!-- ═══ v45.35 · DISTRIBUCIÓN INTEGRAL · spacing + tipografía completa + colores + composición ═══ -->
 <style>
