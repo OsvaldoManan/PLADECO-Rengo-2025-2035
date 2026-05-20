@@ -4946,7 +4946,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 
 <!-- Mobile toggle -->
 <div class="sidebar-overlay" id="sidebarOverlay" role="button" tabindex="-1" aria-label="Cerrar menú" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open');document.querySelector('.menu-toggle').setAttribute('aria-expanded','false')"></div>
-<button class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" onclick="var s=document.querySelector('.sidebar'),o=document.getElementById('sidebarOverlay'),open=!s.classList.contains('open');s.classList.toggle('open');o.classList.toggle('open');this.setAttribute('aria-expanded',open)">&#9776;</button>
+<button class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" onclick="var s=document.querySelector('.sidebar'),o=document.getElementById('sidebarOverlay'),open=!s.classList.contains('open');s.classList.toggle('open');o.classList.toggle('open');this.setAttribute('aria-expanded',open);this.setAttribute('aria-label',open?'Cerrar menú de navegación':'Abrir menú de navegación')"><span class="mt-bars" aria-hidden="true"><span></span><span></span><span></span></span></button>
 
 <!-- Sidebar -->
 <nav class="sidebar" role="navigation" aria-label="Navegación principal">
@@ -5094,7 +5094,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.41</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.42</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5222,7 +5222,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.41</span>
+        <span>&#127919; v45.42</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -12381,10 +12381,11 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </div>
 <div class="update-badge" id="updateBadge" onclick="this.classList.toggle('expanded')">
   <span class="ub-dot"></span>
-  <span class="ub-ver">v45.41</span>
+  <span class="ub-ver">v45.42</span>
   &#218;ltima actualizaci&#243;n: 19 Mayo 2026
   <div class="ub-changelog">
     <h4>&#128203; Historial de Versiones</h4>
+    <div class="ub-entry"><strong>v45.42</strong> <span class="ub-date">19 May 2026</span><br>&#128269;&#128295; **v45.42 &middot; Auditor&iacute;a de botones e interacciones**. Solicitud del usuario: en celular no se ve bien la figura de comprimir, revisar todos los botones en modo auditor&iacute;a. **HALLAZGOS DETECTADOS**: (1) CR&Iacute;TICO: back-to-top DUPLICADO &mdash;exist&iacute;a `#btnTop` original (con anillo de progreso SVG + porcentaje) Y `#backToTop` que se agreg&oacute; err&oacute;neamente en v45.25; dos c&iacute;rculos flotantes amontonados en la esquina inferior derecha, se ve&iacute;a mal especialmente en m&oacute;vil. (2) ALTO: el bot&oacute;n hamburguesa `menu-toggle` usaba el car&aacute;cter Unicode `&#9776;` que renderiza inconsistente en Android/iOS (a veces emoji de color, a veces glifo fino, a veces caja vac&iacute;a tofu). (3) MEDIO: el hamburguesa no daba feedback visual del estado (no morphaba). **FIXES APLICADOS**: (1) **Back-to-top duplicado eliminado**: removido el `#backToTop` del HTML; se conserva solo el `#btnTop` original que es m&aacute;s completo (anillo de progreso de lectura + flecha + %). CSS defensivo `#backToTop{display:none}` por si quedara resto. (2) **Hamburguesa reconstruida**: reemplazado el car&aacute;cter Unicode por **3 barras dibujadas en CSS puro** (robustas, sin dependencia de fuente). Bot&oacute;n 48x48px navy con borde sutil + sombra. (3) **Morph animado a X**: cuando el men&uacute; se abre (`aria-expanded=true`), las 3 barras se transforman en una X con transici&oacute;n cubic-bezier .32s; la barra central se desvanece, las externas rotan 45&deg;. El bot&oacute;n cambia a verde Rengo cuando est&aacute; abierto. (4) **aria-label din&aacute;mico**: alterna entre &laquo;Abrir men&uacute;&raquo; y &laquo;Cerrar men&uacute;&raquo; seg&uacute;n estado. **TOUCH TARGETS**: media query `(hover:none) (pointer:coarse)` garantiza 44px m&iacute;nimos en todos los botones de control (tabs ICT/anest/SC, map-ctrl, glosario filters, mbht-dim-btn, faq-q, floating buttons). **ESTADOS T&Aacute;CTILES**: feedback `:active` scale(.96) en botones tab, rotaci&oacute;n 180&deg; en botones refresh, `-webkit-tap-highlight-color:transparent` en floating buttons (sin flash azul). **FOCUS VISIBLE** uniforme 2px verde Rengo offset 3px. **ANTI-COLISI&Oacute;N**: chatbot-fab reposicionado a bottom 74px en m&oacute;vil para no solaparse con el back-to-top. **Back-to-top original** refinado: 46x46px en tablet, 42x42px en m&oacute;vil mini, respeta safe-areas.</div>
     <div class="ub-entry"><strong>v45.41</strong> <span class="ub-date">19 May 2026</span><br>&#128241;&#128187;&#10024; **v45.41 &middot; Sistema Responsive Ordenado PC + M&oacute;vil**. Solicitud del usuario: darle un orden a la resoluci&oacute;n y composici&oacute;n para PC y M&oacute;vil. **5 BREAKPOINTS CAN&Oacute;NICOS**: xs &le;479px (m&oacute;vil mini iPhone SE) &middot; sm 480-639 (m&oacute;vil est&aacute;ndar) &middot; md 640-899 (tablet vertical) &middot; lg 900-1199 (laptop) &middot; xl 1200+ (desktop). **DESKTOP/PC (&ge;1200px)**: container max-width 1320px con padding 36px lateral; hero 100x60x110px min-height 600px center align con max-width 1080px; H1 clamp 36-56px line-height 1.05; hero-stats grid 6 col gap 14px; MBHT hero 44x48px H1 clamp 32-46px; MBHT KPIs 5 col; MBHT dim cards 2 col; chart-row 2 col; glosario auto-fill min 300px; group-dividers 26x36px con label 22px y circle 54x54px. **LAPTOP (900-1199px)**: container 1180px padding 28px; hero 80x40x90px min-height 520px; H1 clamp 30-44px; stats grid 3 col; KPIs 5 col; resto adapta. **TABLET (640-899px)**: container 720px padding 24px; hero 64x24x72px H1 clamp 26-38px; stats 3 col; MBHT hero 1 col stacked; KPIs 3 col; dim-cards 1 col; charts 1 col; **tabla distritos scroll horizontal con sombra indicadora**. **M&Oacute;VIL ST&Aacute;NDAR (480-639px)**: padding 16px; hero 40x16x48px H1 clamp 24-30px; stats 2 col centradas; MBHT hero compact 22x16px; KPIs 2 col; dim-cards 1 col; charts 1 col h260px; map h360px; rec-cards compact; downloads 1 col; **glosario filters scroll horizontal nowrap**; footer 1 col. **M&Oacute;VIL PEQUE&Ntilde;O (&le;479px) iPhone SE**: body 14px; padding 12px; hero 32x14x40px H1 22px; stats 2 col max-w 280px; MBHT super-compact con **KPIs en lista horizontal inline-flex** (no grid); group-dividers 12x14px; rec-cards columna; floating buttons 40x40 a 12px del borde. **TOUCH DEVICES** (`@media (hover:none) (pointer:coarse)`): hovers desactivados (anti-jank), tooltips por focus/active no hover, touch targets 44px m&iacute;n, sec-print-btn y anchor-copy ocultos, backdrop-filter reducido a 6px (GPU friendlier). **MOUSE DEVICES** (`@media (hover:hover) (pointer:fine)`): cursors apropiados, lift 3px en cards al hover, sidebar links con padding-left animado al hover. **LANDSCAPE M&Oacute;VIL** (h&le;500px landscape): hero ultra compact 30x24x40px H1 22px stats 6 col 6-8px. **PRINT**: hero sin imagen ni gradient, MBHT hero sin patterns/territory bg blanco con borders grises. **SAFE AREAS** iPhone X+: floating buttons y menu-toggle respetan env(safe-area-inset-*). **TOTAL**: 5 breakpoints x ~70 reglas = ~350 l&iacute;neas de CSS ordenado por viewport. Cada dispositivo tiene su composici&oacute;n &oacute;ptima.</div>
     <div class="ub-entry"><strong>v45.40</strong> <span class="ub-date">19 May 2026</span><br>&#129532;&#10024; **v45.40 &middot; Restaurar imagen del hero + mejora resoluci&oacute;n global**. Solicitud del usuario: ten&iacute;amos una imagen en la portada que no perdamos + mejorar la resoluci&oacute;n completa del portal. **BUG FIX DETECTADO**: en v45.39 el watermark del escudo se aplic&oacute; en `.hero::before`, que sobrescrib&iacute;a accidentalmente el `::before` original del hero (l&iacute;nea 332) que conten&iacute;a el gradient navy 88/78/72/85 opacidad principal. Esto rompi&oacute; el overlay del hero. **FIX APLICADO**: removido `.hero::before` de v45.39. Watermark del escudo ahora se aplica v&iacute;a multi-layer background-image en `.hero-bg` (div existente) sin tocar el gradient. **HERO-BG VISIBLE**: opacidad subida de .12 a .45 (3.75x m&aacute;s visible la fotograf&iacute;a de Rengo), filtros refinados blur 1.2px + saturate .78 + brightness .82 para profundidad sin opacar el texto. Dark mode con valores .32/.55/.55. **MEJORA RESOLUCI&Oacute;N GLOBAL**: (1) text-rendering optimizeLegibility en html + body + headers; (2) -webkit-font-smoothing antialiased + -moz-osx-font-smoothing grayscale; (3) font-feature-settings con ss01, cv11, calt, ss02, kern, liga, clig; (4) font-kerning normal + font-variant-ligatures common-ligatures contextual. **IM&Aacute;GENES PREMIUM**: image-rendering high-quality para fotos, crisp-edges para SVGs, geometricPrecision en shape-rendering. **GPU LAYERS** en elementos cr&iacute;ticos: hero, sidebar, mbht-hero, banner-strip, viz-card con transform translateZ(0) + backface-visibility hidden + perspective 1000. **HIGH-DPI / RETINA queries**: @media (-webkit-min-device-pixel-ratio:2) y (min-resolution:192dpi) con bordes .5px en cards y filtros refinados en hero-bg. Refuerzo para 3x con blur .5px. **HERO TEXTO M&Aacute;S LE&Iacute;BLE**: text-shadow 0 2px 12px en h1, 0 1px 4px en p y stats sobre fotograf&iacute;a. Drop-shadow en hero-logo-contigo y sidebar-logo. **HERO STATS CON GLASSMORPHISM**: background rgba(255,255,255,.08) + backdrop-filter blur(8px) saturate(140%) + hover translateY(-2px) + border verde Rengo al hover. Num clamp 20-28px peso 800 con shadow. **BACKDROP FILTERS** finos: blur 12px saturate 180% en chips + tooltips + glassmorphic elements (con @supports check). **FOCUS RING** uniforme 2px verde Rengo offset 3px en todos los elementos interactivos. **ANIMACIONES** respetan prefers-reduced-motion (hero orbs sin animar). **PRINT** con image-rendering high-quality + print-color-adjust exact. **TOTAL**: ~150 l&iacute;neas CSS de optimizaci&oacute;n perceptiva sin JS adicional.</div>
     <div class="ub-entry"><strong>v45.39</strong> <span class="ub-date">19 May 2026</span><br>&#127912;&#10024; **v45.39 &middot; MEGA EST&Eacute;TICA: Paquetes B+C+D+E+F completos**. Solicitud del usuario: hacer todos los paquetes restantes. **(F) COLOR POR CAP&Iacute;TULO**: 11 accent colors (Cap I navy &middot; II azul &middot; III verde Rengo &middot; IV violeta &middot; V magenta &middot; VI &aacute;mbar &middot; VII verde oscuro &middot; VIII cyan &middot; IX naranja &middot; X naranja claro &middot; XI gris). Cada `.group-divider#capitulo-N` toma su `--cap-accent` y aplica color al borde, gradient de fondo, color del label y c&iacute;rculo num&eacute;rico con gradient + sombra. Usa `color-mix(in srgb)` para tintes y bordes con misma identidad. **(C) WATERMARK Escudo Rengo**: pseudo-element `::before` en `.hero` con background-image del escudo institucional 520x520px en .05 opacidad esquina inferior derecha. Variante `.sec-watermark::after` para otras secciones. **(E) DISPLAY FONT**: Playfair Display cargada v&iacute;a Google Fonts (pesos 600/700/800 + it&aacute;licas), aplicada a `.hero h1`, `.mbht-hero-title`, `.pull-quote`, `.group-divider-label`, `h2.display`, `.display-font`. Letter-spacing -.022em. Provee elegancia editorial institucional. **(E) KICKER TITLES**: clase `.kicker` con barrita decorativa 24x2px + texto Inter 11px tracking widest uppercase. Variantes `.kicker-navy/amber/magenta`. **(E) MULTI-COLUMN**: clase `.multi-col` con 2 columnas + gap 40px + column-rule + hyphens auto + text-align justify. Responsive a 1 col en &le;780px. **(B) ICON SYSTEM SVG**: 12 iconos line-style (Feather/Lucide inspired) como CSS data URIs: map, chart, users, target, doc, pin, trending, shield, leaf, book, check, layers, clock. Clase `.svg-icon` + `.sec-icon` wrapper con bg verde-claro + radius. Usables en cualquier elemento con clase modifier. **(D) TOOLTIPS CONTEXTUALES**: cualquier elemento `[data-tooltip]` muestra burbuja navy al hover/focus con max-width 260px y arrow. Aplicado a t&eacute;rminos t&eacute;cnicos clave en MBHT (UAI, manzana censal, INE, Objetivos Estrat&eacute;gicos). Subrayado punteado verde como affordance. **(D) PROGRESS RINGS**: 5 anillos circulares de progreso instalados en MBHT (Acc, Amb, Soc, Seg + BHT Global). SVG con stroke-dasharray animado v&iacute;a IntersectionObserver. Cada anillo con `--ring-color` y drop-shadow. Valor central tabular + nombre uppercase. **(D) SPARKLINES**: utility `.sparkline[data-points]` que genera SVG inline path desde array de puntos, variantes con y sin &aacute;rea rellena. **HARDENING**: try-catch por initializer, prefers-reduced-motion respetado en todas las animaciones. Dark mode con overrides espec&iacute;ficos. **TOTAL**: 9 features nuevas + 11 colors temá ticos + 12 iconos SVG inline = portal con identidad editorial completa.</div>
@@ -23501,6 +23502,181 @@ if('serviceWorker' in navigator){
 }
 </script>
 
+<!-- ═══ v45.42 · AUDITORÍA DE BOTONES · hamburguesa SVG + fixes ═══ -->
+<style>
+/* ═══════════════════════════════════════════════════════
+   v45.42 · MENU-TOGGLE · hamburguesa CSS que morpha a X
+   Reemplaza el carácter Unicode ☰ por barras CSS robustas
+   ═══════════════════════════════════════════════════════ */
+.menu-toggle{
+  display:none;
+  position:fixed;
+  top:12px;left:12px;
+  z-index:1100;
+  width:48px;height:48px;
+  padding:0!important;
+  background:var(--primary)!important;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.12)!important;
+  border-radius:12px!important;
+  cursor:pointer;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 16px rgba(12,31,54,.35)!important;
+  transition:transform .2s, background .2s, box-shadow .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.menu-toggle:active{transform:scale(.92)}
+.menu-toggle:hover{background:#15803d!important}
+
+.menu-toggle .mt-bars{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  width:22px;
+  height:18px;
+  pointer-events:none;
+}
+.menu-toggle .mt-bars span{
+  display:block;
+  width:22px;
+  height:2.6px;
+  background:#fff;
+  border-radius:3px;
+  transition:transform .32s cubic-bezier(.4,0,.2,1), opacity .18s ease;
+  transform-origin:center;
+}
+/* Morph a X cuando el menú está abierto */
+.menu-toggle[aria-expanded="true"] .mt-bars span:nth-child(1){
+  transform:translateY(7.6px) rotate(45deg);
+}
+.menu-toggle[aria-expanded="true"] .mt-bars span:nth-child(2){
+  opacity:0;
+  transform:scaleX(.2);
+}
+.menu-toggle[aria-expanded="true"] .mt-bars span:nth-child(3){
+  transform:translateY(-7.6px) rotate(-45deg);
+}
+/* Cuando abierto, el botón cambia a verde Rengo */
+.menu-toggle[aria-expanded="true"]{
+  background:#15803d!important;
+}
+
+/* Mostrar el menu-toggle solo en ≤900px */
+@media (max-width:900px){
+  .menu-toggle{display:flex!important}
+}
+@media (max-width:479px){
+  .menu-toggle{
+    width:44px!important;height:44px!important;
+    top:10px!important;left:10px!important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   v45.42 · BACK-TO-TOP · asegurar UN solo botón (#btnTop)
+   El #backToTop duplicado fue eliminado del HTML.
+   ═══════════════════════════════════════════════════════ */
+#backToTop{display:none!important}  /* defensa: si quedara algún resto */
+
+/* El back-to-top original (#btnTop) · refinado y táctil */
+.back-to-top#btnTop{
+  -webkit-tap-highlight-color:transparent;
+}
+@media (max-width:900px){
+  .back-to-top#btnTop{
+    width:46px!important;height:46px!important;
+    bottom:18px!important;right:18px!important;
+  }
+  .back-to-top#btnTop .btt-svg{width:46px!important;height:46px!important}
+}
+@media (max-width:479px){
+  .back-to-top#btnTop{
+    width:42px!important;height:42px!important;
+    bottom:14px!important;right:14px!important;
+  }
+  .back-to-top#btnTop .btt-svg{width:42px!important;height:42px!important}
+  .back-to-top#btnTop .btt-pct{font-size:8px!important}
+}
+
+/* ═══════════════════════════════════════════════════════
+   v45.42 · TOUCH TARGETS · garantizar 44px mínimo
+   ═══════════════════════════════════════════════════════ */
+@media (hover:none) and (pointer:coarse){
+  /* Botones de control con área táctil suficiente */
+  .ict-tab-btn, .anest-tab-btn, .sc-tab-btn,
+  .map-ctrl-btn, .ict-vbtn, .ict-reset-btn,
+  .ls-refresh, .faq-q, .glosario-filters button,
+  .mbht-dim-btn, .tl-filter-btn,
+  .ub-changelog, .update-badge{
+    min-height:44px;
+  }
+  /* Asegurar que los botones de cierre/toggle sean cómodos */
+  .menu-toggle, .back-to-top, #btnDark,
+  .chatbot-fab, .search-fab{
+    min-width:44px;
+    min-height:44px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   v45.42 · BOTONES DE CONTROL · estados visibles uniformes
+   ═══════════════════════════════════════════════════════ */
+/* Botones tab genéricos · feedback claro al presionar */
+.ict-tab-btn, .anest-tab-btn, .sc-tab-btn,
+.ict-vbtn, .map-ctrl-btn{
+  -webkit-tap-highlight-color:transparent;
+  transition:background .15s, color .15s, transform .12s, box-shadow .15s;
+}
+.ict-tab-btn:active, .anest-tab-btn:active,
+.sc-tab-btn:active, .ict-vbtn:active,
+.map-ctrl-btn:active{
+  transform:scale(.96);
+}
+
+/* Botón refresh · animación de giro al presionar */
+.ls-refresh, .ict-reset-btn{
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .4s ease;
+}
+.ls-refresh:active, .ict-reset-btn:active{
+  transform:rotate(180deg);
+}
+
+/* Floating buttons · sin highlight azul de tap en móvil */
+#btnDark, .search-fab, .chatbot-fab, .back-to-top, .menu-toggle{
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* Focus visible uniforme en TODOS los botones */
+button:focus-visible,
+[role="button"]:focus-visible,
+.badge:focus-visible{
+  outline:2px solid #2d9a4d!important;
+  outline-offset:3px!important;
+  border-radius:6px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   v45.42 · CHATBOT FAB · posición que no choque con back-to-top
+   ═══════════════════════════════════════════════════════ */
+@media (max-width:900px){
+  .chatbot-fab{
+    bottom:74px!important;  /* arriba del back-to-top */
+    right:18px!important;
+  }
+}
+@media (max-width:479px){
+  .chatbot-fab{
+    bottom:66px!important;
+    right:14px!important;
+    width:46px!important;height:46px!important;
+  }
+}
+</style>
+
 <!-- ═══ v45.41 · SISTEMA RESPONSIVE ORDENADO · PC + Móvil ═══ -->
 <style>
 /* ═══════════════════════════════════════════════════════
@@ -27356,7 +27532,7 @@ section h3:hover .sec-anchor-copy,
 
 <div id="readingProgress" aria-hidden="true"></div>
 
-<button id="backToTop" type="button" aria-label="Volver arriba" title="Volver arriba">&uarr;</button>
+<!-- v45.42: #backToTop duplicado eliminado · se conserva el #btnTop original con anillo de progreso -->
 
 <script>
 /* UX PACK · v45.25 */
