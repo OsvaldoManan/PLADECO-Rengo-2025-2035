@@ -33,6 +33,37 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+/* ─── v45.50 · Blindaje de Chart.js ───────────────────────────────────
+   Un canvas inexistente hacía que Chart.js lanzara "Failed to create
+   chart" y abortara el resto del bloque de script. Este wrapper omite
+   con aviso (no error) los gráficos sin canvas válido y deja continuar
+   al resto del código. Registra en window.__chartSkipped los IDs. */
+(function(){
+  if(typeof window.Chart!=='function') return;
+  var RealChart=window.Chart;
+  function SafeChart(item,config){
+    var el=(typeof item==='string')?document.getElementById(item):item;
+    var ok=el&&(el.tagName==='CANVAS'||typeof el.getContext==='function'||el.canvas);
+    if(!ok){
+      var id=String((item&&item.id)||item);
+      (window.__chartSkipped=window.__chartSkipped||[]).push(id);
+      console.warn('[Chart] gráfico omitido — canvas no encontrado:',id);
+      el=document.createElement('canvas');
+    }
+    try{
+      return new RealChart(el,config);
+    }catch(e){
+      console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);
+      return null;
+    }
+  }
+  SafeChart.prototype=RealChart.prototype;
+  try{Object.setPrototypeOf(SafeChart,RealChart);}catch(_){}
+  SafeChart.__real=RealChart;
+  window.Chart=SafeChart;
+})();
+</script>
 
 <!-- Manifest e iconos -->
 <link rel="manifest" href="manifest.json">
@@ -5076,7 +5107,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.49</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.50</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5204,7 +5235,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.49</span>
+        <span>&#127919; v45.50</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6139,7 +6170,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
   <div class="vad-block">
     <h3 class="vad-block-title">C &middot; Funnel &middot; Cadena de Transformaci&oacute;n Participativa</h3>
     <p class="vad-block-sub">C&oacute;mo la voz ciudadana se transforma en pol&iacute;tica p&uacute;blica concreta. Cada etapa representa un nivel de procesamiento desde el insumo original (firmas individuales) hasta la pol&iacute;tica priorizada (acciones con cronograma y financiamiento).</p>
-    <div class="vad-funnel" id="chartFunnel">
+    <div class="vad-funnel" id="vadFunnel">
       <div class="vad-funnel-stage s1">
         <span class="vad-funnel-num">472</span>
         <span class="vad-funnel-label">Firmas individuales recolectadas en cuadernillos participativos</span>
