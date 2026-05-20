@@ -229,8 +229,8 @@ body.sidebar-collapsed .sidebar-nav a[aria-current="page"]::before{
 }
 /* Asegurar contenedor sin desbordes en estado comprimido */
 body.sidebar-collapsed #main-content{margin-left:64px}
-/* Si el sidebar está oculto en mobile (transform translateX), conserva el ancho colapsado */
-@media(max-width:1100px){
+/* En modo drawer (≤900px) el sidebar sale de pantalla: el contenido va a ancho completo */
+@media(max-width:900px){
   body.sidebar-collapsed #main-content{margin-left:0!important}
 }
 
@@ -3741,8 +3741,9 @@ section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-we
 .search-fab{position:fixed!important}
 .chatbot-fab{position:fixed!important}
 
-/* Asegurar que el sidebar nunca tape contenido en pantallas medianas */
-@media (max-width:1100px){
+/* Sidebar como drawer deslizable en móvil/tablet (≤900px) — mismo breakpoint
+   que el botón hamburguesa, para que siempre haya forma de abrirlo y cerrarlo */
+@media (max-width:900px){
   #main-content{margin-left:0!important;padding-left:14px!important;padding-right:14px!important}
   .sidebar{transform:translateX(-100%)}
   .sidebar.open{transform:translateX(0)}
@@ -5075,7 +5076,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.48</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.49</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5203,7 +5204,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.48</span>
+        <span>&#127919; v45.49</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -24254,8 +24255,9 @@ img[src$=".svg"], svg{
 }
 
 /* ─── GPU layers para elementos críticos ─── */
+/* NOTA: .sidebar y .menu-toggle EXCLUIDOS a propósito — translateZ(0) pisaba
+   el translateX(-100%) que oculta el sidebar como drawer en móvil (v45.49). */
 .hero, .hero-bg, .hero-content,
-.sidebar, .menu-toggle,
 .mbht-hero, .mbht-hero-pattern, .mbht-hero-territory,
 .banner-strip, #backToTop,
 .viz-card, .mbht-rec-card{
@@ -26156,6 +26158,19 @@ body.dark{
 }
 @media (max-width:900px){
   .main, main{padding:var(--space-lg) var(--space-md) var(--space-2xl)!important}
+}
+
+/* ═══ v45.49 · El contenedor principal despeja el sidebar fijo ═══
+   <main id="main-content"> debe quedar SIEMPRE a la derecha del sidebar
+   fijo en escritorio (≥901px) y a ancho completo en modo drawer (≤900px).
+   Anula el margin:0 auto de las reglas de distribución, que lo centraban
+   y lo dejaban oculto tras el sidebar. var(--sidebar-w) ya vale 64px
+   cuando el sidebar está comprimido, así que cubre ambos estados. */
+@media screen and (min-width:901px){
+  #main-content{margin-left:var(--sidebar-w)!important}
+}
+@media screen and (max-width:900px){
+  #main-content{margin-left:0!important}
 }
 
 /* Grids utilitarios */
