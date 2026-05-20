@@ -160,7 +160,7 @@ body{font-family:'Inter','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;ba
 /* ── Mascota sidebar ── */
 .sidebar-mascot{display:flex;flex-direction:column;align-items:center;padding:12px 16px 4px;position:relative;cursor:pointer}
 .sidebar-mascot:hover .mascot-cta{background:var(--green);color:#fff;border-color:var(--green)}
-.mascot-img{width:60px;height:60px;border-radius:16px;background:#fff;padding:0;box-shadow:0 2px 10px rgba(0,0,0,.25);object-fit:cover;filter:none;animation:mascotFloat 3s ease-in-out infinite;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.mascot-img{width:60px;height:60px;border-radius:16px;background:#fff;padding:5px;box-shadow:0 2px 10px rgba(0,0,0,.25);object-fit:contain;filter:none;animation:mascotFloat 3s ease-in-out infinite;cursor:pointer;transition:transform .25s,box-shadow .25s}
 .mascot-img:hover{transform:scale(1.15);animation-play-state:paused;box-shadow:0 4px 16px rgba(45,154,77,.35),0 2px 8px rgba(0,0,0,.25)}
 @keyframes mascotFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 .mascot-bubble{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;margin-top:6px;position:relative;letter-spacing:.3px;opacity:.85;white-space:nowrap;cursor:pointer}
@@ -271,7 +271,7 @@ body.sidebar-collapsed #main-content{margin-left:64px}
 .chatbot-panel{position:fixed;top:50%;left:50%;width:420px;max-width:calc(100vw - 40px);height:560px;max-height:calc(100vh - 80px);background:var(--card);border-radius:18px;box-shadow:0 16px 56px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.12);z-index:9999;display:flex;flex-direction:column;transform:translate(-50%,-50%) scale(.9);opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.4,0,.2,1);overflow:hidden;border:1px solid var(--border)}
 .chatbot-panel.open{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
 .chatbot-header{display:flex;align-items:center;gap:10px;padding:14px 18px;background:linear-gradient(135deg,var(--blue),#1a5c3a);color:#fff;flex-shrink:0}
-.chatbot-header img{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);padding:3px;object-fit:contain}
+.chatbot-header img{width:38px;height:38px;border-radius:50%;background:#fff;padding:3px;object-fit:contain;box-shadow:0 1px 5px rgba(0,0,0,.22)}
 .chatbot-header-info{flex:1}
 .chatbot-header-info h4{margin:0;font-size:13px;font-weight:700}
 .chatbot-header-info span{font-size:11px;opacity:.75}
@@ -291,9 +291,11 @@ body.sidebar-collapsed #main-content{margin-left:64px}
 .chatbot-input-row input:focus{border-color:var(--green)}
 .chatbot-input-row button{background:var(--green);color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s;flex-shrink:0}
 .chatbot-input-row button:hover{background:#22864a;transform:scale(1.08)}
-.chatbot-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),#1a8c4e);color:#fff;border:none;box-shadow:0 4px 20px rgba(45,154,77,.4);cursor:pointer;z-index:9997;font-size:24px;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;animation:fabPulse 3s ease-in-out infinite}
-.chatbot-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(45,154,77,.5)}
-@keyframes fabPulse{0%,100%{box-shadow:0 4px 20px rgba(45,154,77,.4)}50%{box-shadow:0 4px 28px rgba(45,154,77,.6)}}
+.chatbot-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),#1a8c4e);color:#fff;border:2px solid rgba(255,255,255,.82);box-shadow:0 6px 20px rgba(15,45,82,.3),0 2px 6px rgba(0,0,0,.16);cursor:pointer;z-index:9997;font-size:12px;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.4,.64,1),box-shadow .22s;animation:fabPulse 4.5s ease-in-out infinite}
+.chatbot-fab:hover{transform:scale(1.12) rotate(-4deg);box-shadow:0 10px 28px rgba(45,154,77,.45),0 3px 8px rgba(0,0,0,.2)}
+.chatbot-fab:active{transform:scale(1.04)}
+.fab-robot{width:72%;height:72%;object-fit:contain;display:block;pointer-events:none;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.2))}
+@keyframes fabPulse{0%,100%{box-shadow:0 6px 20px rgba(15,45,82,.3),0 2px 6px rgba(0,0,0,.16)}50%{box-shadow:0 9px 26px rgba(45,154,77,.42),0 2px 6px rgba(0,0,0,.16)}}
 .chatbot-fab.hidden{display:none}
 .fab-tooltip{position:absolute;right:64px;top:50%;transform:translateY(-50%);background:var(--primary);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .4s,transform .4s;box-shadow:0 4px 16px rgba(0,0,0,.25)}
 .fab-tooltip::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);border:5px solid transparent;border-left-color:var(--primary)}
@@ -5077,7 +5079,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     <div id="recentVisitsList"></div>
   </div>
   <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente" tabindex="0" role="button" aria-label="Abrir asistente PLADECO" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleChatbot()}" style="display:none">
-    <img src="3.png" alt="Robot Contigo Rengo" class="mascot-img" width="60" height="60" loading="lazy" decoding="async">
+    <img src="chatbot-robot.png" alt="Robot asistente PLADECO" class="mascot-img" width="60" height="60" loading="lazy" decoding="async">
     <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
     <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
   </div>
@@ -5107,14 +5109,14 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.50</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.51</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
 <div class="chatbot-overlay" id="chatOverlay" onclick="toggleChatbot()"></div>
 <div class="chatbot-panel" id="chatPanel">
   <div class="chatbot-header">
-    <img src="3.png" alt="Bot" width="36" height="36" loading="lazy" decoding="async">
+    <img src="chatbot-robot.png" alt="Asistente PLADECO Rengo" width="38" height="38" loading="lazy" decoding="async">
     <div class="chatbot-header-info">
       <h4>Asistente PLADECO Rengo</h4>
       <span>&#9679; En l&iacute;nea &mdash; Datos Censo 2024</span>
@@ -5128,7 +5130,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
     <button onclick="sendChatMessage()" aria-label="Enviar">&#10148;</button>
   </div>
 </div>
-<button class="chatbot-fab hidden" id="chatFab" onclick="toggleChatbot()" aria-label="Abrir asistente">&#128172;<span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
+<button class="chatbot-fab hidden" id="chatFab" onclick="toggleChatbot()" aria-label="Abrir asistente PLADECO"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
 
 <!-- ═══ BANNER INSTITUCIONAL UNIFICADO · Identidad + Pulso Comunal (fecha · clima · aire) ═══ -->
 <div class="construction-banner unified-banner">
@@ -5235,7 +5237,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.50</span>
+        <span>&#127919; v45.51</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
