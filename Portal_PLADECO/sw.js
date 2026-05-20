@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.16
+// PLADECO Rengo 2025-2035 · Service Worker v62.17
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.17: v45.52 - FIX resoluciones: scroll horizontal en móvil eliminado (TOC #resumen con .toc-desc nowrap)
 // v62.16: v45.51 - Chatbot: figura unificada con el robot mascota Rengo (FAB + panel + sidebar) + FAB refinado
 // v62.15: v45.50 - FIX gráficos: blindaje SafeChart + id duplicado #chartFunnel resuelto (gráfico Embudo Participación ahora renderiza)
 // v62.14: v45.49 - FIX sidebar: translateZ(0) pisaba el drawer móvil + breakpoint 1100→900 unificado + offset #main-content
@@ -17,7 +18,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.16';
+const CACHE_STATIC='pladeco-static-v62.17';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
