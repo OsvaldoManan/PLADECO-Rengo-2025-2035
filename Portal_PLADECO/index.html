@@ -5005,7 +5005,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <a href="#censoHeat" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128293;</span> Heatmap Comunal</a>
       <a href="#censoMapa" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128506;</span> Mapa Vulnerabilidad</a>
       <a href="#censoCompos" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128203;</span> Composici&#243;n ICP</a>
-      <a href="#visualizaciones-avanzadas" class="is-new"><span class="ico">&#128202;</span> Visualizaciones Avanzadas</a>
+      <a href="#visualizaciones-avanzadas" class="is-new"><span class="ico">&#129517;</span> Horizontes 2025-2035</a>
       <a href="#analisis-estrategico-censo"><span class="ico">&#128302;</span> An&aacute;lisis Estrat&eacute;gico Censal</a>
       <a href="#ict-espacios-publicos"><span class="ico">&#128205;</span> ICT &middot; Espacios P&uacute;blicos</a>
       <a href="#mbht-bienestar" class="is-new"><span class="ico">&#127960;&#65039;</span> MBHT &middot; Bienestar Territorial</a>
@@ -5114,7 +5114,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.52</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.53</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5242,7 +5242,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.52</span>
+        <span>&#127919; v45.53</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6059,399 +6059,150 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 
 <div class="group-divider" id="capitulo-3"><span class="group-divider-label" data-cap="III">&#128202; An&aacute;lisis Territorial &middot; Datos en Profundidad<span class="cap-sub">Mapas, comparadores y &iacute;ndices que revelan las desigualdades territoriales: la brecha urbano-rural, la situaci&oacute;n de la niñez y la diversidad interna de las 21 unidades vecinales.</span></span></div>
 
-<!-- ═══ §11.7 VISUALIZACIONES AVANZADAS · Pirámide + Sankey + Funnel (v45.29) ═══ -->
+<!-- ═══ §11.7 · HORIZONTES DE IMPLEMENTACIÓN 2025-2035 (v45.53) ═══ -->
 <style>
-/* Scope: .vad-* */
-.vad-block{
-  margin:18px 0 22px;
-  padding:18px 22px;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:var(--rad-md);
-  box-shadow:var(--sh-card);
+/* §11.7 · Horizontes de Implementación — scope .hz-* */
+.hz-intro-bar{display:flex;height:36px;border-radius:10px;overflow:hidden;margin:20px 0 6px;box-shadow:0 1px 5px rgba(0,0,0,.1)}
+.hz-intro-seg{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;white-space:nowrap;padding:0 6px}
+.hz-intro-seg.s1{flex:112;background:linear-gradient(135deg,#1a3d8f,#2c5cb8)}
+.hz-intro-seg.s2{flex:91;background:linear-gradient(135deg,#15803d,#2d9a4d)}
+.hz-intro-seg.s3{flex:22;background:linear-gradient(135deg,#b45309,#f5921d)}
+.hz-intro-cap{font-size:11.5px;color:var(--text2);text-align:center;margin-bottom:26px}
+.hz-roadmap{display:flex;flex-direction:column;gap:18px}
+.hz-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .2s ease,box-shadow .2s ease}
+.hz-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.1)}
+.hz-head{display:flex;align-items:center;gap:14px;padding:15px 20px;color:#fff}
+.hz-card.f1 .hz-head{background:linear-gradient(135deg,#1a3d8f,#2c5cb8)}
+.hz-card.f2 .hz-head{background:linear-gradient(135deg,#15803d,#2d9a4d)}
+.hz-card.f3 .hz-head{background:linear-gradient(135deg,#b45309,#f5921d)}
+.hz-num{flex-shrink:0;width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800}
+.hz-head-main{flex:1;min-width:0}
+.hz-phase{font-size:15.5px;font-weight:800;letter-spacing:.2px;line-height:1.2}
+.hz-years{font-size:11.5px;font-weight:600;opacity:.9;margin-top:2px;letter-spacing:.3px}
+.hz-codename{flex-shrink:0;font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;background:rgba(255,255,255,.16);padding:6px 13px;border-radius:20px;border:1px solid rgba(255,255,255,.3)}
+.hz-body{padding:16px 20px 18px}
+.hz-stat{display:flex;align-items:baseline;gap:9px;margin-bottom:14px;padding-bottom:13px;border-bottom:1px dashed var(--border)}
+.hz-stat-num{font-size:32px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.hz-card.f1 .hz-stat-num{color:#2c5cb8}
+.hz-card.f2 .hz-stat-num{color:#2d9a4d}
+.hz-card.f3 .hz-stat-num{color:#d97706}
+.hz-stat-txt{font-size:12.5px;color:var(--text2);font-weight:600}
+.hz-field{margin-bottom:13px}
+.hz-field:last-of-type{margin-bottom:0}
+.hz-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.hz-card.f1 .hz-label{color:#2c5cb8}
+.hz-card.f2 .hz-label{color:#2d9a4d}
+.hz-card.f3 .hz-label{color:#d97706}
+.hz-text{font-size:13px;line-height:1.62;color:var(--text)}
+.hz-transform{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;line-height:1.58;padding:12px 15px;border-radius:11px;margin-top:14px;color:var(--text)}
+.hz-card.f1 .hz-transform{background:rgba(44,92,184,.09)}
+.hz-card.f2 .hz-transform{background:rgba(45,154,77,.1)}
+.hz-card.f3 .hz-transform{background:rgba(217,119,6,.1)}
+.hz-tico{flex-shrink:0;font-weight:800;font-size:14px}
+.hz-card.f1 .hz-tico{color:#2c5cb8}
+.hz-card.f2 .hz-tico{color:#2d9a4d}
+.hz-card.f3 .hz-tico{color:#d97706}
+.hz-note{margin-top:20px;padding:15px 18px;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:12px;font-size:12.5px;line-height:1.62;color:var(--text2)}
+@media(max-width:600px){
+  .hz-head{flex-wrap:wrap;gap:11px}
+  .hz-codename{order:3;width:100%;text-align:center}
+  .hz-stat-num{font-size:27px}
+  .hz-intro-seg{font-size:10.5px}
+  .hz-body{padding:14px 16px 16px}
 }
-.vad-block-title{
-  font-size:15px;font-weight:700;color:var(--text);
-  margin:0 0 4px;letter-spacing:-.005em;
-}
-.vad-block-sub{
-  font-size:13px;color:var(--text2);line-height:1.55;
-  margin:0 0 14px;max-width:78ch;
-}
-.vad-canvas-wrap{
-  position:relative;width:100%;height:420px;
-  background:var(--c-neutral-soft);
-  border-radius:var(--rad-sm);
-  padding:8px;
-}
-.vad-canvas-wrap canvas,
-.vad-canvas-wrap svg{
-  display:block;width:100%!important;height:100%!important;
-}
-
-/* Funnel · CSS-only */
-.vad-funnel{
-  display:flex;flex-direction:column;align-items:center;
-  gap:8px;padding:18px 14px;
-  background:linear-gradient(180deg,rgba(45,154,77,.04) 0%,rgba(26,61,143,.04) 100%);
-  border-radius:var(--rad-md);
-  min-height:auto;height:auto;
-}
-.vad-funnel-stage{
-  width:100%;max-width:680px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 22px;
-  color:#fff;font-weight:700;
-  border-radius:var(--rad-sm);
-  box-shadow:var(--sh-card);
-  position:relative;
-  transition:transform .2s,box-shadow .2s;
-}
-.vad-funnel-stage:hover{transform:translateY(-1px);box-shadow:var(--sh-card-hover)}
-.vad-funnel-stage::after{
-  content:"";
-  position:absolute;left:50%;bottom:-9px;
-  transform:translateX(-50%);
-  width:0;height:0;
-  border-left:9px solid transparent;
-  border-right:9px solid transparent;
-  border-top:9px solid currentColor;
-  opacity:.4;
-}
-.vad-funnel-stage:last-child::after{display:none}
-.vad-funnel-num{font-size:22px;font-weight:800;letter-spacing:-.02em}
-.vad-funnel-label{font-size:12.5px;font-weight:600;text-align:right;line-height:1.3;flex:1;margin-left:18px;letter-spacing:.01em;text-transform:uppercase}
-.vad-funnel-stage.s1{background:linear-gradient(135deg,#1a3d8f,#2c5cb8);width:100%}
-.vad-funnel-stage.s2{background:linear-gradient(135deg,#0369a1,#0891b2);width:88%}
-.vad-funnel-stage.s3{background:linear-gradient(135deg,#15803d,#22c55e);width:76%}
-.vad-funnel-stage.s4{background:linear-gradient(135deg,#ca8a04,#eab308);width:64%}
-.vad-funnel-stage.s5{background:linear-gradient(135deg,#b45309,#f5921d);width:52%}
-.vad-funnel-stage.s6{background:linear-gradient(135deg,#7c2d12,#dc2626);width:40%;font-weight:800}
-
-@media (max-width:640px){
-  .vad-canvas-wrap{height:340px}
-  .vad-funnel-stage{padding:11px 16px;flex-direction:column;align-items:flex-start;gap:4px}
-  .vad-funnel-label{margin-left:0;font-size:11.5px;text-align:left}
-  .vad-funnel-num{font-size:18px}
-}
-
-/* Tooltip Sankey */
-.vad-sankey-tooltip{
-  position:absolute;
-  background:rgba(12,31,54,.95);
-  color:#fff;
-  padding:6px 10px;
-  border-radius:var(--rad-sm);
-  font-size:11.5px;font-weight:600;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .15s;
-  z-index:10;
-  white-space:nowrap;
-}
-.vad-sankey-tooltip.show{opacity:1}
 </style>
 
 <section id="visualizaciones-avanzadas" class="reveal">
   <div class="sec-header">
-    <div class="badge badge--info">&sect;11.7 &middot; Visualizaciones Avanzadas</div>
-    <h2>&#128202; Datos PLADECO en Profundidad</h2>
-    <p>Tres visualizaciones interactivas que profundizan la lectura del diagn&oacute;stico y la implementaci&oacute;n: <strong>pir&aacute;mide demogr&aacute;fica</strong> del Censo 2024 (estructura etaria por sexo), <strong>diagrama Sankey</strong> del flujo financiero del plan (Municipal+FNDR+Sectorial &rarr; 6 ejes estrat&eacute;gicos), y <strong>funnel de participaci&oacute;n ciudadana</strong> mostrando la cadena de transformaci&oacute;n desde las 472 firmas hasta las 225 acciones priorizadas.</p>
+    <div class="badge badge--info">&sect;11.7 &middot; Estrategia de Implementaci&oacute;n</div>
+    <h2>&#129517; Horizontes de Implementaci&oacute;n 2025-2035</h2>
+    <p>El PLADECO no se ejecuta de una sola vez. Sus <strong>225 acciones priorizadas</strong> se despliegan en <strong>tres horizontes temporales</strong>, cada uno con un foco estrat&eacute;gico propio. Esta hoja de ruta muestra la secuencia: qu&eacute; se prioriza en cada fase, con qu&eacute; intensidad y qu&eacute; transformaci&oacute;n deja instalada para la siguiente.</p>
   </div>
 
-  <!-- A. PIRÁMIDE POBLACIONAL -->
-  <div class="vad-block">
-    <h3 class="vad-block-title">A &middot; Pir&aacute;mide Poblacional &middot; Censo CPV 2024</h3>
-    <p class="vad-block-sub">Estructura etaria y de sexo de los <strong>63.620 habitantes</strong> de Rengo, agrupados en 17 cohortes quinquenales. <span style="color:#1a3d8f;font-weight:700">Hombres a la izquierda</span> &middot; <span style="color:#15803d;font-weight:700">Mujeres a la derecha</span>. Permite identificar el bono demogr&aacute;fico actual (cohortes 20-39 a&ntilde;os) y la transici&oacute;n hacia el envejecimiento (cohortes 60+ creciendo).</p>
-    <div class="vad-canvas-wrap"><canvas id="chartPyramid"></canvas></div>
+  <div class="hz-intro-bar" role="img" aria-label="Distribución de las 225 acciones: 112 de corto plazo, 91 de mediano plazo, 22 de largo plazo">
+    <div class="hz-intro-seg s1">Corto &middot; 112</div>
+    <div class="hz-intro-seg s2">Mediano &middot; 91</div>
+    <div class="hz-intro-seg s3">22</div>
   </div>
+  <div class="hz-intro-cap">Distribuci&oacute;n de las 225 acciones priorizadas seg&uacute;n su horizonte de ejecuci&oacute;n</div>
 
-  <!-- B. SANKEY DE FINANCIAMIENTO -->
-  <div class="vad-block">
-    <h3 class="vad-block-title">B &middot; Sankey &middot; Flujo de Financiamiento del Plan</h3>
-    <p class="vad-block-sub">Distribuci&oacute;n del mix financiero del PLADECO (<strong>Municipal 64% + FNDR 18% + Sectorial 12% + Otros 6%</strong>) hacia los 6 ejes estrat&eacute;gicos seg&uacute;n el peso relativo de sus 225 acciones priorizadas. El grosor de cada flujo es proporcional al monto estimado. Pasa el cursor sobre los nodos para ver detalles.</p>
-    <div class="vad-canvas-wrap" id="chartSankey" style="height:480px"></div>
-  </div>
+  <div class="hz-roadmap">
 
-  <!-- C. FUNNEL DE PARTICIPACIÓN -->
-  <div class="vad-block">
-    <h3 class="vad-block-title">C &middot; Funnel &middot; Cadena de Transformaci&oacute;n Participativa</h3>
-    <p class="vad-block-sub">C&oacute;mo la voz ciudadana se transforma en pol&iacute;tica p&uacute;blica concreta. Cada etapa representa un nivel de procesamiento desde el insumo original (firmas individuales) hasta la pol&iacute;tica priorizada (acciones con cronograma y financiamiento).</p>
-    <div class="vad-funnel" id="vadFunnel">
-      <div class="vad-funnel-stage s1">
-        <span class="vad-funnel-num">472</span>
-        <span class="vad-funnel-label">Firmas individuales recolectadas en cuadernillos participativos</span>
+    <div class="hz-card f1">
+      <div class="hz-head">
+        <div class="hz-num">01</div>
+        <div class="hz-head-main">
+          <div class="hz-phase">Corto Plazo</div>
+          <div class="hz-years">2025 &ndash; 2028</div>
+        </div>
+        <div class="hz-codename">Cimientos</div>
       </div>
-      <div class="vad-funnel-stage s2">
-        <span class="vad-funnel-num">95</span>
-        <span class="vad-funnel-label">Organizaciones sociales involucradas (JJVV, clubes, comit&eacute;s)</span>
-      </div>
-      <div class="vad-funnel-stage s3">
-        <span class="vad-funnel-num">21</span>
-        <span class="vad-funnel-label">Unidades vecinales cubiertas con talleres territoriales</span>
-      </div>
-      <div class="vad-funnel-stage s4">
-        <span class="vad-funnel-num">859</span>
-        <span class="vad-funnel-label">Insumos sistematizados (610 fortalezas + 249 debilidades)</span>
-      </div>
-      <div class="vad-funnel-stage s5">
-        <span class="vad-funnel-num">27</span>
-        <span class="vad-funnel-label">Objetivos estrat&eacute;gicos derivados (6 ejes &middot; FODA)</span>
-      </div>
-      <div class="vad-funnel-stage s6">
-        <span class="vad-funnel-num">225</span>
-        <span class="vad-funnel-label">Acciones priorizadas con plazos, fuentes y responsables</span>
+      <div class="hz-body">
+        <div class="hz-stat"><span class="hz-stat-num">112</span><span class="hz-stat-txt">acciones &middot; 50% de la cartera</span></div>
+        <div class="hz-field">
+          <div class="hz-label">Foco estrat&eacute;gico</div>
+          <div class="hz-text">Instalar capacidades de gesti&oacute;n, resolver lo urgente y conseguir resultados visibles tempranos que construyan confianza ciudadana en el plan.</div>
+        </div>
+        <div class="hz-field">
+          <div class="hz-label">En esta fase</div>
+          <div class="hz-text">La mitad de la cartera se concentra aqu&iacute;. Predominan las acciones habilitantes &mdash;ordenamiento de la gesti&oacute;n municipal, formulaci&oacute;n de proyectos a fondos concursables (FRIL, PMU, FNDR) y fortalecimiento de los equipos&mdash; junto con intervenciones de impacto r&aacute;pido en los barrios y la puesta en marcha simult&aacute;nea de los 6 ejes estrat&eacute;gicos.</div>
+        </div>
+        <div class="hz-transform"><span class="hz-tico">&#9656;</span><span><strong>Transformaci&oacute;n esperada:</strong> el plan pasa del documento a la acci&oacute;n; la comunidad percibe los primeros cambios concretos en su entorno cercano.</span></div>
       </div>
     </div>
+
+    <div class="hz-card f2">
+      <div class="hz-head">
+        <div class="hz-num">02</div>
+        <div class="hz-head-main">
+          <div class="hz-phase">Mediano Plazo</div>
+          <div class="hz-years">2028 &ndash; 2032</div>
+        </div>
+        <div class="hz-codename">Consolidaci&oacute;n</div>
+      </div>
+      <div class="hz-body">
+        <div class="hz-stat"><span class="hz-stat-num">91</span><span class="hz-stat-txt">acciones &middot; 40% de la cartera</span></div>
+        <div class="hz-field">
+          <div class="hz-label">Foco estrat&eacute;gico</div>
+          <div class="hz-text">Ejecutar las inversiones estructurales y escalar los programas que demostraron resultados durante la primera fase.</div>
+        </div>
+        <div class="hz-field">
+          <div class="hz-label">En esta fase</div>
+          <div class="hz-text">Se materializan los proyectos de mayor envergadura &mdash;infraestructura, equipamiento comunitario y programas sociales sostenidos&mdash; que requieren dise&ntilde;o previo, financiamiento sectorial o regional y plazos de maduraci&oacute;n largos. La gesti&oacute;n se profesionaliza y los indicadores comienzan a moverse de forma sostenida.</div>
+        </div>
+        <div class="hz-transform"><span class="hz-tico">&#9656;</span><span><strong>Transformaci&oacute;n esperada:</strong> los cambios dejan de ser puntuales y se vuelven estructurales y medibles &mdash; el territorio y los servicios se transforman de manera duradera.</span></div>
+      </div>
+    </div>
+
+    <div class="hz-card f3">
+      <div class="hz-head">
+        <div class="hz-num">03</div>
+        <div class="hz-head-main">
+          <div class="hz-phase">Largo Plazo</div>
+          <div class="hz-years">2032 &ndash; 2035</div>
+        </div>
+        <div class="hz-codename">Proyecci&oacute;n</div>
+      </div>
+      <div class="hz-body">
+        <div class="hz-stat"><span class="hz-stat-num">22</span><span class="hz-stat-txt">acciones &middot; 10% de la cartera</span></div>
+        <div class="hz-field">
+          <div class="hz-label">Foco estrat&eacute;gico</div>
+          <div class="hz-text">Completar la cartera de mayor complejidad, evaluar el ciclo completo y dejar instaladas las bases del pr&oacute;ximo PLADECO.</div>
+        </div>
+        <div class="hz-field">
+          <div class="hz-label">En esta fase</div>
+          <div class="hz-text">Quedan las acciones de mayor aliento &mdash;las que dependen de hitos previos, gestiones supracomunales o definiciones de pol&iacute;tica de largo plazo&mdash;. Es tambi&eacute;n el momento de la evaluaci&oacute;n final de metas y de sistematizar los aprendizajes del decenio.</div>
+        </div>
+        <div class="hz-transform"><span class="hz-tico">&#9656;</span><span><strong>Transformaci&oacute;n esperada:</strong> el Rengo proyectado en la visi&oacute;n comunal 2035 se consolida &mdash;una comuna m&aacute;s equitativa, sostenible y mejor gobernada&mdash; con una hoja de ruta lista para el siguiente horizonte.</span></div>
+      </div>
+    </div>
+
   </div>
 
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Pir&aacute;mide poblacional: INE, Censo de Poblaci&oacute;n y Vivienda 2024 &mdash; resultados preliminares comuna de Rengo (cohortes quinquenales por sexo). Sankey de financiamiento: Matriz Estrat&eacute;gica PLADECO Rengo 2025-2035 con asignaci&oacute;n estimada de fuentes (BIP, Plan de Inversiones SUBDERE, ERD O'Higgins 2024-2036). Funnel de participaci&oacute;n: Sistematizaci&oacute;n del proceso participativo PLADECO Rengo 2025-2035 &middot; SECPLAC &middot; Mayo 2026.</div>
+  <div class="hz-note"><strong>Los 6 ejes estrat&eacute;gicos est&aacute;n presentes en los tres horizontes</strong>, pero con distinta intensidad: el corto plazo siembra, el mediano plazo construye y el largo plazo proyecta. Cada fase contempla una instancia de evaluaci&oacute;n que permite ajustar la cartera seg&uacute;n los resultados alcanzados.</div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Distribuci&oacute;n temporal de las 225 acciones priorizadas &mdash; Matriz Estrat&eacute;gica PLADECO Rengo 2025-2035, SECPLAC, Mayo 2026. Horizontes de ejecuci&oacute;n seg&uacute;n el cronograma del plan: 112 acciones de corto plazo, 91 de mediano plazo y 22 de largo plazo.</div>
 </section>
-
-<script>
-/* Visualizaciones Avanzadas v45.29 · Pirámide + Sankey + Funnel */
-(function(){
-
-  // ═══ A. PIRÁMIDE POBLACIONAL (Chart.js) ═══
-  function _renderPyramid(){
-    var ctx = document.getElementById('chartPyramid');
-    if(!ctx || typeof Chart === 'undefined'){
-      setTimeout(_renderPyramid, 300);
-      return;
-    }
-    var ageGroups = ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'];
-    var hombres = [-1180,-2060,-2250,-2320,-2390,-2490,-2420,-2350,-2210,-2110,-2040,-1820,-1670,-1360,-1030,-740,-810];
-    var mujeres = [1240,2140,2330,2400,2460,2550,2490,2430,2290,2180,2100,1900,1770,1480,1170,870,1100];
-
-    new Chart(ctx, {
-      type:'bar',
-      data:{
-        labels:ageGroups,
-        datasets:[
-          { label:'Hombres', data:hombres, backgroundColor:'rgba(26,61,143,.78)', borderColor:'#1a3d8f', borderWidth:1, borderRadius:3 },
-          { label:'Mujeres', data:mujeres, backgroundColor:'rgba(45,154,77,.78)', borderColor:'#15803d', borderWidth:1, borderRadius:3 }
-        ]
-      },
-      options:{
-        indexAxis:'y',
-        responsive:true,
-        maintainAspectRatio:false,
-        scales:{
-          x:{
-            stacked:false,
-            grid:{color:'rgba(0,0,0,.06)'},
-            ticks:{
-              callback:function(v){ return Math.abs(v).toLocaleString('es-CL'); },
-              font:{size:11}
-            },
-            title:{display:true,text:'Habitantes (escala bilateral)',font:{size:11,weight:'600'},color:'#475569'}
-          },
-          y:{
-            stacked:false,
-            grid:{display:false},
-            ticks:{font:{size:11,weight:'600'},color:'#475569'},
-            title:{display:true,text:'Grupo de edad',font:{size:11,weight:'600'},color:'#475569'}
-          }
-        },
-        plugins:{
-          legend:{position:'top',labels:{font:{size:12,weight:'600'},padding:14,boxWidth:14}},
-          tooltip:{
-            callbacks:{
-              label:function(c){
-                return c.dataset.label + ': ' + Math.abs(c.parsed.x).toLocaleString('es-CL') + ' hab.';
-              }
-            }
-          }
-        }
-      }
-    });
-    console.log('[VAD-A] Piramide renderizada');
-  }
-
-  // ═══ B. SANKEY (D3.js lazy load) ═══
-  function _loadD3Sankey(cb){
-    if(typeof d3 !== 'undefined' && typeof d3.sankey === 'function'){ return cb(); }
-    var s1 = document.createElement('script');
-    s1.src = 'https://d3js.org/d3.v7.min.js';
-    s1.onload = function(){
-      var s2 = document.createElement('script');
-      s2.src = 'https://cdn.jsdelivr.net/npm/d3-sankey@0.12/dist/d3-sankey.min.js';
-      s2.onload = cb;
-      s2.onerror = function(){ console.warn('[VAD-B] d3-sankey error'); };
-      document.head.appendChild(s2);
-    };
-    s1.onerror = function(){ console.warn('[VAD-B] d3 error'); };
-    document.head.appendChild(s1);
-  }
-
-  function _renderSankey(){
-    var container = document.getElementById('chartSankey');
-    if(!container) return;
-    _loadD3Sankey(function(){
-      try { _drawSankey(container); }
-      catch(e){ console.warn('[VAD-B] sankey draw error', e); container.innerHTML = '<div style="padding:20px;color:#64748b;font-size:13px;text-align:center">No se pudo cargar el diagrama Sankey. Recarga la pagina.</div>'; }
-    });
-  }
-
-  function _drawSankey(container){
-    var width = container.clientWidth;
-    var height = container.clientHeight;
-    container.innerHTML = '';
-
-    var data = {
-      nodes: [
-        {name:'Municipal'},     // 0
-        {name:'FNDR'},          // 1
-        {name:'Sectorial'},     // 2
-        {name:'Otros'},         // 3
-        {name:'E1 Social y Salud'},   // 4
-        {name:'E2 Económico'},        // 5
-        {name:'E3 Educación-Cultura'},// 6
-        {name:'E4 Territorio'},       // 7
-        {name:'E5 Seguridad'},        // 8
-        {name:'E6 Gestión'}           // 9
-      ],
-      links: [
-        // Municipal (64%) → ejes proporcional
-        {source:0, target:4, value:37}, // E1
-        {source:0, target:5, value:11}, // E2
-        {source:0, target:6, value:9},  // E3
-        {source:0, target:7, value:34}, // E4
-        {source:0, target:8, value:20}, // E5
-        {source:0, target:9, value:32}, // E6
-        // FNDR (18%) → mayor a E1 y E4
-        {source:1, target:4, value:14}, // E1
-        {source:1, target:7, value:13}, // E4
-        {source:1, target:8, value:5},  // E5
-        {source:1, target:6, value:2},  // E3
-        {source:1, target:9, value:2},  // E6
-        // Sectorial (12%) → E1, E3, E5
-        {source:2, target:4, value:6},  // E1
-        {source:2, target:6, value:3},  // E3
-        {source:2, target:5, value:3},  // E2
-        {source:2, target:8, value:5},  // E5
-        // Otros (6%) → E2, E4
-        {source:3, target:5, value:2},  // E2
-        {source:3, target:4, value:1},  // E1
-        {source:3, target:7, value:6},  // E4
-        {source:3, target:9, value:2}   // E6
-      ]
-    };
-
-    var nodeColors = ['#1a3d8f','#0369a1','#15803d','#b45309','#c0392b','#f5921d','#2d9a4d','#1a3d8f','#8B1A1A','#2980b9'];
-    var linkColor = function(d){ return nodeColors[d.source.index] || '#94a3b8'; };
-
-    var svg = d3.select(container).append('svg')
-      .attr('width', width).attr('height', height)
-      .attr('viewBox', '0 0 ' + width + ' ' + height);
-
-    var sankey = d3.sankey()
-      .nodeWidth(14)
-      .nodePadding(12)
-      .extent([[8, 16], [width - 8, height - 14]]);
-
-    var sk = sankey({
-      nodes: data.nodes.map(function(d){ return Object.assign({}, d); }),
-      links: data.links.map(function(d){ return Object.assign({}, d); })
-    });
-
-    // Tooltip
-    var tooltip = document.createElement('div');
-    tooltip.className = 'vad-sankey-tooltip';
-    container.appendChild(tooltip);
-
-    // Links
-    svg.append('g')
-      .attr('fill','none')
-      .selectAll('path')
-      .data(sk.links)
-      .enter().append('path')
-        .attr('d', d3.sankeyLinkHorizontal())
-        .attr('stroke', linkColor)
-        .attr('stroke-width', function(d){ return Math.max(1, d.width); })
-        .attr('stroke-opacity', 0.42)
-        .style('transition','stroke-opacity .15s')
-        .on('mouseover', function(event, d){
-          d3.select(this).attr('stroke-opacity', 0.75);
-          tooltip.classList.add('show');
-          tooltip.textContent = d.source.name + ' → ' + d.target.name + ' · ' + d.value + '%';
-        })
-        .on('mousemove', function(event){
-          var rect = container.getBoundingClientRect();
-          tooltip.style.left = (event.clientX - rect.left + 12) + 'px';
-          tooltip.style.top  = (event.clientY - rect.top - 8) + 'px';
-        })
-        .on('mouseout', function(){
-          d3.select(this).attr('stroke-opacity', 0.42);
-          tooltip.classList.remove('show');
-        });
-
-    // Nodes
-    svg.append('g')
-      .selectAll('rect')
-      .data(sk.nodes)
-      .enter().append('rect')
-        .attr('x', function(d){ return d.x0; })
-        .attr('y', function(d){ return d.y0; })
-        .attr('width', function(d){ return d.x1 - d.x0; })
-        .attr('height', function(d){ return Math.max(1, d.y1 - d.y0); })
-        .attr('fill', function(d){ return nodeColors[d.index] || '#475569'; })
-        .attr('stroke', '#fff')
-        .attr('stroke-width', 1);
-
-    // Labels
-    svg.append('g')
-      .style('font','11.5px Inter, system-ui, sans-serif')
-      .selectAll('text')
-      .data(sk.nodes)
-      .enter().append('text')
-        .attr('x', function(d){ return d.x0 < width / 2 ? d.x1 + 7 : d.x0 - 7; })
-        .attr('y', function(d){ return (d.y0 + d.y1) / 2; })
-        .attr('dy', '0.35em')
-        .attr('text-anchor', function(d){ return d.x0 < width / 2 ? 'start' : 'end'; })
-        .attr('fill', '#1e293b')
-        .style('font-weight','600')
-        .text(function(d){ return d.name; });
-
-    console.log('[VAD-B] Sankey renderizado');
-  }
-
-  // ═══ INIT con IntersectionObserver para lazy load ═══
-  function _init(){
-    var sec = document.getElementById('visualizaciones-avanzadas');
-    if(!sec) return;
-    // Pyramid: lazy via IO
-    var io1 = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          _renderPyramid();
-          io1.disconnect();
-        }
-      });
-    }, {threshold:0.1});
-    io1.observe(sec);
-
-    // Sankey: lazy via IO
-    var io2 = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          _renderSankey();
-          io2.disconnect();
-        }
-      });
-    }, {threshold:0.05, rootMargin:'200px'});
-    io2.observe(document.getElementById('chartSankey'));
-
-    console.log('[VAD v45.29] inicializado · lazy observers activos');
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', _init);
-  } else {
-    _init();
-  }
-})();
-</script>
 
 <!-- ═══ A5 · MACROSECTOR · ELIMINADO en v45.2: el perfil zonal de macrosectores
      ahora vive integrado en el mapa del ICT como control flotante topright;
