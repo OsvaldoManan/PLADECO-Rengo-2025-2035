@@ -5065,6 +5065,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <a href="#timeline" class="is-new"><span class="ico">&#128467;&#65039;</span> L&iacute;nea de Tiempo del Proceso</a>
       <a href="#comparador" class="is-new"><span class="ico">&#9878;&#65039;</span> Comparador Comunas Vecinas</a>
       <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a &amp; Actas Participaci&#243;n</a>
+      <a href="#transparencia" class="is-new"><span class="ico">&#128194;</span> Centro de Transparencia</a>
       <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
       <a href="#participa"><span class="ico">&#128227;</span> Participa &middot; Newsletter / Reporte</a>
       <a href="#faq"><span class="ico">&#10067;</span> Preguntas Frecuentes</a>
@@ -5114,7 +5115,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.53</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.54</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5242,7 +5243,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.53</span>
+        <span>&#127919; v45.54</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -11926,6 +11927,143 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   </div>
   <div id="cuadernilloRender"></div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Datos demogr&aacute;ficos Censo INE 2024 &middot; &Iacute;ndices SIVUST calculados por equipo PLADECO sobre manzanas censales &middot; ICT 56 Espacios P&uacute;blicos (Secci&oacute;n 11.3 PLADECO) &middot; Matriz Estrat&eacute;gica de 225 acciones priorizadas &middot; Generaci&oacute;n PDF con jsPDF (open-source MIT) en el navegador, sin enviar tus datos a ning&uacute;n servidor.</div>
+</section>
+
+<!-- ═══ CENTRO DE TRANSPARENCIA Y DESCARGAS (v45.54) ═══ -->
+<style>
+/* Centro de Transparencia — scope .tr-* */
+.tr-group{margin:24px 0}
+.tr-group:first-of-type{margin-top:18px}
+.tr-group-title{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.6px;margin-bottom:13px;padding-bottom:9px;border-bottom:2px solid var(--border)}
+.tr-gt-ico{font-size:15px}
+.tr-gt-count{margin-left:auto;font-size:11px;font-weight:700;color:var(--text2);text-transform:none;letter-spacing:0}
+.tr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:12px}
+.tr-card{display:flex;align-items:center;gap:13px;padding:13px 15px;background:var(--card);border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.tr-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.1);border-color:var(--green)}
+.tr-ico{flex-shrink:0;width:43px;height:43px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:800;color:#fff;letter-spacing:.3px}
+.tr-ico.pdf{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+.tr-ico.xlsx{background:linear-gradient(135deg,#15803d,#22a558)}
+.tr-ico.soon{background:linear-gradient(135deg,#94a3b8,#b9c4d0)}
+.tr-info{flex:1;min-width:0}
+.tr-name{font-size:12.8px;font-weight:700;line-height:1.32;margin-bottom:3px}
+.tr-meta{font-size:11px;color:var(--text2);font-weight:600;letter-spacing:.2px}
+.tr-dl{flex-shrink:0;color:var(--text2);transition:color .18s ease,transform .18s ease}
+.tr-card:hover .tr-dl{color:var(--green);transform:translateY(2px)}
+.tr-card.tr-soon{cursor:default}
+.tr-card.tr-soon:hover{transform:none;box-shadow:0 1px 4px rgba(0,0,0,.04);border-color:var(--border)}
+.tr-soon-tag{flex-shrink:0;font-size:10px;font-weight:800;color:#b45309;background:rgba(245,146,29,.15);padding:5px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.tr-note{margin-top:20px;padding:14px 17px;background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:11px;font-size:12px;line-height:1.62;color:var(--text2)}
+@media(max-width:560px){.tr-grid{grid-template-columns:1fr}}
+</style>
+
+<section id="transparencia" class="reveal">
+  <div class="sec-header">
+    <div class="badge badge--info">Transparencia Activa</div>
+    <h2>&#128194; Centro de Transparencia y Descargas</h2>
+    <p>Los <strong>15 documentos</strong> que respaldan el proceso PLADECO Rengo 2025-2035, reunidos en un solo lugar &mdash; abiertos y descargables. Informes t&eacute;cnicos, actas de la participaci&oacute;n ciudadana y datos de la Matriz de Bienestar Humano Territorial en formato abierto.</p>
+  </div>
+
+  <div class="tr-group">
+    <div class="tr-group-title"><span class="tr-gt-ico">&#128196;</span> Documentos del Plan <span class="tr-gt-count">2 disponibles</span></div>
+    <div class="tr-grid">
+      <div class="tr-card tr-soon">
+        <div class="tr-ico soon">PDF</div>
+        <div class="tr-info"><div class="tr-name">Documento PLADECO Rengo 2025-2035</div><div class="tr-meta">Versi&oacute;n final del plan</div></div>
+        <span class="tr-soon-tag">Jun 2026</span>
+      </div>
+      <a class="tr-card" href="docs/PLADECO_Cronograma_2025-2032.pdf" target="_blank" rel="noopener" title="Abrir Cronograma de Implementaci&oacute;n 2025-2032">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Cronograma de Implementaci&oacute;n 2025-2032</div><div class="tr-meta">PDF &middot; 144 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="docs/Informe_Estado_Espacios_Publicos_Rengo_2026.pdf" target="_blank" rel="noopener" title="Abrir Informe Estado de Espacios P&uacute;blicos 2026">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Informe Estado de Espacios P&uacute;blicos 2026</div><div class="tr-meta">PDF &middot; 54 MB &middot; archivo extenso</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="tr-group">
+    <div class="tr-group-title"><span class="tr-gt-ico">&#128221;</span> Actas del Proceso Participativo <span class="tr-gt-count">8 actas</span></div>
+    <div class="tr-grid">
+      <a class="tr-card" href="actas/Autoridades%20-%20Concejales/PDF%20Concejales.pdf" target="_blank" rel="noopener" title="Abrir Autoridades y Concejales">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Autoridades y Concejales</div><div class="tr-meta">PDF &middot; 1,0 MB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Directores%20Municipalidad%20de%20Rengo/Directores%20Municipalidad%20de%20Rengo.pdf" target="_blank" rel="noopener" title="Abrir Directores Municipales">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Directores Municipales</div><div class="tr-meta">PDF &middot; 800 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Funcionarios%20Municipales/Funcionarios%20Municipales.pdf" target="_blank" rel="noopener" title="Abrir Funcionarios Municipales">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Funcionarios Municipales</div><div class="tr-meta">PDF &middot; 7,8 MB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Juntas%20de%20Vecinos%20Rengo%20Urbano/Juntas%20de%20Vecinos%20Rengo%20Urbano.pdf" target="_blank" rel="noopener" title="Abrir Juntas de Vecinos &middot; Rengo Urbano">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Juntas de Vecinos &middot; Rengo Urbano</div><div class="tr-meta">PDF &middot; 1,5 MB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Juntas%20de%20Vecinos%20Rosario%20Urbano/Juntas%20de%20Vecinos%20Rosario%20Urbano%20PDF.pdf" target="_blank" rel="noopener" title="Abrir Juntas de Vecinos &middot; Rosario Urbano">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Juntas de Vecinos &middot; Rosario Urbano</div><div class="tr-meta">PDF &middot; 1,1 MB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Juntas%20de%20Vecinos%20Rurales/Juntas%20de%20vecinos%20Rurales%20PDF.pdf" target="_blank" rel="noopener" title="Abrir Juntas de Vecinos &middot; Sector Rural">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Juntas de Vecinos &middot; Sector Rural</div><div class="tr-meta">PDF &middot; 2,5 MB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Clubes%20Deportivos/Clubes%20Deportivos%20PDF.pdf" target="_blank" rel="noopener" title="Abrir Clubes Deportivos">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Clubes Deportivos</div><div class="tr-meta">PDF &middot; 508 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="actas/Organizaciones/Organizaciones%20pdf.pdf" target="_blank" rel="noopener" title="Abrir Organizaciones Sociales">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Organizaciones Sociales</div><div class="tr-meta">PDF &middot; 2,9 MB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="tr-group">
+    <div class="tr-group-title"><span class="tr-gt-ico">&#128202;</span> Datos Abiertos &middot; Bienestar Territorial <span class="tr-gt-count">5 archivos</span></div>
+    <div class="tr-grid">
+      <a class="tr-card" href="MBHT/notas-metodologicas.pdf" target="_blank" rel="noopener" title="Abrir Notas Metodol&oacute;gicas MBHT">
+        <div class="tr-ico pdf">PDF</div>
+        <div class="tr-info"><div class="tr-name">Notas Metodol&oacute;gicas MBHT</div><div class="tr-meta">PDF &middot; 616 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="MBHT/Accesibilidad.xlsx" target="_blank" rel="noopener" title="Abrir Dimensi&oacute;n Accesibilidad">
+        <div class="tr-ico xlsx">XLSX</div>
+        <div class="tr-info"><div class="tr-name">Dimensi&oacute;n Accesibilidad</div><div class="tr-meta">XLSX &middot; 332 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="MBHT/Ambiental.xlsx" target="_blank" rel="noopener" title="Abrir Dimensi&oacute;n Ambiental">
+        <div class="tr-ico xlsx">XLSX</div>
+        <div class="tr-info"><div class="tr-name">Dimensi&oacute;n Ambiental</div><div class="tr-meta">XLSX &middot; 228 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="MBHT/Socioecon%C3%B3mica.xlsx" target="_blank" rel="noopener" title="Abrir Dimensi&oacute;n Socioecon&oacute;mica">
+        <div class="tr-ico xlsx">XLSX</div>
+        <div class="tr-info"><div class="tr-name">Dimensi&oacute;n Socioecon&oacute;mica</div><div class="tr-meta">XLSX &middot; 300 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+      <a class="tr-card" href="MBHT/Seguridad.xlsx" target="_blank" rel="noopener" title="Abrir Dimensi&oacute;n Seguridad">
+        <div class="tr-ico xlsx">XLSX</div>
+        <div class="tr-info"><div class="tr-name">Dimensi&oacute;n Seguridad</div><div class="tr-meta">XLSX &middot; 256 KB</div></div>
+        <svg class="tr-dl" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v13m-5-5 5 5 5-5M5 21h14"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="tr-note"><strong>Transparencia activa.</strong> Estos documentos respaldan cada etapa del PLADECO y se publican para libre consulta de la ciudadan&iacute;a. Los datos de la MBHT se entregan en formato abierto (Excel) para su an&aacute;lisis y reutilizaci&oacute;n. El documento final del plan se publicar&aacute; una vez aprobado por el Concejo Municipal.</div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Documentos oficiales del proceso de elaboraci&oacute;n del PLADECO Rengo 2025-2035 &middot; SECPLAC, Ilustre Municipalidad de Rengo &middot; Mayo 2026.</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════
