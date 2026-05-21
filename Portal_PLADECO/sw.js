@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.30
+// PLADECO Rengo 2025-2035 · Service Worker v62.31
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.31: v45.67 - Motor de vistas (detalles): selector de 11 capítulos en la portada + se oculta la UI de scroll (dot-nav, minimapa, barras de progreso) en modo vistas
 // v62.30: v45.66 - Motor de vistas: portada + 11 capítulos como vistas independientes (se acaba el scroll único); navegación por anclas reescrita; tolerante a fallos (ante error vuelve al scroll normal)
 // v62.29: v45.65 - FIX barra superior: ícono duplicado en cada ítem de los menús (.tn-di + el emoji que ya venía en el texto) -> el texto se limpia del ícono
 // v62.28: v45.64 - Banner "En construcción": fila reequilibrada (cinta centrada con 3 zonas de igual peso + pastillas escudo/PLADECO unificadas) + 2 reglas CSS muertas eliminadas
@@ -31,7 +32,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.30';
+const CACHE_STATIC='pladeco-static-v62.31';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
