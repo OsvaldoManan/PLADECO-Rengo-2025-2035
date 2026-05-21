@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.19
+// PLADECO Rengo 2025-2035 · Service Worker v62.20
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.20: v45.55 - Navegación: barra superior de 7 capítulos con menús desplegables reemplaza el sidebar
 // v62.19: v45.54 - Nueva sección #transparencia: Centro de Transparencia y Descargas (15 documentos del proceso)
 // v62.18: v45.53 - §11.7 reconvertida: "Datos en Profundidad" (3 viz redundantes) → "Horizontes de Implementación 2025-2035"
 // v62.17: v45.52 - FIX resoluciones: scroll horizontal en móvil eliminado (TOC #resumen con .toc-desc nowrap)
@@ -20,7 +21,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.19';
+const CACHE_STATIC='pladeco-static-v62.20';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

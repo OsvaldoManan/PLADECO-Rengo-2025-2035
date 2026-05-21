@@ -111,7 +111,7 @@
   --eje1:#c0392b;--eje2:#f5921d;--eje3:#2d9a4d;--eje4:#1a3d8f;--eje5:#8B1A1A;--eje6:#2980b9;
   --bg:#f5f6f8;--card:#fff;--text:#1a2332;--text2:#5c6b7f;--text-secondary:#6b7c94;--border:#e0e4ea;
   --shadow:0 2px 16px rgba(12,31,54,.06);--radius:10px;
-  --sidebar-w:260px;
+  --sidebar-w:0px;
   --green:#2d9a4d;--green-light:#48c76e;--orange:#f5921d;--orange-light:#fdb94d;
   --blue:#1a3d8f;--blue-light:#2d5dcc;
   --muted:#6b7c94;
@@ -172,7 +172,7 @@ body{font-family:'Inter','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;ba
 .sidebar-collapse-btn{width:100%;padding:6px 20px;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.6);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;flex-shrink:0;letter-spacing:.3px}
 .sidebar-collapse-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.7)}
 .sidebar-collapse-btn svg{transition:transform .3s ease;flex-shrink:0}
-body.sidebar-collapsed{--sidebar-w:64px}
+body.sidebar-collapsed{--sidebar-w:0px}
 body.sidebar-collapsed .sidebar-brand{padding:10px 0;display:flex;justify-content:center}
 body.sidebar-collapsed .sidebar-logo-contigo{height:38px}
 body.sidebar-collapsed .sidebar-brand-sub,
@@ -1395,7 +1395,7 @@ body.dark .meta-card .mc-track{background:#334155}
 .plazo-pill .pp-name{font-size:13px;font-weight:700}
 
 /* ── Banner Institucional + En Construcción ── */
-.construction-banner{position:fixed;top:0;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,left .3s ease}
+.construction-banner{position:fixed;top:54px;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,left .3s ease}
 .construction-banner.dismissed{transform:translateY(-100%);opacity:0;pointer-events:none}
 .construction-banner .cb-row{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;gap:16px;position:relative}
 .construction-banner .cb-logo-left{display:flex;align-items:center;gap:14px;flex-shrink:0}
@@ -1416,7 +1416,7 @@ body.dark .meta-card .mc-track{background:#334155}
 .cb-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);width:28px;height:28px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;line-height:1;margin-left:8px}
 .cb-close:hover{background:rgba(255,255,255,.2);color:#fff;transform:scale(1.1)}
 /* Banner unificado (cb-row + live-strip integrado) */
-body{padding-top:96px}
+body{padding-top:150px}
 @media(max-width:900px){
   .construction-banner{left:0}
   .construction-banner .cb-row{padding:6px 12px;gap:8px}
@@ -1427,10 +1427,10 @@ body{padding-top:96px}
   .cb-ribbon{font-size:11px;padding:5px 12px;letter-spacing:.5px}
   .cb-ribbon::before{font-size:11px}
   .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:12px}
-  body{padding-top:76px}
+  body{padding-top:130px}
 }
 @media(max-width:560px){
-  body{padding-top:70px}
+  body{padding-top:124px}
 }
 /* ── KPI Count-Up Animation ── */
 .kpi-value{transition:color .3s}
@@ -4968,6 +4968,215 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <div class="sidebar-overlay" id="sidebarOverlay" role="button" tabindex="-1" aria-label="Cerrar menú" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open');document.querySelector('.menu-toggle').setAttribute('aria-expanded','false')"></div>
 <button class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" onclick="var s=document.querySelector('.sidebar'),o=document.getElementById('sidebarOverlay'),open=!s.classList.contains('open');s.classList.toggle('open');o.classList.toggle('open');this.setAttribute('aria-expanded',open);this.setAttribute('aria-label',open?'Cerrar menú de navegación':'Abrir menú de navegación')"><span class="mt-bars" aria-hidden="true"><span></span><span></span><span></span></span></button>
 
+<!-- ═══ BARRA SUPERIOR DE CAPÍTULOS (v45.55) — reemplaza el sidebar ═══ -->
+<style>
+.topnav{position:fixed;top:0;left:0;right:0;height:54px;z-index:120;display:flex;align-items:center;gap:8px;padding:0 12px;background:linear-gradient(135deg,#0a1f33,#13294a);border-bottom:2px solid rgba(45,154,77,.45);box-shadow:0 2px 14px rgba(0,0,0,.3)}
+.tn-brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;flex-shrink:0;font-weight:800;font-size:13.5px;letter-spacing:.2px}
+.tn-brand img{height:30px;width:auto;display:block}
+.tn-tabs{display:flex;align-items:stretch;flex:1;height:100%;min-width:0}
+.tn-tab{position:relative;display:flex;align-items:stretch}
+.tn-tab-btn{display:flex;align-items:center;gap:5px;height:100%;padding:0 10px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.tn-tab-btn:hover,.tn-tab.open .tn-tab-btn{background:rgba(255,255,255,.09);color:#fff}
+.tn-tab.active .tn-tab-btn{color:#fff;border-bottom-color:#2d9a4d}
+.tn-tab-num{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:rgba(45,154,77,.9);color:#fff;font-size:10.5px;font-weight:800;flex-shrink:0}
+.tn-tab-car{font-size:8px;opacity:.55}
+.tn-drop{position:absolute;top:100%;left:0;width:300px;max-height:74vh;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-top:3px solid #2d9a4d;border-radius:0 0 12px 12px;box-shadow:0 16px 40px rgba(0,0,0,.3);padding:7px;display:none;flex-direction:column;gap:1px}
+.tn-tab:nth-last-child(-n+3) .tn-drop{left:auto;right:0}
+.tn-tab.open .tn-drop{display:flex;animation:tnDrop .15s ease}
+@keyframes tnDrop{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+.tn-drop a{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--text);font-size:12.5px;font-weight:600;line-height:1.35;transition:background .12s,color .12s}
+.tn-drop a:hover{background:rgba(45,154,77,.11);color:#15803d}
+.tn-drop a .tn-di{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.tn-utils{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.tn-util{width:35px;height:35px;border-radius:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.13);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.tn-util:hover{background:rgba(255,255,255,.22)}
+.tn-burger{display:none;width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);cursor:pointer;flex-shrink:0;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0}
+.tn-burger span{width:18px;height:2px;background:#fff;border-radius:2px;transition:.22s}
+.tn-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.tn-burger.open span:nth-child(2){opacity:0}
+.tn-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.tn-mpanel{position:fixed;top:54px;left:0;right:0;bottom:0;background:var(--bg);z-index:119;overflow-y:auto;padding:8px 14px 56px;display:none}
+.tn-mpanel.open{display:block;animation:tnDrop .2s ease}
+.tn-mgroup{border-bottom:1px solid var(--border)}
+.tn-mgroup-btn{width:100%;display:flex;align-items:center;gap:10px;padding:14px 6px;background:none;border:none;color:var(--text);font-size:14px;font-weight:800;cursor:pointer;text-align:left}
+.tn-mchev{margin-left:auto;font-size:11px;transition:transform .2s}
+.tn-mgroup.open .tn-mchev{transform:rotate(180deg)}
+.tn-mlinks{display:none;flex-direction:column;padding:2px 0 10px 30px}
+.tn-mgroup.open .tn-mlinks{display:flex}
+.tn-mlinks a{padding:9px 8px;text-decoration:none;color:var(--text2);font-size:13px;font-weight:600;border-radius:7px}
+.tn-mlinks a:hover{background:rgba(45,154,77,.1);color:#15803d}
+.sidebar{display:none!important}
+.menu-toggle{display:none!important}
+html{scroll-padding-top:150px}
+@media(max-width:1200px){
+  .tn-tabs,.tn-utils{display:none}
+  .tn-burger{display:flex}
+  .tn-brand{flex:1}
+}
+body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
+</style>
+<header class="topnav" id="topnav">
+  <a href="#hero" class="tn-brand" aria-label="Inicio · PLADECO Rengo">
+    <img src="escudo-rengo-blanco.svg" alt="" width="20" height="33" decoding="async">
+    <span>PLADECO Rengo</span>
+  </a>
+  <nav class="tn-tabs" id="tnTabs" aria-label="Capítulos del PLADECO">
+    <div class="tn-tab" data-cap="0"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">1</span>Introducción<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab" data-cap="1"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">2</span>Diagnóstico<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab" data-cap="2"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">3</span>Participación<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab" data-cap="3"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">4</span>Planificación<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab" data-cap="4"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">5</span>Gobernanza<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab" data-cap="5"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">6</span>Seguimiento<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab" data-cap="6"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">7</span>Proceso<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+  </nav>
+  <div class="tn-utils">
+    <button class="tn-util" type="button" onclick="if(typeof openCmdPalette===&#39;function&#39;)openCmdPalette()" title="Buscar (Ctrl+K)" aria-label="Buscar en el portal">&#128269;</button>
+    <button class="tn-util" type="button" id="tnTheme" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">&#127769;</button>
+  </div>
+  <button class="tn-burger" type="button" id="tnBurger" aria-label="Abrir menú de capítulos" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+<div class="tn-mpanel" id="tnMpanel" aria-label="Menú de capítulos"></div>
+<script>
+(function(){
+  var CAPS=['Introducción','Diagnóstico','Participación','Planificación','Gobernanza','Seguimiento','Proceso'];
+  function build(tries){
+    var groups=document.querySelectorAll('.sidebar-nav .sidebar-group');
+    var tabs=document.querySelectorAll('#tnTabs .tn-tab');
+    if(groups.length<7||tabs.length<7){ if((tries||0)<25){return setTimeout(function(){build((tries||0)+1);},200);} return; }
+    var mhtml='';
+    for(var i=0;i<7;i++){
+      var g=groups[i], drop=tabs[i].querySelector('.tn-drop');
+      var links=g.querySelectorAll('a');
+      mhtml+='<div class="tn-mgroup"><button class="tn-mgroup-btn" type="button"><span class="tn-tab-num">'+(i+1)+'</span>'+CAPS[i]+'<span class="tn-mchev">&#9662;</span></button><div class="tn-mlinks">';
+      for(var j=0;j<links.length;j++){
+        var a=links[j];
+        var ico=a.querySelector('.ico');
+        var txt=(a.textContent||'').replace(/\s+/g,' ').trim();
+        var href=a.getAttribute('href')||'#';
+        var ext=a.getAttribute('target')==='_blank'?' target="_blank" rel="noopener"':'';
+        var di=ico?'<span class="tn-di">'+ico.innerHTML+'</span>':'<span class="tn-di"></span>';
+        drop.insertAdjacentHTML('beforeend','<a href="'+href+'"'+ext+'>'+di+'<span>'+txt+'</span></a>');
+        mhtml+='<a href="'+href+'"'+ext+'>'+txt+'</a>';
+      }
+      mhtml+='</div></div>';
+    }
+    var mp=document.getElementById('tnMpanel'); if(mp){mp.innerHTML=mhtml;}
+    wire();
+  }
+  function closeDrops(){
+    var o=document.querySelectorAll('#tnTabs .tn-tab.open');
+    for(var i=0;i<o.length;i++){o[i].classList.remove('open');}
+  }
+  function wire(){
+    var tabs=document.querySelectorAll('#tnTabs .tn-tab');
+    for(var i=0;i<tabs.length;i++){
+      (function(tab){
+        var btn=tab.querySelector('.tn-tab-btn');
+        btn.addEventListener('click',function(e){
+          e.stopPropagation();
+          var was=tab.classList.contains('open');
+          closeDrops();
+          if(!was){tab.classList.add('open');}
+        });
+      })(tabs[i]);
+    }
+    document.addEventListener('click',closeDrops);
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeDrops();}});
+    var tnEl=document.getElementById('topnav');
+    if(tnEl){tnEl.addEventListener('click',onNavClick);}
+    var burger=document.getElementById('tnBurger'), mp=document.getElementById('tnMpanel');
+    if(burger&&mp){
+      burger.addEventListener('click',function(e){
+        e.stopPropagation();
+        var open=mp.classList.toggle('open');
+        burger.classList.toggle('open',open);
+        burger.setAttribute('aria-expanded',open?'true':'false');
+      });
+      mp.addEventListener('click',function(e){
+        var t=e.target;
+        var gb=t.closest?t.closest('.tn-mgroup-btn'):null;
+        if(gb){gb.parentElement.classList.toggle('open');return;}
+        var a=t.closest?t.closest('a'):null;
+        if(a){
+          var href=a.getAttribute('href')||'';
+          if(href.charAt(0)==='#'&&href.length>1&&navTo(href))e.preventDefault();
+          mp.classList.remove('open');
+          burger.classList.remove('open');
+          burger.setAttribute('aria-expanded','false');
+        }
+      });
+    }
+    var th=document.getElementById('tnTheme');
+    if(th){
+      function syncIco(){th.innerHTML=document.body.classList.contains('dark')?'&#9728;&#65039;':'&#127769;';}
+      syncIco();
+      th.addEventListener('click',function(){
+        var isDark=document.body.classList.contains('dark');
+        if(typeof setTheme==='function'){setTheme(isDark?'light':'dark');}
+        else{document.body.classList.toggle('dark');}
+        setTimeout(syncIco,60);
+      });
+    }
+    var ticking=false;
+    function syncActive(){
+      ticking=false;
+      var act=document.querySelector('.sidebar-nav a.active');
+      var idx=-1;
+      if(act&&act.closest){
+        var grp=act.closest('.sidebar-group');
+        if(grp){
+          var all=document.querySelectorAll('.sidebar-nav .sidebar-group');
+          for(var i=0;i<all.length;i++){if(all[i]===grp){idx=i;break;}}
+        }
+      }
+      var tabs=document.querySelectorAll('#tnTabs .tn-tab');
+      for(var k=0;k<tabs.length;k++){tabs[k].classList.toggle('active',k===idx);}
+    }
+    window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(syncActive);}},{passive:true});
+    syncActive();
+    setHeaderPad();
+    window.addEventListener('resize',setHeaderPad,{passive:true});
+    setTimeout(setHeaderPad,800);
+    setTimeout(setHeaderPad,2200);
+  }
+  function hdrH(){
+    var nav=document.getElementById('topnav');
+    var ban=document.querySelector('.construction-banner');
+    var h=nav?nav.offsetHeight:54;
+    if(ban){var bs=getComputedStyle(ban);if(bs.position==='fixed'&&bs.display!=='none'){h+=ban.offsetHeight;}}
+    return h;
+  }
+  function setHeaderPad(){
+    var h=hdrH();
+    document.body.style.setProperty('padding-top',h+'px','important');
+    document.documentElement.style.setProperty('scroll-padding-top',h+'px','important');
+  }
+  function navTo(href){
+    if(!href||href.charAt(0)!=='#'||href.length<2)return false;
+    var el; try{el=document.querySelector(href);}catch(e){return false;}
+    if(!el)return false;
+    var off=hdrH()+10, tries=0;
+    function step(){
+      var top=el.getBoundingClientRect().top;
+      window.scrollTo({top:top+window.pageYOffset-off,behavior:'auto'});
+      tries++;
+      if(tries<16 && Math.abs(el.getBoundingClientRect().top-off)>4){ setTimeout(step,170); }
+    }
+    step();
+    return true;
+  }
+  function onNavClick(e){
+    var a=e.target&&e.target.closest?e.target.closest('a'):null;
+    if(!a)return;
+    var href=a.getAttribute('href')||'';
+    if(href.charAt(0)==='#'&&href.length>1){ if(navTo(href))e.preventDefault(); }
+    closeDrops();
+  }
+  if(document.readyState!=='loading'){build(0);}
+  else{document.addEventListener('DOMContentLoaded',function(){build(0);});}
+})();
+</script>
+
 <!-- Sidebar -->
 <nav class="sidebar" role="navigation" aria-label="Navegación principal">
   <div class="sidebar-brand">
@@ -5115,7 +5324,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.54</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.55</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5243,7 +5452,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.54</span>
+        <span>&#127919; v45.55</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
