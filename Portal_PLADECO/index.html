@@ -5343,7 +5343,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.68</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.69</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5470,7 +5470,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.68</span>
+        <span>&#127919; v45.69</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -27884,7 +27884,9 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
 .pv-card-num{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#2d9a4d}
 .pv-card-name{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.3}
 .pv-card-desc{font-size:11.5px;color:var(--text2);line-height:1.5}
-.pv-nav{display:flex;gap:12px;max-width:820px;margin:46px auto 16px;padding:0 18px}
+.pv-nav{display:block;max-width:820px;margin:46px auto 16px;padding:0 18px}
+.pv-nav-ctx{text-align:center;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#2d9a4d;margin-bottom:12px}
+.pv-nav-row{display:flex;gap:12px}
 .pv-nav a{flex:1;display:block;text-decoration:none;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 16px;color:var(--text);transition:border-color .15s,transform .15s,box-shadow .15s}
 .pv-nav a:hover{border-color:#2d9a4d;transform:translateY(-3px);box-shadow:0 8px 22px rgba(45,154,77,.16)}
 .pv-nav a.pv-off{opacity:.3;pointer-events:none}
@@ -27892,17 +27894,25 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
 .pv-nav .pv-t{display:block;margin-top:3px;font-size:13px;font-weight:700;line-height:1.3}
 .pv-nav .pv-mid{flex:0 1 150px;text-align:center}
 .pv-nav .pv-next{text-align:right}
-@media(max-width:600px){.pv-nav{flex-wrap:wrap}.pv-nav .pv-mid{order:-1;flex:1 1 100%}}
+@media(max-width:600px){.pv-nav-row{flex-wrap:wrap}.pv-nav .pv-mid{order:-1;flex:1 1 100%}}
 </style>
 <script>
-/* Motor de vistas v45.66 — portada + capítulos. Tolerante a fallos:
+/* Motor de vistas v45.69 — portada + vistas por SECCIÓN. Tolerante a fallos:
    ante cualquier error desactiva el modo y el portal vuelve al scroll único. */
 (function(){
   'use strict';
   function run(){
     var main=document.getElementById('main-content');
     if(!main){return;}
-    var kids=Array.prototype.slice.call(main.children),portada=[],chapters=[],cur=null,i;
+    var kids=Array.prototype.slice.call(main.children);
+    var portada=[],chapters=[],units=[],curCh=null,pend=[],curUnit=null,i;
+    function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    function secName(s){
+      var h=s.querySelector('.sec-header h2,h2');
+      if(h){var t=(h.textContent||'').replace(/\s+/g,' ').trim();if(t){return t.slice(0,64);}}
+      var al=s.getAttribute('aria-label');
+      return al?al.replace(/\s+/g,' ').trim().slice(0,64):(s.id||'Sección');
+    }
     for(i=0;i<kids.length;i++){
       var el=kids[i];
       var isDiv=el.classList&&el.classList.contains('group-divider')&&/^capitulo-\d+$/.test(el.id||'');
@@ -27915,21 +27925,26 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
           var c=lbl.cloneNode(true),s=c.querySelector('.cap-sub');if(s&&s.parentNode){s.parentNode.removeChild(s);}
           name=(c.textContent||'').replace(/\s+/g,' ').trim();
         }
-        cur={id:el.id,els:[el],name:name,desc:desc,roman:roman};chapters.push(cur);
-      }else if(cur){cur.els.push(el);}
-      else{portada.push(el);}
+        curCh={id:el.id,name:name,desc:desc,roman:roman,units:[]};chapters.push(curCh);
+        pend=[el];curUnit=null;
+      }else if(curCh){
+        if(el.tagName==='SECTION'&&el.id){
+          curUnit={id:el.id,els:pend.concat([el]),name:secName(el),chapter:curCh};
+          pend=[];units.push(curUnit);curCh.units.push(curUnit);
+        }else if(curUnit){curUnit.els.push(el);}
+        else{pend.push(el);}
+      }else{portada.push(el);}
     }
-    if(chapters.length<2){return;}
+    if(units.length<2){return;}
     var navBar=document.createElement('nav');
-    navBar.className='pv-nav';navBar.setAttribute('aria-label','Navegación entre capítulos');
+    navBar.className='pv-nav';navBar.setAttribute('aria-label','Navegación entre secciones');
     main.appendChild(navBar);
-    /* Selector de capítulos en la portada */
     var grid=document.createElement('nav');
     grid.className='pv-portada';grid.setAttribute('aria-label','Capítulos del PLADECO');
-    var gh='<div class="pv-portada-head"><h2>Explora el Plan por capítulos</h2><p>'+chapters.length+' capítulos &middot; elige por dónde comenzar</p></div><div class="pv-portada-grid">';
+    var gh='<div class="pv-portada-head"><h2>Explora el Plan</h2><p>'+chapters.length+' capítulos &middot; '+units.length+' secciones &middot; elige por dónde comenzar</p></div><div class="pv-portada-grid">';
     for(var ci=0;ci<chapters.length;ci++){
       var ch=chapters[ci];
-      gh+='<a class="pv-card" href="#'+ch.id+'"><span class="pv-card-num">Capítulo '+(ch.roman||(ci+1))+'</span><span class="pv-card-name">'+ch.name+'</span>'+(ch.desc?'<span class="pv-card-desc">'+ch.desc+'</span>':'')+'</a>';
+      gh+='<a class="pv-card" href="#'+ch.id+'"><span class="pv-card-num">Capítulo '+(ch.roman||(ci+1))+' &middot; '+ch.units.length+' secciones</span><span class="pv-card-name">'+esc(ch.name)+'</span>'+(ch.desc?'<span class="pv-card-desc">'+esc(ch.desc)+'</span>':'')+'</a>';
     }
     grid.innerHTML=gh+'</div>';
     if(portada.length&&portada[0].parentElement===main){main.insertBefore(grid,portada[0].nextElementSibling);portada.splice(1,0,grid);}
@@ -27938,7 +27953,7 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
       while(node&&node.parentElement!==main){node=node.parentElement;}
       if(!node){return null;}
       if(portada.indexOf(node)>=0){return 'portada';}
-      for(var k=0;k<chapters.length;k++){if(chapters[k].els.indexOf(node)>=0){return k;}}
+      for(var u=0;u<units.length;u++){if(units[u].els.indexOf(node)>=0){return u;}}
       return null;
     }
     function headerH(){
@@ -27954,18 +27969,21 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
     }
     function show(key){
       hideAll(portada,key!=='portada');
-      for(var k=0;k<chapters.length;k++){hideAll(chapters[k].els,key!==k);}
-      var inCh=(key!=='portada');
-      navBar.classList.toggle('pv-hidden',!inCh);
-      if(inCh){
-        var p=key>0?chapters[key-1]:null,nx=key<chapters.length-1?chapters[key+1]:null;
+      for(var u=0;u<units.length;u++){hideAll(units[u].els,key!==u);}
+      var inV=(key!=='portada');
+      navBar.classList.toggle('pv-hidden',!inV);
+      if(inV){
+        var un=units[key],p=key>0?units[key-1]:null,nx=key<units.length-1?units[key+1]:null;
         navBar.innerHTML=
-          '<a class="pv-prev'+(p?'':' pv-off')+'" href="#'+(p?p.id:'')+'"><span class="pv-d">&#8592; Anterior</span><span class="pv-t">'+(p?p.name:'&nbsp;')+'</span></a>'+
+          '<div class="pv-nav-ctx">Capítulo '+esc(un.chapter.roman)+' &middot; '+esc(un.chapter.name)+'</div>'+
+          '<div class="pv-nav-row">'+
+          '<a class="pv-prev'+(p?'':' pv-off')+'" href="#'+(p?p.id:'')+'"><span class="pv-d">&#8592; Anterior</span><span class="pv-t">'+(p?esc(p.name):'&nbsp;')+'</span></a>'+
           '<a class="pv-mid" href="#inicio"><span class="pv-d">&#8962;</span><span class="pv-t">Portada</span></a>'+
-          '<a class="pv-next'+(nx?'':' pv-off')+'" href="#'+(nx?nx.id:'')+'"><span class="pv-d">Siguiente &#8594;</span><span class="pv-t">'+(nx?nx.name:'&nbsp;')+'</span></a>';
+          '<a class="pv-next'+(nx?'':' pv-off')+'" href="#'+(nx?nx.id:'')+'"><span class="pv-d">Siguiente &#8594;</span><span class="pv-t">'+(nx?esc(nx.name):'&nbsp;')+'</span></a>'+
+          '</div>';
       }
       window.scrollTo(0,0);
-      try{history.replaceState(null,'',inCh?('#'+chapters[key].id):'#inicio');}catch(e){}
+      try{history.replaceState(null,'',inV?('#'+units[key].id):'#inicio');}catch(e){}
       var ds=[60,280,700];for(var d=0;d<ds.length;d++){setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},ds[d]);}
     }
     function go(id){
@@ -27992,7 +28010,7 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
     document.body.classList.add('pv-on');
     var hsh=(location.hash||'').replace('#','');
     if(!hsh||hsh==='inicio'||!go(hsh)){show('portada');}
-    window.PV={show:show,go:go,chapters:chapters};
+    window.PV={show:show,go:go,units:units,chapters:chapters};
   }
   function boot(){try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}}
   boot();
