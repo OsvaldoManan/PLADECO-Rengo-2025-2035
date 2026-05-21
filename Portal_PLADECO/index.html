@@ -5361,7 +5361,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.59</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.60</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5490,7 +5490,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.59</span>
+        <span>&#127919; v45.60</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -25004,6 +25004,33 @@ body.dark .sec-icon{
   background:rgba(45,154,77,.18);
   color:#48c76e;
 }
+
+/* ═══════════════════════════════════════════════════════
+   v45.60 · HERO · foto del Edificio Consistorial protagonista
+   Reemplaza el apilado de 7 capas abstractas (orbes, malla,
+   puntos, escudo tapizado) por: foto real + scrim legible.
+   El scrim va como capa superior del background de .hero-bg
+   (multi-layer) para garantizar contraste del texto blanco.
+   ═══════════════════════════════════════════════════════ */
+.hero-bg{
+  background:
+    linear-gradient(180deg,rgba(6,15,28,.58) 0%,rgba(6,15,28,.46) 35%,rgba(6,15,28,.54) 65%,rgba(7,16,30,.88) 100%),
+    url('hero-bg.jpg') center/cover no-repeat
+  !important;
+  opacity:1!important;
+  filter:blur(2px) brightness(.84) saturate(.96)!important;
+}
+body.dark .hero-bg{
+  background:
+    linear-gradient(180deg,rgba(4,9,20,.72) 0%,rgba(4,9,20,.60) 35%,rgba(5,11,24,.66) 65%,rgba(6,12,26,.93) 100%),
+    url('hero-bg.jpg') center/cover no-repeat
+  !important;
+  opacity:1!important;
+  filter:blur(2px) brightness(.66) saturate(.82)!important;
+}
+.hero::before{background-image:none!important}
+.hero-dots,.hero-orb,.hero-mesh{display:none!important}
+.hero h1,.hero .sub,.hero-brand{text-shadow:0 2px 14px rgba(0,0,0,.6)}
 </style>
 
 <script>
