@@ -5044,12 +5044,18 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       for(var j=0;j<links.length;j++){
         var a=links[j];
         var ico=a.querySelector('.ico');
-        var txt=(a.textContent||'').replace(/\s+/g,' ').trim();
+        var iconHTML=ico?ico.innerHTML:'';
+        /* v45.65 · FIX duplicidad de icono: el <a> original ya incluye el emoji
+           del .ico en su textContent; se clona y se le quita el .ico para que
+           el texto NO repita el icono que ya pone el .tn-di. */
+        var clean=a.cloneNode(true);
+        var icoC=clean.querySelector('.ico'); if(icoC){icoC.remove();}
+        var txt=(clean.textContent||'').replace(/\s+/g,' ').trim();
         var href=a.getAttribute('href')||'#';
         var ext=a.getAttribute('target')==='_blank'?' target="_blank" rel="noopener"':'';
-        var di=ico?'<span class="tn-di">'+ico.innerHTML+'</span>':'<span class="tn-di"></span>';
+        var di='<span class="tn-di">'+iconHTML+'</span>';
         drop.insertAdjacentHTML('beforeend','<a href="'+href+'"'+ext+'>'+di+'<span>'+txt+'</span></a>');
-        mhtml+='<a href="'+href+'"'+ext+'>'+txt+'</a>';
+        mhtml+='<a href="'+href+'"'+ext+'>'+(iconHTML?iconHTML+' ':'')+txt+'</a>';
       }
       mhtml+='</div></div>';
     }
@@ -5337,7 +5343,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.64</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.65</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5464,7 +5470,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.64</span>
+        <span>&#127919; v45.65</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>

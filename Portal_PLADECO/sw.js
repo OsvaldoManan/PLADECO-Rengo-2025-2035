@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.28
+// PLADECO Rengo 2025-2035 · Service Worker v62.29
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.29: v45.65 - FIX barra superior: ícono duplicado en cada ítem de los menús (.tn-di + el emoji que ya venía en el texto) -> el texto se limpia del ícono
 // v62.28: v45.64 - Banner "En construcción": fila reequilibrada (cinta centrada con 3 zonas de igual peso + pastillas escudo/PLADECO unificadas) + 2 reglas CSS muertas eliminadas
 // v62.27: v45.63 - Hero: logo «Contigo Rengo» eliminado (a pedido del usuario) + 3.png y hero-banner.png fuera del pre-cache (ya no se usan, ~1.2 MB menos)
 // v62.26: v45.62 - FIX hero: .hero-bg estaba en position:relative (altura 0) por regla GPU global -> la foto del edificio nunca se veía; forzado a position:absolute + rebalance de scrim/brillo
@@ -29,7 +30,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.28';
+const CACHE_STATIC='pladeco-static-v62.29';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
