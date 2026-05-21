@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.24
+// PLADECO Rengo 2025-2035 · Service Worker v62.25
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.25: v45.61 - Limpieza CSS Etapa 1: sistema de tokens :root consolidado (3 bloques en conflicto -> 1 canónico, valores efectivos, sin cambio visual)
 // v62.24: v45.60 - Hero: foto del Edificio Consistorial como fondo protagonista (scrim legible) + capas abstractas eliminadas; hero-bg.jpg recortado sin logo incrustado
 // v62.23: v45.59 - Hero: imagen del banner Contigo Rengo en alta resolución (666x375 -> 1100x619, transparente, desde 2.png)
 // v62.22: v45.58 - Limpieza nav: botón hamburguesa legacy (.menu-toggle) eliminado · banner superior con filas invertidas (Pulso Comunal arriba, "En construcción" abajo) · hero escritorio compacto
@@ -25,7 +26,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.24';
+const CACHE_STATIC='pladeco-static-v62.25';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
