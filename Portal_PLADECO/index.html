@@ -2546,7 +2546,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .sem-stat .ss-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.7;margin-top:2px}
 
 /* ══ Live-Strip · Pulso Comunal integrado dentro del Banner Institucional ══ */
-.live-strip{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;padding:5px 24px;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.28) 100%);border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.92);font-weight:600;letter-spacing:.01em;backdrop-filter:blur(6px)}
+.live-strip{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;padding:5px 24px;background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(0,0,0,.28) 100%);border-bottom:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.92);font-weight:600;letter-spacing:.01em;backdrop-filter:blur(6px)}
 .ls-item{display:inline-flex;align-items:center;gap:7px;padding:2px 0;transition:opacity .3s}
 .ls-item.loading{opacity:.55}
 .ls-emoji{font-size:17px;line-height:1}
@@ -4964,9 +4964,9 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- Dot navigation -->
 <nav class="dot-nav" id="dotNav" aria-label="Navegación rápida por secciones"></nav>
 
-<!-- Mobile toggle -->
-<div class="sidebar-overlay" id="sidebarOverlay" role="button" tabindex="-1" aria-label="Cerrar menú" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open');document.querySelector('.menu-toggle').setAttribute('aria-expanded','false')"></div>
-<button class="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" onclick="var s=document.querySelector('.sidebar'),o=document.getElementById('sidebarOverlay'),open=!s.classList.contains('open');s.classList.toggle('open');o.classList.toggle('open');this.setAttribute('aria-expanded',open);this.setAttribute('aria-label',open?'Cerrar menú de navegación':'Abrir menú de navegación')"><span class="mt-bars" aria-hidden="true"><span></span><span></span><span></span></span></button>
+<!-- Overlay del sidebar legacy (oculto; conservado solo por referencias JS) -->
+<div class="sidebar-overlay" id="sidebarOverlay" role="button" tabindex="-1" aria-label="Cerrar menú" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open')"></div>
+<!-- v45.58 · botón .menu-toggle eliminado: abría el sidebar legacy (display:none) reemplazado por la barra superior -->
 
 <!-- ═══ BARRA SUPERIOR DE CAPÍTULOS (v45.55) — reemplaza el sidebar ═══ -->
 <style>
@@ -5013,6 +5013,18 @@ html{scroll-padding-top:150px}
 section:not(.hero) p{max-width:720px!important}
 .tn-tab[data-cap="1"] .tn-drop,.tn-tab[data-cap="6"] .tn-drop{width:580px;max-width:92vw}
 .tn-tab[data-cap="1"].open .tn-drop,.tn-tab[data-cap="6"].open .tn-drop{display:grid;grid-template-columns:1fr 1fr;gap:1px}
+/* v45.57 · Inicio (hero) en escritorio — más compacto + mejor uso del ancho */
+@media(min-width:1000px){
+  .hero{padding-top:54px!important;padding-bottom:46px!important}
+  .hero-content{max-width:1280px!important}
+  .hero-logo-wrap{margin-bottom:16px!important}
+  .hero-brand{margin-bottom:4px!important}
+  .hero h1{margin-bottom:10px!important}
+  .hero .sub{max-width:680px!important;margin:8px auto 16px!important}
+  .hero-stats{margin-top:10px!important;gap:18px!important}
+  .infographic-strip{margin-top:16px!important;margin-bottom:0!important}
+  .hero-scroll-hint{margin-top:14px!important}
+}
 @media(max-width:1200px){
   .tn-tabs,.tn-utils{display:none}
   .tn-burger{display:flex}
@@ -5139,10 +5151,10 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     }
     window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(syncActive);}},{passive:true});
     syncActive();
-    setHeaderPad();
-    window.addEventListener('resize',setHeaderPad,{passive:true});
-    setTimeout(setHeaderPad,800);
-    setTimeout(setHeaderPad,2200);
+    setHeaderPad();tuneHero();
+    window.addEventListener('resize',function(){setHeaderPad();tuneHero();},{passive:true});
+    setTimeout(function(){setHeaderPad();tuneHero();},800);
+    setTimeout(function(){setHeaderPad();tuneHero();},2200);
   }
   function hdrH(){
     var nav=document.getElementById('topnav');
@@ -5155,6 +5167,26 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     var h=hdrH();
     document.body.style.setProperty('padding-top',h+'px','important');
     document.documentElement.style.setProperty('scroll-padding-top',h+'px','important');
+  }
+  function tuneHero(){
+    var hero=document.querySelector('.hero');
+    if(!hero)return;
+    var big=window.innerWidth>=1000;
+    function S(el,p,v){if(!el)return;if(big){el.style.setProperty(p,v,'important');}else{el.style.removeProperty(p);}}
+    S(hero,'padding-top','52px');S(hero,'padding-bottom','44px');
+    var hc=hero.querySelector('.hero-content');
+    S(hc,'width','100%');S(hc,'max-width','1280px');
+    S(hero.querySelector('.hero-logo-wrap'),'margin-bottom','14px');
+    S(hero.querySelector('.hero-brand'),'margin-bottom','4px');
+    S(hero.querySelector('h1'),'margin-bottom','10px');
+    var sub=hero.querySelector('.sub');
+    S(sub,'max-width','680px');S(sub,'margin','8px auto 16px');
+    var st=hero.querySelector('.hero-stats');
+    S(st,'margin-top','14px');S(st,'gap','16px');
+    if(st){Array.prototype.forEach.call(st.children,function(c){S(c,'flex','1 1 150px');});}
+    S(hero.querySelector('.infographic-strip'),'margin-top','16px');
+    S(hero.querySelector('.infographic-strip'),'margin-bottom','0px');
+    S(hero.querySelector('.hero-scroll-hint'),'margin-top','14px');
   }
   function navTo(href){
     if(!href||href.charAt(0)!=='#'||href.length<2)return false;
@@ -5329,7 +5361,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.56</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.58</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5354,22 +5386,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 
 <!-- ═══ BANNER INSTITUCIONAL UNIFICADO · Identidad + Pulso Comunal (fecha · clima · aire) ═══ -->
 <div class="construction-banner unified-banner">
-  <div class="cb-row">
-    <div class="cb-logo-left">
-      <div class="cb-escudo-pill">
-        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" width="24" height="38" decoding="async">
-        <span>Ilustre<br>Municipalidad<br>de Rengo</span>
-      </div>
-    </div>
-    <div class="cb-ribbon-wrap"><div class="cb-ribbon">En construcci&#243;n &#183; sujeto a cambios</div></div>
-    <div class="cb-logo-right">
-      <div class="cb-pladeco-pill">
-        <img src="logo-pladeco.png" alt="Logo PLADECO 2025-2035 Plan de Desarrollo Comunal Rengo" width="74" height="56" loading="eager" decoding="async">
-      </div>
-      <button class="cb-close" onclick="dismissBanner()" title="Cerrar banner" aria-label="Cerrar banner">&times;</button>
-    </div>
-  </div>
-  <!-- Fila Pulso Comunal: integrada como sub-row del banner -->
+  <!-- v45.58 · Fila Pulso Comunal (fecha · clima · aire) — invertida: ahora PRIMERA fila del banner -->
   <div class="live-strip" id="liveStrip" aria-label="Pulso comunal de Rengo: fecha, clima y calidad del aire en tiempo real">
     <div class="ls-date" id="lsDate" title="Fecha actual">
       <span class="ls-emoji" aria-hidden="true">&#128197;</span>
@@ -5397,6 +5414,22 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <span class="ls-pulse" aria-hidden="true"></span>
       <span>Actualizado <strong id="lsTime">--:--</strong></span>
       <button class="ls-refresh" type="button" onclick="loadLiveStrip(true)" title="Actualizar ahora (auto cada 5 min)" aria-label="Actualizar clima y aire ahora">&#8634;</button>
+    </div>
+  </div>
+  <!-- v45.58 · Fila identidad institucional + aviso "En construcción" — invertida: ahora SEGUNDA fila -->
+  <div class="cb-row">
+    <div class="cb-logo-left">
+      <div class="cb-escudo-pill">
+        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" width="24" height="38" decoding="async">
+        <span>Ilustre<br>Municipalidad<br>de Rengo</span>
+      </div>
+    </div>
+    <div class="cb-ribbon-wrap"><div class="cb-ribbon">En construcci&#243;n &#183; sujeto a cambios</div></div>
+    <div class="cb-logo-right">
+      <div class="cb-pladeco-pill">
+        <img src="logo-pladeco.png" alt="Logo PLADECO 2025-2035 Plan de Desarrollo Comunal Rengo" width="74" height="56" loading="eager" decoding="async">
+      </div>
+      <button class="cb-close" onclick="dismissBanner()" title="Cerrar banner" aria-label="Cerrar banner">&times;</button>
     </div>
   </div>
 </div>
@@ -5457,7 +5490,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.56</span>
+        <span>&#127919; v45.58</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
