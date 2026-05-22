@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.38
+// PLADECO Rengo 2025-2035 · Service Worker v62.39
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.39: v45.75 - Limpieza CSS: ~165 líneas de estilos muertos del sidebar legacy eliminadas (núcleo, mascota, modo comprimido, progreso, favoritos, buscador, selector de tema, overlay)
 // v62.38: v45.74 - Limpieza profunda: sidebar legacy oculto eliminado (HTML 70 enlaces + ~16 enganches JS) + CSS muerto (botón hamburguesa, logo del hero) · FIX: toggleDark() estaba duplicado y el cambio de tema no tenía efecto
 // v62.37: v45.73 - Footer: argumento del propósito del PLADECO reformulado (instrumento de planificación comunal · hoja de ruta a 10 años)
 // v62.36: v45.72 - Limpieza: bloque huérfano del widget de logros eliminado (achGrid + barra de progreso + contador "0/12 desbloqueados") y un </div> suelto que dejaba HTML malformado
@@ -39,7 +40,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.38';
+const CACHE_STATIC='pladeco-static-v62.39';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
