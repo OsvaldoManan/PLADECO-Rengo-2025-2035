@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.45
+// PLADECO Rengo 2025-2035 · Service Worker v62.46
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.46: v45.82 - Corrección: el PLADECO es 2025-2035. Cronograma alineado (título, tarjeta PDF, enlaces, aria-label, fuente) de "2025-2026"/"2025-2032" a "2025-2035"; PDF físico renombrado a PLADECO_Cronograma_2025-2035.pdf
 // v62.45: v45.81 - Lote D argumentario: #cronograma-gantt (nombre corregido 2025-2032 -> 2025-2026), #resumen (franja "Diagnóstico en una mirada" + frase marco), #visualizaciones-avanzadas (hoja de ruta institucional 2026-2028 con 18 hitos). Integración del Argumentario completa: 14/14 secciones
 // v62.44: v45.80 - Lote C argumentario: #foda (patrimonio +744%, VIF 426, +464%/+554% en amenazas, ERD 13 articulaciones), #matriz (VIF 426 + eje 6 con 10 KPIs y unidad de proyectos), #erd (bloque "ERD como oportunidad financiera")
 // v62.43: v45.79 - Lote B argumentario: #nna (100% NNA evalúa negativo destacado + seguridad de doble entrada +464%/+554%), #diagnostico-institucional (4 brechas institucionales + paradoja), #censo (proyección del envejecimiento 2035)
@@ -46,7 +47,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.45';
+const CACHE_STATIC='pladeco-static-v62.46';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
