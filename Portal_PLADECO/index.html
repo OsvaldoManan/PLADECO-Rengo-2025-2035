@@ -4952,7 +4952,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 .tn-brand img{height:30px;width:auto;display:block}
 .tn-tabs{display:flex;align-items:stretch;flex:0 1 auto;justify-content:center;height:100%;min-width:0}
 .tn-tab{position:relative;display:flex;align-items:stretch}
-.tn-tab-btn{display:flex;align-items:center;gap:5px;height:100%;padding:0 10px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.tn-tab-btn{display:flex;align-items:center;gap:4px;height:100%;padding:0 8px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
 .tn-tab-btn:hover,.tn-tab.open .tn-tab-btn{background:rgba(255,255,255,.09);color:#fff}
 .tn-tab.active .tn-tab-btn{color:#fff;border-bottom-color:#2d9a4d}
 .tn-tab-num{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:rgba(45,154,77,.9);color:#fff;font-size:10.5px;font-weight:800;flex-shrink:0}
@@ -4987,8 +4987,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 html{scroll-padding-top:150px}
 /* v45.56 · ancho de lectura cómodo + menús de 2 columnas para capítulos largos */
 section:not(.hero) p{max-width:720px!important}
-.tn-tab[data-cap="1"] .tn-drop,.tn-tab[data-cap="6"] .tn-drop{width:580px;max-width:92vw}
-.tn-tab[data-cap="1"].open .tn-drop,.tn-tab[data-cap="6"].open .tn-drop{display:grid;grid-template-columns:1fr 1fr;gap:1px}
+/* v45.70 · dropdowns a 1 columna (cada capítulo tiene pocas secciones) */
 /* v45.57 · Inicio (hero) en escritorio — más compacto + mejor uso del ancho */
 @media(min-width:1000px){
   .hero{padding-top:54px!important;padding-bottom:46px!important}
@@ -5001,7 +5000,7 @@ section:not(.hero) p{max-width:720px!important}
   .infographic-strip{margin-top:16px!important;margin-bottom:0!important}
   .hero-scroll-hint{margin-top:14px!important}
 }
-@media(max-width:1200px){
+@media(max-width:1300px){
   .tn-tabs,.tn-utils{display:none}
   .tn-burger{display:flex}
   .tn-brand{flex:1}
@@ -5032,33 +5031,29 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 <script>
 (function(){
   var CAPS=['Introducción','Diagnóstico','Participación','Planificación','Gobernanza','Seguimiento','Proceso'];
+  /* v45.70 · La barra superior se genera desde los 11 capítulos reales del
+     contenido (window.PV del motor de vistas) — antes mostraba 7 grupos. */
   function build(tries){
-    var groups=document.querySelectorAll('.sidebar-nav .sidebar-group');
-    var tabs=document.querySelectorAll('#tnTabs .tn-tab');
-    if(groups.length<7||tabs.length<7){ if((tries||0)<25){return setTimeout(function(){build((tries||0)+1);},200);} return; }
-    var mhtml='';
-    for(var i=0;i<7;i++){
-      var g=groups[i], drop=tabs[i].querySelector('.tn-drop');
-      var links=g.querySelectorAll('a');
-      mhtml+='<div class="tn-mgroup"><button class="tn-mgroup-btn" type="button"><span class="tn-tab-num">'+(i+1)+'</span>'+CAPS[i]+'<span class="tn-mchev">&#9662;</span></button><div class="tn-mlinks">';
-      for(var j=0;j<links.length;j++){
-        var a=links[j];
-        var ico=a.querySelector('.ico');
-        var iconHTML=ico?ico.innerHTML:'';
-        /* v45.65 · FIX duplicidad de icono: el <a> original ya incluye el emoji
-           del .ico en su textContent; se clona y se le quita el .ico para que
-           el texto NO repita el icono que ya pone el .tn-di. */
-        var clean=a.cloneNode(true);
-        var icoC=clean.querySelector('.ico'); if(icoC){icoC.remove();}
-        var txt=(clean.textContent||'').replace(/\s+/g,' ').trim();
-        var href=a.getAttribute('href')||'#';
-        var ext=a.getAttribute('target')==='_blank'?' target="_blank" rel="noopener"':'';
-        var di='<span class="tn-di">'+iconHTML+'</span>';
-        drop.insertAdjacentHTML('beforeend','<a href="'+href+'"'+ext+'>'+di+'<span>'+txt+'</span></a>');
-        mhtml+='<a href="'+href+'"'+ext+'>'+(iconHTML?iconHTML+' ':'')+txt+'</a>';
-      }
-      mhtml+='</div></div>';
+    var PV=window.PV,tnTabs=document.getElementById('tnTabs');
+    if(!tnTabs){return;}
+    if(!PV||!PV.chapters||!PV.chapters.length){
+      if((tries||0)<40){return setTimeout(function(){build((tries||0)+1);},150);}
+      return; /* el motor de vistas no cargó: la barra queda como está */
     }
+    function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+    var SHORT=['Bienvenida','Diagnóstico','Territorio','Participación','Planificación','Gobernanza','Seguimiento','Recursos','Memoria','Tu Turno','Cierre'];
+    var chs=PV.chapters,tabsHtml='',mhtml='';
+    for(var i=0;i<chs.length;i++){
+      var ch=chs[i],label=SHORT[i]||('Cap. '+(i+1)),us=ch.units||[],drop='',mlinks='';
+      for(var j=0;j<us.length;j++){
+        var u=us[j],un=esc(u.name);
+        drop+='<a href="#'+u.id+'"><span class="tn-di">&#8226;</span><span>'+un+'</span></a>';
+        mlinks+='<a href="#'+u.id+'">'+un+'</a>';
+      }
+      tabsHtml+='<div class="tn-tab" data-cap="'+i+'"><button class="tn-tab-btn" type="button" title="'+esc(ch.name)+'"><span class="tn-tab-num">'+(i+1)+'</span>'+esc(label)+'<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop">'+drop+'</div></div>';
+      mhtml+='<div class="tn-mgroup"><button class="tn-mgroup-btn" type="button"><span class="tn-tab-num">'+(i+1)+'</span>'+esc(label)+'<span class="tn-mchev">&#9662;</span></button><div class="tn-mlinks">'+mlinks+'</div></div>';
+    }
+    tnTabs.innerHTML=tabsHtml;
     var mp=document.getElementById('tnMpanel'); if(mp){mp.innerHTML=mhtml;}
     wire();
   }
@@ -5343,7 +5338,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.69</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.70</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5470,7 +5465,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.69</span>
+        <span>&#127919; v45.70</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>

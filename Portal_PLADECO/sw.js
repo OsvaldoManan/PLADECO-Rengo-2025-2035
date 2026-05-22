@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.33
+// PLADECO Rengo 2025-2035 · Service Worker v62.34
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.34: v45.70 - Barra superior reconciliada con los 11 capítulos reales del contenido (antes 7 grupos); se genera desde el motor de vistas
 // v62.33: v45.69 - Motor de vistas Etapa 2: afinado a vistas por SECCIÓN (cada sección su propia vista); navegación sección-a-sección con contexto de capítulo
 // v62.32: v45.68 - Motor de vistas (detalles): el índice denso de 50 enlaces inicia colapsado en la portada (el selector de capítulos es la entrada principal)
 // v62.31: v45.67 - Motor de vistas (detalles): selector de 11 capítulos en la portada + se oculta la UI de scroll (dot-nav, minimapa, barras de progreso) en modo vistas
@@ -34,7 +35,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.33';
+const CACHE_STATIC='pladeco-static-v62.34';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
