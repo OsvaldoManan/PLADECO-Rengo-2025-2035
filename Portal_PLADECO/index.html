@@ -549,10 +549,7 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .uv-table tfoot td{background:var(--primary-light);color:#fff;font-weight:700;padding:10px 12px;border:none}
 .gallery-cat{grid-column:1/-1;font-size:14px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1.5px;padding:20px 0 8px;border-bottom:2px solid var(--border)}
 .gallery-cat:first-child{padding-top:0}
-.hero-logo-wrap{position:relative;display:inline-block;margin-bottom:32px;padding:20px 36px;animation:heroLogoIn .8s ease-out,heroFloat 4s ease-in-out .8s infinite;border-radius:24px;overflow:visible}
-.hero-logo-wrap::before{content:'';position:absolute;inset:-15px -25px;background:radial-gradient(ellipse at center,rgba(255,255,255,.35) 0%,rgba(255,255,255,.18) 30%,rgba(255,255,255,.06) 55%,transparent 75%);border-radius:32px;filter:blur(20px);z-index:0;pointer-events:none}
-.hero-logo-wrap::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:24px;border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 32px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.2);z-index:0;pointer-events:none}
-.hero-logo-contigo{height:130px;width:auto;border-radius:0;background:none;padding:0;box-shadow:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,.12));position:relative;z-index:1;display:block}
+/* v45.74 · CSS del logo del hero (.hero-logo-wrap / .hero-logo-contigo) eliminado — el logo se retiró en v45.63 */
 @keyframes heroLogoIn{from{opacity:0;transform:translateY(-20px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .hero-scroll-hint{display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:32px;color:rgba(255,255,255,.6);text-decoration:none;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;transition:color .3s,transform .3s;animation:scrollBounce 2s ease-in-out infinite 2s}
@@ -4950,9 +4947,7 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 <!-- Dot navigation -->
 <nav class="dot-nav" id="dotNav" aria-label="Navegación rápida por secciones"></nav>
 
-<!-- Overlay del sidebar legacy (oculto; conservado solo por referencias JS) -->
-<div class="sidebar-overlay" id="sidebarOverlay" role="button" tabindex="-1" aria-label="Cerrar menú" onclick="document.querySelector('.sidebar').classList.remove('open');this.classList.remove('open')"></div>
-<!-- v45.58 · botón .menu-toggle eliminado: abría el sidebar legacy (display:none) reemplazado por la barra superior -->
+<!-- v45.74 · Overlay del sidebar legacy eliminado junto con el sidebar -->
 
 <!-- ═══ BARRA SUPERIOR DE CAPÍTULOS (v45.55) — reemplaza el sidebar ═══ -->
 <style>
@@ -4992,8 +4987,6 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 .tn-mgroup.open .tn-mlinks{display:flex}
 .tn-mlinks a{padding:9px 8px;text-decoration:none;color:var(--text2);font-size:13px;font-weight:600;border-radius:7px}
 .tn-mlinks a:hover{background:rgba(45,154,77,.1);color:#15803d}
-.sidebar{display:none!important}
-.menu-toggle{display:none!important}
 html{scroll-padding-top:150px}
 /* v45.56 · ancho de lectura cómodo + menús de 2 columnas para capítulos largos */
 section:not(.hero) p{max-width:720px!important}
@@ -5002,7 +4995,6 @@ section:not(.hero) p{max-width:720px!important}
 @media(min-width:1000px){
   .hero{padding-top:54px!important;padding-bottom:46px!important}
   .hero-content{max-width:1280px!important}
-  .hero-logo-wrap{margin-bottom:16px!important}
   .hero-brand{margin-bottom:4px!important}
   .hero h1{margin-bottom:10px!important}
   .hero .sub{max-width:680px!important;margin:8px auto 16px!important}
@@ -5163,7 +5155,6 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     S(hero,'padding-top','52px');S(hero,'padding-bottom','44px');
     var hc=hero.querySelector('.hero-content');
     S(hc,'width','100%');S(hc,'max-width','1280px');
-    S(hero.querySelector('.hero-logo-wrap'),'margin-bottom','14px');
     S(hero.querySelector('.hero-brand'),'margin-bottom','4px');
     S(hero.querySelector('h1'),'margin-bottom','10px');
     var sub=hero.querySelector('.sub');
@@ -5201,155 +5192,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 })();
 </script>
 
-<!-- Sidebar -->
-<nav class="sidebar" role="navigation" aria-label="Navegación principal">
-  <div class="sidebar-brand">
-    <img src="1.png" alt="Contigo Rengo Mejor Comuna" class="sidebar-logo-contigo" width="78" height="78" decoding="async">
-  </div>
-  <div class="sidebar-brand-sub">
-    <img src="escudo-rengo-blanco.svg" alt="Escudo" width="18" height="30" decoding="async">
-    <div class="sidebar-brand-text">
-      <h2>PLADECO Rengo</h2>
-      <p>2025 &#8212; 2035</p>
-    </div>
-  </div>
-  <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" title="Comprimir menú" aria-label="Comprimir menú lateral">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
-    <span>Comprimir</span>
-  </button>
-  <div class="sidebar-search"><span class="search-icon">&#128269;</span><input type="text" id="sidebarSearch" placeholder="Buscar sección..." oninput="filterSidebar(this.value)" aria-label="Buscar sección en el portal"><span class="kbd-hint" onclick="openCmdPalette()" title="Abrir búsqueda global (Ctrl+K)" style="cursor:pointer"><kbd>Ctrl</kbd><kbd>K</kbd></span></div>
-  <div class="sidebar-nav">
-    <a href="#hero" class="active"><span class="ico">&#127968;</span> Inicio</a>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">1 &middot; Introducci&#243;n al PLADECO</div>
-      <a href="#mvv"><span class="ico">&#127963;</span> Misi&#243;n, Visi&#243;n y Valores</a>
-      <a href="#contexto"><span class="ico">&#128218;</span> Contexto y Marco Legal</a>
-    </div>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">2 &middot; Diagn&#243;stico Territorial</div>
-      <a href="#dashboard"><span class="ico">&#128202;</span> Dashboard de Indicadores</a>
-      <a href="#ficha-comunal"><span class="ico">&#128202;</span> Ficha Comunal &middot; Observatorio</a>
-      <a href="#datos-vivo"><span class="ico">&#128200;</span> Datos Clave en Vivo</a>
-      <a href="#censo"><span class="ico">&#128101;</span> Censo 2024 &middot; Poblaci&#243;n</a>
-      <a href="#censoVuln" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128680;</span> Vulnerabilidad Censal</a>
-      <a href="#censoBrechas" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128200;</span> Brechas Urbano-Rural</a>
-      <a href="#censoHeat" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128293;</span> Heatmap Comunal</a>
-      <a href="#censoMapa" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128506;</span> Mapa Vulnerabilidad</a>
-      <a href="#censoCompos" style="padding-left:42px;font-size:12px;opacity:.85"><span class="ico">&#128203;</span> Composici&#243;n ICP</a>
-      <a href="#visualizaciones-avanzadas" class="is-new"><span class="ico">&#129517;</span> Horizontes 2025-2035</a>
-      <a href="#analisis-estrategico-censo"><span class="ico">&#128302;</span> An&aacute;lisis Estrat&eacute;gico Censal</a>
-      <a href="#ict-espacios-publicos"><span class="ico">&#128205;</span> ICT &middot; Espacios P&uacute;blicos</a>
-      <a href="#mbht-bienestar" class="is-new"><span class="ico">&#127960;&#65039;</span> MBHT &middot; Bienestar Territorial</a>
-      <a href="analisis-territorial.html" target="_blank" rel="noopener" class="is-new"><span class="ico">&#128200;</span> An&aacute;lisis Censo 2024 &middot; &sect;11.5</a>
-      <a href="#mapa"><span class="ico">&#128506;</span> Mapa Interactivo Comunal</a>
-      <a href="#territorio"><span class="ico">&#127963;</span> 21 Unidades Vecinales</a>
-      <a href="#comparador-uv"><span class="ico">&#9878;</span> Comparador entre UVs</a>
-      <a href="#desigualdad"><span class="ico">&#128200;</span> Desigualdad Territorial</a>
-      <a href="#territorial-adv"><span class="ico">&#128296;</span> An&#225;lisis Territorial Avanzado</a>
-      <a href="#nna"><span class="ico">&#128118;</span> Infancia y Adolescencia</a>
-    </div>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">3 &middot; Participaci&#243;n Ciudadana</div>
-      <a href="#sociedad-civil"><span class="ico">&#127760;</span> Sociedad Civil &middot; Plataforma</a>
-      <a href="#diagnostico-institucional"><span class="ico">&#127960;</span> Funcionarios y Directores</a>
-      <a href="#voz"><span class="ico">&#128227;</span> Voz de la Ciudadan&#237;a</a>
-      <a href="#suenos"><span class="ico">&#127775;</span> Visi&#243;n &amp; Sue&#241;os Rengo 2035</a>
-      <a href="#foda"><span class="ico">&#128269;</span> FODA Comunal</a>
-      <a href="#testimonios"><span class="ico">&#128172;</span> Testimonios Ciudadanos</a>
-      <a href="#etnografia"><span class="ico">&#128209;</span> Etnograf&#237;a Social</a>
-    </div>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">4 &middot; Planificaci&#243;n Estrat&#233;gica</div>
-      <a href="#matriz"><span class="ico">&#127919;</span> Matriz Estrat&#233;gica Integrada</a>
-      <a href="#ods-sec"><span class="ico">&#127760;</span> Alineaci&#243;n con ODS</a>
-      <a href="#argumentario"><span class="ico">&#128221;</span> Argumentario</a>
-      <a href="#gestion"><span class="ico">&#128736;</span> Gesti&#243;n e Implementaci&#243;n</a>
-      <a href="#resumen"><span class="ico">&#128203;</span> Resumen Ejecutivo</a>
-    </div>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">5 &middot; Gobernanza y Actores</div>
-      <a href="#equipo"><span class="ico">&#128101;</span> Equipo T&#233;cnico &middot; 11 DIRs</a>
-      <a href="#comisiones"><span class="ico">&#129309;</span> Comisiones de Trabajo</a>
-      <a href="#sna"><span class="ico">&#128279;</span> Red Institucional (SNA)</a>
-    </div>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">6 &middot; Seguimiento y Metas</div>
-      <a href="#viz"><span class="ico">&#127919;</span> Panel Estrat&eacute;gico (14 gr&aacute;ficos)</a>
-      <a href="#semaforo"><span class="ico">&#128678;</span> Sem&#225;foro de Metas</a>
-      <a href="#compromisos"><span class="ico">&#9989;</span> Compromisos P&#250;blicos</a>
-      <a href="#financiamiento"><span class="ico">&#128176;</span> Financiamiento &middot; Recursos</a>
-      <a href="#cronograma-gantt" class="is-new"><span class="ico">&#128197;</span> Cronograma Gantt 2025-2032</a>
-      <a href="#antes-despues"><span class="ico">&#128260;</span> Antes &middot; Despu&#233;s</a>
-      <a href="#graficos"><span class="ico">&#128200;</span> An&#225;lisis Gr&#225;ficos</a>
-    </div>
-
-    <div class="sidebar-group">
-      <div class="sidebar-group-title">7 &middot; Proceso y Documentaci&#243;n</div>
-      <a href="#encuesta"><span class="ico">&#128203;</span> Encuesta Ciudadana</a>
-      <a href="#voz-vecinos" class="is-new"><span class="ico">&#128483;&#65039;</span> Voz de los Vecinos</a>
-      <a href="#cuadernillo" class="is-new"><span class="ico">&#128221;</span> Cuadernillo de mi UV</a>
-      <a href="#erd" class="is-new"><span class="ico">&#127956;</span> ERD O'Higgins 2024-2036</a>
-      <a href="#timeline" class="is-new"><span class="ico">&#128467;&#65039;</span> L&iacute;nea de Tiempo del Proceso</a>
-      <a href="#comparador" class="is-new"><span class="ico">&#9878;&#65039;</span> Comparador Comunas Vecinas</a>
-      <a href="#galeria"><span class="ico">&#128247;</span> Galer&#237;a &amp; Actas Participaci&#243;n</a>
-      <a href="#transparencia" class="is-new"><span class="ico">&#128194;</span> Centro de Transparencia</a>
-      <a href="#presupuesto-participativo"><span class="ico">&#128181;</span> Presupuesto Participativo</a>
-      <a href="#participa"><span class="ico">&#128227;</span> Participa &middot; Newsletter / Reporte</a>
-      <a href="#faq"><span class="ico">&#10067;</span> Preguntas Frecuentes</a>
-      <a href="#glosario" class="is-new"><span class="ico">&#128214;</span> Glosario PLADECO (63 t&eacute;rminos)</a>
-      <a href="#educacion"><span class="ico">&#127891;</span> Aprende sobre tu Comuna</a>
-      <a href="#institucional"><span class="ico">&#127960;&#65039;</span> Acerca del Portal</a>
-      <a href="#documentos"><span class="ico">&#128193;</span> Entregables Finales</a>
-      <a href="#diagramas"><span class="ico">&#128194;</span> 16 Diagramas Metodol&oacute;gicos</a>
-      <a href="#graficos-proceso"><span class="ico">&#128202;</span> 73 Gr&#225;ficos del Proceso</a>
-      <a href="#cartografias"><span class="ico">&#128506;</span> 57 Cartograf&#237;as</a>
-      <a href="#visitas"><span class="ico">&#128101;</span> Contador de Visitas</a>
-    </div>
-  </div>
-  <!-- B4 · Historial visitado reciente -->
-  <div class="recent-visits" id="recentVisits" style="display:none">
-    <div class="recent-visits-title">&#128488;&#65039; Visitado recientemente</div>
-    <div id="recentVisitsList"></div>
-  </div>
-  <div class="sidebar-mascot" onclick="toggleChatbot()" title="Abrir asistente" tabindex="0" role="button" aria-label="Abrir asistente PLADECO" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleChatbot()}" style="display:none">
-    <img src="chatbot-robot.png" alt="Robot asistente PLADECO" class="mascot-img" width="60" height="60" loading="lazy" decoding="async">
-    <div class="mascot-bubble">&#128172; Asistente PLADECO</div>
-    <div class="mascot-cta"><span class="cta-icon">&#128269;</span> Preg&#250;ntame sobre Rengo</div>
-  </div>
-  <div class="sidebar-reading" id="sidebarReading" style="display:none"><span class="sr-icon">&#128214;</span> <span id="readingTime">~25 min lectura</span></div>
-  <div class="sidebar-progress">
-    <div class="sidebar-progress-label">Avance PLADECO</div>
-    <div class="sidebar-progress-bar"><div class="sidebar-progress-fill"></div></div>
-    <div class="sidebar-progress-text">0% &#8212; Explora las secciones</div>
-  </div>
-  <div class="sidebar-favs empty" id="sidebarFavs">
-    <div class="sf-title">
-      <span>&#11088; Mi PLADECO</span>
-      <button class="sf-clear" type="button" onclick="clearFavs()">Limpiar</button>
-    </div>
-    <div id="sidebarFavsList"></div>
-  </div>
-  <div class="sidebar-theme-switch">
-    <div class="ts-label">Apariencia</div>
-    <div class="ts-toggle" role="tablist" aria-label="Selector de tema">
-      <button type="button" class="ts-opt" data-theme="light" onclick="setTheme('light')" role="tab" aria-label="Modo claro">
-        <span class="ts-ico">&#9728;&#65039;</span>
-        <span class="ts-txt">Claro</span>
-      </button>
-      <button type="button" class="ts-opt" data-theme="dark" onclick="setTheme('dark')" role="tab" aria-label="Modo oscuro">
-        <span class="ts-ico">&#127769;</span>
-        <span class="ts-txt">Oscuro</span>
-      </button>
-    </div>
-  </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.73</span></div>
-</nav>
+<!-- v45.74 · Sidebar legacy eliminado por completo (70 enlaces, display:none): la barra superior de 11 capítulos + el motor de vistas son la única navegación. -->
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
 <div class="chatbot-overlay" id="chatOverlay" onclick="toggleChatbot()"></div>
@@ -5475,7 +5318,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.73</span>
+        <span>&#127919; v45.74</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -16380,41 +16223,7 @@ function initSectionReveal(){
   allSections.forEach(s=>{if(!s.classList.contains('revealed'))obs.observe(s);});
 }
 
-// ── SIDEBAR COLLAPSE (v45.6 mejorado · tooltips automáticos) ──
-function annotateSidebarTooltips(){
-  document.querySelectorAll('.sidebar-nav a').forEach(function(a){
-    if(a.dataset.tooltip) return;
-    // Extraer texto sin el icono
-    var clone=a.cloneNode(true);
-    var ico=clone.querySelector('.ico');
-    if(ico)ico.remove();
-    var txt=(clone.textContent||'').trim();
-    if(txt)a.dataset.tooltip=txt;
-  });
-}
-function toggleSidebarCollapse(){
-  document.body.classList.toggle('sidebar-collapsed');
-  const collapsed=document.body.classList.contains('sidebar-collapsed');
-  localStorage.setItem('pladeco-sidebar-collapsed',collapsed?'1':'0');
-  if(collapsed)annotateSidebarTooltips();
-  // Cambiar el title del botón según estado
-  var btn=document.querySelector('.sidebar-collapse-btn');
-  if(btn){
-    btn.title=collapsed?'Expandir menú':'Comprimir menú';
-    btn.setAttribute('aria-label',collapsed?'Expandir menú lateral':'Comprimir menú lateral');
-    var span=btn.querySelector('span');
-    if(span && !collapsed)span.textContent='Comprimir';
-  }
-}
-// Restore sidebar state + anotar tooltips
-if(localStorage.getItem('pladeco-sidebar-collapsed')==='1'){document.body.classList.add('sidebar-collapsed');}
-try{annotateSidebarTooltips();}catch(_){}
-/* Re-anotar cuando se modifique el sidebar dinámicamente */
-try{
-  var _sbObserver=new MutationObserver(function(){annotateSidebarTooltips();});
-  var _sbNav=document.querySelector('.sidebar-nav');
-  if(_sbNav)_sbObserver.observe(_sbNav,{childList:true,subtree:true});
-}catch(_){}
+// (v45.74) Colapso del sidebar + tooltips automáticos eliminados con el sidebar legacy
 
 // ── DARK / LIGHT MODE ──
 function syncThemeSwitcher(isDark){
@@ -18032,8 +17841,6 @@ document.addEventListener('keydown',e=>{
     // Close lightbox
     const lb=document.getElementById('lightbox');
     if(lb)lb.classList.remove('open');
-    // Close sidebar on mobile
-    if(window.innerWidth<=900){document.querySelector('.sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
     if(chatOpen)toggleChatbot();
   }
   // D key = toggle dark mode (v45.30 con null-check)
@@ -18041,12 +17848,6 @@ document.addEventListener('keydown',e=>{
     var bd = document.getElementById('btnDark');
     if(bd) bd.click();
     else if(typeof toggleDark === 'function') toggleDark();
-  }
-  // / key = focus sidebar search
-  if(e.key==='/'&&!e.ctrlKey){
-    e.preventDefault();
-    const si=document.getElementById('sidebarSearch');
-    if(si){si.focus();si.select();}
   }
   // T key = back to top
   if(e.key==='t'&&!e.ctrlKey&&!e.metaKey){
@@ -18081,13 +17882,7 @@ _onScroll(function(){
   btnTop.classList.toggle('show', window.scrollY > 600);
 });
 
-// Mobile sidebar close on nav click
-navLinks.forEach(a=>a.addEventListener('click',()=>{
-  if(window.innerWidth<=900){
-    document.querySelector('.sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('open');
-  }
-}));
+// (v45.74) Cierre del sidebar móvil al hacer clic eliminado con el sidebar legacy
 
 // Chatbot Enter key support
 document.getElementById('chatInput').addEventListener('keydown',e=>{
@@ -19192,39 +18987,8 @@ setTimeout(()=>{
 },3000);
 
 
-// ══════════════════════════════════════════════════════
-// F1: BUSCADOR INTERNO
-// ══════════════════════════════════════════════════════
-function filterSidebar(q){
-  q=q.toLowerCase().trim();
-  if(q) q=stripAccents(q);
-  const links=document.querySelectorAll('.sidebar-nav a');
-  const groups=document.querySelectorAll('.sidebar-group');
-  if(!q){links.forEach(a=>a.classList.remove('search-hidden'));groups.forEach(g=>g.style.display='');return;}
-  links.forEach(a=>{
-    const text=stripAccents(a.textContent.toLowerCase());
-    const href=a.getAttribute('href')||'';
-    const secId=href.replace('#','');
-    const sec=document.getElementById(secId);
-    let match=text.includes(q);
-    if(!match&&sec){
-      /* Search headings, subheadings, and first 500 chars of body text */
-      var heads=sec.querySelectorAll('h2,h3,h4,.viz-sub,.kpi-label,.gauge-label');
-      for(var i=0;i<heads.length;i++){
-        if(stripAccents(heads[i].textContent.toLowerCase()).includes(q)){match=true;break;}
-      }
-      if(!match){
-        var bodyText=stripAccents(sec.textContent.toLowerCase().substring(0,2000));
-        match=bodyText.includes(q);
-      }
-    }
-    a.classList.toggle('search-hidden',!match);
-  });
-  groups.forEach(g=>{
-    const visibleLinks=g.querySelectorAll('a:not(.search-hidden)');
-    g.style.display=visibleLinks.length?'':'none';
-  });
-}
+// (v45.74) Buscador interno del sidebar (filterSidebar) eliminado con el sidebar legacy
+// La búsqueda global se mantiene en la paleta de comandos (Ctrl+K).
 
 // ══════════════════════════════════════════════════════
 // MEJORA: COMMAND PALETTE (Ctrl+K)
@@ -19740,11 +19504,6 @@ function toggleChatbot(){
   document.getElementById('chatOverlay').classList.toggle('open',chatOpen);
   document.getElementById('chatPanel').classList.toggle('open',chatOpen);
   if(chatOpen){
-    if(window.innerWidth<=900){
-      var sb=document.querySelector('.sidebar');
-      if(sb) sb.classList.remove('open');
-      document.body.classList.remove('sidebar-open');
-    }
     const msgs=document.getElementById('chatMessages');
     if(!msgs.children.length){
       const h=new Date().getHours();
@@ -22190,7 +21949,7 @@ function v40JumpChapter(dir){
   var target=document.getElementById(V40_CAPITULOS[newIdx].id);
   if(target)target.scrollIntoView({behavior:'smooth'});
 }
-function toggleDark(){var b=document.getElementById('btnDark');if(b)b.click();else document.body.classList.toggle('dark');}
+/* v45.74 · toggleDark() duplicado (v40) eliminado: este wrapper llamaba a #btnDark.click(), pero #btnDark tiene onclick="toggleDark()" -> bucle que nunca alternaba el tema. Ahora rige la definicion real de toggleDark() (mas arriba), que aplica .dark y actualiza graficos. */
 
 /* ══════════════════════════════════════════════════════
    B2. Bottom Nav (actualizar item activo)
@@ -22895,21 +22654,7 @@ function lazyChart(canvasId, renderFn) {
   }, {passive: true});
 })();
 
-// ══════════════════════════════════════════════════════
-// ACCESSIBILITY: aria-current on active sidebar link
-// ══════════════════════════════════════════════════════
-(function initAriaCurrent(){
-  const obs = new MutationObserver(() => {
-    document.querySelectorAll('.sidebar-nav a').forEach(a => {
-      if (a.classList.contains('active')) a.setAttribute('aria-current', 'page');
-      else a.removeAttribute('aria-current');
-    });
-  });
-  const nav = document.querySelector('.sidebar-nav');
-  if (nav) obs.observe(nav, {subtree: true, attributes: true, attributeFilter: ['class']});
-  // Initial set
-  document.querySelectorAll('.sidebar-nav a.active').forEach(a => a.setAttribute('aria-current', 'page'));
-})();
+// (v45.74) initAriaCurrent del sidebar eliminado con el sidebar legacy
 
 // ══════════════════════════════════════════════════════
 // IMAGE LAZY LOADING (programmatic for dynamic images)
@@ -23455,50 +23200,7 @@ window.meSankeyFilter=function(ax){
 };
 
 }
-(function initSidebarGroupIndicator(){
-  const groupMap=[
-    {divider:'Datos Censales',sections:['censo','censoVuln','censoBrechas','censoHeat','censoMapa','censoCompos']},
-    {divider:'Diagnóstico Territorial',sections:['datos-vivo','mapa','territorio','comparador-uv','desigualdad','territorial-adv','nna']},
-    {divider:'Participación Ciudadana',sections:['voz','suenos','foda','testimonios']},
-    {divider:'Planificación Estratégica',sections:['ejes','ods-sec','gestion','argumentario','resumen']},
-    {divider:'Análisis Institucional',sections:['equipo','sna','etnografia','comisiones']},
-    {divider:'Seguimiento',sections:['cronograma','semaforo','compromisos','financiamiento','antes-despues','graficos']},
-    {divider:'Proceso y Recursos',sections:['galeria','documentos','diagramas','visitas','graficos-proceso','cartografias']}
-  ];
-  const sidebarGroups=document.querySelectorAll('.sidebar-group');
-  const groupTitles=[];
-  sidebarGroups.forEach(g=>{
-    const t=g.querySelector('.sidebar-group-title');
-    if(t)groupTitles.push({el:g,text:t.textContent.trim()});
-  });
-  function findGroup(sectionId){
-    for(let i=0;i<groupMap.length;i++){
-      if(groupMap[i].sections.includes(sectionId))return groupMap[i].divider;
-    }
-    return null;
-  }
-  let lastActiveGroup='';
-  const grpObs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        const gName=findGroup(e.target.id);
-        if(gName&&gName!==lastActiveGroup){
-          lastActiveGroup=gName;
-          groupTitles.forEach(gt=>{
-            const match=gt.text.toLowerCase().includes(gName.toLowerCase().substring(0,10));
-            gt.el.classList.toggle('active-group',match);
-          });
-        }
-      }
-    });
-  },{threshold:0.15,rootMargin:'-80px 0px -50% 0px'});
-  groupMap.forEach(g=>{
-    g.sections.forEach(sid=>{
-      const el=document.getElementById(sid);
-      if(el)grpObs.observe(el);
-    });
-  });
-})();
+// (v45.74) initSidebarGroupIndicator eliminado con el sidebar legacy
 
 // ══════════════════════════════════════════════════════
 // PDF EXPORT: Print individual sections · v45.4 DESHABILITADO
@@ -23704,76 +23406,7 @@ function subscribeNewsletter(e){
 
 <!-- ═══ v45.42 · AUDITORÍA DE BOTONES · hamburguesa SVG + fixes ═══ -->
 <style>
-/* ═══════════════════════════════════════════════════════
-   v45.42 · MENU-TOGGLE · hamburguesa CSS que morpha a X
-   Reemplaza el carácter Unicode ☰ por barras CSS robustas
-   ═══════════════════════════════════════════════════════ */
-.menu-toggle{
-  display:none;
-  position:fixed;
-  top:12px;left:12px;
-  z-index:1100;
-  width:48px;height:48px;
-  padding:0!important;
-  background:var(--primary)!important;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.12)!important;
-  border-radius:12px!important;
-  cursor:pointer;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 16px rgba(12,31,54,.35)!important;
-  transition:transform .2s, background .2s, box-shadow .2s;
-  -webkit-tap-highlight-color:transparent;
-}
-.menu-toggle:active{transform:scale(.92)}
-.menu-toggle:hover{background:#15803d!important}
-
-.menu-toggle .mt-bars{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:5px;
-  width:22px;
-  height:18px;
-  pointer-events:none;
-}
-.menu-toggle .mt-bars span{
-  display:block;
-  width:22px;
-  height:2.6px;
-  background:#fff;
-  border-radius:3px;
-  transition:transform .32s cubic-bezier(.4,0,.2,1), opacity .18s ease;
-  transform-origin:center;
-}
-/* Morph a X cuando el menú está abierto */
-.menu-toggle[aria-expanded="true"] .mt-bars span:nth-child(1){
-  transform:translateY(7.6px) rotate(45deg);
-}
-.menu-toggle[aria-expanded="true"] .mt-bars span:nth-child(2){
-  opacity:0;
-  transform:scaleX(.2);
-}
-.menu-toggle[aria-expanded="true"] .mt-bars span:nth-child(3){
-  transform:translateY(-7.6px) rotate(-45deg);
-}
-/* Cuando abierto, el botón cambia a verde Rengo */
-.menu-toggle[aria-expanded="true"]{
-  background:#15803d!important;
-}
-
-/* Mostrar el menu-toggle solo en ≤900px */
-@media (max-width:900px){
-  .menu-toggle{display:flex!important}
-}
-@media (max-width:479px){
-  .menu-toggle{
-    width:44px!important;height:44px!important;
-    top:10px!important;left:10px!important;
-  }
-}
+/* v45.74 · CSS del botón hamburguesa (.menu-toggle) eliminado — el botón se retiró en v45.58 al reemplazar el sidebar por la barra superior */
 
 /* ═══════════════════════════════════════════════════════
    v45.42 · BACK-TO-TOP · asegurar UN solo botón (#btnTop)
@@ -27345,51 +26978,7 @@ input[type="email"]:focus,textarea:focus,select:focus{
 /* Polish UX v45.28 · drawer mejorado + lazy images + ESC */
 (function(){
   function _polishInit(){
-    var sidebar = document.querySelector('.sidebar');
-    var overlay = document.getElementById('sidebarOverlay');
-    var toggle  = document.querySelector('.menu-toggle');
-
-    if(sidebar && overlay && toggle){
-      // 1. Observer para sincronizar body.sidebar-open con .sidebar.open
-      var obs = new MutationObserver(function(){
-        var open = sidebar.classList.contains('open');
-        document.body.classList.toggle('sidebar-open', open);
-      });
-      obs.observe(sidebar, {attributes:true, attributeFilter:['class']});
-
-      // 2. Cerrar al hacer click en un link interno (solo mobile)
-      sidebar.addEventListener('click', function(e){
-        var link = e.target.closest('a[href^="#"]');
-        if(!link) return;
-        if(window.innerWidth > 900) return;
-        setTimeout(function(){
-          sidebar.classList.remove('open');
-          overlay.classList.remove('open');
-          toggle.setAttribute('aria-expanded','false');
-        }, 120);
-      });
-
-      // 3. Cerrar con ESC
-      document.addEventListener('keydown', function(e){
-        if(e.key === 'Escape' && sidebar.classList.contains('open')){
-          sidebar.classList.remove('open');
-          overlay.classList.remove('open');
-          toggle.setAttribute('aria-expanded','false');
-          toggle.focus();
-        }
-      });
-
-      // 4. Re-evaluar al cambiar tamaño (si pasa de mobile a desktop con sidebar abierto)
-      window.addEventListener('resize', function(){
-        if(window.innerWidth > 900 && sidebar.classList.contains('open')){
-          sidebar.classList.remove('open');
-          overlay.classList.remove('open');
-          toggle.setAttribute('aria-expanded','false');
-        }
-      });
-    }
-
-    // 5. Lazy images fade-in
+    // Lazy images fade-in (v45.74: bloque del sidebar legacy eliminado)
     var imgs = document.querySelectorAll('img[loading="lazy"]');
     imgs.forEach(function(img){
       if(img.complete && img.naturalHeight !== 0){
@@ -27399,8 +26988,7 @@ input[type="email"]:focus,textarea:focus,select:focus{
         img.addEventListener('error', function(){ img.classList.add('loaded'); });
       }
     });
-
-    console.log('[Polish v45.28] sidebar+ESC+body-lock+lazy-' + imgs.length);
+    console.log('[Polish v45.28] lazy-' + imgs.length);
   }
 
   if(document.readyState === 'loading'){
