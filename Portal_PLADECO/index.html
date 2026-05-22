@@ -1443,6 +1443,16 @@ body{padding-top:150px}
 @media(max-width:560px){
   body{padding-top:124px}
 }
+/* ── v45.71 · Escritorio · Pulso Comunal reubicado BAJO el aviso "En construcción" ──
+   A pedido: la cinta "En construcción · sujeto a cambios" sube a la primera fila
+   (mayor visibilidad para quien estudia el documento) y la franja de
+   fecha/clima/aire baja a la segunda. Solo escritorio (>900px); el orden DOM
+   no cambia, por lo que en móvil se conserva el layout original. */
+@media(min-width:901px){
+  .unified-banner{display:flex;flex-direction:column}
+  .unified-banner .cb-row{order:1}
+  .unified-banner #liveStrip{order:2;border-top:1px solid rgba(255,255,255,.08);border-bottom:none}
+}
 /* ── KPI Count-Up Animation ── */
 .kpi-value{transition:color .3s}
 .kpi-value.counting{color:var(--accent)}
@@ -5338,7 +5348,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
   </div>
-  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.70</span></div>
+  <div class="sidebar-footer">SECPLAC &middot; Municipalidad de Rengo<br><span id="sidebarVersion">v45.71</span></div>
 </nav>
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
@@ -5363,7 +5373,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 
 <!-- ═══ BANNER INSTITUCIONAL UNIFICADO · Identidad + Pulso Comunal (fecha · clima · aire) ═══ -->
 <div class="construction-banner unified-banner">
-  <!-- v45.58 · Fila Pulso Comunal (fecha · clima · aire) — invertida: ahora PRIMERA fila del banner -->
+  <!-- Fila Pulso Comunal (fecha · clima · aire) — v45.71: en escritorio se reordena vía CSS (order) y queda bajo el aviso -->
   <div class="live-strip" id="liveStrip" aria-label="Pulso comunal de Rengo: fecha, clima y calidad del aire en tiempo real">
     <div class="ls-date" id="lsDate" title="Fecha actual">
       <span class="ls-emoji" aria-hidden="true">&#128197;</span>
@@ -5393,7 +5403,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <button class="ls-refresh" type="button" onclick="loadLiveStrip(true)" title="Actualizar ahora (auto cada 5 min)" aria-label="Actualizar clima y aire ahora">&#8634;</button>
     </div>
   </div>
-  <!-- v45.58 · Fila identidad institucional + aviso "En construcción" — invertida: ahora SEGUNDA fila -->
+  <!-- Fila identidad institucional + aviso "En construcción" — v45.71: en escritorio sube a primera fila vía CSS (order) -->
   <div class="cb-row">
     <div class="cb-logo-left">
       <div class="cb-escudo-pill">
@@ -5465,7 +5475,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.70</span>
+        <span>&#127919; v45.71</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -12676,7 +12686,6 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     <div class="footer-brand">
       <strong>PLADECO Rengo 2025 &#8211; 2035</strong>
       <p>Plan de Desarrollo Comunal construido con la participaci&#243;n ciudadana de las 21 unidades vecinales de Rengo.</p>
-      <span class="footer-badge">Datos: Censo 2024 INE</span>
     </div>
     <div class="footer-col">
       <h5>Autoridades</h5>
