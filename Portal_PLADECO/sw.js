@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.40
+// PLADECO Rengo 2025-2035 · Service Worker v62.41
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.41: v45.77 - #dashboard: 3 KPIs nuevos del argumentario (100% NNA evalúa negativo, materialización 30,7%, captación 6,28%) + intro con la tensión central + transparencia alineada a +15,85pp
 // v62.40: v45.76 - Argumentario alineado al deck V2/V3: cifras corregidas (patrimonio +744%, transparencia +15,85pp), 3 argumentos nuevos (paradoja central, 4 brechas urgentes, brecha financiera) + frase marco
 // v62.39: v45.75 - Limpieza CSS: ~165 líneas de estilos muertos del sidebar legacy eliminadas (núcleo, mascota, modo comprimido, progreso, favoritos, buscador, selector de tema, overlay)
 // v62.38: v45.74 - Limpieza profunda: sidebar legacy oculto eliminado (HTML 70 enlaces + ~16 enganches JS) + CSS muerto (botón hamburguesa, logo del hero) · FIX: toggleDark() estaba duplicado y el cambio de tema no tenía efecto
@@ -41,7 +42,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.40';
+const CACHE_STATIC='pladeco-static-v62.41';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
