@@ -5217,7 +5217,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.100</span>
+        <span>&#127919; v45.101</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -8986,6 +8986,59 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     </div>
   </div>
 
+  <!-- ═══ ANÁLISIS DE FRECUENCIA DE COMENTARIOS Y OPINIONES (v45.101) ═══ -->
+  <div style="margin:32px 0 8px;padding:20px;background:linear-gradient(135deg,rgba(67,97,238,.05),rgba(34,197,94,.04));border:1px solid var(--border);border-left:4px solid #4361ee;border-radius:14px">
+    <div style="display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#4361ee;background:rgba(67,97,238,.1);padding:5px 11px;border-radius:99px;margin-bottom:10px">&#128202; An&aacute;lisis de Frecuencia</div>
+    <h3 style="font-size:19px;font-weight:800;color:var(--text);margin:0 0 6px;line-height:1.3">Frecuencia de Comentarios y Opiniones &middot; Sociedad Civil Organizada</h3>
+    <p style="font-size:13.5px;color:var(--text2);margin:0;line-height:1.6">Cuatro visualizaciones que sintetizan <strong>cu&aacute;nto se mencion&oacute; cada tema</strong> en el proceso participativo con las 95 organizaciones (472 participantes). Se cruzan encuestas vinculadas (119 adultos + 21 NNA = 140 respuestas), 30 entrevistas en profundidad, 74 reuniones internas/externas y participaci&oacute;n institucional por dependencia. Esto convierte la nube de opiniones de la sociedad civil en una arquitectura de prioridades trazable y comparable entre grupos.</p>
+  </div>
+
+  <!-- Fila 1: TOP 15 unificado + Convergencia/Divergencia -->
+  <div class="viz-row" style="margin-top:14px">
+    <div class="viz-card">
+      <h3>&#129351; TOP 15 temas m&aacute;s mencionados &middot; ranking unificado</h3>
+      <div class="viz-sub">Suma de menciones agregadas de las 95 organizaciones en prioridades, infraestructura y salud</div>
+      <div style="position:relative;height:480px"><canvas id="chartTopTemas"></canvas></div>
+    </div>
+    <div class="viz-card">
+      <h3>&#128280; Convergencia y divergencia &middot; Adultos vs NNA</h3>
+      <div class="viz-sub">Ranking comparativo entre las dos generaciones que participaron del proceso: temas con el mismo orden son consensos, los que se cruzan son tensiones intergeneracionales que las organizaciones deben resolver</div>
+      <div style="position:relative;height:480px"><canvas id="chartSlopeAdNNA"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Fila 2: Distribución temática + Frecuencia por dirección -->
+  <div class="viz-row">
+    <div class="viz-card">
+      <h3>&#129704; Distribuci&oacute;n de menciones por dominio tem&aacute;tico</h3>
+      <div class="viz-sub">285 menciones agrupadas en 8 dominios: a qu&eacute; le da m&aacute;s peso la sociedad civil organizada</div>
+      <div style="position:relative;height:360px"><canvas id="chartDistribTematica"></canvas></div>
+    </div>
+    <div class="viz-card">
+      <h3>&#127963;&#65039; Contraparte institucional &middot; entrevistas por direcci&oacute;n municipal</h3>
+      <div class="viz-sub">225 entrevistas que reflejan con qu&eacute; direcciones municipales se articularon las organizaciones para llevar sus comentarios al diagn&oacute;stico</div>
+      <div style="position:relative;height:360px"><canvas id="chartActoresHeatmap"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Insight bar -->
+  <div style="margin:18px 0 8px;padding:14px 18px;background:rgba(67,97,238,.06);border-radius:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;font-size:12px;line-height:1.45">
+    <div><strong style="color:#ef4444;font-size:18px">75</strong> <span style="color:var(--text2)">menciones &middot; Seguridad p&uacute;blica (1&deg; ranking unificado)</span></div>
+    <div><strong style="color:#22c55e;font-size:18px">73</strong> <span style="color:var(--text2)">menciones &middot; Calles y veredas (1&deg; infraestructura)</span></div>
+    <div><strong style="color:#f59e0b;font-size:18px">52</strong> <span style="color:var(--text2)">menciones &middot; Especialistas salud (empate 1&deg;)</span></div>
+    <div><strong style="color:#4361ee;font-size:18px">3 / 10</strong> <span style="color:var(--text2)">consensos absolutos Adultos-NNA (top 3 coincide)</span></div>
+  </div>
+
+  <!-- Lectura cerrando el análisis -->
+  <div class="callout" style="margin-top:20px">
+    <div class="callout-icon">&#128214;</div>
+    <div class="callout-body">
+      <div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Lectura del An&aacute;lisis</div>
+      Cuando las 95 organizaciones hablan, los temas que m&aacute;s repiten no son aleatorios &mdash; revelan c&oacute;mo articulan su demanda colectiva. Seguridad, calles, plazas y salud copan el ranking, lo que confirma que las organizaciones priorizan el entorno cotidiano sobre lo program&aacute;tico. La diferencia generacional adultos-NNA muestra que la sociedad civil no es un bloque homog&eacute;neo: las directivas mayores empujan infraestructura; los grupos juveniles empujan cultura y deporte. El PLADECO debe sostener ambas voces, articularlas con las direcciones municipales que efectivamente las recogen (SECPLAC y DIDECO concentran 50 de 225 entrevistas) y devolver respuestas trazables a cada grupo organizado.
+    </div>
+  </div>
+  <!-- ═══ /ANÁLISIS DE FRECUENCIA ═══ -->
+
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Diagn&#243;stico Sociedad Civil Rengo 2024&#8211;2025 &bull; Proceso participativo PLADECO 2025&#8211;2035 &bull; 95 organizaciones &bull; 472 participantes &bull; Septiembre 2024 &#8211; Abril 2025 &bull; Regi&#243;n del Libertador B. O&#8217;Higgins</div>
 </section>
 
@@ -9069,51 +9122,6 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     </div>
     <div class="foda-quotes" id="fodaQuotes"></div>
   </div>
-
-  <!-- ═══ ANÁLISIS DE FRECUENCIA DE COMENTARIOS Y OPINIONES (v45.100) ═══ -->
-  <div style="margin:32px 0 8px;padding:20px;background:linear-gradient(135deg,rgba(67,97,238,.05),rgba(34,197,94,.04));border:1px solid var(--border);border-left:4px solid #4361ee;border-radius:14px">
-    <div style="display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#4361ee;background:rgba(67,97,238,.1);padding:5px 11px;border-radius:99px;margin-bottom:10px">&#128202; An&aacute;lisis de Frecuencia</div>
-    <h3 style="font-size:19px;font-weight:800;color:var(--text);margin:0 0 6px;line-height:1.3">Frecuencia de Comentarios y Opiniones</h3>
-    <p style="font-size:13.5px;color:var(--text2);margin:0;line-height:1.6">Cuatro visualizaciones que sintetizan <strong>cu&aacute;nto se mencion&oacute; cada tema</strong> en el proceso participativo. Se cruzan encuestas (119 adultos + 21 NNA = 140), entrevistas cualitativas (120+) y participaci&oacute;n por dependencia municipal. Esto convierte la nube de opiniones en una arquitectura de prioridades trazable.</p>
-  </div>
-
-  <!-- Fila 1: TOP 15 unificado + Convergencia/Divergencia -->
-  <div class="viz-row" style="margin-top:14px">
-    <div class="viz-card">
-      <h3>&#129351; TOP 15 temas m&aacute;s mencionados &middot; ranking unificado</h3>
-      <div class="viz-sub">Suma de menciones en prioridades, infraestructura y salud (n=119 + ratios)</div>
-      <div style="position:relative;height:480px"><canvas id="chartTopTemas"></canvas></div>
-    </div>
-    <div class="viz-card">
-      <h3>&#128280; Convergencia y divergencia &middot; Adultos vs NNA</h3>
-      <div class="viz-sub">Ranking comparativo: temas con el mismo orden son consensos, los que se cruzan son tensiones generacionales</div>
-      <div style="position:relative;height:480px"><canvas id="chartSlopeAdNNA"></canvas></div>
-    </div>
-  </div>
-
-  <!-- Fila 2: Distribución temática + Heatmap entrevistas -->
-  <div class="viz-row">
-    <div class="viz-card">
-      <h3>&#129704; Distribuci&oacute;n de menciones por dominio tem&aacute;tico</h3>
-      <div class="viz-sub">285 menciones agrupadas en 5 grandes &aacute;reas (prioridades + infraestructura + salud)</div>
-      <div style="position:relative;height:360px"><canvas id="chartDistribTematica"></canvas></div>
-    </div>
-    <div class="viz-card">
-      <h3>&#127963;&#65039; Frecuencia de entrevistas por direcci&oacute;n municipal</h3>
-      <div class="viz-sub">225 entrevistas a 14 tipos de actores institucionales: qui&eacute;n m&aacute;s aport&oacute; al diagn&oacute;stico</div>
-      <div style="position:relative;height:360px"><canvas id="chartActoresHeatmap"></canvas></div>
-    </div>
-  </div>
-
-  <!-- Insight bar -->
-  <div style="margin:18px 0 8px;padding:14px 18px;background:rgba(67,97,238,.06);border-radius:10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;font-size:12px;line-height:1.45">
-    <div><strong style="color:#ef4444;font-size:18px">75</strong> <span style="color:var(--text2)">menciones &middot; Seguridad p&uacute;blica (1&deg; ranking unificado)</span></div>
-    <div><strong style="color:#22c55e;font-size:18px">73</strong> <span style="color:var(--text2)">menciones &middot; Calles y veredas (1&deg; infraestructura)</span></div>
-    <div><strong style="color:#f59e0b;font-size:18px">52</strong> <span style="color:var(--text2)">menciones &middot; Especialistas salud (empate 1&deg;)</span></div>
-    <div><strong style="color:#4361ee;font-size:18px">3 / 10</strong> <span style="color:var(--text2)">consensos absolutos Adultos-NNA (top 3 coincide)</span></div>
-  </div>
-
-  <!-- ═══ /ANÁLISIS DE FRECUENCIA ═══ -->
 
   <div class="callout" style="margin-top:24px">
     <div class="callout-icon">&#128214;</div>
