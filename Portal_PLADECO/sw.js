@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.55
+// PLADECO Rengo 2025-2035 · Service Worker v62.56
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.56: v45.92 - Sección NUEVA #decisiones entre #argumentario y #resumen: "Decisiones que toma este PLADECO" — 6 elecciones normativas explícitas (financiero, económico, territorial, institucional, político, social) con qué elige / qué descarta / por qué / indicador. Cierre normativo: las decisiones son contestables y reversibles, pero no opcionales.
 // v62.55: v45.91 - Síntesis Interpretativa en #resumen: "4 lecturas del documento" que consolidan las 12 Lecturas del Diagnóstico en insights estratégicos para el Alcalde y el Concejo (paradoja institucional, geografía desigual, brecha de captación, legitimidad ciudadana).
 // v62.54: v45.90 - Lecturas del Diagnóstico (Lote 3/3): callouts interpretativos en #ficha-comunal, #ict-espacios-publicos, #voz y #suenos. Ahora las 12 secciones densas en datos cuentan qué significan los números, no solo qué muestran.
 // v62.53: v45.89 - "Qué pasa después" en #cronograma-gantt: hoja de ruta institucional post-entrega (Jun 2026 → Mar 2027) en 6 pasos: aprobación del Concejo, decreto alcaldicio, plan anual de implementación, tablero trimestral, 1ª encuesta + informe anual, participación permanente
@@ -56,7 +57,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.55';
+const CACHE_STATIC='pladeco-static-v62.56';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
