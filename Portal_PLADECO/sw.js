@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.47
+// PLADECO Rengo 2025-2035 · Service Worker v62.48
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.48: v45.84 - Lecturas interpretativas (Lote 2/2): callouts "Lectura del Diagnóstico" en #censo, #nna, #foda, #diagnostico-institucional. Las 8 secciones densas en datos ahora cuentan qué significan, no solo qué muestran.
 // v62.47: v45.83 - Lecturas interpretativas (Lote 1/2): callouts "Lectura del Diagnóstico" en #dashboard, #financiamiento, #semaforo, #compromisos — convierten datos en argumento
 // v62.46: v45.82 - Corrección: el PLADECO es 2025-2035. Cronograma alineado (título, tarjeta PDF, enlaces, aria-label, fuente) de "2025-2026"/"2025-2032" a "2025-2035"; PDF físico renombrado a PLADECO_Cronograma_2025-2035.pdf
 // v62.45: v45.81 - Lote D argumentario: #cronograma-gantt (nombre corregido 2025-2032 -> 2025-2026), #resumen (franja "Diagnóstico en una mirada" + frase marco), #visualizaciones-avanzadas (hoja de ruta institucional 2026-2028 con 18 hitos). Integración del Argumentario completa: 14/14 secciones
@@ -48,7 +49,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.47';
+const CACHE_STATIC='pladeco-static-v62.48';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
