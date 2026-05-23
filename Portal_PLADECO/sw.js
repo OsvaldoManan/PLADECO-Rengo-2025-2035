@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.53
+// PLADECO Rengo 2025-2035 · Service Worker v62.54
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.54: v45.90 - Lecturas del Diagnóstico (Lote 3/3): callouts interpretativos en #ficha-comunal, #ict-espacios-publicos, #voz y #suenos. Ahora las 12 secciones densas en datos cuentan qué significan los números, no solo qué muestran.
 // v62.53: v45.89 - "Qué pasa después" en #cronograma-gantt: hoja de ruta institucional post-entrega (Jun 2026 → Mar 2027) en 6 pasos: aprobación del Concejo, decreto alcaldicio, plan anual de implementación, tablero trimestral, 1ª encuesta + informe anual, participación permanente
 // v62.52: v45.88 - Mirada de Género transversal: callouts en #nna, #voz, #foda y #diagnostico-institucional con la lectura de género específica de cada sección (NNA por género, participación femenina, VIF + JJVV, Ley Karin como política institucional de género)
 // v62.51: v45.87 - 2 bloques nuevos: "Riesgos de Implementación" (7 riesgos + mitigaciones) en #compromisos, y "Rengo en el contexto regional" (6 KPIs vs región O'Higgins) en #comparador
@@ -54,7 +55,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.53';
+const CACHE_STATIC='pladeco-static-v62.54';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
