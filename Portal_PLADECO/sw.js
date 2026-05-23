@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.69
+// PLADECO Rengo 2025-2035 · Service Worker v62.70
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.70: v45.106 - Consolidación visual del header: (1) Logo PLADECO + badge "En construcción" movidos al topbar como tn-pladeco-pill (al lado de la marca PLADECO Rengo). (2) Se elimina el cb-row del construction-banner duplicado (municipalidad+badge+pladeco+close X) que sumaba ~80px innecesarios. (3) Live-strip (fecha/clima/aire) movido OUT del construction-banner a su propio wrapper .live-strip-wrap standalone, manteniendo posición fixed bajo el topbar. (4) Resultado: 1 sola barra de identidad (topbar) + 1 strip de pulso comunal — sin duplicación. Responsive: en <900px se oculta el badge, en <560px se oculta toda la pildora PLADECO.
 // v62.69: v45.105 - DOS arreglos: (1) Topbar superior agrupa los 11 capítulos en 4 macro-tabs (01 Introducción / 02 Diagnóstico / 03 Planificación / 04 Cierre) con dropdown que lista los capítulos y sus unidades dentro de cada parte. Color codificado con paleta institucional. Versión mobile equivalente. (2) Live-strip del pulso comunal (fecha/clima/aire) ahora muestra fecha y hora INMEDIATAMENTE vía script inline al lado del HTML — sin depender del script principal ni de fetches. Las APIs de clima/aire siguen actualizando asíncrono.
 // v62.68: v45.104 - Mapa visual de las 4 partes al inicio del Quick Index. Strip horizontal con 4 cards (número 01-04 grande + nombre + descripción breve + count) que enlazan a los macro-dividers correspondientes. Hero/portada intacto. Título del Quick Index actualizado a "Mapa del PLADECO · 4 partes · 53 secciones" con flujo descrito en el subtítulo (Introducción → Diagnóstico → Planificación → Cierre). Antes del detalle expandido, el lector ve la estructura completa de un vistazo.
 // v62.67: v45.103 - Quick-index lateral envuelve los 7 grupos existentes en 4 macro-contenedores con header propio (01-04 + nombre + count). TOC del Resumen reestructurado en 3 bloques (02 Diagnóstico, 03 Planificación, 04 Cierre) con headers de macro y links ampliados. Paleta macro refinada a tonos profundos institucionales (indigo #1e3a8a, terracota #9a3412, verde profundo #14532d, violeta profundo #3b0764) para diferenciar visualmente de los chapter accents. Responsive verificado en 375/768/1280.
@@ -70,7 +71,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.69';
+const CACHE_STATIC='pladeco-static-v62.70';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

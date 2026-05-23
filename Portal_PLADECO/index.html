@@ -1257,6 +1257,9 @@ body.dark .meta-card .mc-track{background:#334155}
 .plazo-pill .pp-name{font-size:13px;font-weight:700}
 
 /* ── Banner Institucional + En Construcción ── */
+/* v45.106 · wrapper standalone para live-strip (reemplaza construction-banner) */
+.live-strip-wrap{position:fixed;top:54px;left:0;right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);box-shadow:0 4px 16px rgba(0,0,0,.25);border-bottom:2px solid rgba(45,154,77,.25)}
+.live-strip-wrap+main{padding-top:38px}
 .construction-banner{position:fixed;top:54px;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,left .3s ease}
 .construction-banner.dismissed{transform:translateY(-100%);opacity:0;pointer-events:none}
 /* ── v45.64 · Banner "En construcción" · fila reequilibrada ──
@@ -4829,6 +4832,18 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 .tn-brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tn-brand img{height:30px;width:auto;display:block}
 .tn-tabs{display:flex;align-items:stretch;flex:0 1 auto;justify-content:center;height:100%;min-width:0}
+/* v45.106 · pildora consolidada PLADECO + aviso "En construccion" en el topbar */
+.tn-pladeco-pill{display:flex;align-items:center;gap:8px;padding:3px 10px 3px 6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:10px;margin-right:6px;flex-shrink:0}
+.tn-pladeco-pill img{height:30px;width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.tn-construccion-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#f59e0b,#c97014);color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:99px;white-space:nowrap;box-shadow:0 1px 3px rgba(245,146,29,.4)}
+@media(max-width:900px){
+  .tn-pladeco-pill{padding:3px 8px 3px 5px;gap:6px}
+  .tn-pladeco-pill img{height:26px}
+  .tn-construccion-badge{display:none}
+}
+@media(max-width:560px){
+  .tn-pladeco-pill{display:none}
+}
 .tn-tab{position:relative;display:flex;align-items:stretch}
 .tn-tab-btn{display:flex;align-items:center;gap:5px;height:100%;padding:0 12px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
 .tn-tab-btn:hover,.tn-tab.open .tn-tab-btn{background:rgba(255,255,255,.09);color:#fff}
@@ -4901,6 +4916,11 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <img src="escudo-rengo-blanco.svg" alt="" width="20" height="33" decoding="async">
     <span>PLADECO Rengo</span>
   </a>
+  <!-- v45.106 · Pildora PLADECO consolidada en topbar (eliminado el construction-banner duplicado) -->
+  <div class="tn-pladeco-pill" aria-hidden="true">
+    <img src="logo-pladeco.png" alt="" width="46" height="34" loading="eager" decoding="async">
+    <span class="tn-construccion-badge">&#9888; En construcci&oacute;n</span>
+  </div>
   <nav class="tn-tabs" id="tnTabs" aria-label="Capítulos del PLADECO">
     <div class="tn-tab" data-cap="0"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">1</span>Introducción<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
     <div class="tn-tab" data-cap="1"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">2</span>Diagnóstico<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
@@ -5122,9 +5142,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 </div>
 <button class="chatbot-fab hidden" id="chatFab" onclick="toggleChatbot()" aria-label="Abrir asistente PLADECO"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
 
-<!-- ═══ BANNER INSTITUCIONAL UNIFICADO · Identidad + Pulso Comunal (fecha · clima · aire) ═══ -->
-<div class="construction-banner unified-banner">
-  <!-- Fila Pulso Comunal (fecha · clima · aire) — v45.71: en escritorio se reordena vía CSS (order) y queda bajo el aviso -->
+<!-- ═══ PULSO COMUNAL (live-strip) · v45.106: sacado del construction-banner para sobrevivir solo ═══ -->
+<div class="live-strip-wrap">
   <div class="live-strip" id="liveStrip" aria-label="Pulso comunal de Rengo: fecha, clima y calidad del aire en tiempo real">
     <div class="ls-date" id="lsDate" title="Fecha actual">
       <span class="ls-emoji" aria-hidden="true">&#128197;</span>
@@ -5176,23 +5195,9 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     }catch(e){}
   })();
   </script>
-  <!-- Fila identidad institucional + aviso "En construcción" — v45.71: en escritorio sube a primera fila vía CSS (order) -->
-  <div class="cb-row">
-    <div class="cb-logo-left">
-      <div class="cb-escudo-pill">
-        <img src="escudo-rengo-blanco.svg" alt="Escudo Rengo" width="24" height="38" decoding="async">
-        <span>Ilustre<br>Municipalidad<br>de Rengo</span>
-      </div>
-    </div>
-    <div class="cb-ribbon-wrap"><div class="cb-ribbon">En construcci&#243;n &#183; sujeto a cambios</div></div>
-    <div class="cb-logo-right">
-      <div class="cb-pladeco-pill">
-        <img src="logo-pladeco.png" alt="Logo PLADECO 2025-2035 Plan de Desarrollo Comunal Rengo" width="74" height="56" loading="eager" decoding="async">
-      </div>
-      <button class="cb-close" onclick="dismissBanner()" title="Cerrar banner" aria-label="Cerrar banner">&times;</button>
-    </div>
-  </div>
 </div>
+<!-- v45.106 · cb-row eliminado: la identidad municipal + PLADECO + aviso "En construccion" ahora viven en el topbar consolidado, ahorrando ~80px de altura -->
+
 
 <main class="main" id="main-content" role="main">
 
@@ -5309,7 +5314,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.105</span>
+        <span>&#127919; v45.106</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
