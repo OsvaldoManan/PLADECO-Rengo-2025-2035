@@ -4830,10 +4830,24 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 .tn-brand img{height:30px;width:auto;display:block}
 .tn-tabs{display:flex;align-items:stretch;flex:0 1 auto;justify-content:center;height:100%;min-width:0}
 .tn-tab{position:relative;display:flex;align-items:stretch}
-.tn-tab-btn{display:flex;align-items:center;gap:4px;height:100%;padding:0 8px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.tn-tab-btn{display:flex;align-items:center;gap:5px;height:100%;padding:0 12px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
 .tn-tab-btn:hover,.tn-tab.open .tn-tab-btn{background:rgba(255,255,255,.09);color:#fff}
 .tn-tab.active .tn-tab-btn{color:#fff;border-bottom-color:#2d9a4d}
-.tn-tab-num{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:5px;background:rgba(45,154,77,.9);color:#fff;font-size:10.5px;font-weight:800;flex-shrink:0}
+.tn-tab-num{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:18px;padding:0 5px;border-radius:5px;background:rgba(45,154,77,.9);color:#fff;font-size:10.5px;font-weight:800;flex-shrink:0;letter-spacing:.02em}
+/* v45.105 · macro-tabs en el topbar (4 partes) */
+.tn-tab.tn-macro .tn-tab-btn{padding:0 14px;font-size:12px;letter-spacing:.01em}
+.tn-tab.tn-macro .tn-tab-num{background:var(--mc);box-shadow:0 0 0 1px rgba(255,255,255,.12) inset}
+.tn-tab.tn-macro.open .tn-tab-btn,.tn-tab.tn-macro .tn-tab-btn:hover{background:color-mix(in srgb, var(--mc) 28%, transparent);border-bottom-color:var(--mc)}
+.tn-drop.tn-drop-macro{width:340px;border-top-color:var(--mc)}
+.tn-drop-group{padding:8px 4px 6px;border-bottom:1px dashed var(--border)}
+.tn-drop-group:last-child{border-bottom:none}
+.tn-drop-group-head{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px 6px;color:var(--mc)}
+.tn-drop-group-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:5px;background:color-mix(in srgb, var(--mc) 14%, transparent);color:var(--mc);font-size:10.5px;font-weight:800}
+.tn-m-sub{padding:6px 0;border-bottom:1px dashed var(--border)}
+.tn-m-sub:last-child{border-bottom:none}
+.tn-m-sub-head{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--mc);padding:6px 4px 4px}
+.tn-mgroup.tn-mgroup-macro .tn-tab-num{background:var(--mc)}
+.tn-mgroup.tn-mgroup-macro.open{background:color-mix(in srgb, var(--mc) 7%, transparent)}
 .tn-tab-car{font-size:8px;opacity:.55}
 .tn-drop{position:absolute;top:100%;left:0;width:300px;max-height:74vh;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-top:3px solid #2d9a4d;border-radius:0 0 12px 12px;box-shadow:0 16px 40px rgba(0,0,0,.3);padding:7px;display:none;flex-direction:column;gap:1px}
 .tn-tab:nth-last-child(-n+3) .tn-drop{left:auto;right:0}
@@ -4906,8 +4920,9 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 <script>
 (function(){
   var CAPS=['Introducción','Diagnóstico','Participación','Planificación','Gobernanza','Seguimiento','Proceso'];
-  /* v45.70 · La barra superior se genera desde los 11 capítulos reales del
-     contenido (window.PV del motor de vistas) — antes mostraba 7 grupos. */
+  /* v45.105 · La barra superior agrupa los 11 capítulos en 4 macro-partes
+     (Introducción, Diagnóstico, Planificación, Cierre) cada una con dropdown
+     que lista las secciones de sus capítulos. */
   function build(tries){
     var PV=window.PV,tnTabs=document.getElementById('tnTabs');
     if(!tnTabs){return;}
@@ -4917,16 +4932,36 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     }
     function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
     var SHORT=['Bienvenida','Diagnóstico','Territorio','Participación','Planificación','Gobernanza','Seguimiento','Recursos','Memoria','Tu Turno','Cierre'];
+    /* Mapeo a 4 macro-partes — íconos + colores institucionales */
+    var MACROS=[
+      {num:'01',name:'Introducción',icon:'📖',color:'#1e3a8a',caps:[0]},
+      {num:'02',name:'Diagnóstico',icon:'🔍',color:'#9a3412',caps:[1,2,3]},
+      {num:'03',name:'Planificación',icon:'🎯',color:'#14532d',caps:[4,5,6]},
+      {num:'04',name:'Cierre',icon:'🏁',color:'#3b0764',caps:[7,8,9,10]}
+    ];
     var chs=PV.chapters,tabsHtml='',mhtml='';
-    for(var i=0;i<chs.length;i++){
-      var ch=chs[i],label=SHORT[i]||('Cap. '+(i+1)),us=ch.units||[],drop='',mlinks='';
-      for(var j=0;j<us.length;j++){
-        var u=us[j],un=esc(u.name);
-        drop+='<a href="#'+u.id+'"><span class="tn-di">&#8226;</span><span>'+un+'</span></a>';
-        mlinks+='<a href="#'+u.id+'">'+un+'</a>';
+    for(var mi=0;mi<MACROS.length;mi++){
+      var M=MACROS[mi];
+      var drop='',mlinks='';
+      for(var ci=0;ci<M.caps.length;ci++){
+        var capIdx=M.caps[ci];
+        var ch=chs[capIdx]; if(!ch) continue;
+        var capLabel=SHORT[capIdx]||('Cap. '+(capIdx+1));
+        var us=ch.units||[];
+        /* Encabezado del capítulo dentro del dropdown desktop */
+        drop+='<div class="tn-drop-group"><div class="tn-drop-group-head"><span class="tn-drop-group-num">'+(capIdx+1)+'</span>'+esc(capLabel)+'</div>';
+        /* Encabezado del capítulo en el menú móvil */
+        mlinks+='<div class="tn-m-sub"><div class="tn-m-sub-head">'+(capIdx+1)+' &middot; '+esc(capLabel)+'</div>';
+        for(var j=0;j<us.length;j++){
+          var u=us[j],un=esc(u.name);
+          drop+='<a href="#'+u.id+'"><span class="tn-di">&#8226;</span><span>'+un+'</span></a>';
+          mlinks+='<a href="#'+u.id+'">'+un+'</a>';
+        }
+        drop+='</div>';
+        mlinks+='</div>';
       }
-      tabsHtml+='<div class="tn-tab" data-cap="'+i+'"><button class="tn-tab-btn" type="button" title="'+esc(ch.name)+'"><span class="tn-tab-num">'+(i+1)+'</span>'+esc(label)+'<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop">'+drop+'</div></div>';
-      mhtml+='<div class="tn-mgroup"><button class="tn-mgroup-btn" type="button"><span class="tn-tab-num">'+(i+1)+'</span>'+esc(label)+'<span class="tn-mchev">&#9662;</span></button><div class="tn-mlinks">'+mlinks+'</div></div>';
+      tabsHtml+='<div class="tn-tab tn-macro" data-macro="'+mi+'" style="--mc:'+M.color+'"><button class="tn-tab-btn" type="button" title="Parte '+M.num+' &middot; '+esc(M.name)+'"><span class="tn-tab-num">'+M.num+'</span>'+M.icon+' '+esc(M.name)+'<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop tn-drop-macro">'+drop+'</div></div>';
+      mhtml+='<div class="tn-mgroup tn-mgroup-macro" style="--mc:'+M.color+'"><button class="tn-mgroup-btn" type="button"><span class="tn-tab-num">'+M.num+'</span>'+M.icon+' '+esc(M.name)+'<span class="tn-mchev">&#9662;</span></button><div class="tn-mlinks">'+mlinks+'</div></div>';
     }
     tnTabs.innerHTML=tabsHtml;
     var mp=document.getElementById('tnMpanel'); if(mp){mp.innerHTML=mhtml;}
@@ -5119,6 +5154,28 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <button class="ls-refresh" type="button" onclick="loadLiveStrip(true)" title="Actualizar ahora (auto cada 5 min)" aria-label="Actualizar clima y aire ahora">&#8634;</button>
     </div>
   </div>
+  <!-- v45.105 · Bootstrap inline: la fecha y hora aparecen inmediatamente sin depender del script principal ni de fetches -->
+  <script>
+  (function(){
+    try{
+      var d=new Date();
+      var DIAS=['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'];
+      var MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      var diaEl=document.getElementById('lsDateDia');
+      var numEl=document.getElementById('lsDateNum');
+      var anioEl=document.getElementById('lsDateAnio');
+      var timeEl=document.getElementById('lsTime');
+      if(diaEl)diaEl.innerHTML=DIAS[d.getDay()];
+      if(numEl)numEl.textContent=d.getDate()+' '+MESES[d.getMonth()];
+      if(anioEl)anioEl.textContent=d.getFullYear();
+      if(timeEl){
+        var h=String(d.getHours()).padStart(2,'0');
+        var m=String(d.getMinutes()).padStart(2,'0');
+        timeEl.textContent=h+':'+m;
+      }
+    }catch(e){}
+  })();
+  </script>
   <!-- Fila identidad institucional + aviso "En construcción" — v45.71: en escritorio sube a primera fila vía CSS (order) -->
   <div class="cb-row">
     <div class="cb-logo-left">
@@ -5252,7 +5309,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.104</span>
+        <span>&#127919; v45.105</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -23058,9 +23115,16 @@ function updateDateStrip(){
 function loadLiveStrip(manual){
   var btn=document.querySelector('.ls-refresh');
   if(manual&&btn)btn.classList.add('spinning');
-  updateDateStrip();
-  loadWeatherStrip();
-  loadAirStrip().finally(function(){if(btn)setTimeout(function(){btn.classList.remove('spinning');},800);});
+  // Fecha SIEMPRE primero (sincrónica, no depende de red — evita que la barra quede vacía si fallan las APIs)
+  try{updateDateStrip();}catch(e){console.warn('updateDateStrip falló:',e);}
+  // Marcar hora actual aunque el clima aún no responda
+  var timeEl=document.getElementById('lsTime');
+  if(timeEl&&timeEl.textContent==='--:--')timeEl.textContent=fmtTime(new Date());
+  // Clima y aire en paralelo (no bloquean si fallan)
+  try{loadWeatherStrip();}catch(e){console.warn('loadWeatherStrip falló:',e);}
+  try{
+    loadAirStrip().finally(function(){if(btn)setTimeout(function(){btn.classList.remove('spinning');},800);});
+  }catch(e){console.warn('loadAirStrip falló:',e); if(btn)btn.classList.remove('spinning');}
 }
 
 function loadWeatherStrip(){
