@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.50
+// PLADECO Rengo 2025-2035 · Service Worker v62.51
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.51: v45.87 - 2 bloques nuevos: "Riesgos de Implementación" (7 riesgos + mitigaciones) en #compromisos, y "Rengo en el contexto regional" (6 KPIs vs región O'Higgins) en #comparador
 // v62.50: v45.86 - Metodología visible ("Cómo se construyó este PLADECO": 4 fases + 12 fuentes oficiales + 5 stats) en #institucional + Onboarding "Cómo leer este PLADECO" (4 perfiles: Alcalde/Concejo, Ciudadanía, Equipo técnico, Investigación) dentro del hero
 // v62.49: v45.85 - 2 bloques estratégicos del V3: matriz "4 decisiones para el Alcalde" (urgencia × impacto) en #visualizaciones-avanzadas, y "La ventana 2025-2026 no se repite" (4 factores que convergen) en #argumentario
 // v62.48: v45.84 - Lecturas interpretativas (Lote 2/2): callouts "Lectura del Diagnóstico" en #censo, #nna, #foda, #diagnostico-institucional. Las 8 secciones densas en datos ahora cuentan qué significan, no solo qué muestran.
@@ -51,7 +52,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.50';
+const CACHE_STATIC='pladeco-static-v62.51';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
