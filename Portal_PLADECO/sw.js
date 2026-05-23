@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.72
+// PLADECO Rengo 2025-2035 · Service Worker v62.73
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.73: v45.109 - Eliminado el panel #planStatus "¿Cómo va el plan?" entero que duplicaba el bloque "Estado del Proceso PLADECO" ya restaurado en la portada del hero (v45.107). Se rescatan los 3 CTAs (🚦 Semáforo de Metas, 🎯 Matriz Estratégica, 💾 Descargar Plan) y se suben a la portada bajo el grid de 6 cards del Estado del Proceso, con border-top dashed y color coding (verde/violeta/azul). Ahorro: ~280px verticales + eliminación de duplicación cognitiva.
 // v62.72: v45.108 - Countdown-strip mejorado: ahora vive en una .countdown-section con header propio ("⚠ Portal en construcción" badge ámbar pulsante + título "Próximos hitos del PLADECO" + subtítulo explicativo). La cuenta regresiva se popula INMEDIATAMENTE vía bootstrap inline (mismo patrón que la fecha del live-strip) — sin esperar a updateCountdown() del script principal. Ya no muestra "--" en los días.
 // v62.71: v45.107 - DOS arreglos: (1) BYPASS de APIs externas en el SW: api.open-meteo.com y air-quality-api.open-meteo.com ahora pasan directo a network sin pasar por la cache stale-while-revalidate del SW (que estaba retornando undefined cuando la cache no tenía la respuesta, rompiendo el fetch). El clima y la calidad del aire ahora cargan correctamente. (2) RESTAURADO en la portada del hero un strip "Estado del Proceso PLADECO" con 6 cards (Diagnóstico 100%, Aprobación 75%, Participación 472, Acciones 225, Cobertura UV 21/21, Entrevistas 115+4036) — el usuario lo extrañaba.
 // v62.70: v45.106 - Consolidación visual del header: (1) Logo PLADECO + badge "En construcción" movidos al topbar como tn-pladeco-pill (al lado de la marca PLADECO Rengo). (2) Se elimina el cb-row del construction-banner duplicado (municipalidad+badge+pladeco+close X) que sumaba ~80px innecesarios. (3) Live-strip (fecha/clima/aire) movido OUT del construction-banner a su propio wrapper .live-strip-wrap standalone, manteniendo posición fixed bajo el topbar. (4) Resultado: 1 sola barra de identidad (topbar) + 1 strip de pulso comunal — sin duplicación. Responsive: en <900px se oculta el badge, en <560px se oculta toda la pildora PLADECO.
@@ -73,7 +74,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.72';
+const CACHE_STATIC='pladeco-static-v62.73';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
