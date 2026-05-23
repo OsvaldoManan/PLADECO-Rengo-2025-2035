@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.63
+// PLADECO Rengo 2025-2035 · Service Worker v62.64
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.64: v45.100 - 4 gráficos nuevos de frecuencia de comentarios y opiniones en #voz: (A) TOP 15 temas unificados ranking horizontal, (B) Convergencia/divergencia Adultos vs NNA con brecha porcentual, (C) Distribución de 285 menciones por 8 dominios temáticos (doughnut con total al centro), (D) Frecuencia de 225 entrevistas por 15 direcciones municipales con gradient de intensidad. Insight bar con 4 hitos del análisis.
 // v62.63: v45.99 - Auditoría completa de #documentos: 15/15 archivos verificados (2 docs/, 5 MBHT/, 8 actas/). Certificación visible en #documentos con resultado por carpeta y tamaño total (76 MB). TOC del Resumen + quick-index actualizados con #validacion-concejo y #faq-concejo (badge is-new).
 // v62.62: v45.98 - Sección NUEVA #faq-concejo "Preguntas del Concejo + Banco de objeciones" — 12 FAQ previsibles (expandibles, vinculadas a evidencia) + 8 objeciones tipo "Si te dicen X, responde Y" para defender el plan en sesión de Concejo, prensa o redes. Cierre normativo: defender el plan, no negar la crítica.
 // v62.61: v45.97 - Sección NUEVA #validacion-concejo "Hoja de Validación del Concejo Municipal" — herramienta para los 6 concejales: contexto legal Ley 18.695, checklist de 10 puntos con link a evidencia, 3 tipos de voto sugeridos (aprobar/aprobar con observaciones/rechazar) con plantilla de fundamentación, lista de lo que NO se vota, cierre con sentido político.
@@ -64,7 +65,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.63';
+const CACHE_STATIC='pladeco-static-v62.64';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
