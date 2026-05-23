@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.65
+// PLADECO Rengo 2025-2035 · Service Worker v62.66
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.66: v45.102 - Arquitectura informativa: 11 capítulos agrupados en 4 macro-partes con macro-dividers visuales y color codificado. Parte 01 Introducción (azul · cap I), Parte 02 Diagnóstico (ámbar · caps II-IV), Parte 03 Planificación (verde · caps V-VII), Parte 04 Cierre (violeta · caps VIII-XI). Numeración 01-04 grande + label parte X de 4 + descripción de la parte + contador de capítulos. Responsive: en mobile se apila vertical.
 // v62.65: v45.101 - Reubicación: el bloque "Análisis de Frecuencia de Comentarios y Opiniones" (4 charts) se mueve de #voz a #sociedad-civil donde corresponde temáticamente. Framing adaptado al diagnóstico de organizaciones: las 95 organizaciones (472 participantes) como sujeto de las menciones. Se agrega una Lectura del Análisis específica sobre cómo articulan su demanda colectiva los grupos organizados.
 // v62.64: v45.100 - 4 gráficos nuevos de frecuencia de comentarios y opiniones en #voz: (A) TOP 15 temas unificados ranking horizontal, (B) Convergencia/divergencia Adultos vs NNA con brecha porcentual, (C) Distribución de 285 menciones por 8 dominios temáticos (doughnut con total al centro), (D) Frecuencia de 225 entrevistas por 15 direcciones municipales con gradient de intensidad. Insight bar con 4 hitos del análisis.
 // v62.63: v45.99 - Auditoría completa de #documentos: 15/15 archivos verificados (2 docs/, 5 MBHT/, 8 actas/). Certificación visible en #documentos con resultado por carpeta y tamaño total (76 MB). TOC del Resumen + quick-index actualizados con #validacion-concejo y #faq-concejo (badge is-new).
@@ -66,7 +67,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.65';
+const CACHE_STATIC='pladeco-static-v62.66';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
