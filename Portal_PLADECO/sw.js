@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.66
+// PLADECO Rengo 2025-2035 · Service Worker v62.67
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.67: v45.103 - Quick-index lateral envuelve los 7 grupos existentes en 4 macro-contenedores con header propio (01-04 + nombre + count). TOC del Resumen reestructurado en 3 bloques (02 Diagnóstico, 03 Planificación, 04 Cierre) con headers de macro y links ampliados. Paleta macro refinada a tonos profundos institucionales (indigo #1e3a8a, terracota #9a3412, verde profundo #14532d, violeta profundo #3b0764) para diferenciar visualmente de los chapter accents. Responsive verificado en 375/768/1280.
 // v62.66: v45.102 - Arquitectura informativa: 11 capítulos agrupados en 4 macro-partes con macro-dividers visuales y color codificado. Parte 01 Introducción (azul · cap I), Parte 02 Diagnóstico (ámbar · caps II-IV), Parte 03 Planificación (verde · caps V-VII), Parte 04 Cierre (violeta · caps VIII-XI). Numeración 01-04 grande + label parte X de 4 + descripción de la parte + contador de capítulos. Responsive: en mobile se apila vertical.
 // v62.65: v45.101 - Reubicación: el bloque "Análisis de Frecuencia de Comentarios y Opiniones" (4 charts) se mueve de #voz a #sociedad-civil donde corresponde temáticamente. Framing adaptado al diagnóstico de organizaciones: las 95 organizaciones (472 participantes) como sujeto de las menciones. Se agrega una Lectura del Análisis específica sobre cómo articulan su demanda colectiva los grupos organizados.
 // v62.64: v45.100 - 4 gráficos nuevos de frecuencia de comentarios y opiniones en #voz: (A) TOP 15 temas unificados ranking horizontal, (B) Convergencia/divergencia Adultos vs NNA con brecha porcentual, (C) Distribución de 285 menciones por 8 dominios temáticos (doughnut con total al centro), (D) Frecuencia de 225 entrevistas por 15 direcciones municipales con gradient de intensidad. Insight bar con 4 hitos del análisis.
@@ -67,7 +68,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.66';
+const CACHE_STATIC='pladeco-static-v62.67';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

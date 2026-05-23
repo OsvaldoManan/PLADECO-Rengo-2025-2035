@@ -4292,8 +4292,26 @@ body.dark .search-modal-footer{background:rgba(0,0,0,.2)}
 .quick-index-toggle:hover{background:rgba(45,154,77,.18);border-color:rgba(45,154,77,.4)}
 .quick-index-toggle .qi-chev{transition:transform .25s;display:inline-block;font-size:11px}
 .quick-index.collapsed .qi-chev{transform:rotate(-90deg)}
-.quick-index-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;animation:qiSlide .3s ease}
+.quick-index-groups{display:flex;flex-direction:column;gap:22px;animation:qiSlide .3s ease}
 .quick-index.collapsed .quick-index-groups{display:none}
+
+/* v45.103 · macro-wrapper para las 4 partes del PLADECO */
+.qi-macro{padding:14px 0 0;border-top:3px solid var(--qm-c)}
+.qi-macro:first-child{border-top:none;padding-top:0}
+.qi-macro-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px;padding:0 4px}
+.qi-macro-num{font-size:22px;font-weight:900;color:var(--qm-c);letter-spacing:-.02em;line-height:1}
+.qi-macro-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.qi-macro-count{font-size:11px;color:var(--text2);margin-left:auto;font-weight:600;background:var(--qm-soft);padding:3px 8px;border-radius:99px}
+.qi-macro-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.qi-macro#qm-1{--qm-c:#1e3a8a;--qm-soft:rgba(30,58,138,.08)}
+.qi-macro#qm-2{--qm-c:#9a3412;--qm-soft:rgba(154,52,18,.08)}
+.qi-macro#qm-3{--qm-c:#14532d;--qm-soft:rgba(20,83,45,.08)}
+.qi-macro#qm-4{--qm-c:#3b0764;--qm-soft:rgba(59,7,100,.08)}
+@media(max-width:700px){
+  .qi-macro-num{font-size:18px}
+  .qi-macro-name{font-size:13px}
+  .qi-macro-count{font-size:10px}
+}
 @keyframes qiSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .qi-group{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 14px;transition:all .2s;border-top:3px solid var(--gcolor,#2d9a4d)}
 .qi-group:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
@@ -5217,7 +5235,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.102</span>
+        <span>&#127919; v45.103</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -5299,6 +5317,16 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
     <div class="quick-index-groups">
+
+      <!-- ═══ MACRO 01 · INTRODUCCIÓN ═══ -->
+      <div class="qi-macro" id="qm-1">
+        <div class="qi-macro-head">
+          <span class="qi-macro-num">01</span>
+          <span class="qi-macro-name">Introducci&oacute;n</span>
+          <span class="qi-macro-count">1 cap&iacute;tulo</span>
+        </div>
+        <div class="qi-macro-body">
+
       <div class="qi-group" data-grp="1">
         <div class="qi-group-head"><div class="qi-group-num">1</div><div class="qi-group-name">Introducci&oacute;n al PLADECO</div></div>
         <div class="qi-links">
@@ -5307,6 +5335,19 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
           <a href="#encuesta" class="qi-link"><span class="qi-link-ico">&#128203;</span><span class="qi-link-txt">Encuesta Ciudadana</span></a>
         </div>
       </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ MACRO 02 · DIAGNÓSTICO ═══ -->
+      <div class="qi-macro" id="qm-2">
+        <div class="qi-macro-head">
+          <span class="qi-macro-num">02</span>
+          <span class="qi-macro-name">Diagn&oacute;stico</span>
+          <span class="qi-macro-count">3 cap&iacute;tulos &middot; II, III, IV</span>
+        </div>
+        <div class="qi-macro-body">
+
       <div class="qi-group" data-grp="2">
         <div class="qi-group-head"><div class="qi-group-num">2</div><div class="qi-group-name">Diagn&oacute;stico Territorial</div></div>
         <div class="qi-links">
@@ -5333,6 +5374,18 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
           <a href="#testimonios" class="qi-link"><span class="qi-link-ico">&#128172;</span><span class="qi-link-txt">Testimonios Ciudadanos</span></a>
         </div>
       </div>
+        </div>
+      </div>
+
+      <!-- ═══ MACRO 03 · PLANIFICACIÓN ═══ -->
+      <div class="qi-macro" id="qm-3">
+        <div class="qi-macro-head">
+          <span class="qi-macro-num">03</span>
+          <span class="qi-macro-name">Planificaci&oacute;n</span>
+          <span class="qi-macro-count">3 cap&iacute;tulos &middot; V, VI, VII</span>
+        </div>
+        <div class="qi-macro-body">
+
       <div class="qi-group" data-grp="4">
         <div class="qi-group-head"><div class="qi-group-num">4</div><div class="qi-group-name">Planificaci&oacute;n Estrat&eacute;gica</div></div>
         <div class="qi-links">
@@ -5366,6 +5419,18 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
           <a href="#antes-despues" class="qi-link"><span class="qi-link-ico">&#128272;</span><span class="qi-link-txt">Antes / Despu&eacute;s</span></a>
         </div>
       </div>
+        </div>
+      </div>
+
+      <!-- ═══ MACRO 04 · CIERRE ═══ -->
+      <div class="qi-macro" id="qm-4">
+        <div class="qi-macro-head">
+          <span class="qi-macro-num">04</span>
+          <span class="qi-macro-name">Cierre</span>
+          <span class="qi-macro-count">4 cap&iacute;tulos &middot; VIII, IX, X, XI</span>
+        </div>
+        <div class="qi-macro-body">
+
       <div class="qi-group" data-grp="7">
         <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Documentaci&oacute;n</div></div>
         <div class="qi-links">
@@ -5384,6 +5449,11 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
           <a href="#diagramas" class="qi-link"><span class="qi-link-ico">&#128194;</span><span class="qi-link-txt">16 Diagramas metodol&oacute;gicos</span></a>
         </div>
       </div>
+
+        </div>
+      </div>
+      <!-- ═══ /MACRO 04 ═══ -->
+
     </div>
   </div>
 </section>
@@ -10545,29 +10615,77 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   </div>
   <!-- ===== /Síntesis Interpretativa ===== -->
 
-  <!-- Table of Contents -->
+  <!-- Table of Contents · v45.103 estructurado en 4 macro-partes -->
   <div style="margin-bottom:28px">
-    <h3 style="font-size:15px;font-weight:800;margin-bottom:14px">&#128204; Índice de Secciones</h3>
-    <ol class="toc-list">
-      <li><a href="#dashboard"><span>Dashboard</span><span class="toc-desc">Indicadores clave y KPIs</span></a></li>
-      <li><a href="#mapa"><span>Mapa Territorial</span><span class="toc-desc">Georreferenciación comunal</span></a></li>
-      <li><a href="#territorio"><span>Diagnóstico Territorial</span><span class="toc-desc">21 unidades vecinales</span></a></li>
-      <li><a href="#censo"><span>Censo 2024</span><span class="toc-desc">Datos demográficos actualizados</span></a></li>
-      <li><a href="#analisis-estrategico-censo"><span>Análisis Estratégico Censal</span><span class="toc-desc">7 índices · 826 manzanas · vulnerabilidad multidimensional</span></a></li>
-      <li><a href="#ict-espacios-publicos"><span>ICT Espacios Públicos</span><span class="toc-desc">65 puntos catastrados · 4 zonas · 5 estados</span></a></li>
-      <li><a href="#voz"><span>Voz Ciudadana</span><span class="toc-desc">Encuestas y participación</span></a></li>
-      <li><a href="#foda"><span>FODA</span><span class="toc-desc">Análisis estratégico institucional</span></a></li>
-      <li><a href="#decisiones"><span>Decisiones del Plan</span><span class="toc-desc">6 elecciones normativas · qué elige, qué descarta, indicador</span></a></li>
-      <li><a href="#matriz"><span>Matriz Estratégica</span><span class="toc-desc">6 ejes · 27 OE · 225 acciones priorizadas</span></a></li>
-      <li><a href="#gestion"><span>Gestión PLADECO</span><span class="toc-desc">Modernización municipal</span></a></li>
-      <li><a href="#semaforo"><span>Semáforo de Metas</span><span class="toc-desc">Seguimiento indicadores</span></a></li>
-      <li><a href="#financiamiento"><span>Financiamiento</span><span class="toc-desc">Presupuesto y fuentes</span></a></li>
-      <li><a href="#cronograma-gantt"><span>Cronograma Gantt</span><span class="toc-desc">7 macroprocesos · 30 actividades · 42 semanas · Ago 25 → Jun 26</span></a></li>
-      <li><a href="#validacion-concejo"><span>Hoja de Validación del Concejo</span><span class="toc-desc">Checklist 10 puntos · 3 tipos de voto · base legal Ley 18.695</span></a></li>
-      <li><a href="#faq-concejo"><span>FAQ del Concejo + Objeciones</span><span class="toc-desc">12 preguntas frecuentes + 8 objeciones tipo con respuesta preparada</span></a></li>
-      <li><a href="#glosario"><span>Glosario PLADECO</span><span class="toc-desc">Términos técnicos del plan</span></a></li>
-      <li><a href="#documentos"><span>Documentos</span><span class="toc-desc">Descargas y reportes</span></a></li>
-    </ol>
+    <h3 style="font-size:15px;font-weight:800;margin-bottom:14px">&#128204; &Iacute;ndice por Parte del PLADECO</h3>
+
+    <!-- MACRO 02 · Diagnóstico (la parte 01 es Introducción / hero, no necesita listado de secciones aquí) -->
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #9a3412">
+        <span style="font-size:18px;font-weight:900;color:#9a3412;letter-spacing:-.02em">02</span>
+        <span style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">Diagn&oacute;stico</span>
+        <span style="font-size:10.5px;color:var(--text2);margin-left:auto;font-weight:600">3 cap&iacute;tulos &middot; II, III, IV</span>
+      </div>
+      <ol class="toc-list">
+        <li><a href="#dashboard"><span>Dashboard</span><span class="toc-desc">Indicadores clave y KPIs</span></a></li>
+        <li><a href="#ficha-comunal"><span>Ficha Comunal</span><span class="toc-desc">Observatorio Laboral &middot; realidad y proyecci&oacute;n 2024-2029</span></a></li>
+        <li><a href="#censo"><span>Censo 2024</span><span class="toc-desc">63.620 hab &middot; 826 manzanas &middot; datos demogr&aacute;ficos</span></a></li>
+        <li><a href="#analisis-estrategico-censo"><span>An&aacute;lisis Estrat&eacute;gico Censal</span><span class="toc-desc">7 &iacute;ndices &middot; vulnerabilidad multidimensional</span></a></li>
+        <li><a href="#ict-espacios-publicos"><span>ICT Espacios P&uacute;blicos</span><span class="toc-desc">65 puntos catastrados &middot; 5 estados</span></a></li>
+        <li><a href="#mapa"><span>Mapa Territorial</span><span class="toc-desc">Georreferenciaci&oacute;n comunal</span></a></li>
+        <li><a href="#territorio"><span>Territorio</span><span class="toc-desc">21 unidades vecinales</span></a></li>
+        <li><a href="#mbht-bienestar"><span>MBHT &middot; Bienestar Humano Territorial</span><span class="toc-desc">665 manzanas con &iacute;ndice de bienestar</span></a></li>
+        <li><a href="#sociedad-civil"><span>Sociedad Civil Organizada</span><span class="toc-desc">95 organizaciones &middot; 472 participantes &middot; an&aacute;lisis de frecuencias</span></a></li>
+        <li><a href="#voz"><span>Voz Ciudadana</span><span class="toc-desc">119 encuestas adultos + 21 NNA + 120 entrevistas</span></a></li>
+        <li><a href="#suenos"><span>Sue&ntilde;os 2035</span><span class="toc-desc">140 personas + nube de palabras + red SNA</span></a></li>
+        <li><a href="#foda"><span>FODA</span><span class="toc-desc">An&aacute;lisis estrat&eacute;gico institucional</span></a></li>
+      </ol>
+    </div>
+
+    <!-- MACRO 03 · Planificación -->
+    <div style="margin-bottom:16px">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #14532d">
+        <span style="font-size:18px;font-weight:900;color:#14532d;letter-spacing:-.02em">03</span>
+        <span style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">Planificaci&oacute;n</span>
+        <span style="font-size:10.5px;color:var(--text2);margin-left:auto;font-weight:600">3 cap&iacute;tulos &middot; V, VI, VII</span>
+      </div>
+      <ol class="toc-list">
+        <li><a href="#matriz"><span>Matriz Estrat&eacute;gica</span><span class="toc-desc">6 ejes &middot; 27 OE &middot; 225 acciones &middot; mapa Ejes&harr;Decisiones</span></a></li>
+        <li><a href="#erd"><span>Articulaci&oacute;n con ERD O&#39;Higgins</span><span class="toc-desc">Estrategia Regional 2024-2036</span></a></li>
+        <li><a href="#argumentario"><span>Argumentario</span><span class="toc-desc">Respaldo pol&iacute;tico-t&eacute;cnico + Ventana 2025-2026</span></a></li>
+        <li><a href="#decisiones"><span>Decisiones del Plan</span><span class="toc-desc">6 elecciones normativas &middot; qu&eacute; elige, qu&eacute; descarta, indicador</span></a></li>
+        <li><a href="#resumen"><span>Resumen Ejecutivo</span><span class="toc-desc">S&iacute;ntesis Interpretativa &middot; 4 lecturas del documento</span></a></li>
+        <li><a href="#diagnostico-institucional"><span>Diagn&oacute;stico Institucional</span><span class="toc-desc">115 funcionarios + 30 entrevistas a directores</span></a></li>
+        <li><a href="#equipo"><span>Equipo y Gobernanza</span><span class="toc-desc">SECPLAC + 30 direcciones + redes interinstitucionales</span></a></li>
+        <li><a href="#semaforo"><span>Sem&aacute;foro de 10 KPIs</span><span class="toc-desc">Seguimiento p&uacute;blico trimestral de metas</span></a></li>
+        <li><a href="#financiamiento"><span>Financiamiento</span><span class="toc-desc">Mix presupuestario + brecha de captaci&oacute;n FNDR</span></a></li>
+        <li><a href="#compromisos"><span>Compromisos + Riesgos</span><span class="toc-desc">7 riesgos identificados con mitigaci&oacute;n</span></a></li>
+        <li><a href="#cronograma-gantt"><span>Cronograma + Pr&oacute;ximos pasos</span><span class="toc-desc">42 semanas Ago 25 &rarr; Jun 26 + hoja de ruta post-entrega</span></a></li>
+        <li><a href="#validacion-concejo"><span>Hoja de Validaci&oacute;n del Concejo</span><span class="toc-desc">Checklist 10 puntos &middot; 3 tipos de voto &middot; Ley 18.695</span></a></li>
+        <li><a href="#faq-concejo"><span>FAQ del Concejo + Objeciones</span><span class="toc-desc">12 preguntas frecuentes + 8 objeciones tipo</span></a></li>
+      </ol>
+    </div>
+
+    <!-- MACRO 04 · Cierre -->
+    <div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #3b0764">
+        <span style="font-size:18px;font-weight:900;color:#3b0764;letter-spacing:-.02em">04</span>
+        <span style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em">Cierre</span>
+        <span style="font-size:10.5px;color:var(--text2);margin-left:auto;font-weight:600">4 cap&iacute;tulos &middot; VIII, IX, X, XI</span>
+      </div>
+      <ol class="toc-list">
+        <li><a href="#glosario"><span>Glosario PLADECO</span><span class="toc-desc">70 t&eacute;rminos t&eacute;cnicos + meta-conceptos del portal</span></a></li>
+        <li><a href="#faq"><span>Preguntas Frecuentes</span><span class="toc-desc">FAQ general del portal</span></a></li>
+        <li><a href="#timeline"><span>L&iacute;nea de Tiempo del Proceso</span><span class="toc-desc">Hitos mar 2025 &rarr; jun 2026</span></a></li>
+        <li><a href="#galeria"><span>Galer&iacute;a Fotogr&aacute;fica</span><span class="toc-desc">Talleres + reuniones territoriales</span></a></li>
+        <li><a href="#voz-vecinos"><span>Voz Vecinos &middot; Dashboard en vivo</span><span class="toc-desc">Pulso de participaci&oacute;n actualizado</span></a></li>
+        <li><a href="#cuadernillo"><span>Cuadernillo PDF por UV</span><span class="toc-desc">Material descargable por barrio</span></a></li>
+        <li><a href="#participa"><span>Participa &middot; Canales abiertos</span><span class="toc-desc">Newsletter + reportes ciudadanos</span></a></li>
+        <li><a href="#educacion"><span>Aprende sobre tu Comuna</span><span class="toc-desc">Quiz interactivo</span></a></li>
+        <li><a href="#documentos"><span>Centro de Transparencia y Descargas</span><span class="toc-desc">15/15 archivos verificados &middot; auditor&iacute;a mayo 2026</span></a></li>
+        <li><a href="#institucional"><span>Acerca del Portal</span><span class="toc-desc">Metodolog&iacute;a + cr&eacute;ditos</span></a></li>
+      </ol>
+    </div>
   </div>
   <div class="resumen-hero">
     <div class="rh-grid" id="resumenGrid"></div>
@@ -26191,10 +26309,11 @@ table th, table td{
   font-weight:900;
   letter-spacing:-.02em;
 }
-.macro-divider#macro-introduccion{--macro-accent:#4361ee;--macro-accent-soft:rgba(67,97,238,.07)}
-.macro-divider#macro-diagnostico{--macro-accent:#f5921d;--macro-accent-soft:rgba(245,146,29,.07)}
-.macro-divider#macro-planificacion{--macro-accent:#2d9a4d;--macro-accent-soft:rgba(45,154,77,.07)}
-.macro-divider#macro-cierre{--macro-accent:#7c3aed;--macro-accent-soft:rgba(124,58,237,.07)}
+/* Paleta institucional macro (tonos profundos para visualizar jerarquía superior a los chapter accents) */
+.macro-divider#macro-introduccion{--macro-accent:#1e3a8a;--macro-accent-soft:rgba(30,58,138,.08)}  /* indigo profundo · marco institucional */
+.macro-divider#macro-diagnostico{--macro-accent:#9a3412;--macro-accent-soft:rgba(154,52,18,.08)}    /* terracota · análisis profundo de la realidad */
+.macro-divider#macro-planificacion{--macro-accent:#14532d;--macro-accent-soft:rgba(20,83,45,.08)}   /* verde profundo · acción / crecimiento */
+.macro-divider#macro-cierre{--macro-accent:#3b0764;--macro-accent-soft:rgba(59,7,100,.08)}          /* violeta profundo · síntesis / transparencia */
 @media (max-width:768px){
   .macro-divider{padding:24px 16px 22px;margin:40px 0 24px}
   .macro-divider-inner{flex-direction:column;text-align:center;gap:14px}
