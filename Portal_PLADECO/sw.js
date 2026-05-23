@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.59
+// PLADECO Rengo 2025-2035 · Service Worker v62.60
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.60: v45.96 - "Mapa de Articulación · 6 Ejes ↔ 6 Decisiones" al inicio de #matriz. Cada Eje muestra Principal + Apoyo entre las 6 Decisiones del Plan. Cierra el loop argumental: del diagnóstico (Lecturas) a las decisiones (qué elige) a los ejes (dónde) a las 225 acciones (qué). Nota de cobertura cruzada destaca D06 y D04 como transversales.
 // v62.59: v45.95 - "¿Cuánto tiempo tienes?" en el onboarding del hero: 4 rutas de lectura por tiempo disponible (5', 15', 45', completa). La mayoría de los lectores tiene 5 minutos, no 5 horas — esta pieza garantiza que cualquiera salga entendiendo las ideas clave.
 // v62.58: v45.94 - Onboarding "Cómo leer este PLADECO" actualizado con piezas nuevas (Síntesis Interpretativa, Decisiones del Plan, Lecturas del Diagnóstico, Próximos pasos, Glosario 70) + Lecturas del Diagnóstico Lote 4/4 en #matriz y #mbht-bienestar. Cobertura interpretativa: 14 secciones (era 12).
 // v62.57: v45.93 - Navegabilidad de #decisiones: agregado al TOC del Resumen Ejecutivo y al quick-index lateral. Glosario PLADECO ampliado de 63 a 70 términos con 7 meta-términos del portal (Lectura del Diagnóstico, Síntesis Interpretativa, Decisiones del Plan, Mirada de Género, Ventana 2025-2026, Próximos Pasos, Riesgos de Implementación). Planificación pasa de 12 a 19.
@@ -60,7 +61,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.59';
+const CACHE_STATIC='pladeco-static-v62.60';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
