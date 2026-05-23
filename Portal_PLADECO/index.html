@@ -4295,6 +4295,23 @@ body.dark .search-modal-footer{background:rgba(0,0,0,.2)}
 .quick-index-groups{display:flex;flex-direction:column;gap:22px;animation:qiSlide .3s ease}
 .quick-index.collapsed .quick-index-groups{display:none}
 
+/* v45.104 · Mapa visual de las 4 partes al inicio del quick-index */
+.qi-macro-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;padding-bottom:22px;border-bottom:1px dashed var(--border)}
+.qi-mm-card{display:flex;gap:14px;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mc);border-radius:12px;text-decoration:none;color:var(--text);transition:transform .2s,box-shadow .2s,border-color .2s}
+.qi-mm-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(15,23,42,.08);border-color:var(--mc)}
+.qi-mm-num{font-size:36px;font-weight:900;color:var(--mc);letter-spacing:-.03em;line-height:1;flex-shrink:0;opacity:.92}
+.qi-mm-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.qi-mm-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.01em;line-height:1.2}
+.qi-mm-desc{font-size:11.5px;color:var(--text2);line-height:1.45;flex:1}
+.qi-mm-count{font-size:10px;font-weight:800;color:var(--mc);letter-spacing:.08em;text-transform:uppercase;padding-top:4px;border-top:1px dashed color-mix(in srgb, var(--mc) 25%, transparent)}
+body.dark .qi-mm-card{background:rgba(255,255,255,.03)}
+@media(max-width:700px){
+  .qi-macro-map{grid-template-columns:1fr;gap:8px;margin-bottom:18px;padding-bottom:16px}
+  .qi-mm-num{font-size:28px}
+  .qi-mm-name{font-size:13.5px}
+  .qi-mm-desc{font-size:11px}
+}
+
 /* v45.103 · macro-wrapper para las 4 partes del PLADECO */
 .qi-macro{padding:14px 0 0;border-top:3px solid var(--qm-c)}
 .qi-macro:first-child{border-top:none;padding-top:0}
@@ -5235,7 +5252,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.103</span>
+        <span>&#127919; v45.104</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -5303,13 +5320,13 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   </div>
 </section>
 
-<!-- ═══ &Iacute;NDICE NAVEGABLE (Quick Index) ═══ -->
+<!-- ═══ &Iacute;NDICE NAVEGABLE (Quick Index) · v45.104 estructurado en 4 partes ═══ -->
 <section class="reveal" aria-label="&Iacute;ndice de secciones del portal">
   <div class="quick-index" id="quickIndex">
     <div class="quick-index-header">
       <div>
-        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> &Iacute;ndice de Secciones <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">50 secciones</span></h3>
-        <div class="quick-index-sub">Atajos a todas las secciones del portal organizadas en 7 grupos tem&aacute;ticos &middot; Las marcadas <strong style="color:#2d9a4d">NEW</strong> son incorporaciones recientes.</div>
+        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> Mapa del PLADECO <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">4 partes &middot; 53 secciones</span></h3>
+        <div class="quick-index-sub">El portal se lee en 4 momentos: <strong style="color:#1e3a8a">Introducci&oacute;n</strong> &rarr; <strong style="color:#9a3412">Diagn&oacute;stico</strong> &rarr; <strong style="color:#14532d">Planificaci&oacute;n</strong> &rarr; <strong style="color:#3b0764">Cierre</strong>. Las marcadas <strong style="color:#2d9a4d">NEW</strong> son incorporaciones recientes.</div>
       </div>
       <button class="quick-index-toggle" type="button" onclick="document.getElementById('quickIndex').classList.toggle('collapsed')">
         <span class="qi-chev">&#9660;</span>
@@ -5317,6 +5334,43 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </button>
     </div>
     <div class="quick-index-groups">
+
+      <!-- ═══ v45.104 · MAPA VISUAL DE LAS 4 PARTES ═══ -->
+      <div class="qi-macro-map">
+        <a href="#macro-introduccion" class="qi-mm-card" style="--mc:#1e3a8a">
+          <div class="qi-mm-num">01</div>
+          <div class="qi-mm-body">
+            <div class="qi-mm-name">&#128218; Introducci&oacute;n</div>
+            <div class="qi-mm-desc">Marco del PLADECO antes de mirar datos.</div>
+            <div class="qi-mm-count">1 cap&iacute;tulo</div>
+          </div>
+        </a>
+        <a href="#macro-diagnostico" class="qi-mm-card" style="--mc:#9a3412">
+          <div class="qi-mm-num">02</div>
+          <div class="qi-mm-body">
+            <div class="qi-mm-name">&#128269; Diagn&oacute;stico</div>
+            <div class="qi-mm-desc">Datos territoriales + an&aacute;lisis profundo + voz comunitaria.</div>
+            <div class="qi-mm-count">3 cap&iacute;tulos &middot; II, III, IV</div>
+          </div>
+        </a>
+        <a href="#macro-planificacion" class="qi-mm-card" style="--mc:#14532d">
+          <div class="qi-mm-num">03</div>
+          <div class="qi-mm-body">
+            <div class="qi-mm-name">&#127919; Planificaci&oacute;n</div>
+            <div class="qi-mm-desc">6 Ejes &middot; 6 Decisiones &middot; 225 acciones &middot; 10 KPIs.</div>
+            <div class="qi-mm-count">3 cap&iacute;tulos &middot; V, VI, VII</div>
+          </div>
+        </a>
+        <a href="#macro-cierre" class="qi-mm-card" style="--mc:#3b0764">
+          <div class="qi-mm-num">04</div>
+          <div class="qi-mm-body">
+            <div class="qi-mm-name">&#127942; Cierre</div>
+            <div class="qi-mm-desc">Recursos &middot; memoria &middot; participaci&oacute;n &middot; transparencia.</div>
+            <div class="qi-mm-count">4 cap&iacute;tulos &middot; VIII&ndash;XI</div>
+          </div>
+        </a>
+      </div>
+      <!-- ═══ /MAPA VISUAL ═══ -->
 
       <!-- ═══ MACRO 01 · INTRODUCCIÓN ═══ -->
       <div class="qi-macro" id="qm-1">
