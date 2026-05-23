@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.70
+// PLADECO Rengo 2025-2035 · Service Worker v62.71
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.71: v45.107 - DOS arreglos: (1) BYPASS de APIs externas en el SW: api.open-meteo.com y air-quality-api.open-meteo.com ahora pasan directo a network sin pasar por la cache stale-while-revalidate del SW (que estaba retornando undefined cuando la cache no tenía la respuesta, rompiendo el fetch). El clima y la calidad del aire ahora cargan correctamente. (2) RESTAURADO en la portada del hero un strip "Estado del Proceso PLADECO" con 6 cards (Diagnóstico 100%, Aprobación 75%, Participación 472, Acciones 225, Cobertura UV 21/21, Entrevistas 115+4036) — el usuario lo extrañaba.
 // v62.70: v45.106 - Consolidación visual del header: (1) Logo PLADECO + badge "En construcción" movidos al topbar como tn-pladeco-pill (al lado de la marca PLADECO Rengo). (2) Se elimina el cb-row del construction-banner duplicado (municipalidad+badge+pladeco+close X) que sumaba ~80px innecesarios. (3) Live-strip (fecha/clima/aire) movido OUT del construction-banner a su propio wrapper .live-strip-wrap standalone, manteniendo posición fixed bajo el topbar. (4) Resultado: 1 sola barra de identidad (topbar) + 1 strip de pulso comunal — sin duplicación. Responsive: en <900px se oculta el badge, en <560px se oculta toda la pildora PLADECO.
 // v62.69: v45.105 - DOS arreglos: (1) Topbar superior agrupa los 11 capítulos en 4 macro-tabs (01 Introducción / 02 Diagnóstico / 03 Planificación / 04 Cierre) con dropdown que lista los capítulos y sus unidades dentro de cada parte. Color codificado con paleta institucional. Versión mobile equivalente. (2) Live-strip del pulso comunal (fecha/clima/aire) ahora muestra fecha y hora INMEDIATAMENTE vía script inline al lado del HTML — sin depender del script principal ni de fetches. Las APIs de clima/aire siguen actualizando asíncrono.
 // v62.68: v45.104 - Mapa visual de las 4 partes al inicio del Quick Index. Strip horizontal con 4 cards (número 01-04 grande + nombre + descripción breve + count) que enlazan a los macro-dividers correspondientes. Hero/portada intacto. Título del Quick Index actualizado a "Mapa del PLADECO · 4 partes · 53 secciones" con flujo descrito en el subtítulo (Introducción → Diagnóstico → Planificación → Cierre). Antes del detalle expandido, el lector ve la estructura completa de un vistazo.
@@ -71,7 +72,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.70';
+const CACHE_STATIC='pladeco-static-v62.71';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -167,6 +168,15 @@ self.addEventListener('fetch',function(e){
   try{url=new URL(req.url);}catch(err){return;}
 
   if(req.method!=='GET') return;
+
+  /* 0. v45.107 · BYPASS: APIs externas en tiempo real (clima/aire/etc.)
+     no deben pasar por la cache del SW. Si la SW las maneja con
+     stale-while-revalidate y la network falla, devuelve undefined y
+     rompe la respuesta. Dejarlas pasar directo a network. */
+  var EXTERNAL_API_HOSTS=['api.open-meteo.com','air-quality-api.open-meteo.com','script.google.com','script.googleusercontent.com'];
+  if(EXTERNAL_API_HOSTS.indexOf(url.hostname)>=0){
+    return; /* permite que el navegador maneje el fetch directamente */
+  }
 
   /* 1. OSM map tiles → cache-first, runtime cache */
   if(url.hostname.indexOf('tile.openstreetmap.org')>=0){
