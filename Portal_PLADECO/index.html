@@ -2496,6 +2496,43 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
   --fs-h2:clamp(1.4rem,3vw,2rem);
   --fs-h3:clamp(1.15rem,2vw,1.5rem);
   --fs-body:clamp(.9rem,1.2vw,1rem);
+
+  /* v45.111 · escala tipográfica discreta para reemplazar los 60+ valores hardcoded */
+  --fs-2xs:10.5px;     /* badges micro, hint legales */
+  --fs-xs:11px;        /* labels, badges */
+  --fs-sm:12px;        /* tags, captions */
+  --fs-base:13px;      /* body texto secundario */
+  --fs-md:14px;        /* body principal */
+  --fs-lg:16px;        /* lead text, párrafos destacados */
+  --fs-xl:18px;        /* H4, subtítulos pequeños */
+  --fs-2xl:22px;       /* H3 medio */
+  --fs-3xl:28px;       /* H2 destacado */
+  --fs-4xl:36px;       /* H1 hero secundario */
+  --fs-5xl:48px;       /* display hero */
+
+  /* v45.111 · line-heights consistentes */
+  --lh-tight:1.2;      /* títulos grandes */
+  --lh-snug:1.35;      /* subtítulos */
+  --lh-base:1.5;       /* body normal */
+  --lh-relaxed:1.65;   /* párrafos largos / lectura */
+  --lh-loose:1.8;      /* texto poético / decorativo */
+
+  /* v45.111 · font-weights (limita el abuso del 800) */
+  --fw-normal:400;
+  --fw-medium:500;
+  --fw-semi:600;
+  --fw-bold:700;
+  --fw-extra:800;
+  --fw-black:900;
+
+  /* v45.111 · letter-spacing tokens */
+  --ls-tight:-.02em;   /* títulos grandes (display) */
+  --ls-snug:-.01em;    /* H2/H3 */
+  --ls-normal:0;       /* body */
+  --ls-wide:.02em;     /* botones */
+  --ls-wider:.08em;    /* labels mayúsculas */
+  --ls-widest:.14em;   /* meta labels mayúsculas */
+
   --tr-fast:.15s cubic-bezier(.4,0,.2,1);
   --tr-base:.3s cubic-bezier(.4,0,.2,1);
   --tr-slow:.6s cubic-bezier(.4,0,.2,1);
@@ -5453,7 +5490,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.110</span>
+        <span>&#127919; v45.111</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -15308,7 +15345,7 @@ function updateMapMarkers(mode){
     else{radius=u.bip>0?Math.max(5,u.bip/maxBip*25):4;color=u.bip>0?'#8b5cf6':'#94a3b8';}
     const marker = L.circleMarker([lat,lng],{radius,fillColor:color,color:'#fff',weight:2,fillOpacity:.8}).addTo(mapInstance);
     const invStr = u.inv>0 ? '$'+(u.inv/1000).toLocaleString('es-CL',{maximumFractionDigits:0})+' M' : 'Sin registro';
-    marker.bindPopup(`<div style="font-family:system-ui;min-width:180px"><strong style="font-size:14px">${u.name}</strong><br><span style="font-size:11px;color:${u.tipo==='Urbano'?'#4361ee':'#22c55e'};font-weight:600">${u.tipo} — ${u.uv}</span><hr style="margin:6px 0;border-color:#e2e8f0"><table style="font-size:11px;width:100%"><tr><td>Población</td><td style="text-align:right;font-weight:700">${u.pob.toLocaleString('es-CL')}</td></tr><tr><td>NNA</td><td style="text-align:right;font-weight:700">${u.nna.toLocaleString('es-CL')}</td></tr><tr><td>Proyectos BIP</td><td style="text-align:right;font-weight:700">${u.bip}</td></tr><tr><td>Inversión</td><td style="text-align:right;font-weight:700">${invStr}</td></tr></table></div>`);
+    marker.bindPopup(`<div style="font-family:'Inter',system-ui,sans-serif;min-width:180px"><strong style="font-size:14px">${u.name}</strong><br><span style="font-size:11px;color:${u.tipo==='Urbano'?'#4361ee':'#22c55e'};font-weight:600">${u.tipo} — ${u.uv}</span><hr style="margin:6px 0;border-color:#e2e8f0"><table style="font-size:11px;width:100%"><tr><td>Población</td><td style="text-align:right;font-weight:700">${u.pob.toLocaleString('es-CL')}</td></tr><tr><td>NNA</td><td style="text-align:right;font-weight:700">${u.nna.toLocaleString('es-CL')}</td></tr><tr><td>Proyectos BIP</td><td style="text-align:right;font-weight:700">${u.bip}</td></tr><tr><td>Inversión</td><td style="text-align:right;font-weight:700">${invStr}</td></tr></table></div>`);
     mapMarkers.push(marker);
   });
 }
@@ -25600,21 +25637,28 @@ function subscribeNewsletter(e){
 }
 
 /* ═══════════════════════════════════════════════════════
-   v45.42 · TOUCH TARGETS · garantizar 44px mínimo
+   v45.42/v45.111 · TOUCH TARGETS · garantizar 44px mínimo SIEMPRE
+   (no solo en pointer:coarse — laptops híbridos y accesibilidad motora también lo necesitan, WCAG 2.5.5)
    ═══════════════════════════════════════════════════════ */
+.ict-tab-btn, .anest-tab-btn, .sc-tab-btn,
+.map-ctrl-btn, .ict-vbtn, .ict-reset-btn,
+.ls-refresh, .faq-q, .glosario-filters button,
+.mbht-dim-btn, .tl-filter-btn,
+.me-tab-btn{
+  min-height:44px;
+}
+/* Asegurar que los botones de cierre/toggle sean cómodos también en desktop */
+.menu-toggle, .back-to-top, #btnDark,
+.chatbot-fab, .search-fab{
+  min-width:44px;
+  min-height:44px;
+}
 @media (hover:none) and (pointer:coarse){
-  /* Botones de control con área táctil suficiente */
+  /* Refuerzo extra solo en touch puro: padding más generoso */
   .ict-tab-btn, .anest-tab-btn, .sc-tab-btn,
-  .map-ctrl-btn, .ict-vbtn, .ict-reset-btn,
-  .ls-refresh, .faq-q, .glosario-filters button,
-  .mbht-dim-btn, .tl-filter-btn{
-    min-height:44px;
-  }
-  /* Asegurar que los botones de cierre/toggle sean cómodos */
-  .menu-toggle, .back-to-top, #btnDark,
-  .chatbot-fab, .search-fab{
-    min-width:44px;
-    min-height:44px;
+  .map-ctrl-btn, .me-tab-btn{
+    padding-top:10px;
+    padding-bottom:10px;
   }
 }
 
