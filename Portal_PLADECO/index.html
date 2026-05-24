@@ -5155,7 +5155,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <button onclick="sendChatMessage()" aria-label="Enviar">&#10148;</button>
   </div>
 </div>
-<button class="chatbot-fab hidden" id="chatFab" onclick="toggleChatbot()" aria-label="Abrir asistente PLADECO"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
+<button class="chatbot-fab" id="chatFab" onclick="toggleChatbot()" aria-label="Abrir asistente PLADECO"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
 
 <!-- ═══ PULSO COMUNAL (live-strip) · v45.106: sacado del construction-banner para sobrevivir solo ═══ -->
 <div class="live-strip-wrap">
@@ -5208,6 +5208,51 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         timeEl.textContent=h+':'+m;
       }
     }catch(e){}
+  })();
+  </script>
+  <!-- v45.110 · Bootstrap inline para clima/aire: dispara fetches Open-Meteo inmediatamente sin esperar al script principal -->
+  <script>
+  (function(){
+    try{
+      var LAT=-34.4067, LON=-70.8597;
+      var WMO={0:['☀️','Despejado'],1:['🌤','Despejado'],2:['⛅','Parc. nublado'],3:['☁️','Nublado'],45:['🌫','Niebla'],48:['🌫','Niebla'],51:['🌦','Llovizna'],53:['🌦','Llovizna'],55:['🌧','Llovizna'],61:['🌧','Lluvia ligera'],63:['🌧','Lluvia'],65:['🌧','Lluvia intensa'],71:['🌨','Nieve'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],80:['🌦','Chubascos'],81:['🌧','Chubascos'],82:['⛈','Chubascos fuertes'],95:['⛈','Tormenta']};
+      // Clima
+      fetch('https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Santiago',{cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(!d||!d.current)return;
+          var c=d.current, info=WMO[c.weather_code]||['🌤','Rengo'];
+          var t=document.getElementById('lsWxTemp'); if(t)t.textContent=Math.round(c.temperature_2m);
+          var ic=document.getElementById('lsWxIcon'); if(ic)ic.textContent=info[0];
+          var de=document.getElementById('lsWxDesc'); if(de)de.textContent=info[1]+' · Rengo';
+          var h=document.getElementById('lsWxHum'); if(h)h.textContent=Math.round(c.relative_humidity_2m);
+          var w=document.getElementById('lsWxWind'); if(w)w.textContent=Math.round(c.wind_speed_10m);
+          var cl=document.getElementById('lsClima'); if(cl)cl.classList.remove('loading');
+        })
+        .catch(function(err){console.warn('[clima inline]',err);});
+      // Aire
+      fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+LAT+'&longitude='+LON+'&current=european_aqi&timezone=America/Santiago',{cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(!d||!d.current)return;
+          var ica=Math.round(d.current.european_aqi||0);
+          var ie=document.getElementById('lsAirICA'); if(ie)ie.textContent=ica;
+          var be=document.getElementById('lsAirBadge');
+          if(be){
+            var lvl='Bueno', cls='good';
+            if(ica<=20){lvl='Muy bueno';}
+            else if(ica<=40){lvl='Bueno';}
+            else if(ica<=60){lvl='Moderado';}
+            else if(ica<=80){lvl='Pobre';cls='warn';}
+            else if(ica<=100){lvl='Muy pobre';cls='bad';}
+            else{lvl='Extr. pobre';cls='bad';}
+            be.className='ls-air-badge '+cls;
+            be.textContent=lvl;
+          }
+          var ai=document.getElementById('lsAire'); if(ai)ai.classList.remove('loading');
+        })
+        .catch(function(err){console.warn('[aire inline]',err);});
+    }catch(e){console.warn('[clima/aire bootstrap]',e);}
   })();
   </script>
 </div>
@@ -5408,7 +5453,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.109</span>
+        <span>&#127919; v45.110</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
