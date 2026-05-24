@@ -33,19 +33,38 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script>
-/* v45.119 · Wrap de L.map() para registrar todas las instancias y poder invalidarlas al cambiar de vista.
-   Se ejecuta al cargar Leaflet (defer ya terminó). */
+/* v45.119 · Wrap de L.map() para registrar instancias. Polling activo desde
+   ya — captura a Leaflet apenas se carga, ANTES de que el script principal
+   llame a L.map(...). */
 window.__leafletMaps=window.__leafletMaps||[];
-window.addEventListener('load',function(){
-  if(typeof L==='undefined'||L.__patched)return;
-  var orig=L.map;
-  L.map=function(){
-    var m=orig.apply(L,arguments);
-    try{window.__leafletMaps.push(m);}catch(e){}
-    return m;
-  };
-  L.__patched=true;
-});
+(function(){
+  var tries=0;
+  function patch(){
+    if(typeof L==='undefined'){
+      if(tries++<200){return setTimeout(patch,20);}
+      return;
+    }
+    if(L.__patched)return;
+    var orig=L.map;
+    L.map=function(){
+      var m=orig.apply(L,arguments);
+      try{window.__leafletMaps.push(m);}catch(e){}
+      return m;
+    };
+    /* Si la propiedad L.Map se usa directamente con new, también patcharlo */
+    if(L.Map&&!L.Map.__patched){
+      var origCreate=L.Map.prototype.initialize;
+      L.Map.prototype.initialize=function(){
+        var r=origCreate.apply(this,arguments);
+        try{if(window.__leafletMaps.indexOf(this)<0)window.__leafletMaps.push(this);}catch(e){}
+        return r;
+      };
+      L.Map.__patched=true;
+    }
+    L.__patched=true;
+  }
+  patch();
+})();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
@@ -5612,7 +5631,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.119</span>
+        <span>&#127919; v45.120</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
