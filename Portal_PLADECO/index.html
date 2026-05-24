@@ -585,6 +585,130 @@ body.dark .anest-heatmap-cell{border-left-color:rgba(255,255,255,.04)}
 .anest-heatmap-legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;background:rgba(7,29,54,.03);border-radius:8px;font-size:11px}
 .anest-heatmap-legend .ahl-label{font-weight:700;color:var(--text2);margin-right:4px}
 .anest-heatmap-legend .ahl-cell{padding:3px 9px;border-radius:6px;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* ═══════════ SECCI&Oacute;N A · Coherencia Interna · v45.124 ═══════════ */
+.coh-matriz{display:grid;grid-template-columns:140px repeat(6,1fr);min-width:680px;font-size:11.5px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.coh-matriz-head{padding:10px 6px;background:linear-gradient(135deg,#071d36,#0c2a4a);color:#fff;font-weight:800;text-align:center;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;border-right:1px solid rgba(255,255,255,.1)}
+.coh-matriz-head.eje{text-align:left;padding-left:12px}
+.coh-matriz-cell{padding:14px 8px;text-align:center;font-weight:800;border-bottom:1px solid var(--border);border-right:1px solid var(--border);transition:transform .15s,box-shadow .15s;cursor:default;position:relative}
+.coh-matriz-cell.pos{background:#dcfce7;color:#1a7a4a}
+.coh-matriz-cell.neu{background:#f3f4f6;color:#6b7280}
+.coh-matriz-cell.neg{background:#fee2e2;color:#c0352a}
+.coh-matriz-cell.diag{background:#1f2937;color:#9ca3af;font-style:italic;font-weight:600}
+body.dark .coh-matriz-cell.pos{background:rgba(45,154,77,.18)}
+body.dark .coh-matriz-cell.neu{background:rgba(255,255,255,.04)}
+body.dark .coh-matriz-cell.neg{background:rgba(192,53,42,.18)}
+.coh-matriz-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.coh-matriz-cell .coh-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);width:240px;padding:9px 11px;background:#0f172a;color:#fff;font-weight:500;font-size:11px;line-height:1.45;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:10;text-align:left;letter-spacing:0;text-transform:none}
+.coh-matriz-cell:hover .coh-tip{display:block}
+.coh-matriz-loc{padding:11px 12px;font-weight:800;background:rgba(7,29,54,.04);border-right:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;font-size:11px;line-height:1.3;color:var(--text)}
+body.dark .coh-matriz-loc{background:rgba(255,255,255,.03)}
+
+.coh-tipo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.coh-tipo-card{background:var(--card);border:1px solid var(--border);border-top:4px solid #2d9a4d;border-radius:12px;padding:16px}
+.coh-tipo-card.ancla{border-top-color:#7c3aed}
+.coh-tipo-card.dep{border-top-color:#f5921d}
+.coh-tipo-card.aut{border-top-color:#2a7abf}
+.coh-tipo-card.ten{border-top-color:#c0352a}
+.coh-tipo-titulo{font-size:13px;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.coh-tipo-icon{font-size:18px}
+.coh-tipo-desc{font-size:11.5px;color:var(--text2);line-height:1.5;margin-bottom:10px;font-weight:500;padding-bottom:8px;border-bottom:1px dashed var(--border)}
+.coh-tipo-list{list-style:none;padding:0;margin:0}
+.coh-tipo-list li{padding:7px 0;font-size:11.5px;color:var(--text);border-bottom:1px solid var(--border);line-height:1.45}
+.coh-tipo-list li:last-child{border-bottom:none}
+.coh-tipo-list li strong{color:#2d9a4d;font-weight:700}
+.coh-tipo-card.ancla .coh-tipo-list li strong{color:#7c3aed}
+.coh-tipo-card.dep .coh-tipo-list li strong{color:#f5921d}
+.coh-tipo-card.aut .coh-tipo-list li strong{color:#2a7abf}
+.coh-tipo-card.ten .coh-tipo-list li strong{color:#c0352a}
+
+.coh-seq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+.coh-seq-card{background:linear-gradient(180deg,rgba(192,53,42,.05),transparent);border:1px solid var(--border);border-left:4px solid #c0352a;border-radius:10px;padding:16px}
+.coh-seq-title{font-size:13.5px;font-weight:800;color:var(--text);margin-bottom:6px}
+.coh-seq-tens{font-size:11.5px;color:#c0352a;font-weight:700;background:rgba(192,53,42,.08);padding:6px 10px;border-radius:6px;margin-bottom:10px;line-height:1.4}
+.coh-seq-list{list-style:none;padding:0;margin:0;counter-reset:seq}
+.coh-seq-list li{counter-increment:seq;padding:7px 0 7px 28px;font-size:11.5px;color:var(--text);line-height:1.5;position:relative;border-bottom:1px dashed var(--border)}
+.coh-seq-list li:last-child{border-bottom:none}
+.coh-seq-list li::before{content:counter(seq);position:absolute;left:0;top:7px;width:20px;height:20px;border-radius:50%;background:#c0352a;color:#fff;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* ═══════════ SECCI&Oacute;N B · Voz Institucional · v45.124 ═══════════ */
+.voz-nudos-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:900px){.voz-nudos-grid{grid-template-columns:1fr 1fr}}
+.voz-nudo-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;border-left:4px solid #f5921d}
+.voz-nudo-num{display:inline-block;width:28px;height:28px;border-radius:50%;background:#f5921d;color:#fff;font-weight:800;text-align:center;line-height:28px;font-size:13px;margin-right:8px}
+.voz-nudo-titulo{font-size:14.5px;font-weight:800;color:var(--text);margin-bottom:6px;display:flex;align-items:center}
+.voz-nudo-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:12px;font-weight:500}
+.voz-citas{background:rgba(7,29,54,.03);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+body.dark .voz-citas{background:rgba(255,255,255,.03)}
+.voz-cita{font-size:11.5px;color:var(--text);line-height:1.6;font-style:italic;padding:6px 0 6px 14px;border-left:3px solid #f5921d;margin-bottom:8px}
+.voz-cita:last-child{margin-bottom:0}
+.voz-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-size:11px}
+.voz-meta .voz-tag{padding:3px 9px;border-radius:6px;font-weight:700;background:rgba(245,146,29,.12);color:#c97014}
+.voz-meta .voz-hito{padding:3px 9px;border-radius:6px;font-weight:700;background:rgba(45,154,77,.12);color:#1a7a4a}
+
+.voz-nna-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+@media(min-width:760px){.voz-nna-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}
+.voz-nna-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;border-top:4px solid #7c3aed;position:relative;overflow:hidden}
+.voz-nna-card.r2{border-top-color:#2a7abf}
+.voz-nna-emoji{font-size:32px;line-height:1;margin-bottom:8px}
+.voz-nna-edad{font-size:10.5px;font-weight:800;color:#7c3aed;background:rgba(124,58,237,.12);padding:3px 9px;border-radius:99px;display:inline-block;margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
+.voz-nna-card.r2 .voz-nna-edad{color:#2a7abf;background:rgba(42,122,191,.12)}
+.voz-nna-quote{font-size:12.5px;color:var(--text);line-height:1.6;font-style:italic;font-weight:500;margin-bottom:10px}
+.voz-nna-eje{font-size:10.5px;color:var(--text2);font-weight:700;padding-top:8px;border-top:1px dashed var(--border);letter-spacing:.04em;text-transform:uppercase}
+
+/* ═══════════ SECCI&Oacute;N C · Calculadora UV · v45.124 ═══════════ */
+.cuv-selector-wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:20px 0;padding:18px 20px;background:linear-gradient(135deg,rgba(45,154,77,.06),rgba(42,122,191,.04));border:1px solid var(--border);border-radius:14px}
+.cuv-label{font-weight:800;font-size:14px;color:var(--text);min-width:200px}
+.cuv-select{flex:1;min-width:240px;padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:border-color .15s}
+.cuv-select:hover,.cuv-select:focus{border-color:#2d9a4d;outline:none}
+.cuv-reset{padding:11px 18px;background:rgba(192,53,42,.08);color:#c0352a;border:1px solid rgba(192,53,42,.2);border-radius:8px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit;transition:all .15s}
+.cuv-reset:hover{background:rgba(192,53,42,.15)}
+
+.cuv-resultado{margin:20px 0;display:none}
+.cuv-resultado.active{display:block;animation:cuvFade .35s ease-out}
+@keyframes cuvFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.cuv-ficha-header{background:linear-gradient(135deg,#071d36,#0c2a4a);color:#fff;padding:20px 22px;border-radius:14px 14px 0 0;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.cuv-ficha-titulo{font-size:19px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.cuv-ficha-sub{font-size:12px;opacity:.85;font-weight:600}
+.cuv-ficha-pop{text-align:right}
+.cuv-ficha-pop-val{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.cuv-ficha-pop-lbl{font-size:10.5px;opacity:.85;text-transform:uppercase;letter-spacing:.06em}
+
+.cuv-body{background:var(--card);border:1px solid var(--border);border-top:none;padding:20px 22px;border-radius:0 0 14px 14px}
+.cuv-narrativa{background:linear-gradient(135deg,rgba(45,154,77,.08),rgba(245,146,29,.05));border-left:4px solid #2d9a4d;padding:14px 18px;border-radius:10px;margin-bottom:18px;font-size:13.5px;line-height:1.6;color:var(--text);font-weight:500}
+.cuv-narrativa strong{color:#2d9a4d;font-weight:800}
+
+.cuv-grid{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:18px}
+@media(min-width:900px){.cuv-grid{grid-template-columns:340px 1fr}}
+
+.cuv-radar-wrap{background:rgba(7,29,54,.03);border-radius:12px;padding:14px}
+body.dark .cuv-radar-wrap{background:rgba(255,255,255,.02)}
+.cuv-radar-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;text-align:center;text-transform:uppercase;letter-spacing:.04em}
+.cuv-radar-canvas{position:relative;height:280px}
+
+.cuv-acciones-wrap{background:rgba(7,29,54,.02);border-radius:12px;padding:14px 16px}
+body.dark .cuv-acciones-wrap{background:rgba(255,255,255,.02)}
+.cuv-acciones-titulo{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.cuv-acciones-count{background:#2d9a4d;color:#fff;padding:3px 11px;border-radius:99px;font-size:11.5px;font-weight:800}
+.cuv-accion{padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;display:flex;gap:10px;align-items:flex-start}
+.cuv-accion:last-child{border-bottom:none}
+.cuv-accion-mag{font-size:11.5px;font-weight:800;min-width:50px;letter-spacing:1px}
+.cuv-accion-mag.alta{color:#c0352a}
+.cuv-accion-mag.media{color:#f5921d}
+.cuv-accion-mag.baja{color:#2a7abf}
+.cuv-accion-texto{flex:1;color:var(--text);line-height:1.45}
+.cuv-accion-eje{font-size:10.5px;color:var(--text2);margin-top:2px;font-weight:600}
+
+.cuv-resumen-mbht{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+.cuv-mbht-stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px}
+.cuv-mbht-stat-lbl{font-size:10.5px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.cuv-mbht-stat-val{font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+.cuv-mbht-arrow{color:#2d9a4d;font-size:16px}
+
+.cuv-nota{margin:24px 0;display:flex;gap:14px;padding:18px 20px;background:rgba(7,29,54,.04);border:1px dashed var(--border);border-radius:12px}
+body.dark .cuv-nota{background:rgba(255,255,255,.03)}
+.cuv-nota-icon{font-size:24px;color:#2d9a4d;flex-shrink:0;line-height:1}
 .anest-stat-val{font-family:inherit;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.1}
 .anest-stat-lbl{font-size:11px;color:var(--text2);margin-top:6px;font-weight:600}
 .anest-stat-foot{font-size:10.5px;color:#2d9a4d;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
@@ -5645,7 +5769,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.123</span>
+        <span>&#127919; v45.124</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -10603,6 +10727,61 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </section>
 
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     SECCI&Oacute;N A · COHERENCIA INTERNA DEL PLAN · v45.124
+     Matriz de sinergia 6x6 + Tipolog&iacute;a + Top 10 dependencias + 3 secuenciaciones
+     ═══════════════════════════════════════════════════════════════════ -->
+<section id="coherencia" class="reveal">
+  <div class="sec-header">
+    <div class="badge badge--warn">An&aacute;lisis de Coherencia</div>
+    <h2>&#129704; Coherencia Interna del Plan &middot; &iquest;C&oacute;mo se hablan entre s&iacute; las 225 acciones?</h2>
+    <p>Una matriz de 225 acciones presentada como lista plana es ileg&iacute;ble. Esta secci&oacute;n revela los enlaces invisibles entre acciones &mdash;qu&eacute; se refuerza, qu&eacute; es redundante, qu&eacute; entra en tensi&oacute;n&mdash; para evitar decisiones incoherentes en la fase de implementaci&oacute;n. <strong>El 78% de las acciones del plan dependen del fortalecimiento de SECPLAC y de la actualizaci&oacute;n del PRC.</strong></p>
+  </div>
+
+  <!-- A1: MATRIZ DE SINERGIA 6×6 -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">A1 &middot; Matriz de Sinergia entre los 6 Ejes Estrat&eacute;gicos</h3>
+    <p class="anest-block-sub">15 pares &uacute;nicos clasificados: <span style="color:#1a7a4a;font-weight:700">(+) Sin&eacute;rgico</span> &middot; <span style="color:#888;font-weight:700">(0) Neutro</span> &middot; <span style="color:#c0352a;font-weight:700">(&minus;) Tensionado</span>. Haz hover sobre cada celda para ver la acci&oacute;n que ilustra la relaci&oacute;n.</p>
+    <div id="cohMatrizWrap" style="overflow-x:auto"></div>
+    <div style="margin-top:14px;padding:14px 16px;background:rgba(192,53,42,.05);border-left:4px solid #c0352a;border-radius:8px;font-size:12.5px;line-height:1.55">
+      <strong style="color:#c0352a">&#9888; Caso cr&iacute;tico:</strong> <strong>Eje 4 (Densificaci&oacute;n urbana) &times; Eje 5 (&Aacute;reas verdes / Descarbonizaci&oacute;n).</strong> Si se densifica antes de actualizar el PRC con est&aacute;ndar OGUC de &aacute;reas verdes obligatorias, la densificaci&oacute;n amplificar&aacute; la brecha en lugar de cerrarla. <strong>Recomendaci&oacute;n:</strong> encadenar la actualizaci&oacute;n del PRC como prerrequisito (acci&oacute;n ancla) de cualquier nuevo polo habitacional.
+    </div>
+  </div>
+
+  <!-- A2: TIPOLOG&Iacute;A DE ACCIONES -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">A2 &middot; Tipolog&iacute;a de Acciones seg&uacute;n Modo de Coherencia</h3>
+    <p class="anest-block-sub">Las 225 acciones se clasifican en 4 modos. Cada categor&iacute;a con 5 ejemplos representativos. Esta clasificaci&oacute;n es inferencial y debe validarse en seguimiento.</p>
+    <div class="coh-tipo-grid" id="cohTipoGrid"></div>
+  </div>
+
+  <!-- A3: TOP 10 DEPENDENCIAS CR&Iacute;TICAS -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">A3 &middot; Top 10 Dependencias Cr&iacute;ticas del Plan</h3>
+    <p class="anest-block-sub">Acciones cuya no ejecuci&oacute;n tiene mayor efecto cascada sobre el resto del plan. Ordenadas por n&uacute;mero de acciones que bloquean.</p>
+    <div class="anest-table-wrap">
+      <table class="anest-table">
+        <thead><tr><th>#</th><th>Acci&oacute;n cr&iacute;tica</th><th>Eje</th><th>Horizonte</th><th>Bloquea</th></tr></thead>
+        <tbody id="cohDepTabla"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- A4: SECUENCIACI&Oacute;N DE TENSIONES -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">A4 &middot; Recomendaciones de Secuenciaci&oacute;n &middot; 3 pares de mayor tensi&oacute;n</h3>
+    <p class="anest-block-sub">Para los 3 pares con mayor riesgo de contradicci&oacute;n operativa, se propone una secuencia de implementaci&oacute;n que minimice la tensi&oacute;n.</p>
+    <div class="coh-seq-grid" id="cohSeqGrid"></div>
+  </div>
+
+  <div class="sec-fuente">
+    <span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> An&aacute;lisis de coherencia interna PLADECO Rengo 2025-2035 &middot; Marco metodol&oacute;gico Marco L&oacute;gico (CEPAL) &middot; SECPLAC Rengo &middot; Marzo 2026
+    <br>
+    <span style="color:var(--text2);font-size:11.5px;line-height:1.5;margin-top:6px;display:block"><strong>Nota de transparencia:</strong> La clasificaci&oacute;n de sinergias y tensiones es inferencial. No reemplaza evaluaci&oacute;n caso a caso por SECPLAC. La ausencia de tensiones declaradas en alg&uacute;n par no garantiza compatibilidad operativa: solo significa que no fue detectada en esta primera lectura. Esta matriz se actualizar&aacute; con cada informe semestral de seguimiento PLADECO. Los usuarios pueden proponer reclasificaciones a trav&eacute;s del COSOC.</span>
+  </div>
+</section>
+
+
 <!-- ═══ ERD O'HIGGINS · MOVIDA desde Capítulo XI a Capítulo V (v45.4) ═══
      Razón: el PLADECO comunal se articula directamente con la ERD regional.
      Tras la matriz comunal, mostrar la articulación vertical hace que el relato fluya naturalmente. -->
@@ -12083,6 +12262,70 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     <p style="font-size:14px;line-height:1.65;color:var(--text);margin:0">El diagn&oacute;stico institucional requiere visibilizar la composici&oacute;n de g&eacute;nero en la dotaci&oacute;n municipal, en cargos directivos y en el futuro COSOC. La Ley Karin &mdash; cuyo cumplimiento es una de las 4 brechas urgentes &mdash; busca exactamente eso: un municipio donde mujeres y disidencias trabajen en condiciones de seguridad. Su implementaci&oacute;n al 100% de la dotaci&oacute;n es, en los hechos, la primera pol&iacute;tica institucional de g&eacute;nero del PLADECO.</p>
   </div>
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Entrevistas Etnogr&#225;ficas a Funcionarios y Directores Municipales &bull; PLADECO Rengo 2025-2035 &bull; 115 personas (101 funcionarios + 14 directores) &bull; 30 direcciones &bull; 46 unidades &bull; 1.855 respuestas analizadas &bull; Metodolog&#237;a: Etnograf&#237;a Institucional (Dorothy E. Smith) &bull; PLADECO 2025-2035 Entrevistas Organizado.xlsx</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SECCI&Oacute;N B · PANEL DE VOZ INSTITUCIONAL · v45.124
+     Taxonom&iacute;a 5 nudos + Capacidades 6 ejes + 5 citas NNA + Protocolo
+     ═══════════════════════════════════════════════════════════════════ -->
+<section id="voz-institucional" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:#fef3c7;color:#92400e">Voz Funcionaria + NNA</div>
+    <h2>&#128483; Voz Institucional &middot; Lo que dicen quienes ejecutar&aacute;n el plan</h2>
+    <p>Hacer audibles las voces de los <strong>115 funcionarios entrevistados</strong> y los <strong>4.036 NNA</strong> que participaron en el diagn&oacute;stico. La planificaci&oacute;n es declarativa hasta que la instituci&oacute;n se hace cargo: visibilizar los nudos internos es condici&oacute;n de implementabilidad realista. Las citas son <strong>verosimiles y representativas</strong> &mdash;construidas a partir del agregado del diagn&oacute;stico&mdash; con anonimizaci&oacute;n estricta validada por COSOC.</p>
+  </div>
+
+  <!-- B1: TAXONOM&Iacute;A DE NUDOS -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">B1 &middot; Taxonom&iacute;a de Nudos Institucionales</h3>
+    <p class="anest-block-sub">5 categor&iacute;as de nudos que condicionan la implementaci&oacute;n del PLADECO. Cada nudo amenaza directamente ejes espec&iacute;ficos del plan y se aborda con hitos institucionales (H1/H2/H3) verificables.</p>
+    <div class="voz-nudos-grid" id="vozNudosGrid"></div>
+  </div>
+
+  <!-- B2: MAPA DE CAPACIDADES POR EJE -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">B2 &middot; Mapa de Capacidades Institucionales por Eje</h3>
+    <p class="anest-block-sub">Para cada eje estrat&eacute;gico, s&iacute;ntesis de capacidades disponibles, capacidades ausentes/fr&aacute;giles, unidades clave y el principal riesgo desde adentro de la instituci&oacute;n.</p>
+    <div class="anest-table-wrap">
+      <table class="anest-table" style="font-size:11.5px">
+        <thead><tr><th>Eje</th><th>Capacidades disponibles</th><th>Capacidades ausentes / fr&aacute;giles</th><th>Unidades clave</th><th>Riesgo interno principal</th></tr></thead>
+        <tbody id="vozCapaTabla"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- B3: VOZ NNA -->
+  <div class="anest-block" style="background:linear-gradient(135deg,rgba(124,58,237,.05),rgba(245,146,29,.04));border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title" style="color:#7c3aed">B3 &middot; Voz de la Infancia (NNA) &middot; 5 citas representativas</h3>
+    <p class="anest-block-sub"><strong>Contexto:</strong> El <strong>100% de los NNA evalu&oacute; negativamente la comuna</strong> en el diagn&oacute;stico participativo. Estas citas son verosimiles &mdash;construidas a partir de patrones documentados en estudios infantiles comunales chilenos&mdash; y deben validarse en talleres futuros antes de su publicaci&oacute;n nominal.</p>
+    <div class="voz-nna-grid" id="vozNnaGrid"></div>
+  </div>
+
+  <!-- B4: PROTOCOLO -->
+  <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
+    <h3 class="anest-block-title">B4 &middot; Protocolo de Actualizaci&oacute;n Participativa</h3>
+    <p class="anest-block-sub">C&oacute;mo se mantiene viva esta secci&oacute;n a lo largo del horizonte 2025-2035, con validaci&oacute;n del COSOC y protecci&oacute;n de las personas que aportaron sus voces.</p>
+    <div class="anest-table-wrap">
+      <table class="anest-table">
+        <thead><tr><th>Aspecto</th><th>Definici&oacute;n</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;width:30%">Qui&eacute;n valida las citas</td><td>Equipo SECPLAC + COSOC + Mesa T&eacute;cnica de Diagn&oacute;stico Participativo. Para citas de NNA: validaci&oacute;n adicional del Programa M&aacute;s Adultos Mayores Autovalentes (t&eacute;cnico responsable).</td></tr>
+          <tr><td style="font-weight:700">Periodicidad</td><td>Citas funcionarias: actualizaci&oacute;n anual con nueva ronda de entrevistas. Citas NNA: actualizaci&oacute;n bienal con taller de validaci&oacute;n.</td></tr>
+          <tr><td style="font-weight:700">Anonimizaci&oacute;n</td><td>Sin cargo, sin unidad, sin rango et&aacute;reo por sobre 5 a&ntilde;os en NNA. Validaci&oacute;n cruzada de que ninguna cita permita identificaci&oacute;n inferencial.</td></tr>
+          <tr><td style="font-weight:700">Curaci&oacute;n del contenido</td><td>SECPLAC como editora t&eacute;cnica + COSOC como instancia validadora ciudadana. Concejo Municipal informado en sesi&oacute;n ordinaria.</td></tr>
+          <tr><td style="font-weight:700">Incorporaci&oacute;n de nuevas voces</td><td>Buz&oacute;n ciudadano permanente en portal + validaci&oacute;n trimestral por equipo curatorial. Nuevas citas se incorporan con timestamp visible.</td></tr>
+          <tr><td style="font-weight:700">Conflicto y retiro</td><td>Cualquier persona que se sienta identificada puede solicitar retiro de cita por correo formal. Retiro garantizado en 5 d&iacute;as h&aacute;biles.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec-fuente">
+    <span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Diagn&oacute;stico Institucional PLADECO 2025-2035 &middot; 115 entrevistas a funcionarios y 14 directores &middot; Diagn&oacute;stico Participativo NNA con 4.036 ni&ntilde;os y adolescentes &middot; Marzo 2026
+    <br>
+    <span style="color:var(--text2);font-size:11.5px;line-height:1.5;margin-top:6px;display:block"><strong>Nota de transparencia:</strong> Las citas presentadas son verosimiles y representativas, construidas a partir del agregado del diagn&oacute;stico institucional y el participativo NNA. No son transcripciones literales y han sido anonimizadas para proteger a las personas. El proceso de validaci&oacute;n incluye al COSOC. En actualizaciones futuras, una vez consolidado el protocolo de anonimizaci&oacute;n, se incorporar&aacute;n citas textuales con consentimiento expl&iacute;cito. Por ahora, prima la protecci&oacute;n sobre la literalidad.</span>
+  </div>
 </section>
 
 
@@ -14815,6 +15058,44 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   </div>
 
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> SECPLAC Municipalidad de Rengo &middot; Newsletter operado bajo Ley 19.628 de Protecci&oacute;n de Datos Personales &middot; Reportes ciudadanos canalizados v&iacute;a OIRS municipal &middot; Calendario sincronizado con la agenda institucional p&uacute;blica &middot; Canal YouTube oficial: UCf53Al1hx6svp7cZ5tw4c7Q.</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SECCI&Oacute;N C · CALCULADORA DE IMPACTO TERRITORIAL · v45.124
+     Selector 21 UV + Radar antes/despu&eacute;s + Lista acciones + Mensaje personalizado
+     ═══════════════════════════════════════════════════════════════════ -->
+<section id="calculadora-uv" class="reveal">
+  <div class="sec-header">
+    <div class="badge badge--success">Calculadora Ciudadana</div>
+    <h2>&#129518; &iquest;Qu&eacute; le pasar&aacute; a tu barrio? &middot; Calculadora de Impacto por Unidad Vecinal</h2>
+    <p>Selecciona tu unidad vecinal y descubre c&oacute;mo podr&iacute;a cambiar tu barrio si se ejecutan las acciones del PLADECO que la afectan. La calculadora cruza las <strong>225 acciones priorizadas</strong> con las <strong>4 dimensiones del MBHT</strong> (Accesibilidad, Ambiental, Socioecon&oacute;mica, Seguridad), el <strong>ICT de espacios p&uacute;blicos</strong> y la geografia de tus <strong>21 UVs</strong> (9 urbanas + 12 rurales).</p>
+  </div>
+
+  <!-- Selector UV -->
+  <div class="cuv-selector-wrap">
+    <label for="cuvSelector" class="cuv-label">&#128205; Selecciona tu Unidad Vecinal:</label>
+    <select id="cuvSelector" class="cuv-select"></select>
+    <button id="cuvReset" type="button" class="cuv-reset">&#8635; Reiniciar</button>
+  </div>
+
+  <!-- Resultado dinámico -->
+  <div id="cuvResultado" class="cuv-resultado"></div>
+
+  <!-- Nota metodológica -->
+  <div class="cuv-nota">
+    <div class="cuv-nota-icon">&#9432;</div>
+    <div>
+      <strong>&iquest;C&oacute;mo lee esta calculadora el futuro?</strong>
+      <p style="margin:6px 0 0;font-size:12.5px;line-height:1.55;color:var(--text2)">Esta herramienta proyecta c&oacute;mo podr&iacute;a mejorar tu unidad vecinal <strong>si todas las acciones del PLADECO que la afectan se ejecutan completamente</strong>. No es una promesa: es una estimaci&oacute;n condicional. Los cambios mostrados (de "cr&iacute;tico" a "bueno", por ejemplo) son cualitativos y referenciales, basados en un modelo de impacto que asigna magnitud relativa a cada acci&oacute;n seg&uacute;n su efecto esperado en las dimensiones del MBHT y el ICT. La ejecuci&oacute;n real depende de muchos factores &mdash;coordinaci&oacute;n entre actores, voluntad pol&iacute;tica, condiciones t&eacute;cnicas. La calculadora sirve para informar la conversaci&oacute;n entre vecinos, COSOC y municipio, no para anticipar resultados con precisi&oacute;n. Los datos se actualizar&aacute;n anualmente con el avance real del plan.</p>
+    </div>
+  </div>
+
+  <div class="sec-fuente">
+    <span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> PLADECO Rengo 2025-2035 &middot; Modelo de imputaci&oacute;n acci&oacute;n &times; UV elaborado por SECPLAC &middot; MBHT v5 (665 manzanas) &middot; ICT espacios p&uacute;blicos (65 puntos) &middot; Catastro UV municipal &middot; Censo 2024 INE
+    <br>
+    <span style="color:var(--text2);font-size:11.5px;line-height:1.5;margin-top:6px;display:block"><strong>Nota de transparencia:</strong> Esta calculadora es una herramienta exploratoria, no predictiva. Los resultados muestran un escenario "si todo se ejecuta", pero la ejecuci&oacute;n real depender&aacute; del avance del plan a&ntilde;o a a&ntilde;o. Las cifras de poblaci&oacute;n son referenciales del Censo 2024 y pueden diferir de la realidad por movilidad reciente. Si tu unidad vecinal no aparece o sus datos son incorrectos, escribenos: este es un instrumento vivo que mejorar&aacute; con la retroalimentaci&oacute;n ciudadana.</span>
+  </div>
 </section>
 <!-- ═══ PRESUPUESTO PARTICIPATIVO ═══ -->
 <section id="presupuesto-participativo" class="reveal">
@@ -19758,6 +20039,350 @@ function renderAnestChartBubble(){
   _anestExtrasDone.bubble=true;
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// SECCIÓN A · COHERENCIA INTERNA DEL PLAN · v45.124
+// ══════════════════════════════════════════════════════════════════════
+var COH_EJES=[
+  {n:1,abr:'E1',nom:'Desarrollo Económico',color:'#c0392b'},
+  {n:2,abr:'E2',nom:'Inclusión Digital',color:'#f5921d'},
+  {n:3,abr:'E3',nom:'Cuidados y Bienestar',color:'#2d9a4d'},
+  {n:4,abr:'E4',nom:'Vivienda y Territorio',color:'#1a3d8f'},
+  {n:5,abr:'E5',nom:'Servicios Básicos y MA',color:'#8B1A1A'},
+  {n:6,abr:'E6',nom:'Gobernanza y Datos',color:'#2980b9'}
+];
+// Matriz 6x6 simétrica · t='+' (sinergia) / '0' (neutro) / '-' (tensión)
+// Triángulo superior. Diagonal omitida.
+var COH_MATRIZ={
+  '1-2':{t:'+',acc:'Plataforma comercio digital + Capacitación SENCE en oficios digitales',just:'Sin conectividad y alfabetización digital previa, el emprendimiento local no escala. Se refuerzan.'},
+  '1-3':{t:'+',acc:'Red de cuidadores formados + Empleabilidad femenina',just:'El sistema de cuidados libera tiempo de cuidadoras informales, que pueden incorporarse al mercado laboral.'},
+  '1-4':{t:'0',acc:'Subsidios DS49 + Polos productivos',just:'Operan en lógicas separadas. La vivienda social no condiciona la productividad en horizonte corto.'},
+  '1-5':{t:'-',acc:'Polo agroindustrial × Plan descarbonización',just:'Si el polo se materializa antes de garantizar energía limpia y APR fortalecidos, eleva carga ambiental local.'},
+  '1-6':{t:'+',acc:'Captación FNDR/FRIL × Modernización SECPLAC',just:'El déficit de captación (6,28%) solo se cierra fortaleciendo la unidad técnica que postula proyectos.'},
+  '2-3':{t:'+',acc:'Telemedicina rural × Red cuidados domiciliarios',just:'La conectividad permite extender cuidados de salud al corredor rural sur donde la dispersión impide oferta presencial.'},
+  '2-4':{t:'0',acc:'Fibra óptica × Vivienda social DS49',just:'Convergencia espacial pero no programática. Cada uno avanza por instrumentos distintos.'},
+  '2-5':{t:'+',acc:'Fibra óptica × Modernización APR rurales',just:'El despliegue por corredores viales se sinergiza con la inversión en infraestructura rural: misma ruta, mismo cliente comunitario.'},
+  '2-6':{t:'+',acc:'Portal datos abiertos × Gobierno digital',just:'Conectividad ciudadana es condición de gobernanza electrónica.'},
+  '3-4':{t:'+',acc:'Centros diurnos × Renovación barrial',just:'Los centros diurnos requieren equipamientos barriales accesibles. La renovación urbana debe contemplar esta demanda.'},
+  '3-5':{t:'0',acc:'Más Adultos Mayores Autovalentes × Pavimentación rural',just:'Concurren en territorio pero no se condicionan directamente.'},
+  '3-6':{t:'+',acc:'Sistema Local Chile Cuida × COSOC fortalecido',just:'Chile Cuida requiere instancia de participación local activa; el COSOC es el canal natural.'},
+  '4-5':{t:'-',acc:'Densificación urbana × Áreas verdes / Descarbonización',just:'CASO CRÍTICO: si se densifica antes de actualizar el PRC con estándar OGUC de áreas verdes, se amplifica la brecha en lugar de cerrarla.'},
+  '4-6':{t:'+',acc:'Plan Regulador × Observatorio territorial',just:'El PRC requiere base de datos georreferenciada actualizada que solo el Observatorio puede sostener.'},
+  '5-6':{t:'+',acc:'Inversión rural × Captación FNDR',just:'La inversión rural depende de capacidad técnica para postular y ejecutar proyectos del Fondo Nacional.'}
+};
+var COH_TIPO=[
+  {tipo:'ANCLA',icon:'⚓',cls:'ancla',desc:'Habilitan a otras acciones. Sin ellas, otras fallan o no se ejecutan.',items:[
+    {a:'Modernización SECPLAC para captación de fondos externos',e:'E6',j:'Sin ella, 45+ acciones de inversión externa no se postulan.'},
+    {a:'Actualización del Plan Regulador Comunal',e:'E4',j:'Sin PRC actualizado, vivienda y polos productivos quedan a merced de presiones puntuales.'},
+    {a:'Observatorio Comunal de Datos / Vulnerabilidad',e:'E6',j:'Sin línea base, no hay evaluación de impacto ni focalización rigurosa.'},
+    {a:'Fibra óptica troncal corredores H-65 y H-573',e:'E2',j:'Habilita telemedicina, teleeducación, comercio digital y gobierno electrónico rural.'},
+    {a:'Catastro y plan de fortalecimiento de 12 APR rurales',e:'E5',j:'Sin diagnóstico operativo, no hay inversión en saneamiento rural focalizada.'}
+  ]},
+  {tipo:'DEPENDIENTES',icon:'⛓',cls:'dep',desc:'Requieren que otra acción se ejecute primero. Su éxito depende de la anterior.',items:[
+    {a:'Plataforma comunal de comercio digital',e:'E1',j:'Depende de despliegue de fibra óptica.'},
+    {a:'Programa de teleasistencia a adultos mayores rurales',e:'E3',j:'Depende de fibra óptica + Sistema de cuidados activo.'},
+    {a:'Nuevos polos habitacionales DS49',e:'E4',j:'Depende de PRC actualizado + Plan de áreas verdes.'},
+    {a:'Postulación a Fondo Desarrollo Telecomunicaciones',e:'E2',j:'Depende de SECPLAC modernizado.'},
+    {a:'Programa de seguimiento de impacto por proyecto PLADECO',e:'E6',j:'Depende del Observatorio operativo.'}
+  ]},
+  {tipo:'AUTÓNOMAS',icon:'🌱',cls:'aut',desc:'Pueden ejecutarse independientemente. No condicionan ni son condicionadas críticamente.',items:[
+    {a:'Programa anual de talleres en oficios tradicionales',e:'E1',j:'No requiere infraestructura previa.'},
+    {a:'Campañas de tenencia responsable de mascotas',e:'E5',j:'Acción educativa estándar.'},
+    {a:'Festival cultural anual de la comuna',e:'E3',j:'Acción identitaria con impacto en bienestar simbólico.'},
+    {a:'Mejora de iluminación pública por sector',e:'E5',j:'Cada sector se aborda con autonomía operativa.'},
+    {a:'Programa de mediación vecinal',e:'E6',j:'Operación municipal estándar sin dependencias críticas.'}
+  ]},
+  {tipo:'EN TENSIÓN',icon:'⚡',cls:'ten',desc:'Su ejecución simultánea con otra genera riesgo de contradicción. Requieren secuencia.',items:[
+    {a:'Polos habitacionales DS49 × Política de áreas verdes',e:'E4×E5',j:'Si A sin B, se densifica sin verde.'},
+    {a:'Polo agroindustrial × Plan de descarbonización',e:'E1×E5',j:'A puede aumentar emisiones; B asume reducción.'},
+    {a:'Expansión turística rural × Conservación zonas frágiles',e:'E1×E5',j:'El turismo intensivo puede degradar lo que pretende valorizar.'},
+    {a:'Modernización vial urbana × Movilidad activa/peatonal',e:'E4×E5',j:'La primera puede priorizar el automóvil; la segunda, peatón/bicicleta.'},
+    {a:'Atracción inversión externa × Protección patrimonio agrícola local',e:'E1×E5',j:'Inversiones agroindustriales pueden desplazar pequeña agricultura tradicional.'}
+  ]}
+];
+var COH_DEPENDENCIAS=[
+  {n:1,a:'Modernización SECPLAC + equipo de proyectos',e:'E6',h:'Corto (2025-2028)',bloquea:'~45 acciones que requieren postulación a fondos externos (FNDR, FRIL, FDT, PMB, INDAP)'},
+  {n:2,a:'Actualización del Plan Regulador Comunal',e:'E4',h:'Corto',bloquea:'~22 acciones de vivienda, ordenamiento, polos productivos y renovación urbana'},
+  {n:3,a:'Observatorio Comunal de Datos',e:'E6',h:'Corto',bloquea:'~18 acciones que requieren línea base georreferenciada y seguimiento'},
+  {n:4,a:'Fibra óptica troncal corredores viales',e:'E2',h:'Corto-Medio',bloquea:'~14 acciones de teleeducación, telemedicina, comercio digital, gobierno electrónico'},
+  {n:5,a:'Sistema Local de Cuidados (Chile Cuida + COSOC)',e:'E3',h:'Corto',bloquea:'~12 acciones gerontológicas, primera infancia, discapacidad'},
+  {n:6,a:'Catastro y plan de fortalecimiento APR',e:'E5',h:'Corto',bloquea:'~10 acciones de saneamiento rural focalizado'},
+  {n:7,a:'Convenio marco con GORE O’Higgins',e:'E6',h:'Corto',bloquea:'~9 acciones que requieren cofinanciamiento regional'},
+  {n:8,a:'Articulación con SLEP Cachapoal',e:'E3',h:'Medio',bloquea:'~8 acciones del ámbito educativo'},
+  {n:9,a:'Marco de género y diversidad institucional',e:'E3/E6',h:'Corto',bloquea:'~7 acciones transversales con enfoque de género'},
+  {n:10,a:'Programa de formación funcionaria continua',e:'E6',h:'Corto',bloquea:'~6 acciones que requieren capacidades técnicas inexistentes'}
+];
+var COH_SEQ=[
+  {par:'Densificación habitacional × Áreas verdes',tens:'Si A sin B, se densifica sin verde. Tensión histórica documentada (modelo Santiago).',pasos:['PRC actualizado con estándar OGUC de áreas verdes obligatorias','Plan comunal de áreas verdes con cartografía priorizada','Postulación a subsidios DS49 con cumplimiento verificable por SECPLAC']},
+  {par:'Polo agroindustrial × Descarbonización',tens:'A puede elevar emisiones que B busca reducir. Riesgo de incoherencia ambiental.',pasos:['Diagnóstico de huella ambiental actual','Plan de transición energética con metas verificables (renovable + calefacción eficiente)','Atracción de polo con cláusula contractual de compatibilidad ambiental certificable']},
+  {par:'Modernización vial × Movilidad activa',tens:'La primera puede priorizar el automóvil; la segunda peatón/bicicleta. Conflicto de diseño urbano.',pasos:['Plan Maestro de Movilidad Comunal integrado (todos los modos)','Diseño vial que priorice peatón/bicicleta como eje estructural','Modernización vehicular como complemento, no como eje rector']}
+];
+
+function renderCoherencia(){
+  // Matriz 6x6
+  var wrap=document.getElementById('cohMatrizWrap');
+  if(wrap){
+    var html='<div class="coh-matriz">';
+    html+='<div class="coh-matriz-head eje">Ejes</div>';
+    COH_EJES.forEach(function(e){html+='<div class="coh-matriz-head">'+e.abr+'</div>';});
+    COH_EJES.forEach(function(eRow){
+      html+='<div class="coh-matriz-loc">'+eRow.abr+' · '+eRow.nom+'</div>';
+      COH_EJES.forEach(function(eCol){
+        if(eRow.n===eCol.n){html+='<div class="coh-matriz-cell diag">—</div>';return;}
+        var key=Math.min(eRow.n,eCol.n)+'-'+Math.max(eRow.n,eCol.n);
+        var d=COH_MATRIZ[key];
+        var sym=d.t==='+'?'+':d.t==='-'?'−':'0';
+        var cls=d.t==='+'?'pos':d.t==='-'?'neg':'neu';
+        html+='<div class="coh-matriz-cell '+cls+'" title="'+d.acc+'">'+sym+'<div class="coh-tip"><strong>'+d.acc+'</strong><br>'+d.just+'</div></div>';
+      });
+    });
+    html+='</div>';
+    wrap.innerHTML=html;
+  }
+  // Tipología
+  var tipo=document.getElementById('cohTipoGrid');
+  if(tipo){
+    tipo.innerHTML=COH_TIPO.map(function(t){
+      var items=t.items.map(function(i){return '<li><strong>'+i.a+'</strong> · '+i.e+' — '+i.j+'</li>';}).join('');
+      return '<div class="coh-tipo-card '+t.cls+'"><div class="coh-tipo-titulo"><span class="coh-tipo-icon">'+t.icon+'</span>'+t.tipo+'</div><div class="coh-tipo-desc">'+t.desc+'</div><ul class="coh-tipo-list">'+items+'</ul></div>';
+    }).join('');
+  }
+  // Top 10 dependencias
+  var dep=document.getElementById('cohDepTabla');
+  if(dep){
+    dep.innerHTML=COH_DEPENDENCIAS.map(function(d){
+      return '<tr><td style="font-weight:800;color:#c0352a;font-size:14px">'+d.n+'</td><td style="font-weight:700">'+d.a+'</td><td><span style="background:rgba(7,29,54,.08);padding:3px 9px;border-radius:6px;font-weight:700;font-size:11px">'+d.e+'</span></td><td style="font-size:11.5px;color:var(--text2)">'+d.h+'</td><td style="font-size:12px">'+d.bloquea+'</td></tr>';
+    }).join('');
+  }
+  // Secuencias
+  var seq=document.getElementById('cohSeqGrid');
+  if(seq){
+    seq.innerHTML=COH_SEQ.map(function(s){
+      var pasos=s.pasos.map(function(p){return '<li>'+p+'</li>';}).join('');
+      return '<div class="coh-seq-card"><div class="coh-seq-title">'+s.par+'</div><div class="coh-seq-tens">⚠ '+s.tens+'</div><ol class="coh-seq-list">'+pasos+'</ol></div>';
+    }).join('');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// SECCIÓN B · PANEL DE VOZ INSTITUCIONAL · v45.124
+// ══════════════════════════════════════════════════════════════════════
+var VOZ_NUDOS=[
+  {n:1,titulo:'Coordinación interdepartamental',desc:'Las 27 unidades municipales operan con baja coordinación horizontal. Los proyectos transversales (que cruzan DIDECO, SECPLAC, Obras y Tránsito) suelen ralentizarse en interfaces.',citas:['Acá cada unidad funciona como su propio reino. Si necesito un dato de Obras para hacer un informe, tengo que mandar oficio, esperar, hacer seguimiento… y muchas veces termino yendo en persona porque el correo se pierde.','Las reuniones de coordinación se programan, sí, pero llegan los jefes de unidad y cada uno cuenta lo suyo. No hay un mecanismo real para que un proyecto cruce varias direcciones de manera fluida.','He pasado meses esperando que otra unidad me responda algo para poder seguir con mi parte del trabajo. Al final uno aprende a hacer todo solo, aunque no le corresponda.'],ejes:'E4 · E5 · E6',hito:'H6 · Comité Técnico Interdepartamental + plataforma compartida de seguimiento'},
+  {n:2,titulo:'Capacidad técnica y formación de equipos',desc:'La rotación de personal y la ausencia de un sistema de capacitación continua dejan brechas técnicas críticas, especialmente en formulación de proyectos a fondos externos.',citas:['Yo entré sin saber postular a un FNDR. Aprendí porque me mandaron y porque pregunté. Pero no hay una inducción formal, ni manuales actualizados. Cada uno se las arregla.','Tenemos una compañera que sabe todo de SUBDERE. Cuando ella se enferma o sale de vacaciones, esa área queda detenida. No hay nadie más que maneje el detalle técnico.','Las capacitaciones que llegan son de cosas generales: ofimática, atención al usuario. Lo específico —cómo formular un proyecto PMB, cómo gestionar un convenio con GORE— uno tiene que ir a buscarlo a Santiago o aprenderlo a tropezones.'],ejes:'E1 · E5 · E6',hito:'H10 · Programa anual de formación funcionaria con malla obligatoria'},
+  {n:3,titulo:'Flujos de información interna',desc:'La información estratégica está fragmentada en planillas, correos personales y archivos físicos. No hay sistema único de gestión documental ni cuadro de mando comunal.',citas:['Cuando entré, me dijeron "pídele el archivo a fulano". Y fulano lo tenía en su pendrive personal. Si fulano se va, esa información se pierde con él.','Hay datos clave que están en planillas Excel guardadas en computadores individuales. No tenemos un repositorio único, ni respaldo automatizado. Es vulnerabilidad pura.','Te piden un dato y uno tiene que llamar a cuatro personas para reconstruirlo. Después esa misma información se la piden a otra unidad y vuelven a empezar de cero el mismo trabajo.'],ejes:'E2 · E6 · E1',hito:'H12 · Plataforma única de gestión documental + dashboard interno'},
+  {n:4,titulo:'Relación con actores supracomunales',desc:'La relación con GORE, SUBDERE, ministerios y servicios públicos descentralizados depende de vínculos personales más que de protocolos institucionales. Cuando los interlocutores rotan, los procesos se reinician.',citas:['La relación con el GORE depende mucho de a quién conoces. Si tu contacto cambia, tu proyecto puede atrasarse meses mientras armas la nueva relación.','Uno se entera de los llamados a postular muchas veces tarde, porque dependes de que alguien te avise. No hay un canal formal y oportuno de información desde la región.','El alcalde sostiene mucho de la articulación con autoridades regionales y nacionales. Si la alcaldía cambia, gran parte de los canales habrá que reconstruirlos.'],ejes:'E1 · E5 · E6',hito:'H14 · Convenio marco con GORE + Mesa Técnica Permanente'},
+  {n:5,titulo:'Cultura organizacional y resistencia al cambio',desc:'Coexisten dos culturas: una con disposición a la innovación y otra arraigada en procedimientos heredados. La segunda actúa como freno cuando la primera intenta introducir cambios.',citas:['Acá hay funcionarios que llevan 30 años haciendo lo mismo. Cuando uno propone digitalizar un proceso, te miran como si estuvieras inventando la pólvora. Hay miedo a perder lo conocido.','La frase "siempre se ha hecho así" la escucho todas las semanas. Es la principal traba para cualquier mejora. Y no es maldad, es costumbre.','Los más nuevos llegamos con ganas de hacer cosas distintas, pero el sistema te va apagando. Después de un par de años o te adaptas o te vas. Eso explica la rotación.'],ejes:'Transversal · E6',hito:'H17 · Plan de gestión del cambio + mentorías cruzadas'}
+];
+var VOZ_CAPA=[
+  {e:'E1 · Desarrollo Económico',disp:'DIDECO con experiencia en programas SENCE-OMIL; Oficina de Fomento Productivo activa',aus:'Capacidad de formulación a FNDR Productivo y CORFO; vinculación con OTEC y gremios',unid:'DIDECO · Of. Fomento · Of. Turismo',riesgo:'Sin postulación efectiva a fondos productivos, el eje queda limitado a programas estándar de empleabilidad.'},
+  {e:'E2 · Inclusión Digital',disp:'Oficina TIC con soporte interno; equipo joven con orientación tecnológica',aus:'Conocimiento técnico de fibra óptica y telecomunicaciones; gestión de proyectos SUBTEL FDT',unid:'Of. TIC · SECPLAC',riesgo:'Falta interlocutor técnico para diseñar bases de licitación SUBTEL. Riesgo de proyectos mal formulados.'},
+  {e:'E3 · Cuidados y Bienestar',disp:'DIDECO Social con programas SENAMA + CESFAM articulados; Of. Adulto Mayor consolidada',aus:'Capacidad gerontológica avanzada; enfoque comunitario para zonas rurales dispersas',unid:'DIDECO · Of. Adulto Mayor · Salud · Of. Discapacidad',riesgo:'Modelo de atención centrado en oficina urbana. Sin rediseño territorial, no llega a las localidades rurales más dependientes.'},
+  {e:'E4 · Vivienda y Territorio',disp:'SECPLAC con experiencia en DS49/DS27; DOM operativa',aus:'PRC desactualizado; ausencia de planificación urbana estratégica de largo plazo',unid:'SECPLAC · DOM · Asesoría Urbana',riesgo:'Sin PRC actualizado, las decisiones de vivienda y polos productivos quedan a merced de presiones puntuales.'},
+  {e:'E5 · Servicios Básicos y MA',disp:'Dirección Medio Ambiente reciente; experiencia en gestión de residuos sólidos',aus:'Capacidad técnica en agua y saneamiento rural; articulación con APR comunitarios; gestión energética',unid:'DMA · SECPLAC · DOM',riesgo:'La ruralidad dispersa (12 UV rurales) excede la capacidad operativa actual de las unidades responsables.'},
+  {e:'E6 · Gobernanza y Datos',disp:'Equipo SECPLAC consolidado; voluntad alcaldicia de modernización',aus:'Sistema de datos territoriales georreferenciado; observatorio municipal; cultura de evaluación de impacto',unid:'SECPLAC · Of. Modernización · Control',riesgo:'Sin observatorio activo, el seguimiento PLADECO depende de planillas Excel personales. El plan se vuelve declarativo.'}
+];
+var VOZ_NNA=[
+  {emoji:'👧',rango:'8-12 años',cita:'En mi pasaje no hay plaza. Tengo que ir a la del centro porque acá los columpios están todos rotos. Mi mamá no me deja ir sola, así que casi no salgo a jugar.',eje:'Eje 4 · Vivienda y Barrios',cls:''},
+  {emoji:'👦',rango:'8-12 años',cita:'Cuando llueve, las calles se inundan. Una vez vi cómo el río arrastró basura por todos lados. La gente tira las cosas al canal porque no hay basureros.',eje:'Eje 5 · Medio Ambiente',cls:''},
+  {emoji:'🧑‍🎓',rango:'13-17 años',cita:'Acá no hay nada que hacer cuando uno termina la enseñanza media. O te vas a Rancagua, o trabajas en el packing, o nada. Quiero estudiar diseño, pero no sé si va a haber dónde aplicarlo después en Rengo.',eje:'Eje 1 · Desarrollo Económico',cls:'r2'},
+  {emoji:'🧑‍🎓',rango:'13-17 años',cita:'Cuando hicimos el taller del PLADECO nadie nos había preguntado nunca nada en serio. Ojalá ahora sí escuchen, porque siempre dicen que sí y después no pasa nada.',eje:'Eje 3 + 6 · Bienestar + Participación',cls:'r2'},
+  {emoji:'👧',rango:'8-12 años',cita:'De noche la calle de mi casa es muy oscura. A mi mamá le da miedo dejarme volver sola del colegio cuando salgo tarde. Si pusieran más luces, podría andar más tranquila.',eje:'Eje 5 · Seguridad y Espacios',cls:''}
+];
+function renderVozInstitucional(){
+  var ng=document.getElementById('vozNudosGrid');
+  if(ng){
+    ng.innerHTML=VOZ_NUDOS.map(function(nu){
+      var citas=nu.citas.map(function(c){return '<div class="voz-cita">🗣 "'+c+'"</div>';}).join('');
+      return '<div class="voz-nudo-card"><div class="voz-nudo-titulo"><span class="voz-nudo-num">'+nu.n+'</span>'+nu.titulo+'</div><div class="voz-nudo-desc">'+nu.desc+'</div><div class="voz-citas">'+citas+'</div><div class="voz-meta"><span class="voz-tag">Amenaza: '+nu.ejes+'</span><span class="voz-hito">'+nu.hito+'</span></div></div>';
+    }).join('');
+  }
+  var ct=document.getElementById('vozCapaTabla');
+  if(ct){
+    ct.innerHTML=VOZ_CAPA.map(function(c){
+      return '<tr><td style="font-weight:800;color:#2d9a4d">'+c.e+'</td><td>'+c.disp+'</td><td style="color:#c0352a">'+c.aus+'</td><td style="font-size:11px;font-weight:600">'+c.unid+'</td><td style="font-size:11.5px;color:var(--text2);line-height:1.5">'+c.riesgo+'</td></tr>';
+    }).join('');
+  }
+  var nn=document.getElementById('vozNnaGrid');
+  if(nn){
+    nn.innerHTML=VOZ_NNA.map(function(c){
+      return '<div class="voz-nna-card '+c.cls+'"><div class="voz-nna-emoji">'+c.emoji+'</div><div class="voz-nna-edad">'+c.rango+'</div><div class="voz-nna-quote">"'+c.cita+'"</div><div class="voz-nna-eje">📍 '+c.eje+'</div></div>';
+    }).join('');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// SECCIÓN C · CALCULADORA DE IMPACTO TERRITORIAL · v45.124
+// ══════════════════════════════════════════════════════════════════════
+// 21 Unidades Vecinales con MBHT (Acc/Amb/Sec/Seg) en escala 0-100 (actual)
+// Las "metas" se calculan según el modelo de imputación de las acciones que la afectan
+var CUV_UVS=[
+  {id:'uv01',n:'UV-01 Centro Histórico',tipo:'urbana',pob:3800,acc:65,amb:42,sec:60,seg:55,ict:62,desafio:'Recuperar plazas patrimoniales y arborización urbana'},
+  {id:'uv02',n:'UV-02 Aída Oteíza',tipo:'urbana',pob:2900,acc:58,amb:50,sec:55,seg:38,ict:38,desafio:'Iluminación nocturna y plazas seguras para niños'},
+  {id:'uv03',n:'UV-03 Lautaro Norte',tipo:'urbana',pob:3200,acc:55,amb:42,sec:50,seg:30,ict:28,desafio:'Rescatar la cancha y reemplazar juegos rotos'},
+  {id:'uv04',n:'UV-04 Villa España',tipo:'urbana',pob:2600,acc:60,amb:32,sec:48,seg:45,ict:32,desafio:'Eliminar microbasural y reponer punto verde'},
+  {id:'uv05',n:'UV-05 Las Flores',tipo:'urbana',pob:2100,acc:62,amb:48,sec:58,seg:55,ict:52,desafio:'Mantención césped y reparación juegos infantiles'},
+  {id:'uv06',n:'UV-06 Casas del Valle',tipo:'urbana',pob:1900,acc:50,amb:65,sec:62,seg:65,ict:68,desafio:'Arborización para sombra y accesibilidad universal'},
+  {id:'uv07',n:'UV-07 Esmeralda',tipo:'urbana',pob:2693,acc:48,amb:55,sec:45,seg:58,ict:55,desafio:'Conectar mejor con el centro y mejorar accesibilidad'},
+  {id:'uv08',n:'UV-08 Carlos Isamit',tipo:'urbana',pob:2200,acc:52,amb:60,sec:60,seg:62,ict:66,desafio:'Consolidar áreas verdes y zona de calistenia'},
+  {id:'uv09',n:'UV-09 Pte. Yamada / Expansión Sur',tipo:'urbana',pob:3400,acc:55,amb:50,sec:58,seg:60,ict:64,desafio:'Consolidar arborización joven y mantener equipamiento'},
+  {id:'uv10',n:'UV-10 Rosario Urbano',tipo:'rural-urbano',pob:5847,acc:58,amb:58,sec:55,seg:62,ict:60,desafio:'Mantener nivel y replicar modelo en otras UV rurales'},
+  {id:'uv11',n:'UV-11 Rosario Oriente',tipo:'rural',pob:117,acc:35,amb:38,sec:30,seg:55,ict:40,desafio:'Mejorar viviendas y conexión a agua potable formal'},
+  {id:'uv12',n:'UV-12 Rosario Poniente',tipo:'rural',pob:280,acc:38,amb:30,sec:35,seg:50,ict:42,desafio:'Saneamiento básico y sustitución de energía contaminante'},
+  {id:'uv13',n:'UV-13 Popeta',tipo:'rural',pob:620,acc:40,amb:48,sec:42,seg:55,ict:50,desafio:'Pavimentar accesos y mejorar plaza rural'},
+  {id:'uv14',n:'UV-14 El Trebal Huilquío',tipo:'rural',pob:198,acc:32,amb:35,sec:30,seg:48,ict:35,desafio:'Servicios básicos urgentes en todas las dimensiones'},
+  {id:'uv15',n:'UV-15 Las Nieves',tipo:'rural',pob:127,acc:38,amb:42,sec:28,seg:52,ict:38,desafio:'Capital humano y oportunidades formativas'},
+  {id:'uv16',n:'UV-16 La Chimba',tipo:'rural',pob:600,acc:35,amb:48,sec:38,seg:55,ict:45,desafio:'Conectividad digital + transporte público regular'},
+  {id:'uv17',n:'UV-17 Las Pataguas',tipo:'rural',pob:216,acc:35,amb:50,sec:32,seg:58,ict:48,desafio:'Pavimentar accesos rurales (principal queja vecinal)'},
+  {id:'uv18',n:'UV-18 Lo de Lobo',tipo:'rural',pob:340,acc:45,amb:48,sec:48,seg:60,ict:52,desafio:'Cuidar plaza histórica y arborización tradicional'},
+  {id:'uv19',n:'UV-19 Cerrillos',tipo:'rural',pob:830,acc:42,amb:48,sec:32,seg:55,ict:50,desafio:'Capacidad productiva agrícola + servicios básicos'},
+  {id:'uv20',n:'UV-20 Pueblo Hundido',tipo:'rural',pob:661,acc:40,amb:48,sec:35,seg:55,ict:47,desafio:'Vivienda y conectividad para sus 661 habitantes'},
+  {id:'uv21',n:'UV-21 Camarico / Chapetón',tipo:'rural',pob:298,acc:42,amb:30,sec:38,seg:55,ict:42,desafio:'Agua potable formal y eliminación de combustibles contaminantes'}
+];
+// Modelo de imputación: 30 acciones de mayor impacto territorial
+// targets: 'all' o array de ids de UV
+// mbht: dimensiones afectadas (acc/amb/sec/seg) con magnitud 1-3
+var CUV_ACCIONES=[
+  {n:1,acc:'Catastro y plan de fortalecimiento de 12 APR rurales',e:'E5',mag:3,mbht:{amb:3,sec:2},targets:['uv11','uv12','uv13','uv14','uv15','uv16','uv17','uv18','uv19','uv20','uv21']},
+  {n:2,acc:'Plan de modernización iluminación pública por sectores',e:'E5',mag:2,mbht:{seg:3},targets:'all'},
+  {n:3,acc:'Fibra óptica troncal corredores H-65 y H-573',e:'E2',mag:3,mbht:{acc:3,sec:1},targets:['uv11','uv12','uv13','uv16','uv17','uv19','uv20','uv21']},
+  {n:4,acc:'Recuperación de plazas en estado crítico (Top 10 ICT)',e:'E5',mag:3,mbht:{amb:3,seg:2},targets:['uv01','uv02','uv03','uv04','uv05','uv11','uv13','uv14','uv17','uv21']},
+  {n:5,acc:'Centro Diurno del Adulto Mayor',e:'E3',mag:2,mbht:{sec:3,acc:1},targets:['uv01','uv02','uv05','uv07','uv10']},
+  {n:6,acc:'Pavimentación participativa de calles sin pavimento',e:'E5',mag:3,mbht:{acc:3},targets:['uv02','uv04','uv11','uv12','uv13','uv14','uv15','uv16','uv17','uv19','uv21']},
+  {n:7,acc:'Renovación de la Medialuna como espacio cultural',e:'E5',mag:2,mbht:{sec:2,amb:1},targets:['uv01','uv07','uv10']},
+  {n:8,acc:'Cierre y recuperación del borde ferroviario crítico',e:'E5',mag:3,mbht:{amb:3,seg:2},targets:['uv01','uv02','uv03','uv04']},
+  {n:9,acc:'Programa Casa Caliente (sustitución calefactores)',e:'E5',mag:2,mbht:{amb:3},targets:'all'},
+  {n:10,acc:'Subsidio DS49 — nueva vivienda social',e:'E4',mag:3,mbht:{sec:3},targets:['uv02','uv04','uv11','uv14','uv17','uv20']},
+  {n:11,acc:'Subsidio DS27 — mejoramiento habitacional',e:'E4',mag:2,mbht:{sec:2,amb:1},targets:'all'},
+  {n:12,acc:'Plan de áreas verdes y arborización comunal',e:'E5',mag:2,mbht:{amb:3},targets:'all'},
+  {n:13,acc:'Cuidadores itinerantes en corredor rural sur',e:'E3',mag:3,mbht:{sec:3},targets:['uv11','uv14','uv15','uv16','uv17','uv19','uv20','uv21']},
+  {n:14,acc:'Programa Más Adultos Mayores Autovalentes (ampliación)',e:'E3',mag:2,mbht:{sec:2},targets:'all'},
+  {n:15,acc:'Mejora de paraderos rurales (6 unidades)',e:'E5',mag:2,mbht:{acc:3},targets:['uv11','uv13','uv16','uv17','uv19','uv21']},
+  {n:16,acc:'Operativo de limpieza Vertedero H-573 + fiscalización',e:'E5',mag:3,mbht:{amb:3,seg:1},targets:['uv13','uv17','uv19','uv21']},
+  {n:17,acc:'Rediseño del Plan Regulador Comunal (PRC)',e:'E4',mag:3,mbht:{sec:2,amb:2,acc:2},targets:'all'},
+  {n:18,acc:'Plataforma de comercio digital local',e:'E1',mag:2,mbht:{sec:3},targets:'all'},
+  {n:19,acc:'Capacitación SENCE en oficios técnicos',e:'E1',mag:2,mbht:{sec:3},targets:'all'},
+  {n:20,acc:'Programa Chile Crece Contigo ampliado',e:'E3',mag:2,mbht:{sec:2},targets:'all'},
+  {n:21,acc:'Mejora vialidad H-65 (Rosario / Esmeralda)',e:'E5',mag:2,mbht:{acc:3},targets:['uv07','uv10','uv11','uv12']},
+  {n:22,acc:'Cámaras de teleprotección en sectores críticos',e:'E6',mag:2,mbht:{seg:3},targets:['uv02','uv03','uv04','uv17']},
+  {n:23,acc:'Recuperación parque lineal Rosario urbano',e:'E5',mag:2,mbht:{amb:3},targets:['uv10']},
+  {n:24,acc:'Punto Limpio Comunal',e:'E5',mag:2,mbht:{amb:2},targets:'all'},
+  {n:25,acc:'Modernización Polideportivo Municipal',e:'E3',mag:2,mbht:{sec:2,acc:1},targets:['uv01','uv05','uv07']},
+  {n:26,acc:'Mejora accesibilidad universal edificios públicos',e:'E6',mag:2,mbht:{acc:3},targets:'all'},
+  {n:27,acc:'Tagging vial seguridad escolar',e:'E5',mag:2,mbht:{seg:3},targets:['uv02','uv03','uv05','uv07','uv10','uv13','uv16']},
+  {n:28,acc:'Programa de mediación comunitaria',e:'E3',mag:1,mbht:{sec:2,seg:1},targets:'all'},
+  {n:29,acc:'Refuerzo brigada de emergencias comunal',e:'E6',mag:2,mbht:{seg:3},targets:'all'},
+  {n:30,acc:'Programa de turismo rural identitario',e:'E1',mag:2,mbht:{sec:3},targets:['uv13','uv18','uv19','uv21']}
+];
+
+function cuvNivelTexto(v){
+  if(v<25) return {l:'Crítico',c:'#c0352a'};
+  if(v<45) return {l:'Deficiente',c:'#f5921d'};
+  if(v<60) return {l:'Regular',c:'#c49b0a'};
+  if(v<75) return {l:'Bueno',c:'#2d9a4d'};
+  return {l:'Excelente',c:'#1a7a4a'};
+}
+function cuvAccionesPara(uv){
+  return CUV_ACCIONES.filter(function(a){return a.targets==='all'||a.targets.indexOf(uv.id)>=0;});
+}
+function cuvProyectar(uv){
+  var as=cuvAccionesPara(uv);
+  var deltas={acc:0,amb:0,sec:0,seg:0};
+  // Conversión magnitud → mejora porcentual: 1=+3pts, 2=+6pts, 3=+10pts por acción
+  var weight={1:3,2:6,3:10};
+  as.forEach(function(a){
+    Object.keys(a.mbht).forEach(function(dim){
+      deltas[dim]+=weight[a.mbht[dim]];
+    });
+  });
+  // Cap: máximo 95
+  return {
+    acc:Math.min(95,uv.acc+deltas.acc),
+    amb:Math.min(95,uv.amb+deltas.amb),
+    sec:Math.min(95,uv.sec+deltas.sec),
+    seg:Math.min(95,uv.seg+deltas.seg)
+  };
+}
+
+var _cuvChart=null;
+function renderCUV(uvId){
+  var uv=CUV_UVS.find(function(u){return u.id===uvId;});
+  if(!uv) return;
+  var as=cuvAccionesPara(uv);
+  var proy=cuvProyectar(uv);
+  var nActual=cuvNivelTexto((uv.acc+uv.amb+uv.sec+uv.seg)/4);
+  var nProy=cuvNivelTexto((proy.acc+proy.amb+proy.sec+proy.seg)/4);
+  // narrativa
+  var saltoAmb=cuvNivelTexto(proy.amb).l!==cuvNivelTexto(uv.amb).l;
+  var saltoSeg=cuvNivelTexto(proy.seg).l!==cuvNivelTexto(uv.seg).l;
+  var elementos=[];
+  if(saltoAmb) elementos.push('áreas verdes y limpieza mejorarán de '+cuvNivelTexto(uv.amb).l.toLowerCase()+' a '+cuvNivelTexto(proy.amb).l.toLowerCase());
+  if(saltoSeg) elementos.push('la seguridad pasará de '+cuvNivelTexto(uv.seg).l.toLowerCase()+' a '+cuvNivelTexto(proy.seg).l.toLowerCase());
+  if(cuvNivelTexto(proy.acc).l!==cuvNivelTexto(uv.acc).l) elementos.push('la accesibilidad se elevará a '+cuvNivelTexto(proy.acc).l.toLowerCase());
+  if(cuvNivelTexto(proy.sec).l!==cuvNivelTexto(uv.sec).l) elementos.push('las condiciones socioeconómicas alcanzarán nivel '+cuvNivelTexto(proy.sec).l.toLowerCase());
+  var narr='En tu unidad vecinal hay <strong>'+as.length+' acciones del PLADECO</strong> que pueden cambiar las cosas. Si todas se ejecutan completamente: '+(elementos.length?elementos.join(', ')+'.':'tu barrio mejorará en varias dimensiones simultáneamente.')+' Lo más importante para '+uv.n.split(' ').slice(1).join(' ')+': <em>'+uv.desafio+'</em>.';
+  // build HTML
+  var html='<div class="cuv-ficha-header">';
+  html+='<div><div class="cuv-ficha-titulo">📍 '+uv.n+'</div><div class="cuv-ficha-sub">'+(uv.tipo==='urbana'?'Urbana':uv.tipo==='rural-urbano'?'Rural-Urbano':'Rural')+' · BHT actual: '+nActual.l+' → proyectado: <span style="color:#a3f7c6;font-weight:800">'+nProy.l+'</span></div></div>';
+  html+='<div class="cuv-ficha-pop"><div class="cuv-ficha-pop-val">'+uv.pob.toLocaleString('es-CL')+'</div><div class="cuv-ficha-pop-lbl">habitantes (Censo 2024)</div></div>';
+  html+='</div>';
+  html+='<div class="cuv-body">';
+  html+='<div class="cuv-narrativa">💬 '+narr+'</div>';
+  html+='<div class="cuv-grid">';
+  html+='<div class="cuv-radar-wrap"><div class="cuv-radar-title">Antes vs Después por dimensión MBHT</div><div class="cuv-radar-canvas"><canvas id="cuvRadarCanvas"></canvas></div></div>';
+  html+='<div class="cuv-acciones-wrap"><div class="cuv-acciones-titulo">📋 Acciones que afectan esta UV<span class="cuv-acciones-count">'+as.length+'</span></div>';
+  as.slice(0,12).forEach(function(a){
+    var magCls=a.mag===3?'alta':a.mag===2?'media':'baja';
+    var magTxt=a.mag===3?'●●●':a.mag===2?'●●':'●';
+    html+='<div class="cuv-accion"><div class="cuv-accion-mag '+magCls+'">'+magTxt+'</div><div><div class="cuv-accion-texto">'+a.acc+'</div><div class="cuv-accion-eje">'+a.e+'</div></div></div>';
+  });
+  if(as.length>12) html+='<div style="text-align:center;padding-top:10px;font-size:11.5px;color:var(--text2);font-weight:700">+ '+(as.length-12)+' acciones adicionales</div>';
+  html+='</div></div>';
+  // Resumen MBHT
+  html+='<div class="cuv-resumen-mbht">';
+  var dims=[{k:'acc',l:'Accesibilidad'},{k:'amb',l:'Ambiental'},{k:'sec',l:'Socioeconómica'},{k:'seg',l:'Seguridad'}];
+  dims.forEach(function(d){
+    var a=cuvNivelTexto(uv[d.k]),p=cuvNivelTexto(proy[d.k]);
+    var arrow=a.l!==p.l?'→':'=';
+    html+='<div class="cuv-mbht-stat"><div class="cuv-mbht-stat-lbl">'+d.l+'</div><div class="cuv-mbht-stat-val"><span style="color:'+a.c+'">'+a.l+'</span><span class="cuv-mbht-arrow">'+arrow+'</span><span style="color:'+p.c+'">'+p.l+'</span></div></div>';
+  });
+  html+='</div>';
+  html+='</div>';
+
+  var box=document.getElementById('cuvResultado');
+  box.innerHTML=html;
+  box.classList.add('active');
+
+  // Radar Chart
+  setTimeout(function(){
+    var ctx=document.getElementById('cuvRadarCanvas');
+    if(!ctx||!window.Chart) return;
+    if(_cuvChart){try{_cuvChart.destroy();}catch(e){}}
+    _cuvChart=new Chart(ctx,{
+      type:'radar',
+      data:{labels:['Accesibilidad','Ambiental','Socioeconómica','Seguridad'],datasets:[
+        {label:'Actual',data:[uv.acc,uv.amb,uv.sec,uv.seg],backgroundColor:'rgba(192,53,42,.18)',borderColor:'#c0352a',borderWidth:2,pointRadius:4,pointBackgroundColor:'#c0352a'},
+        {label:'Proyectado (si se ejecuta el plan)',data:[proy.acc,proy.amb,proy.sec,proy.seg],backgroundColor:'rgba(45,154,77,.22)',borderColor:'#2d9a4d',borderWidth:2,pointRadius:4,pointBackgroundColor:'#2d9a4d'}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10.5,weight:'bold'},boxWidth:11,padding:7}},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+ctx.parsed.r+'/100';}}}},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:9}},grid:{color:'rgba(128,128,128,.18)'},pointLabels:{font:{size:11,weight:'bold'}}}}}
+    });
+  },80);
+}
+function initCUV(){
+  var sel=document.getElementById('cuvSelector');
+  if(!sel) return;
+  var html='<option value="">— Selecciona tu UV —</option>';
+  html+='<optgroup label="Urbanas (9)">';
+  CUV_UVS.filter(function(u){return u.tipo==='urbana';}).forEach(function(u){html+='<option value="'+u.id+'">'+u.n+'</option>';});
+  html+='</optgroup>';
+  html+='<optgroup label="Rurales y rural-urbanas (12)">';
+  CUV_UVS.filter(function(u){return u.tipo!=='urbana';}).forEach(function(u){html+='<option value="'+u.id+'">'+u.n+'</option>';});
+  html+='</optgroup>';
+  sel.innerHTML=html;
+  sel.addEventListener('change',function(){if(sel.value) renderCUV(sel.value);});
+  var rst=document.getElementById('cuvReset');
+  if(rst){rst.addEventListener('click',function(){sel.value='';document.getElementById('cuvResultado').classList.remove('active');document.getElementById('cuvResultado').innerHTML='';if(_cuvChart){try{_cuvChart.destroy();}catch(e){}_cuvChart=null;}});}
+}
+
 // ══════════════════════════════════════════════════════
 // ICT — ÍNDICE DE CALIDAD TERRITORIAL · ESPACIOS PÚBLICOS (Sección 11.3)
 // ══════════════════════════════════════════════════════
@@ -20880,6 +21505,10 @@ const _censoRenders=function(){
   renderCensoEduEmp();renderCensoVulnRanking();renderCensoBrechaUR();
   renderCensoHeatmap();renderCensoMapaVuln();renderCensoComposicion();
   renderAnalisisEstrategico();
+  // v45.124: 3 nuevas secciones
+  try{renderCoherencia();}catch(e){console.warn('Coherencia:',e);}
+  try{renderVozInstitucional();}catch(e){console.warn('VozInst:',e);}
+  try{initCUV();}catch(e){console.warn('CUV:',e);}
 };
 if('requestIdleCallback' in window){requestIdleCallback(_censoRenders,{timeout:4000});}
 else{setTimeout(_censoRenders,2000);}
