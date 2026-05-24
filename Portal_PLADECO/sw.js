@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.84
+// PLADECO Rengo 2025-2035 · Service Worker v62.85
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.85: v45.122 - BLOQUE GOBERNANZA (Propuestas 2, 5, 10): (1) Matriz de Riesgo expandida a 12 riesgos clasificados en 3 familias (institucional/técnico/gobernanza multinivel) con probabilidad, impacto y mitigación específica, ubicada en #compromisos. (2) Protocolo de Actualización institucionalizado en #institucional con 5 bloques (activación extraordinaria, calendario fijo, actores RACI, mecanismo participativo, articulación electoral). (3) Bitácora Pública de Versiones #bitacora en #documentos con 10 entradas de muestra, criterios de trazabilidad post-aprobación del Concejo y link al repo Git público.
 // v62.84: v45.121 - Reordenamiento jerárquico de los índices en la portada pv-on: el #quickIndex (Mapa del PLADECO · 4 macros visuales) se mueve dinámicamente para aparecer JUSTO ARRIBA del .pv-portada (Explora el Plan · 11 capítulos detallados). Eliminación de redundancia: cuando el quickIndex está en este contexto (clase .pv-portada-companion), se ocultan los qi-macros expandidos (qi-group lists) que duplicaban los 11 pv-cards. Resultado: vista alta de 4 macros → detalle por 11 capítulos. Flujo coherente sin información repetida.
 // v62.83: v45.120 - Hotfix v45.119: el wrap de L.map() esperaba al evento 'load' del window, pero el script principal con todos los L.map(...) ya se había ejecutado para entonces. Refactor: ahora el wrap usa polling activo (setTimeout 20ms x 200 intentos = 4s) que captura Leaflet apenas se carga, ANTES del primer L.map(). También wrapea L.Map.prototype.initialize como segunda red para registrar instancias creadas con `new L.Map()`.
 // v62.82: v45.119 - MAPAS LEAFLET RESTAURADOS. Los 5 mapas (mapContainer, mapCensoVuln, ictMap, mbhtMap, mapSC) se inicializaban con height:0 porque las secciones contenedoras estaban .pv-hidden al cargar. Sistema universal nuevo: (1) Wrap de L.map() para registrar TODA instancia en window.__leafletMaps. (2) En PV.show() iterar window.__leafletMaps y llamar invalidateSize(true) en cada uno con 2 setTimeouts (80ms y 320ms) para asegurar que el contenedor ya tenga altura visible. Resultado: al navegar a cualquier sección con mapa, este recalcula y dibuja correctamente.
@@ -85,7 +86,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.84';
+const CACHE_STATIC='pladeco-static-v62.85';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
