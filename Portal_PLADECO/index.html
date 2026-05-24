@@ -1599,7 +1599,29 @@ body.dark .section-reading{background:rgba(255,255,255,.04);border-color:rgba(25
   .section-reading{position:static;margin-top:8px;display:inline-flex}
   .sec-header{padding-bottom:8px}
 }
-@media print{.print-btn,.fav-toggle,.share-btn,.section-reading{display:none!important}}
+@media print{
+  /* v45.113 · Reglas de impresion globales para nuevas secciones */
+  .print-btn,.fav-toggle,.share-btn,.section-reading{display:none!important}
+  /* Macro-dividers se muestran como page-breaks en impresion */
+  .macro-divider{break-before:page;page-break-before:always;background:none!important;border:2px solid #000!important;padding:14px 18px!important;margin:0 0 18px!important}
+  .macro-divider-num{font-size:32px!important;color:#000!important}
+  .macro-divider-title{font-size:18px!important;color:#000!important}
+  .macro-divider-desc{font-size:11px!important;color:#333!important}
+  /* Nuevas secciones del v45.89-v45.110 se imprimen sin sombras ni gradients */
+  #validacion-concejo,#faq-concejo,#decisiones{break-inside:avoid-page;background:#fff!important}
+  #validacion-concejo .callout,#faq-concejo .callout,#decisiones .callout{background:#f5f5f5!important;border:1px solid #ccc!important}
+  /* FAQ-concejo: abrir todos los details para impresion */
+  #faq-concejo details{break-inside:avoid;border:1px solid #ccc!important;padding:10px!important;margin-bottom:8px!important}
+  #faq-concejo details summary{font-weight:700!important}
+  #faq-concejo details summary::after{content:''!important}
+  #faq-concejo details[open] summary,#faq-concejo details summary{list-style:none!important}
+  #faq-concejo details:not([open]) > *:not(summary){display:block!important}
+  /* Live-strip oculto en impresion */
+  .live-strip-wrap,.tn-pladeco-pill,.tn-construccion-badge{display:none!important}
+  /* Topbar simplificado */
+  .topnav{position:static!important;background:#fff!important;border-bottom:2px solid #000!important;color:#000!important}
+  .tn-brand,.tn-brand span{color:#000!important}
+}
 @media print{
   body.printing-section .sidebar,
   body.printing-section .construction-banner,
@@ -5490,7 +5512,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.112</span>
+        <span>&#127919; v45.113</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -5843,7 +5865,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         </div>
         <p class="fuente-info-subtitle">El diagn&#243;stico comunal se construy&#243; integrando <strong>4 fuentes complementarias</strong> que garantizan una visi&#243;n integral del territorio y sus comunidades.</p>
         <div class="fuente-info-img-wrap">
-          <img src="fuente-info.png" alt="Fuentes de Informaci&#243;n PLADECO Rengo 2025-2035" loading="lazy" decoding="async">
+          <img src="fuente-info.png" alt="Fuentes de Informaci&#243;n PLADECO Rengo 2025-2035" width="1200" height="800" loading="lazy" decoding="async" style="width:100%;height:auto">
         </div>
         <div class="fuente-info-sources">
           <div class="fuente-info-src">
