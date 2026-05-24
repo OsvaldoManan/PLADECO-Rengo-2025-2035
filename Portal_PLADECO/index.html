@@ -5631,7 +5631,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.120</span>
+        <span>&#127919; v45.121</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -29923,6 +29923,13 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
 .pv-portada-head{text-align:center;margin-bottom:22px}
 .pv-portada-head h2{font-size:clamp(20px,2.6vw,28px);font-weight:800;color:var(--text);line-height:1.2}
 .pv-portada-head p{font-size:13px;color:var(--text2);margin-top:6px}
+/* v45.121 · Quick Index como companion del pv-portada: solo muestra el mapa visual de 4 macros,
+   oculta los qi-macros detallados (que se duplican con los 11 pv-cards) */
+.pv-portada-companion .qi-macro{display:none!important}
+.pv-portada-companion .qi-macro-map{padding-bottom:0!important;border-bottom:none!important;margin-bottom:0!important}
+.pv-portada-companion .quick-index-toggle{display:none!important}
+.pv-portada-companion .quick-index{margin-bottom:0}
+.pv-portada-companion+.pv-portada{margin-top:18px}
 .pv-portada-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
 .pv-card{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:var(--card);border:1px solid var(--border);border-left:4px solid #2d9a4d;border-radius:14px;padding:15px 18px;transition:transform .15s,box-shadow .15s,border-color .15s}
 .pv-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(45,154,77,.17);border-left-color:#f5921d}
@@ -29994,6 +30001,27 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
     grid.innerHTML=gh+'</div>';
     if(portada.length&&portada[0].parentElement===main){main.insertBefore(grid,portada[0].nextElementSibling);portada.splice(1,0,grid);}
     else{portada.push(grid);}
+    /* v45.121 · Mover #quickIndex (Mapa del PLADECO · 4 partes) JUSTO ANTES de pv-portada
+       para que aparezca arriba de "Explora el Plan" y se evite redundancia */
+    try{
+      var qiSec=document.getElementById('quickIndex');
+      if(qiSec){
+        var qiWrapper=qiSec.closest('section')||qiSec.parentElement;
+        if(qiWrapper&&qiWrapper.parentElement&&qiWrapper!==grid.previousElementSibling){
+          /* Mover el wrapper del quickIndex inmediatamente antes del grid */
+          grid.parentElement.insertBefore(qiWrapper,grid);
+          /* Actualizar el array portada para reflejar el nuevo orden */
+          var idx=portada.indexOf(qiWrapper);
+          if(idx>=0)portada.splice(idx,1);
+          var gridIdx=portada.indexOf(grid);
+          portada.splice(gridIdx,0,qiWrapper);
+          /* Marcar visualmente como complementario */
+          qiWrapper.classList.add('pv-portada-companion');
+          /* Forzar visibilidad expandida en portada (la collapsed por defecto se vuelve confusa aquí) */
+          qiSec.classList.remove('collapsed');
+        }
+      }
+    }catch(e){console.warn('[PV] mover quickIndex falló:',e);}
     function viewOf(node){
       while(node&&node.parentElement!==main){node=node.parentElement;}
       if(!node){return null;}
