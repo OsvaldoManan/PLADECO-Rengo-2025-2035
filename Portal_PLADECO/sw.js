@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.85
+// PLADECO Rengo 2025-2035 · Service Worker v62.86
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.86: v45.123 - BLOQUE ESTRATÉGICO (Propuestas 1, 3, 9) + INTEGRACIÓN ANÁLISIS TERRITORIAL CENSO 2024: (1) Teoría del Cambio en #matriz con 6 cadenas causales por eje (Condición → Intervención → Supuestos → Resultado → Indicador). (2) Dependencias Supracomunales en #erd: tabla de 12 acciones × actores externos (GORE, SUBDERE, MINSAL, MOP, etc.) con nivel de dependencia color-codificado. (3) Comparador Longitudinal PLADECO 2015-2024 en #argumentario con 6 KPIs de cumplimiento + 6 lecciones mapeadas a las 6 Decisiones del Plan. (4) ANÁLISIS TERRITORIAL CENSO 2024 completado en #analisis-estrategico-censo: agregados 3 gráficos avanzados (Gráfico 4 Scatter ICHT_VUL vs IPSB con 18 localidades, Gráfico 7 Heatmap multidimensional 15×6 con color por umbral, Gráfico 8 Bubble ICP vs Población log-scale con líneas de referencia ICP rural/comunal). Plus 5ta conclusión principal (IDDC transversal) agregada al Tab Recomendaciones. Cobertura completa del documento "Analisis_Territorial_Rengo_2024.docx" del Análisis Censal.
 // v62.85: v45.122 - BLOQUE GOBERNANZA (Propuestas 2, 5, 10): (1) Matriz de Riesgo expandida a 12 riesgos clasificados en 3 familias (institucional/técnico/gobernanza multinivel) con probabilidad, impacto y mitigación específica, ubicada en #compromisos. (2) Protocolo de Actualización institucionalizado en #institucional con 5 bloques (activación extraordinaria, calendario fijo, actores RACI, mecanismo participativo, articulación electoral). (3) Bitácora Pública de Versiones #bitacora en #documentos con 10 entradas de muestra, criterios de trazabilidad post-aprobación del Concejo y link al repo Git público.
 // v62.84: v45.121 - Reordenamiento jerárquico de los índices en la portada pv-on: el #quickIndex (Mapa del PLADECO · 4 macros visuales) se mueve dinámicamente para aparecer JUSTO ARRIBA del .pv-portada (Explora el Plan · 11 capítulos detallados). Eliminación de redundancia: cuando el quickIndex está en este contexto (clase .pv-portada-companion), se ocultan los qi-macros expandidos (qi-group lists) que duplicaban los 11 pv-cards. Resultado: vista alta de 4 macros → detalle por 11 capítulos. Flujo coherente sin información repetida.
 // v62.83: v45.120 - Hotfix v45.119: el wrap de L.map() esperaba al evento 'load' del window, pero el script principal con todos los L.map(...) ya se había ejecutado para entonces. Refactor: ahora el wrap usa polling activo (setTimeout 20ms x 200 intentos = 4s) que captura Leaflet apenas se carga, ANTES del primer L.map(). También wrapea L.Map.prototype.initialize como segunda red para registrar instancias creadas con `new L.Map()`.
@@ -86,7 +87,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.85';
+const CACHE_STATIC='pladeco-static-v62.86';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

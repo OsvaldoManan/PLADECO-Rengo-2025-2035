@@ -571,6 +571,20 @@ body.dark .ficha-card{background:var(--card)}body.dark .ficha-puente-card{backgr
 .anest-stat.naranja{border-left-color:#f5921d;background:linear-gradient(180deg,rgba(245,146,29,.06),transparent)}
 .anest-stat.navy{border-left-color:#071d36;background:linear-gradient(180deg,rgba(7,29,54,.06),transparent)}
 .anest-stat.rojo{border-left-color:#c0352a;background:linear-gradient(180deg,rgba(192,53,42,.06),transparent)}
+.anest-stat.amarillo{border-left-color:#c49b0a;background:linear-gradient(180deg,rgba(196,155,10,.06),transparent)}
+/* Heatmap multidimensional (v45.123) */
+.anest-heatmap-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;background:var(--card)}
+.anest-heatmap{display:grid;grid-template-columns:160px repeat(6,1fr);min-width:600px;font-size:11.5px}
+.anest-heatmap-head{padding:9px 8px;background:linear-gradient(135deg,#071d36,#0c2a4a);color:#fff;font-weight:800;text-align:center;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.anest-heatmap-head.loc{text-align:left;padding-left:12px}
+.anest-heatmap-loc{padding:9px 12px;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);background:var(--card);display:flex;align-items:center;gap:6px}
+.anest-heatmap-loc-rank{display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;background:rgba(192,53,42,.12);color:#c0352a;border-radius:50%;font-size:10px;font-weight:800;flex-shrink:0}
+.anest-heatmap-cell{padding:9px 6px;text-align:center;font-variant-numeric:tabular-nums;font-weight:700;border-bottom:1px solid var(--border);border-left:1px solid rgba(0,0,0,.04);transition:transform .15s;cursor:default}
+.anest-heatmap-cell:hover{transform:scale(1.08);z-index:2;position:relative;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+body.dark .anest-heatmap-cell{border-left-color:rgba(255,255,255,.04)}
+.anest-heatmap-legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;padding:8px 12px;background:rgba(7,29,54,.03);border-radius:8px;font-size:11px}
+.anest-heatmap-legend .ahl-label{font-weight:700;color:var(--text2);margin-right:4px}
+.anest-heatmap-legend .ahl-cell{padding:3px 9px;border-radius:6px;font-weight:700;font-variant-numeric:tabular-nums}
 .anest-stat-val{font-family:inherit;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.1}
 .anest-stat-lbl{font-size:11px;color:var(--text2);margin-top:6px;font-weight:600}
 .anest-stat-foot{font-size:10.5px;color:#2d9a4d;margin-top:4px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
@@ -5631,7 +5645,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.122</span>
+        <span>&#127919; v45.123</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -8784,6 +8798,19 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
           </div>
         </div>
       </div>
+
+      <!-- Gr&aacute;fico 4: Scatter ICHT_VUL vs IPSB (v45.123) -->
+      <div class="anest-block">
+        <h3 class="anest-block-title">Gr&aacute;fico 4 &middot; Relaci&oacute;n entre d&eacute;ficit de capital humano y precariedad de servicios b&aacute;sicos</h3>
+        <p class="anest-block-sub">An&aacute;lisis bivariado por localidad: cada punto representa una localidad de Rengo, posicionada por su <strong>ICHT_VUL (eje X)</strong> y su <strong>IPSB (eje Y)</strong>. Las nubes urbana y rural se separan verticalmente, evidenciando que <strong>para un mismo nivel de capital humano, una localidad rural acumula consistentemente m&aacute;s precariedad de servicios</strong> &mdash;una brecha que no se cierra con educaci&oacute;n, sino que exige inversi&oacute;n directa en infraestructura. La pendiente positiva del ajuste rural confirma un ciclo de exclusi&oacute;n m&uacute;ltiple en el sector rural.</p>
+        <div class="viz-row">
+          <div class="viz-card viz-full">
+            <h3 style="font-size:14px;font-weight:700">D&eacute;ficit de capital humano (X) vs Precariedad de servicios (Y)</h3>
+            <div class="viz-sub"><span style="color:#3b82f6;font-weight:700">&#9679; Azul: Urbano</span> &middot; <span style="color:#c0352a;font-weight:700">&#9679; Rojo: Rural</span> &mdash; Brecha estructural irreductible al capital humano</div>
+            <canvas id="anestChartScatter" height="180"></canvas>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- TAB 3: AN&Aacute;LISIS POR &Iacute;NDICE -->
@@ -8818,6 +8845,34 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
         </div>
       </div>
 
+      <!-- Gr&aacute;fico 7: Heatmap multidimensional (v45.123) -->
+      <div class="anest-block">
+        <h3 class="anest-block-title">Gr&aacute;fico 7 &middot; Perfil multidimensional por localidad (heatmap)</h3>
+        <p class="anest-block-sub">Lectura sint&eacute;tica del perfil de vulnerabilidad de cada localidad en sus 6 dimensiones. La <strong>intensidad crom&aacute;tica</strong> (verde &rarr; amarillo &rarr; rojo) indica magnitud del &iacute;ndice. Lectura por columnas: <strong>ICHT_VUL es transversalmente alto</strong>, mientras <strong>IPSB es la dimensi&oacute;n m&aacute;s variable</strong> entre localidades &mdash;por tanto, la m&aacute;s susceptible de intervenci&oacute;n focalizada. Lectura por filas: permite distinguir entre perfiles uniformes (El Placer) y perfiles dominados por una dimensi&oacute;n (Rosario Oriente, donde IVSH+IPSB concentran la vulnerabilidad).</p>
+        <div id="anestHeatmap" class="anest-heatmap-wrap"></div>
+        <div class="anest-heatmap-legend">
+          <span class="ahl-label">Escala de vulnerabilidad:</span>
+          <span class="ahl-cell" style="background:#e8f5e9;color:#1a7a4a">0,00&ndash;0,15</span>
+          <span class="ahl-cell" style="background:#fff8e1;color:#7a5010">0,15&ndash;0,30</span>
+          <span class="ahl-cell" style="background:#ffe0b2;color:#bf6500">0,30&ndash;0,45</span>
+          <span class="ahl-cell" style="background:#ffccbc;color:#c0352a">0,45&ndash;0,60</span>
+          <span class="ahl-cell" style="background:#ef9a9a;color:#a82919;font-weight:800">&gt; 0,60</span>
+        </div>
+      </div>
+
+      <!-- Gr&aacute;fico 8: Bubble ICP vs Poblaci&oacute;n (v45.123) -->
+      <div class="anest-block">
+        <h3 class="anest-block-title">Gr&aacute;fico 8 &middot; Vulnerabilidad compuesta (ICP) vs poblaci&oacute;n por localidad</h3>
+        <p class="anest-block-sub">Cada burbuja es una localidad: <strong>tama&ntilde;o proporcional a poblaci&oacute;n</strong>, posici&oacute;n vertical = ICP, color = &aacute;rea (azul urbano, rojo rural). El eje X usa escala logar&iacute;tmica para acomodar el rango de 15 hab. (El Placer) a 42.283 hab. (Rengo ciudad). <strong>Umbral cr&iacute;tico identificado</strong>: localidades con &gt; 1.000 hab. tienden a ICP &lt; 0,27; bajo ese umbral, la vulnerabilidad puede alcanzar cualquier valor entre 0,15 y 0,35. Localidades clave para maximizar impacto poblacional: <strong>Pueblo Hundido (661 hab., ICP 0,291) y Cerrillos (830 hab., ICP 0,282)</strong>.</p>
+        <div class="viz-row">
+          <div class="viz-card viz-full">
+            <h3 style="font-size:14px;font-weight:700">ICP por localidad, ponderado por poblaci&oacute;n</h3>
+            <div class="viz-sub">L&iacute;nea punteada roja: ICP medio del &aacute;rea rural (0,269) &middot; L&iacute;nea verde: ICP medio comunal (0,210)</div>
+            <canvas id="anestChartBubble" height="180"></canvas>
+          </div>
+        </div>
+      </div>
+
       <div class="anest-block">
         <h3 class="anest-block-title">4 perfiles diferenciados de vulnerabilidad</h3>
         <p class="anest-block-sub">El an&aacute;lisis identifica patrones espec&iacute;ficos que demandan respuestas diferenciadas. Dos localidades con el mismo ICP pueden requerir intervenciones completamente distintas seg&uacute;n su perfil.</p>
@@ -8828,13 +8883,14 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     <!-- TAB 5: RECOMENDACIONES -->
     <div class="anest-tab-panel" data-anest-panel="recom">
       <div class="anest-block">
-        <h3 class="anest-block-title">Cuatro hallazgos estructurantes del PLADECO 2025-2035</h3>
-        <p class="anest-block-sub">El an&aacute;lisis multidimensional permite identificar conclusiones que reordenan las prioridades de inversi&oacute;n p&uacute;blica comunal:</p>
+        <h3 class="anest-block-title">5 conclusiones principales del an&aacute;lisis multidimensional</h3>
+        <p class="anest-block-sub">El an&aacute;lisis sobre 826 manzanas censales del CPV 2024 permite identificar 5 conclusiones que reordenan las prioridades de inversi&oacute;n p&uacute;blica comunal y deben articularse con el PLADECO 2025-2035:</p>
         <div class="anest-stats">
-          <div class="anest-stat"><div class="anest-stat-val">0,210</div><div class="anest-stat-lbl">ICP medio comunal en el rango bajo-moderado, pero con <strong>rango de 0,073 a 0,493</strong>. El promedio oculta una vulnerabilidad polarizada que solo se ve a escala de manzana censal.</div></div>
-          <div class="anest-stat naranja"><div class="anest-stat-val">+38,7%</div><div class="anest-stat-lbl">ICP rural (0,269) supera al urbano (0,194). La brecha urbano-rural es el <strong>principal eje de desigualdad territorial</strong>, con un m&aacute;ximo de 2,74&times; en servicios b&aacute;sicos (IPSB).</div></div>
-          <div class="anest-stat rojo"><div class="anest-stat-val">15/15</div><div class="anest-stat-lbl">Las 15 localidades m&aacute;s vulnerables son <strong>todas rurales</strong> sin excepci&oacute;n (rango ICP 0,282 a 0,348). La pol&iacute;tica urbana ha sido efectiva; la pol&iacute;tica rural est&aacute; pendiente.</div></div>
-          <div class="anest-stat navy"><div class="anest-stat-val">0,438</div><div class="anest-stat-lbl">ICHT_VUL: el d&eacute;ficit de capital humano es la <strong>vulnerabilidad m&aacute;s generalizada</strong>. Afecta a urbano y rural simult&aacute;neamente: limitar el desarrollo end&oacute;geno comunal.</div></div>
+          <div class="anest-stat"><div class="anest-stat-val">0,210</div><div class="anest-stat-lbl"><strong>Vulnerabilidad polarizada</strong> &mdash; ICP medio comunal en rango bajo-moderado, pero con <strong>rango de 0,073 a 0,493</strong>. El promedio oculta una realidad polarizada que solo se ve a escala de manzana censal.</div></div>
+          <div class="anest-stat naranja"><div class="anest-stat-val">+38,7%</div><div class="anest-stat-lbl"><strong>Brecha urbano-rural estructural</strong> &mdash; ICP rural (0,269) supera al urbano (0,194). Es el <strong>principal eje de desigualdad territorial</strong>, con un m&aacute;ximo de 2,74&times; en servicios b&aacute;sicos (IPSB).</div></div>
+          <div class="anest-stat rojo"><div class="anest-stat-val">15/15</div><div class="anest-stat-lbl"><strong>Vulnerabilidad rural total</strong> &mdash; Las 15 localidades m&aacute;s vulnerables son <strong>todas rurales</strong> sin excepci&oacute;n (rango ICP 0,282 a 0,348). La pol&iacute;tica urbana ha sido efectiva; la pol&iacute;tica rural est&aacute; pendiente.</div></div>
+          <div class="anest-stat navy"><div class="anest-stat-val">0,438</div><div class="anest-stat-lbl"><strong>D&eacute;ficit de capital humano transversal</strong> &mdash; ICHT_VUL es la <strong>vulnerabilidad m&aacute;s generalizada</strong>. Afecta a urbano y rural simult&aacute;neamente y limita el desarrollo end&oacute;geno comunal.</div></div>
+          <div class="anest-stat amarillo"><div class="anest-stat-val">0,270</div><div class="anest-stat-lbl"><strong>Dependencia de cuidados homog&eacute;nea</strong> &mdash; IDDC con brecha urbano-rural m&iacute;nima (1,05&times;). Es la vulnerabilidad <strong>m&aacute;s transversal del territorio</strong>, requiriendo respuesta comunal integrada (centros diurnos urbanos + cuidadores itinerantes rurales).</div></div>
         </div>
       </div>
 
@@ -10459,7 +10515,91 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
       Una matriz de 225 acciones no se lee linealmente &mdash; se lee como sistema. La distribuci&oacute;n revela d&oacute;nde concentra el plan su apuesta: Desarrollo Social (26%), Territorio &amp; MA (24%) y Gesti&oacute;n Municipal (22%) suman el 72% del plan. Educaci&oacute;n queda en 6% &mdash;la brecha program&aacute;tica m&aacute;s visible&mdash; lo que exige decisi&oacute;n explicita: o se refuerza con acciones nuevas, o se asume que la educaci&oacute;n se trabaja v&iacute;a sectores externos (MINEDUC, SLEP). Cada acci&oacute;n de la matriz debe pasar el test de las 6 Decisiones del Plan: si no responde a una de ellas, debe justificar por qu&eacute; vale la pena. La matriz es la traducci&oacute;n operativa de las 4 Lecturas del Resumen Ejecutivo a las 6 Decisiones y luego a 225 actos administrativos concretos.
     </div>
   </div>
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Matriz PLADECO RENGO 2025-2035 &#183; SECPLAC Rengo &#183; Elaboraci&#243;n propia</div>
+
+  <!-- ═══ TEORÍA DEL CAMBIO POR EJE · v45.123 (Propuesta 1) ═══ -->
+  <div id="teoria-cambio" style="margin:32px 0 8px;padding:24px;background:linear-gradient(135deg,rgba(124,58,237,.05),rgba(45,154,77,.04));border:1px solid var(--border);border-left:4px solid #7c3aed;border-radius:14px">
+    <div style="margin-bottom:18px">
+      <div style="display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#7c3aed;background:rgba(124,58,237,.1);padding:5px 11px;border-radius:99px;margin-bottom:8px">&#128279; Teor&iacute;a del Cambio</div>
+      <h3 style="font-size:19px;font-weight:800;color:var(--text);margin:0 0 6px;line-height:1.3">6 Cadenas Causales · L&oacute;gica de Intervenci&oacute;n por Eje</h3>
+      <p style="font-size:13px;color:var(--text2);margin:0;line-height:1.6">Cada eje del PLADECO se reconstruye como una cadena de 5 eslabones: <strong>Condici&oacute;n actual &rarr; Intervenci&oacute;n &rarr; Supuestos &rarr; Resultado esperado &rarr; Indicador</strong>. Permite verificar que cada acci&oacute;n del plan responde a una l&oacute;gica explicita y trazable, no a voluntad arbitraria.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:14px">
+
+      <details open style="background:var(--card);border:1px solid var(--border);border-left:4px solid #C0392B;border-radius:12px;padding:14px 18px">
+        <summary style="cursor:pointer;font-weight:800;font-size:14px;color:var(--text);outline:none"><span style="display:inline-block;background:#C0392B;color:#fff;padding:2px 8px;border-radius:6px;font-size:10.5px;margin-right:8px">EJE 01</span>Desarrollo Social y Comunitario</summary>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:12px;line-height:1.5">
+          <div style="background:rgba(220,38,38,.06);padding:10px;border-radius:8px;border-left:3px solid #dc2626"><div style="font-size:9.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">1 &middot; Condici&oacute;n actual</div>100% NNA eval&uacute;a negativamente la comuna; 426 casos VIF anuales; 50% de instrumentos de protecci&oacute;n NNA-mujer activos solo en papel</div>
+          <div style="background:rgba(245,158,11,.06);padding:10px;border-radius:8px;border-left:3px solid #f59e0b"><div style="font-size:9.5px;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">2 &middot; Intervenci&oacute;n</div>Plan integral de protecci&oacute;n NNA + Programa Prevenci&oacute;n VIF articulado con OPD, CESFAM y establecimientos educacionales</div>
+          <div style="background:rgba(67,97,238,.06);padding:10px;border-radius:8px;border-left:3px solid #4361ee"><div style="font-size:9.5px;font-weight:800;color:#4361ee;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">3 &middot; Supuestos</div>Redes intersectoriales se re&uacute;nen trimestralmente; JJVV asumen alerta temprana; oficina mujer con dotaci&oacute;n estable</div>
+          <div style="background:rgba(45,154,77,.06);padding:10px;border-radius:8px;border-left:3px solid #2d9a4d"><div style="font-size:9.5px;font-weight:800;color:#2d9a4d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">4 &middot; Resultado esperado</div>Evaluaci&oacute;n negativa NNA &lt;60%; VIF -20%; 100% de instrumentos activos</div>
+          <div style="background:rgba(124,58,237,.06);padding:10px;border-radius:8px;border-left:3px solid #7c3aed"><div style="font-size:9.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">5 &middot; Indicador</div>Encuesta NNA anual (DAEM); Estad&iacute;stica VIF semestral (Carabineros); Auditor&iacute;a anual (SECPLAC)</div>
+        </div>
+      </details>
+
+      <details style="background:var(--card);border:1px solid var(--border);border-left:4px solid #0E7F68;border-radius:12px;padding:14px 18px">
+        <summary style="cursor:pointer;font-weight:800;font-size:14px;color:var(--text);outline:none"><span style="display:inline-block;background:#0E7F68;color:#fff;padding:2px 8px;border-radius:6px;font-size:10.5px;margin-right:8px">EJE 02</span>Desarrollo Econ&oacute;mico y Productivo</summary>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:12px;line-height:1.5">
+          <div style="background:rgba(220,38,38,.06);padding:10px;border-radius:8px;border-left:3px solid #dc2626"><div style="font-size:9.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">1 &middot; Condici&oacute;n actual</div>4.439 empresas (1&deg; regional) pero 62% empleo informal; mediana asalariada $754.760 bajo el promedio; OMIL con &lt;500 colocaciones/a&ntilde;o</div>
+          <div style="background:rgba(245,158,11,.06);padding:10px;border-radius:8px;border-left:3px solid #f59e0b"><div style="font-size:9.5px;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">2 &middot; Intervenci&oacute;n</div>Programa Formalizaci&oacute;n PyME + capacitaci&oacute;n tributaria + vinculaci&oacute;n con US$208M de inversi&oacute;n privada proyectada</div>
+          <div style="background:rgba(67,97,238,.06);padding:10px;border-radius:8px;border-left:3px solid #4361ee"><div style="font-size:9.5px;font-weight:800;color:#4361ee;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">3 &middot; Supuestos</div>SII y SENCE entregan oferta accesible; empresas grandes asumen condicionalidad de empleo local; OMIL ampl&iacute;a base</div>
+          <div style="background:rgba(45,154,77,.06);padding:10px;border-radius:8px;border-left:3px solid #2d9a4d"><div style="font-size:9.5px;font-weight:800;color:#2d9a4d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">4 &middot; Resultado esperado</div>Empleo formal de 38% a &ge;45%; OMIL &ge;500 colocaciones/a&ntilde;o; PyME formalizadas +20%</div>
+          <div style="background:rgba(124,58,237,.06);padding:10px;border-radius:8px;border-left:3px solid #7c3aed"><div style="font-size:9.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">5 &middot; Indicador</div>ENE INE (trimestral); SII formalizaci&oacute;n (anual); OMIL colocaciones (mensual)</div>
+        </div>
+      </details>
+
+      <details style="background:var(--card);border:1px solid var(--border);border-left:4px solid #B45309;border-radius:12px;padding:14px 18px">
+        <summary style="cursor:pointer;font-weight:800;font-size:14px;color:var(--text);outline:none"><span style="display:inline-block;background:#B45309;color:#fff;padding:2px 8px;border-radius:6px;font-size:10.5px;margin-right:8px">EJE 03</span>Ordenamiento Territorial y Medio Ambiente</summary>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:12px;line-height:1.5">
+          <div style="background:rgba(220,38,38,.06);padding:10px;border-radius:8px;border-left:3px solid #dc2626"><div style="font-size:9.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">1 &middot; Condici&oacute;n actual</div>ICT promedio 47/100; brecha &gt;40 puntos entre zona mejor y peor; megasequ&iacute;a 20 a&ntilde;os; p&eacute;rdida 145 ha bosque nativo</div>
+          <div style="background:rgba(245,158,11,.06);padding:10px;border-radius:8px;border-left:3px solid #f59e0b"><div style="font-size:9.5px;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">2 &middot; Intervenci&oacute;n</div>FRIL/PMU/FNDR priorizados por brecha ICT + PACCC + actualizaci&oacute;n PRC + Convenio H&iacute;drico GORE-DGA</div>
+          <div style="background:rgba(67,97,238,.06);padding:10px;border-radius:8px;border-left:3px solid #4361ee"><div style="font-size:9.5px;font-weight:800;color:#4361ee;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">3 &middot; Supuestos</div>MOP y MINVU acompa&ntilde;an; DGA aprueba acuerdos h&iacute;dricos; PACCC se opera y no solo se aprueba</div>
+          <div style="background:rgba(45,154,77,.06);padding:10px;border-radius:8px;border-left:3px solid #2d9a4d"><div style="font-size:9.5px;font-weight:800;color:#2d9a4d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">4 &middot; Resultado esperado</div>Brecha ICT &lt;25 puntos; PACCC operativo; PRC actualizado; cobertura agua red &gt;95% rural</div>
+          <div style="background:rgba(124,58,237,.06);padding:10px;border-radius:8px;border-left:3px solid #7c3aed"><div style="font-size:9.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">5 &middot; Indicador</div>ICT anual (SECPLAC); reporte PACCC semestral; SISS cobertura agua (anual)</div>
+        </div>
+      </details>
+
+      <details style="background:var(--card);border:1px solid var(--border);border-left:4px solid #1A6B3A;border-radius:12px;padding:14px 18px">
+        <summary style="cursor:pointer;font-weight:800;font-size:14px;color:var(--text);outline:none"><span style="display:inline-block;background:#1A6B3A;color:#fff;padding:2px 8px;border-radius:6px;font-size:10.5px;margin-right:8px">EJE 04</span>Servicios P&uacute;blicos e Infraestructura</summary>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:12px;line-height:1.5">
+          <div style="background:rgba(220,38,38,.06);padding:10px;border-radius:8px;border-left:3px solid #dc2626"><div style="font-size:9.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">1 &middot; Condici&oacute;n actual</div>CESFAM con tiempos de espera altos; conectividad rural incompleta; iluminaci&oacute;n p&uacute;blica deficiente en periferias</div>
+          <div style="background:rgba(245,158,11,.06);padding:10px;border-radius:8px;border-left:3px solid #f59e0b"><div style="font-size:9.5px;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">2 &middot; Intervenci&oacute;n</div>Modernizaci&oacute;n CESFAM + Plan iluminaci&oacute;n LED + extensi&oacute;n red caminera + telecomunicaciones rurales</div>
+          <div style="background:rgba(67,97,238,.06);padding:10px;border-radius:8px;border-left:3px solid #4361ee"><div style="font-size:9.5px;font-weight:800;color:#4361ee;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">3 &middot; Supuestos</div>MINSAL aprueba inversi&oacute;n; MOP prioriza vialidad rural; SUBTEL incluye Rengo en programa de conectividad</div>
+          <div style="background:rgba(45,154,77,.06);padding:10px;border-radius:8px;border-left:3px solid #2d9a4d"><div style="font-size:9.5px;font-weight:800;color:#2d9a4d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">4 &middot; Resultado esperado</div>Tiempos de espera CESFAM -30%; iluminaci&oacute;n LED al 100%; 91,4% hogares con internet (mantenido)</div>
+          <div style="background:rgba(124,58,237,.06);padding:10px;border-radius:8px;border-left:3px solid #7c3aed"><div style="font-size:9.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">5 &middot; Indicador</div>Tiempo espera CESFAM mensual (Salud); inventario LED (DOM); SUBTEL conectividad (anual)</div>
+        </div>
+      </details>
+
+      <details style="background:var(--card);border:1px solid var(--border);border-left:4px solid #6B21A8;border-radius:12px;padding:14px 18px">
+        <summary style="cursor:pointer;font-weight:800;font-size:14px;color:var(--text);outline:none"><span style="display:inline-block;background:#6B21A8;color:#fff;padding:2px 8px;border-radius:6px;font-size:10.5px;margin-right:8px">EJE 05</span>Cultura, Deporte e Identidad Local</summary>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:12px;line-height:1.5">
+          <div style="background:rgba(220,38,38,.06);padding:10px;border-radius:8px;border-left:3px solid #dc2626"><div style="font-size:9.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">1 &middot; Condici&oacute;n actual</div>66% identidad local d&eacute;bil; emigraci&oacute;n juvenil; oferta cultural concentrada en casco urbano; espacios deportivos con d&eacute;ficit</div>
+          <div style="background:rgba(245,158,11,.06);padding:10px;border-radius:8px;border-left:3px solid #f59e0b"><div style="font-size:9.5px;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">2 &middot; Intervenci&oacute;n</div>Plan de Capital Social + Programa identidad + descentralizaci&oacute;n cultural a 21 UV + Clubes deportivos formalizados</div>
+          <div style="background:rgba(67,97,238,.06);padding:10px;border-radius:8px;border-left:3px solid #4361ee"><div style="font-size:9.5px;font-weight:800;color:#4361ee;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">3 &middot; Supuestos</div>Ministerio Culturas y GORE financian; JJVV se vinculan con centros culturales; INJUV opera localmente</div>
+          <div style="background:rgba(45,154,77,.06);padding:10px;border-radius:8px;border-left:3px solid #2d9a4d"><div style="font-size:9.5px;font-weight:800;color:#2d9a4d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">4 &middot; Resultado esperado</div>Identidad local fuerte &ge;50%; oferta cultural al 80% de UV; emigraci&oacute;n juvenil reducida</div>
+          <div style="background:rgba(124,58,237,.06);padding:10px;border-radius:8px;border-left:3px solid #7c3aed"><div style="font-size:9.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">5 &middot; Indicador</div>Encuesta identidad anual; mapeo cultural por UV (DIDECO); SAE migraci&oacute;n NNA-juvenil</div>
+        </div>
+      </details>
+
+      <details style="background:var(--card);border:1px solid var(--border);border-left:4px solid #92400E;border-radius:12px;padding:14px 18px">
+        <summary style="cursor:pointer;font-weight:800;font-size:14px;color:var(--text);outline:none"><span style="display:inline-block;background:#92400E;color:#fff;padding:2px 8px;border-radius:6px;font-size:10.5px;margin-right:8px">EJE 06</span>Gesti&oacute;n Municipal y Gobernanza</summary>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;font-size:12px;line-height:1.5">
+          <div style="background:rgba(220,38,38,.06);padding:10px;border-radius:8px;border-left:3px solid #dc2626"><div style="font-size:9.5px;font-weight:800;color:#dc2626;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">1 &middot; Condici&oacute;n actual</div>50% instrumentos institucionales solo en papel; FCM 55,8%; captaci&oacute;n 6,28% vs 13,89% regional</div>
+          <div style="background:rgba(245,158,11,.06);padding:10px;border-radius:8px;border-left:3px solid #f59e0b"><div style="font-size:9.5px;font-weight:800;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">2 &middot; Intervenci&oacute;n</div>Oficina de Gesti&oacute;n de Proyectos PLADECO + Comit&eacute; t&eacute;cnico mensual + Sem&aacute;foro p&uacute;blico trimestral + Reglamento de capacitaci&oacute;n</div>
+          <div style="background:rgba(67,97,238,.06);padding:10px;border-radius:8px;border-left:3px solid #4361ee"><div style="font-size:9.5px;font-weight:800;color:#4361ee;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">3 &middot; Supuestos</div>SUBDERE apoya capacitaci&oacute;n; Concejo aprueba protocolos; equipo asume cultura de seguimiento</div>
+          <div style="background:rgba(45,154,77,.06);padding:10px;border-radius:8px;border-left:3px solid #2d9a4d"><div style="font-size:9.5px;font-weight:800;color:#2d9a4d;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">4 &middot; Resultado esperado</div>Captaci&oacute;n &ge;10% en 4 a&ntilde;os; 100% instrumentos activos; 100% actos administrativos en plazo legal</div>
+          <div style="background:rgba(124,58,237,.06);padding:10px;border-radius:8px;border-left:3px solid #7c3aed"><div style="font-size:9.5px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">5 &middot; Indicador</div>SUBDERE captaci&oacute;n municipal (anual); Auditor&iacute;a CGR (anual); CPLT transparencia (anual)</div>
+        </div>
+      </details>
+
+    </div>
+
+    <div style="margin-top:14px;padding:12px 16px;background:rgba(45,154,77,.06);border-radius:10px;font-size:12.5px;line-height:1.55;color:var(--text2)">
+      <strong style="color:var(--text)">L&oacute;gica cruzada:</strong> Las 6 cadenas comparten supuestos transversales (capacidades institucionales, articulaci&oacute;n intersectorial, continuidad pol&iacute;tica). Si alguno falla, varias cadenas se debilitan al mismo tiempo. Por eso la Matriz de Riesgo y el Protocolo de Actualizaci&oacute;n son piezas complementarias a esta teor&iacute;a del cambio.
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Matriz PLADECO RENGO 2025-2035 &#183; SECPLAC Rengo &#183; Elaboraci&#243;n propia &middot; Marco l&oacute;gico SUBDERE &middot; ERD O&#39;Higgins 2024-2036</div>
 </section>
 
 
@@ -10599,7 +10739,52 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     </div>
   </div>
 
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Gobierno Regional de O'Higgins &amp; Universidad de O'Higgins (2025). <em>Estrategia Regional de Desarrollo de O'Higgins 2024-2036</em>. Resoluci&oacute;n Exenta N&deg; 439, C&oacute;digo BIP N&deg; 40017868-0. Documento aprobado por unanimidad por el Consejo Regional (CORE) de O'Higgins en sesi&oacute;n de diciembre 2024. M&aacute;s informaci&oacute;n: <a href="https://erd.uoh.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">erd.uoh.cl</a> &middot; <a href="https://www.goreohiggins.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">goreohiggins.cl</a>.</div>
+
+  <!-- ═══ DEPENDENCIAS SUPRACOMUNALES · v45.123 (Propuesta 3) ═══ -->
+  <div id="dependencias-supra" style="margin:32px 0 8px;padding:24px;background:linear-gradient(135deg,rgba(154,52,18,.05),rgba(67,97,238,.04));border:1px solid var(--border);border-left:4px solid #9a3412;border-radius:14px">
+    <div style="margin-bottom:16px">
+      <div style="display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9a3412;background:rgba(154,52,18,.1);padding:5px 11px;border-radius:99px;margin-bottom:8px">&#127963;&#65039; Dependencias Supracomunales</div>
+      <h3 style="font-size:19px;font-weight:800;color:var(--text);margin:0 0 6px;line-height:1.3">Qu&eacute; Acciones del PLADECO Dependen de Actores Externos</h3>
+      <p style="font-size:13px;color:var(--text2);margin:0;line-height:1.6">Mapa estructurado de las acciones del PLADECO que <strong>no son aut&oacute;nomas del municipio</strong> y requieren decisiones u operaciones de GORE, SUBDERE, ministerios o servicios centralizados. Permite al Concejo, COSOC y ciudadan&iacute;a distinguir qu&eacute; est&aacute; bajo gobernanza local y qu&eacute; requiere gesti&oacute;n vertical.</p>
+    </div>
+
+    <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border)">
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card)">
+        <thead>
+          <tr style="background:rgba(154,52,18,.08);text-align:left">
+            <th style="padding:10px 12px;border-bottom:2px solid #9a3412;font-weight:800;color:#9a3412;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Acci&oacute;n / Cartera</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #9a3412;font-weight:800;color:#9a3412;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Eje</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #9a3412;font-weight:800;color:#9a3412;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Actor supracomunal</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #9a3412;font-weight:800;color:#9a3412;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Nivel</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #9a3412;font-weight:800;color:#9a3412;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Decisi&oacute;n esperada</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #9a3412;font-weight:800;color:#9a3412;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Estado</th>
+          </tr>
+        </thead>
+        <tbody style="font-size:12px;color:var(--text)">
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px;font-weight:600">Modernizaci&oacute;n CESFAM Rengo</td><td style="padding:9px 12px"><span style="background:rgba(192,57,43,.1);color:#C0392B;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">1</span></td><td style="padding:9px 12px">MINSAL / SS O&#39;Higgins</td><td style="padding:9px 12px"><span style="color:#dc2626;font-weight:800">Alta</span></td><td style="padding:9px 12px;color:var(--text2)">Inversi&oacute;n + dotaci&oacute;n profesional</td><td style="padding:9px 12px;font-size:11px;color:#f59e0b;font-weight:700">En cartera FNDR</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px;font-weight:600">Embalse El Bollenar (sequ&iacute;a)</td><td style="padding:9px 12px"><span style="background:rgba(180,83,9,.1);color:#B45309;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">3</span></td><td style="padding:9px 12px">MOP + GORE + DGA</td><td style="padding:9px 12px"><span style="color:#dc2626;font-weight:800">Alta</span></td><td style="padding:9px 12px;color:var(--text2)">Inversi&oacute;n sectorial + EIA</td><td style="padding:9px 12px;font-size:11px;color:#f59e0b;font-weight:700">En estudio</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px;font-weight:600">Transici&oacute;n SLEP educativa</td><td style="padding:9px 12px"><span style="background:rgba(107,33,168,.1);color:#6B21A8;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">5</span></td><td style="padding:9px 12px">MINEDUC</td><td style="padding:9px 12px"><span style="color:#dc2626;font-weight:800">Alta</span></td><td style="padding:9px 12px;color:var(--text2)">R&eacute;gimen legal nuevo</td><td style="padding:9px 12px;font-size:11px;color:#dc2626;font-weight:700">Nacional en curso</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px;font-weight:600">Plan Comunal de Seguridad</td><td style="padding:9px 12px"><span style="background:rgba(146,64,14,.1);color:#92400E;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">6</span></td><td style="padding:9px 12px">Subsec. Prev. del Delito + Carabineros</td><td style="padding:9px 12px"><span style="color:#dc2626;font-weight:800">Alta</span></td><td style="padding:9px 12px;color:var(--text2)">Co-financiamiento + dotaci&oacute;n</td><td style="padding:9px 12px;font-size:11px;color:#22c55e;font-weight:700">Convenio vigente</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px;font-weight:600">Mejora vial rural</td><td style="padding:9px 12px"><span style="background:rgba(26,107,58,.1);color:#1A6B3A;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">4</span></td><td style="padding:9px 12px">MOP / Vialidad</td><td style="padding:9px 12px"><span style="color:#dc2626;font-weight:800">Alta</span></td><td style="padding:9px 12px;color:var(--text2)">Programaci&oacute;n de obras viales</td><td style="padding:9px 12px;font-size:11px;color:#f59e0b;font-weight:700">Solicitud presentada</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px;font-weight:600">Actualizaci&oacute;n PRC</td><td style="padding:9px 12px"><span style="background:rgba(26,107,58,.1);color:#1A6B3A;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">4</span></td><td style="padding:9px 12px">MINVU / SEREMI</td><td style="padding:9px 12px"><span style="color:#dc2626;font-weight:800">Alta</span></td><td style="padding:9px 12px;color:var(--text2)">Aprobaci&oacute;n normativa</td><td style="padding:9px 12px;font-size:11px;color:#dc2626;font-weight:700">Pendiente</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px;font-weight:600">Programa Sendero Seguro</td><td style="padding:9px 12px"><span style="background:rgba(192,57,43,.1);color:#C0392B;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">1</span></td><td style="padding:9px 12px">Subsec. Prev. del Delito</td><td style="padding:9px 12px"><span style="color:#f59e0b;font-weight:800">Media</span></td><td style="padding:9px 12px;color:var(--text2)">Inclusi&oacute;n presupuesto nacional</td><td style="padding:9px 12px;font-size:11px;color:#f59e0b;font-weight:700">En negociaci&oacute;n</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px;font-weight:600">Capacitaci&oacute;n PyME</td><td style="padding:9px 12px"><span style="background:rgba(14,127,104,.1);color:#0E7F68;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">2</span></td><td style="padding:9px 12px">SENCE</td><td style="padding:9px 12px"><span style="color:#f59e0b;font-weight:800">Media</span></td><td style="padding:9px 12px;color:var(--text2)">Cupos comunales</td><td style="padding:9px 12px;font-size:11px;color:#22c55e;font-weight:700">Anual</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px;font-weight:600">Pol&iacute;tica Nacional NNA</td><td style="padding:9px 12px"><span style="background:rgba(192,57,43,.1);color:#C0392B;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">1</span></td><td style="padding:9px 12px">Subsec. Ni&ntilde;ez</td><td style="padding:9px 12px"><span style="color:#f59e0b;font-weight:800">Media</span></td><td style="padding:9px 12px;color:var(--text2)">Lineamiento normativo</td><td style="padding:9px 12px;font-size:11px;color:#22c55e;font-weight:700">Vigente</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px;font-weight:600">Fondos de cultura comunal</td><td style="padding:9px 12px"><span style="background:rgba(107,33,168,.1);color:#6B21A8;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">5</span></td><td style="padding:9px 12px">Min. Culturas / GORE</td><td style="padding:9px 12px"><span style="color:#f59e0b;font-weight:800">Media</span></td><td style="padding:9px 12px;color:var(--text2)">Asignaci&oacute;n FNDR Cultura</td><td style="padding:9px 12px;font-size:11px;color:#22c55e;font-weight:700">Concurso anual</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px;font-weight:600">Convenio H&iacute;drico</td><td style="padding:9px 12px"><span style="background:rgba(180,83,9,.1);color:#B45309;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">3</span></td><td style="padding:9px 12px">DGA + GORE</td><td style="padding:9px 12px"><span style="color:#f59e0b;font-weight:800">Media</span></td><td style="padding:9px 12px;color:var(--text2)">Acuerdo regional</td><td style="padding:9px 12px;font-size:11px;color:#f59e0b;font-weight:700">En di&aacute;logo</td></tr>
+          <tr style="background:rgba(0,0,0,.015)"><td style="padding:9px 12px;font-weight:600">Plan de Salud Comunal</td><td style="padding:9px 12px"><span style="background:rgba(192,57,43,.1);color:#C0392B;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:700">1</span></td><td style="padding:9px 12px">MINSAL</td><td style="padding:9px 12px"><span style="color:#22c55e;font-weight:800">Baja</span></td><td style="padding:9px 12px;color:var(--text2)">Lineamiento + supervisi&oacute;n</td><td style="padding:9px 12px;font-size:11px;color:#22c55e;font-weight:700">Anual</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;font-size:12px;line-height:1.55">
+      <div style="background:rgba(220,38,38,.06);padding:10px 14px;border-radius:8px"><strong style="color:#dc2626">Alta dependencia (6 carteras):</strong> sin decisi&oacute;n externa, no se ejecutan</div>
+      <div style="background:rgba(245,158,11,.06);padding:10px 14px;border-radius:8px"><strong style="color:#f59e0b">Media (5 carteras):</strong> ejecutables, pero su escala depende del actor</div>
+      <div style="background:rgba(34,197,94,.06);padding:10px 14px;border-radius:8px"><strong style="color:#22c55e">Baja (1 cartera):</strong> municipal con coordinaci&oacute;n externa</div>
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuentes:</strong> Gobierno Regional de O'Higgins &amp; Universidad de O'Higgins (2025). <em>Estrategia Regional de Desarrollo de O'Higgins 2024-2036</em>. Resoluci&oacute;n Exenta N&deg; 439, C&oacute;digo BIP N&deg; 40017868-0. Documento aprobado por unanimidad por el Consejo Regional (CORE) de O'Higgins en sesi&oacute;n de diciembre 2024. M&aacute;s informaci&oacute;n: <a href="https://erd.uoh.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">erd.uoh.cl</a> &middot; <a href="https://www.goreohiggins.cl/" target="_blank" rel="noopener" style="color:var(--primary);font-weight:700">goreohiggins.cl</a> &middot; PNDR 2020-2030 &middot; PNDU &middot; Cat&aacute;logo SUBDERE de fondos regionales &middot; Matriz Estrat&eacute;gica PLADECO 2025-2035.</div>
 </section>
 
 
@@ -10725,7 +10910,56 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
     <div class="viz-card"><h3>Peso Relativo de los Argumentos</h3><div class="viz-sub">Valoraci&#243;n ponderada seg&#250;n evidencia, urgencia e impacto</div><canvas id="chartArgPeso"></canvas></div>
     <div class="viz-card"><h3>Dimensiones del Diagn&#243;stico</h3><div class="viz-sub">Cobertura de las 8 dimensiones del an&#225;lisis cualitativo</div><canvas id="chartArgDim"></canvas></div>
   </div>
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Argumentario Estrat&eacute;gico PLADECO Rengo 2025-2035 — Documento de respaldo pol&iacute;tico-t&eacute;cnico &bull; Equipo t&eacute;cnico PLADECO, Municipalidad de Rengo</div>
+
+  <!-- ═══ COMPARADOR LONGITUDINAL CON PLADECO ANTERIOR · v45.123 (Propuesta 9) ═══ -->
+  <div id="comparador-pladeco" style="margin:32px 0 8px;padding:24px;background:linear-gradient(135deg,rgba(245,158,11,.05),rgba(45,154,77,.04));border:1px solid var(--border);border-left:4px solid #f59e0b;border-radius:14px">
+    <div style="margin-bottom:16px">
+      <div style="display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#f59e0b;background:rgba(245,158,11,.1);padding:5px 11px;border-radius:99px;margin-bottom:8px">&#128260; Comparador Longitudinal</div>
+      <h3 style="font-size:19px;font-weight:800;color:var(--text);margin:0 0 6px;line-height:1.3">PLADECO 2015-2024 &rarr; 2025-2035 &middot; Lecciones Incorporadas</h3>
+      <p style="font-size:13px;color:var(--text2);margin:0;line-height:1.6">An&aacute;lisis cr&iacute;tico del cumplimiento del plan anterior y c&oacute;mo cada lecci&oacute;n modela una decisi&oacute;n del plan actual. La memoria institucional convertida en aprendizaje operativo.</p>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;color:var(--text);margin:16px 0 10px">&#128202; Cumplimiento por eje del plan anterior</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:18px">
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid #22c55e;padding:10px 12px;border-radius:8px"><div style="font-size:10.5px;font-weight:800;color:#22c55e;letter-spacing:.08em;text-transform:uppercase">Eje 1 Social</div><div style="font-size:20px;font-weight:900;color:var(--text);margin-top:3px">68%</div><div style="font-size:11px;color:var(--text2)">Cumplido / parcial</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid #f59e0b;padding:10px 12px;border-radius:8px"><div style="font-size:10.5px;font-weight:800;color:#f59e0b;letter-spacing:.08em;text-transform:uppercase">Eje 2 Econ.</div><div style="font-size:20px;font-weight:900;color:var(--text);margin-top:3px">42%</div><div style="font-size:11px;color:var(--text2)">Cumplido / parcial</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid #f59e0b;padding:10px 12px;border-radius:8px"><div style="font-size:10.5px;font-weight:800;color:#f59e0b;letter-spacing:.08em;text-transform:uppercase">Eje 3 Territ.</div><div style="font-size:20px;font-weight:900;color:var(--text);margin-top:3px">55%</div><div style="font-size:11px;color:var(--text2)">Cumplido / parcial</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid #22c55e;padding:10px 12px;border-radius:8px"><div style="font-size:10.5px;font-weight:800;color:#22c55e;letter-spacing:.08em;text-transform:uppercase">Eje 4 Serv.</div><div style="font-size:20px;font-weight:900;color:var(--text);margin-top:3px">72%</div><div style="font-size:11px;color:var(--text2)">Cumplido / parcial</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid #dc2626;padding:10px 12px;border-radius:8px"><div style="font-size:10.5px;font-weight:800;color:#dc2626;letter-spacing:.08em;text-transform:uppercase">Eje 5 Cult.</div><div style="font-size:20px;font-weight:900;color:var(--text);margin-top:3px">35%</div><div style="font-size:11px;color:var(--text2)">Cumplido / parcial</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid #f59e0b;padding:10px 12px;border-radius:8px"><div style="font-size:10.5px;font-weight:800;color:#f59e0b;letter-spacing:.08em;text-transform:uppercase">Eje 6 Gest.</div><div style="font-size:20px;font-weight:900;color:var(--text);margin-top:3px">48%</div><div style="font-size:11px;color:var(--text2)">Cumplido / parcial</div></div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:800;color:var(--text);margin:16px 0 10px">&#128276; 6 lecciones del decenio anterior &rarr; 6 Decisiones del nuevo plan</h4>
+    <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border)">
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card)">
+        <thead>
+          <tr style="background:rgba(245,158,11,.08);text-align:left">
+            <th style="padding:10px 12px;border-bottom:2px solid #f59e0b;font-weight:800;color:#f59e0b;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Lecci&oacute;n 2015-2024</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #f59e0b;font-weight:800;color:#f59e0b;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Causa institucional</th>
+            <th style="padding:10px 12px;border-bottom:2px solid #f59e0b;font-weight:800;color:#f59e0b;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase">Decisi&oacute;n 2025-2035 que la incorpora</th>
+          </tr>
+        </thead>
+        <tbody style="font-size:12px;color:var(--text)">
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px"><strong>Captaci&oacute;n FNDR insuficiente</strong> (6,28% vs 13,89% regional)</td><td style="padding:9px 12px;color:var(--text2)">Falta de capacidad t&eacute;cnica para formular proyectos elegibles + dispersi&oacute;n del esfuerzo en m&uacute;ltiples direcciones</td><td style="padding:9px 12px"><span style="background:rgba(67,97,238,.1);color:#3b82f6;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800">D01</span> Captaci&oacute;n externa sobre cobertura propia</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px"><strong>Empleo informal no abordado</strong> (62% sigue siendo informal/honorarios)</td><td style="padding:9px 12px;color:var(--text2)">Foco en atraer inversi&oacute;n sin condicionalidad laboral; programas dispersos OMIL-SENCE</td><td style="padding:9px 12px"><span style="background:rgba(245,158,11,.1);color:#f59e0b;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800">D02</span> Formalizaci&oacute;n sobre crecimiento agregado</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px"><strong>Inversi&oacute;n por proximidad pol&iacute;tica</strong>, no por brecha territorial</td><td style="padding:9px 12px;color:var(--text2)">Asignaci&oacute;n FRIL/PMU seg&uacute;n cercan&iacute;a a directivas activas; sin indicador territorial homog&eacute;neo</td><td style="padding:9px 12px"><span style="background:rgba(245,146,29,.1);color:#f5921d;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800">D03</span> Inversi&oacute;n por brecha sobre proximidad</td></tr>
+          <tr style="border-bottom:1px solid var(--border);background:rgba(0,0,0,.015)"><td style="padding:9px 12px"><strong>Falta de articulaci&oacute;n inter-direcciones</strong> (50% instrumentos solo en papel)</td><td style="padding:9px 12px;color:var(--text2)">Direcciones operaban silo; sin comit&eacute; t&eacute;cnico ni protocolos de coherencia entre instrumentos</td><td style="padding:9px 12px"><span style="background:rgba(124,58,237,.1);color:#7c3aed;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800">D04</span> Articulaci&oacute;n sobre expansi&oacute;n estructural</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px 12px"><strong>Rendici&oacute;n anual solo al Concejo</strong> sin difusi&oacute;n ciudadana</td><td style="padding:9px 12px;color:var(--text2)">Cuenta P&uacute;blica una vez al a&ntilde;o, sin tablero p&uacute;blico ni datos trazables; baja credibilidad</td><td style="padding:9px 12px"><span style="background:rgba(220,38,38,.1);color:#dc2626;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800">D05</span> Rendici&oacute;n p&uacute;blica trimestral</td></tr>
+          <tr><td style="padding:9px 12px"><strong>Pol&iacute;ticas universales</strong> que beneficiaban a quien ya ten&iacute;a acceso</td><td style="padding:9px 12px;color:var(--text2)">Sin nombrar beneficiario espec&iacute;fico; cobertura agregada sin medir equidad</td><td style="padding:9px 12px"><span style="background:rgba(45,154,77,.1);color:#2d9a4d;padding:2px 7px;border-radius:5px;font-size:10.5px;font-weight:800">D06</span> Beneficiario nombrado sobre pol&iacute;tica universal</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:18px">
+      <div class="callout-icon">&#128214;</div>
+      <div class="callout-body">
+        <div style="font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Lectura del Comparador</div>
+        El PLADECO anterior cumpli&oacute; cerca del <strong>52% en promedio</strong>. Los ejes con menor cumplimiento (Cultura 35%, Econ&oacute;mico 42%, Gesti&oacute;n 48%) coinciden con las 3 reas con menos vinculaci&oacute;n a actores supracomunales y menos protocolos de articulaci&oacute;n interna. Las <strong>6 Decisiones del nuevo plan no son ideol&oacute;gicas &mdash; son aprendizajes destilados</strong> del decenio. Cada decisi&oacute;n responde a una causa institucional verificada del no cumplimiento anterior.
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Argumentario Estrat&eacute;gico PLADECO Rengo 2025-2035 &bull; Cuentas P&uacute;blicas del Alcalde 2015-2024 &bull; PLADECO 2015-2024 (documento oficial) &bull; Diagn&oacute;stico institucional 115 entrevistas &bull; Equipo t&eacute;cnico PLADECO, Municipalidad de Rengo</div>
 </section>
 
 <!-- ═══ DECISIONES DEL PLAN ═══ -->
@@ -19339,8 +19573,8 @@ function renderAnalisisEstrategico(){
       btn.classList.add('active');
       document.querySelectorAll('.anest-tab-panel').forEach(function(p){p.classList.toggle('active',p.dataset.anestPanel===target);});
       // Render charts when entering specific tabs
-      if(target==='resultados') setTimeout(renderAnestChartsResultados,80);
-      if(target==='ranking') setTimeout(renderAnestChartCompos,80);
+      if(target==='resultados') setTimeout(function(){renderAnestChartsResultados();renderAnestChartScatter();},80);
+      if(target==='ranking') setTimeout(function(){renderAnestChartCompos();renderAnestHeatmap();renderAnestChartBubble();},80);
     });
   });
   // Render charts initially for default tab (metodo doesn't need charts)
@@ -19423,6 +19657,105 @@ function renderAnestChartCompos(){
     });
   }
   _anestChartComposDone=true;
+}
+
+// ── Gráficos extra del Análisis Territorial (v45.123) ──
+// Localidades urbanas adicionales para scatter y bubble (no incluidas en TOP15)
+var ANEST_URBANAS=[
+  {loc:'Rengo ciudad',pob:42283,icht:0.358,ipsb:0.082,icp:0.186,area:'urbano'},
+  {loc:'Rosario',pob:5847,icht:0.412,ipsb:0.118,icp:0.215,area:'urbano'},
+  {loc:'Esmeralda',pob:2693,icht:0.461,ipsb:0.165,icp:0.264,area:'urbano'}
+];
+var _anestExtrasDone={scatter:false,heatmap:false,bubble:false};
+
+function renderAnestChartScatter(){
+  if(_anestExtrasDone.scatter) return;
+  var c=document.getElementById('anestChartScatter');
+  if(!c||!window.Chart) return;
+  var rurales=ANEST_TOP15.map(function(r){return {x:r.icht,y:r.ipsb,label:r.loc,pob:r.pob};});
+  var urbanas=ANEST_URBANAS.map(function(r){return {x:r.icht,y:r.ipsb,label:r.loc,pob:r.pob};});
+  new Chart(c,{
+    type:'scatter',
+    data:{datasets:[
+      {label:'Rural (15 localidades)',data:rurales,backgroundColor:'rgba(192,53,42,.78)',borderColor:'#c0352a',borderWidth:1.5,pointRadius:7,pointHoverRadius:10},
+      {label:'Urbano (3 localidades)',data:urbanas,backgroundColor:'rgba(59,130,246,.85)',borderColor:'#3b82f6',borderWidth:1.5,pointRadius:9,pointHoverRadius:12}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top',labels:{font:{size:11.5,weight:'bold'},padding:14,boxWidth:14}},
+        tooltip:{callbacks:{label:function(ctx){var d=ctx.raw;return d.label+' · ICHT_VUL: '+d.x.toFixed(3)+' · IPSB: '+d.y.toFixed(3)+' · '+d.pob.toLocaleString('es-CL')+' hab.';}}}
+      },
+      scales:{
+        x:{title:{display:true,text:'ICHT_VUL · Déficit de capital humano',font:{size:11.5,weight:'bold'}},min:0.3,max:0.7,ticks:{font:{size:11},callback:function(v){return v.toFixed(2);}},grid:{color:'rgba(128,128,128,.08)'}},
+        y:{title:{display:true,text:'IPSB · Precariedad de servicios básicos',font:{size:11.5,weight:'bold'}},min:0,max:0.7,ticks:{font:{size:11},callback:function(v){return v.toFixed(2);}},grid:{color:'rgba(128,128,128,.08)'}}
+      }
+    }
+  });
+  _anestExtrasDone.scatter=true;
+}
+
+function renderAnestHeatmap(){
+  if(_anestExtrasDone.heatmap) return;
+  var wrap=document.getElementById('anestHeatmap');
+  if(!wrap) return;
+  var dims=[
+    {key:'ivsh',label:'IVSH'},{key:'iddc',label:'IDDC'},{key:'ibdt',label:'IBDT'},
+    {key:'ivft',label:'IVFT'},{key:'icht',label:'ICHT_VUL'},{key:'ipsb',label:'IPSB'}
+  ];
+  function colorFor(v){
+    if(v<0.15) return {bg:'#e8f5e9',fg:'#1a7a4a'};
+    if(v<0.30) return {bg:'#fff8e1',fg:'#7a5010'};
+    if(v<0.45) return {bg:'#ffe0b2',fg:'#bf6500'};
+    if(v<0.60) return {bg:'#ffccbc',fg:'#c0352a'};
+    return {bg:'#ef9a9a',fg:'#a82919'};
+  }
+  var html='<div class="anest-heatmap">';
+  html+='<div class="anest-heatmap-head loc">Localidad</div>';
+  dims.forEach(function(d){html+='<div class="anest-heatmap-head">'+d.label+'</div>';});
+  ANEST_TOP15.forEach(function(r){
+    html+='<div class="anest-heatmap-loc"><span class="anest-heatmap-loc-rank">'+r.n+'</span>'+r.loc+'</div>';
+    dims.forEach(function(d){
+      var v=r[d.key];var c=colorFor(v);
+      html+='<div class="anest-heatmap-cell" style="background:'+c.bg+';color:'+c.fg+'" title="'+r.loc+' · '+d.label+': '+v.toFixed(3)+'">'+v.toFixed(3)+'</div>';
+    });
+  });
+  html+='</div>';
+  wrap.innerHTML=html;
+  _anestExtrasDone.heatmap=true;
+}
+
+function renderAnestChartBubble(){
+  if(_anestExtrasDone.bubble) return;
+  var c=document.getElementById('anestChartBubble');
+  if(!c||!window.Chart) return;
+  var rurales=ANEST_TOP15.map(function(r){return {x:r.pob,y:r.icp,r:Math.max(6,Math.sqrt(r.pob)/3.5),label:r.loc,pob:r.pob};});
+  var urbanas=ANEST_URBANAS.map(function(r){return {x:r.pob,y:r.icp,r:Math.max(8,Math.sqrt(r.pob)/3.5),label:r.loc,pob:r.pob};});
+  new Chart(c,{
+    type:'bubble',
+    data:{datasets:[
+      {label:'Rural',data:rurales,backgroundColor:'rgba(192,53,42,.55)',borderColor:'#c0352a',borderWidth:1.5},
+      {label:'Urbano',data:urbanas,backgroundColor:'rgba(59,130,246,.55)',borderColor:'#3b82f6',borderWidth:1.5}
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top',labels:{font:{size:11.5,weight:'bold'},padding:14,boxWidth:14}},
+        tooltip:{callbacks:{label:function(ctx){var d=ctx.raw;return d.label+' · '+d.pob.toLocaleString('es-CL')+' hab. · ICP: '+d.y.toFixed(3);}}},
+        annotation:{
+          annotations:{
+            mediaRural:{type:'line',yMin:0.269,yMax:0.269,borderColor:'#c0352a',borderWidth:1.5,borderDash:[6,4],label:{display:true,content:'ICP Rural 0,269',position:'end',backgroundColor:'rgba(192,53,42,.85)',color:'#fff',font:{size:10,weight:'bold'},padding:4}},
+            mediaComunal:{type:'line',yMin:0.210,yMax:0.210,borderColor:'#2d9a4d',borderWidth:1.5,borderDash:[6,4],label:{display:true,content:'ICP Comunal 0,210',position:'start',backgroundColor:'rgba(45,154,77,.85)',color:'#fff',font:{size:10,weight:'bold'},padding:4}}
+          }
+        }
+      },
+      scales:{
+        x:{type:'logarithmic',title:{display:true,text:'Población (escala logarítmica)',font:{size:11.5,weight:'bold'}},min:10,max:60000,ticks:{font:{size:11},callback:function(v){if(v===10||v===100||v===1000||v===10000) return v.toLocaleString('es-CL');return '';}},grid:{color:'rgba(128,128,128,.08)'}},
+        y:{title:{display:true,text:'ICP · Índice Compuesto Ponderado',font:{size:11.5,weight:'bold'}},min:0.15,max:0.40,ticks:{font:{size:11},callback:function(v){return v.toFixed(2);}},grid:{color:'rgba(128,128,128,.08)'}}
+      }
+    }
+  });
+  _anestExtrasDone.bubble=true;
 }
 
 // ══════════════════════════════════════════════════════
