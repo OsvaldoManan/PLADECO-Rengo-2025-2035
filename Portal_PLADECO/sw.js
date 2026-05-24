@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.77
+// PLADECO Rengo 2025-2035 · Service Worker v62.78
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.78: v45.114 - CHATBOT FIX completo: (1) toggleChatbot() reescrito con try/catch + guards de existencia de overlay/panel + addBotMsg con guard adicional + mensaje de bienvenida actualizado (PLADECO 2025-2035, 6 Decisiones, glosario 70). (2) Función expuesta explícitamente a window (window.toggleChatbot, window.sendChatMessage, window.askChat, window.chatNavigate). (3) onclick inline reemplazado por addEventListener defensivo con polling: si toggleChatbot aún no está disponible, espera hasta 6s con reintentos cada 150ms. (4) touchend handler agregado para mobile. (5) z-index del FAB sin cambios (9997), panel 9999, overlay 9998 — correcto.
 // v62.77: v45.113 - Print stylesheet ampliado para todas las piezas v45.89-v45.110: macro-dividers con page-break-before, secciones #validacion-concejo + #faq-concejo + #decisiones con break-inside avoid-page y background blanco, FAQ details abiertos forzadamente en impresión, live-strip y tn-pladeco-pill ocultos, topbar simplificado a B/N. Plus: width/height agregados a fuente-info.png (evita CLS).
 // v62.76: v45.112 - LIMPIEZA: (1) 6 PNGs huérfanos borrados del repo (~3.5 MB liberados): 3.png 1.09MB, logo-contigo-rengo.png 967KB, logo-contigo-rengo-h.png 824KB, propuesta_1_*.png 453KB, propuesta_4_*.png 283KB, hero-banner.png 207KB. (2) Breakpoints CSS consolidados: 20 ocurrencias de (max-width:700px) + 16 de (max-width:760px) → 36 consolidadas a (max-width:768px) (estándar de la industria). Total 768px ahora = 44 reglas. Reduce fragmentación de 23 breakpoints únicos a ~21.
 // v62.75: v45.111 - Mejoras de composición (auditoría tipografía + responsive): (1) 23 tokens CSS nuevos en :root: escala tipográfica discreta de 11 niveles (--fs-2xs hasta --fs-5xl), 5 line-heights (--lh-tight a --lh-loose), 6 font-weights (--fw-normal a --fw-black), 6 letter-spacing (--ls-tight a --ls-widest). (2) Touch targets 44px aplicados a tabs en TODOS los dispositivos (antes solo pointer:coarse) — cumple WCAG 2.5.5 también en laptops híbridos y accesibilidad motora. Padding extra solo en touch puro. (3) font-family huérfana corregida en popup del mapa (system-ui → 'Inter',system-ui,sans-serif).
@@ -78,7 +79,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.77';
+const CACHE_STATIC='pladeco-static-v62.78';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

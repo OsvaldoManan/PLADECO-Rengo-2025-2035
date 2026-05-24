@@ -5214,7 +5214,40 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <button onclick="sendChatMessage()" aria-label="Enviar">&#10148;</button>
   </div>
 </div>
-<button class="chatbot-fab" id="chatFab" onclick="toggleChatbot()" aria-label="Abrir asistente PLADECO"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
+<button class="chatbot-fab" id="chatFab" type="button" aria-label="Abrir asistente PLADECO Rengo"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
+<script>
+/* v45.114 · Wiring defensivo del chatbot FAB - addEventListener garantiza que funcione aunque toggleChatbot se cargue después */
+(function(){
+  var fab=document.getElementById('chatFab');
+  if(!fab)return;
+  function clickHandler(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if(typeof window.toggleChatbot==='function'){
+      try{window.toggleChatbot();}catch(err){console.error('[chatbot click]',err);}
+    }else{
+      /* Si el script principal aun no carga, mostrar mensaje breve */
+      console.warn('[chatbot] toggleChatbot aun no disponible — reintentando...');
+      var attempts=0;
+      var retry=setInterval(function(){
+        attempts++;
+        if(typeof window.toggleChatbot==='function'){
+          clearInterval(retry);
+          try{window.toggleChatbot();}catch(err){console.error(err);}
+        }else if(attempts>40){
+          clearInterval(retry);
+          alert('El asistente está cargando. Recargá la página si persiste.');
+        }
+      },150);
+    }
+  }
+  fab.addEventListener('click',clickHandler);
+  fab.addEventListener('touchend',function(e){
+    if(e.cancelable)e.preventDefault();
+    clickHandler(e);
+  },{passive:false});
+})();
+</script>
 
 <!-- ═══ PULSO COMUNAL (live-strip) · v45.106: sacado del construction-banner para sobrevivir solo ═══ -->
 <div class="live-strip-wrap">
@@ -5512,7 +5545,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.113</span>
+        <span>&#127919; v45.114</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -21716,21 +21749,37 @@ const CHATBOT_QA=[
 const CHAT_SUGGESTIONS=['¿Qué es el PLADECO?','Análisis Estratégico Censal','ICT Espacios Públicos','Ficha Comunal','Diagnóstico Institucional','Presupuesto Participativo','FAQ Preguntas Frecuentes','Glosario términos técnicos','Canales oficiales','Sociedad Civil','Red SNA articulaciones','Localidad más vulnerable','Salud mental NNA','Cambio climático','FODA por actor'];
 const chatHistory=new Set();
 let chatOpen=false;
+/* v45.114 · toggleChatbot defensivo: guards completos + exposición explícita a window */
 function toggleChatbot(){
-  chatOpen=!chatOpen;
-  document.getElementById('chatOverlay').classList.toggle('open',chatOpen);
-  document.getElementById('chatPanel').classList.toggle('open',chatOpen);
-  if(chatOpen){
-    const msgs=document.getElementById('chatMessages');
-    if(!msgs.children.length){
-      const h=new Date().getHours();
-      const saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
-      addBotMsg(saludo+' Soy **Contigo Rengo**, tu asistente del PLADECO 2025-2035.\n\nPuedo ayudarte con **80+ temas**:\n• 📊 **Datos**: Censo 2024, ICVU, empresas, empleo, educación\n• 🗺️ **Territorio**: 21 UVs, vulnerabilidad censal, desigualdad BIP\n• 🔬 **Análisis Censal**: 7 índices · 826 manzanas · Top 15 localidades\n• 📍 **ICT Espacios Públicos**: 56 espacios catastrados · 4 zonas · 5 estados\n• 📋 **Ficha Comunal**: realidad laboral · US$208M inversión 2025-2029\n• 👔 **Diagnóstico Institucional**: 115 entrevistas a funcionarios y directores\n• 🎯 **PLADECO**: 6 ejes · 27 OE · 225 acciones · FODA · matriz\n• 💸 **Presupuesto Participativo**: $200M · 21 UV · 5 etapas\n• 👧 **NNA**: salud mental · violencia · derechos · deportes\n• 🌱 **Ambiente**: PACCC · sequía · áreas verdes · parque solar\n• 🏛️ **Institucional**: Ley Karin · transparencia · COSOC · Gabinete\n• 🌐 **Sociedad Civil**: 95 organizaciones · 472 participantes · Red SNA\n• ❓ **FAQ**: preguntas frecuentes · glosario 63 términos\n\n💡 **Tips**: Escribe una **localidad** para datos específicos, prueba los botones, o usa **Ctrl+K** para buscar en todo el portal.\n\n✨ **Novedades v34**: Análisis Estratégico Censal · ICT · FAQ · Presupuesto Participativo · Glosario interactivo · Tema claro/oscuro · Buscador full-text · Mi PLADECO favoritos.');
-      showSuggestions();
+  try{
+    const overlay=document.getElementById('chatOverlay');
+    const panel=document.getElementById('chatPanel');
+    if(!overlay||!panel){
+      console.warn('[chatbot] elementos no encontrados:',{overlay:!!overlay,panel:!!panel});
+      return;
     }
-    setTimeout(()=>document.getElementById('chatInput').focus(),350);
-  }
+    chatOpen=!chatOpen;
+    overlay.classList.toggle('open',chatOpen);
+    panel.classList.toggle('open',chatOpen);
+    if(chatOpen){
+      const msgs=document.getElementById('chatMessages');
+      if(msgs&&!msgs.children.length){
+        try{
+          const h=new Date().getHours();
+          const saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
+          if(typeof addBotMsg==='function'){
+            addBotMsg(saludo+' Soy **Contigo Rengo**, tu asistente del PLADECO 2025-2035.\n\nPuedo ayudarte con **80+ temas**:\n• 📊 **Datos**: Censo 2024, ICVU, empresas, empleo, educación\n• 🗺️ **Territorio**: 21 UVs, vulnerabilidad censal, desigualdad BIP\n• 🔬 **Análisis Censal**: 7 índices · 826 manzanas\n• 📍 **ICT Espacios Públicos**: 65 puntos catastrados\n• 📋 **Ficha Comunal**: realidad laboral · US$208M inversión\n• 🎯 **PLADECO**: 6 ejes · 6 Decisiones · 225 acciones · FODA\n• 💸 **Presupuesto Participativo**: $200M · 21 UV\n• 👧 **NNA**: salud mental · violencia · derechos\n• 🌱 **Ambiente**: PACCC · sequía · áreas verdes\n• 🏛️ **Institucional**: Ley Karin · transparencia · COSOC\n• 🌐 **Sociedad Civil**: 95 organizaciones · 472 participantes\n• ❓ **FAQ**: preguntas frecuentes · glosario 70 términos\n\n💡 **Tips**: Escribe una **localidad** para datos específicos o usa **Ctrl+K** para buscar en todo el portal.');
+          }
+          if(typeof showSuggestions==='function')showSuggestions();
+        }catch(e){console.warn('[chatbot] error al agregar saludo:',e);}
+      }
+      const inp=document.getElementById('chatInput');
+      if(inp)setTimeout(()=>{try{inp.focus();}catch(_){}},350);
+    }
+  }catch(e){console.error('[chatbot] toggleChatbot fallo:',e);}
 }
+/* Exponer explícitamente a window para garantizar acceso desde onclick HTML */
+window.toggleChatbot=toggleChatbot;
 function addBotMsg(text,secId){
   const msgs=document.getElementById('chatMessages');
   const d=document.createElement('div');
@@ -21798,6 +21847,10 @@ function chatNavigate(secId){
   toggleChatbot();
   setTimeout(()=>{el.scrollIntoView({behavior:'smooth',block:'start'});},400);
 }
+/* v45.114 · Exponer todas las funciones del chatbot a window para acceso desde onclick HTML */
+window.sendChatMessage=sendChatMessage;
+window.askChat=askChat;
+window.chatNavigate=chatNavigate;
 /* ── Trigram fuzzy similarity ── */
 function trigramSim(a,b){
   if(a.length<3||b.length<3)return a.includes(b)||b.includes(a)?0.6:0;
