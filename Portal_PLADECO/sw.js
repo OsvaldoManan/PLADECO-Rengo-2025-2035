@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.75
+// PLADECO Rengo 2025-2035 · Service Worker v62.76
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.76: v45.112 - LIMPIEZA: (1) 6 PNGs huérfanos borrados del repo (~3.5 MB liberados): 3.png 1.09MB, logo-contigo-rengo.png 967KB, logo-contigo-rengo-h.png 824KB, propuesta_1_*.png 453KB, propuesta_4_*.png 283KB, hero-banner.png 207KB. (2) Breakpoints CSS consolidados: 20 ocurrencias de (max-width:700px) + 16 de (max-width:760px) → 36 consolidadas a (max-width:768px) (estándar de la industria). Total 768px ahora = 44 reglas. Reduce fragmentación de 23 breakpoints únicos a ~21.
 // v62.75: v45.111 - Mejoras de composición (auditoría tipografía + responsive): (1) 23 tokens CSS nuevos en :root: escala tipográfica discreta de 11 niveles (--fs-2xs hasta --fs-5xl), 5 line-heights (--lh-tight a --lh-loose), 6 font-weights (--fw-normal a --fw-black), 6 letter-spacing (--ls-tight a --ls-widest). (2) Touch targets 44px aplicados a tabs en TODOS los dispositivos (antes solo pointer:coarse) — cumple WCAG 2.5.5 también en laptops híbridos y accesibilidad motora. Padding extra solo en touch puro. (3) font-family huérfana corregida en popup del mapa (system-ui → 'Inter',system-ui,sans-serif).
 // v62.74: v45.110 - DOS arreglos: (1) chatbot-fab perdió la clase "hidden" inicial — ahora el botón flotante del asistente PLADECO aparece visible desde el primer paint, sin esperar al setTimeout de 3 segundos del script principal. (2) Bootstrap inline de clima/aire embebido en el live-strip-wrap: dispara los fetches a Open-Meteo INMEDIATAMENTE al parsear el HTML, sin esperar a loadLiveStrip() del script principal. {cache:'no-store'} para asegurar datos frescos.
 // v62.73: v45.109 - Eliminado el panel #planStatus "¿Cómo va el plan?" entero que duplicaba el bloque "Estado del Proceso PLADECO" ya restaurado en la portada del hero (v45.107). Se rescatan los 3 CTAs (🚦 Semáforo de Metas, 🎯 Matriz Estratégica, 💾 Descargar Plan) y se suben a la portada bajo el grid de 6 cards del Estado del Proceso, con border-top dashed y color coding (verde/violeta/azul). Ahorro: ~280px verticales + eliminación de duplicación cognitiva.
@@ -76,7 +77,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.75';
+const CACHE_STATIC='pladeco-static-v62.76';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
