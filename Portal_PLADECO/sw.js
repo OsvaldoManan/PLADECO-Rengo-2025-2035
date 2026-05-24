@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2345 · Service Worker v62.80
+// PLADECO Rengo 2025-2035 · Service Worker v62.81
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.81: v45.118 - CHATBOT RAG COMPLETO RESTAURADO. Bug encontrado y arreglado: chartDistribTematica (v45.100) tenía un `}` faltante al cerrar options:{...}, lo que dejaba el segundo plugins:[...] como hijo de options en vez de hermano. Esto causaba SyntaxError silencioso que rompía TODO el script principal (línea 14938-25641) antes de definir window.toggleChatbot, window.answerChat, CHATBOT_QA (85 entradas), EJES, etc. Detectado validando con node --check. Fix: agregar el `}` faltante. Resultado: ahora el chatbot responde con datos completos (ej: "Cuál es la población" → devuelve 7 índices de vulnerabilidad de Rengo Urbano + ranking de 20 localidades).
 // v62.80: v45.116 - CHATBOT AUTOSUFICIENTE: el toggleChatbot + sendChatMessage minimales se definen INLINE al lado del FAB, sin depender del script principal (que tenía algún issue silencioso impidiendo la exposición a window). Wiring del FAB, botón close, overlay, input Enter y botón enviar también todo en inline. Si el script principal luego carga la versión completa con CHATBOT_QA + answerChat, sobrescribe sin romper. Garantía: el chatbot SIEMPRE abre al click.
 // v62.79: v45.115 - FIXES de consistencia post-auditoría integral: (1) Empresas 4.829 → 4.439 unificado en 49 ocurrencias (cifra oficial SII 2024 que ya usaban Ficha Comunal y Decisiones). (2) Glosario "63 términos" → "70 términos" en 5 referencias (group-divider VIII, p descriptivo, transparencia card, chatbot QA). (3) Descripción del Glosario ampliada para mencionar los 7 meta-conceptos del portal. (4) class="reveal" agregada a 4 secciones del Cap III que faltaban (#mapa, #territorio, #comparador-uv, #desigualdad) — animaciones consistentes en todo el Cap III.
 // v62.78: v45.114 - CHATBOT FIX completo: (1) toggleChatbot() reescrito con try/catch + guards de existencia de overlay/panel + addBotMsg con guard adicional + mensaje de bienvenida actualizado (PLADECO 2025-2035, 6 Decisiones, glosario 70). (2) Función expuesta explícitamente a window (window.toggleChatbot, window.sendChatMessage, window.askChat, window.chatNavigate). (3) onclick inline reemplazado por addEventListener defensivo con polling: si toggleChatbot aún no está disponible, espera hasta 6s con reintentos cada 150ms. (4) touchend handler agregado para mobile. (5) z-index del FAB sin cambios (9997), panel 9999, overlay 9998 — correcto.
@@ -81,7 +82,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.80';
+const CACHE_STATIC='pladeco-static-v62.81';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
