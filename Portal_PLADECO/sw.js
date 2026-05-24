@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v62.81
+// PLADECO Rengo 2025-2035 · Service Worker v62.82
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v62.82: v45.119 - MAPAS LEAFLET RESTAURADOS. Los 5 mapas (mapContainer, mapCensoVuln, ictMap, mbhtMap, mapSC) se inicializaban con height:0 porque las secciones contenedoras estaban .pv-hidden al cargar. Sistema universal nuevo: (1) Wrap de L.map() para registrar TODA instancia en window.__leafletMaps. (2) En PV.show() iterar window.__leafletMaps y llamar invalidateSize(true) en cada uno con 2 setTimeouts (80ms y 320ms) para asegurar que el contenedor ya tenga altura visible. Resultado: al navegar a cualquier sección con mapa, este recalcula y dibuja correctamente.
 // v62.81: v45.118 - CHATBOT RAG COMPLETO RESTAURADO. Bug encontrado y arreglado: chartDistribTematica (v45.100) tenía un `}` faltante al cerrar options:{...}, lo que dejaba el segundo plugins:[...] como hijo de options en vez de hermano. Esto causaba SyntaxError silencioso que rompía TODO el script principal (línea 14938-25641) antes de definir window.toggleChatbot, window.answerChat, CHATBOT_QA (85 entradas), EJES, etc. Detectado validando con node --check. Fix: agregar el `}` faltante. Resultado: ahora el chatbot responde con datos completos (ej: "Cuál es la población" → devuelve 7 índices de vulnerabilidad de Rengo Urbano + ranking de 20 localidades).
 // v62.80: v45.116 - CHATBOT AUTOSUFICIENTE: el toggleChatbot + sendChatMessage minimales se definen INLINE al lado del FAB, sin depender del script principal (que tenía algún issue silencioso impidiendo la exposición a window). Wiring del FAB, botón close, overlay, input Enter y botón enviar también todo en inline. Si el script principal luego carga la versión completa con CHATBOT_QA + answerChat, sobrescribe sin romper. Garantía: el chatbot SIEMPRE abre al click.
 // v62.79: v45.115 - FIXES de consistencia post-auditoría integral: (1) Empresas 4.829 → 4.439 unificado en 49 ocurrencias (cifra oficial SII 2024 que ya usaban Ficha Comunal y Decisiones). (2) Glosario "63 términos" → "70 términos" en 5 referencias (group-divider VIII, p descriptivo, transparencia card, chatbot QA). (3) Descripción del Glosario ampliada para mencionar los 7 meta-conceptos del portal. (4) class="reveal" agregada a 4 secciones del Cap III que faltaban (#mapa, #territorio, #comparador-uv, #desigualdad) — animaciones consistentes en todo el Cap III.
@@ -82,7 +83,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v62.81';
+const CACHE_STATIC='pladeco-static-v62.82';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

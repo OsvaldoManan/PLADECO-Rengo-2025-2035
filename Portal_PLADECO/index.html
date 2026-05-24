@@ -32,6 +32,21 @@
 <!-- Hojas de estilo y scripts externos (Chart.js síncrono porque el código inline lo consume; Leaflet diferido porque se inicializa por IntersectionObserver) -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script>
+/* v45.119 · Wrap de L.map() para registrar todas las instancias y poder invalidarlas al cambiar de vista.
+   Se ejecuta al cargar Leaflet (defer ya terminó). */
+window.__leafletMaps=window.__leafletMaps||[];
+window.addEventListener('load',function(){
+  if(typeof L==='undefined'||L.__patched)return;
+  var orig=L.map;
+  L.map=function(){
+    var m=orig.apply(L,arguments);
+    try{window.__leafletMaps.push(m);}catch(e){}
+    return m;
+  };
+  L.__patched=true;
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 /* ─── v45.50 · Blindaje de Chart.js ───────────────────────────────────
@@ -5597,7 +5612,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.118</span>
+        <span>&#127919; v45.119</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -29996,6 +30011,25 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
       window.scrollTo(0,0);
       try{history.replaceState(null,'',inV?('#'+units[key].id):'#inicio');}catch(e){}
       var ds=[60,280,700];for(var d=0;d<ds.length;d++){setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},ds[d]);}
+      /* v45.119 · INVALIDAR TAMAÑO de TODOS los mapas Leaflet al cambiar de vista
+         (los mapas se inicializan con height:0 cuando estaban en .pv-hidden, hay que recalcular) */
+      try{
+        var allMapDivs=document.querySelectorAll('.leaflet-container');
+        for(var i=0;i<allMapDivs.length;i++){
+          (function(div){
+            /* Iterar instancias registradas en window.__leafletMaps */
+            if(window.__leafletMaps){
+              for(var j=0;j<window.__leafletMaps.length;j++){
+                var m=window.__leafletMaps[j];
+                if(m&&m._container===div&&typeof m.invalidateSize==='function'){
+                  setTimeout(function(){try{m.invalidateSize(true);}catch(e){}},80);
+                  setTimeout(function(){try{m.invalidateSize(true);}catch(e){}},320);
+                }
+              }
+            }
+          })(allMapDivs[i]);
+        }
+      }catch(e){console.warn('[PV] invalidateSize falló:',e);}
     }
     function go(id){
       var tgt=null;try{tgt=document.getElementById(id);}catch(e){}
