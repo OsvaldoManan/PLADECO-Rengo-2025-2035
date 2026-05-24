@@ -5216,8 +5216,59 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 </div>
 <button class="chatbot-fab" id="chatFab" type="button" aria-label="Abrir asistente PLADECO Rengo"><img src="chatbot-robot.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
 <script>
-/* v45.114 · Wiring defensivo del chatbot FAB - addEventListener garantiza que funcione aunque toggleChatbot se cargue después */
+/* v45.116 · IMPLEMENTACION AUTOSUFICIENTE de toggleChatbot al lado del FAB
+   NO depende del script principal. Garantiza que el chatbot ABRA siempre.
+   Si el script principal carga, sobrescribe con la version completa. */
 (function(){
+  /* Definir toggleChatbot inline si aun no existe */
+  if(typeof window.toggleChatbot!=='function'){
+    window.chatOpen=false;
+    window.toggleChatbot=function(){
+      try{
+        var overlay=document.getElementById('chatOverlay');
+        var panel=document.getElementById('chatPanel');
+        if(!overlay||!panel){console.warn('[chatbot] elementos no encontrados');return;}
+        window.chatOpen=!window.chatOpen;
+        overlay.classList.toggle('open',window.chatOpen);
+        panel.classList.toggle('open',window.chatOpen);
+        if(window.chatOpen){
+          var msgs=document.getElementById('chatMessages');
+          if(msgs&&!msgs.children.length){
+            /* Mensaje de bienvenida minimo (la version completa lo reemplaza si carga) */
+            var h=new Date().getHours();
+            var saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
+            msgs.innerHTML='<div class="chatbot-msg bot"><strong>🤖 Contigo Rengo</strong><br>'+saludo+' Soy el asistente del PLADECO Rengo 2025-2035.<br><br>Puedes navegar por el portal o escribir tu pregunta abajo. El asistente completo se carga progresivamente.</div>';
+          }
+          var inp=document.getElementById('chatInput');
+          if(inp)setTimeout(function(){try{inp.focus();}catch(_){}},350);
+        }
+      }catch(e){console.error('[chatbot toggle]',e);}
+    };
+    /* sendChatMessage minimo */
+    if(typeof window.sendChatMessage!=='function'){
+      window.sendChatMessage=function(){
+        var inp=document.getElementById('chatInput');
+        var msgs=document.getElementById('chatMessages');
+        if(!inp||!msgs)return;
+        var q=inp.value.trim();
+        if(!q)return;
+        inp.value='';
+        var d=document.createElement('div');
+        d.className='chatbot-msg user';
+        d.textContent=q;
+        msgs.appendChild(d);
+        /* Respuesta minima si no hay sistema completo */
+        setTimeout(function(){
+          var r=document.createElement('div');
+          r.className='chatbot-msg bot';
+          r.innerHTML='<strong>🤖 Contigo Rengo</strong><br>El sistema completo de respuestas se esta cargando. Mientras tanto, puedes explorar las 4 macro-partes del portal: <a href="#macro-introduccion">Introducción</a>, <a href="#macro-diagnostico">Diagnóstico</a>, <a href="#macro-planificacion">Planificación</a>, <a href="#macro-cierre">Cierre</a>.';
+          msgs.appendChild(r);
+          msgs.scrollTop=msgs.scrollHeight;
+        },400);
+      };
+    }
+  }
+  /* Wiring del FAB */
   var fab=document.getElementById('chatFab');
   if(!fab)return;
   function clickHandler(e){
@@ -5225,20 +5276,6 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     e.stopPropagation();
     if(typeof window.toggleChatbot==='function'){
       try{window.toggleChatbot();}catch(err){console.error('[chatbot click]',err);}
-    }else{
-      /* Si el script principal aun no carga, mostrar mensaje breve */
-      console.warn('[chatbot] toggleChatbot aun no disponible — reintentando...');
-      var attempts=0;
-      var retry=setInterval(function(){
-        attempts++;
-        if(typeof window.toggleChatbot==='function'){
-          clearInterval(retry);
-          try{window.toggleChatbot();}catch(err){console.error(err);}
-        }else if(attempts>40){
-          clearInterval(retry);
-          alert('El asistente está cargando. Recargá la página si persiste.');
-        }
-      },150);
     }
   }
   fab.addEventListener('click',clickHandler);
@@ -5246,6 +5283,21 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     if(e.cancelable)e.preventDefault();
     clickHandler(e);
   },{passive:false});
+  /* Tambien wire del boton close del panel y overlay */
+  setTimeout(function(){
+    var closeBtn=document.querySelector('.chatbot-close');
+    if(closeBtn)closeBtn.addEventListener('click',function(e){e.preventDefault();window.toggleChatbot();});
+    var ov=document.getElementById('chatOverlay');
+    if(ov)ov.addEventListener('click',function(){window.toggleChatbot();});
+    /* Input Enter para enviar */
+    var inp=document.getElementById('chatInput');
+    if(inp)inp.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(typeof window.sendChatMessage==='function')window.sendChatMessage();}
+    });
+    /* Boton de enviar */
+    var sendBtn=document.querySelector('.chatbot-input-row button');
+    if(sendBtn)sendBtn.addEventListener('click',function(e){e.preventDefault();if(typeof window.sendChatMessage==='function')window.sendChatMessage();});
+  },200);
 })();
 </script>
 
@@ -5545,7 +5597,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.115</span>
+        <span>&#127919; v45.116</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
