@@ -1087,6 +1087,228 @@ body.dark .sc-tab-nav{background:linear-gradient(135deg,#04101e 0%,#071a31 60%,#
 .viz-card canvas{width:100%!important;max-height:420px;display:block;background:var(--card);border-radius:6px}
 .viz-full{grid-column:1/-1}
 .viz-full canvas{max-height:360px}
+
+/* ═══════════════════════════════════════════════════════════════════
+   v45.131 · AUDITORIA Y CANON DE CARDS · Composicion uniforme
+   Sistema de cards con jerarquia visual, hover refinado y a11y
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Variables canonicas de cards */
+:root{
+  --card-pad-sm:14px;
+  --card-pad:18px;
+  --card-pad-lg:22px;
+  --card-pad-xl:28px;
+  --card-gap:16px;
+  --card-radius:12px;
+  --card-radius-sm:10px;
+  --card-radius-lg:14px;
+  --card-shadow-rest:0 1px 3px rgba(15,23,42,.05),0 1px 2px rgba(15,23,42,.03);
+  --card-shadow-hover:0 8px 24px rgba(15,23,42,.10),0 3px 8px rgba(15,23,42,.06);
+  --card-border:1px solid var(--border);
+  --card-border-accent:2px solid #2d9a4d;
+  --card-transition:transform .22s cubic-bezier(.4,0,.2,1),box-shadow .22s ease,border-color .22s ease;
+}
+
+/* Mejora universal de viz-card - jerarquia + hover refinado */
+.viz-card{
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.viz-card:hover{
+  box-shadow:var(--card-shadow-hover);
+  transform:translateY(-3px);
+  border-color:rgba(45,154,77,.35);
+}
+.viz-card:focus-within{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.viz-card h3{letter-spacing:-.01em;line-height:1.3}
+.viz-card .viz-sub{letter-spacing:.005em}
+
+/* Cards de estadisticas (anest-stat) - jerarquia mejorada */
+.anest-stat{
+  position:relative;
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.anest-stat:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--card-shadow-hover);
+}
+.anest-stat .anest-stat-val{
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum";
+}
+
+/* TR-card de descargas - tap target mas grande + estado activo */
+.tr-card{min-height:64px;align-items:flex-start}
+.tr-card:hover{
+  border-color:rgba(45,154,77,.45);
+  transform:translateY(-2px);
+  box-shadow:var(--card-shadow-hover);
+}
+.tr-card:active{transform:translateY(-1px)}
+.tr-card .tr-name{line-height:1.35}
+.tr-card .tr-meta{line-height:1.4}
+
+/* Team cards - mejor padding y hover */
+.team-card{
+  padding:var(--card-pad-lg);
+  border-radius:var(--card-radius-lg);
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.team-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--card-shadow-hover);
+  border-color:rgba(45,154,77,.4);
+}
+
+/* Coh-tipo-card, voz-nudo-card, voz-nna-card · consistencia visual */
+.coh-tipo-card,.voz-nudo-card,.voz-nna-card,.coh-seq-card{
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.coh-tipo-card:hover,.voz-nudo-card:hover,.voz-nna-card:hover,.coh-seq-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--card-shadow-hover);
+}
+
+/* ANEST-index-card (6 dimensiones del Analisis Censal) */
+.anest-index-card{
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.anest-index-card:hover{
+  box-shadow:var(--card-shadow-hover);
+  transform:translateY(-3px);
+}
+
+/* ANEST-perfil cards · perfil de vulnerabilidad */
+.anest-perfil{
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.anest-perfil:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--card-shadow-hover);
+  border-color:rgba(45,154,77,.35);
+}
+
+/* ANEST-recom cards */
+.anest-recom{
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+}
+.anest-recom:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--card-shadow-hover);
+}
+
+/* ═══ Galeria de Proyeccion · sistema de cards refinado ═══ */
+.proy-gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+.proy-gallery-card{
+  display:flex;
+  flex-direction:column;
+  text-decoration:none;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:var(--card-radius);
+  overflow:hidden;
+  background:var(--card);
+  transition:var(--card-transition);
+  box-shadow:var(--card-shadow-rest);
+  position:relative;
+}
+.proy-gallery-card::after{
+  content:"\21E9";
+  position:absolute;
+  top:8px; right:8px;
+  width:26px; height:26px;
+  border-radius:50%;
+  background:rgba(0,0,0,.65);
+  color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:800;
+  opacity:0;
+  transform:translateY(-4px);
+  transition:opacity .2s,transform .2s;
+  pointer-events:none;
+  backdrop-filter:blur(4px);
+}
+.proy-gallery-card:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--card-shadow-hover);
+  border-color:rgba(45,154,77,.5);
+}
+.proy-gallery-card:hover::after{
+  opacity:1;
+  transform:translateY(0);
+}
+.proy-gallery-card:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.proy-gallery-card img{
+  width:100%; height:150px;
+  object-fit:cover;
+  display:block;
+  background:linear-gradient(135deg,rgba(45,154,77,.04),rgba(245,146,29,.03));
+  transition:transform .35s ease;
+}
+.proy-gallery-card:hover img{transform:scale(1.04)}
+.proy-gallery-card .pgc-cap{
+  padding:11px 13px 12px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.35;
+  background:var(--card);
+  border-top:1px solid var(--border);
+}
+.proy-gallery-card .pgc-cap small{
+  display:block;
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--text2);
+  margin-top:2px;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+
+/* CUV-mbht-stat · mejor hover */
+.cuv-mbht-stat{transition:var(--card-transition);box-shadow:var(--card-shadow-rest)}
+.cuv-mbht-stat:hover{transform:translateY(-2px);box-shadow:var(--card-shadow-hover)}
+
+/* Print friendly: sin shadows ni transforms */
+@media print{
+  .viz-card,.anest-stat,.tr-card,.team-card,.coh-tipo-card,.voz-nudo-card,
+  .voz-nna-card,.coh-seq-card,.anest-index-card,.anest-perfil,.anest-recom,
+  .proy-gallery-card,.cuv-mbht-stat{
+    box-shadow:none !important;
+    transform:none !important;
+    page-break-inside:avoid;
+  }
+}
+
+/* Reduced motion respeta preferencias de a11y */
+@media (prefers-reduced-motion:reduce){
+  .viz-card,.anest-stat,.tr-card,.team-card,.coh-tipo-card,.voz-nudo-card,
+  .voz-nna-card,.coh-seq-card,.anest-index-card,.anest-perfil,.anest-recom,
+  .proy-gallery-card,.cuv-mbht-stat,.proy-gallery-card img{
+    transition:none !important;
+    transform:none !important;
+  }
+}
+
+
 .treemap-wrap{display:flex;flex-wrap:wrap;gap:2px;min-height:280px}
 .tm-eje{border-radius:8px;overflow:hidden;display:flex;flex-wrap:wrap;gap:2px;padding:3px;position:relative}
 .tm-eje-label{position:absolute;top:4px;left:6px;font-size:10px;font-weight:800;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.4);z-index:2;pointer-events:none}
@@ -5762,7 +5984,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.130</span>
+        <span>&#127919; v45.131</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -9251,71 +9473,23 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
     <h3 class="anest-block-title">Galer&iacute;a de figuras del informe demogr&aacute;fico</h3>
     <p class="anest-block-sub">10 figuras t&eacute;cnicas + 6 mapas distritales producidos por el equipo PLADECO. Cada imagen es descargable de forma individual o como parte del informe completo en PDF.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px">
-      <a href="proyeccion-poblacion/fig01_trayectoria_poblacional.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig01_trayectoria_poblacional.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Trayectoria poblacional 2002-2035">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 1 &middot; Trayectoria poblacional 2002-2035</div>
-      </a>
-      <a href="proyeccion-poblacion/fig02_comparacion_metodos.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig02_comparacion_metodos.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Comparaci&oacute;n 5 m&eacute;todos">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 2 &middot; Comparaci&oacute;n 5 m&eacute;todos</div>
-      </a>
-      <a href="proyeccion-poblacion/fig03_estructura_etaria.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig03_estructura_etaria.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Estructura etaria">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 3 &middot; Estructura etaria</div>
-      </a>
-      <a href="proyeccion-poblacion/fig04_indice_envejecimiento.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig04_indice_envejecimiento.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="&Iacute;ndice de envejecimiento">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 4 &middot; &Iacute;ndice envejecimiento</div>
-      </a>
-      <a href="proyeccion-poblacion/fig05_dependencia.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig05_dependencia.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Razones de dependencia">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 5 &middot; Razones de dependencia</div>
-      </a>
-      <a href="proyeccion-poblacion/fig06_ie_distrital.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig06_ie_distrital.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="IE distrital">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 6 &middot; IE distrital</div>
-      </a>
-      <a href="proyeccion-poblacion/fig07_proyeccion_distrital.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig07_proyeccion_distrital.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Proyecci&oacute;n distrital">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 7 &middot; Proyecci&oacute;n distrital</div>
-      </a>
-      <a href="proyeccion-poblacion/fig08_socioeconomico.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig08_socioeconomico.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Caracterizaci&oacute;n socioecon&oacute;mica">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 8 &middot; Caracterizaci&oacute;n socioecon&oacute;mica</div>
-      </a>
-      <a href="proyeccion-poblacion/fig09_piramide.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig09_piramide.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Pir&aacute;mide poblacional">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 9 &middot; Pir&aacute;mide poblacional</div>
-      </a>
-      <a href="proyeccion-poblacion/fig10_vivienda.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/fig10_vivienda.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Vivienda">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Fig 10 &middot; Vivienda</div>
-      </a>
-      <a href="proyeccion-poblacion/mapa01_ie_2024.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/mapa01_ie_2024.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Mapa IE 2024">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Mapa 1 &middot; IE 2024</div>
-      </a>
-      <a href="proyeccion-poblacion/mapa02_poblacion_2024.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/mapa02_poblacion_2024.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Mapa Poblaci&oacute;n 2024">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Mapa 2 &middot; Poblaci&oacute;n 2024</div>
-      </a>
-      <a href="proyeccion-poblacion/mapa03_ie_2035.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/mapa03_ie_2035.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Mapa IE proyectado 2035">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Mapa 3 &middot; IE proyectado 2035</div>
-      </a>
-      <a href="proyeccion-poblacion/mapa04_poblacion_2035.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/mapa04_poblacion_2035.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Mapa Poblaci&oacute;n proyectada 2035">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Mapa 4 &middot; Poblaci&oacute;n proyectada 2035</div>
-      </a>
-      <a href="proyeccion-poblacion/mapa05_variacion_2024_2035.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/mapa05_variacion_2024_2035.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Mapa Variaci&oacute;n 2024-2035">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Mapa 5 &middot; Variaci&oacute;n 2024-2035</div>
-      </a>
-      <a href="proyeccion-poblacion/mapa06_delta_ie_2024_2035.png" target="_blank" download style="display:block;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--card);transition:transform .15s">
-        <img src="proyeccion-poblacion/mapa06_delta_ie_2024_2035.png" loading="lazy" style="width:100%;height:140px;object-fit:cover;display:block" alt="Mapa Delta IE 2024-2035">
-        <div style="padding:8px 12px;font-size:11.5px;font-weight:700">Mapa 6 &middot; Delta IE 2024-2035</div>
-      </a>
+    <div class="proy-gallery">
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig01_trayectoria_poblacional.png" target="_blank" download title="Descargar Fig 1 - Trayectoria poblacional 2002-2035"><img src="proyeccion-poblacion/fig01_trayectoria_poblacional.png" loading="lazy" alt="Trayectoria poblacional 2002-2035"><div class="pgc-cap"><small>Fig 1</small>Trayectoria poblacional 2002-2035</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig02_comparacion_metodos.png" target="_blank" download title="Descargar Fig 2 - Comparaci&oacute;n 5 m&eacute;todos"><img src="proyeccion-poblacion/fig02_comparacion_metodos.png" loading="lazy" alt="Comparaci&oacute;n 5 m&eacute;todos"><div class="pgc-cap"><small>Fig 2</small>Comparaci&oacute;n 5 m&eacute;todos</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig03_estructura_etaria.png" target="_blank" download title="Descargar Fig 3 - Estructura etaria"><img src="proyeccion-poblacion/fig03_estructura_etaria.png" loading="lazy" alt="Estructura etaria"><div class="pgc-cap"><small>Fig 3</small>Estructura etaria</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig04_indice_envejecimiento.png" target="_blank" download title="Descargar Fig 4 - &Iacute;ndice envejecimiento"><img src="proyeccion-poblacion/fig04_indice_envejecimiento.png" loading="lazy" alt="&Iacute;ndice envejecimiento"><div class="pgc-cap"><small>Fig 4</small>&Iacute;ndice envejecimiento</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig05_dependencia.png" target="_blank" download title="Descargar Fig 5 - Razones de dependencia"><img src="proyeccion-poblacion/fig05_dependencia.png" loading="lazy" alt="Razones de dependencia"><div class="pgc-cap"><small>Fig 5</small>Razones de dependencia</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig06_ie_distrital.png" target="_blank" download title="Descargar Fig 6 - IE distrital"><img src="proyeccion-poblacion/fig06_ie_distrital.png" loading="lazy" alt="IE distrital"><div class="pgc-cap"><small>Fig 6</small>IE distrital</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig07_proyeccion_distrital.png" target="_blank" download title="Descargar Fig 7 - Proyecci&oacute;n distrital"><img src="proyeccion-poblacion/fig07_proyeccion_distrital.png" loading="lazy" alt="Proyecci&oacute;n distrital"><div class="pgc-cap"><small>Fig 7</small>Proyecci&oacute;n distrital</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig08_socioeconomico.png" target="_blank" download title="Descargar Fig 8 - Caracterizaci&oacute;n socioecon&oacute;mica"><img src="proyeccion-poblacion/fig08_socioeconomico.png" loading="lazy" alt="Caracterizaci&oacute;n socioecon&oacute;mica"><div class="pgc-cap"><small>Fig 8</small>Caracterizaci&oacute;n socioecon&oacute;mica</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig09_piramide.png" target="_blank" download title="Descargar Fig 9 - Pir&aacute;mide poblacional"><img src="proyeccion-poblacion/fig09_piramide.png" loading="lazy" alt="Pir&aacute;mide poblacional"><div class="pgc-cap"><small>Fig 9</small>Pir&aacute;mide poblacional</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/fig10_vivienda.png" target="_blank" download title="Descargar Fig 10 - Vivienda"><img src="proyeccion-poblacion/fig10_vivienda.png" loading="lazy" alt="Vivienda"><div class="pgc-cap"><small>Fig 10</small>Vivienda</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/mapa01_ie_2024.png" target="_blank" download title="Descargar Mapa 1 - IE 2024"><img src="proyeccion-poblacion/mapa01_ie_2024.png" loading="lazy" alt="IE 2024"><div class="pgc-cap"><small>Mapa 1</small>IE 2024</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/mapa02_poblacion_2024.png" target="_blank" download title="Descargar Mapa 2 - Poblaci&oacute;n 2024"><img src="proyeccion-poblacion/mapa02_poblacion_2024.png" loading="lazy" alt="Poblaci&oacute;n 2024"><div class="pgc-cap"><small>Mapa 2</small>Poblaci&oacute;n 2024</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/mapa03_ie_2035.png" target="_blank" download title="Descargar Mapa 3 - IE proyectado 2035"><img src="proyeccion-poblacion/mapa03_ie_2035.png" loading="lazy" alt="IE proyectado 2035"><div class="pgc-cap"><small>Mapa 3</small>IE proyectado 2035</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/mapa04_poblacion_2035.png" target="_blank" download title="Descargar Mapa 4 - Poblaci&oacute;n proyectada 2035"><img src="proyeccion-poblacion/mapa04_poblacion_2035.png" loading="lazy" alt="Poblaci&oacute;n proyectada 2035"><div class="pgc-cap"><small>Mapa 4</small>Poblaci&oacute;n proyectada 2035</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/mapa05_variacion_2024_2035.png" target="_blank" download title="Descargar Mapa 5 - Variaci&oacute;n 2024-2035"><img src="proyeccion-poblacion/mapa05_variacion_2024_2035.png" loading="lazy" alt="Variaci&oacute;n 2024-2035"><div class="pgc-cap"><small>Mapa 5</small>Variaci&oacute;n 2024-2035</div></a>
+      <a class="proy-gallery-card" href="proyeccion-poblacion/mapa06_delta_ie_2024_2035.png" target="_blank" download title="Descargar Mapa 6 - Delta IE 2024-2035"><img src="proyeccion-poblacion/mapa06_delta_ie_2024_2035.png" loading="lazy" alt="Delta IE 2024-2035"><div class="pgc-cap"><small>Mapa 6</small>Delta IE 2024-2035</div></a>
     </div>
   </div>
 
