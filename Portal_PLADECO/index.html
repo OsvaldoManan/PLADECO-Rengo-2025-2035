@@ -283,36 +283,45 @@ canvas{display:block;background:var(--card);border-radius:6px}
 
 /* ── Hero ── */
 .hero{background:var(--primary);color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;filter:blur(2px) saturate(.5);opacity:.12;pointer-events:none;z-index:0}
-/* v45.126 · Fondo base difuminado del portal completo */
+/* v45.136 · Hero-bg refactorizado para MAXIMA NITIDEZ de la imagen 4K (3840x2160) */
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;
+  filter:none;
+  opacity:.55;
+  pointer-events:none;
+  z-index:0;
+  image-rendering:auto;
+}
+/* v45.136 · Fondo sutil del portal · blur moderado para no pixelar */
 .portal-bg{
   position:fixed;
-  inset:-30px; /* extra para compensar el blur en bordes */
+  inset:-20px;
   background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;
-  filter:blur(22px) saturate(.7) brightness(1.05);
-  opacity:1;
+  filter:blur(8px) saturate(.85) brightness(1);
+  opacity:.85;
   pointer-events:none;
   z-index:-2;
-  transform:scale(1.1);
+  transform:scale(1.05);
+  image-rendering:auto;
 }
-/* Overlay claro encima del .portal-bg para preservar legibilidad de las secciones */
+/* Overlay para preservar legibilidad sin matar la imagen */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   background:var(--bg);
-  opacity:.93;
+  opacity:.88;
   pointer-events:none;
   z-index:-1;
 }
-body.dark::before{opacity:.94}
-body.dark .portal-bg{filter:blur(22px) saturate(.5) brightness(.65)}
-/* Body transparente para que el portal-bg se vea a través del overlay */
+body.dark::before{opacity:.92}
+body.dark .portal-bg{filter:blur(8px) saturate(.55) brightness(.55)}
 body{background-color:transparent !important}
-html{background:var(--bg)} /* fallback */
+html{background:var(--bg)}
 @media (max-width:768px){
-  .portal-bg{filter:blur(18px) saturate(.6) brightness(1.05)}
-  body::before{opacity:.95}
+  .portal-bg{filter:blur(6px) saturate(.85) brightness(1)}
+  body::before{opacity:.92}
 }
 .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,22,38,.88) 0%,rgba(12,31,54,.78) 40%,rgba(20,45,90,.72) 70%,rgba(26,61,143,.85) 100%);z-index:0;pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--primary),transparent);z-index:0;pointer-events:none}
@@ -5981,7 +5990,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.135</span>
+        <span>&#127919; v45.136</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -28785,25 +28794,9 @@ table th, table td{
    En su lugar: nueva clase .hero-watermark (HTML div) o
    background-image en .hero-bg con multi-layer.
    ═══════════════════════════════════════════════════════ */
-/* Watermark via .hero-bg multi-layer · preserva gradient navy del hero */
-.hero-bg{
-  background:
-    url('escudo-rengo-blanco.svg') right -80px bottom -80px / 480px no-repeat,
-    url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat!important;
-  opacity:.45!important;
-  filter:blur(1.2px) saturate(.78) brightness(.82)!important;
-}
-body.dark .hero-bg{
-  opacity:.32!important;
-  filter:blur(1.5px) saturate(.55) brightness(.55)!important;
-}
-@media (max-width:640px){
-  .hero-bg{
-    background:
-      url('escudo-rengo-blanco.svg') right -60px bottom -60px / 280px no-repeat,
-      url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat!important;
-  }
-}
+/* v45.136 · ELIMINADO watermark del escudo y filtros duplicados en .hero-bg
+   La nueva regla limpia esta en linea ~286 (sin escudo overlay, sin blur excesivo).
+   El escudo institucional ya esta presente en el topbar (.tn-brand img). */
 
 /* sec-watermark variant para otras secciones */
 .sec-watermark{
@@ -29105,14 +29098,16 @@ body.dark .sec-icon{
    El scrim va como capa superior del background de .hero-bg
    (multi-layer) para garantizar contraste del texto blanco.
    ═══════════════════════════════════════════════════════ */
+/* v45.136 · Scrim suave para legibilidad sin destruir la imagen */
 .hero-bg{
   position:absolute!important;inset:0!important;z-index:0!important;
   background:
-    linear-gradient(180deg,rgba(7,13,26,.52) 0%,rgba(7,13,26,.38) 42%,rgba(7,13,26,.45) 70%,rgba(6,11,22,.85) 100%),
+    linear-gradient(180deg,rgba(7,13,26,.35) 0%,rgba(7,13,26,.18) 42%,rgba(7,13,26,.30) 70%,rgba(6,11,22,.70) 100%),
     url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat
   !important;
   opacity:1!important;
-  filter:blur(2px) brightness(.80) saturate(.98)!important;
+  filter:none !important;
+  image-rendering:auto;
 }
 body.dark .hero-bg{
   background:
