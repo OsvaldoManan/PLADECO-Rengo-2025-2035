@@ -1326,13 +1326,14 @@ body.dark .sc-tab-nav{background:linear-gradient(135deg,#04101e 0%,#071a31 60%,#
   margin:0 auto 28px;max-width:680px;
 }
 .hero-logo-pladeco{
-  width:100%;max-width:520px;height:auto;
-  filter:drop-shadow(0 4px 18px rgba(0,0,0,.35));
+  width:100%;max-width:380px;height:auto;
+  filter:drop-shadow(0 4px 18px rgba(0,0,0,.4));
   transition:transform .4s cubic-bezier(.4,0,.2,1);
 }
 .hero-logo-pladeco:hover{transform:scale(1.02)}
-@media(max-width:768px){.hero-logo-pladeco{max-width:340px}}
-@media(max-width:480px){.hero-logo-pladeco{max-width:260px}}
+@media(max-width:768px){.hero-logo-pladeco{max-width:280px}}
+@media(max-width:480px){.hero-logo-pladeco{max-width:220px}}
+.hero-logo-wrap{margin:0 auto 22px !important}
 
 /* Hero stats v134 con popup */
 .hero-stats-v134 .hero-stat{position:relative;cursor:help;transition:all .25s ease}
@@ -5850,98 +5851,6 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 </script>
 
 <!-- ═══ PULSO COMUNAL (live-strip) · v45.106: sacado del construction-banner para sobrevivir solo ═══ -->
-<div class="live-strip-wrap">
-  <div class="live-strip" id="liveStrip" aria-label="Pulso del PLADECO: fecha actual y KPIs institucionales">
-    <div class="ls-date" id="lsDate" title="Fecha actual">
-      <span class="ls-emoji" aria-hidden="true">&#128197;</span>
-      <span class="ls-date-dia" id="lsDateDia">--</span>
-      <span class="ls-date-num" id="lsDateNum">-- --</span>
-      <span id="lsDateAnio">----</span>
-    </div>
-    <div class="ls-sep" aria-hidden="true"></div>
-    <div class="ls-item ls-kpi" title="Habitantes según Censo 2024"><span class="ls-emoji">&#128101;</span><span><span class="ls-val">63.620</span><span class="ls-desc">habitantes</span></span></div>
-    <div class="ls-sep" aria-hidden="true"></div>
-    <div class="ls-item ls-kpi" title="Acciones priorizadas del PLADECO"><span class="ls-emoji">&#127919;</span><span><span class="ls-val">225</span><span class="ls-desc">acciones</span></span></div>
-    <div class="ls-sep" aria-hidden="true"></div>
-    <div class="ls-item ls-kpi" title="Unidades Vecinales · 9 urbanas + 12 rurales"><span class="ls-emoji">&#128205;</span><span><span class="ls-val">21</span><span class="ls-desc">UV</span></span></div>
-    <div class="ls-sep" aria-hidden="true"></div>
-    <div class="ls-item ls-kpi" title="ODS de la Agenda 2030 vinculados"><span class="ls-emoji">&#127757;</span><span><span class="ls-val">13/17</span><span class="ls-desc">ODS</span></span></div>
-    <div class="ls-meta">
-      <span class="ls-pulse" aria-hidden="true"></span>
-      <span>Portal actualizado <strong id="lsTime">--:--</strong></span>
-    </div>
-  </div>
-  <!-- v45.105 · Bootstrap inline: la fecha y hora aparecen inmediatamente sin depender del script principal ni de fetches -->
-  <script>
-  (function(){
-    try{
-      var d=new Date();
-      var DIAS=['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'];
-      var MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-      var diaEl=document.getElementById('lsDateDia');
-      var numEl=document.getElementById('lsDateNum');
-      var anioEl=document.getElementById('lsDateAnio');
-      var timeEl=document.getElementById('lsTime');
-      if(diaEl)diaEl.innerHTML=DIAS[d.getDay()];
-      if(numEl)numEl.textContent=d.getDate()+' '+MESES[d.getMonth()];
-      if(anioEl)anioEl.textContent=d.getFullYear();
-      if(timeEl){
-        var h=String(d.getHours()).padStart(2,'0');
-        var m=String(d.getMinutes()).padStart(2,'0');
-        timeEl.textContent=h+':'+m;
-      }
-    }catch(e){}
-  })();
-  </script>
-  <!-- v45.110 · Bootstrap inline para clima/aire: dispara fetches Open-Meteo inmediatamente sin esperar al script principal -->
-  <script>
-  (function(){
-    try{
-      var LAT=-34.4067, LON=-70.8597;
-      var WMO={0:['☀️','Despejado'],1:['🌤','Despejado'],2:['⛅','Parc. nublado'],3:['☁️','Nublado'],45:['🌫','Niebla'],48:['🌫','Niebla'],51:['🌦','Llovizna'],53:['🌦','Llovizna'],55:['🌧','Llovizna'],61:['🌧','Lluvia ligera'],63:['🌧','Lluvia'],65:['🌧','Lluvia intensa'],71:['🌨','Nieve'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],80:['🌦','Chubascos'],81:['🌧','Chubascos'],82:['⛈','Chubascos fuertes'],95:['⛈','Tormenta']};
-      // Clima
-      fetch('https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Santiago',{cache:'no-store'})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(!d||!d.current)return;
-          var c=d.current, info=WMO[c.weather_code]||['🌤','Rengo'];
-          var t=document.getElementById('lsWxTemp'); if(t)t.textContent=Math.round(c.temperature_2m);
-          var ic=document.getElementById('lsWxIcon'); if(ic)ic.textContent=info[0];
-          var de=document.getElementById('lsWxDesc'); if(de)de.textContent=info[1]+' · Rengo';
-          var h=document.getElementById('lsWxHum'); if(h)h.textContent=Math.round(c.relative_humidity_2m);
-          var w=document.getElementById('lsWxWind'); if(w)w.textContent=Math.round(c.wind_speed_10m);
-          var cl=document.getElementById('lsClima'); if(cl)cl.classList.remove('loading');
-        })
-        .catch(function(err){console.warn('[clima inline]',err);});
-      // Aire
-      fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+LAT+'&longitude='+LON+'&current=european_aqi&timezone=America/Santiago',{cache:'no-store'})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(!d||!d.current)return;
-          var ica=Math.round(d.current.european_aqi||0);
-          var ie=document.getElementById('lsAirICA'); if(ie)ie.textContent=ica;
-          var be=document.getElementById('lsAirBadge');
-          if(be){
-            var lvl='Bueno', cls='good';
-            if(ica<=20){lvl='Muy bueno';}
-            else if(ica<=40){lvl='Bueno';}
-            else if(ica<=60){lvl='Moderado';}
-            else if(ica<=80){lvl='Pobre';cls='warn';}
-            else if(ica<=100){lvl='Muy pobre';cls='bad';}
-            else{lvl='Extr. pobre';cls='bad';}
-            be.className='ls-air-badge '+cls;
-            be.textContent=lvl;
-          }
-          var ai=document.getElementById('lsAire'); if(ai)ai.classList.remove('loading');
-        })
-        .catch(function(err){console.warn('[aire inline]',err);});
-    }catch(e){console.warn('[clima/aire bootstrap]',e);}
-  })();
-  </script>
-</div>
-<!-- v45.106 · cb-row eliminado: la identidad municipal + PLADECO + aviso "En construccion" ahora viven en el topbar consolidado, ahorrando ~80px de altura -->
-
-
 <main class="main" id="main-content" role="main">
 
 <!-- ═══ HERO ═══ -->
@@ -5953,41 +5862,15 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-content">
-    <!-- v45.134 · LOGO PLADECO institucional reemplaza texto + intercambio cualitativo/cuantitativo -->
+    <!-- v45.135 · Logo PLADECO COLOR mas pequeno, manteniendo subtitulo institucional -->
     <div class="hero-logo-wrap">
-      <img src="Logo-Pladeco-Blanco.png" alt="PLADECO Rengo 2025-2035 - Plan de Desarrollo Comunal" class="hero-logo-pladeco" loading="eager" fetchpriority="high">
+      <img src="Logo-Pladeco-Color.png" alt="PLADECO Rengo 2025-2035 - Plan de Desarrollo Comunal" class="hero-logo-pladeco" loading="eager" fetchpriority="high">
     </div>
     <p class="sub">Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes.</p>
 
-    <!-- ARRIBA: lectura rapida cualitativa (intercambio v45.134) -->
-    <div class="hero-roles-strip" style="margin:30px auto 18px;max-width:1100px;padding:20px 24px;background:rgba(255,255,255,.07);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);border-radius:14px;color:#fff;position:relative;z-index:5">
-      <div style="font-size:11px;font-weight:800;color:#fbbf24;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;text-align:center">&#128214; C&oacute;mo leer este PLADECO</div>
-      <h3 style="font-size:17px;font-weight:700;margin:4px 0 12px;color:#fff;line-height:1.3;text-align:center">El portal en 60 segundos &middot; una ruta para cada lector</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;font-size:13px;line-height:1.5">
-        <div style="background:rgba(0,0,0,.22);border-left:3px solid #ef4444;border-radius:10px;padding:12px 14px">
-          <div style="font-size:10.5px;font-weight:800;color:#fca5a5;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128100; Alcalde &middot; Concejo</div>
-          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:4px;font-size:12.5px">Decisi&oacute;n y rendici&oacute;n de cuentas</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.78)">S&iacute;ntesis Interpretativa &middot; <strong>Decisiones del Plan (6)</strong> &middot; Argumentario &middot; Compromisos &middot; Sem&aacute;foro (10 KPIs)</div>
-        </div>
-        <div style="background:rgba(0,0,0,.22);border-left:3px solid #f59e0b;border-radius:10px;padding:12px 14px">
-          <div style="font-size:10.5px;font-weight:800;color:#fbbf24;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128101; Ciudadan&iacute;a</div>
-          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:4px;font-size:12.5px">Qu&eacute; pasa en mi comuna y mi UV</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.78)">Dashboard &middot; FODA &middot; Voz Ciudadana &middot; Sue&ntilde;os 2035 &middot; NNA &middot; 21 UVs &middot; Galer&iacute;a</div>
-        </div>
-        <div style="background:rgba(0,0,0,.22);border-left:3px solid #2d9a4d;border-radius:10px;padding:12px 14px">
-          <div style="font-size:10.5px;font-weight:800;color:#86efac;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128736; Equipo t&eacute;cnico</div>
-          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:4px;font-size:12.5px">Datos, matriz e instrumentos</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.78)">Matriz Estrat&eacute;gica &middot; <strong>12 Lecturas del Diagn&oacute;stico</strong> &middot; Censo 2024 &middot; MBHT &middot; ICT &middot; Financiamiento</div>
-        </div>
-        <div style="background:rgba(0,0,0,.22);border-left:3px solid #c4b5fd;border-radius:10px;padding:12px 14px">
-          <div style="font-size:10.5px;font-weight:800;color:#c4b5fd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128300; Investigaci&oacute;n</div>
-          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:4px;font-size:12.5px">Metodolog&iacute;a y fuentes</div>
-          <div style="font-size:11px;color:rgba(255,255,255,.78)">Argumentario &middot; Decisiones del Plan &middot; Diagn&oacute;stico Institucional &middot; ERD O&apos;Higgins &middot; Glosario (70)</div>
-        </div>
-      </div>
     </div>
 
-    <!-- ABAJO: datos cuantitativos con POPUPS (intercambio v45.134) -->
+    <!-- v45.135 · Datos cuantitativos con POPUPS (orden original restaurado) -->
     <div class="hero-stats hero-stats-v134" style="margin-top:8px">
       <div class="hero-stat" data-pop="63.620 habitantes seg&uacute;n el Censo de Poblaci&oacute;n y Vivienda 2024 del INE. Crecimiento de +8,2% respecto del Censo 2017 (58.825 hab.). Distribuci&oacute;n: 79,9% urbano - 20,1% rural."><div class="num">63.620</div><div class="lbl">Habitantes &middot; Censo 2024</div><span class="hs-pop-ico">&#9432;</span></div>
       <div class="hero-stat" data-pop="6 Ejes Estrat&eacute;gicos del PLADECO 2025-2035: Desarrollo Econ&oacute;mico, Inclusi&oacute;n Digital, Cuidados y Bienestar, Vivienda y Territorio, Servicios B&aacute;sicos y MA, Gobernanza y Datos."><div class="num">6</div><div class="lbl">Ejes Estrat&eacute;gicos</div><span class="hs-pop-ico">&#9432;</span></div>
@@ -6013,6 +5896,38 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <span>Explorar</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </a>
+    <div style="margin:36px auto 0;max-width:1100px;padding:22px 26px;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:14px;color:#fff;position:relative;z-index:5">
+      <div style="font-size:11px;font-weight:800;color:#fbbf24;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">&#128214; C&oacute;mo leer este PLADECO</div>
+      <h3 style="font-size:18px;font-weight:800;margin:4px 0 14px;color:#fff;line-height:1.3">El portal en 60 segundos &middot; una ruta para cada lector</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;font-size:13px;line-height:1.5">
+
+        <div style="background:rgba(0,0,0,.22);border-left:3px solid #ef4444;border-radius:10px;padding:14px 16px">
+          <div style="font-size:10.5px;font-weight:800;color:#fca5a5;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128100; Alcalde &middot; Concejo</div>
+          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:6px">Decisi&oacute;n y rendici&oacute;n de cuentas</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">S&iacute;ntesis Interpretativa &middot; <strong>Decisiones del Plan (6)</strong> &middot; Argumentario &middot; Compromisos &middot; Sem&aacute;foro (10 KPIs) &middot; Pr&oacute;ximos pasos</div>
+        </div>
+
+        <div style="background:rgba(0,0,0,.22);border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px">
+          <div style="font-size:10.5px;font-weight:800;color:#fbbf24;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128101; Ciudadan&iacute;a</div>
+          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:6px">Qu&eacute; pasa en mi comuna y mi UV</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">Dashboard &middot; FODA Comunal &middot; Voz Ciudadana &middot; Sue&ntilde;os 2035 &middot; NNA &middot; 21 Unidades Vecinales &middot; Galer&iacute;a</div>
+        </div>
+
+        <div style="background:rgba(0,0,0,.22);border-left:3px solid #2d9a4d;border-radius:10px;padding:14px 16px">
+          <div style="font-size:10.5px;font-weight:800;color:#86efac;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128736; Equipo t&eacute;cnico</div>
+          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:6px">Datos, matriz e instrumentos</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">Matriz Estrat&eacute;gica &middot; <strong>12 Lecturas del Diagn&oacute;stico</strong> &middot; Censo 2024 &middot; MBHT &middot; ICT Espacios P&uacute;blicos &middot; Financiamiento</div>
+        </div>
+
+        <div style="background:rgba(0,0,0,.22);border-left:3px solid #c4b5fd;border-radius:10px;padding:14px 16px">
+          <div style="font-size:10.5px;font-weight:800;color:#c4b5fd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128300; Investigaci&oacute;n</div>
+          <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:6px">Metodolog&iacute;a y fuentes</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">Argumentario &middot; Decisiones del Plan &middot; Diagn&oacute;stico Institucional &middot; ERD O'Higgins &middot; Centro de Transparencia &middot; Glosario (70)</div>
+        </div>
+
+      </div>
+    </div>
+
     
 
 <!-- ═══ COUNTDOWN STRIP (F4) · v45.108 con header "En construcción" + bootstrap inline ═══ -->
@@ -6066,7 +5981,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.134</span>
+        <span>&#127919; v45.135</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
