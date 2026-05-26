@@ -5918,7 +5918,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 <!-- v45.74 · Sidebar legacy eliminado por completo (70 enlaces, display:none): la barra superior de 11 capítulos + el motor de vistas son la única navegación. -->
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
-<div class="chatbot-overlay" id="chatOverlay" onclick="toggleChatbot()"></div>
+<div class="chatbot-overlay" id="chatOverlay"></div>
 <div class="chatbot-panel" id="chatPanel">
   <div class="chatbot-header">
     <img src="chatbot-robot.png" alt="Asistente PLADECO Rengo" width="38" height="38" loading="lazy" decoding="async">
@@ -5926,7 +5926,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h4>Asistente PLADECO Rengo</h4>
       <span>&#9679; En l&iacute;nea &mdash; Datos Censo 2024</span>
     </div>
-    <button type="button" class="chatbot-close" onclick="toggleChatbot()" aria-label="Cerrar el chat" title="Cerrar chat (ESC)">&times;</button>
+    <button type="button" class="chatbot-close" onclick="event.preventDefault();event.stopPropagation();if(typeof window.toggleChatbot==='function')window.toggleChatbot();return false;" aria-label="Cerrar el chat" title="Cerrar chat (ESC)">&times;</button>
   </div>
   <div class="chatbot-messages" id="chatMessages"></div>
   <div class="chatbot-suggestions" id="chatSugg"></div>
@@ -6004,12 +6004,15 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     if(e.cancelable)e.preventDefault();
     clickHandler(e);
   },{passive:false});
-  /* Tambien wire del boton close del panel y overlay */
+  /* v45.163 · Wire del overlay solo (el boton close usa onclick inline con stopPropagation, sin duplicar handler) */
   setTimeout(function(){
-    var closeBtn=document.querySelector('.chatbot-close');
-    if(closeBtn)closeBtn.addEventListener('click',function(e){e.preventDefault();window.toggleChatbot();});
+    /* IMPORTANTE: NO agregar addEventListener al .chatbot-close porque el onclick inline ya lo maneja.
+       Tener ambos hacia que toggleChatbot() se ejecutara 2 veces (cerrar+abrir) anulando el efecto. */
     var ov=document.getElementById('chatOverlay');
-    if(ov)ov.addEventListener('click',function(){window.toggleChatbot();});
+    if(ov)ov.addEventListener('click',function(e){
+      /* Solo cerrar si el click fue en el overlay mismo, no en sus hijos */
+      if(e.target===ov&&typeof window.toggleChatbot==='function')window.toggleChatbot();
+    });
     /* Input Enter para enviar */
     var inp=document.getElementById('chatInput');
     if(inp)inp.addEventListener('keydown',function(e){
@@ -6311,7 +6314,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.162</span>
+        <span>&#127919; v45.163</span>
         <span>&#128197; 26 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
