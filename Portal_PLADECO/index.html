@@ -494,6 +494,12 @@ body.dark .arg-quote{background:linear-gradient(135deg,#1a1a3e,#2a0a5a)}
 .hero-scroll-hint svg{opacity:.7}
 @keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 .hero-brand{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:8px;font-weight:400}
+/* v45.145 · Logo institucional PLADECO en el hero · tamaño ad-hoc no excesivo */
+.hero-logo{display:block;width:auto;max-width:380px;height:auto;margin:0 auto 16px;filter:drop-shadow(0 6px 22px rgba(0,0,0,.42)) drop-shadow(0 2px 6px rgba(0,0,0,.28));image-rendering:-webkit-optimize-contrast;-webkit-user-select:none;user-select:none}
+@media(max-width:768px){.hero-logo{max-width:280px;margin-bottom:14px}}
+@media(max-width:480px){.hero-logo{max-width:220px;margin-bottom:12px}}
+/* Screen-reader only (accesibilidad · SEO) */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .kpi-alert{display:inline-block;font-size:11px;padding:2px 6px;border-radius:4px;font-weight:700;margin-left:6px;vertical-align:middle}
 .kpi-alert.red{background:#fee2e2;color:#dc2626}
 .kpi-alert.green{background:#d1fae5;color:#059669}
@@ -1700,9 +1706,8 @@ body.dark .meta-card .mc-track{background:#334155}
 .plazo-pill .pp-name{font-size:13px;font-weight:700}
 
 /* ── Banner Institucional + En Construcción ── */
-/* v45.106 · wrapper standalone para live-strip (reemplaza construction-banner) */
-.live-strip-wrap{position:fixed;top:54px;left:0;right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);box-shadow:0 4px 16px rgba(0,0,0,.25);border-bottom:2px solid rgba(45,154,77,.25)}
-.live-strip-wrap+main{padding-top:38px}
+/* v45.143 · .live-strip-wrap ELIMINADO · el topbar institucional queda como banner único arriba */
+.live-strip-wrap{display:none!important}
 .construction-banner{position:fixed;top:54px;left:var(--sidebar-w);right:0;z-index:99;background:linear-gradient(135deg,#0f2240 0%,#17376a 50%,#1e4d8c 100%);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,left .3s ease}
 .construction-banner.dismissed{transform:translateY(-100%);opacity:0;pointer-events:none}
 /* ── v45.64 · Banner "En construcción" · fila reequilibrada ──
@@ -1992,9 +1997,10 @@ body.dark .construccion-meta span{background:rgba(255,255,255,.05);border-color:
 }
 @media print{.construccion-section{display:none!important}}
 
-/* v45.108 · contenedor de la cuenta regresiva con header */
-.countdown-section{background:linear-gradient(135deg,#081626 0%,#0c1f36 40%,#142d5a 100%);color:#fff;padding:28px 40px 32px;position:relative;overflow:hidden}
-.countdown-section::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(245,146,29,.08),transparent 60%);pointer-events:none}
+/* v45.143 · countdown-section pegada al topbar como banner único · fondo transparente */
+.countdown-section{background:transparent !important;color:#fff;padding:18px 40px 24px;margin-top:0 !important;position:relative;overflow:hidden}
+.countdown-section::before{content:none}
+.countdown-section .countdown-header{margin:0 auto 14px}
 .countdown-header{max-width:900px;margin:0 auto 22px;text-align:center;position:relative;z-index:1}
 .cd-section-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f59e0b,#c97014);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 14px;border-radius:99px;box-shadow:0 2px 8px rgba(245,146,29,.4);margin-bottom:12px}
 .cd-pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:cdPulseDot 1.8s infinite}
@@ -2007,10 +2013,11 @@ body.dark .construccion-meta span{background:rgba(255,255,255,.05);border-color:
   .cd-section-sub{font-size:12px}
 }
 
+/* v45.143 · countdown-strip · sin rayas de fondo · cards limpias institucionales */
 .countdown-strip{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;padding:0;color:#fff;position:relative;overflow:visible;background:transparent}
-.countdown-strip::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(255,255,255,.02) 80px,rgba(255,255,255,.02) 81px);pointer-events:none}
-.countdown-card{text-align:center;padding:18px 28px;background:rgba(255,255,255,.06);border-radius:14px;min-width:170px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);transition:transform .2s,background .2s}
-.countdown-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.1)}
+.countdown-strip::before{content:none}
+.countdown-card{text-align:center;padding:18px 28px;background:rgba(15,23,42,.55);border-radius:14px;min-width:170px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);box-shadow:0 4px 14px rgba(0,0,0,.18);transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease}
+.countdown-card:hover{transform:translateY(-3px);background:rgba(15,23,42,.66);border-color:rgba(45,154,77,.42);box-shadow:0 8px 22px rgba(0,0,0,.24),0 0 0 1px rgba(45,154,77,.18) inset}
 .countdown-card .cd-days{font-size:38px;font-weight:900;line-height:1;transition:opacity .4s;background:linear-gradient(135deg,#48c76e,#4d7de6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .countdown-card .cd-days.flip{opacity:0}
 .countdown-card .cd-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-top:4px}
@@ -4802,34 +4809,71 @@ body.dark .search-modal-footer{background:rgba(0,0,0,.2)}
   .ps-card-val{font-size:18px}
 }
 
-/* ══ Índice de Inicio (Quick Nav agrupado por temáticas) ══ */
-.quick-index{background:linear-gradient(135deg,rgba(45,154,77,.04),rgba(245,146,29,.03));border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin:24px 0 18px;box-shadow:var(--shadow);overflow:hidden;transition:max-height .35s ease,padding .25s ease;position:relative}
-.quick-index-header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px}
-.quick-index-title{font-family:inherit;font-size:18px;font-weight:800;color:var(--text);margin:0;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
-.quick-index-title .qi-emoji{font-size:22px}
-.quick-index-sub{font-size:11.5px;color:var(--text2);margin-top:3px;font-weight:500;line-height:1.45}
-.quick-index-toggle{background:rgba(45,154,77,.1);color:#2d9a4d;border:1px solid rgba(45,154,77,.25);padding:7px 13px;border-radius:8px;font-family:inherit;font-size:11px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s;letter-spacing:.02em}
-.quick-index-toggle:hover{background:rgba(45,154,77,.18);border-color:rgba(45,154,77,.4)}
+/* ══ Mapa del PLADECO (Quick Index) · v45.141 refresh institucional ══ */
+.quick-index{background:linear-gradient(180deg,rgba(255,255,255,.985) 0%,rgba(248,250,252,.96) 100%);border:1px solid rgba(45,154,77,.18);border-radius:16px;padding:22px 26px;margin:24px 0 18px;box-shadow:0 4px 18px rgba(15,23,42,.06),0 1px 3px rgba(15,23,42,.04);overflow:hidden;transition:max-height .35s ease,padding .25s ease,box-shadow .25s ease;position:relative}
+.quick-index::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1e3a8a 0%,#9a3412 33%,#14532d 66%,#3b0764 100%);border-radius:16px 16px 0 0;opacity:.85}
+.quick-index:hover{box-shadow:0 6px 24px rgba(15,23,42,.08),0 2px 6px rgba(15,23,42,.05)}
+.quick-index-header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;padding-top:4px}
+.quick-index-title{font-family:inherit;font-size:19px;font-weight:800;color:var(--text);margin:0;letter-spacing:-.012em;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.quick-index-title .qi-emoji{font-size:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.08))}
+.qi-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#2d9a4d 0%,#1f7a3a 100%);padding:4px 11px;border-radius:99px;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 1px 4px rgba(45,154,77,.32);margin-left:2px}
+.qi-pill::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#fff;opacity:.85}
+.quick-index-sub{font-size:12px;color:var(--text2);margin-top:5px;font-weight:500;line-height:1.5}
+.quick-index-sub strong{font-weight:700}
+.quick-index-toggle{background:#fff;color:#1f7a3a;border:1.5px solid rgba(45,154,77,.32);padding:8px 14px;border-radius:10px;font-family:inherit;font-size:11.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .2s;letter-spacing:.03em;box-shadow:0 1px 3px rgba(45,154,77,.08)}
+.quick-index-toggle:hover{background:#2d9a4d;color:#fff;border-color:#2d9a4d;transform:translateY(-1px);box-shadow:0 3px 10px rgba(45,154,77,.28)}
 .quick-index-toggle .qi-chev{transition:transform .25s;display:inline-block;font-size:11px}
 .quick-index.collapsed .qi-chev{transform:rotate(-90deg)}
 .quick-index-groups{display:flex;flex-direction:column;gap:22px;animation:qiSlide .3s ease}
 .quick-index.collapsed .quick-index-groups{display:none}
+body.dark .quick-index{background:linear-gradient(180deg,rgba(20,28,42,.94),rgba(15,22,34,.92));border-color:rgba(45,154,77,.28)}
+body.dark .qi-pill{box-shadow:0 1px 4px rgba(45,154,77,.45)}
+body.dark .quick-index-toggle{background:rgba(45,154,77,.14);color:#7ddb9d;border-color:rgba(45,154,77,.38)}
+body.dark .quick-index-toggle:hover{background:#2d9a4d;color:#fff}
 
-/* v45.104 · Mapa visual de las 4 partes al inicio del quick-index */
-.qi-macro-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:24px;padding-bottom:22px;border-bottom:1px dashed var(--border)}
-.qi-mm-card{display:flex;gap:14px;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mc);border-radius:12px;text-decoration:none;color:var(--text);transition:transform .2s,box-shadow .2s,border-color .2s}
-.qi-mm-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(15,23,42,.08);border-color:var(--mc)}
-.qi-mm-num{font-size:36px;font-weight:900;color:var(--mc);letter-spacing:-.03em;line-height:1;flex-shrink:0;opacity:.92}
-.qi-mm-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
-.qi-mm-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.01em;line-height:1.2}
-.qi-mm-desc{font-size:11.5px;color:var(--text2);line-height:1.45;flex:1}
-.qi-mm-count{font-size:10px;font-weight:800;color:var(--mc);letter-spacing:.08em;text-transform:uppercase;padding-top:4px;border-top:1px dashed color-mix(in srgb, var(--mc) 25%, transparent)}
+/* v45.141 · Mapa visual de las 4 partes refinado · gradiente + hover institucional */
+.qi-macro-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:26px;padding-bottom:24px;border-bottom:1px dashed var(--border)}
+.qi-mm-card{display:flex;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mc);border-radius:14px;text-decoration:none;color:var(--text);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;position:relative;overflow:hidden}
+.qi-mm-card::after{content:'';position:absolute;top:0;left:0;right:0;height:0;background:linear-gradient(180deg,color-mix(in srgb, var(--mc) 8%, transparent),transparent);transition:height .22s ease;pointer-events:none}
+.qi-mm-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(15,23,42,.10),0 2px 6px color-mix(in srgb, var(--mc) 18%, transparent);border-color:var(--mc);border-left-width:5px}
+.qi-mm-card:hover::after{height:100%}
+.qi-mm-num{font-size:38px;font-weight:900;color:var(--mc);letter-spacing:-.04em;line-height:1;flex-shrink:0;opacity:.95;font-variant-numeric:tabular-nums}
+.qi-mm-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
+.qi-mm-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.012em;line-height:1.22}
+.qi-mm-desc{font-size:12px;color:var(--text2);line-height:1.48;flex:1}
+.qi-mm-count{font-size:10px;font-weight:800;color:var(--mc);letter-spacing:.09em;text-transform:uppercase;padding-top:5px;border-top:1px dashed color-mix(in srgb, var(--mc) 28%, transparent)}
 body.dark .qi-mm-card{background:rgba(255,255,255,.03)}
 @media(max-width:768px){
-  .qi-macro-map{grid-template-columns:1fr;gap:8px;margin-bottom:18px;padding-bottom:16px}
-  .qi-mm-num{font-size:28px}
+  .quick-index{padding:18px 18px}
+  .quick-index-title{font-size:16.5px}
+  .qi-pill{font-size:9.5px;padding:3px 9px}
+  .qi-macro-map{grid-template-columns:1fr;gap:10px;margin-bottom:18px;padding-bottom:16px}
+  .qi-mm-num{font-size:30px}
   .qi-mm-name{font-size:13.5px}
-  .qi-mm-desc{font-size:11px}
+  .qi-mm-desc{font-size:11.5px}
+}
+
+/* v45.141 · Rutas de lectura (¿Cuánto tiempo tienes?) · refresh institucional */
+.qi-rutas-wrap{margin-top:18px;padding-top:16px;border-top:1px dashed rgba(255,255,255,.18)}
+.qi-rutas-head{font-size:10.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;margin-bottom:12px;text-align:center}
+.qi-rutas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.qi-ruta-card{position:relative;display:flex;flex-direction:column;gap:7px;padding:13px 15px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:12px;text-decoration:none;color:#fff;transition:transform .22s ease,background .22s ease,border-color .22s ease,box-shadow .22s ease;overflow:hidden;backdrop-filter:blur(4px)}
+.qi-ruta-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--qrtone,#fbbf24);opacity:.85;transition:width .22s ease,opacity .22s ease}
+.qi-ruta-card:hover{transform:translateY(-2px);background:rgba(255,255,255,.11);border-color:color-mix(in srgb, var(--qrtone) 55%, transparent);box-shadow:0 6px 18px rgba(0,0,0,.18),0 0 0 1px color-mix(in srgb, var(--qrtone) 25%, transparent) inset}
+.qi-ruta-card:hover::before{width:4px;opacity:1}
+.qi-ruta-card[data-tone="ambar"]{--qrtone:#fbbf24}
+.qi-ruta-card[data-tone="naranja"]{--qrtone:#f5921d}
+.qi-ruta-card[data-tone="verde"]{--qrtone:#86efac}
+.qi-ruta-card[data-tone="violeta"]{--qrtone:#c4b5fd}
+.qi-ruta-top{display:flex;align-items:baseline;gap:8px}
+.qi-ruta-time{font-size:22px;font-weight:900;color:var(--qrtone);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.qi-ruta-time.qi-ruta-inf{font-size:24px;line-height:.85}
+.qi-ruta-tag{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.78)}
+.qi-ruta-desc{font-size:11.5px;color:rgba(255,255,255,.88);line-height:1.5}
+@media(max-width:560px){
+  .qi-rutas-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .qi-ruta-card{padding:11px 12px}
+  .qi-ruta-time{font-size:19px}
 }
 
 /* v45.103 · macro-wrapper para las 4 partes del PLADECO */
@@ -5406,8 +5450,12 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 .tn-mgroup.open .tn-mchev{transform:rotate(180deg)}
 .tn-mlinks{display:none;flex-direction:column;padding:2px 0 10px 30px}
 .tn-mgroup.open .tn-mlinks{display:flex}
-.tn-mlinks a{padding:9px 8px;text-decoration:none;color:var(--text2);font-size:13px;font-weight:600;border-radius:7px}
+.tn-mlinks a{display:flex;align-items:center;gap:10px;padding:9px 8px;text-decoration:none;color:var(--text2);font-size:13px;font-weight:600;border-radius:7px;line-height:1.35;transition:background .12s,color .12s}
 .tn-mlinks a:hover{background:rgba(45,154,77,.1);color:#15803d}
+/* v45.144 · emoji indicador por sección en el menú móvil */
+.tn-mlinks a .tn-mi{font-size:15px;width:20px;text-align:center;flex-shrink:0;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.tn-m-sub{padding-top:4px}
+.tn-m-sub-head{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);opacity:.78;padding:8px 4px 4px;margin-top:4px}
 html{scroll-padding-top:150px}
 /* v45.56 · ancho de lectura cómodo + menús de 2 columnas para capítulos largos */
 section:not(.hero) p{max-width:720px!important}
@@ -5459,6 +5507,27 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 <script>
 (function(){
   var CAPS=['Introducción','Diagnóstico','Participación','Planificación','Gobernanza','Seguimiento','Proceso'];
+  /* v45.144 · Mapa de emojis por sección para el menú hamburguesa + dropdown desktop */
+  var SEC_EMOJI={
+    /* Macro 01 · Introducción */
+    'mvv':'🏛️','contexto':'📚','educacion':'🎓','encuesta':'📋',
+    /* Macro 02 · Diagnóstico */
+    'dashboard':'📊','ficha-comunal':'🪪','censo':'🗂️','comparador':'⚖️','visualizaciones-avanzadas':'📈',
+    'ict-espacios-publicos':'🌳','mbht-bienestar':'💚','analisis-estrategico-censo':'🎯','proyeccion-poblacion':'👥',
+    'datos-vivo':'⚡','graficos':'📉','mapa':'🗺️','territorio':'🌎','comparador-uv':'🔀','desigualdad':'⚠️',
+    'territorial-adv':'🏘️','nna':'👶','sociedad-civil':'🤝','voz':'🗣️','suenos':'✨','foda':'🧩',
+    /* Macro 03 · Planificación */
+    'matriz':'🎯','coherencia':'🔗','erd':'🌐','ods-sec':'🌱','gestion':'⚙️','argumentario':'💡','decisiones':'⚖️',
+    'resumen':'📑','diagnostico-institucional':'🏢','voz-institucional':'👥','equipo':'👤','sna':'🔄',
+    'etnografia':'🔬','comisiones':'🧑‍💼','viz':'📊','semaforo':'🚦','compromisos':'✅','financiamiento':'💰',
+    'cronograma-gantt':'📅','validacion-concejo':'🤲','faq-concejo':'❓',
+    /* Macro 04 · Cierre */
+    'faq':'❓','glosario':'📖','institucional':'🏛️','timeline':'⏳','galeria':'📸','antes-despues':'🔄',
+    'voz-vecinos':'🗣️','cuadernillo':'📓','participa':'🙋','calculadora-uv':'🧮','presupuesto-participativo':'💵',
+    'documentos':'📁','visitas':'👁️'
+  };
+  /* v45.144 · Secciones excluidas del menú (huérfanas, técnicas o sin h2) */
+  var SEC_HIDE_FROM_MENU={'portal-cta':1};
   /* v45.105 · La barra superior agrupa los 11 capítulos en 4 macro-partes
      (Introducción, Diagnóstico, Planificación, Cierre) cada una con dropdown
      que lista las secciones de sus capítulos. */
@@ -5481,20 +5550,26 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     var chs=PV.chapters,tabsHtml='',mhtml='';
     for(var mi=0;mi<MACROS.length;mi++){
       var M=MACROS[mi];
-      var drop='',mlinks='';
+      var drop='',mlinks='',unitsShown=0;
       for(var ci=0;ci<M.caps.length;ci++){
         var capIdx=M.caps[ci];
         var ch=chs[capIdx]; if(!ch) continue;
         var capLabel=SHORT[capIdx]||('Cap. '+(capIdx+1));
         var us=ch.units||[];
+        /* Filtrar unidades excluidas ANTES de construir el bloque del capítulo */
+        var visibleUnits=[];
+        for(var k=0;k<us.length;k++){if(!SEC_HIDE_FROM_MENU[us[k].id]){visibleUnits.push(us[k]);}}
+        if(!visibleUnits.length)continue;
         /* Encabezado del capítulo dentro del dropdown desktop */
         drop+='<div class="tn-drop-group"><div class="tn-drop-group-head"><span class="tn-drop-group-num">'+(capIdx+1)+'</span>'+esc(capLabel)+'</div>';
         /* Encabezado del capítulo en el menú móvil */
         mlinks+='<div class="tn-m-sub"><div class="tn-m-sub-head">'+(capIdx+1)+' &middot; '+esc(capLabel)+'</div>';
-        for(var j=0;j<us.length;j++){
-          var u=us[j],un=esc(u.name);
-          drop+='<a href="#'+u.id+'"><span class="tn-di">&#8226;</span><span>'+un+'</span></a>';
-          mlinks+='<a href="#'+u.id+'">'+un+'</a>';
+        for(var j=0;j<visibleUnits.length;j++){
+          var u=visibleUnits[j],un=esc(u.name);
+          var emo=SEC_EMOJI[u.id]||'•';
+          drop+='<a href="#'+u.id+'"><span class="tn-di">'+emo+'</span><span>'+un+'</span></a>';
+          mlinks+='<a href="#'+u.id+'"><span class="tn-mi">'+emo+'</span><span>'+un+'</span></a>';
+          unitsShown++;
         }
         drop+='</div>';
         mlinks+='</div>';
@@ -5746,105 +5821,10 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 })();
 </script>
 
-<!-- ═══ PULSO COMUNAL (live-strip) · v45.106: sacado del construction-banner para sobrevivir solo ═══ -->
-<div class="live-strip-wrap">
-  <div class="live-strip" id="liveStrip" aria-label="Pulso comunal de Rengo: fecha, clima y calidad del aire en tiempo real">
-    <div class="ls-date" id="lsDate" title="Fecha actual">
-      <span class="ls-emoji" aria-hidden="true">&#128197;</span>
-      <span class="ls-date-dia" id="lsDateDia">--</span>
-      <span class="ls-date-num" id="lsDateNum">-- --</span>
-      <span id="lsDateAnio">----</span>
-    </div>
-    <div class="ls-sep" aria-hidden="true"></div>
-    <div class="ls-item loading" id="lsClima" title="Clima actual de Rengo">
-      <span class="ls-emoji" id="lsWxIcon">&#127780;</span>
-      <span><span class="ls-val" id="lsWxTemp">--</span><span class="ls-unit">&deg;C</span></span>
-      <span class="ls-desc" id="lsWxDesc">Rengo</span>
-    </div>
-    <div class="ls-sub">
-      <span>&#128167;</span><strong id="lsWxHum">--</strong>%
-      <span style="margin-left:8px">&#128168;</span><strong id="lsWxWind">--</strong> km/h
-    </div>
-    <div class="ls-sep" aria-hidden="true"></div>
-    <div class="ls-item loading" id="lsAire" title="Calidad del aire EAQI">
-      <span class="ls-emoji">&#127811;</span>
-      <span>Aire <span class="ls-val" id="lsAirICA">--</span></span>
-      <span class="ls-air-badge good" id="lsAirBadge">--</span>
-    </div>
-    <div class="ls-meta">
-      <span class="ls-pulse" aria-hidden="true"></span>
-      <span>Actualizado <strong id="lsTime">--:--</strong></span>
-      <button class="ls-refresh" type="button" onclick="loadLiveStrip(true)" title="Actualizar ahora (auto cada 5 min)" aria-label="Actualizar clima y aire ahora">&#8634;</button>
-    </div>
-  </div>
-  <!-- v45.105 · Bootstrap inline: la fecha y hora aparecen inmediatamente sin depender del script principal ni de fetches -->
-  <script>
-  (function(){
-    try{
-      var d=new Date();
-      var DIAS=['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'];
-      var MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-      var diaEl=document.getElementById('lsDateDia');
-      var numEl=document.getElementById('lsDateNum');
-      var anioEl=document.getElementById('lsDateAnio');
-      var timeEl=document.getElementById('lsTime');
-      if(diaEl)diaEl.innerHTML=DIAS[d.getDay()];
-      if(numEl)numEl.textContent=d.getDate()+' '+MESES[d.getMonth()];
-      if(anioEl)anioEl.textContent=d.getFullYear();
-      if(timeEl){
-        var h=String(d.getHours()).padStart(2,'0');
-        var m=String(d.getMinutes()).padStart(2,'0');
-        timeEl.textContent=h+':'+m;
-      }
-    }catch(e){}
-  })();
-  </script>
-  <!-- v45.110 · Bootstrap inline para clima/aire: dispara fetches Open-Meteo inmediatamente sin esperar al script principal -->
-  <script>
-  (function(){
-    try{
-      var LAT=-34.4067, LON=-70.8597;
-      var WMO={0:['☀️','Despejado'],1:['🌤','Despejado'],2:['⛅','Parc. nublado'],3:['☁️','Nublado'],45:['🌫','Niebla'],48:['🌫','Niebla'],51:['🌦','Llovizna'],53:['🌦','Llovizna'],55:['🌧','Llovizna'],61:['🌧','Lluvia ligera'],63:['🌧','Lluvia'],65:['🌧','Lluvia intensa'],71:['🌨','Nieve'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],80:['🌦','Chubascos'],81:['🌧','Chubascos'],82:['⛈','Chubascos fuertes'],95:['⛈','Tormenta']};
-      // Clima
-      fetch('https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Santiago',{cache:'no-store'})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(!d||!d.current)return;
-          var c=d.current, info=WMO[c.weather_code]||['🌤','Rengo'];
-          var t=document.getElementById('lsWxTemp'); if(t)t.textContent=Math.round(c.temperature_2m);
-          var ic=document.getElementById('lsWxIcon'); if(ic)ic.textContent=info[0];
-          var de=document.getElementById('lsWxDesc'); if(de)de.textContent=info[1]+' · Rengo';
-          var h=document.getElementById('lsWxHum'); if(h)h.textContent=Math.round(c.relative_humidity_2m);
-          var w=document.getElementById('lsWxWind'); if(w)w.textContent=Math.round(c.wind_speed_10m);
-          var cl=document.getElementById('lsClima'); if(cl)cl.classList.remove('loading');
-        })
-        .catch(function(err){console.warn('[clima inline]',err);});
-      // Aire
-      fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+LAT+'&longitude='+LON+'&current=european_aqi&timezone=America/Santiago',{cache:'no-store'})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(!d||!d.current)return;
-          var ica=Math.round(d.current.european_aqi||0);
-          var ie=document.getElementById('lsAirICA'); if(ie)ie.textContent=ica;
-          var be=document.getElementById('lsAirBadge');
-          if(be){
-            var lvl='Bueno', cls='good';
-            if(ica<=20){lvl='Muy bueno';}
-            else if(ica<=40){lvl='Bueno';}
-            else if(ica<=60){lvl='Moderado';}
-            else if(ica<=80){lvl='Pobre';cls='warn';}
-            else if(ica<=100){lvl='Muy pobre';cls='bad';}
-            else{lvl='Extr. pobre';cls='bad';}
-            be.className='ls-air-badge '+cls;
-            be.textContent=lvl;
-          }
-          var ai=document.getElementById('lsAire'); if(ai)ai.classList.remove('loading');
-        })
-        .catch(function(err){console.warn('[aire inline]',err);});
-    }catch(e){console.warn('[clima/aire bootstrap]',e);}
-  })();
-  </script>
-</div>
+<!-- v45.143 · live-strip (Pulso comunal con fecha + clima + aire) ELIMINADO por solicitud del usuario.
+     Razón: unificar el topbar institucional como "banner único" sin barra intermedia. La info del clima/aire no es
+     información esencial del PLADECO y duplicaba peso visual debajo del topbar. -->
+
 <!-- v45.106 · cb-row eliminado: la identidad municipal + PLADECO + aviso "En construccion" ahora viven en el topbar consolidado, ahorrando ~80px de altura -->
 
 
@@ -5859,9 +5839,10 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-content">
-    <!-- v45.63 · Logo «Contigo Rengo» del hero eliminado a pedido del usuario -->
-    <div class="hero-brand">&#127963;&#65039; Ilustre Municipalidad de Rengo</div>
-    <h1>Plan de Desarrollo Comunal<br><span>Rengo 2025 — 2035</span></h1>
+    <!-- v45.145 · Hero-brand (📚 Ilustre Municipalidad de Rengo) + h1 (Plan de Desarrollo Comunal Rengo 2025-2035) REEMPLAZADOS por el logo institucional PLADECO. Se conserva un <h1 class="sr-only"> para SEO y accesibilidad. -->
+    <h1 class="sr-only">Plan de Desarrollo Comunal Rengo 2025 — 2035</h1>
+    <img class="hero-logo" src="Logo-Pladeco-Color.png" alt="PLADECO Rengo 2025-2035 · Plan de Desarrollo Comunal Rengo" width="380" height="208" loading="eager" decoding="async">
+
     <p class="sub">Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes.</p>
     <div class="hero-stats">
       <div class="hero-stat"><div class="num">63.620</div><div class="lbl">Habitantes (Censo 2024)</div></div>
@@ -5919,29 +5900,29 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 
       </div>
 
-      <!-- ─── ¿Cuánto tiempo tienes? · 4 rutas según tiempo disponible ─── -->
-      <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(255,255,255,.18)">
-        <div style="font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px;text-align:center">&#9201;&#65039; &iquest;Cu&aacute;nto tiempo tienes?</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;font-size:12px;line-height:1.45">
+      <!-- ─── ¿Cuánto tiempo tienes? · 4 rutas según tiempo disponible · v45.141 refresh ─── -->
+      <div class="qi-rutas-wrap">
+        <div class="qi-rutas-head">&#9201;&#65039; &iquest;Cu&aacute;nto tiempo tienes?</div>
+        <div class="qi-rutas-grid">
 
-          <a href="#resumen" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(251,191,36,.5)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:18px;font-weight:900;color:#fbbf24">5&prime;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">M&iacute;nimo viable</span></div>
-            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">S&iacute;ntesis Interpretativa (4 lecturas) + 6 Decisiones del Plan (t&iacute;tulos)</div>
+          <a href="#resumen" class="qi-ruta-card" data-tone="ambar">
+            <div class="qi-ruta-top"><span class="qi-ruta-time">5&prime;</span><span class="qi-ruta-tag">M&iacute;nimo viable</span></div>
+            <div class="qi-ruta-desc">S&iacute;ntesis Interpretativa (4 lecturas) + 6 Decisiones del Plan (t&iacute;tulos)</div>
           </a>
 
-          <a href="#argumentario" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(245,146,29,.5)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:18px;font-weight:900;color:#f5921d">15&prime;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">Decisor</span></div>
-            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">+ Argumentario + Ventana 2025-2026 + Sem&aacute;foro (10 KPIs) + Pr&oacute;ximos pasos</div>
+          <a href="#argumentario" class="qi-ruta-card" data-tone="naranja">
+            <div class="qi-ruta-top"><span class="qi-ruta-time">15&prime;</span><span class="qi-ruta-tag">Decisor</span></div>
+            <div class="qi-ruta-desc">+ Argumentario + Ventana 2025-2026 + Sem&aacute;foro (10 KPIs) + Pr&oacute;ximos pasos</div>
           </a>
 
-          <a href="#dashboard" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(45,154,77,.6)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:18px;font-weight:900;color:#86efac">45&prime;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">Lectura plena</span></div>
-            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">+ Diagn&oacute;stico (12 Lecturas) + Matriz + Financiamiento + Voz Ciudadana</div>
+          <a href="#dashboard" class="qi-ruta-card" data-tone="verde">
+            <div class="qi-ruta-top"><span class="qi-ruta-time">45&prime;</span><span class="qi-ruta-tag">Lectura plena</span></div>
+            <div class="qi-ruta-desc">+ Diagn&oacute;stico (12 Lecturas) + Matriz + Financiamiento + Voz Ciudadana</div>
           </a>
 
-          <a href="#capitulo-1" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(196,181,253,.6)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
-            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:14px;font-weight:900;color:#c4b5fd">&#8734;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">Lectura completa</span></div>
-            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">11 cap&iacute;tulos &middot; 55 secciones &middot; Inicia en el Cap&iacute;tulo I</div>
+          <a href="#capitulo-1" class="qi-ruta-card" data-tone="violeta">
+            <div class="qi-ruta-top"><span class="qi-ruta-time qi-ruta-inf">&#8734;</span><span class="qi-ruta-tag">Lectura completa</span></div>
+            <div class="qi-ruta-desc">11 cap&iacute;tulos &middot; 53 secciones &middot; Inicia en el Cap&iacute;tulo I</div>
           </a>
 
         </div>
@@ -5952,7 +5933,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   </div>
 </div>
 
-<!-- ═══ COUNTDOWN STRIP (F4) · v45.108 con header "En construcción" + bootstrap inline ═══ -->
+<!-- ═══ COUNTDOWN STRIP (F4) · v45.142 RESTAURADO · fondo transparente · contenido intacto ═══ -->
 <section class="countdown-section reveal" aria-label="Próximos hitos del PLADECO">
   <div class="countdown-header">
     <div class="cd-section-badge">
@@ -5992,6 +5973,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   </script>
 </section>
 
+
 <!-- ═══ PORTAL EN CONSTRUCCIÓN · Welcome card ═══ -->
 <section class="construccion-section reveal" aria-label="Portal en construcci&oacute;n">
   <div class="construccion-card">
@@ -6003,7 +5985,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.139</span>
+        <span>&#127919; v45.145</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6020,7 +6002,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <div class="quick-index" id="quickIndex">
     <div class="quick-index-header">
       <div>
-        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> Mapa del PLADECO <span style="font-size:10.5px;font-weight:700;color:#2d9a4d;background:rgba(45,154,77,.12);padding:3px 9px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;margin-left:4px">4 partes &middot; 53 secciones</span></h3>
+        <h3 class="quick-index-title"><span class="qi-emoji">&#129517;</span> Mapa del PLADECO <span class="qi-pill">4 partes &middot; 53 secciones</span></h3>
         <div class="quick-index-sub">El portal se lee en 4 momentos: <strong style="color:#1e3a8a">Introducci&oacute;n</strong> &rarr; <strong style="color:#9a3412">Diagn&oacute;stico</strong> &rarr; <strong style="color:#14532d">Planificaci&oacute;n</strong> &rarr; <strong style="color:#3b0764">Cierre</strong>. Las marcadas <strong style="color:#2d9a4d">NEW</strong> son incorporaciones recientes.</div>
       </div>
       <button class="quick-index-toggle" type="button" onclick="document.getElementById('quickIndex').classList.toggle('collapsed')">
