@@ -309,9 +309,10 @@ body{font-family:'Inter','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;ba
 section{padding:48px 40px;max-width:1440px;margin:0 auto}
 canvas{display:block;background:var(--card);border-radius:6px}
 
-/* ── Hero ── v45.138 Imagen institucional 4K como protagonista */
-.hero{background:#0c1f36;color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;filter:none;opacity:1;pointer-events:none;z-index:0;image-rendering:auto;image-rendering:-webkit-optimize-contrast}
+/* ── Hero ── v45.162 · MARCO ELIMINADO · contenido flota sobre el portal-bg institucional sin caja delimitadora */
+.hero{background:transparent !important;color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden;box-shadow:none !important;border:none !important}
+/* v45.162 · .hero-bg DESACTIVADO: la imagen institucional ya esta en .portal-bg (fondo global del portal), evita duplicacion del rectangulo "marco" */
+.hero-bg{display:none !important}
 /* v45.139 · Fondo institucional VISIBLE en todo el portal · imagen 4K como base */
 .portal-bg{
   position:fixed;
@@ -349,7 +350,8 @@ html{background:var(--bg)} /* fallback */
   background:var(--card) !important;
 }
 /* v45.138 · Scrim del hero muy suave para que la imagen institucional 4K sea protagonista */
-.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,22,38,.25) 0%,rgba(12,31,54,.10) 35%,rgba(8,22,38,.20) 65%,rgba(8,22,38,.55) 100%);z-index:0;pointer-events:none}
+/* v45.162 · Scrim del .hero::before suavizado · marco eliminado · solo sutil fade inferior para legibilidad */
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,transparent 60%,rgba(8,22,38,.18) 100%);z-index:0;pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,rgba(8,22,38,.65),transparent);z-index:0;pointer-events:none}
 /* v45.138 · Orbs, dots y mesh ATENUADOS para no opacar la imagen institucional */
 .hero-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:0;display:none !important}
@@ -1443,7 +1445,7 @@ body.dark .sc-tab-nav{background:linear-gradient(135deg,#04101e 0%,#071a31 60%,#
 @keyframes darkSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
 body.dark{--bg:#0b1624;--card:#132035;--text:#e2e8f0;--text2:#94a3b8;--text-secondary:#8b9bb5;--border:#243550;--shadow:0 2px 16px rgba(0,0,0,.4);--accent:#48c76e;--green:#48c76e;--green-light:#6ddb8e;--orange:#fdb94d;--blue:#4d7de6;--muted:#8b9bb5}
 body.dark .sidebar{background:#0c0c1d}
-body.dark .hero{background:linear-gradient(135deg,#0c0c1d 0%,#1a1a3e 50%,#2a0a5a 100%)}
+body.dark .hero{background:transparent !important}
 body.dark .uv-table th{background:#0f172a}
 body.dark .viz-card h3{background:linear-gradient(135deg,#e2e8f0,#94a3b8);-webkit-background-clip:text;background-clip:text}
 body.dark .mvv-header h2 span{background:linear-gradient(135deg,#6ddb8e,#4d7de6);-webkit-background-clip:text;background-clip:text}
@@ -6309,7 +6311,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.161</span>
+        <span>&#127919; v45.162</span>
         <span>&#128197; 26 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
