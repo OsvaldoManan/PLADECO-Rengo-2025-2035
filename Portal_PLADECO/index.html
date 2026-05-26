@@ -1862,30 +1862,40 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 @keyframes onboardIn{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:600px){.onboard-tip{max-width:calc(100vw - 32px);left:16px!important;right:16px!important}}
 
-/* ── Galería Fotográfica ── */
+/* ── Galería Fotográfica · v45.148 cards interactivas con hint de click ── */
 .galeria-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 @media(max-width:600px){.galeria-grid{grid-template-columns:1fr 1fr;gap:8px}}
-.galeria-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s;cursor:pointer;position:relative;aspect-ratio:4/3;background:var(--border)}
-.galeria-card:hover{transform:scale(1.03);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.galeria-card{display:block;border:none;padding:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s;cursor:zoom-in;position:relative;aspect-ratio:4/3;background:var(--border);width:100%;font-family:inherit}
+.galeria-card:hover{transform:scale(1.03);box-shadow:0 8px 30px rgba(0,0,0,.22)}
+.galeria-card:focus-visible{outline:3px solid #db2777;outline-offset:3px}
 .galeria-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
 .galeria-card:hover img{transform:scale(1.06)}
-.galeria-card .galeria-overlay{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.72));color:#fff;opacity:0;transition:opacity .3s}
-.galeria-card:hover .galeria-overlay{opacity:1}
-@media(hover:none){.galeria-card .galeria-overlay{opacity:1;background:linear-gradient(transparent 40%,rgba(0,0,0,.65))}}
-.galeria-card .galeria-overlay h4{font-size:12px;font-weight:700;margin:0}
-.galeria-card .galeria-overlay span{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:.5px}
-.galeria-counter{text-align:center;margin-top:12px;font-size:13px;color:var(--text-secondary);font-weight:600}
-/* Lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+.galeria-card .galeria-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:14px 16px;background:linear-gradient(180deg,transparent 0%,transparent 50%,rgba(0,0,0,.78) 100%);color:#fff;opacity:0;transition:opacity .3s;text-align:left}
+.galeria-card:hover .galeria-overlay,.galeria-card:focus-visible .galeria-overlay{opacity:1}
+@media(hover:none){.galeria-card .galeria-overlay{opacity:1;background:linear-gradient(transparent 40%,rgba(0,0,0,.7))}}
+.galeria-card .galeria-overlay h4{font-size:13px;font-weight:700;margin:0 0 4px;line-height:1.3}
+.galeria-card .galeria-overlay .galeria-click-hint{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:rgba(219,39,119,.85);padding:4px 9px;border-radius:99px;backdrop-filter:blur(4px)}
+.galeria-card .galeria-overlay .galeria-click-hint::before{content:'\1F50D'}
+.galeria-card .galeria-zoom-icon{position:absolute;top:12px;right:12px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:17px;background:rgba(0,0,0,.55);color:#fff;border-radius:50%;backdrop-filter:blur(6px);opacity:0;transform:scale(.8);transition:opacity .3s ease,transform .3s ease}
+.galeria-card:hover .galeria-zoom-icon,.galeria-card:focus-visible .galeria-zoom-icon{opacity:1;transform:scale(1)}
+.galeria-counter{text-align:center;margin-top:14px;font-size:13px;color:var(--text-secondary);font-weight:600}
+/* Lightbox · v45.148 con counter visible y feedback de carga */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .lightbox.open{opacity:1;pointer-events:auto}
-.lightbox img{max-width:90vw;max-height:85vh;border-radius:12px;box-shadow:0 12px 60px rgba(0,0,0,.5);object-fit:contain;transition:transform .3s}
-.lightbox-close{position:absolute;top:20px;right:28px;font-size:36px;color:#fff;background:none;border:none;cursor:pointer;opacity:.8;transition:opacity .2s;z-index:10001}
-.lightbox-close:hover{opacity:1}
-.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:40px;color:#fff;background:rgba(255,255,255,.12);border:none;cursor:pointer;padding:12px 18px;border-radius:50%;opacity:.7;transition:opacity .2s,background .2s}
-.lightbox-nav:hover{opacity:1;background:rgba(255,255,255,.22)}
-.lightbox-prev{left:20px}
-.lightbox-next{right:20px}
-.lightbox-caption{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:#fff;font-size:13px;font-weight:600;background:rgba(0,0,0,.5);padding:6px 18px;border-radius:20px;white-space:nowrap}
+.lightbox img{max-width:90vw;max-height:82vh;border-radius:12px;box-shadow:0 12px 60px rgba(0,0,0,.5);object-fit:contain;transition:transform .3s,opacity .25s;background:#111}
+.lightbox.open img{animation:lbZoom .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes lbZoom{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+.lightbox-close{position:absolute;top:18px;right:22px;width:44px;height:44px;font-size:24px;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;z-index:10001}
+.lightbox-close:hover{background:rgba(219,39,119,.7);transform:rotate(90deg) scale(1.05)}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:24px;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);cursor:pointer;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+.lightbox-nav:hover{background:rgba(219,39,119,.65);transform:translateY(-50%) scale(1.08)}
+.lightbox-prev{left:22px}
+.lightbox-next{right:22px}
+@media(max-width:560px){.lightbox-prev{left:8px}.lightbox-next{right:8px}.lightbox-nav{width:44px;height:44px;font-size:18px}}
+.lightbox-caption{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);color:#fff;font-size:13.5px;font-weight:600;background:rgba(0,0,0,.6);padding:8px 20px;border-radius:99px;white-space:nowrap;backdrop-filter:blur(4px);max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.lightbox-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.65);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;display:flex;gap:14px;align-items:center}
+.lightbox-hint kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:5px;font-size:10.5px;font-family:inherit}
+@media(max-width:560px){.lightbox-hint{display:none}}
 
 /* ── Enhanced Doc Cards ── */
 .doc-card-enhanced{background:var(--card);border-radius:var(--radius);padding:0;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column}
@@ -6006,7 +6016,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.147</span>
+        <span>&#127919; v45.148</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -14186,14 +14196,15 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 
 
 <!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Cerrar">&#10005;</button>
-  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)" aria-label="Anterior">&#10094;</button>
-  <img id="lightboxImg" src="" alt="Foto galería">
-  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)" aria-label="Siguiente">&#10095;</button>
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Visor de imagen ampliada">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Cerrar visor (ESC)" title="Cerrar (ESC)">&#10005;</button>
+  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)" aria-label="Imagen anterior" title="Anterior (&larr;)">&#10094;</button>
+  <img id="lightboxImg" src="" alt="Foto galer&iacute;a">
+  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)" aria-label="Imagen siguiente" title="Siguiente (&rarr;)">&#10095;</button>
   <div class="lightbox-caption" id="lightboxCaption"></div>
   <div class="lightbox-counter" id="lightboxCounter"></div>
   <div class="lightbox-progress" id="lightboxProgress"></div>
+  <div class="lightbox-hint" aria-hidden="true"><span><kbd>&larr;</kbd> <kbd>&rarr;</kbd> navegar</span><span><kbd>ESC</kbd> cerrar</span></div>
 </div>
 
 <!-- Lightbox Diagramas -->
@@ -18937,38 +18948,42 @@ function renderTreemapFin(){
   window.addEventListener('resize',function(){clearTimeout(_tmResizeTimer);_tmResizeTimer=setTimeout(drawTreemap,150);});
 }
 
-// ── GALERIA FOTOGRAFICA ──
+// ── GALERIA FOTOGRAFICA · v45.148 lightbox mejorado + 2 fotos agregadas (8.jpg + 12.jpg) ──
 const GALERIA_FOTOS=[
-  {src:'Imagenes entrevista/9.jpg',titulo:'Registro proceso PLADECO #1'},
-  {src:'Imagenes entrevista/10.jpg',titulo:'Registro proceso PLADECO #2'},
-  {src:'Imagenes entrevista/11.jpg',titulo:'Registro proceso PLADECO #3'},
-  {src:'Imagenes entrevista/13.jpg',titulo:'Registro proceso PLADECO #4'},
-  {src:'Imagenes entrevista/14.jpg',titulo:'Registro proceso PLADECO #5'},
-  {src:'Imagenes entrevista/15.jpg',titulo:'Registro proceso PLADECO #6'},
-  {src:'Imagenes entrevista/16.jpg',titulo:'Registro proceso PLADECO #7'},
-  {src:'Imagenes entrevista/17.jpg',titulo:'Registro proceso PLADECO #8'},
-  {src:'Imagenes entrevista/18.jpg',titulo:'Registro proceso PLADECO #9'},
-  {src:'Imagenes entrevista/19.jpg',titulo:'Registro proceso PLADECO #10'},
-  {src:'Imagenes entrevista/20.jpg',titulo:'Registro proceso PLADECO #11'},
-  {src:'Imagenes entrevista/21.jpg',titulo:'Registro proceso PLADECO #12'},
-  {src:'Imagenes entrevista/22.jpg',titulo:'Registro proceso PLADECO #13'},
-  {src:'Imagenes entrevista/23.jpg',titulo:'Registro proceso PLADECO #14'},
-  {src:'Imagenes entrevista/24.jpg',titulo:'Registro proceso PLADECO #15'},
-  {src:'Imagenes entrevista/25.jpg',titulo:'Registro proceso PLADECO #16'}
+  {src:'Imagenes entrevista/8.jpg',titulo:'Registro proceso PLADECO #1'},
+  {src:'Imagenes entrevista/9.jpg',titulo:'Registro proceso PLADECO #2'},
+  {src:'Imagenes entrevista/10.jpg',titulo:'Registro proceso PLADECO #3'},
+  {src:'Imagenes entrevista/11.jpg',titulo:'Registro proceso PLADECO #4'},
+  {src:'Imagenes entrevista/12.jpg',titulo:'Registro proceso PLADECO #5'},
+  {src:'Imagenes entrevista/13.jpg',titulo:'Registro proceso PLADECO #6'},
+  {src:'Imagenes entrevista/14.jpg',titulo:'Registro proceso PLADECO #7'},
+  {src:'Imagenes entrevista/15.jpg',titulo:'Registro proceso PLADECO #8'},
+  {src:'Imagenes entrevista/16.jpg',titulo:'Registro proceso PLADECO #9'},
+  {src:'Imagenes entrevista/17.jpg',titulo:'Registro proceso PLADECO #10'},
+  {src:'Imagenes entrevista/18.jpg',titulo:'Registro proceso PLADECO #11'},
+  {src:'Imagenes entrevista/19.jpg',titulo:'Registro proceso PLADECO #12'},
+  {src:'Imagenes entrevista/20.jpg',titulo:'Registro proceso PLADECO #13'},
+  {src:'Imagenes entrevista/21.jpg',titulo:'Registro proceso PLADECO #14'},
+  {src:'Imagenes entrevista/22.jpg',titulo:'Registro proceso PLADECO #15'},
+  {src:'Imagenes entrevista/23.jpg',titulo:'Registro proceso PLADECO #16'},
+  {src:'Imagenes entrevista/24.jpg',titulo:'Registro proceso PLADECO #17'},
+  {src:'Imagenes entrevista/25.jpg',titulo:'Registro proceso PLADECO #18'}
 ];
 let lightboxIdx=0;
 function renderGaleria(){
   const el=document.getElementById('galeriaGrid');
   if(!el)return;
   el.innerHTML=GALERIA_FOTOS.map((f,i)=>`
-    <div class="galeria-card" onclick="openLightbox(${i})">
+    <button type="button" class="galeria-card" onclick="openLightbox(${i})" aria-label="Ampliar imagen: ${f.titulo}">
       <img src="${f.src}" alt="${f.titulo}" loading="lazy" decoding="async">
       <div class="galeria-overlay">
+        <span class="galeria-zoom-icon" aria-hidden="true">&#128270;</span>
         <h4>${f.titulo}</h4>
+        <span class="galeria-click-hint">Click para ampliar</span>
       </div>
-    </div>`).join('');
+    </button>`).join('');
   const counter=document.getElementById('galeriaCounter');
-  if(counter) counter.textContent='📷 '+GALERIA_FOTOS.length+' registros fotográficos del proceso';
+  if(counter) counter.textContent='📷 '+GALERIA_FOTOS.length+' registros fotográficos · haz clic en una imagen para ampliar';
 }
 function openLightbox(idx){
   lightboxIdx=idx;
@@ -22137,7 +22152,7 @@ if(typeof Chart !== 'undefined' && Chart.defaults){
 // TIER 1: Immediate — structural HTML + navigation (above-fold)
 renderUV();renderComisiones();renderDocsEnhanced();try{renderDiagramas();}catch(_){}
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
-renderTestimonios();renderCompromisos();renderAntesDespues();renderGaleria();
+try{renderTestimonios();}catch(_){}try{renderCompromisos();}catch(_){}try{renderAntesDespues();}catch(_){}try{renderGaleria();}catch(_){}
 renderTimeline();renderEthnoTabs();
 renderSemaforo();initSemaforoFilter();renderComparador();renderResumen();renderPlazoPills();
 renderInclChips();renderArgumentario();renderGestionKPIs();
