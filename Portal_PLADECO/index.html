@@ -5499,8 +5499,11 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
   .tn-pladeco-pill img{height:26px}
   .tn-construccion-badge{display:none}
 }
+/* v45.150 · En mobile mantener visible el boton Home aunque se oculten logo+badge */
 @media(max-width:560px){
-  .tn-pladeco-pill{display:none}
+  .tn-pladeco-pill{padding:0;background:none;border:none;box-shadow:none;margin-right:4px}
+  .tn-pladeco-pill img{display:none}
+  .tn-construccion-badge{display:none}
 }
 .tn-tab{position:relative;display:flex;align-items:stretch}
 .tn-tab-btn{display:flex;align-items:center;gap:5px;height:100%;padding:0 12px;background:none;border:none;border-bottom:3px solid transparent;color:rgba(255,255,255,.82);font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
@@ -5530,8 +5533,21 @@ body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
 .tn-drop a:hover{background:rgba(45,154,77,.11);color:#15803d}
 .tn-drop a .tn-di{font-size:13px;width:18px;text-align:center;flex-shrink:0}
 .tn-utils{display:flex;align-items:center;justify-content:flex-end;gap:5px;flex:1 1 0}
+/* v45.150 · Buscador + tema agrupados en un solo bloque institucional */
+.tn-utils-group{display:inline-flex;align-items:center;gap:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:11px;padding:3px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.tn-utils-group .tn-util{width:30px;height:30px;border-radius:8px;background:transparent;border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s;box-shadow:none}
+.tn-utils-group .tn-util:hover{background:rgba(255,255,255,.16);transform:scale(1.06)}
+.tn-utils-group .tn-util:focus-visible{outline:2px solid #f59e0b;outline-offset:1px}
+.tn-utils-sep{width:1px;height:18px;background:rgba(255,255,255,.18);margin:0 2px;display:inline-block;flex-shrink:0}
+/* Fallback para .tn-util suelto fuera del grupo (compat) */
 .tn-util{width:35px;height:35px;border-radius:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.13);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
 .tn-util:hover{background:rgba(255,255,255,.22)}
+/* v45.150 · Boton Home en la pildora PLADECO */
+.tn-home-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);color:#fff;text-decoration:none;cursor:pointer;transition:background .18s,transform .18s,border-color .18s,box-shadow .18s;margin-left:2px;flex-shrink:0}
+.tn-home-btn:hover{background:rgba(245,146,29,.35);border-color:rgba(245,146,29,.7);color:#fff;transform:translateY(-1px) scale(1.05);box-shadow:0 3px 10px rgba(245,146,29,.32)}
+.tn-home-btn:focus-visible{outline:2px solid #f59e0b;outline-offset:2px}
+.tn-home-btn svg{display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.32))}
+@media(max-width:600px){.tn-home-btn{width:26px;height:26px}.tn-home-btn svg{width:13px;height:13px}}
 .tn-burger{display:none;width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);cursor:pointer;flex-shrink:0;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0}
 .tn-burger span{width:18px;height:2px;background:#fff;border-radius:2px;transition:.22s}
 .tn-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
@@ -5578,10 +5594,15 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <img src="escudo-rengo-blanco.svg" alt="" width="20" height="33" decoding="async">
     <span>PLADECO Rengo</span>
   </a>
-  <!-- v45.106 · Pildora PLADECO consolidada en topbar (eliminado el construction-banner duplicado) -->
-  <div class="tn-pladeco-pill" aria-hidden="true">
-    <img src="logo-pladeco.png" alt="" width="46" height="34" loading="eager" decoding="async">
-    <span class="tn-construccion-badge">&#9888; En construcci&oacute;n</span>
+  <!-- v45.150 · Pildora PLADECO + boton Home al lado del badge "En Construccion" -->
+  <div class="tn-pladeco-pill">
+    <img src="logo-pladeco.png" alt="" width="46" height="34" loading="eager" decoding="async" aria-hidden="true">
+    <span class="tn-construccion-badge" aria-hidden="true">&#9888; En construcci&oacute;n</span>
+    <a href="#hero" class="tn-home-btn" title="Volver al inicio del portal" aria-label="Volver al inicio del portal">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5L12 2l9 7.5V20a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2V9.5z"/>
+      </svg>
+    </a>
   </div>
   <nav class="tn-tabs" id="tnTabs" aria-label="Capítulos del PLADECO">
     <div class="tn-tab" data-cap="0"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">1</span>Introducción<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
@@ -5593,8 +5614,11 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <div class="tn-tab" data-cap="6"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">7</span>Proceso<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
   </nav>
   <div class="tn-utils">
-    <button class="tn-util" type="button" onclick="if(typeof openCmdPalette===&#39;function&#39;)openCmdPalette()" title="Buscar (Ctrl+K)" aria-label="Buscar en el portal">&#128269;</button>
-    <button class="tn-util" type="button" id="tnTheme" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">&#127769;</button>
+    <div class="tn-utils-group" role="group" aria-label="Buscador y tema">
+      <button class="tn-util" type="button" onclick="if(typeof openCmdPalette===&#39;function&#39;)openCmdPalette()" title="Buscar (Ctrl+K)" aria-label="Buscar en el portal">&#128269;</button>
+      <span class="tn-utils-sep" aria-hidden="true"></span>
+      <button class="tn-util" type="button" id="tnTheme" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro">&#127769;</button>
+    </div>
   </div>
   <button class="tn-burger" type="button" id="tnBurger" aria-label="Abrir menú de capítulos" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
@@ -6196,7 +6220,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.149</span>
+        <span>&#127919; v45.150</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
