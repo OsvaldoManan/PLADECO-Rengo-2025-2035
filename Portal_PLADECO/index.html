@@ -146,14 +146,52 @@ window.__leafletMaps=window.__leafletMaps||[];
      Valores = los EFECTIVOS que ya renderizaba el portal. Sin cambio visual. */
 
   /* v45.137 · Tipografia institucional Poppins (de la carpeta /fonts) */
+/* v45.158 · TIPOGRAFIA INSTITUCIONAL · Poppins (cuerpo) + Neulis Cursive (acentos italic) */
+/* Poppins · 5 pesos disponibles · weight 400 mapeado a Medium para tener "regular" cuando CSS lo pida */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Poppins-ExtraBold.ttf') format('truetype')}
-@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:500;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium.otf') format('opentype')}
-@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Bold.otf') format('opentype')}
+/* Italic synthesis vendrá del navegador (Poppins no incluye italic, lo deriva) */
+@font-face{font-family:'Poppins';font-style:italic;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
+@font-face{font-family:'Poppins';font-style:italic;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
+@font-face{font-family:'Poppins';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
+/* Neulis Cursive · italic + roman (regular) para acentos institucionales */
+@font-face{font-family:'Neulis Cursive';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Regular.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Semi_Bold.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Bold.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:400;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Italic.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:500;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium_Italic.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:600;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Semi_Bold_Italic.otf') format('opentype')}
+@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Bold_Italic.otf') format('opentype')}
 /* Aplicar Poppins como fuente principal */
-html,body{font-family:'Poppins','Inter',system-ui,-apple-system,sans-serif !important}
+html,body{font-family:'Poppins','Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif !important}
+
+/* v45.158 · OVERRIDE GLOBAL · Poppins en TODO el portal con !important */
+*,*::before,*::after{
+  font-family:'Poppins','Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif !important;
+}
+/* Excepciones tecnicas: codigo y monospace conservan su fuente */
+code,kbd,pre,samp,var,tt,.mono,.code,.font-mono{
+  font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,'Courier New',monospace !important;
+}
+/* Neulis Cursive para acentos institucionales: italic + clases utilitarias */
+em,cite,i:not(.fa):not([class*="fa-"]):not([class*="icon"]),
+.font-neulis,.neulis,.cursive-accent,blockquote.quote{
+  font-family:'Neulis Cursive','Poppins',Georgia,Cambria,'Times New Roman',serif !important;
+  font-style:italic;
+}
+/* Asegurar headings con Poppins (refuerzo) */
+h1,h2,h3,h4,h5,h6{
+  font-family:'Poppins','Inter',system-ui,sans-serif !important;
+  font-weight:700;
+}
+/* Inputs y formularios heredan Poppins */
+input,textarea,select,button,optgroup{
+  font-family:'Poppins','Inter',system-ui,sans-serif !important;
+}
 
   /* PALETA INSTITUCIONAL */
   --primary:#0c1f36;--primary-light:#1a3d8f;--accent:#2d9a4d;--accent2:#f5921d;--accent2-dark:#c97014;
@@ -6259,7 +6297,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.157</span>
+        <span>&#127919; v45.158</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
