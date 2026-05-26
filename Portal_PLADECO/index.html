@@ -4831,26 +4831,47 @@ body.dark .qi-pill{box-shadow:0 1px 4px rgba(45,154,77,.45)}
 body.dark .quick-index-toggle{background:rgba(45,154,77,.14);color:#7ddb9d;border-color:rgba(45,154,77,.38)}
 body.dark .quick-index-toggle:hover{background:#2d9a4d;color:#fff}
 
-/* v45.141 · Mapa visual de las 4 partes refinado · gradiente + hover institucional */
-.qi-macro-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:26px;padding-bottom:24px;border-bottom:1px dashed var(--border)}
-.qi-mm-card{display:flex;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mc);border-radius:14px;text-decoration:none;color:var(--text);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;position:relative;overflow:hidden}
-.qi-mm-card::after{content:'';position:absolute;top:0;left:0;right:0;height:0;background:linear-gradient(180deg,color-mix(in srgb, var(--mc) 8%, transparent),transparent);transition:height .22s ease;pointer-events:none}
+/* v45.147 · Panel interactivo · 4 tabs (macros) con paneles desplegables */
+.qi-macro-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:18px;padding-bottom:0;border-bottom:none}
+.qi-mm-card{display:flex;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mc);border-radius:14px;text-decoration:none;color:var(--text);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background .22s ease;position:relative;overflow:hidden;cursor:pointer;font-family:inherit;text-align:left;width:100%}
+.qi-mm-card::after{content:'';position:absolute;top:0;left:0;right:0;height:0;background:linear-gradient(180deg,color-mix(in srgb, var(--mc) 10%, transparent),transparent);transition:height .22s ease;pointer-events:none}
 .qi-mm-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(15,23,42,.10),0 2px 6px color-mix(in srgb, var(--mc) 18%, transparent);border-color:var(--mc);border-left-width:5px}
 .qi-mm-card:hover::after{height:100%}
+.qi-mm-card[aria-expanded="true"]{background:color-mix(in srgb, var(--mc) 10%, var(--card));border-color:var(--mc);border-left-width:5px;box-shadow:0 6px 22px color-mix(in srgb, var(--mc) 24%, transparent),0 2px 6px rgba(15,23,42,.06)}
+.qi-mm-card[aria-expanded="true"]::after{height:100%}
+.qi-mm-card[aria-expanded="true"] .qi-mm-toggle{transform:rotate(180deg);color:var(--mc)}
 .qi-mm-num{font-size:38px;font-weight:900;color:var(--mc);letter-spacing:-.04em;line-height:1;flex-shrink:0;opacity:.95;font-variant-numeric:tabular-nums}
 .qi-mm-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;position:relative;z-index:1}
 .qi-mm-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.012em;line-height:1.22}
 .qi-mm-desc{font-size:12px;color:var(--text2);line-height:1.48;flex:1}
 .qi-mm-count{font-size:10px;font-weight:800;color:var(--mc);letter-spacing:.09em;text-transform:uppercase;padding-top:5px;border-top:1px dashed color-mix(in srgb, var(--mc) 28%, transparent)}
+.qi-mm-toggle{position:absolute;top:14px;right:14px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text2);background:color-mix(in srgb, var(--mc) 8%, transparent);border-radius:50%;transition:transform .25s ease,color .2s ease,background .2s ease;z-index:2}
+.qi-mm-card:hover .qi-mm-toggle{color:var(--mc);background:color-mix(in srgb, var(--mc) 14%, transparent)}
+.qi-mm-card:focus-visible{outline:2px solid var(--mc);outline-offset:2px}
 body.dark .qi-mm-card{background:rgba(255,255,255,.03)}
+body.dark .qi-mm-card[aria-expanded="true"]{background:color-mix(in srgb, var(--mc) 22%, rgba(255,255,255,.04))}
+
+/* v45.147 · Paneles tabpanel (qi-macro) ocultos por default · expanden con animación */
+.qi-macro{display:none;animation:qiPanelIn .32s cubic-bezier(.4,0,.2,1)}
+.qi-macro.show{display:block}
+@keyframes qiPanelIn{
+  from{opacity:0;transform:translateY(-8px);max-height:0}
+  to{opacity:1;transform:translateY(0);max-height:2000px}
+}
+.qi-macro-head{display:flex;align-items:center;gap:12px;padding:10px 14px;margin-bottom:14px;background:color-mix(in srgb, var(--mc) 8%, transparent);border-left:3px solid var(--mc);border-radius:0 8px 8px 0}
+.qi-macro-num{font-size:18px;font-weight:900;color:var(--mc);font-variant-numeric:tabular-nums}
+.qi-macro-name{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.qi-macro-count{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--text2);letter-spacing:.06em;text-transform:uppercase}
+
 @media(max-width:768px){
   .quick-index{padding:18px 18px}
   .quick-index-title{font-size:16.5px}
   .qi-pill{font-size:9.5px;padding:3px 9px}
-  .qi-macro-map{grid-template-columns:1fr;gap:10px;margin-bottom:18px;padding-bottom:16px}
+  .qi-macro-map{grid-template-columns:1fr;gap:10px;margin-bottom:14px}
   .qi-mm-num{font-size:30px}
   .qi-mm-name{font-size:13.5px}
   .qi-mm-desc{font-size:11.5px}
+  .qi-mm-toggle{top:12px;right:12px}
 }
 
 /* v45.141 · Rutas de lectura (¿Cuánto tiempo tienes?) · refresh institucional */
@@ -5985,7 +6006,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.146</span>
+        <span>&#127919; v45.147</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6012,45 +6033,49 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     </div>
     <div class="quick-index-groups">
 
-      <!-- ═══ v45.104 · MAPA VISUAL DE LAS 4 PARTES ═══ -->
-      <div class="qi-macro-map">
-        <a href="#macro-introduccion" class="qi-mm-card" style="--mc:#1e3a8a">
+      <!-- ═══ v45.147 · PANEL INTERACTIVO DE TABS · 4 macros desplegables ═══ -->
+      <div class="qi-macro-map" role="tablist" aria-label="Las 4 partes del PLADECO">
+        <button type="button" class="qi-mm-card" data-macro="1" style="--mc:#1e3a8a" role="tab" aria-controls="qm-1" aria-expanded="false" aria-selected="false">
           <div class="qi-mm-num">01</div>
           <div class="qi-mm-body">
             <div class="qi-mm-name">&#128218; Introducci&oacute;n</div>
             <div class="qi-mm-desc">Marco del PLADECO antes de mirar datos.</div>
             <div class="qi-mm-count">1 cap&iacute;tulo</div>
           </div>
-        </a>
-        <a href="#macro-diagnostico" class="qi-mm-card" style="--mc:#9a3412">
+          <span class="qi-mm-toggle" aria-hidden="true">&#9662;</span>
+        </button>
+        <button type="button" class="qi-mm-card" data-macro="2" style="--mc:#9a3412" role="tab" aria-controls="qm-2" aria-expanded="false" aria-selected="false">
           <div class="qi-mm-num">02</div>
           <div class="qi-mm-body">
             <div class="qi-mm-name">&#128269; Diagn&oacute;stico</div>
             <div class="qi-mm-desc">Datos territoriales + an&aacute;lisis profundo + voz comunitaria.</div>
             <div class="qi-mm-count">3 cap&iacute;tulos &middot; II, III, IV</div>
           </div>
-        </a>
-        <a href="#macro-planificacion" class="qi-mm-card" style="--mc:#14532d">
+          <span class="qi-mm-toggle" aria-hidden="true">&#9662;</span>
+        </button>
+        <button type="button" class="qi-mm-card" data-macro="3" style="--mc:#14532d" role="tab" aria-controls="qm-3" aria-expanded="false" aria-selected="false">
           <div class="qi-mm-num">03</div>
           <div class="qi-mm-body">
             <div class="qi-mm-name">&#127919; Planificaci&oacute;n</div>
             <div class="qi-mm-desc">6 Ejes &middot; 6 Decisiones &middot; 225 acciones &middot; 10 KPIs.</div>
             <div class="qi-mm-count">3 cap&iacute;tulos &middot; V, VI, VII</div>
           </div>
-        </a>
-        <a href="#macro-cierre" class="qi-mm-card" style="--mc:#3b0764">
+          <span class="qi-mm-toggle" aria-hidden="true">&#9662;</span>
+        </button>
+        <button type="button" class="qi-mm-card" data-macro="4" style="--mc:#3b0764" role="tab" aria-controls="qm-4" aria-expanded="false" aria-selected="false">
           <div class="qi-mm-num">04</div>
           <div class="qi-mm-body">
             <div class="qi-mm-name">&#127942; Cierre</div>
             <div class="qi-mm-desc">Recursos &middot; memoria &middot; participaci&oacute;n &middot; transparencia.</div>
             <div class="qi-mm-count">4 cap&iacute;tulos &middot; VIII&ndash;XI</div>
           </div>
-        </a>
+          <span class="qi-mm-toggle" aria-hidden="true">&#9662;</span>
+        </button>
       </div>
-      <!-- ═══ /MAPA VISUAL ═══ -->
+      <!-- ═══ /PANEL INTERACTIVO ═══ -->
 
-      <!-- ═══ MACRO 01 · INTRODUCCIÓN ═══ -->
-      <div class="qi-macro" id="qm-1">
+      <!-- ═══ MACRO 01 · INTRODUCCIÓN · panel desplegable v45.147 ═══ -->
+      <div class="qi-macro" id="qm-1" role="tabpanel" aria-hidden="true" style="--mc:#1e3a8a">
         <div class="qi-macro-head">
           <span class="qi-macro-num">01</span>
           <span class="qi-macro-name">Introducci&oacute;n</span>
@@ -6070,8 +6095,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         </div>
       </div>
 
-      <!-- ═══ MACRO 02 · DIAGNÓSTICO ═══ -->
-      <div class="qi-macro" id="qm-2">
+      <!-- ═══ MACRO 02 · DIAGNÓSTICO · panel desplegable v45.147 ═══ -->
+      <div class="qi-macro" id="qm-2" role="tabpanel" aria-hidden="true" style="--mc:#9a3412">
         <div class="qi-macro-head">
           <span class="qi-macro-num">02</span>
           <span class="qi-macro-name">Diagn&oacute;stico</span>
@@ -6109,8 +6134,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         </div>
       </div>
 
-      <!-- ═══ MACRO 03 · PLANIFICACIÓN ═══ -->
-      <div class="qi-macro" id="qm-3">
+      <!-- ═══ MACRO 03 · PLANIFICACIÓN · panel desplegable v45.147 ═══ -->
+      <div class="qi-macro" id="qm-3" role="tabpanel" aria-hidden="true" style="--mc:#14532d">
         <div class="qi-macro-head">
           <span class="qi-macro-num">03</span>
           <span class="qi-macro-name">Planificaci&oacute;n</span>
@@ -6154,8 +6179,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         </div>
       </div>
 
-      <!-- ═══ MACRO 04 · CIERRE ═══ -->
-      <div class="qi-macro" id="qm-4">
+      <!-- ═══ MACRO 04 · CIERRE · panel desplegable v45.147 ═══ -->
+      <div class="qi-macro" id="qm-4" role="tabpanel" aria-hidden="true" style="--mc:#3b0764">
         <div class="qi-macro-head">
           <span class="qi-macro-num">04</span>
           <span class="qi-macro-name">Cierre</span>
@@ -6189,6 +6214,57 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     </div>
   </div>
 </section>
+
+<!-- v45.147 · Panel interactivo del Mapa del PLADECO · toggle de tabs por macro -->
+<script>
+(function(){
+  function init(){
+    var cards=document.querySelectorAll('#quickIndex .qi-mm-card[data-macro]');
+    if(!cards.length){return;}
+    function close(card){
+      var id=card.getAttribute('aria-controls');
+      var panel=id?document.getElementById(id):null;
+      card.setAttribute('aria-expanded','false');
+      card.setAttribute('aria-selected','false');
+      if(panel){panel.classList.remove('show');panel.setAttribute('aria-hidden','true');}
+    }
+    function open(card){
+      var id=card.getAttribute('aria-controls');
+      var panel=id?document.getElementById(id):null;
+      card.setAttribute('aria-expanded','true');
+      card.setAttribute('aria-selected','true');
+      if(panel){panel.classList.add('show');panel.setAttribute('aria-hidden','false');}
+    }
+    function toggle(card){
+      var wasOpen=card.getAttribute('aria-expanded')==='true';
+      cards.forEach(close);
+      if(!wasOpen){open(card);}
+    }
+    cards.forEach(function(card){
+      card.addEventListener('click',function(e){
+        e.preventDefault();
+        toggle(card);
+      });
+      card.addEventListener('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(card);}
+        else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+          e.preventDefault();
+          var arr=Array.prototype.slice.call(cards);
+          var idx=arr.indexOf(card);
+          var next=e.key==='ArrowRight'?(idx+1)%arr.length:(idx-1+arr.length)%arr.length;
+          arr[next].focus();
+        }
+      });
+    });
+    /* Asegurar que el quickIndex empiece expandido cuando vive sobre la portada
+       (la lógica del motor de vistas ya lo des-colapsa, pero por si acaso). */
+    var qi=document.getElementById('quickIndex');
+    if(qi&&qi.classList.contains('pv-portada-companion')){qi.classList.remove('collapsed');}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}
+  else{init();}
+})();
+</script>
 
 <!-- ═══ ENCUESTA CIUDADANA ═══ -->
 
