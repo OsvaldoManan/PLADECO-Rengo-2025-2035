@@ -271,35 +271,41 @@ canvas{display:block;background:var(--card);border-radius:6px}
 /* ── Hero ── v45.138 Imagen institucional 4K como protagonista */
 .hero{background:#0c1f36;color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;filter:none;opacity:1;pointer-events:none;z-index:0;image-rendering:auto;image-rendering:-webkit-optimize-contrast}
-/* v45.126 · Fondo base difuminado del portal completo */
+/* v45.139 · Fondo institucional VISIBLE en todo el portal · imagen 4K como base */
 .portal-bg{
   position:fixed;
-  inset:-30px; /* extra para compensar el blur en bordes */
-  background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;
-  filter:blur(22px) saturate(.7) brightness(1.05);
+  inset:0;
+  background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat fixed;
+  filter:blur(3px) saturate(1) brightness(1);
   opacity:1;
   pointer-events:none;
   z-index:-2;
-  transform:scale(1.1);
+  image-rendering:auto;
+  image-rendering:-webkit-optimize-contrast;
 }
-/* Overlay claro encima del .portal-bg para preservar legibilidad de las secciones */
+/* v45.139 · Overlay TRANSLUCIDO (no opaco) para preservar legibilidad sin tapar la imagen */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:var(--bg);
-  opacity:.93;
+  background:linear-gradient(180deg,rgba(248,250,252,.55) 0%,rgba(248,250,252,.65) 100%);
   pointer-events:none;
   z-index:-1;
 }
-body.dark::before{opacity:.94}
-body.dark .portal-bg{filter:blur(22px) saturate(.5) brightness(.65)}
-/* Body transparente para que el portal-bg se vea a través del overlay */
+body.dark::before{background:linear-gradient(180deg,rgba(15,23,42,.72) 0%,rgba(15,23,42,.80) 100%)}
+body.dark .portal-bg{filter:blur(3px) saturate(.85) brightness(.78)}
+/* Body transparente para que la imagen se vea a través del overlay translúcido */
 body{background-color:transparent !important}
 html{background:var(--bg)} /* fallback */
 @media (max-width:768px){
-  .portal-bg{filter:blur(18px) saturate(.6) brightness(1.05)}
-  body::before{opacity:.95}
+  .portal-bg{filter:blur(2px) saturate(1) brightness(1);background-attachment:scroll}
+  body::before{background:linear-gradient(180deg,rgba(248,250,252,.72) 0%,rgba(248,250,252,.78) 100%)}
+}
+/* Asegurar que las cards de secciones tengan fondo opaco para legibilidad */
+.viz-card,.anest-stat,.tr-card,.team-card,.coh-tipo-card,.voz-nudo-card,
+.voz-nna-card,.coh-seq-card,.anest-index-card,.anest-perfil,.anest-recom,
+.cuv-mbht-stat,.ficha-card,.proy-gallery-card{
+  background:var(--card) !important;
 }
 /* v45.138 · Scrim del hero muy suave para que la imagen institucional 4K sea protagonista */
 .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,22,38,.25) 0%,rgba(12,31,54,.10) 35%,rgba(8,22,38,.20) 65%,rgba(8,22,38,.55) 100%);z-index:0;pointer-events:none}
@@ -5997,7 +6003,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.138</span>
+        <span>&#127919; v45.139</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
