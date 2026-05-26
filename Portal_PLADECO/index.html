@@ -24,7 +24,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <!-- Preload de assets críticos visibles al inicio (above-the-fold) -->
-<link rel="preload" as="image" href="hero-bg.jpg">
+<link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.png">
 <link rel="preload" as="image" href="logo-pladeco.png">
 <link rel="preload" as="image" href="escudo-rengo-blanco.svg">
 <link rel="preload" as="image" href="Obra.png">
@@ -145,28 +145,15 @@ window.__leafletMaps=window.__leafletMaps||[];
      en conflicto (--text, --bg, --border, --rad-*, --sh-*, --pad-card*).
      Valores = los EFECTIVOS que ya renderizaba el portal. Sin cambio visual. */
 
-  
-/* v45.134 · Tipografia institucional Poppins + Neulis Cursive (acentos) */
+  /* v45.137 · Tipografia institucional Poppins (de la carpeta /fonts) */
 @font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Poppins-ExtraBold.ttf') format('truetype')}
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:500;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium.otf') format('opentype')}
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Bold.otf') format('opentype')}
-@font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:800;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Extra_Bold.otf') format('opentype')}
-
-/* Aplicar Poppins como fuente principal del portal v45.134 */
-html,body,.viz-card,.viz-card *,.team-card,.tr-card,.anest-stat,.coh-tipo-card,
-.voz-nudo-card,.cuv-mbht-stat,button,input,textarea,select,
-.footer,.topnav,.tn-tabs,.tn-tab-btn,.tn-drop,.live-strip,
-h1,h2,h3,h4,h5,h6,p,a,li,td,th,div{
-  font-family:'Poppins','Inter',system-ui,-apple-system,sans-serif !important;
-}
-/* Neulis Cursive solo para acentos institucionales (italic destacados) */
-.neulis,.hero h1 span em,.brand-cursive{
-  font-family:'Neulis Cursive','Poppins',sans-serif !important;
-  font-style:italic !important;
-}
+/* Aplicar Poppins como fuente principal */
+html,body{font-family:'Poppins','Inter',system-ui,-apple-system,sans-serif !important}
 
   /* PALETA INSTITUCIONAL */
   --primary:#0c1f36;--primary-light:#1a3d8f;--accent:#2d9a4d;--accent2:#f5921d;--accent2-dark:#c97014;
@@ -283,45 +270,36 @@ canvas{display:block;background:var(--card);border-radius:6px}
 
 /* ── Hero ── */
 .hero{background:var(--primary);color:#fff;padding:90px 40px 80px;margin-left:0;max-width:none;text-align:center;position:relative;overflow:hidden}
-/* v45.136 · Hero-bg refactorizado para MAXIMA NITIDEZ de la imagen 4K (3840x2160) */
-.hero-bg{
-  position:absolute;inset:0;
-  background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;
-  filter:none;
-  opacity:.55;
-  pointer-events:none;
-  z-index:0;
-  image-rendering:auto;
-}
-/* v45.136 · Fondo sutil del portal · blur moderado para no pixelar */
+.hero-bg{position:absolute;inset:0;background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;filter:none;opacity:.55;pointer-events:none;z-index:0;image-rendering:auto}
+/* v45.126 · Fondo base difuminado del portal completo */
 .portal-bg{
   position:fixed;
-  inset:-20px;
+  inset:-30px; /* extra para compensar el blur en bordes */
   background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat;
-  filter:blur(8px) saturate(.85) brightness(1);
-  opacity:.85;
+  filter:blur(22px) saturate(.7) brightness(1.05);
+  opacity:1;
   pointer-events:none;
   z-index:-2;
-  transform:scale(1.05);
-  image-rendering:auto;
+  transform:scale(1.1);
 }
-/* Overlay para preservar legibilidad sin matar la imagen */
+/* Overlay claro encima del .portal-bg para preservar legibilidad de las secciones */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   background:var(--bg);
-  opacity:.88;
+  opacity:.93;
   pointer-events:none;
   z-index:-1;
 }
-body.dark::before{opacity:.92}
-body.dark .portal-bg{filter:blur(8px) saturate(.55) brightness(.55)}
+body.dark::before{opacity:.94}
+body.dark .portal-bg{filter:blur(22px) saturate(.5) brightness(.65)}
+/* Body transparente para que el portal-bg se vea a través del overlay */
 body{background-color:transparent !important}
-html{background:var(--bg)}
+html{background:var(--bg)} /* fallback */
 @media (max-width:768px){
-  .portal-bg{filter:blur(6px) saturate(.85) brightness(1)}
-  body::before{opacity:.92}
+  .portal-bg{filter:blur(18px) saturate(.6) brightness(1.05)}
+  body::before{opacity:.95}
 }
 .hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,22,38,.88) 0%,rgba(12,31,54,.78) 40%,rgba(20,45,90,.72) 70%,rgba(26,61,143,.85) 100%);z-index:0;pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--primary),transparent);z-index:0;pointer-events:none}
@@ -1328,106 +1306,6 @@ body.dark .sc-tab-nav{background:linear-gradient(135deg,#04101e 0%,#071a31 60%,#
     transform:none !important;
     page-break-inside:avoid;
   }
-
-/* ═══ v45.134 · Hero Logo PLADECO institucional ═══ */
-.hero-logo-wrap{
-  display:flex;justify-content:center;align-items:center;
-  margin:0 auto 28px;max-width:680px;
-}
-.hero-logo-pladeco{
-  width:100%;max-width:380px;height:auto;
-  filter:drop-shadow(0 4px 18px rgba(0,0,0,.4));
-  transition:transform .4s cubic-bezier(.4,0,.2,1);
-}
-.hero-logo-pladeco:hover{transform:scale(1.02)}
-@media(max-width:768px){.hero-logo-pladeco{max-width:280px}}
-@media(max-width:480px){.hero-logo-pladeco{max-width:220px}}
-.hero-logo-wrap{margin:0 auto 22px !important}
-
-/* Hero stats v134 con popup */
-.hero-stats-v134 .hero-stat{position:relative;cursor:help;transition:all .25s ease}
-.hero-stats-v134 .hero-stat:hover{transform:translateY(-3px)}
-.hs-pop-ico{
-  position:absolute;top:8px;right:10px;
-  font-size:14px;color:rgba(255,255,255,.4);
-  transition:color .2s;
-}
-.hero-stats-v134 .hero-stat:hover .hs-pop-ico{color:#fbbf24}
-.hero-stats-v134 .hero-stat[data-pop]::after{
-  content:attr(data-pop);
-  position:absolute;bottom:calc(100% + 12px);left:50%;
-  transform:translateX(-50%) translateY(8px);
-  width:280px;max-width:88vw;
-  padding:11px 14px;
-  background:rgba(15,23,42,.96);
-  color:#fff;
-  font-size:11.5px;font-weight:500;line-height:1.5;
-  border-radius:10px;
-  box-shadow:0 12px 32px rgba(0,0,0,.4);
-  opacity:0;pointer-events:none;
-  transition:opacity .25s,transform .25s;
-  z-index:50;
-  text-align:left;
-  letter-spacing:.01em;
-}
-.hero-stats-v134 .hero-stat[data-pop]::before{
-  content:"";
-  position:absolute;bottom:calc(100% + 6px);left:50%;
-  transform:translateX(-50%) translateY(8px);
-  border:6px solid transparent;
-  border-top-color:rgba(15,23,42,.96);
-  opacity:0;pointer-events:none;
-  transition:opacity .25s,transform .25s;
-  z-index:51;
-}
-.hero-stats-v134 .hero-stat:hover[data-pop]::after,
-.hero-stats-v134 .hero-stat:focus[data-pop]::after{
-  opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;
-}
-.hero-stats-v134 .hero-stat:hover[data-pop]::before,
-.hero-stats-v134 .hero-stat:focus[data-pop]::before{
-  opacity:1;transform:translateX(-50%) translateY(0);
-}
-
-/* ═══ v45.134 · Topbar Home button ═══ */
-.tn-home-btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:36px;height:36px;
-  margin-left:8px;
-  border-radius:8px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.14);
-  color:#fff;
-  transition:all .2s;
-  text-decoration:none;
-  flex-shrink:0;
-}
-.tn-home-btn:hover{
-  background:rgba(245,146,29,.85);
-  border-color:rgba(245,146,29,1);
-  transform:translateY(-1px);
-  box-shadow:0 4px 12px rgba(245,146,29,.4);
-}
-.tn-home-btn:active{transform:translateY(0)}
-@media(max-width:768px){.tn-home-btn{width:32px;height:32px;margin-left:6px}.tn-home-btn svg{width:17px;height:17px}}
-
-/* ═══ v45.134 · Live-strip simplificado con KPIs ═══ */
-.live-strip .ls-kpi{display:flex;align-items:center;gap:8px;color:#fff;font-size:12.5px;font-weight:600}
-.live-strip .ls-kpi .ls-val{font-weight:800;font-size:15px;color:#fbbf24;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-.live-strip .ls-kpi .ls-desc{font-weight:500;color:rgba(255,255,255,.78);margin-left:4px;font-size:11.5px;text-transform:lowercase}
-@media(max-width:768px){
-  .live-strip .ls-kpi{font-size:11.5px}
-  .live-strip .ls-kpi .ls-val{font-size:13px}
-  .live-strip .ls-kpi .ls-desc{display:none}
-}
-@media(max-width:560px){
-  .live-strip .ls-kpi:nth-of-type(3),.live-strip .ls-kpi:nth-of-type(4){display:none}
-}
-
-/* ═══ v45.134 · Hero roles strip · 4 cards lectura rapida ═══ */
-.hero-roles-strip > div > div{transition:transform .25s ease,background .25s ease}
-.hero-roles-strip > div > div:hover{transform:translateY(-3px);background:rgba(0,0,0,.32) !important}
-
 }
 
 /* Reduced motion respeta preferencias de a11y */
@@ -5860,6 +5738,107 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 </script>
 
 <!-- ═══ PULSO COMUNAL (live-strip) · v45.106: sacado del construction-banner para sobrevivir solo ═══ -->
+<div class="live-strip-wrap">
+  <div class="live-strip" id="liveStrip" aria-label="Pulso comunal de Rengo: fecha, clima y calidad del aire en tiempo real">
+    <div class="ls-date" id="lsDate" title="Fecha actual">
+      <span class="ls-emoji" aria-hidden="true">&#128197;</span>
+      <span class="ls-date-dia" id="lsDateDia">--</span>
+      <span class="ls-date-num" id="lsDateNum">-- --</span>
+      <span id="lsDateAnio">----</span>
+    </div>
+    <div class="ls-sep" aria-hidden="true"></div>
+    <div class="ls-item loading" id="lsClima" title="Clima actual de Rengo">
+      <span class="ls-emoji" id="lsWxIcon">&#127780;</span>
+      <span><span class="ls-val" id="lsWxTemp">--</span><span class="ls-unit">&deg;C</span></span>
+      <span class="ls-desc" id="lsWxDesc">Rengo</span>
+    </div>
+    <div class="ls-sub">
+      <span>&#128167;</span><strong id="lsWxHum">--</strong>%
+      <span style="margin-left:8px">&#128168;</span><strong id="lsWxWind">--</strong> km/h
+    </div>
+    <div class="ls-sep" aria-hidden="true"></div>
+    <div class="ls-item loading" id="lsAire" title="Calidad del aire EAQI">
+      <span class="ls-emoji">&#127811;</span>
+      <span>Aire <span class="ls-val" id="lsAirICA">--</span></span>
+      <span class="ls-air-badge good" id="lsAirBadge">--</span>
+    </div>
+    <div class="ls-meta">
+      <span class="ls-pulse" aria-hidden="true"></span>
+      <span>Actualizado <strong id="lsTime">--:--</strong></span>
+      <button class="ls-refresh" type="button" onclick="loadLiveStrip(true)" title="Actualizar ahora (auto cada 5 min)" aria-label="Actualizar clima y aire ahora">&#8634;</button>
+    </div>
+  </div>
+  <!-- v45.105 · Bootstrap inline: la fecha y hora aparecen inmediatamente sin depender del script principal ni de fetches -->
+  <script>
+  (function(){
+    try{
+      var d=new Date();
+      var DIAS=['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'];
+      var MESES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      var diaEl=document.getElementById('lsDateDia');
+      var numEl=document.getElementById('lsDateNum');
+      var anioEl=document.getElementById('lsDateAnio');
+      var timeEl=document.getElementById('lsTime');
+      if(diaEl)diaEl.innerHTML=DIAS[d.getDay()];
+      if(numEl)numEl.textContent=d.getDate()+' '+MESES[d.getMonth()];
+      if(anioEl)anioEl.textContent=d.getFullYear();
+      if(timeEl){
+        var h=String(d.getHours()).padStart(2,'0');
+        var m=String(d.getMinutes()).padStart(2,'0');
+        timeEl.textContent=h+':'+m;
+      }
+    }catch(e){}
+  })();
+  </script>
+  <!-- v45.110 · Bootstrap inline para clima/aire: dispara fetches Open-Meteo inmediatamente sin esperar al script principal -->
+  <script>
+  (function(){
+    try{
+      var LAT=-34.4067, LON=-70.8597;
+      var WMO={0:['☀️','Despejado'],1:['🌤','Despejado'],2:['⛅','Parc. nublado'],3:['☁️','Nublado'],45:['🌫','Niebla'],48:['🌫','Niebla'],51:['🌦','Llovizna'],53:['🌦','Llovizna'],55:['🌧','Llovizna'],61:['🌧','Lluvia ligera'],63:['🌧','Lluvia'],65:['🌧','Lluvia intensa'],71:['🌨','Nieve'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],80:['🌦','Chubascos'],81:['🌧','Chubascos'],82:['⛈','Chubascos fuertes'],95:['⛈','Tormenta']};
+      // Clima
+      fetch('https://api.open-meteo.com/v1/forecast?latitude='+LAT+'&longitude='+LON+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Santiago',{cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(!d||!d.current)return;
+          var c=d.current, info=WMO[c.weather_code]||['🌤','Rengo'];
+          var t=document.getElementById('lsWxTemp'); if(t)t.textContent=Math.round(c.temperature_2m);
+          var ic=document.getElementById('lsWxIcon'); if(ic)ic.textContent=info[0];
+          var de=document.getElementById('lsWxDesc'); if(de)de.textContent=info[1]+' · Rengo';
+          var h=document.getElementById('lsWxHum'); if(h)h.textContent=Math.round(c.relative_humidity_2m);
+          var w=document.getElementById('lsWxWind'); if(w)w.textContent=Math.round(c.wind_speed_10m);
+          var cl=document.getElementById('lsClima'); if(cl)cl.classList.remove('loading');
+        })
+        .catch(function(err){console.warn('[clima inline]',err);});
+      // Aire
+      fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+LAT+'&longitude='+LON+'&current=european_aqi&timezone=America/Santiago',{cache:'no-store'})
+        .then(function(r){return r.json();})
+        .then(function(d){
+          if(!d||!d.current)return;
+          var ica=Math.round(d.current.european_aqi||0);
+          var ie=document.getElementById('lsAirICA'); if(ie)ie.textContent=ica;
+          var be=document.getElementById('lsAirBadge');
+          if(be){
+            var lvl='Bueno', cls='good';
+            if(ica<=20){lvl='Muy bueno';}
+            else if(ica<=40){lvl='Bueno';}
+            else if(ica<=60){lvl='Moderado';}
+            else if(ica<=80){lvl='Pobre';cls='warn';}
+            else if(ica<=100){lvl='Muy pobre';cls='bad';}
+            else{lvl='Extr. pobre';cls='bad';}
+            be.className='ls-air-badge '+cls;
+            be.textContent=lvl;
+          }
+          var ai=document.getElementById('lsAire'); if(ai)ai.classList.remove('loading');
+        })
+        .catch(function(err){console.warn('[aire inline]',err);});
+    }catch(e){console.warn('[clima/aire bootstrap]',e);}
+  })();
+  </script>
+</div>
+<!-- v45.106 · cb-row eliminado: la identidad municipal + PLADECO + aviso "En construccion" ahora viven en el topbar consolidado, ahorrando ~80px de altura -->
+
+
 <main class="main" id="main-content" role="main">
 
 <!-- ═══ HERO ═══ -->
@@ -5871,22 +5850,17 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <div class="hero-orb hero-orb-3"></div>
   <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-content">
-    <!-- v45.135 · Logo PLADECO COLOR mas pequeno, manteniendo subtitulo institucional -->
-    <div class="hero-logo-wrap">
-      <img src="Logo-Pladeco-Color.png" alt="PLADECO Rengo 2025-2035 - Plan de Desarrollo Comunal" class="hero-logo-pladeco" loading="eager" fetchpriority="high">
-    </div>
+    <!-- v45.63 · Logo «Contigo Rengo» del hero eliminado a pedido del usuario -->
+    <div class="hero-brand">&#127963;&#65039; Ilustre Municipalidad de Rengo</div>
+    <h1>Plan de Desarrollo Comunal<br><span>Rengo 2025 — 2035</span></h1>
     <p class="sub">Rengo, comuna inclusiva, sustentable y conectada, que potencia su identidad territorial y mejora la calidad de vida de sus habitantes.</p>
-
-    </div>
-
-    <!-- v45.135 · Datos cuantitativos con POPUPS (orden original restaurado) -->
-    <div class="hero-stats hero-stats-v134" style="margin-top:8px">
-      <div class="hero-stat" data-pop="63.620 habitantes seg&uacute;n el Censo de Poblaci&oacute;n y Vivienda 2024 del INE. Crecimiento de +8,2% respecto del Censo 2017 (58.825 hab.). Distribuci&oacute;n: 79,9% urbano - 20,1% rural."><div class="num">63.620</div><div class="lbl">Habitantes &middot; Censo 2024</div><span class="hs-pop-ico">&#9432;</span></div>
-      <div class="hero-stat" data-pop="6 Ejes Estrat&eacute;gicos del PLADECO 2025-2035: Desarrollo Econ&oacute;mico, Inclusi&oacute;n Digital, Cuidados y Bienestar, Vivienda y Territorio, Servicios B&aacute;sicos y MA, Gobernanza y Datos."><div class="num">6</div><div class="lbl">Ejes Estrat&eacute;gicos</div><span class="hs-pop-ico">&#9432;</span></div>
-      <div class="hero-stat" data-pop="225 acciones priorizadas distribuidas en los 6 ejes y 27 Objetivos Estrat&eacute;gicos Internos. Cada acci&oacute;n con horizonte temporal, responsable y mecanismo de financiamiento."><div class="num">225</div><div class="lbl">Pol&iacute;ticas P&uacute;blicas</div><span class="hs-pop-ico">&#9432;</span></div>
-      <div class="hero-stat" data-pop="21 Unidades Vecinales: 9 urbanas (Centro, A&iacute;da Otei&iacute;za, Lautaro, Villa Espa&ntilde;a, Las Flores, etc.) + 12 rurales (Rosario, Popeta, El Trebal, Las Nieves, etc.)."><div class="num">21</div><div class="lbl">Unidades Vecinales</div><span class="hs-pop-ico">&#9432;</span></div>
-      <div class="hero-stat" data-pop="Alineaci&oacute;n declarada del PLADECO con 13 de los 17 Objetivos de Desarrollo Sostenible de la Agenda 2030 de Naciones Unidas."><div class="num">13/17</div><div class="lbl">ODS &middot; Agenda 2030</div><span class="hs-pop-ico">&#9432;</span></div>
-      <div class="hero-stat" data-pop="32 Objetivos Estrat&eacute;gicos articulados con la Imagen Municipal y la Estrategia Regional de Desarrollo de O&apos;Higgins 2024-2036."><div class="num">32</div><div class="lbl">Objetivos Estrat&eacute;gicos</div><span class="hs-pop-ico">&#9432;</span></div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">63.620</div><div class="lbl">Habitantes (Censo 2024)</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="lbl">Ejes Estrat&#233;gicos</div></div>
+      <div class="hero-stat"><div class="num">225</div><div class="lbl">Pol&#237;ticas P&#250;blicas</div></div>
+      <div class="hero-stat"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></div>
+      <div class="hero-stat"><div class="num">13/17</div><div class="lbl">Objetivos de Desarrollo Sostenible (ONU)</div></div>
+      <div class="hero-stat"><div class="num">32</div><div class="lbl">Objetivos Estrat&#233;gicos</div></div>
     </div>
     <!-- Infografía integrada en hero -->
     <div class="infographic-strip" id="infographic" style="grid-template-columns:1fr auto 1fr;max-width:500px;margin:28px auto 0;padding:18px 28px;border-radius:12px;background:rgba(255,255,255,.08);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);box-shadow:none">
@@ -5931,13 +5905,43 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         <div style="background:rgba(0,0,0,.22);border-left:3px solid #c4b5fd;border-radius:10px;padding:14px 16px">
           <div style="font-size:10.5px;font-weight:800;color:#c4b5fd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128300; Investigaci&oacute;n</div>
           <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:6px">Metodolog&iacute;a y fuentes</div>
-          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">Argumentario &middot; Decisiones del Plan &middot; Diagn&oacute;stico Institucional &middot; ERD O'Higgins &middot; Centro de Transparencia &middot; Glosario (70)</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">Argumentario &middot; Decisiones del Plan &middot; Diagn&oacute;stico Institucional &middot; ERD O&#39;Higgins &middot; Centro de Transparencia &middot; Glosario (70)</div>
         </div>
 
       </div>
-    </div>
 
-    
+      <!-- ─── ¿Cuánto tiempo tienes? · 4 rutas según tiempo disponible ─── -->
+      <div style="margin-top:18px;padding-top:16px;border-top:1px dashed rgba(255,255,255,.18)">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px;text-align:center">&#9201;&#65039; &iquest;Cu&aacute;nto tiempo tienes?</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;font-size:12px;line-height:1.45">
+
+          <a href="#resumen" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(251,191,36,.5)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:18px;font-weight:900;color:#fbbf24">5&prime;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">M&iacute;nimo viable</span></div>
+            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">S&iacute;ntesis Interpretativa (4 lecturas) + 6 Decisiones del Plan (t&iacute;tulos)</div>
+          </a>
+
+          <a href="#argumentario" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(245,146,29,.5)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:18px;font-weight:900;color:#f5921d">15&prime;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">Decisor</span></div>
+            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">+ Argumentario + Ventana 2025-2026 + Sem&aacute;foro (10 KPIs) + Pr&oacute;ximos pasos</div>
+          </a>
+
+          <a href="#dashboard" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(45,154,77,.6)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:18px;font-weight:900;color:#86efac">45&prime;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">Lectura plena</span></div>
+            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">+ Diagn&oacute;stico (12 Lecturas) + Matriz + Financiamiento + Voz Ciudadana</div>
+          </a>
+
+          <a href="#capitulo-1" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:11px 13px;text-decoration:none;color:#fff;transition:background .2s,border-color .2s" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(196,181,253,.6)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.12)'">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="font-size:14px;font-weight:900;color:#c4b5fd">&#8734;</span><span style="font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)">Lectura completa</span></div>
+            <div style="font-size:11.5px;color:rgba(255,255,255,.85)">11 cap&iacute;tulos &middot; 55 secciones &middot; Inicia en el Cap&iacute;tulo I</div>
+          </a>
+
+        </div>
+      </div>
+
+      <div style="margin-top:14px;font-size:11.5px;color:rgba(255,255,255,.65);text-align:center">Usa la barra superior para navegar por cap&iacute;tulo &middot; Ctrl+K para buscar en todo el portal</div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ COUNTDOWN STRIP (F4) · v45.108 con header "En construcción" + bootstrap inline ═══ -->
 <section class="countdown-section reveal" aria-label="Próximos hitos del PLADECO">
@@ -5990,7 +5994,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.136</span>
+        <span>&#127919; v45.137</span>
         <span>&#128197; 19 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -15310,14 +15314,7 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   </div>
 
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Registro fotogr&aacute;fico y actas de participaci&oacute;n del proceso PLADECO Rengo 2025 &bull; Equipo de comunicaciones Municipalidad de Rengo &bull; 8 cuadernillos formales con 472 firmas verificadas</div>
-
-  <!-- v45.134 · Texto rescatado de #portal-cta eliminado -->
-  <div style="margin:28px auto 0;max-width:1100px;padding:22px 26px;background:linear-gradient(135deg,rgba(45,154,77,.08),rgba(245,146,29,.05));border:1px solid var(--border);border-left:4px solid #2d9a4d;border-radius:14px">
-    <div style="font-size:11px;font-weight:800;color:#2d9a4d;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">&#127942; S&iacute;ntesis del proceso</div>
-    <p style="font-size:13.5px;line-height:1.7;color:var(--text);margin:0;font-weight:500">Este portal re&uacute;ne el <strong>diagn&oacute;stico</strong>, la <strong>planificaci&oacute;n estrat&eacute;gica</strong> y el <strong>seguimiento</strong> del Plan de Desarrollo Comunal, construido con la participaci&oacute;n de <strong>m&aacute;s de 500 vecinos y vecinas</strong> de <strong>95 organizaciones</strong> en las 21 unidades vecinales de Rengo, <strong>115 funcionarios municipales</strong> entrevistados y <strong>4.036 ni&ntilde;os, ni&ntilde;as y adolescentes</strong> encuestados (OLN). La <strong>transparencia</strong> y la <strong>reutilizaci&oacute;n del conocimiento</strong> son principios centrales de este instrumento de gesti&oacute;n.</p>
-  </div>
-
-  </section>
+</section>
 <!-- ═══ ANTES / DESPUÉS ═══ -->
 <section id="antes-despues" class="reveal">
   <div class="sec-header">
@@ -16023,6 +16020,21 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   <div class="tr-note"><strong>Transparencia activa.</strong> Estos documentos respaldan cada etapa del PLADECO y se publican para libre consulta de la ciudadan&iacute;a. Los datos de la MBHT se entregan en formato abierto (Excel) para su an&aacute;lisis y reutilizaci&oacute;n. Las 4 presentaciones t&eacute;cnicas sobre 100 MB se sirven mediante <strong>Git LFS</strong> para garantizar descarga directa sin restricciones (Ley 20.285 de Transparencia). El documento final del plan se publicar&aacute; una vez aprobado por el Concejo Municipal.</div>
 
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Documentos oficiales del proceso de elaboraci&oacute;n del PLADECO Rengo 2025-2035 &middot; SECPLAC, Ilustre Municipalidad de Rengo &middot; Mayo 2026 &middot; <strong>39 archivos publicados</strong> (15 base + 24 presentaciones t&eacute;cnicas, incluyendo 4 v&iacute;a Git LFS).</div>
+</section>
+
+
+<!-- ═══ CTA FINAL ═══ -->
+<section id="portal-cta" style="padding-bottom:20px">
+  <div class="portal-cta">
+    <h3>PLADECO Rengo 2025 &ndash; 2035</h3>
+    <div class="cta-sub">Este portal re&uacute;ne el <strong>diagn&oacute;stico</strong>, la <strong>planificaci&oacute;n estrat&eacute;gica</strong> y el <strong>seguimiento</strong> del Plan de Desarrollo Comunal, construido con la participaci&oacute;n de <strong>472 vecinos y vecinas</strong> de <strong>95 organizaciones</strong> en las 21 unidades vecinales de Rengo, 115 funcionarios municipales entrevistados y 4.036 ni&ntilde;os, ni&ntilde;as y adolescentes encuestados. La transparencia y la reutilizaci&oacute;n del conocimiento son principios centrales de este instrumento de gesti&oacute;n.</div>
+    <div class="portal-cta-actions">
+      <button class="portal-cta-btn primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#9650; Volver al inicio</button>
+      <button class="portal-cta-btn secondary" onclick="openPortalSearch()">&#128269; Buscar en el portal</button>
+      <button class="portal-cta-btn secondary" onclick="navigator.clipboard.writeText(window.location.href.split('?')[0]).then(()=>showToast('&iexcl;Enlace copiado!','success'))">&#128279; Copiar enlace</button>
+      <button class="portal-cta-btn secondary" onclick="toggleChatbot()">&#128172; Preguntar al asistente</button>
+    </div>
+  </div>
 </section>
 
 <button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver al inicio de la p&#225;gina">
@@ -28794,9 +28806,8 @@ table th, table td{
    En su lugar: nueva clase .hero-watermark (HTML div) o
    background-image en .hero-bg con multi-layer.
    ═══════════════════════════════════════════════════════ */
-/* v45.136 · ELIMINADO watermark del escudo y filtros duplicados en .hero-bg
-   La nueva regla limpia esta en linea ~286 (sin escudo overlay, sin blur excesivo).
-   El escudo institucional ya esta presente en el topbar (.tn-brand img). */
+/* v45.137 · Watermark del escudo eliminado para no degradar la imagen institucional 4K */
+/* El escudo institucional ya esta presente en el topbar (.tn-brand img) */
 
 /* sec-watermark variant para otras secciones */
 .sec-watermark{
@@ -29098,7 +29109,6 @@ body.dark .sec-icon{
    El scrim va como capa superior del background de .hero-bg
    (multi-layer) para garantizar contraste del texto blanco.
    ═══════════════════════════════════════════════════════ */
-/* v45.136 · Scrim suave para legibilidad sin destruir la imagen */
 .hero-bg{
   position:absolute!important;inset:0!important;z-index:0!important;
   background:
