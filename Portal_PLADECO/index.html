@@ -6297,8 +6297,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.159</span>
-        <span>&#128197; 19 Mayo 2026</span>
+        <span>&#127919; v45.160</span>
+        <span>&#128197; 26 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
         <span>&#128279; 95 organizaciones</span>
@@ -16577,9 +16577,28 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span>Actualizado: 18 Mayo 2026 &middot; v45.0</span>
+    <span id="footerVersion">Actualizado: 26 Mayo 2026 &middot; v45.160</span>
   </div>
 </footer>
+
+<!-- v45.160 · Sincronizacion automatica del footer-version con la version institucional del card "Portal en Construccion" -->
+<script>
+(function(){
+  function sync(){
+    try{
+      var foot=document.getElementById('footerVersion');
+      var meta=document.querySelector('.construccion-meta');
+      if(!foot||!meta)return;
+      var verNode=Array.prototype.find.call(meta.children,function(s){return /v45\./.test(s.textContent||'');});
+      var dateNode=Array.prototype.find.call(meta.children,function(s){return /\d{1,2}\s+[A-Za-z]+\s+\d{4}/.test(s.textContent||'');});
+      var ver=verNode?(verNode.textContent.match(/v45\.\d+/)||[])[0]:null;
+      var date=dateNode?(dateNode.textContent.match(/\d{1,2}\s+[A-Za-z]+\s+\d{4}/)||[])[0]:null;
+      if(ver&&date){foot.textContent='Actualizado: '+date+' · '+ver;}
+    }catch(e){}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sync);}else{sync();}
+})();
+</script>
 
 <!-- F7: Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
