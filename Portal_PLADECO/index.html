@@ -5126,8 +5126,18 @@ body.dark .qi-group{background:rgba(255,255,255,.02)}
    ══════════════════════════════════════════ */
 .mvv-viewer{position:fixed;inset:0;z-index:10001;background:rgba(8,16,32,.82);backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s cubic-bezier(.4,0,.2,1)}
 .mvv-viewer.open{opacity:1;pointer-events:auto}
-.mvv-viewer-img{max-width:min(85vw,720px);max-height:82vh;border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.08);object-fit:contain;transform:scale(.88) translateY(12px);transition:transform .5s cubic-bezier(.23,1,.32,1);user-select:none}
+/* v45.166 · Wrapper para imagen MVV con loader visual */
+.mvv-viewer-img-wrap{position:relative;display:flex;align-items:center;justify-content:center;max-width:min(90vw,960px);max-height:82vh}
+.mvv-viewer-img{max-width:min(90vw,960px);max-height:82vh;border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.08);object-fit:contain;transform:scale(.88) translateY(12px);transition:transform .5s cubic-bezier(.23,1,.32,1),opacity .35s ease;user-select:none;opacity:0;background:rgba(20,32,54,.35)}
 .mvv-viewer.open .mvv-viewer-img{transform:scale(1) translateY(0)}
+/* Loader spinner mientras carga la imagen */
+.mvv-viewer-loader{position:absolute;width:40px;height:40px;border:3px solid rgba(255,255,255,.18);border-top-color:#fff;border-radius:50%;animation:mvvSpin .8s linear infinite;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.mvv-viewer-img-wrap.loading .mvv-viewer-loader{opacity:1}
+@keyframes mvvSpin{to{transform:rotate(360deg)}}
+/* Hint de teclado en la base */
+.mvv-viewer-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.65);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;display:flex;gap:14px;align-items:center;font-family:var(--font-body,system-ui)}
+.mvv-viewer-hint kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:5px;font-size:10.5px;font-family:inherit}
+@media(max-width:560px){.mvv-viewer-hint{display:none}}
 .mvv-viewer .lightbox-close{position:fixed;top:18px;right:24px;font-size:28px;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);cursor:pointer;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:10002;backdrop-filter:blur(8px)}
 .mvv-viewer .lightbox-close:hover{background:rgba(255,255,255,.2);transform:scale(1.1)}
 .mvv-viewer .mvv-nav{position:fixed;top:50%;transform:translateY(-50%);font-size:28px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);cursor:pointer;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .25s;backdrop-filter:blur(8px)}
@@ -6331,7 +6341,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.165</span>
+        <span>&#127919; v45.166</span>
         <span>&#128197; 26 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -14540,20 +14550,27 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   <div class="lightbox-caption" id="diagLightboxCaption"></div>
 </div>
 
-<!-- ═══ MVV IMAGE VIEWER ═══ -->
-<div class="mvv-viewer" id="mvvViewer" onclick="if(event.target===this)closeMvvViewer()">
-  <button class="lightbox-close" onclick="closeMvvViewer()" aria-label="Cerrar">&#10005;</button>
-  <button class="mvv-nav mvv-nav-prev" onclick="navMvvViewer(-1)" aria-label="Anterior">&#10094;</button>
-  <img class="mvv-viewer-img" id="mvvViewerImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" alt="Visor de Misi&#243;n, Visi&#243;n y Valores">
-  <button class="mvv-nav mvv-nav-next" onclick="navMvvViewer(1)" aria-label="Siguiente">&#10095;</button>
-  <div class="mvv-viewer-dots" id="mvvDots">
-    <button class="mvv-viewer-dot active" onclick="goMvvViewer(0)"></button>
-    <button class="mvv-viewer-dot" onclick="goMvvViewer(1)"></button>
-    <button class="mvv-viewer-dot" onclick="goMvvViewer(2)"></button>
-    <button class="mvv-viewer-dot" onclick="goMvvViewer(3)"></button>
-    <button class="mvv-viewer-dot" onclick="goMvvViewer(4)"></button>
+<!-- ═══ MVV IMAGE VIEWER · v45.166 popup accesible + keyboard nav ═══ -->
+<div class="mvv-viewer" id="mvvViewer" onclick="if(event.target===this)closeMvvViewer()" role="dialog" aria-modal="true" aria-labelledby="mvvViewerCap" aria-hidden="true">
+  <button class="lightbox-close" onclick="closeMvvViewer()" aria-label="Cerrar visor (ESC)" title="Cerrar (ESC)" type="button">&#10005;</button>
+  <button class="mvv-nav mvv-nav-prev" onclick="navMvvViewer(-1)" aria-label="Imagen anterior" title="Anterior (&larr;)" type="button">&#10094;</button>
+  <div class="mvv-viewer-img-wrap" id="mvvViewerImgWrap">
+    <span class="mvv-viewer-loader" aria-hidden="true"></span>
+    <img class="mvv-viewer-img" id="mvvViewerImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" alt="Visor de Misi&#243;n, Visi&#243;n y Valores">
   </div>
-  <div class="mvv-viewer-caption" id="mvvViewerCap"></div>
+  <button class="mvv-nav mvv-nav-next" onclick="navMvvViewer(1)" aria-label="Imagen siguiente" title="Siguiente (&rarr;)" type="button">&#10095;</button>
+  <div class="mvv-viewer-dots" id="mvvDots" role="tablist" aria-label="Navegaci&oacute;n entre im&aacute;genes">
+    <button class="mvv-viewer-dot active" onclick="goMvvViewer(0)" aria-label="Imagen 1 de 5: Misi&oacute;n" type="button"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(1)" aria-label="Imagen 2 de 5: Visi&oacute;n" type="button"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(2)" aria-label="Imagen 3 de 5: Principios" type="button"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(3)" aria-label="Imagen 4 de 5: Proyecci&oacute;n 2035" type="button"></button>
+    <button class="mvv-viewer-dot" onclick="goMvvViewer(4)" aria-label="Imagen 5 de 5: Fuentes" type="button"></button>
+  </div>
+  <div class="mvv-viewer-caption" id="mvvViewerCap" aria-live="polite"></div>
+  <div class="mvv-viewer-hint" aria-hidden="true">
+    <span><kbd>&larr;</kbd> <kbd>&rarr;</kbd> navegar</span>
+    <span><kbd>ESC</kbd> cerrar</span>
+  </div>
 </div>
 
 <!-- ═══ FAQ · PREGUNTAS FRECUENTES ═══ -->
@@ -19380,6 +19397,7 @@ function closeLightbox(e){
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow='';
 }
+/* v45.166 · Keyboard navigation completa: ESC + flechas para AMBOS lightbox (galeria + MVV) */
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){
     var lb=document.getElementById('lightbox');
@@ -19387,9 +19405,19 @@ document.addEventListener('keydown',function(e){
     var mv=document.getElementById('mvvViewer');
     if(mv&&mv.classList.contains('open')){closeMvvViewer();return;}
   }
-  if(document.getElementById('lightbox')?.classList.contains('open')){
-    if(e.key==='ArrowRight')navLightbox(1);
-    if(e.key==='ArrowLeft')navLightbox(-1);
+  /* Flechas para lightbox galeria */
+  var lb=document.getElementById('lightbox');
+  if(lb&&lb.classList.contains('open')){
+    if(e.key==='ArrowRight'){e.preventDefault();navLightbox(1);}
+    if(e.key==='ArrowLeft'){e.preventDefault();navLightbox(-1);}
+  }
+  /* v45.166 · Flechas para MVV viewer */
+  var mv=document.getElementById('mvvViewer');
+  if(mv&&mv.classList.contains('open')){
+    if(e.key==='ArrowRight'){e.preventDefault();navMvvViewer(1);}
+    if(e.key==='ArrowLeft'){e.preventDefault();navMvvViewer(-1);}
+    if(e.key==='Home'){e.preventDefault();goMvvViewer(0);}
+    if(e.key==='End'){e.preventDefault();goMvvViewer(MVV_IMGS.length-1);}
   }
 });
 function navLightbox(dir){
@@ -19408,33 +19436,67 @@ const MVV_IMGS=[
   {src:'fuente-info.png',titulo:'Fuentes de Información — PLADECO Rengo 2025-2035'}
 ];
 let mvvIdx=0;
+let mvvPrevFocus=null; /* v45.166 · focus management */
 function openMvvViewer(idx){
   mvvIdx=idx;
+  try{mvvPrevFocus=document.activeElement;}catch(_){}
   var v=document.getElementById('mvvViewer');
-  var img=document.getElementById('mvvViewerImg');
-  var cap=document.getElementById('mvvViewerCap');
-  img.src=MVV_IMGS[idx].src;
-  cap.textContent=MVV_IMGS[idx].titulo;
+  if(!v)return;
+  loadMvvImage(idx);
   updateMvvDots();
   v.classList.add('open');
+  v.setAttribute('aria-hidden','false');
   document.body.style.overflow='hidden';
+  /* Focus al boton de cerrar para accesibilidad keyboard */
+  setTimeout(function(){
+    var closeBtn=v.querySelector('.lightbox-close');
+    if(closeBtn)try{closeBtn.focus({preventScroll:true});}catch(_){}
+  },50);
 }
 function closeMvvViewer(){
-  document.getElementById('mvvViewer').classList.remove('open');
+  var v=document.getElementById('mvvViewer');
+  if(!v)return;
+  v.classList.remove('open');
+  v.setAttribute('aria-hidden','true');
   document.body.style.overflow='';
+  /* Devolver focus al elemento que abrio el modal */
+  if(mvvPrevFocus&&typeof mvvPrevFocus.focus==='function'){
+    try{mvvPrevFocus.focus({preventScroll:true});}catch(_){}
+  }
+}
+function loadMvvImage(idx){
+  var img=document.getElementById('mvvViewerImg');
+  var cap=document.getElementById('mvvViewerCap');
+  var wrap=document.getElementById('mvvViewerImgWrap');
+  if(!img||!cap||!MVV_IMGS[idx])return;
+  /* Mostrar loader mientras la imagen se carga */
+  if(wrap)wrap.classList.add('loading');
+  img.style.opacity='0';
+  img.onload=function(){
+    if(wrap)wrap.classList.remove('loading');
+    img.style.opacity='1';
+  };
+  img.onerror=function(){
+    if(wrap)wrap.classList.remove('loading');
+    img.style.opacity='1';
+    console.warn('[mvv] imagen no encontrada:',MVV_IMGS[idx].src);
+  };
+  img.src=MVV_IMGS[idx].src;
+  img.alt=MVV_IMGS[idx].titulo;
+  cap.textContent=MVV_IMGS[idx].titulo;
 }
 function navMvvViewer(dir){
   mvvIdx=(mvvIdx+dir+MVV_IMGS.length)%MVV_IMGS.length;
-  var img=document.getElementById('mvvViewerImg');
-  var cap=document.getElementById('mvvViewerCap');
-  img.src=MVV_IMGS[mvvIdx].src;
-  cap.textContent=MVV_IMGS[mvvIdx].titulo;
+  loadMvvImage(mvvIdx);
   updateMvvDots();
 }
-function goMvvViewer(idx){mvvIdx=idx;navMvvViewer(0);}
+function goMvvViewer(idx){mvvIdx=((idx%MVV_IMGS.length)+MVV_IMGS.length)%MVV_IMGS.length;loadMvvImage(mvvIdx);updateMvvDots();}
 function updateMvvDots(){
   var dots=document.querySelectorAll('.mvv-viewer-dot');
-  dots.forEach(function(d,i){d.classList.toggle('active',i===mvvIdx);});
+  dots.forEach(function(d,i){
+    d.classList.toggle('active',i===mvvIdx);
+    d.setAttribute('aria-selected',i===mvvIdx?'true':'false');
+  });
 }
 // ── GRÁFICOS DEL PROCESO ──
 const GRAFICOS_DATA=[
