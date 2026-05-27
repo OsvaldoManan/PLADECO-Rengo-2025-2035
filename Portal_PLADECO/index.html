@@ -1931,6 +1931,91 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 @keyframes onboardIn{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(max-width:600px){.onboard-tip{max-width:calc(100vw - 32px);left:16px!important;right:16px!important}}
 
+/* v45.167 · HISTORIA DE RENGO · Linea de tiempo institucional con asociatividad como hilo conductor */
+.hist-section{padding:36px 24px 48px;max-width:1200px;margin:0 auto;color:var(--text)}
+.hist-section .sec-header h2{font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.25;letter-spacing:-.015em;font-weight:800}
+.hist-section .sec-header h2 em{font-style:italic;color:#b88a0b;font-weight:700}
+
+/* Hero · imagen collage institucional */
+.hist-hero{margin:1.5rem 0 2rem;border-radius:18px;overflow:hidden;background:var(--surface,#142036);box-shadow:0 14px 48px rgba(0,0,0,.32),0 0 0 1px rgba(255,255,255,.08);position:relative}
+.hist-hero img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover;cursor:zoom-in;transition:transform .55s cubic-bezier(.23,1,.32,1),filter .35s ease;filter:saturate(.96) contrast(1.02)}
+.hist-hero img:hover{transform:scale(1.015);filter:saturate(1.04) contrast(1.06)}
+.hist-hero-caption{padding:14px 22px 16px;background:linear-gradient(180deg,rgba(15,22,34,0),rgba(15,22,34,.92));color:#fff;font-size:.875rem;line-height:1.55;font-style:italic}
+.hist-hero-caption strong{color:#fde68a;font-weight:600;font-style:normal}
+.hist-hero-eyebrow{display:block;font-size:.6875rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#fbbf24;font-style:normal;margin-bottom:4px}
+
+/* Lead argumentativo · cita destacada */
+.hist-lead{margin:2rem auto;max-width:780px}
+.hist-lead-quote{position:relative;padding:1.25rem 1.5rem 1.25rem 3rem;background:rgba(184,134,11,.08);border-left:4px solid #b88a0b;border-radius:0 12px 12px 0;font-size:1rem;line-height:1.7;color:var(--text)}
+.hist-lead-mark{position:absolute;top:-.5rem;left:.75rem;font-size:3.5rem;line-height:1;color:#b88a0b;opacity:.45;font-family:Georgia,serif}
+.hist-lead-quote p{margin:0;max-width:none}
+.hist-lead-quote strong{color:#b88a0b;font-weight:700}
+
+/* Header de la timeline */
+.hist-timeline-header{text-align:center;margin:2.5rem 0 1.5rem}
+.hist-timeline-title{font-size:clamp(1.125rem,1rem + .5vw,1.375rem);font-weight:700;margin:0 0 .375rem;color:var(--text);letter-spacing:-.01em}
+.hist-timeline-sub{font-size:.875rem;color:var(--text2,rgba(255,255,255,.78));margin:0;max-width:560px;margin-inline:auto;line-height:1.55}
+.hist-timeline-sub em{color:#b88a0b;font-style:italic;font-weight:600}
+
+/* Linea de tiempo · 5 hitos */
+.hist-timeline{list-style:none;padding:0;margin:0 0 2.5rem;display:flex;flex-direction:column;gap:1.5rem;position:relative;counter-reset:histi}
+.hist-timeline::before{content:'';position:absolute;left:42px;top:30px;bottom:30px;width:2px;background:linear-gradient(180deg,#7c3aed 0%,#b88a0b 35%,#0369a1 65%,#2d9a4d 100%);opacity:.55;border-radius:2px}
+
+.hist-item{display:grid;grid-template-columns:90px 1fr;gap:1.25rem;align-items:flex-start;position:relative;counter-increment:histi}
+.hist-item[data-era="originarios"] {--era-color:#7c3aed}
+.hist-item[data-era="colonial"]    {--era-color:#9a3412}
+.hist-item[data-era="ferroviario"] {--era-color:#374151}
+.hist-item[data-era="agricola"]    {--era-color:#b88a0b}
+.hist-item[data-era="actual"]      {--era-color:#2d9a4d}
+
+.hist-marker{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:.25rem;z-index:2}
+.hist-marker-icon{width:60px;height:60px;border-radius:50%;background:var(--surface,#142036);border:3px solid var(--era-color);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 14px rgba(0,0,0,.22),0 0 0 4px color-mix(in srgb,var(--era-color) 18%,transparent)}
+.hist-marker-year{font-family:var(--font-display,Georgia,serif);font-size:.75rem;font-weight:800;color:var(--era-color);letter-spacing:.04em;text-align:center;line-height:1.1;font-variant-numeric:tabular-nums}
+
+.hist-card{background:var(--surface,#142036);border:1px solid rgba(255,255,255,.10);border-left:4px solid var(--era-color);border-radius:14px;padding:1.25rem 1.5rem;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.hist-card:hover{transform:translateX(4px);box-shadow:0 10px 28px rgba(0,0,0,.18),0 0 0 1px color-mix(in srgb,var(--era-color) 22%,transparent) inset;border-color:color-mix(in srgb,var(--era-color) 60%,rgba(255,255,255,.20))}
+
+.hist-card-head{margin-bottom:.625rem}
+.hist-era-tag{display:inline-flex;align-items:center;gap:.375rem;font-size:.6875rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:.25rem .625rem;border-radius:99px;background:color-mix(in srgb,var(--era-color) 12%,transparent);color:var(--era-color);border:1px solid color-mix(in srgb,var(--era-color) 32%,transparent);margin-bottom:.5rem}
+.hist-era-tag--current{background:color-mix(in srgb,var(--era-color) 18%,transparent)}
+.hist-card-title{font-size:1.0625rem;font-weight:700;color:var(--text);margin:0;letter-spacing:-.01em;line-height:1.3}
+.hist-card-text{font-size:.875rem;line-height:1.65;color:var(--text2,rgba(255,255,255,.86));margin:0;max-width:none}
+.hist-card-text strong{color:var(--text);font-weight:600}
+.hist-card-text em{color:var(--era-color);font-style:italic;font-weight:600}
+
+.hist-card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:.875rem;padding-top:.75rem;border-top:1px dashed rgba(255,255,255,.10)}
+.hist-tag{font-size:.6875rem;font-weight:600;padding:.25rem .5rem;border-radius:6px;background:rgba(255,255,255,.06);color:var(--text2,rgba(255,255,255,.75));border:1px solid rgba(255,255,255,.08)}
+
+/* Hito actual · destacado con stats */
+.hist-card--highlight{background:linear-gradient(135deg,color-mix(in srgb,var(--era-color) 14%,var(--surface,#142036)) 0%,var(--surface,#142036) 60%);border-left-width:5px}
+.hist-card-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.625rem;margin-top:.875rem;padding-top:.875rem;border-top:1px dashed rgba(255,255,255,.10)}
+.hist-stat{text-align:center;padding:.5rem .25rem;background:rgba(255,255,255,.04);border-radius:8px}
+.hist-stat strong{display:block;font-family:var(--font-display,Georgia,serif);font-size:1.25rem;font-weight:800;color:#2d9a4d;line-height:1;letter-spacing:-.015em;font-variant-numeric:tabular-nums;margin-bottom:2px}
+.hist-stat span{display:block;font-size:.6875rem;font-weight:600;color:var(--text2,rgba(255,255,255,.7));letter-spacing:.02em}
+
+/* Cierre argumentativo */
+.hist-closing{display:flex;gap:1rem;align-items:flex-start;margin:2rem 0 1rem;padding:1.25rem 1.5rem;background:linear-gradient(135deg,rgba(45,154,77,.08),rgba(184,134,11,.04));border:1px solid rgba(45,154,77,.28);border-left:4px solid #2d9a4d;border-radius:12px}
+.hist-closing-icon{font-size:1.75rem;line-height:1;flex-shrink:0}
+.hist-closing-title{font-size:1rem;font-weight:700;margin:0 0 .5rem;color:#2d9a4d}
+.hist-closing p{font-size:.875rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85));max-width:none}
+.hist-closing p strong{color:var(--text);font-weight:600}
+
+/* Mobile */
+@media(max-width:640px){
+  .hist-section{padding:24px 14px 36px}
+  .hist-timeline::before{left:30px}
+  .hist-item{grid-template-columns:64px 1fr;gap:.875rem}
+  .hist-marker-icon{width:48px;height:48px;font-size:18px;border-width:2px}
+  .hist-marker-year{font-size:.6875rem}
+  .hist-card{padding:1rem 1.125rem}
+  .hist-card-title{font-size:.9375rem}
+  .hist-card-text{font-size:.8125rem}
+  .hist-hero img{max-height:300px}
+  .hist-lead-quote{padding:1rem 1.125rem 1rem 2.5rem;font-size:.9375rem}
+  .hist-lead-mark{font-size:3rem;top:-.375rem;left:.5rem}
+  .hist-closing{flex-direction:column;padding:1rem 1.125rem}
+}
+
 /* ── Galería Fotográfica · v45.148 cards interactivas con hint de click ── */
 .galeria-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 @media(max-width:600px){.galeria-grid{grid-template-columns:1fr 1fr;gap:8px}}
@@ -5738,7 +5823,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   /* v45.144 · Mapa de emojis por sección para el menú hamburguesa + dropdown desktop */
   var SEC_EMOJI={
     /* Macro 01 · Introducción */
-    'mvv':'🏛️','contexto':'📚','educacion':'🎓','encuesta':'📋',
+    'mvv':'🏛️','contexto':'📚','historia':'📜','educacion':'🎓','encuesta':'📋',
     /* Macro 02 · Diagnóstico */
     'dashboard':'📊','ficha-comunal':'🪪','censo':'🗂️','comparador':'⚖️','visualizaciones-avanzadas':'📈',
     'ict-espacios-publicos':'🌳','mbht-bienestar':'💚','analisis-estrategico-censo':'🎯','proyeccion-poblacion':'👥',
@@ -6341,7 +6426,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.166</span>
+        <span>&#127919; v45.167</span>
         <span>&#128197; 26 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6815,6 +6900,174 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     </div>
     <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Ley Org&aacute;nica Constitucional de Municipalidades N&deg; 18.695 &middot; Ley 20.500 sobre Asociaciones y Participaci&oacute;n Ciudadana en la Gesti&oacute;n P&uacute;blica &middot; Subsecretar&iacute;a de Desarrollo Regional y Administrativo (SUBDERE) &middot; Manual de Elaboraci&oacute;n de PLADECO &middot; Contralor&iacute;a General de la Rep&uacute;blica, dictamen sobre cumplimiento PLADECO.</div>
   </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     HISTORIA DE RENGO · v45.167 · Una comuna que sobrevive y se desarrolla
+     con la asociatividad · seccion explicativa-evolutiva del Capitulo I
+     ═══════════════════════════════════════════════════════════════════ -->
+<section id="historia" class="reveal hist-section" aria-labelledby="histTitle">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(184,134,11,.14);color:#b88a0b">&#128221; Identidad comunal &middot; Linea de tiempo</div>
+    <h2 id="histTitle">&#127963;&#65039; Historia de Rengo: una comuna que sobrevive y se desarrolla con la <em>asociatividad</em></h2>
+    <p>Rengo no se construye sola. Desde los pueblos originarios hasta el PLADECO 2025-2035, cada hito de la comuna ha estado sostenido por la <strong>organizacion colectiva</strong>: caciques mapuche, gremios coloniales, sociedades obreras del ferrocarril, cooperativas agricolas, juntas de vecinos, cuerpos de bomberos, sindicatos rurales y las 95 organizaciones que hoy participan en este Plan. Esta seccion presenta esa trayectoria como hilo conductor de la identidad comunal.</p>
+  </div>
+
+  <!-- IMAGEN HISTORICA · COLLAGE -->
+  <figure class="hist-hero">
+    <img src="rengo-historia-collage.jpg"
+         alt="Collage historico de Rengo: trabajadores con bueyes, bomberos antiguos, ferrocarril a vapor, iglesia parroquial, esculturas mapuche en la plaza y el rio Cachapoal con la cordillera de los Andes"
+         width="1500" height="1125"
+         loading="lazy" decoding="async"
+         onclick="if(typeof openLightbox==='function'){if(typeof GALERIA_FOTOS!=='undefined'){GALERIA_FOTOS.push({src:'rengo-historia-collage.jpg',titulo:'Historia de Rengo · Collage institucional'});openLightbox(GALERIA_FOTOS.length-1)}else{this.requestFullscreen&&this.requestFullscreen()}}"
+         tabindex="0" role="button"
+         aria-label="Ver el collage historico en pantalla completa"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"
+         style="cursor:zoom-in">
+    <figcaption class="hist-hero-caption">
+      <span class="hist-hero-eyebrow">Memoria visual</span>
+      Del cacique Rengo al rio Cachapoal: <strong>tres siglos de organizacion colectiva</strong> en una sola imagen. Cada elemento documenta un momento de cohesion comunitaria.
+    </figcaption>
+  </figure>
+
+  <!-- LEAD ARGUMENTATIVO -->
+  <div class="hist-lead">
+    <div class="hist-lead-quote">
+      <span class="hist-lead-mark">&ldquo;</span>
+      <p>La asociatividad no es una promesa del PLADECO: es <strong>el patron historico</strong> que ha permitido que Rengo sobreviva a los grandes ciclos &mdash;colonial, ferroviario, agroexportador, post-industrial&mdash; y siga siendo una comuna con identidad propia en el Valle del Cachapoal.</p>
+    </div>
+  </div>
+
+  <!-- LINEA DE TIEMPO · 5 HITOS -->
+  <div class="hist-timeline-header">
+    <h3 class="hist-timeline-title">&#9201;&#65039; Cinco hitos que explican la Rengo de hoy</h3>
+    <p class="hist-timeline-sub">Cada hito muestra como una forma distinta de <em>asociatividad</em> sostuvo el desarrollo en su epoca.</p>
+  </div>
+
+  <ol class="hist-timeline" role="list">
+
+    <!-- HITO 1 · PUEBLOS ORIGINARIOS -->
+    <li class="hist-item" data-era="originarios" role="listitem">
+      <div class="hist-marker" aria-hidden="true">
+        <span class="hist-marker-icon">&#128009;</span>
+        <span class="hist-marker-year">pre-1799</span>
+      </div>
+      <article class="hist-card">
+        <header class="hist-card-head">
+          <span class="hist-era-tag">Pueblos originarios</span>
+          <h4 class="hist-card-title">El Cacique Rengo y los Picunche del Cachapoal</h4>
+        </header>
+        <p class="hist-card-text">
+          El nombre de la comuna proviene del <strong>cacique Rengo</strong>, capitan mapuche que lucho contra las huestes de Pedro de Valdivia en el siglo XVI. En mapudungun, <em>rengo</em> significa &ldquo;el flaco&rdquo; o &ldquo;el desigual&rdquo;. Antes de la fundacion espanola, el territorio era habitado por los <strong>picunche</strong>, agricultores sedentarios que organizaban su vida en torno al rio Cachapoal mediante <strong>lof y rewes</strong> &mdash;unidades de asociacion territorial y ritual&mdash; reconocidos hoy con las esculturas instaladas en la plaza comunal.
+        </p>
+        <div class="hist-card-tags">
+          <span class="hist-tag">Lof &middot; rewe</span>
+          <span class="hist-tag">Cachapoal</span>
+          <span class="hist-tag">Memoria mapuche</span>
+        </div>
+      </article>
+    </li>
+
+    <!-- HITO 2 · FUNDACION -->
+    <li class="hist-item" data-era="colonial" role="listitem">
+      <div class="hist-marker" aria-hidden="true">
+        <span class="hist-marker-icon">&#127963;&#65039;</span>
+        <span class="hist-marker-year">1799</span>
+      </div>
+      <article class="hist-card">
+        <header class="hist-card-head">
+          <span class="hist-era-tag">Fundacion colonial</span>
+          <h4 class="hist-card-title">Villa de San Vicente Martir de Leyba</h4>
+        </header>
+        <p class="hist-card-text">
+          El 4 de marzo de 1799, el Gobernador del Reino de Chile <strong>Ambrosio O'Higgins</strong> funda la villa con el trazado damero hispanico: <strong>plaza central, iglesia parroquial, cabildo y cuartel</strong>. La organizacion politica de la villa se sostiene en <strong>cofradias religiosas, gremios artesanales y juntas de vecinos coloniales</strong> que administraban espacios comunes (acequias, mercado, abasto de panaderia). El nombre Rengo se impondria en el siglo XIX, sobre el toponimo colonial.
+        </p>
+        <div class="hist-card-tags">
+          <span class="hist-tag">Trazado damero</span>
+          <span class="hist-tag">Cofradias</span>
+          <span class="hist-tag">Gremios artesanales</span>
+        </div>
+      </article>
+    </li>
+
+    <!-- HITO 3 · FERROCARRIL -->
+    <li class="hist-item" data-era="ferroviario" role="listitem">
+      <div class="hist-marker" aria-hidden="true">
+        <span class="hist-marker-icon">&#128646;</span>
+        <span class="hist-marker-year">1862</span>
+      </div>
+      <article class="hist-card">
+        <header class="hist-card-head">
+          <span class="hist-era-tag">Era ferroviaria</span>
+          <h4 class="hist-card-title">Llegada del ferrocarril Santiago&ndash;Talca</h4>
+        </header>
+        <p class="hist-card-text">
+          La inauguracion de la estacion de Rengo en 1862 transforma la economia local: se acelera la <strong>migracion campo-ciudad</strong>, llegan trabajadores ferroviarios, comerciantes y artesanos. Emergen las <strong>sociedades de socorros mutuos</strong>, los <strong>circulos obreros</strong> y, en 1893, se funda el <strong>Cuerpo de Bomberos de Rengo</strong> &mdash;una de las primeras instituciones civiles de asociacion voluntaria de la comuna, aun activa hoy&mdash;. Rengo se incorpora como nodo del nuevo Chile moderno.
+        </p>
+        <div class="hist-card-tags">
+          <span class="hist-tag">Estacion 1862</span>
+          <span class="hist-tag">Bomberos 1893</span>
+          <span class="hist-tag">Sociedades obreras</span>
+        </div>
+      </article>
+    </li>
+
+    <!-- HITO 4 · SIGLO XX -->
+    <li class="hist-item" data-era="agricola" role="listitem">
+      <div class="hist-marker" aria-hidden="true">
+        <span class="hist-marker-icon">&#127815;</span>
+        <span class="hist-marker-year">Siglo XX</span>
+      </div>
+      <article class="hist-card">
+        <header class="hist-card-head">
+          <span class="hist-era-tag">Era agroexportadora</span>
+          <h4 class="hist-card-title">Cooperativas, sindicatos rurales y juntas de vecinos</h4>
+        </header>
+        <p class="hist-card-text">
+          Entre 1930 y 1990 Rengo se consolida como <strong>polo vitivinicola y frutic ola</strong> del Valle del Cachapoal. La <strong>Reforma Agraria (1962-1973)</strong> introduce los <strong>sindicatos campesinos</strong> y las cooperativas de produccion. En 1968, la Ley 16.880 institucionaliza las <strong>juntas de vecinos</strong>: Rengo organiza su territorio en lo que hoy son las 21 unidades vecinales. Esta capa de organizacion sobrevive incluso a la dictadura y reemerge con fuerza en los 90 con la <strong>Ley 18.695</strong> que ordena el primer PLADECO comunal.
+        </p>
+        <div class="hist-card-tags">
+          <span class="hist-tag">Cooperativas vinicolas</span>
+          <span class="hist-tag">Ley 16.880 &middot; 1968</span>
+          <span class="hist-tag">21 UV originales</span>
+        </div>
+      </article>
+    </li>
+
+    <!-- HITO 5 · SIGLO XXI · PLADECO -->
+    <li class="hist-item hist-item--current" data-era="actual" role="listitem">
+      <div class="hist-marker" aria-hidden="true">
+        <span class="hist-marker-icon">&#129309;</span>
+        <span class="hist-marker-year">2025-2035</span>
+      </div>
+      <article class="hist-card hist-card--highlight">
+        <header class="hist-card-head">
+          <span class="hist-era-tag hist-era-tag--current">PLADECO 2025-2035</span>
+          <h4 class="hist-card-title">La asociatividad como columna del nuevo Plan</h4>
+        </header>
+        <p class="hist-card-text">
+          El PLADECO 2025-2035 reconoce explicitamente esta trayectoria. Articula <strong>472 vecinos</strong> de <strong>95 organizaciones</strong> en las <strong>21 unidades vecinales</strong>, suma la voz de <strong>4.036 NNA</strong> a traves de la Oficina Local de la Ninez y entrevista a <strong>115 funcionarios municipales</strong>. No es un Plan disenado en gabinete: es <strong>la sintesis tecnica de la asociatividad historica de Rengo</strong>, proyectada en 6 ejes, 225 acciones y 10 KPIs medibles al ano 2035.
+        </p>
+        <div class="hist-card-stats">
+          <div class="hist-stat"><strong>472</strong><span>vecinos participantes</span></div>
+          <div class="hist-stat"><strong>95</strong><span>organizaciones</span></div>
+          <div class="hist-stat"><strong>21</strong><span>unidades vecinales</span></div>
+          <div class="hist-stat"><strong>4.036</strong><span>NNA encuestados</span></div>
+        </div>
+      </article>
+    </li>
+  </ol>
+
+  <!-- CIERRE ARGUMENTATIVO -->
+  <aside class="hist-closing">
+    <div class="hist-closing-icon" aria-hidden="true">&#128218;</div>
+    <div>
+      <h3 class="hist-closing-title">Por que esto importa para el PLADECO</h3>
+      <p>Comprender la historia de Rengo no es un ejercicio nostalgico: es el <strong>argumento de fondo del Plan</strong>. Si la comuna ha sobrevivido tres siglos a partir de su capacidad de organizarse, el PLADECO 2025-2035 debe <strong>fortalecer esa misma capacidad</strong> &mdash;no reemplazarla&mdash; mediante instrumentos modernos: presupuesto participativo, COSOC operativo, transparencia activa y monitoreo ciudadano permanente. La identidad asociativa de Rengo no se inventa, se cuida.</p>
+    </div>
+  </aside>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Archivo Historico Municipal de Rengo &middot; Servicio Nacional del Patrimonio Cultural &middot; Memoria Chilena (Biblioteca Nacional) &middot; Argumentario Estrategico PLADECO Rengo 2025-2035 (V2) &middot; Ley 16.880 de Juntas de Vecinos (1968) &middot; Ley 18.695 LOC Municipalidades.</div>
 </section>
 
 <!-- v45.129 · #educacion (Aprende sobre tu Comuna) movido aqui a Introduccion -->
