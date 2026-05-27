@@ -3496,8 +3496,32 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 @media(max-width:768px){
   .sec-header{margin-bottom:14px !important;padding-bottom:10px !important}
   .sec-header h2{font-size:1.2rem !important;line-height:1.2 !important;margin-bottom:5px !important}
-  .sec-header p{font-size:.85rem !important;line-height:1.5 !important}
+  /* v45.173 · Mobile: revertir a left-align porque justify en lineas cortas genera huecos */
+  .sec-header p{font-size:.85rem !important;line-height:1.5 !important;text-align:left !important;hyphens:manual !important}
   .sec-header .badge{font-size:11px !important;padding:2px 8px !important;margin-bottom:6px !important}
+}
+
+/* v45.173 · DESKTOP · Justificacion editorial en cards principales del portal */
+/* Aplica solo en desktop (>=769px) porque en mobile el justify con lineas cortas genera huecos visuales */
+@media(min-width:769px){
+  .eje-card p,
+  .foda-card p,
+  .foda-card li,
+  .mvv-card p,
+  .construccion-text p,
+  .lectura-card p,
+  .lectura-desc,
+  .dec-card p,
+  .resumen-card p,
+  .insight-card p,
+  .sec-fuente,
+  .x-tab-panel > p,
+  .reveal > p:not(.no-justify){
+    text-align:justify;
+    text-justify:inter-word;
+    hyphens:auto;
+    -webkit-hyphens:auto;
+  }
 }
 
 /* 8. Hero KPIs mobile: 2 columnas compactas */
@@ -3828,6 +3852,11 @@ section p strong{color:var(--text);font-weight:700}
   line-height:1.55;
   max-width:82ch;
   color:var(--text2);
+  /* v45.173 · Justificacion editorial · evita lineas cortas y huecos en parrafos largos */
+  text-align:justify;
+  text-justify:inter-word;
+  hyphens:auto;
+  -webkit-hyphens:auto;
 }
 .sec-header .badge{
   font-size:11px !important;
@@ -6453,7 +6482,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.172</span>
+        <span>&#127919; v45.173</span>
         <span>&#128197; 27 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
