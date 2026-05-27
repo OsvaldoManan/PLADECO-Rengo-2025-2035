@@ -5162,9 +5162,21 @@ body.dark .qi-group{background:rgba(255,255,255,.02)}
 .mvv-card-accent{height:4px;width:100%;background:linear-gradient(90deg,var(--green),var(--blue))}
 .mvv-card:nth-child(2) .mvv-card-accent{background:linear-gradient(90deg,var(--blue),#7c3aed)}
 .mvv-card:nth-child(3) .mvv-card-accent{background:linear-gradient(90deg,var(--accent2),var(--green))}
-.mvv-card-img{position:relative;padding:20px 20px 0;display:flex;justify-content:center;align-items:center;background:linear-gradient(180deg,rgba(245,246,248,.5),transparent)}
-.mvv-card-img img{width:100%;max-width:300px;height:auto;border-radius:14px;transition:transform .5s cubic-bezier(.23,1,.32,1);filter:drop-shadow(0 4px 12px rgba(0,0,0,.08))}
-.mvv-card:hover .mvv-card-img img{transform:scale(1.03)}
+/* v45.165 · MVV con FOTOS INSTITUCIONALES reales · diseno formal */
+.mvv-card-img{position:relative;padding:0;display:block;background:transparent;overflow:hidden;aspect-ratio:3/2}
+.mvv-card-img img{width:100%;height:100%;object-fit:cover;border-radius:0;transition:transform .55s cubic-bezier(.23,1,.32,1),filter .35s ease;filter:saturate(.92) contrast(1.02)}
+/* Fotos institucionales con overlay sutil + cinta de color del macro */
+.mvv-card-img::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,31,54,0) 0%,rgba(12,31,54,0) 55%,rgba(12,31,54,.45) 100%);z-index:1;pointer-events:none;transition:opacity .35s ease;opacity:.85}
+.mvv-card-img::after{content:'\1F50D  Ver en pantalla completa';position:absolute;bottom:0;left:0;right:0;padding:9px 14px;color:#fff;font-size:11px;font-weight:600;text-align:center;letter-spacing:.04em;z-index:2;opacity:0;transform:translateY(6px);transition:opacity .25s ease,transform .35s ease}
+.mvv-card:hover .mvv-card-img img{transform:scale(1.05);filter:saturate(1) contrast(1.04)}
+.mvv-card:hover .mvv-card-img::before{opacity:1}
+.mvv-card:hover .mvv-card-img::after{opacity:1;transform:translateY(0)}
+/* Banda de color institucional en el borde superior de cada card */
+.mvv-card-img .mvv-photo-ribbon{position:absolute;top:0;left:0;right:0;height:3px;z-index:3}
+.mvv-card:nth-child(1) .mvv-card-img .mvv-photo-ribbon{background:linear-gradient(90deg,var(--green),var(--blue))}
+.mvv-card:nth-child(2) .mvv-card-img .mvv-photo-ribbon{background:linear-gradient(90deg,var(--blue),#7c3aed)}
+.mvv-card:nth-child(3) .mvv-card-img .mvv-photo-ribbon{background:linear-gradient(90deg,var(--accent2),var(--green))}
+img.mvv-institutional-photo{display:block}
 .mvv-card-body{padding:20px 24px 24px;flex:1;display:flex;flex-direction:column}
 .mvv-card-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding:4px 10px;border-radius:6px;width:fit-content}
 .mvv-card:nth-child(1) .mvv-card-tag{color:var(--green);background:rgba(45,154,77,.08)}
@@ -5189,7 +5201,11 @@ body.dark .qi-group{background:rgba(255,255,255,.02)}
 .mvv-objetivo:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(12,31,54,.12),0 8px 20px rgba(124,58,237,.08);border-color:rgba(124,58,237,.2)}
 .mvv-objetivo-accent{height:4px;background:linear-gradient(90deg,#7c3aed,var(--green),var(--blue),var(--accent2))}
 .mvv-objetivo-inner{display:grid;grid-template-columns:320px 1fr;gap:0;align-items:stretch}
-.mvv-objetivo-img{padding:24px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(124,58,237,.04),rgba(45,154,77,.03));cursor:pointer;position:relative;overflow:hidden}
+/* v45.165 · Proyeccion 2035 con foto institucional · sin padding ni gradient decorativo */
+.mvv-objetivo-img{padding:0;display:block;background:transparent;cursor:pointer;position:relative;overflow:hidden;aspect-ratio:4/5}
+.mvv-objetivo-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.23,1,.32,1),filter .4s ease;filter:saturate(.92) contrast(1.02)}
+.mvv-objetivo:hover .mvv-objetivo-img img{transform:scale(1.04);filter:saturate(1.02) contrast(1.05)}
+.mvv-objetivo-img::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,31,54,0) 0%,rgba(12,31,54,0) 60%,rgba(12,31,54,.55) 100%);z-index:1;pointer-events:none;opacity:.88}
 .mvv-objetivo-img::after{content:'🔍 Ver en grande';position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(transparent,rgba(12,31,54,.75));color:#fff;font-size:11px;font-weight:600;text-align:center;letter-spacing:.5px;opacity:0;transform:translateY(8px);transition:all .35s cubic-bezier(.23,1,.32,1)}
 .mvv-objetivo:hover .mvv-objetivo-img::after{opacity:1;transform:translateY(0)}
 .mvv-objetivo-img img{max-width:280px;width:100%;height:auto;border-radius:14px;transition:transform .5s cubic-bezier(.23,1,.32,1);filter:drop-shadow(0 4px 12px rgba(0,0,0,.08))}
@@ -6315,7 +6331,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.164</span>
+        <span>&#127919; v45.165</span>
         <span>&#128197; 26 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -6620,7 +6636,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="mision.png" alt="Misión Municipalidad de Rengo" width="500" height="500" loading="lazy" decoding="async" onclick="openMvvViewer(0)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(0)}" style="cursor:pointer">
+          <img src="mvv-mision.jpg" alt="Equipo de planificación PLADECO Rengo en sesión de trabajo institucional" width="1200" height="800" loading="lazy" decoding="async" onclick="openMvvViewer(0)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(0)}" style="cursor:pointer" class="mvv-institutional-photo">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#127919; Misión</div>
@@ -6638,7 +6654,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="vision.png" alt="Visión Municipalidad de Rengo" width="500" height="500" loading="lazy" decoding="async" onclick="openMvvViewer(1)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(1)}" style="cursor:pointer">
+          <img src="mvv-vision.jpg" alt="Talleres ciudadanos PLADECO Rengo · participación de 472 vecinos y 95 organizaciones" width="1200" height="800" loading="lazy" decoding="async" onclick="openMvvViewer(1)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(1)}" style="cursor:pointer" class="mvv-institutional-photo">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#128302; Visión</div>
@@ -6656,7 +6672,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <img src="valores.png" alt="Principios Institucionales Municipalidad de Rengo" width="500" height="500" loading="lazy" decoding="async" onclick="openMvvViewer(2)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(2)}" style="cursor:pointer">
+          <img src="mvv-principios.jpg" alt="Visita en terreno PLADECO Rengo · diálogo con vecinos en su unidad vecinal" width="1200" height="800" loading="lazy" decoding="async" onclick="openMvvViewer(2)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(2)}" style="cursor:pointer" class="mvv-institutional-photo">
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag">&#127942; Principios</div>
@@ -6676,7 +6692,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div class="mvv-objetivo-accent"></div>
       <div class="mvv-objetivo-inner">
         <div class="mvv-objetivo-img" onclick="openMvvViewer(3)" tabindex="0" role="button" aria-label="Ver Proyecci&#243;n Rengo 2035 en pantalla completa" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(3)}" style="cursor:pointer">
-          <img src="proyeccion-2035.png" alt="Imagen Objetivo Comunal — Proyección Rengo 2035" width="1085" height="1450" loading="lazy" decoding="async">
+          <img src="mvv-proyeccion.jpg" alt="Comunidad PLADECO Rengo · imagen objetivo de cohesión y desarrollo territorial 2035" width="1200" height="800" loading="lazy" decoding="async" class="mvv-institutional-photo">
         </div>
         <div class="mvv-objetivo-body">
           <div class="mvv-objetivo-tag">&#128302; Imagen Objetivo Comunal</div>
@@ -19385,10 +19401,10 @@ function navLightbox(dir){
 }
 // ── MVV IMAGE VIEWER ──
 const MVV_IMGS=[
-  {src:'mision.png',titulo:'Misión — Municipalidad de Rengo'},
-  {src:'vision.png',titulo:'Visión — Municipalidad de Rengo'},
-  {src:'valores.png',titulo:'Principios Institucionales — Municipalidad de Rengo'},
-  {src:'proyeccion-2035.png',titulo:'Imagen Objetivo Comunal — Proyección Rengo 2035'},
+  {src:'mvv-mision.jpg',titulo:'Misión — Equipo de planificación PLADECO Rengo'},
+  {src:'mvv-vision.jpg',titulo:'Visión — Talleres ciudadanos · 472 vecinos · 95 organizaciones'},
+  {src:'mvv-principios.jpg',titulo:'Principios — Visita en terreno con la comunidad'},
+  {src:'mvv-proyeccion.jpg',titulo:'Proyección 2035 — Comunidad PLADECO Rengo'},
   {src:'fuente-info.png',titulo:'Fuentes de Información — PLADECO Rengo 2025-2035'}
 ];
 let mvvIdx=0;
