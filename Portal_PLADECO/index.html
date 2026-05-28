@@ -305,6 +305,38 @@ input,textarea,select,button,optgroup{
   --c-info:#1d4ed8;        --c-info-soft:#dbeafe;       --c-info-strong:#1e3a8a;
   --c-neutral:#475569;     --c-neutral-soft:#f1f5f9;    --c-neutral-strong:#1e293b;
 
+  /* ═══════════════════════════════════════════════════════════════════
+     v45.185 · AUDITORIA WCAG AA · 7 CORRECCIONES DE CONTRASTE
+     Identidad institucional preservada (crimson #990000, navy #1F3864).
+     ═══════════════════════════════════════════════════════════════════ */
+
+  /* (a) COLORES INSTITUCIONALES BASE — NO MODIFICAR */
+  --c-crimson-base:#990000;          /* identidad Municipalidad */
+  --c-navy-base:#1F3864;             /* identidad Municipalidad */
+  --c-bg-dark-base:#0b1624;          /* fondo modo oscuro institucional */
+
+  /* (b) VARIANTES PARA MODO OSCURO (calculadas para >=4.5:1 sobre #0b1624) */
+  --c-crimson-on-dark:#ff5252;       /* 5.77:1 AA  (era 2.04:1) */
+  --c-navy-on-dark:#7ea4d8;          /* 7.27:1 AAA (era 1.58:1) */
+  --c-on-navy:#f1f5f9;               /* 10.7:1 AAA texto sobre navy bg */
+
+  /* (c) TEXTO JERARQUICO ACCESIBLE */
+  --c-text-1:#0f172a;                /* primario   · 19.3:1 sobre #fff */
+  --c-text-2:#334155;                /* secundario · 11.7:1 sobre #fff */
+  --c-text-3:#6b6a62;                /* terciario  · 5.38:1 sobre #fff, 4.67:1 sobre slate-100 */
+  --c-text-footnote:#6b6a62;         /* alias para notas al pie y .sec-fuente */
+
+  /* (d) SEMAFORO DE METAS · pares bg+text por estado (light mode) */
+  --sm-logrado-bg:#dcfce7;           --sm-logrado-text:#166534;     /* 6.38:1 AA */
+  --sm-riesgo-bg:#fef3c7;            --sm-riesgo-text:#92400e;      /* 6.24:1 AA */
+  --sm-critico-bg:#fee2e2;           --sm-critico-text:#990000;     /* 7.34:1 AAA · preserva crimson */
+  --sm-pendiente-bg:#e2e8f0;         --sm-pendiente-text:#334155;   /* 8.36:1 AAA */
+
+  /* (e) COMPONENTES · banner En Construccion */
+  --banner-coral-bg:#FAECE7;
+  --banner-coral-text:#a13e1e;       /* 5.57:1 sobre bg, 6.44:1 sobre white */
+  --banner-coral-accent:#D85A30;     /* solo decoracion (iconos/border), NO texto */
+
   /* BORDER RADIUS · escala unificada */
   --rad-xs:6px; --rad-sm:8px; --rad-md:12px; --rad-lg:14px; --rad-xl:18px; --rad-full:9999px;
   --radius:10px;
@@ -1592,7 +1624,83 @@ body.dark .sc-tab-nav{background:linear-gradient(135deg,#04101e 0%,#071a31 60%,#
 .dark-toggle:hover{transform:scale(1.1)}
 .dark-toggle.spin{animation:darkSpin .5s ease}
 @keyframes darkSpin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
-body.dark{--bg:#0b1624;--card:#132035;--text:#e2e8f0;--text2:#94a3b8;--text-secondary:#8b9bb5;--border:#243550;--shadow:0 2px 16px rgba(0,0,0,.4);--accent:#48c76e;--green:#48c76e;--green-light:#6ddb8e;--orange:#fdb94d;--blue:#4d7de6;--muted:#8b9bb5}
+/* v45.185 · COMPONENTES WCAG AA · semaforo de metas (4 estados) */
+.semaforo{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:999px;
+  font-size:12px;font-weight:700;letter-spacing:.02em;
+  line-height:1.4;white-space:nowrap;
+}
+.semaforo--logrado{   background:var(--sm-logrado-bg);   color:var(--sm-logrado-text); }
+.semaforo--riesgo{    background:var(--sm-riesgo-bg);    color:var(--sm-riesgo-text); }
+.semaforo--critico{   background:var(--sm-critico-bg);   color:var(--sm-critico-text); }
+.semaforo--pendiente{ background:var(--sm-pendiente-bg); color:var(--sm-pendiente-text); }
+
+/* v45.185 · WCAG AA · notas al pie y citas de fuente unificadas a --c-text-footnote (5.38:1 sobre white) */
+.sec-fuente,
+.hist-biblio-foot,
+.gr-bib-list,
+.kpi-detail,
+.kpi .kpi-detail,
+small.footnote,
+.footer-meta,
+.sec-fuente-meta{
+  color:var(--c-text-footnote) !important;
+}
+/* Excepcion: si hay enlaces dentro de la nota, no reciben el gris */
+.sec-fuente a, .gr-bib-list a, .hist-biblio-foot a{ color:inherit; }
+
+/* v45.185 · WCAG AA · banner En Construccion con coral corregido (5.57:1) */
+.construccion-card,
+.banner-construccion,
+.construction-banner{
+  background:var(--banner-coral-bg);
+  color:var(--banner-coral-text);
+  border-left:4px solid var(--banner-coral-accent);
+}
+.construccion-card strong,
+.banner-construccion strong,
+.construction-banner strong{ color:var(--banner-coral-text); font-weight:700; }
+.construccion-card .icon,
+.banner-construccion .icon,
+.construction-banner svg{ color:var(--banner-coral-accent); }
+
+/* v45.185 · KPI alerts del dashboard: aplicar pares accesibles */
+.kpi-alert.green,
+.kpi-alert.success{ background:var(--sm-logrado-bg); color:var(--sm-logrado-text); padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
+.kpi-alert.amber,
+.kpi-alert.warning{ background:var(--sm-riesgo-bg); color:var(--sm-riesgo-text); padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
+.kpi-alert.red,
+.kpi-alert.danger{ background:var(--sm-critico-bg); color:var(--sm-critico-text); padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
+.kpi-alert.blue,
+.kpi-alert.pending,
+.kpi-alert.info{ background:var(--sm-pendiente-bg); color:var(--sm-pendiente-text); padding:2px 8px; border-radius:999px; font-size:11px; font-weight:700; }
+
+body.dark{--bg:#0b1624;--card:#132035;--text:#e2e8f0;--text2:#94a3b8;--text-secondary:#8b9bb5;--border:#243550;--shadow:0 2px 16px rgba(0,0,0,.4);--accent:#48c76e;--green:#48c76e;--green-light:#6ddb8e;--orange:#fdb94d;--blue:#4d7de6;--muted:#8b9bb5;
+  /* v45.185 · WCAG AA · overrides para modo oscuro */
+  --c-text-1:#e2e8f0;                /* 13.4:1 sobre #0b1624 */
+  --c-text-2:#cbd5e1;                /* 10.7:1 sobre #0b1624 */
+  --c-text-3:#a5a299;                /* 7.16:1 sobre #0b1624 (era 3.8:1 con #888780) */
+  --c-text-footnote:#a5a299;
+  /* Reemplazos de identidad institucional para uso COMO TEXTO en dark */
+  --c-crimson:var(--c-crimson-on-dark);
+  --c-navy:var(--c-navy-on-dark);
+  /* Semaforo de metas — fondos profundos + textos pasteles */
+  --sm-logrado-bg:#052e16;           --sm-logrado-text:#86efac;     /* 12.4:1 AAA */
+  --sm-riesgo-bg:#451a03;            --sm-riesgo-text:#fcd34d;      /* 10.2:1 AAA */
+  --sm-critico-bg:#450a0a;           --sm-critico-text:#fca5a5;     /* 8.1:1 AAA */
+  --sm-pendiente-bg:#1e293b;         --sm-pendiente-text:#cbd5e1;   /* 9.6:1 AAA */
+  /* Banner coral en modo oscuro */
+  --banner-coral-bg:#451a03;
+  --banner-coral-text:#fdba74;       /* 7.3:1 sobre bg dark */
+}
+/* Respeta preferencia del sistema si no hay theme explicito */
+@media (prefers-color-scheme: dark){
+  body:not(.light){
+    --c-text-3:#a5a299;
+    --c-text-footnote:#a5a299;
+  }
+}
 body.dark .sidebar{background:#0c0c1d}
 body.dark .hero{background:transparent !important}
 body.dark .uv-table th{background:#0f172a}
@@ -6839,7 +6947,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.184</span>
+        <span>&#127919; v45.185</span>
         <span>&#128197; 27 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
