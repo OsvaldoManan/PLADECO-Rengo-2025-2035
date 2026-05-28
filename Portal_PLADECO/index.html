@@ -20,17 +20,21 @@
 <link rel="dns-prefetch" href="https://unpkg.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-<!-- Tipografía Inter · carga no-bloqueante vía <link> en vez de @import (Fase B v45.20) -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- v45.181 · Tipografia Inter · carga NO-BLOQUEANTE (print-onload trick) para no bloquear el first paint -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
 
-<!-- Preload de assets críticos visibles al inicio (above-the-fold) -->
-<link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.png">
-<link rel="preload" as="image" href="logo-pladeco.png">
+<!-- v45.181 · Preload de assets criticos above-the-fold con fetchpriority -->
+<link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="logo-pladeco.png" fetchpriority="high">
 <link rel="preload" as="image" href="escudo-rengo-blanco.svg">
-<link rel="preload" as="image" href="Obra.png">
+<link rel="preload" as="image" href="splash-logo-2026.jpg" fetchpriority="high">
 
-<!-- Hojas de estilo y scripts externos (Chart.js síncrono porque el código inline lo consume; Leaflet diferido porque se inicializa por IntersectionObserver) -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<!-- v45.181 · Leaflet CSS NO-BLOQUEANTE (print-onload trick) - los mapas son lazy-init -->
+<link rel="preload" as="style" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all';this.onload=null"/>
+<noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/></noscript>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script>
 /* v45.119 · Wrap de L.map() para registrar instancias. Polling activo desde
@@ -66,15 +70,14 @@ window.__leafletMaps=window.__leafletMaps||[];
   patch();
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- v45.181 · Chart.js cargado con defer + fetchpriority=low (no bloquea first paint).
+     El blindaje SafeChart se aplica en DOMContentLoaded (defer scripts ejecutan antes de DCL). -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer fetchpriority="low"></script>
 <script>
-/* ─── v45.50 · Blindaje de Chart.js ───────────────────────────────────
-   Un canvas inexistente hacía que Chart.js lanzara "Failed to create
-   chart" y abortara el resto del bloque de script. Este wrapper omite
-   con aviso (no error) los gráficos sin canvas válido y deja continuar
-   al resto del código. Registra en window.__chartSkipped los IDs. */
-(function(){
+/* ─── v45.50 · Blindaje de Chart.js (v45.181 · ahora dentro de DCL para soportar Chart.js defer) ─── */
+function __installSafeChart(){
   if(typeof window.Chart!=='function') return;
+  if(window.Chart.__safe) return;
   var RealChart=window.Chart;
   function SafeChart(item,config){
     var el=(typeof item==='string')?document.getElementById(item):item;
@@ -95,8 +98,15 @@ window.__leafletMaps=window.__leafletMaps||[];
   SafeChart.prototype=RealChart.prototype;
   try{Object.setPrototypeOf(SafeChart,RealChart);}catch(_){}
   SafeChart.__real=RealChart;
+  SafeChart.__safe=true;
   window.Chart=SafeChart;
-})();
+}
+/* Defer ejecuta ANTES de DOMContentLoaded, asi que para cuando DCL dispara Chart.js ya esta cargado */
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',__installSafeChart);
+}else{
+  __installSafeChart();
+}
 </script>
 
 <!-- Manifest e iconos -->
@@ -317,7 +327,7 @@ canvas{display:block;background:var(--card);border-radius:6px}
 .portal-bg{
   position:fixed;
   inset:0;
-  background:url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat fixed;
+  background:url('Entrada-Rengo-Color-Pladeco.jpg') center/cover no-repeat fixed;
   filter:blur(3px) saturate(1) brightness(1);
   opacity:1;
   pointer-events:none;
@@ -6691,7 +6701,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.180</span>
+        <span>&#127919; v45.181</span>
         <span>&#128197; 27 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
@@ -30522,7 +30532,7 @@ body.dark .sec-icon{
   position:absolute!important;inset:0!important;z-index:0!important;
   background:
     linear-gradient(180deg,rgba(7,13,26,.20) 0%,rgba(7,13,26,.08) 35%,rgba(7,13,26,.15) 65%,rgba(7,13,26,.55) 100%),
-    url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat
+    url('Entrada-Rengo-Color-Pladeco.jpg') center/cover no-repeat
   !important;
   opacity:1!important;
   filter:none !important;
@@ -30532,7 +30542,7 @@ body.dark .sec-icon{
 body.dark .hero-bg{
   background:
     linear-gradient(180deg,rgba(7,13,26,.52) 0%,rgba(7,13,26,.38) 42%,rgba(7,13,26,.45) 70%,rgba(5,9,20,.86) 100%),
-    url('Entrada-Rengo-Color-Pladeco.png') center/cover no-repeat
+    url('Entrada-Rengo-Color-Pladeco.jpg') center/cover no-repeat
   !important;
   opacity:1!important;
   filter:blur(2px) brightness(.70) saturate(.92)!important;
@@ -32277,7 +32287,7 @@ section img:not([src*="logo"]):not([src*="escudo"]):not(.icon){
 }
 /* v45.159 · El radial-gradient verde rgba(45,154,77,.10) generaba un tono verdoso
    en el fondo del hero. Reemplazado por background:transparent para mantener
-   el fondo institucional 4K (Entrada-Rengo-Color-Pladeco.png) sin tinte de color. */
+   el fondo institucional 4K (Entrada-Rengo-Color-Pladeco.jpg) sin tinte de color. */
 .hero::after{
   content:none;
 }
