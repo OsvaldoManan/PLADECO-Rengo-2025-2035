@@ -444,23 +444,28 @@ section#dashboard, section#mvv, section#mapa{
   content-visibility:visible;
 }
 
-/* v45.139 · Overlay TRANSLUCIDO (no opaco) para preservar legibilidad sin tapar la imagen */
+/* v45.183 · Overlay translucido con tinte slate-100 mas suave + brightness reducido en la imagen base.
+   Antes (v45.139): overlay slate-50 (248,250,252) al 55-65% = se veia "lavado / muy claro".
+   Ahora: overlay slate-200 (226,232,240) al 38-48% + portal-bg brightness:.78 para tono institucional.
+   Preserva contraste para texto slate-600 (--text2) en sec-header. */
 body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:linear-gradient(180deg,rgba(248,250,252,.55) 0%,rgba(248,250,252,.65) 100%);
+  background:linear-gradient(180deg,rgba(226,232,240,.40) 0%,rgba(203,213,225,.50) 100%);
   pointer-events:none;
   z-index:-1;
 }
-body.dark::before{background:linear-gradient(180deg,rgba(15,23,42,.72) 0%,rgba(15,23,42,.80) 100%)}
-body.dark .portal-bg{filter:blur(3px) saturate(.85) brightness(.78)}
+/* v45.183 · Portal-bg con brightness reducido en light mode (la imagen institucional se ve mas profunda) */
+.portal-bg{filter:blur(3px) saturate(1.05) brightness(.78)}
+body.dark::before{background:linear-gradient(180deg,rgba(15,23,42,.78) 0%,rgba(15,23,42,.86) 100%)}
+body.dark .portal-bg{filter:blur(3px) saturate(.85) brightness(.65)}
 /* Body transparente para que la imagen se vea a través del overlay translúcido */
 body{background-color:transparent !important}
 html{background:var(--bg)} /* fallback */
 @media (max-width:768px){
-  .portal-bg{filter:blur(2px) saturate(1) brightness(1);background-attachment:scroll}
-  body::before{background:linear-gradient(180deg,rgba(248,250,252,.72) 0%,rgba(248,250,252,.78) 100%)}
+  .portal-bg{filter:blur(2px) saturate(1) brightness(.80);background-attachment:scroll}
+  body::before{background:linear-gradient(180deg,rgba(226,232,240,.55) 0%,rgba(203,213,225,.65) 100%)}
 }
 /* Asegurar que las cards de secciones tengan fondo opaco para legibilidad */
 .viz-card,.anest-stat,.tr-card,.team-card,.coh-tipo-card,.voz-nudo-card,
@@ -6810,7 +6815,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.182</span>
+        <span>&#127919; v45.183</span>
         <span>&#128197; 27 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
