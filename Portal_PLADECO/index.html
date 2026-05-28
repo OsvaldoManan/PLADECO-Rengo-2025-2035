@@ -3361,15 +3361,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @keyframes splashPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.85}}
 @keyframes splashLoad{0%{width:0}60%{width:75%}100%{width:100%}}
 
-/* ── Hero Stats Animated Entrance ── */
-.hero-stat{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease,box-shadow .25s,border-color .25s}
-.hero-stat.revealed{opacity:1;transform:translateY(0);transition:transform .25s,box-shadow .25s,border-color .25s,opacity .3s}
-.hero-stat:nth-child(1){transition-delay:.1s}
-.hero-stat:nth-child(2){transition-delay:.2s}
-.hero-stat:nth-child(3){transition-delay:.3s}
-.hero-stat:nth-child(4){transition-delay:.4s}
-.hero-stat:nth-child(5){transition-delay:.5s}
-.hero-stat:nth-child(6){transition-delay:.6s}
+/* v45.186 · Hero Stats VISIBLES POR DEFECTO (antes quedaban invisibles si fallaba el JS de reveal).
+   Animacion de entrada opcional: solo se aplica cuando JS agrega .hero-stats-animating al padre,
+   asi que el comportamiento por defecto es "visibles inmediatamente". */
+.hero-stat{opacity:1;transform:translateY(0);transition:transform .25s,box-shadow .25s,border-color .25s,opacity .3s}
+/* Animacion opt-in: solo si el JS agrega clase .hero-stats-animating ANTES de pintar */
+.hero-stats.hero-stats-animating .hero-stat{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
+.hero-stats.hero-stats-animating .hero-stat.revealed{opacity:1;transform:translateY(0)}
+.hero-stats.hero-stats-animating .hero-stat:nth-child(1){transition-delay:.1s}
+.hero-stats.hero-stats-animating .hero-stat:nth-child(2){transition-delay:.2s}
+.hero-stats.hero-stats-animating .hero-stat:nth-child(3){transition-delay:.3s}
+.hero-stats.hero-stats-animating .hero-stat:nth-child(4){transition-delay:.4s}
+.hero-stats.hero-stats-animating .hero-stat:nth-child(5){transition-delay:.5s}
+.hero-stats.hero-stats-animating .hero-stat:nth-child(6){transition-delay:.6s}
 
 /* ── Section Title (cleaned) ── */
 
@@ -6947,7 +6951,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.185</span>
+        <span>&#127919; v45.186</span>
         <span>&#128197; 27 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
