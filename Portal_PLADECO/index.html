@@ -153,12 +153,16 @@ window.__leafletMaps=window.__leafletMaps||[];
   patch();
 })();
 </script>
-<!-- v45.181 · Chart.js cargado con defer + fetchpriority=low (no bloquea first paint).
-     El blindaje SafeChart se aplica en DOMContentLoaded (defer scripts ejecutan antes de DCL). -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer fetchpriority="low"></script>
+<!-- v45.187 · HOTFIX · Chart.js REVERTIDO a sincrono.
+     v45.181 lo habia puesto en defer para no bloquear first paint, pero los chart inits
+     inline en el body se ejecutan DURANTE el parsing (sync), antes de que defer'd Chart.js
+     termine. Resultado: window.Chart undefined cuando los inits intentan crear graficos
+     => TODOS los graficos del portal invisibles. Sync garantiza que Chart.js este listo
+     antes de cualquier "new Chart(...)" inline. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
-/* ─── v45.50 · Blindaje de Chart.js (v45.181 · ahora dentro de DCL para soportar Chart.js defer) ─── */
-function __installSafeChart(){
+/* ─── v45.50 · Blindaje de Chart.js · v45.187 · vuelve a IIFE sincrono porque Chart.js ya es sync ─── */
+(function(){
   if(typeof window.Chart!=='function') return;
   if(window.Chart.__safe) return;
   var RealChart=window.Chart;
@@ -183,13 +187,7 @@ function __installSafeChart(){
   SafeChart.__real=RealChart;
   SafeChart.__safe=true;
   window.Chart=SafeChart;
-}
-/* Defer ejecuta ANTES de DOMContentLoaded, asi que para cuando DCL dispara Chart.js ya esta cargado */
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',__installSafeChart);
-}else{
-  __installSafeChart();
-}
+})();
 </script>
 
 <!-- Manifest e iconos -->
@@ -463,18 +461,18 @@ canvas{display:block;background:var(--card);border-radius:6px}
   image-rendering:auto;
   image-rendering:-webkit-optimize-contrast;
 }
-/* v45.182 · content-visibility:auto · renderizado diferido nativo del navegador para secciones below-fold.
-   Browser skips painting/layout de secciones off-screen, mejora drasticamente Time to First Paint.
-   contain-intrinsic-size reserva espacio aproximado para evitar layout shift (CLS) al hacer scroll. */
-section.reveal:not(:first-of-type){
+/* v45.187 · content-visibility:auto DESACTIVADO porque rompia la inicializacion de
+   Chart.js: los canvases dentro de secciones content-visibility:auto se inicializaban
+   con width/height = 0 antes de que el usuario hiciera scroll. Resultado: graficos
+   invisibles o microscopicos en todo el portal. El ahorro de paint inicial no
+   compensa la perdida de funcionalidad de los ~50 graficos del PLADECO. */
+/* section.reveal:not(:first-of-type){
   content-visibility:auto;
   contain-intrinsic-size:1px 1200px;
 }
-/* Excluir secciones con mapas Leaflet o canvas Chart.js criticos del above-the-fold:
-   estas secciones renderizan via IntersectionObserver propio y no necesitan defer extra */
 section#dashboard, section#mvv, section#mapa{
   content-visibility:visible;
-}
+} */
 
 /* v45.184 · Iluminacion institucional ELEGANTE · overlay navy + texto sec-header invertido a blanco.
    Antes el portal se veia muy claro/lavado. Ahora: overlay navy slate-900 (.52-.62) + portal-bg
@@ -6951,7 +6949,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <h3>&iexcl;Estamos <span>construyendo</span> el PLADECO contigo!</h3>
       <p>Este portal del <strong>Plan de Desarrollo Comunal Rengo 2025-2035</strong> se encuentra en construcci&#243;n activa. Los contenidos se actualizan continuamente conforme avanza el proceso participativo, validaciones t&#233;cnicas e incorporaci&#243;n de aportes ciudadanos. Algunas secciones pueden cambiar.</p>
       <div class="construccion-meta">
-        <span>&#127919; v45.186</span>
+        <span>&#127919; v45.187</span>
         <span>&#128197; 27 Mayo 2026</span>
         <span>&#128202; 53 secciones</span>
         <span>&#128101; 472 participantes</span>
