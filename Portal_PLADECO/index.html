@@ -103,10 +103,10 @@
 <link rel="dns-prefetch" href="https://unpkg.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-<!-- v45.181 · Tipografia Inter · carga NO-BLOQUEANTE (print-onload trick) para no bloquear el first paint -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+<!-- v45.193 · Tipografia: Inter (cuerpo/datos) + Source Serif 4 (titulos institucionales) · carga NO-BLOQUEANTE (print-onload trick) · una sola request a Google Fonts -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"></noscript>
 
 <!-- v45.181 · Preload de assets criticos above-the-fold con fetchpriority -->
 <link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.jpg" fetchpriority="high">
@@ -257,12 +257,12 @@ window.__leafletMaps=window.__leafletMaps||[];
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:500;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium_Italic.otf') format('opentype')}
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:600;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Semi_Bold_Italic.otf') format('opentype')}
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Bold_Italic.otf') format('opentype')}
-/* Aplicar Poppins como fuente principal */
-html,body{font-family:'Poppins','Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif !important}
+/* v45.193 · TIPOGRAFIA DELIBERADA · cuerpo=Inter (lectura/datos) · titulos=Source Serif 4 (formalidad institucional). Tokens --font-cuerpo / --font-titulo en :root al final del <style>; cada var() lleva fallback completo por seguridad de producción. */
+html,body{font-family:var(--font-cuerpo,'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif) !important}
 
-/* v45.158 · OVERRIDE GLOBAL · Poppins en TODO el portal con !important */
+/* OVERRIDE GLOBAL · cuerpo (Inter) en TODO el portal con !important */
 *,*::before,*::after{
-  font-family:'Poppins','Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif !important;
+  font-family:var(--font-cuerpo,'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif),'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji' !important;
 }
 /* Excepciones tecnicas: codigo y monospace conservan su fuente */
 code,kbd,pre,samp,var,tt,.mono,.code,.font-mono{
@@ -271,17 +271,21 @@ code,kbd,pre,samp,var,tt,.mono,.code,.font-mono{
 /* Neulis Cursive para acentos institucionales: italic + clases utilitarias */
 em,cite,i:not(.fa):not([class*="fa-"]):not([class*="icon"]),
 .font-neulis,.neulis,.cursive-accent,blockquote.quote{
-  font-family:'Neulis Cursive','Poppins',Georgia,Cambria,'Times New Roman',serif !important;
+  font-family:'Neulis Cursive',var(--font-titulo,Georgia,Cambria,serif) !important;
   font-style:italic;
 }
-/* Asegurar headings con Poppins (refuerzo) */
-h1,h2,h3,h4,h5,h6{
-  font-family:'Poppins','Inter',system-ui,sans-serif !important;
+/* Titulos h1-h3 en serif institucional (Source Serif 4); h4-h6 en cuerpo */
+h1,h2,h3{
+  font-family:var(--font-titulo,Georgia,Cambria,'Times New Roman',serif) !important;
   font-weight:700;
 }
-/* Inputs y formularios heredan Poppins */
+h4,h5,h6{
+  font-family:var(--font-cuerpo,'Inter',system-ui,sans-serif) !important;
+  font-weight:700;
+}
+/* Inputs y formularios en cuerpo */
 input,textarea,select,button,optgroup{
-  font-family:'Poppins','Inter',system-ui,sans-serif !important;
+  font-family:var(--font-cuerpo,'Inter',system-ui,sans-serif) !important;
 }
 
   /* PALETA INSTITUCIONAL */
@@ -33357,17 +33361,17 @@ main section[id]{
 }
 main section[id]:last-of-type{margin-bottom:0}
 
-/* ═══ SEC-FUENTE REFINADA ═══ */
+/* ═══ SEC-FUENTE REFINADA · v45.193 piso accesible 15px + itálica (Problema 2) ═══ */
 .sec-fuente{
   margin-top:18px!important;
   padding:14px 18px!important;
   background:rgba(12,31,54,.03)!important;
   border-radius:var(--rad-sm)!important;
   border-left:3px solid rgba(12,31,54,.25)!important;
-  font-size:var(--ts-sm)!important;
-  line-height:var(--lh-normal)!important;
+  font-size:var(--text-nota,15px)!important;
+  line-height:1.65!important;
   color:var(--text2)!important;
-  font-style:normal!important;
+  font-style:italic!important;
 }
 .sec-fuente .sf-icon{
   display:inline-flex;align-items:center;justify-content:center;
@@ -34554,6 +34558,105 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
 }
 
 /* ═══ FIN v45.192 P1+P2 ═══ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.193 · SISTEMA TIPOGRÁFICO UNIFICADO
+   Pareja: Source Serif 4 (títulos · formalidad institucional) + Inter (cuerpo · datos)
+   Mobile-first · base 16px · notas ≥15px · WCAG AA · escala fluida con clamp()
+   Usuario de referencia: adulto mayor de Rengo (ante la duda: más grande y espaciado)
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── FAMILIAS (con fallback completo) ── */
+  --font-titulo:'Source Serif 4',Georgia,Cambria,'Times New Roman',serif;
+  --font-cuerpo:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+
+  /* ── ESCALA FLUIDA DE TÍTULOS · clamp(mín móvil, preferido vw, máx desktop) ──
+     En px (no rem) para ser inmune a la compresión del font-size raíz del portal
+     (~13.3px). El fluido lo aporta el término vw central. */
+  --text-h1:clamp(30px, 3.6vw, 44px);   /* móvil 30 → desktop 44 */
+  --text-h2:clamp(22px, 2.4vw, 30px);   /* móvil 22 → desktop 30 */
+  --text-h3:clamp(18px, 1.6vw, 22px);   /* móvil 18 → desktop 22 */
+
+  /* ── CUERPO (estable, no fluido, por legibilidad) · px (piso garantizado) ── */
+  --text-body:16px;          /* piso accesible gobierno digital */
+  --text-body-lg:17px;       /* lectura narrativa larga (Historia, marco) */
+  --text-small:14px;         /* piso utilitario, nunca menos */
+  --text-nota:15px;          /* notas de fuente (≥14px obligatorio) */
+
+  /* ── INTERLINEADOS ── */
+  --lh-tight:1.15;   /* títulos grandes */
+  --lh-snug:1.3;     /* subtítulos */
+  --lh-body:1.6;     /* cuerpo (rango óptimo 1.5–1.7) */
+  --lh-loose:1.7;    /* narrativa extensa */
+
+  /* ── PESOS ── */
+  --fw-body:400;--fw-medium:500;--fw-semibold:600;--fw-bold:700;--fw-extra:800;--fw-black:900;
+
+  /* ── ANCHO DE LECTURA ── */
+  --ancho-lectura:70ch; /* 65–75 caracteres por línea */
+}
+
+/* ── Render base: nitidez del serif y leading cómodo en ambos modos ── */
+body{font-size:var(--text-body);line-height:var(--lh-body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+/* ══ PROBLEMA 6 · Títulos fluidos con clamp() ══ */
+h1{line-height:var(--lh-tight)}
+h2,h3{line-height:var(--lh-snug)}
+.hero h1{font-size:var(--text-h1);line-height:1.12;font-weight:var(--fw-bold);letter-spacing:-.015em}
+.sec-header h2{font-size:var(--text-h2);font-weight:var(--fw-bold);letter-spacing:-.01em}
+.sec-header h3{font-size:var(--text-h3);font-weight:var(--fw-bold)}
+/* compensación óptica del serif sobre fondo oscuro #0b1624 (serif adelgaza en dark) */
+body.dark h1,body.dark h2,body.dark h3{letter-spacing:-.004em}
+
+/* ══ PROBLEMA 4 · Cuerpo accesible + escala ══
+   Especificidad (0,2,2) para superar `section[id] > .sec-header p{...!important}` del
+   re-skin. clamp(15px→16px): piso accesible ≥15px sin forzar 16px en móvil. */
+.sec-header p,
+section[id] > .sec-header p{font-size:clamp(15px,1.6vw,16px)!important;line-height:var(--lh-body)!important;max-width:var(--ancho-lectura)}
+
+/* ══ PROBLEMA 5 · Ancho de lectura (prosa narrativa) ══ */
+.bloque-lectura{max-width:var(--ancho-lectura);margin-inline:auto}
+.bloque-lectura p{font-size:var(--text-body-lg);line-height:var(--lh-loose);margin-bottom:1em}
+.hist-section .sec-header p{max-width:var(--ancho-lectura)}
+.contexto-header p{max-width:var(--ancho-lectura)}
+@media(max-width:768px){
+  /* en móvil el ancho ya es estrecho: el límite no estorba, pero garantizamos sin overflow */
+  .bloque-lectura{max-width:100%}
+}
+
+/* ══ PROBLEMA 2 · Notas de fuente legibles (≥15px, itálica, contraste AA) ══
+   El tamaño/itálica los impone el bloque "SEC-FUENTE REFINADA" (con !important).
+   Aquí sólo ajustamos strong (no itálico) y enlaces. El .sf-icon conserva su badge. */
+.sec-fuente strong{font-style:normal!important;font-size:var(--text-nota,15px)}
+.sec-fuente a{color:var(--accent);font-style:normal}
+
+/* ══ PROBLEMA 3 · Cifras tabulares (alineación de columnas numéricas) ══ */
+.cifra,
+.kpi .kpi-value,.hero-stat .num,.meta-card .mc-val .v-num,.voz-value,
+.sem-stat .ss-val,.qi-mm-num,.ficha-inv-big,.gob-metric-val,
+table,th,td,.uv-table td,.anest-table td,.tabla td,.data-table td{
+  font-variant-numeric:tabular-nums;
+  font-feature-settings:"tnum" 1,"lnum" 1;
+}
+/* clase utilitaria reutilizable para cualquier dato numérico del portal */
+.cifra{font-weight:var(--fw-extra);letter-spacing:-.01em}
+/* números grandes destacados: anclan visualmente la tarjeta */
+.kpi .kpi-value,.hero-stat .num,.voz-value,.ficha-inv-big{letter-spacing:-.02em}
+
+/* ══ TEXTO LEGAL CITADO (Ley 18.695 LOCM) · estilo de cita institucional ══ */
+.contexto-legal,.texto-legal{
+  font-size:var(--text-nota);line-height:1.75;color:var(--text);
+  border-left:4px solid #1F3864;background:rgba(31,56,100,.05);
+}
+.contexto-legal strong,.texto-legal strong{color:#1F3864;font-weight:var(--fw-bold);font-style:normal}
+.contexto-legal cite,.texto-legal cite{
+  display:block;margin-top:10px;font-family:var(--font-titulo);font-style:italic;
+  font-size:var(--text-small);color:var(--text2);font-weight:var(--fw-semibold);
+}
+body.dark .contexto-legal,body.dark .texto-legal{border-left-color:#6f93cc;background:rgba(111,147,204,.10)}
+body.dark .contexto-legal strong,body.dark .texto-legal strong{color:#9db8e0}
+
+/* ═══ FIN v45.193 SISTEMA TIPOGRÁFICO ═══ */
 </style>
 <script>
 /* Motor de vistas v45.69 — portada + vistas por SECCIÓN. Tolerante a fallos:
