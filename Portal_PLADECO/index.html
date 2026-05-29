@@ -6159,6 +6159,25 @@ body.dark .cg-label.cg-activity{background:#1a2332;color:#94a3b8}
 body.dark .cg-lane{background-color:#1a2332}
 body.dark .cg-lane.cg-lane-activity{background-color:rgba(255,255,255,.012)}
 body.dark .cg-tooltip{background:#0c1f36;border:1px solid #2d3748}
+
+/* ═══ SNA GOBERNANZA POLICÉNTRICA ═══ */
+.gob-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:16px;background:#fff;border:2px solid #94a3b8;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.gob-chip:hover{opacity:.85;transform:scale(1.03)}
+.gob-chip.active{background:var(--accent,#0f2d52)!important;color:#fff!important;border-color:var(--accent,#0f2d52)!important}
+.gob-tab{padding:8px 16px;border:none;background:none;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.gob-tab:hover{color:var(--text)}
+.gob-tab.active{color:#0891b2;border-bottom-color:#0891b2}
+.gob-tab-panel{animation:fadeIn .3s ease}
+.gob-metric{padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--card);text-align:center}
+.gob-metric-val{font-size:22px;font-weight:800;color:var(--text);margin-bottom:2px}
+.gob-metric-lbl{font-size:11.5px;font-weight:700;color:var(--accent,#0891b2);margin-bottom:4px}
+.gob-metric-desc{font-size:10px;color:var(--text2);line-height:1.4}
+body.dark .gob-chip{background:var(--card,#1a2332);border-color:#475569}
+body.dark .gob-metric{background:var(--card,#1a2332)}
+@media(max-width:640px){
+  #gobSNAGraph{height:420px!important}
+  #gobEgoPanel{width:220px!important;right:6px!important;top:6px!important;padding:12px!important}
+}
 </style>
 </head>
 <body>
@@ -6353,7 +6372,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'territorial-adv':'🏘️','nna':'👶','sociedad-civil':'🤝','voz':'🗣️','suenos':'✨','foda':'🧩',
     /* Macro 03 · Planificación */
     'matriz':'🎯','coherencia':'🔗','erd':'🌐','ods-sec':'🌱','gestion':'⚙️','argumentario':'💡','decisiones':'⚖️',
-    'resumen':'📑','diagnostico-institucional':'🏢','voz-institucional':'👥','equipo':'👤','sna':'🔄',
+    'resumen':'📑','diagnostico-institucional':'🏢','voz-institucional':'👥','equipo':'👤','sna':'🔄','sna-gobernanza':'🌐',
     'etnografia':'🔬','comisiones':'🧑‍💼','viz':'📊','semaforo':'🚦','compromisos':'✅','financiamiento':'💰',
     'cronograma-gantt':'📅','validacion-concejo':'🤲','faq-concejo':'❓',
     /* Macro 04 · Cierre */
@@ -7112,6 +7131,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         <div class="qi-links">
           <a href="#equipo" class="qi-link"><span class="qi-link-ico">&#128101;</span><span class="qi-link-txt">Equipo T&eacute;cnico &middot; 11 DIRs</span></a>
           <a href="#sna" class="qi-link"><span class="qi-link-ico">&#128268;</span><span class="qi-link-txt">Red SNA Institucional</span></a>
+          <a href="#sna-gobernanza" class="qi-link is-new"><span class="qi-link-ico">&#127760;</span><span class="qi-link-txt">SNA Gobernanza Polic&eacute;ntrica</span></a>
           <a href="#etnografia" class="qi-link"><span class="qi-link-ico">&#128209;</span><span class="qi-link-txt">Etnograf&iacute;a Social</span></a>
           <a href="#comisiones" class="qi-link"><span class="qi-link-ico">&#128214;</span><span class="qi-link-txt">Comisiones Tem&aacute;ticas</span></a>
         </div>
@@ -14934,6 +14954,191 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
   </div>
 
   <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Compromisos p&uacute;blicos del PLADECO Rengo 2025-2035 &bull; Acuerdos del Concejo Municipal &bull; Diagn&oacute;stico institucional (115 entrevistas) &bull; Auditor&iacute;a retrospectiva PLADECO 2015-2024 &bull; Marco de gesti&oacute;n de riesgos SUBDERE &bull; Municipalidad de Rengo</div>
+</section>
+
+<!-- ═══ SNA GOBERNANZA POLICÉNTRICA ═══ -->
+<section id="sna-gobernanza" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(8,145,178,.1);color:#0891b2">Gobernanza Polic&eacute;ntrica</div>
+    <h2>&#127760; Red de Gobernanza del PLADECO</h2>
+    <p>Mapa de articulaci&oacute;n entre <strong>todos los actores</strong> que construyeron el Plan Comunal: unidades municipales, organizaciones de la sociedad civil, actores supracomunales e instancias de participaci&oacute;n formal. Este an&aacute;lisis de redes revela c&oacute;mo fluye la informaci&oacute;n, qui&eacute;n coordina con qui&eacute;n, y d&oacute;nde est&aacute;n los vac&iacute;os de articulaci&oacute;n en el sistema de gobernanza comunal.</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="stat-row">
+    <div class="stat-chip"><div class="sc-icon" style="background:rgba(37,99,235,.1);color:#2563eb">&#127963;</div><div><div class="sc-val" id="gobKpiNodos">41</div><div class="sc-lbl">Actores en la red</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:rgba(8,145,178,.1);color:#0891b2">&#128279;</div><div><div class="sc-val" id="gobKpiAristas">0</div><div class="sc-lbl">V&iacute;nculos documentados</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:rgba(124,58,237,.1);color:#7c3aed">&#9733;</div><div><div class="sc-val">6</div><div class="sc-lbl">Comunidades detectadas</div></div></div>
+    <div class="stat-chip"><div class="sc-icon" style="background:rgba(220,38,38,.1);color:#dc2626">&#128301;</div><div><div class="sc-val" id="gobKpiDens">--</div><div class="sc-lbl">Densidad de red</div></div></div>
+  </div>
+
+  <!-- Filtros por tipo de nodo -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 10px;padding:14px 16px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
+    <span style="font-size:11px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:4px;margin-right:4px">&#127919; Tipo de actor:</span>
+    <button class="gob-chip active" onclick="filterGobTipo(this,'ALL')" style="background:#0f2d52;color:#fff;border:2px solid #0f2d52">Todos</button>
+    <button class="gob-chip" onclick="filterGobTipo(this,'MUN')" style="border-color:#2563eb;color:#2563eb">&#127963; Municipal (15)</button>
+    <button class="gob-chip" onclick="filterGobTipo(this,'OSC')" style="border-color:#f5921d;color:#f5921d">&#129309; Sociedad Civil (13)</button>
+    <button class="gob-chip" onclick="filterGobTipo(this,'SUP')" style="border-color:#0891b2;color:#0891b2">&#127758; Supracomunal (10)</button>
+    <button class="gob-chip" onclick="filterGobTipo(this,'IPF')" style="border-color:#c0392b;color:#c0392b">&#128227; Part. Formal (3)</button>
+  </div>
+  <!-- Filtros por tipo de relación -->
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;padding:14px 16px;background:var(--card);border-radius:10px;border:1px solid var(--border)">
+    <span style="font-size:11px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:4px;margin-right:4px">&#128279; V&iacute;nculo:</span>
+    <button class="gob-chip gob-edge-chip active" onclick="filterGobEdge(this,'ALL')" style="background:#0f2d52;color:#fff;border:2px solid #0f2d52">Todos</button>
+    <button class="gob-chip gob-edge-chip" onclick="filterGobEdge(this,'coord')" style="border-color:#3b82f6;color:#3b82f6">Coordinaci&oacute;n</button>
+    <button class="gob-chip gob-edge-chip" onclick="filterGobEdge(this,'info')" style="border-color:#94a3b8;color:#64748b">Flujo info</button>
+    <button class="gob-chip gob-edge-chip" onclick="filterGobEdge(this,'formal')" style="border-color:#dc2626;color:#dc2626">Formal-normativo</button>
+    <button class="gob-chip gob-edge-chip" onclick="filterGobEdge(this,'copart')" style="border-color:#8b5cf6;color:#8b5cf6">Co-participaci&oacute;n</button>
+    <button class="gob-chip gob-edge-chip" onclick="filterGobEdge(this,'derivacion')" style="border-color:#f59e0b;color:#d97706">Derivaci&oacute;n</button>
+  </div>
+
+  <!-- Sociograma D3 -->
+  <div style="position:relative;background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:8px">
+    <div id="gobSNAGraph" style="width:100%;height:620px;cursor:grab"></div>
+    <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap">&#128161; Arrastra nodos &middot; Clic = ego-red &middot; Doble clic = fijar &middot; Scroll = zoom</div>
+    <!-- Panel ego-red -->
+    <div id="gobEgoPanel" style="display:none;position:absolute;top:12px;right:12px;width:260px;background:var(--card);border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.35);padding:16px;font-size:12px;z-index:10;max-height:580px;overflow-y:auto;color:var(--text)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong style="font-size:13px;color:var(--text)" id="gobEgoTitle">Actor</strong>
+        <button onclick="clearGobEgo()" style="background:none;border:none;font-size:16px;cursor:pointer;color:var(--text2)">&times;</button>
+      </div>
+      <div id="gobEgoContent"></div>
+    </div>
+  </div>
+
+  <!-- Leyenda compacta -->
+  <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:10px 0 24px;font-size:11px;color:var(--text2)">
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#2563eb;vertical-align:middle;margin-right:3px"></span>Municipal</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#f5921d;vertical-align:middle;margin-right:3px"></span>Sociedad Civil</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#0891b2;clip-path:polygon(50% 0%,100% 100%,0% 100%);vertical-align:middle;margin-right:3px"></span>Supracomunal</span>
+    <span><span style="display:inline-block;width:12px;height:12px;background:#c0392b;clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);vertical-align:middle;margin-right:3px"></span>Part. Formal</span>
+    <span style="margin-left:12px">&#8212; <span style="color:#3b82f6">Coord.</span></span>
+    <span>- - <span style="color:#64748b">Info</span></span>
+    <span style="color:#dc2626">&#9472;&#9472; Formal</span>
+    <span style="color:#8b5cf6">&#9473; Co-part.</span>
+    <span style="color:#d97706">&#10230; Deriv.</span>
+  </div>
+
+  <!-- 4 VISTAS POR AUDIENCIA -->
+  <div style="margin-top:24px">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;border-bottom:2px solid var(--border);padding-bottom:6px">
+      <button class="gob-tab active" onclick="switchGobTab(this,0)">&#127963; Alcalde / Concejo</button>
+      <button class="gob-tab" onclick="switchGobTab(this,1)">&#129309; Ciudadan&iacute;a</button>
+      <button class="gob-tab" onclick="switchGobTab(this,2)">&#128200; Equipo T&eacute;cnico</button>
+      <button class="gob-tab" onclick="switchGobTab(this,3)">&#128218; Investigaci&oacute;n</button>
+    </div>
+
+    <!-- Tab 0: Alcalde -->
+    <div class="gob-tab-panel" id="gobTab0" style="display:block">
+      <h3 style="font-size:15px;margin:0 0 12px">&#127919; Mapa de articulaci&oacute;n: &iquest;qui&eacute;n conecta la gesti&oacute;n?</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">
+        <div style="background:linear-gradient(135deg,rgba(220,38,38,.06),rgba(220,38,38,.02));border:1px solid rgba(220,38,38,.2);border-left:4px solid #dc2626;border-radius:12px;padding:16px">
+          <div style="font-weight:700;color:#dc2626;font-size:13px;margin-bottom:6px">&#9888; Riesgo: concentraci&oacute;n de puentes</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">SECPLAN y DIDECO concentran los v&iacute;nculos entre la institucionalidad y la sociedad civil. Si uno de estos equipos pierde capacidad, la articulaci&oacute;n del PLADECO se debilita cr&iacute;ticamente. <strong>Recomendaci&oacute;n:</strong> crear rutas alternativas de articulaci&oacute;n directa.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(37,99,235,.06),rgba(37,99,235,.02));border:1px solid rgba(37,99,235,.2);border-left:4px solid #2563eb;border-radius:12px;padding:16px">
+          <div style="font-weight:700;color:#2563eb;font-size:13px;margin-bottom:6px">&#128204; Brecha urbano-rural</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">Las organizaciones rurales tienen en promedio menos conexiones que las urbanas. La Oficina de Rosario funciona como &uacute;nico puente territorial. <strong>Recomendaci&oacute;n:</strong> fortalecer la descentralizaci&oacute;n v&iacute;a Of. Rosario como segundo centro articulador.</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(124,58,237,.02));border:1px solid rgba(124,58,237,.2);border-left:4px solid #7c3aed;border-radius:12px;padding:16px">
+          <div style="font-weight:700;color:#7c3aed;font-size:13px;margin-bottom:6px">&#128161; Oportunidad: policentricidad latente</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">Existen m&uacute;ltiples centros de articulaci&oacute;n potencial (comunidades en la red) que operan aut&oacute;nomamente pero <strong>sin coordinaci&oacute;n entre s&iacute;</strong>. Activar los puentes entre estas comunidades transformar&iacute;a la gobernanza comunal.</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px 18px;background:linear-gradient(135deg,rgba(22,163,74,.05),rgba(22,163,74,.02));border:1px solid rgba(22,163,74,.2);border-radius:12px">
+        <div style="font-weight:700;color:#16a34a;font-size:13px;margin-bottom:8px">&#9989; 5 Recomendaciones de dise&ntilde;o institucional</div>
+        <ol style="font-size:12px;color:var(--text2);line-height:1.7;margin:0;padding-left:18px">
+          <li><strong>Mesa de Articulaci&oacute;n Inter-Eje</strong>: reuni&oacute;n trimestral de los nodos centrales de cada comunidad de la red (vinculada a OE 6.1 M&amp;E).</li>
+          <li><strong>Fortalecer Of. Rosario</strong> con personal t&eacute;cnico y mandato formal para derivaciones rurales (Eje 4, OE 4.2 Barrios).</li>
+          <li><strong>Ampliar COSOC</strong> incorporando NNA (v&iacute;a Of. Ni&ntilde;ez), comercio y clubes deportivos rurales (Eje 6, OE 6.6).</li>
+          <li><strong>Protocolo de derivaci&oacute;n cruzada</strong> entre unidades para demandas multi-direcci&oacute;n (Eje 6, OE 6.3 ERP).</li>
+          <li><strong>&ldquo;Embajadores de Red&rdquo;</strong> en cada UV: dirigente capacitado para conectar actores locales con la red institucional (Eje 1, OE 1.4).</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Tab 1: Ciudadanía -->
+    <div class="gob-tab-panel" id="gobTab1" style="display:none">
+      <h3 style="font-size:15px;margin:0 0 12px">&#129309; &iquest;C&oacute;mo se conecta tu territorio?</h3>
+      <p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:16px">Haz <strong>clic en cualquier nodo</strong> del mapa de arriba para ver con qui&eacute;n est&aacute; conectado. Si buscas tu junta de vecinos o tu organizaci&oacute;n, las encontrar&aacute;s como parte de los nodos de Sociedad Civil (naranjos). Los puntos m&aacute;s grandes tienen m&aacute;s conexiones.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+        <div style="padding:16px;border-radius:12px;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.15);text-align:center">
+          <div style="font-size:28px;margin-bottom:4px">&#127963;</div>
+          <div style="font-size:13px;font-weight:700;color:#2563eb">Municipal</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">Las 15 unidades del municipio que gestionan el PLADECO</div>
+        </div>
+        <div style="padding:16px;border-radius:12px;background:rgba(245,146,29,.06);border:1px solid rgba(245,146,29,.15);text-align:center">
+          <div style="font-size:28px;margin-bottom:4px">&#129309;</div>
+          <div style="font-size:13px;font-weight:700;color:#f5921d">Sociedad Civil</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">89 organizaciones: juntas de vecinos, clubes, UCAM, culturales</div>
+        </div>
+        <div style="padding:16px;border-radius:12px;background:rgba(8,145,178,.06);border:1px solid rgba(8,145,178,.15);text-align:center">
+          <div style="font-size:28px;margin-bottom:4px">&#127758;</div>
+          <div style="font-size:13px;font-weight:700;color:#0891b2">Supracomunal</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">GORE, ministerios y servicios p&uacute;blicos que apoyan a la comuna</div>
+        </div>
+        <div style="padding:16px;border-radius:12px;background:rgba(192,57,43,.06);border:1px solid rgba(192,57,43,.15);text-align:center">
+          <div style="font-size:28px;margin-bottom:4px">&#128227;</div>
+          <div style="font-size:13px;font-weight:700;color:#c0392b">Participaci&oacute;n Formal</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:4px">COSOC, comisiones y consejos donde se toman decisiones</div>
+        </div>
+      </div>
+      <div style="margin-top:16px;padding:14px 18px;border-radius:12px;border:1px solid var(--border);background:rgba(139,92,246,.04)">
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.7"><strong style="color:#7c3aed">&#128161; &iquest;Qu&eacute; significa el mapa?</strong><br>Cada punto es una persona, organizaci&oacute;n o instituci&oacute;n que particip&oacute; en construir el plan de la comuna. Las l&iacute;neas muestran qui&eacute;n trabaja con qui&eacute;n, qui&eacute;n entreg&oacute; informaci&oacute;n a qui&eacute;n, y qui&eacute;n participa en las mismas instancias. Si tu organizaci&oacute;n aparece con pocas l&iacute;neas, puede necesitar m&aacute;s canales de conexi&oacute;n. Si tiene muchas, cumple un rol articulador importante.</div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Equipo Técnico -->
+    <div class="gob-tab-panel" id="gobTab2" style="display:none">
+      <h3 style="font-size:15px;margin:0 0 12px">&#128200; M&eacute;tricas SNA completas</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:18px" id="gobMetricsGrid">
+        <div class="gob-metric"><div class="gob-metric-val" id="gm_densidad">--</div><div class="gob-metric-lbl">Densidad</div><div class="gob-metric-desc">Proporci&oacute;n de v&iacute;nculos existentes sobre posibles</div></div>
+        <div class="gob-metric"><div class="gob-metric-val" id="gm_centraliz">--</div><div class="gob-metric-lbl">Centralizaci&oacute;n de grado</div><div class="gob-metric-desc">Concentraci&oacute;n de conexiones en pocos actores</div></div>
+        <div class="gob-metric"><div class="gob-metric-val" id="gm_comps">--</div><div class="gob-metric-lbl">Componentes</div><div class="gob-metric-desc">Subgrafos conectados (1 = red &iacute;ntegra)</div></div>
+        <div class="gob-metric"><div class="gob-metric-val" id="gm_cluster">--</div><div class="gob-metric-lbl">Clustering</div><div class="gob-metric-desc">Tendencia a formar tri&aacute;ngulos cerrados</div></div>
+        <div class="gob-metric"><div class="gob-metric-val" id="gm_modul">--</div><div class="gob-metric-lbl">Modularidad Q</div><div class="gob-metric-desc">Calidad de la partici&oacute;n en comunidades</div></div>
+        <div class="gob-metric"><div class="gob-metric-val" id="gm_ipl">--</div><div class="gob-metric-lbl">&Iacute;ndice Policentricidad</div><div class="gob-metric-desc">IPL: alto = policentricidad latente</div></div>
+      </div>
+      <h4 style="font-size:13px;margin:18px 0 10px;color:var(--text)">&#128202; Top 10 actores por grado</h4>
+      <div id="gobTopDegree" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px"></div>
+      <h4 style="font-size:13px;margin:18px 0 10px;color:var(--text)">&#128301; Comunidades detectadas</h4>
+      <div id="gobCommunities" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px"></div>
+    </div>
+
+    <!-- Tab 3: Investigación -->
+    <div class="gob-tab-panel" id="gobTab3" style="display:none">
+      <h3 style="font-size:15px;margin:0 0 12px">&#128218; Nota metodol&oacute;gica y datos abiertos</h3>
+      <div style="padding:18px;border-radius:12px;border:1px solid var(--border);background:var(--card);margin-bottom:16px">
+        <div style="font-size:12.5px;color:var(--text2);line-height:1.75">
+          <p style="margin:0 0 10px">La red de gobernanza del PLADECO Rengo se reconstruy&oacute; a partir de registros administrativos del proceso de planificaci&oacute;n, no de un levantamiento relacional dise&ntilde;ado espec&iacute;ficamente para SNA. Las relaciones son de tres tipos seg&uacute;n su evidencia: <strong>(1) observadas directamente</strong> &mdash; co-participaci&oacute;n en instancias documentadas con lista de asistencia, entrevistas registradas, membres&iacute;a formal en COSOC y comisiones; <strong>(2) inferidas de mandato</strong> &mdash; la co-responsabilidad sobre acciones del PLADECO establece un v&iacute;nculo prescriptivo que puede o no traducirse en coordinaci&oacute;n real; <strong>(3) inferidas por estructura formal</strong> &mdash; los canales legales (JV&rarr;DIDECO, COSOC&rarr;Alcald&iacute;a) existen normativamente aunque su uso efectivo var&iacute;a.</p>
+          <p style="margin:0 0 10px">Sesgos identificados: <em>sesgo de participaci&oacute;n</em> (solo aparecen actores del proceso formal), <em>sesgo de simetr&iacute;a</em> (co-participaci&oacute;n no captura asimetr&iacute;as de poder), <em>sesgo de completitud</em> (ausencia de arista puede significar ausencia de registro, no de relaci&oacute;n).</p>
+          <p style="margin:0"><strong>Marco te&oacute;rico:</strong> Gobernanza polic&eacute;ntrica (Ostrom, 2010), Kontextsteuerung (Willke, 1992), policy networks (Provan &amp; Kenis, 2008), structural holes (Burt, 1992). El SNA es una <em>aproximaci&oacute;n a la estructura de oportunidad de coordinaci&oacute;n</em>, no un retrato de la coordinaci&oacute;n real.</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+        <div style="padding:16px;border-radius:12px;border:1px solid rgba(37,99,235,.2);background:rgba(37,99,235,.04)">
+          <div style="font-weight:700;color:#2563eb;font-size:13px;margin-bottom:8px">&#128269; Para robustecer la red (Fase 2)</div>
+          <ul style="font-size:12px;color:var(--text2);line-height:1.7;margin:0;padding-left:16px">
+            <li>Encuesta relacional <em>name-generator</em> a 18 directores municipales</li>
+            <li>Encuesta de red a ~50 dirigentes de JV y OSC</li>
+            <li>Registro sistematizado de derivaciones en OIRS (6 meses)</li>
+          </ul>
+        </div>
+        <div style="padding:16px;border-radius:12px;border:1px solid rgba(124,58,237,.2);background:rgba(124,58,237,.04)">
+          <div style="font-weight:700;color:#7c3aed;font-size:13px;margin-bottom:8px">&#128214; Referencias</div>
+          <ul style="font-size:11px;color:var(--text2);line-height:1.7;margin:0;padding-left:16px">
+            <li>Burt, R. S. (1992). <em>Structural holes</em>. Harvard UP.</li>
+            <li>Ostrom, E. (2010). <em>Am. Econ. Rev.</em>, 100(3), 641&ndash;672.</li>
+            <li>Provan, K. &amp; Kenis, P. (2008). <em>JPART</em>, 18(2), 229&ndash;252.</li>
+            <li>Wasserman, S. &amp; Faust, K. (1994). <em>Social network analysis</em>. Cambridge UP.</li>
+            <li>Willke, H. (1992). <em>Ironie des Staates</em>. Suhrkamp.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> An&aacute;lisis de Redes Sociales (SNA) de gobernanza polic&eacute;ntrica &bull; 89 organizaciones participantes &bull; 15 unidades municipales &bull; 10 actores supracomunales &bull; Proceso participativo PLADECO 2025 &bull; Metodolog&iacute;a: Ostrom (2010), Burt (1992), Provan &amp; Kenis (2008)</div>
 </section>
 
 <!-- ═══ FINANCIAMIENTO ═══ -->
@@ -24737,6 +24942,308 @@ function renderSNAGraph(){
     node.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
   });
 }
+
+/* ═══ SNA GOBERNANZA POLICÉNTRICA · Datos reales del proceso PLADECO ═══ */
+var GOB_SNA={nodes:[
+{id:'m_dideco',l:'DIDECO',t:'MUN',s:213,com:1},{id:'m_secplan',l:'SECPLAN',t:'MUN',s:242,com:0},
+{id:'m_ddel',l:'DDEL',t:'MUN',s:260,com:0},{id:'m_dom',l:'DOM',t:'MUN',s:92,com:0},
+{id:'m_aseo',l:'Aseo y Ornato',t:'MUN',s:95,com:4},{id:'m_salud',l:'Depto. Salud',t:'MUN',s:55,com:4},
+{id:'m_seg',l:'Seguridad Pub.',t:'MUN',s:31,com:3},{id:'m_biblio',l:'Biblioteca',t:'MUN',s:60,com:2},
+{id:'m_cultura',l:'Cultura',t:'MUN',s:40,com:2},{id:'m_depor',l:'Deportes',t:'MUN',s:59,com:2},
+{id:'m_ninez',l:'Of. Niñez',t:'MUN',s:60,com:1},{id:'m_senda',l:'SENDA',t:'MUN',s:80,com:1},
+{id:'m_gab',l:'Gabinete',t:'MUN',s:42,com:0},{id:'m_sm',l:'Sec. Municipal',t:'MUN',s:55,com:0},
+{id:'m_ctrl',l:'D. Control',t:'MUN',s:23,com:0},
+{id:'o_ucam',l:'UCAM',t:'OSC',s:55,com:1},{id:'o_cosoc',l:'COSOC',t:'OSC',s:9,com:5},
+{id:'o_cultural',l:'Culturales',t:'OSC',s:12,com:2},{id:'o_huasos',l:'Huasos',t:'OSC',s:6,com:2},
+{id:'o_carab',l:'Carabineros',t:'OSC',s:2,com:3},{id:'o_bomb',l:'Bomberos',t:'OSC',s:5,com:3},
+{id:'o_transp',l:'Transporte',t:'OSC',s:13,com:5},{id:'o_jjvvu',l:'JJVV Urbanas (50)',t:'OSC',s:59,com:1},
+{id:'o_jjvvr',l:'JJVV Rurales (24)',t:'OSC',s:80,com:1},{id:'o_jv',l:'JV Río Claro',t:'OSC',s:18,com:1},
+{id:'o_nna',l:'NNA (4.036)',t:'OSC',s:21,com:1},{id:'o_comerc',l:'Comercio',t:'OSC',s:4,com:5},
+{id:'o_mamb',l:'Medio Amb.',t:'OSC',s:4,com:4},
+{id:'s_gore',l:"GORE O'Higgins",t:'SUP',s:30,com:0},{id:'s_sernatur',l:'SERNATUR',t:'SUP',s:10,com:2},
+{id:'s_sence',l:'SENCE',t:'SUP',s:10,com:4},{id:'s_minvu',l:'MINVU',t:'SUP',s:10,com:4},
+{id:'s_mop',l:'MOP/DOH',t:'SUP',s:10,com:4},{id:'s_minsal',l:'MINSAL',t:'SUP',s:10,com:4},
+{id:'s_senapred',l:'SENAPRED',t:'SUP',s:10,com:3},{id:'s_corfo',l:'CORFO',t:'SUP',s:10,com:4},
+{id:'s_subdere',l:'SUBDERE',t:'SUP',s:10,com:0},{id:'s_cgr',l:'CGR',t:'SUP',s:10,com:0},
+{id:'i_concejo',l:'Concejo Mun.',t:'IPF',s:15,com:0},{id:'i_comisiones',l:'Comisiones Tem.',t:'IPF',s:20,com:0},
+{id:'i_conseg',l:'Consejo Seguridad',t:'IPF',s:10,com:3}
+],edges:[
+/* MUN↔OSC: Coordinación operativa (observada en etnografía y talleres) */
+{s:'m_dideco',e:'o_jjvvu',r:'coord',w:3},{s:'m_dideco',e:'o_jjvvr',r:'coord',w:3},
+{s:'m_dideco',e:'o_ucam',r:'coord',w:2},{s:'m_dideco',e:'o_cultural',r:'coord',w:1},
+{s:'m_dideco',e:'o_comerc',r:'coord',w:1},{s:'m_ninez',e:'o_nna',r:'coord',w:3},
+{s:'m_senda',e:'o_nna',r:'coord',w:2},{s:'m_seg',e:'o_carab',r:'coord',w:3},
+{s:'m_seg',e:'o_bomb',r:'coord',w:2},{s:'m_salud',e:'o_ucam',r:'coord',w:2},
+{s:'m_cultura',e:'o_cultural',r:'coord',w:2},{s:'m_cultura',e:'o_huasos',r:'coord',w:1},
+{s:'m_aseo',e:'o_mamb',r:'coord',w:1},{s:'m_depor',e:'o_jjvvu',r:'coord',w:1},
+{s:'m_biblio',e:'o_cultural',r:'coord',w:1},{s:'m_ddel',e:'o_jjvvu',r:'coord',w:2},
+{s:'m_ddel',e:'o_jjvvr',r:'coord',w:2},
+/* Flujo de información diagnóstica (observada: listas asistencia talleres) */
+{s:'o_jjvvu',e:'m_dideco',r:'info',w:2},{s:'o_jjvvr',e:'m_dideco',r:'info',w:2},
+{s:'o_ucam',e:'m_secplan',r:'info',w:2},{s:'o_nna',e:'m_ninez',r:'info',w:3},
+{s:'o_comerc',e:'m_secplan',r:'info',w:1},{s:'o_mamb',e:'m_secplan',r:'info',w:1},
+{s:'o_jv',e:'m_secplan',r:'info',w:1},{s:'o_transp',e:'m_secplan',r:'info',w:1},
+/* Formal-normativo (Ley 20.500, 18.695, decreto 1778) */
+{s:'m_secplan',e:'o_cosoc',r:'formal',w:2},
+/* Derivación de demandas (Ley 19.418, etnografía) */
+{s:'o_jjvvu',e:'m_dom',r:'derivacion',w:2},{s:'o_jjvvr',e:'m_dom',r:'derivacion',w:1},
+/* SUP→MUN: Articulación sectorial (ERD 2024-2036, convenios) */
+{s:'s_gore',e:'m_secplan',r:'formal',w:3},{s:'s_gore',e:'m_dom',r:'formal',w:2},
+{s:'s_sernatur',e:'m_secplan',r:'coord',w:1},{s:'s_sence',e:'m_dideco',r:'coord',w:1},
+{s:'s_minvu',e:'m_dom',r:'formal',w:2},{s:'s_mop',e:'m_dom',r:'formal',w:2},
+{s:'s_minsal',e:'m_salud',r:'formal',w:2},{s:'s_senapred',e:'m_seg',r:'formal',w:2},
+{s:'s_corfo',e:'m_dideco',r:'coord',w:1},{s:'s_subdere',e:'m_secplan',r:'formal',w:3},
+{s:'s_cgr',e:'m_ctrl',r:'formal',w:2},
+/* IPF: Instancias de participación formal */
+{s:'i_concejo',e:'m_secplan',r:'formal',w:2},{s:'i_concejo',e:'m_dideco',r:'formal',w:1},
+{s:'i_comisiones',e:'m_secplan',r:'copart',w:2},{s:'i_comisiones',e:'m_dideco',r:'copart',w:2},
+{s:'i_comisiones',e:'m_seg',r:'copart',w:1},{s:'i_conseg',e:'m_seg',r:'copart',w:2},
+{s:'i_conseg',e:'o_carab',r:'copart',w:2},{s:'i_conseg',e:'o_bomb',r:'copart',w:1},
+{s:'i_concejo',e:'o_cosoc',r:'formal',w:1},
+/* MUN↔MUN: Coordinación interna (categorías compartidas INST_SNA_DIRS) */
+{s:'m_secplan',e:'m_ddel',r:'coord',w:2},{s:'m_secplan',e:'m_dom',r:'coord',w:2},
+{s:'m_secplan',e:'m_gab',r:'coord',w:1},{s:'m_dideco',e:'m_salud',r:'coord',w:1},
+{s:'m_dideco',e:'m_ninez',r:'coord',w:2},{s:'m_dideco',e:'m_senda',r:'coord',w:1},
+{s:'m_dideco',e:'m_cultura',r:'coord',w:1},{s:'m_ddel',e:'m_dom',r:'coord',w:2},
+{s:'m_ddel',e:'m_aseo',r:'coord',w:1},{s:'m_seg',e:'m_senda',r:'coord',w:1},
+{s:'m_sm',e:'m_ctrl',r:'coord',w:1},{s:'m_sm',e:'m_gab',r:'coord',w:1},
+{s:'m_cultura',e:'m_depor',r:'coord',w:1},{s:'m_cultura',e:'m_biblio',r:'coord',w:1},
+/* OSC↔OSC: Co-participación temática (SC_SNA_THEMES del portal) */
+{s:'o_carab',e:'o_bomb',r:'copart',w:2},{s:'o_jjvvu',e:'o_jjvvr',r:'copart',w:2},
+{s:'o_ucam',e:'o_jjvvu',r:'copart',w:1},{s:'o_ucam',e:'o_jjvvr',r:'copart',w:1},
+{s:'o_cosoc',e:'o_jjvvu',r:'copart',w:1},{s:'o_cosoc',e:'o_jjvvr',r:'copart',w:1},
+{s:'o_cultural',e:'o_huasos',r:'copart',w:1},{s:'o_jjvvr',e:'o_jv',r:'copart',w:2},
+{s:'o_jv',e:'o_mamb',r:'copart',w:1},{s:'o_nna',e:'o_carab',r:'copart',w:1},
+{s:'o_comerc',e:'o_transp',r:'copart',w:1},{s:'o_huasos',e:'o_jjvvr',r:'copart',w:1}
+]};
+var GOB_COMMUNITIES=[
+{id:0,name:'Núcleo Institucional',color:'#2563eb',desc:'SECPLAN, DDEL, DOM, Gabinete, Sec. Mun., Control + GORE, SUBDERE, CGR, Concejo, Comisiones'},
+{id:1,name:'Social-Territorial',color:'#7c3aed',desc:'DIDECO, Of. Niñez, SENDA + JJVV Urbanas/Rurales, UCAM, NNA, JV Río Claro'},
+{id:2,name:'Cultural-Identitario',color:'#f5921d',desc:'Cultura, Deportes, Biblioteca + Culturales, Huasos, SERNATUR'},
+{id:3,name:'Seguridad',color:'#dc2626',desc:'Seguridad Pública + Carabineros, Bomberos, SENAPRED, Consejo Seguridad'},
+{id:4,name:'Servicios y Desarrollo',color:'#0891b2',desc:'Salud, Aseo + MINVU, MOP, MINSAL, CORFO, SENCE, Medio Amb.'},
+{id:5,name:'Participación-Económica',color:'#d97706',desc:'COSOC, Transporte, Comercio'}
+];
+var GOB_EC={coord:'#3b82f6',info:'#94a3b8',formal:'#dc2626',copart:'#8b5cf6',derivacion:'#f59e0b'};
+var GOB_ED={coord:'',info:'4,4',formal:'8,4',copart:'',derivacion:'2,6'};
+var GOB_TC={MUN:'#2563eb',OSC:'#f5921d',SUP:'#0891b2',IPF:'#c0392b'};
+var _gob={tf:'ALL',ef:'ALL',sim:null,node:null,link:null,N:null,E:null};
+
+function gobR(d){return Math.max(8,Math.sqrt(d.s||10)*1.1+6);}
+
+function renderGobSNA(){
+  var ct=document.getElementById('gobSNAGraph');
+  if(!ct||ct._rendered)return;
+  if(typeof d3==='undefined'){
+    if(!window._d3Loading){window._d3Loading=true;var sc=document.createElement('script');sc.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';sc.onload=function(){renderGobSNA();};document.head.appendChild(sc);}
+    else{setTimeout(renderGobSNA,400);}return;}
+  ct._rendered=true;
+  var w=ct.clientWidth||900,h=620;
+  var N=GOB_SNA.nodes.map(function(n){return Object.assign({},n);});
+  var E=GOB_SNA.edges.map(function(d){return{source:d.s,target:d.e,r:d.r,w:d.w,s:d.s,e:d.e};});
+  _gob.N=N;_gob.E=E;
+  /* Grado */
+  var deg={};N.forEach(function(n){deg[n.id]=0;});
+  E.forEach(function(d){deg[d.s]=(deg[d.s]||0)+1;deg[d.e]=(deg[d.e]||0)+1;});
+  N.forEach(function(n){n.degree=deg[n.id]||0;});
+  /* SVG */
+  var svg=d3.select('#gobSNAGraph').append('svg').attr('width',w).attr('height',h).attr('viewBox','0 0 '+w+' '+h).style('background','transparent');
+  var g=svg.append('g');
+  svg.call(d3.zoom().scaleExtent([0.3,4]).on('zoom',function(ev){g.attr('transform',ev.transform);}));
+  svg.on('click',function(ev){if(ev.target.tagName==='svg')clearGobEgo();});
+  svg.append('defs').append('marker').attr('id','gobArr').attr('viewBox','0 -5 10 10').attr('refX',22).attr('refY',0)
+    .attr('markerWidth',6).attr('markerHeight',6).attr('orient','auto').append('path').attr('d','M0,-4L10,0L0,4').attr('fill','#f59e0b');
+  /* Force */
+  var sim=d3.forceSimulation(N)
+    .force('link',d3.forceLink(E).id(function(d){return d.id;}).distance(110).strength(0.12))
+    .force('charge',d3.forceManyBody().strength(-380))
+    .force('center',d3.forceCenter(w/2,h/2))
+    .force('collide',d3.forceCollide().radius(function(d){return gobR(d)+8;}))
+    .force('x',d3.forceX(w/2).strength(0.03))
+    .force('y',d3.forceY(h/2).strength(0.03));
+  _gob.sim=sim;
+  /* Aristas */
+  var link=g.append('g').selectAll('line').data(E).enter().append('line')
+    .attr('stroke',function(d){return GOB_EC[d.r]||'#94a3b8';})
+    .attr('stroke-width',function(d){return Math.max(1,d.w);})
+    .attr('stroke-opacity',0.4)
+    .attr('stroke-dasharray',function(d){return GOB_ED[d.r]||'';})
+    .attr('marker-end',function(d){return d.r==='derivacion'?'url(#gobArr)':'';});
+  _gob.link=link;
+  /* Nodos con forma por tipo */
+  var _gobDragDist=0,_gobDragSX=0,_gobDragSY=0;
+  var gobDrag=d3.drag().clickDistance(4)
+    .on('start',function(ev,d){_gobDragDist=0;_gobDragSX=ev.x;_gobDragSY=ev.y;if(!ev.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+    .on('drag',function(ev,d){var dx=ev.x-_gobDragSX,dy=ev.y-_gobDragSY;_gobDragDist=Math.sqrt(dx*dx+dy*dy);d.fx=ev.x;d.fy=ev.y;})
+    .on('end',function(ev,d){if(!ev.active)sim.alphaTarget(0);if(_gobDragDist<4){showGobEgo(d);}});
+  var node=g.append('g').selectAll('g').data(N).enter().append('g').style('cursor','pointer')
+    .call(gobDrag)
+    .on('dblclick',function(ev,d){d.fx=null;d.fy=null;})
+    .on('click',function(ev,d){ev.stopPropagation();showGobEgo(d);})
+    .on('mouseover',function(ev,d){
+      var cn=new Set([d.id]);E.forEach(function(l){var a=typeof l.source==='object'?l.source.id:l.s;var b=typeof l.target==='object'?l.target.id:l.e;if(a===d.id)cn.add(b);if(b===d.id)cn.add(a);});
+      link.attr('stroke-opacity',function(l){var a=typeof l.source==='object'?l.source.id:l.s;var b=typeof l.target==='object'?l.target.id:l.e;return a===d.id||b===d.id?0.9:0.04;});
+      node.style('opacity',function(n){return cn.has(n.id)?1:0.12;});
+    }).on('mouseout',function(){gobResetHL();});
+  node.each(function(d){
+    var el=d3.select(this),r=gobR(d),tc=GOB_TC[d.t]||'#888',cc=GOB_COMMUNITIES[d.com]?GOB_COMMUNITIES[d.com].color:tc;
+    if(d.t==='MUN'){el.append('circle').attr('r',r).attr('fill',tc).attr('stroke','#fff').attr('stroke-width',2.5);}
+    else if(d.t==='OSC'){el.append('rect').attr('x',-r).attr('y',-r).attr('width',r*2).attr('height',r*2).attr('rx',3).attr('fill',tc).attr('stroke','#fff').attr('stroke-width',2);}
+    else if(d.t==='SUP'){el.append('path').attr('d','M0,'+(-r-2)+'L'+(r+2)+','+(r)+'L'+(-r-2)+','+(r)+'Z').attr('fill',tc).attr('stroke','#fff').attr('stroke-width',2);}
+    else{el.append('path').attr('d','M0,'+(-r)+'L'+r+',0L0,'+r+'L'+(-r)+',0Z').attr('fill',tc).attr('stroke','#fff').attr('stroke-width',2);}
+  });
+  node.append('text').attr('text-anchor','middle').attr('dy',function(d){return gobR(d)+14;})
+    .attr('font-size','9px').attr('font-weight','700').attr('fill','#e2e8f0')
+    .attr('paint-order','stroke').attr('stroke','#0b1624').attr('stroke-width','3px').attr('stroke-linejoin','round')
+    .text(function(d){return d.l;});
+  _gob.node=node;
+  sim.on('tick',function(){
+    link.attr('x1',function(d){return d.source.x;}).attr('y1',function(d){return d.source.y;}).attr('x2',function(d){return d.target.x;}).attr('y2',function(d){return d.target.y;});
+    node.attr('transform',function(d){return 'translate('+d.x+','+d.y+')';});
+  });
+  /* Click-to-ego: robust pointerup handler on SVG (bypasses D3 drag suppression) */
+  var _gobPDown=null;
+  svg.on('pointerdown',function(ev){_gobPDown={x:ev.clientX,y:ev.clientY,t:Date.now()};});
+  svg.on('pointerup',function(ev){
+    if(!_gobPDown)return;var dx=ev.clientX-_gobPDown.x,dy=ev.clientY-_gobPDown.y,dt=Date.now()-_gobPDown.t;
+    _gobPDown=null;if(Math.sqrt(dx*dx+dy*dy)>6||dt>400)return;
+    var pt=svg.node().createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;
+    var svgP=pt.matrixTransform(g.node().getScreenCTM().inverse());
+    var best=null,bestD=Infinity;
+    N.forEach(function(n){var nd=Math.sqrt((n.x-svgP.x)*(n.x-svgP.x)+(n.y-svgP.y)*(n.y-svgP.y));if(nd<bestD){bestD=nd;best=n;}});
+    if(best&&bestD<gobR(best)+12){showGobEgo(best);}else{clearGobEgo();}
+  });
+  /* KPIs */
+  var $=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  $('gobKpiNodos',N.length);$('gobKpiAristas',E.length);
+  gobMetrics(N,E);gobTop10(N);gobComms();
+}
+
+function gobResetHL(){
+  var tf=_gob.tf,ef=_gob.ef;
+  if(!_gob.link)return;
+  _gob.link.attr('stroke-opacity',function(l){if(ef!=='ALL'&&l.r!==ef)return 0.02;return 0.4;})
+    .attr('stroke-width',function(l){return Math.max(1,l.w);});
+  _gob.node.style('opacity',function(n){if(tf!=='ALL'&&n.t!==tf)return 0.12;return 1;});
+}
+
+function showGobEgo(d){
+  var panel=document.getElementById('gobEgoPanel'),title=document.getElementById('gobEgoTitle'),body=document.getElementById('gobEgoContent');
+  panel.style.display='block';title.textContent=d.l;
+  var nbs=[];var E=_gob.E;
+  E.forEach(function(l){
+    var a=typeof l.source==='object'?l.source.id:l.s,b=typeof l.target==='object'?l.target.id:l.e;
+    if(a===d.id)nbs.push({id:b,rel:l.r});if(b===d.id)nbs.push({id:a,rel:l.r});
+  });
+  var nm={};_gob.N.forEach(function(n){nm[n.id]=n;});
+  var tn={MUN:'Municipal',OSC:'Sociedad Civil',SUP:'Supracomunal',IPF:'Part. Formal'};
+  var rn={coord:'Coordinación',info:'Flujo info',formal:'Formal-normativo',copart:'Co-participación',derivacion:'Derivación'};
+  var h='<div style="margin-bottom:8px"><span style="padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:'+(GOB_TC[d.t]||'#888')+';color:#fff">'+(tn[d.t]||d.t)+'</span></div>';
+  h+='<div style="font-size:11px;color:var(--text2);margin-bottom:6px">Grado: <strong>'+d.degree+'</strong> &middot; Com.: <strong>'+(GOB_COMMUNITIES[d.com]?GOB_COMMUNITIES[d.com].name:'—')+'</strong></div>';
+  var sem=d.degree>=6?'🟢 Alta':d.degree>=3?'🟡 Media':'🔴 Baja';
+  h+='<div style="font-size:11px;margin-bottom:10px;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.06)">Articulación: <strong>'+sem+'</strong></div>';
+  h+='<div style="font-size:10.5px;font-weight:700;color:var(--text);margin-bottom:6px">Conexiones ('+nbs.length+')</div>';
+  nbs.forEach(function(nb){var nn=nm[nb.id];if(!nn)return;
+    h+='<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:10.5px">';
+    h+='<span style="width:6px;height:6px;border-radius:50%;background:'+(GOB_EC[nb.rel]||'#888')+';flex-shrink:0"></span>';
+    h+='<span style="flex:1;color:var(--text)">'+nn.l+'</span>';
+    h+='<span style="font-size:9px;color:var(--text2)">'+(rn[nb.rel]||nb.rel)+'</span></div>';
+  });
+  body.innerHTML=h;
+  /* Highlight ego-net */
+  var cn=new Set([d.id]);nbs.forEach(function(nb){cn.add(nb.id);});
+  _gob.link.attr('stroke-opacity',function(l){var a=typeof l.source==='object'?l.source.id:l.s,b=typeof l.target==='object'?l.target.id:l.e;return a===d.id||b===d.id?0.9:0.03;})
+    .attr('stroke-width',function(l){var a=typeof l.source==='object'?l.source.id:l.s,b=typeof l.target==='object'?l.target.id:l.e;return a===d.id||b===d.id?3:1;});
+  _gob.node.style('opacity',function(n){return cn.has(n.id)?1:0.1;});
+}
+function clearGobEgo(){document.getElementById('gobEgoPanel').style.display='none';gobResetHL();}
+
+function filterGobTipo(btn,tipo){
+  document.querySelectorAll('.gob-chip:not(.gob-edge-chip)').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');_gob.tf=tipo;gobApplyF();
+}
+function filterGobEdge(btn,et){
+  document.querySelectorAll('.gob-edge-chip').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');_gob.ef=et;gobApplyF();
+}
+function gobApplyF(){
+  var tf=_gob.tf,ef=_gob.ef;
+  _gob.node.style('opacity',function(n){return tf!=='ALL'&&n.t!==tf?0.12:1;});
+  _gob.link.attr('stroke-opacity',function(l){
+    if(ef!=='ALL'&&l.r!==ef)return 0.02;
+    if(tf==='ALL')return 0.5;
+    var a=typeof l.source==='object'?l.source:null,b=typeof l.target==='object'?l.target:null;
+    if(a&&b){if(a.t!==tf&&b.t!==tf)return 0.02;}
+    return 0.5;
+  });
+}
+function switchGobTab(btn,idx){
+  document.querySelectorAll('.gob-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  for(var i=0;i<4;i++){var p=document.getElementById('gobTab'+i);if(p)p.style.display=i===idx?'block':'none';}
+}
+
+function gobMetrics(N,E){
+  var n=N.length,maxP=n*(n-1)/2,dens=E.length/maxP;
+  var maxD=0;N.forEach(function(nd){if(nd.degree>maxD)maxD=nd.degree;});
+  var sumD=0;N.forEach(function(nd){sumD+=maxD-nd.degree;});
+  var centr=sumD/((n-1)*(n-2));
+  /* Componentes BFS */
+  var vis={},comps=0,adj={};
+  N.forEach(function(nd){adj[nd.id]=[];});
+  E.forEach(function(d){adj[d.s]=adj[d.s]||[];adj[d.e]=adj[d.e]||[];adj[d.s].push(d.e);adj[d.e].push(d.s);});
+  N.forEach(function(nd){if(!vis[nd.id]){comps++;var q=[nd.id];while(q.length){var c=q.shift();if(vis[c])continue;vis[c]=true;(adj[c]||[]).forEach(function(nb){if(!vis[nb])q.push(nb);});}}});
+  /* Clustering */
+  var tTri=0,tTrip=0;
+  N.forEach(function(nd){var nbs=adj[nd.id]||[];if(nbs.length<2)return;tTrip+=nbs.length*(nbs.length-1)/2;
+    for(var i=0;i<nbs.length;i++)for(var j=i+1;j<nbs.length;j++)if((adj[nbs[i]]||[]).indexOf(nbs[j])>=0)tTri++;});
+  var clust=tTrip>0?tTri/tTrip:0;
+  /* Modularidad Q simplificada */
+  var m=E.length,ki={};N.forEach(function(nd){ki[nd.id]=nd.degree;});var Q=0;
+  E.forEach(function(d){var si=N.find(function(n){return n.id===d.s;}),ti=N.find(function(n){return n.id===d.e;});
+    if(si&&ti){Q+=(si.com===ti.com?1:0)-(ki[d.s]*ki[d.e])/(2*m);}});
+  Q=Q/(2*m);
+  /* E/I ratio */
+  var intra=0,inter=0;
+  E.forEach(function(d){var si=N.find(function(n){return n.id===d.s;}),ti=N.find(function(n){return n.id===d.e;});
+    if(si&&ti){if(si.com===ti.com)intra++;else inter++;}});
+  var eiR=E.length>0?inter/E.length:0;
+  var ipl=(Q>0?Q:0.1)*centr/Math.max(eiR,0.05);
+  /* Display */
+  var $=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  $('gm_densidad',dens.toFixed(3));$('gm_centraliz',centr.toFixed(3));$('gm_comps',comps);
+  $('gm_cluster',clust.toFixed(3));$('gm_modul',Q.toFixed(3));$('gm_ipl',ipl.toFixed(2));
+  $('gobKpiDens',dens.toFixed(3));
+}
+function gobTop10(N){
+  var sorted=N.slice().sort(function(a,b){return b.degree-a.degree;}).slice(0,10);
+  var h='';sorted.forEach(function(n,i){
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card)">';
+    h+='<span style="font-size:14px;font-weight:800;color:var(--text);width:22px;text-align:center">'+(i+1)+'</span>';
+    h+='<span style="width:10px;height:10px;border-radius:50%;background:'+(GOB_TC[n.t]||'#888')+';flex-shrink:0"></span>';
+    h+='<span style="flex:1;font-size:12px;font-weight:600;color:var(--text)">'+n.l+'</span>';
+    h+='<span style="font-size:12px;font-weight:800;color:'+(GOB_TC[n.t]||'#888')+'">'+n.degree+'</span></div>';
+  });var el=document.getElementById('gobTopDegree');if(el)el.innerHTML=h;
+}
+function gobComms(){
+  var h='';GOB_COMMUNITIES.forEach(function(c){
+    var mem=GOB_SNA.nodes.filter(function(n){return n.com===c.id;});
+    h+='<div style="padding:14px;border-radius:12px;border:1px solid var(--border);border-left:4px solid '+c.color+';background:var(--card)">';
+    h+='<div style="font-weight:700;font-size:12px;color:'+c.color+';margin-bottom:4px">'+c.name+' ('+mem.length+' actores)</div>';
+    h+='<div style="font-size:10.5px;color:var(--text2);line-height:1.5">'+c.desc+'</div></div>';
+  });var el=document.getElementById('gobCommunities');if(el)el.innerHTML=h;
+}
+/* Lazy-load del grafo de gobernanza al entrar en viewport */
+(function(){
+  var sec=document.getElementById('sna-gobernanza');
+  if(!sec)return;
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting){renderGobSNA();obs.disconnect();}});
+    },{rootMargin:'200px'});
+    obs.observe(sec);
+  }else{setTimeout(renderGobSNA,3000);}
+})();
 
 /* ─── Datos: 8 FODA por Actor + 20 registros Cruce ─── */
 var SC_FODA_DATA=[
