@@ -25113,6 +25113,24 @@ function renderGobSNA(){
     N.forEach(function(n){var nd=Math.sqrt((n.x-svgP.x)*(n.x-svgP.x)+(n.y-svgP.y)*(n.y-svgP.y));if(nd<bestD){bestD=nd;best=n;}});
     if(best&&bestD<gobR(best)+12){showGobEgo(best);}else{clearGobEgo();}
   });
+  /* A4 · Zoom controls para móvil */
+  (function(){
+    if(typeof matchMedia==='undefined'||!matchMedia('(max-width:768px)').matches)return;
+    var ctrl=document.createElement('div');ctrl.className='gob-zoom-ctrl';
+    ctrl.innerHTML='<button class="gob-zoom-btn" data-z="in" aria-label="Acercar">+</button>'
+      +'<button class="gob-zoom-btn" data-z="out" aria-label="Alejar">&minus;</button>'
+      +'<button class="gob-zoom-btn" data-z="fit" aria-label="Ajustar">&#8862;</button>';
+    ct.style.position='relative';ct.appendChild(ctrl);
+    var zoomBehavior=d3.zoom().scaleExtent([0.3,4]).on('zoom',function(ev){g.attr('transform',ev.transform);});
+    svg.call(zoomBehavior);
+    ctrl.addEventListener('click',function(ev){
+      var btn=ev.target.closest('.gob-zoom-btn');if(!btn)return;
+      var dir=btn.dataset.z,sel=d3.select(svg.node());
+      if(dir==='in')sel.transition().duration(300).call(zoomBehavior.scaleBy,1.5);
+      else if(dir==='out')sel.transition().duration(300).call(zoomBehavior.scaleBy,0.67);
+      else sel.transition().duration(400).call(zoomBehavior.scaleTo,0.5,[(w/2),(h/2)]);
+    });
+  })();
   /* KPIs */
   var $=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
   $('gobKpiNodos',N.length);$('gobKpiAristas',E.length);
@@ -26028,7 +26046,7 @@ function toggleChatbot(){
           const h=new Date().getHours();
           const saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
           if(typeof addBotMsg==='function'){
-            addBotMsg(saludo+' Soy **Contigo Rengo**, tu asistente del PLADECO 2025-2035.\n\nPuedo ayudarte con **80+ temas**:\n• 📊 **Datos**: Censo 2024, ICVU, empresas, empleo, educación\n• 🗺️ **Territorio**: 21 UVs, vulnerabilidad censal, desigualdad BIP\n• 🔬 **Análisis Censal**: 7 índices · 826 manzanas\n• 📍 **ICT Espacios Públicos**: 65 puntos catastrados\n• 📋 **Ficha Comunal**: realidad laboral · US$208M inversión\n• 🎯 **PLADECO**: 6 ejes · 6 Decisiones · 225 acciones · FODA\n• 💸 **Presupuesto Participativo**: $200M · 21 UV\n• 👧 **NNA**: salud mental · violencia · derechos\n• 🌱 **Ambiente**: PACCC · sequía · áreas verdes\n• 🏛️ **Institucional**: Ley Karin · transparencia · COSOC\n• 🌐 **Sociedad Civil**: 95 organizaciones · 472 participantes\n• ❓ **FAQ**: preguntas frecuentes · glosario 70 términos\n\n💡 **Tips**: Escribe una **localidad** para datos específicos o usa **Ctrl+K** para buscar en todo el portal.');
+            addBotMsg(saludo+' Soy **Contigo Rengo**, asistente del PLADECO 2025-2035.\n\nPuedo ayudarte con datos verificados sobre:\n• 📊 **Población y territorio** (Censo 2024 · 63.620 hab)\n• 🎯 **Ejes, metas y políticas** del plan\n• 🗺️ **Tu unidad vecinal** o localidad\n• 🌐 **Red de gobernanza** (41 actores · 74 vínculos)\n• 📍 **Navegación** por las 53 secciones del portal\n\n⚠️ Mis respuestas provienen exclusivamente de los **datos oficiales** del PLADECO. Si necesitas algo fuera de este alcance, te derivaré al equipo de SECPLAC.\n\n💡 Escribe una **localidad** para datos específicos, o usa el botón 🔍 para buscar.');
           }
           if(typeof showSuggestions==='function')showSuggestions();
         }catch(e){console.warn('[chatbot] error al agregar saludo:',e);}
@@ -26194,7 +26212,7 @@ function chatDynUV(){
 function chatDynGreeting(){
   const h=new Date().getHours();
   const saludo=h<12?'¡Buenos días! ☀️':h<20?'¡Buenas tardes! 👋':'¡Buenas noches! 🌙';
-  return saludo+' Soy **Contigo Rengo**, tu asistente del PLADECO. ¿En qué puedo ayudarte?\n\nPrueba preguntarme por población, localidades, ejes, metas, FODA o cualquier tema del plan.';
+  return saludo+' Soy **Contigo Rengo**, asistente del PLADECO 2025-2035.\n\nPuedo ayudarte con datos verificados sobre:\n• 📊 Población y territorio (Censo 2024)\n• 🎯 Ejes, metas y políticas del plan\n• 🗺️ Tu unidad vecinal o localidad\n• 🌐 Red de gobernanza\n• 📍 Navegación por el portal\n\n⚠️ Mis respuestas provienen de datos oficiales verificados.';
 }
 /* ── Localidad lookup (dynamic from CENSO_VULNERABILIDAD) ── */
 function chatLookupLocalidad(q){
@@ -26331,6 +26349,7 @@ function answerChat(q){
       else answer='Información disponible en la sección correspondiente del portal.';
     }
     addBotMsg(answer,best.sec);
+    logChatMetric(q,true,best.sec);
     /* Show contextual follow-ups if available */
     if(best.follow&&best.follow.length){
       const filtered=best.follow.filter(f=>!chatHistory.has(stripAccents(f.toLowerCase())));
@@ -26339,11 +26358,120 @@ function answerChat(q){
       showSuggestions();
     }
   }else{
-    addBotMsg('No encontré una respuesta exacta para "**'+q+'**", pero puedo ayudarte con:\n\n📊 **Datos**: población, vivienda, empleo, educación, ICVU, empresas\n🗺️ **Territorial**: localidades, vulnerabilidad, brechas, desigualdad BIP\n📋 **PLADECO**: ejes, metas, ODS, FODA, gestión financiera\n🏛️ **Institucional**: Ley Karin, transparencia, COSOC, PACCC\n👧 **Infancia**: salud mental, violencia, derechos NNA, deportes\n🌱 **Ambiente**: cambio climático, sequía, áreas verdes, parque solar\n\n💡 **Tips**:\n• Escribe el nombre de una **localidad** (ej: "Apalta", "Rosario")\n• Usa `!ayuda` para ver todos los **comandos rápidos** disponibles');
+    addBotMsg('No encontré una respuesta exacta para "**'+q+'**" en mi base de datos verificada.\n\n🔍 **Esto puedo sugerirte:**\n• Prueba el **buscador del portal** (botón 🔍 abajo) con palabras clave\n• Escribe el nombre de una **localidad** (ej: "Apalta", "Rosario")\n• Usa `!ayuda` para ver **comandos rápidos**\n\n📧 **Contacto directo:**\n• SECPLAC: dcastillo@munirengo.cl\n• Encargado PLADECO: omanan@munirengo.cl\n\nRecuerda que puedo ayudarte con: población, localidades, ejes, metas, FODA, red de gobernanza, participación e indicadores.');
+    logChatMetric(q,false,null);
     showSuggestions();
   }
 }
 /* duplicate keydown removed — see line 6798 */
+
+// ══════════════════════════════════════════════════════
+// v45.192 · P1+P2 — Funciones JS nuevas
+// ══════════════════════════════════════════════════════
+
+/* ── B5 · Métricas del asistente (localStorage) ── */
+function logChatMetric(query,matched,section){
+  try{
+    var m=JSON.parse(localStorage.getItem('pladeco_chat_metrics')||'[]');
+    m.push({q:(query||'').substring(0,100),ok:!!matched,sec:section||null,ts:new Date().toISOString().split('T')[0]});
+    if(m.length>500)m=m.slice(-500);
+    localStorage.setItem('pladeco_chat_metrics',JSON.stringify(m));
+  }catch(e){}
+}
+function getChatMetricsSummary(){
+  try{
+    var m=JSON.parse(localStorage.getItem('pladeco_chat_metrics')||'[]');
+    var total=m.length,ok=m.filter(function(x){return x.ok}).length;
+    var topQ={};m.forEach(function(x){topQ[x.q]=(topQ[x.q]||0)+1;});
+    var sorted=Object.entries(topQ).sort(function(a,b){return b[1]-a[1];});
+    return{total:total,exitosas:ok,tasa:total?Math.round(ok/total*100)+'%':'—',top5:sorted.slice(0,5)};
+  }catch(e){return null;}
+}
+
+/* ── A3 · Guard táctil para mapas Leaflet en móvil ── */
+function initMobileMapGuards(){
+  if(typeof matchMedia==='undefined'||!matchMedia('(max-width:768px)').matches)return;
+  var maps=window.__leafletMaps||[];
+  maps.forEach(function(map){
+    try{
+      map.scrollWheelZoom.disable();
+      map.dragging.disable();
+      var container=map.getContainer();
+      if(container.querySelector('.map-touch-overlay'))return;
+      container.style.position='relative';
+      var ov=document.createElement('div');
+      ov.className='map-touch-overlay';
+      ov.innerHTML='<span>Toca para explorar el mapa</span>';
+      container.appendChild(ov);
+      ov.addEventListener('click',function(){
+        map.scrollWheelZoom.enable();map.dragging.enable();
+        ov.classList.add('map-overlay-hidden');
+        var timer;
+        map.on('movestart zoomstart',function(){clearTimeout(timer);});
+        map.on('moveend zoomend',function(){
+          timer=setTimeout(function(){
+            map.scrollWheelZoom.disable();map.dragging.disable();
+            ov.classList.remove('map-overlay-hidden');
+          },5000);
+        });
+      });
+    }catch(e){}
+  });
+}
+/* Ejecutar cuando Leaflet haya cargado mapas */
+if(window.__leafletMaps&&window.__leafletMaps.length){initMobileMapGuards();}
+else{document.addEventListener('DOMContentLoaded',function(){setTimeout(initMobileMapGuards,3000);});}
+
+/* ── A2 · Reordenar KPIs por urgencia en móvil ── */
+function reorderSemaforoMobile(){
+  if(typeof matchMedia==='undefined'||!matchMedia('(max-width:768px)').matches)return;
+  var grid=document.getElementById('semaforoGrid')||document.querySelector('.semaforo-grid');
+  if(!grid)return;
+  var cards=Array.from(grid.querySelectorAll('.meta-card'));
+  if(cards.length<2)return;
+  /* Ordenar: rojo primero, luego ámbar, luego verde, luego sin estado */
+  var order={red:0,amber:1,green:2};
+  cards.sort(function(a,b){
+    var la=a.querySelector('.mc-light');
+    var lb=b.querySelector('.mc-light');
+    var oa=la?(la.classList.contains('red')?0:la.classList.contains('amber')?1:2):3;
+    var ob=lb?(lb.classList.contains('red')?0:lb.classList.contains('amber')?1:2):3;
+    return oa-ob;
+  });
+  cards.forEach(function(c){grid.appendChild(c);});
+  /* Agregar botón "Ver todos" si hay más de 6 KPIs */
+  if(cards.length>6&&!grid.querySelector('.sem-show-all-btn')){
+    cards.forEach(function(c,i){if(i>=6)c.style.display='none';});
+    var btn=document.createElement('button');
+    btn.className='sem-show-all-btn';
+    btn.textContent='Ver los '+cards.length+' indicadores ▾';
+    btn.addEventListener('click',function(){
+      cards.forEach(function(c){c.style.display='';});
+      btn.style.display='none';
+    });
+    grid.appendChild(btn);
+  }
+}
+window.addEventListener('resize',function(){var t;clearTimeout(t);t=setTimeout(reorderSemaforoMobile,300);});
+
+/* ── A5 · Botón scroll-to-top ── */
+(function(){
+  var btn=document.createElement('button');
+  btn.className='scroll-top-btn';
+  btn.setAttribute('aria-label','Volver arriba');
+  btn.innerHTML='&#9650;';
+  document.body.appendChild(btn);
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  var lastY=0,ticking=false;
+  window.addEventListener('scroll',function(){
+    lastY=window.scrollY||window.pageYOffset;
+    if(!ticking){requestAnimationFrame(function(){
+      if(lastY>600)btn.classList.add('stt-visible');
+      else btn.classList.remove('stt-visible');
+      ticking=false;
+    });ticking=true;}
+  },{passive:true});
+})();
 
 // ══════════════════════════════════════════════════════
 // F4/F16: COUNTDOWN + FLIP ANIMATION
@@ -34344,7 +34472,106 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
   .proc-tl-year{font-size:11px}
 }
 
-/* ═══ FIN v45.191 SISTEMA MÓVIL P0 ═══ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.192 · P1+P2 COMPLETO — Mapas táctiles, zoom SNA, scroll-top, métricas
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── A3 · Overlay de activación táctil para mapas ── */
+.map-touch-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;
+  z-index:800;cursor:pointer;transition:opacity .3s;
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+}
+.map-touch-overlay span{
+  background:rgba(0,0,0,.72);color:#fff;padding:10px 20px;
+  border-radius:24px;font-size:13px;font-weight:600;
+  pointer-events:none;
+}
+.map-overlay-hidden{opacity:0;pointer-events:none}
+
+@media(max-width:768px){
+  /* Leaflet zoom buttons más grandes */
+  .leaflet-control-zoom a{
+    width:44px!important;height:44px!important;
+    line-height:44px!important;font-size:20px!important;
+  }
+  /* Leyendas colapsables */
+  .map-legend-collapsible{
+    max-height:36px;overflow:hidden;transition:max-height .3s ease;
+    cursor:pointer;position:relative;
+  }
+  .map-legend-collapsible::after{
+    content:'▾ Leyenda';position:absolute;bottom:0;left:0;right:0;
+    text-align:center;font-size:10px;font-weight:700;color:var(--accent);
+    background:linear-gradient(transparent,var(--card) 60%);padding:4px 0;
+  }
+  .map-legend-collapsible.expanded{max-height:500px}
+  .map-legend-collapsible.expanded::after{content:'▴ Cerrar';background:var(--card)}
+}
+
+/* ── A3 · Botón fullscreen para contenedores de mapa ── */
+.map-fullscreen-btn{
+  position:absolute;top:10px;right:10px;width:44px;height:44px;
+  border-radius:10px;background:var(--card);border:1px solid var(--border);
+  display:none;align-items:center;justify-content:center;
+  font-size:18px;z-index:800;cursor:pointer;color:var(--text);
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+@media(max-width:768px){.map-fullscreen-btn{display:flex}}
+.map-fullscreen-btn:active{background:var(--accent);color:#fff}
+
+/* ── A4 · Controles de zoom D3 para sociograma ── */
+.gob-zoom-ctrl{
+  position:absolute;bottom:50px;left:10px;display:none;
+  flex-direction:column;gap:4px;z-index:5;
+}
+@media(max-width:768px){.gob-zoom-ctrl{display:flex}}
+.gob-zoom-btn{
+  width:44px;height:44px;border-radius:10px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-size:20px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+  -webkit-tap-highlight-color:transparent;transition:background .15s;
+}
+.gob-zoom-btn:active{background:var(--accent);color:#fff}
+
+/* ── A5 · Botón scroll-to-top ── */
+.scroll-top-btn{
+  position:fixed;bottom:72px;left:16px;width:44px;height:44px;
+  border-radius:50%;background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-size:18px;cursor:pointer;z-index:9989;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(0,0,0,.25);transition:opacity .3s,transform .3s;
+  -webkit-tap-highlight-color:transparent;
+}
+.scroll-top-btn.stt-visible{display:flex}
+.scroll-top-btn:active{transform:scale(.9)}
+@media(min-width:769px){
+  .scroll-top-btn{bottom:24px;left:24px}
+}
+
+/* ── A2 · Botón "Ver todos los KPIs" colapsable ── */
+.sem-show-all-btn{
+  display:none;width:100%;padding:12px;border:2px dashed var(--border);
+  border-radius:var(--radius);background:transparent;color:var(--text2);
+  font-size:13px;font-weight:600;cursor:pointer;text-align:center;
+  margin-top:8px;transition:border-color .2s,color .2s;
+  min-height:44px;
+}
+.sem-show-all-btn:active{border-color:var(--accent);color:var(--accent)}
+@media(max-width:768px){.sem-show-all-btn{display:block}}
+
+/* ── B4 · Chatbot chips mejorados para móvil ── */
+@media(max-width:768px){
+  .chatbot-suggestions button{
+    min-height:44px;padding:8px 14px;font-size:12px;
+    border-radius:20px;
+  }
+}
+
+/* ═══ FIN v45.192 P1+P2 ═══ */
 </style>
 <script>
 /* Motor de vistas v45.69 — portada + vistas por SECCIÓN. Tolerante a fallos:
