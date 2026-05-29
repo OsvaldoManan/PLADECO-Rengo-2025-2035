@@ -6377,7 +6377,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'cronograma-gantt':'📅','validacion-concejo':'🤲','faq-concejo':'❓',
     /* Macro 04 · Cierre */
     'faq':'❓','glosario':'📖','institucional':'🏛️','timeline':'⏳','galeria':'📸','antes-despues':'🔄',
-    'voz-vecinos':'🗣️','cuadernillo':'📓','participa':'🙋','calculadora-uv':'🧮','presupuesto-participativo':'💵',
+    'cuadernillo':'📓','participa':'🙋','calculadora-uv':'🧮','presupuesto-participativo':'💵',
     'documentos':'📁','visitas':'👁️'
   };
   /* v45.146 · Secciones excluidas del menú (huérfanas, técnicas o con nombre crudo del id) */
@@ -7162,7 +7162,6 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div class="qi-group" data-grp="7">
         <div class="qi-group-head"><div class="qi-group-num">7</div><div class="qi-group-name">Recursos &amp; Documentaci&oacute;n</div></div>
         <div class="qi-links">
-          <a href="#voz-vecinos" class="qi-link is-new"><span class="qi-link-ico">&#128483;&#65039;</span><span class="qi-link-txt">Voz de los Vecinos</span></a>
           <a href="#cuadernillo" class="qi-link is-new"><span class="qi-link-ico">&#128221;</span><span class="qi-link-txt">Cuadernillo PDF UV</span></a>
           <a href="#erd" class="qi-link is-new"><span class="qi-link-ico">&#127956;</span><span class="qi-link-txt">ERD O'Higgins 2024-2036</span></a>
           <a href="#timeline" class="qi-link is-new"><span class="qi-link-ico">&#128467;&#65039;</span><span class="qi-link-txt">L&iacute;nea de Tiempo</span></a>
@@ -14451,7 +14450,6 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
         <li><a href="#faq"><span>Preguntas Frecuentes</span><span class="toc-desc">FAQ general del portal</span></a></li>
         <li><a href="#timeline"><span>L&iacute;nea de Tiempo del Proceso</span><span class="toc-desc">Hitos mar 2025 &rarr; jun 2026</span></a></li>
         <li><a href="#galeria"><span>Galer&iacute;a Fotogr&aacute;fica</span><span class="toc-desc">Talleres + reuniones territoriales</span></a></li>
-        <li><a href="#voz-vecinos"><span>Voz Vecinos &middot; Dashboard en vivo</span><span class="toc-desc">Pulso de participaci&oacute;n actualizado</span></a></li>
         <li><a href="#cuadernillo"><span>Cuadernillo PDF por UV</span><span class="toc-desc">Material descargable por barrio</span></a></li>
         <li><a href="#participa"><span>Participa &middot; Canales abiertos</span><span class="toc-desc">Newsletter + reportes ciudadanos</span></a></li>
         <li><a href="#educacion"><span>Aprende sobre tu Comuna</span><span class="toc-desc">Quiz interactivo</span></a></li>
@@ -15374,7 +15372,6 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
       <a href="#equipo" class="sr-link"><span class="sr-ico">&#128104;&#8205;&#128188;</span> Equipo SECPLAC</a>
       <a href="#sociedad-civil" class="sr-link"><span class="sr-ico">&#129309;</span> Sociedad Civil</a>
       <a href="#diagnostico-institucional" class="sr-link"><span class="sr-ico">&#127963;&#65039;</span> Entrevistas Institucionales</a>
-      <a href="#voz-vecinos" class="sr-link"><span class="sr-ico">&#128483;&#65039;</span> Voz Vecinos</a>
       <a href="#encuesta" class="sr-link"><span class="sr-ico">&#128203;</span> Encuesta Masiva</a>
     </div>
   </div>
@@ -17067,20 +17064,7 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 </section>
 
 
-<!-- ═══ A2 · DASHBOARD VOZ DE LOS VECINOS ═══ -->
-<section id="voz-vecinos" class="reveal" aria-labelledby="vozH">
-  <div class="sec-header">
-    <div class="badge badge--success">Pulso Participativo</div>
-    <h2 id="vozH">&#128483;&#65039; Voz de los Vecinos &middot; Dashboard en vivo</h2>
-    <p>Agregador de toda la participaci&oacute;n ciudadana en el portal PLADECO: votos en la encuesta, reportes registrados, suscripciones al newsletter, visitas y secciones favoritas. Los n&uacute;meros se actualizan autom&aacute;ticamente desde el backend (Google Apps Script &middot; Google Sheets), reflejando en tiempo real c&oacute;mo Rengo participa.</p>
-  </div>
-  <div class="voz-meta-row">
-    <span><span class="voz-pulse"></span> <strong>En vivo</strong> &middot; sincronizando cada 60 segundos</span>
-    <span>Actualizado: <strong id="vozLastFetch">--:--:--</strong> <button onclick="loadVozVecinos(true)" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:14px;padding:0 4px" title="Actualizar ahora">&#8634;</button></span>
-  </div>
-  <div class="voz-grid" id="vozGrid"></div>
-  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> Backend propio Google Apps Script + Google Sheets &middot; APIs internas del portal &middot; localStorage para favoritos y logros &middot; Datos agregados privacy-first (sin IP individual, sin tracking de comportamiento).</div>
-</section>
+<!-- v45.193 · Sección "Voz de los Vecinos / Pulso Participativo" eliminada por decisión editorial -->
 
 <!-- ═══ A3 · CUADERNILLO PDF por UV ═══ -->
 <section id="cuadernillo" class="reveal" aria-labelledby="cuaH">
@@ -28588,7 +28572,6 @@ function v40InitKeyboardShortcuts(){
       else if(k==='m')target='matriz';
       else if(k==='c')target='cuadernillo';
       else if(k==='e')target='erd';
-      else if(k==='p')target='voz-vecinos';
       else if(k==='g'){window.scrollTo({top:0,behavior:'smooth'});return;}
       if(target){
         var el=document.getElementById(target);
@@ -28700,7 +28683,6 @@ function initV40Navigation(){
 var HERO_SLIDES=[
   {cat:'Votaci&oacute;n activa',icon:'&#128499;&#65039;',title:'<strong>Tu opini&oacute;n importa</strong>. Vota cu&aacute;l es el tema m&aacute;s urgente para Rengo.',link:'#encuesta',action:'Votar ahora &rarr;'},
   {cat:'Reporta',icon:'&#128205;',title:'<strong>Reporta un bache, basura, alumbrado</strong> con un click en el mapa.',link:'#reporta',action:'Reportar &rarr;'},
-  {cat:'Pulso PLADECO',icon:'&#128202;',title:'<strong>Cu&aacute;ntos vecinos est&aacute;n participando</strong>: revisa el dashboard en vivo.',link:'#voz-vecinos',action:'Ver pulso &rarr;'},
   {cat:'Material',icon:'&#128221;',title:'<strong>Descarga el cuadernillo</strong> con datos espec&iacute;ficos de tu UV.',link:'#cuadernillo',action:'Descargar &rarr;'},
   {cat:'ERD Regional',icon:'&#127956;',title:'<strong>Conoce c&oacute;mo Rengo se alinea con O\'Higgins 2024-2036</strong>.',link:'#erd',action:'Explorar ERD &rarr;'},
   {cat:'Aprende',icon:'&#127919;',title:'<strong>Hazte el Quiz</strong> y desbloquea tu logro &laquo;Experto PLADECO&raquo;.',link:'#educacion',action:'Jugar &rarr;'}
@@ -28740,10 +28722,10 @@ function _heroCarStartTimer(){
 function _heroCarResetTimer(){_heroCarStartTimer();}
 
 /* ══════════════════════════════════════════════════════
-   A2. Dashboard Voz de los Vecinos (agregador KPIs)
+   A2. Dashboard Voz de los Vecinos — DESACTIVADO v45.193
    ══════════════════════════════════════════════════════ */
 function _vozFmt(n){return n>=1000?(n/1000).toFixed(1)+'k':String(n);}
-function loadVozVecinos(manual){
+function loadVozVecinos(manual){return;/* desactivado v45.193 */
   var grid=document.getElementById('vozGrid');if(!grid)return;
   // Render skeleton
   if(!grid.querySelector('.voz-card')){
@@ -29247,7 +29229,7 @@ try{renderProcessTimeline();}catch(e){console.warn('renderProcessTimeline:',e);}
 try{initErdTabs();}catch(e){console.warn('initErdTabs:',e);}
 // MAJOR v38.0 inits
 try{renderHeroCarousel();}catch(e){console.warn('heroCarousel:',e);}
-try{loadVozVecinos();startVozAutoRefresh();}catch(e){console.warn('vozVecinos:',e);}
+/* v45.193: vozVecinos desactivado */
 try{lazyInitOnView('#reporta',initReporteCiudadano);}catch(e){console.warn('reporte:',e);}
 try{lazyInitOnView('#heatmap',initHeatmap);}catch(e){console.warn('heatmap:',e);}
 /* v45.2 · #macrosector eliminado, lazyInit removido */
