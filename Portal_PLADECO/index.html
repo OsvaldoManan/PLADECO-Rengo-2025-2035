@@ -17846,7 +17846,7 @@ body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba
 
 
 <!-- ═══ CTA FINAL ═══ -->
-<section id="portal-cta" style="padding-bottom:20px">
+<section id="portal-cta" data-nav-title="Cierre del recorrido" style="padding-bottom:20px">
   <div class="portal-cta">
     <h3>PLADECO Rengo 2025 &ndash; 2035</h3>
     <div class="cta-sub">Este portal re&uacute;ne el <strong>diagn&oacute;stico</strong>, la <strong>planificaci&oacute;n estrat&eacute;gica</strong> y el <strong>seguimiento</strong> del Plan de Desarrollo Comunal, construido con la participaci&oacute;n de <strong>472 vecinos y vecinas</strong> de <strong>95 organizaciones</strong> en las 21 unidades vecinales de Rengo, 115 funcionarios municipales entrevistados y 4.036 ni&ntilde;os, ni&ntilde;as y adolescentes encuestados. La transparencia y la reutilizaci&oacute;n del conocimiento son principios centrales de este instrumento de gesti&oacute;n.</div>
@@ -34812,10 +34812,12 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     var portada=[],chapters=[],units=[],curCh=null,pend=[],curUnit=null,i;
     function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
     function secName(s){
-      var h=s.querySelector('.sec-header h2,h2');
+      var dn=s.getAttribute('data-nav-title');
+      if(dn){var dt=dn.replace(/\s+/g,' ').trim();if(dt)return dt.slice(0,64);}
+      var h=s.querySelector('.sec-header h2,h2')||s.querySelector('.sec-header h3,h3');
       if(h){var t=(h.textContent||'').replace(/\s+/g,' ').trim();if(t){return t.slice(0,64);}}
       var al=s.getAttribute('aria-label');
-      return al?al.replace(/\s+/g,' ').trim().slice(0,64):(s.id||'Sección');
+      return al?al.replace(/\s+/g,' ').trim().slice(0,64):(s.id?s.id.replace(/[-_]+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();}).slice(0,64):'Sección');
     }
     for(i=0;i<kids.length;i++){
       var el=kids[i];
