@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>/* v45.195 · Modo captura/auditoría: ?nofx o ?capture activan .nofx (sin animaciones ni pollers). Se aplica temprano para evitar parpadeo. */
+(function(){try{if(/[?&](nofx|capture)(=|&|$)/.test(location.search))document.documentElement.classList.add('nofx');}catch(e){}})();</script>
 <title>PLADECO Rengo 2025-2035 | Portal Estratégico</title>
 <meta name="description" content="Portal interactivo del Plan de Desarrollo Comunal de Rengo 2025-2035. 6 ejes estrat&#233;gicos, 225 pol&#237;ticas p&#250;blicas, 63.620 habitantes (Censo 2024). Diagn&#243;stico territorial, cartograf&#237;a, datos y participaci&#243;n ciudadana.">
 <meta name="keywords" content="PLADECO, Rengo, plan desarrollo comunal, municipalidad rengo, censo 2024, sociedad civil, planificaci&#243;n territorial, O'Higgins, vulnerabilidad socioterritorial, espacios p&#250;blicos">
@@ -34781,6 +34783,22 @@ body.dark .contexto-legal,body.dark .texto-legal{border-left-color:#6f93cc;backg
 body.dark .contexto-legal strong,body.dark .texto-legal strong{color:#9db8e0}
 
 /* ═══ FIN v45.193 SISTEMA TIPOGRÁFICO ═══ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.195 · MOVIMIENTO REDUCIDO (accesibilidad WCAG 2.3.3) + MODO CAPTURA ?nofx
+   - prefers-reduced-motion: calma TODAS las animaciones/transiciones (página funcional)
+   - html.nofx (?nofx/?capture): las desactiva del todo, para captura/auditoría estable
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+}
+html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
+  animation:none!important;transition:none!important;scroll-behavior:auto!important;
+}
+/* ═══ FIN v45.195 ═══ */
 </style>
 <script>
 /* Motor de vistas v45.69 — portada + vistas por SECCIÓN. Tolerante a fallos:
@@ -35072,6 +35090,24 @@ body.dark .contexto-legal strong,body.dark .texto-legal strong{color:#9db8e0}
     if(btn)btn.textContent='Entendido';
     setTimeout(function(){banner.classList.add('pwa-show');},3500);
   }
+})();
+</script>
+
+<script>
+/* v45.195 · Modo captura ?nofx: tras estabilizar la página, detiene pollers/animaciones JS
+   (clear timers + cancel rAF) para que herramientas de captura/auditoría alcancen "idle".
+   Solo se activa con ?nofx/?capture; las visitas normales no se ven afectadas. */
+(function(){
+  if(!document.documentElement.classList.contains('nofx'))return;
+  function freeze(){
+    try{
+      var m=setTimeout(function(){},0);for(var i=0;i<=m;i++){clearTimeout(i);clearInterval(i);}
+      var r=requestAnimationFrame(function(){});for(var j=0;j<=r;j++)cancelAnimationFrame(j);
+    }catch(e){}
+  }
+  /* 1,4s tras 'load' para permitir que charts/secciones terminen su render inicial */
+  if(document.readyState==='complete')setTimeout(freeze,1400);
+  else window.addEventListener('load',function(){setTimeout(freeze,1400);});
 })();
 </script>
 
