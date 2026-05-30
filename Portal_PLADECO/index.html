@@ -10130,12 +10130,23 @@ body.dark #svMap{background:#0f1a2a}
 .sv-legend{display:flex;flex-wrap:wrap;gap:14px;padding:12px 16px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text2)}
 .sv-legend-item{display:inline-flex;align-items:center;gap:6px}
 .sv-legend-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);flex-shrink:0}
-.sv-corridor{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:center;background:linear-gradient(135deg,rgba(192,57,43,.06),rgba(224,122,47,.04));border:1px solid var(--border);border-left:4px solid var(--sv-rojo);border-radius:14px;padding:22px 24px;margin:22px 0}
-.sv-corridor h3{font-size:17px;color:var(--sv-rojo);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.sv-corridor p{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:8px}
-.sv-corridor figure{margin:0}
-.sv-corridor img{width:100%;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;display:block}
-.sv-corridor figcaption{font-size:11px;color:var(--text2);margin-top:6px;text-align:center}
+.sv-corridor{background:linear-gradient(135deg,rgba(192,57,43,.07),rgba(224,122,47,.04));border:1px solid var(--border);border-left:4px solid var(--sv-rojo);border-radius:14px;padding:20px 24px;margin:22px 0}
+.sv-corridor h3{font-size:17px;color:var(--sv-rojo);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+body.dark .sv-corridor h3{color:#f08a7d}
+.sv-corridor p{font-size:14.5px;color:var(--text);line-height:1.7;margin-bottom:8px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.sv-corridor p:last-child{margin-bottom:0}
+/* Cards de análisis de los datos */
+.sv-analisis-head{font-size:16px;color:var(--sv-azul);margin:28px 0 2px;display:flex;align-items:center;gap:8px}
+body.dark .sv-analisis-head{color:#8fb6d6}
+.sv-analisis-sub{font-size:13px;color:var(--text2);margin-bottom:14px}
+.sv-analisis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;margin-bottom:8px}
+.sv-acard{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--ac,#2E6F95);border-radius:14px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px;transition:transform .18s,box-shadow .18s}
+.sv-acard:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.13)}
+.sv-acard-top{display:flex;align-items:center;gap:10px}
+.sv-acard-ico{font-size:21px;line-height:1;flex-shrink:0}
+.sv-acard-titulo{font-size:14px;font-weight:700;color:var(--text);line-height:1.25}
+.sv-acard-dato{font-size:23px;font-weight:800;color:var(--ac,#2E6F95);font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-left:auto;flex-shrink:0}
+.sv-acard-txt{font-size:13px;color:var(--text2);line-height:1.6;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
 .sv-cartera{display:flex;flex-direction:column;gap:10px;margin:18px 0}
 .sv-acc{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .sv-acc-head{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 18px;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text);min-height:44px}
@@ -10199,18 +10210,17 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
     <div class="sv-legend" id="svLegend" aria-label="Leyenda de severidad"></div>
   </div>
 
-  <!-- 6 · Hallazgo territorial + cartografía -->
+  <!-- 6 · Hallazgo territorial -->
   <div class="sv-corridor">
-    <div>
-      <h3>&#128205; Corredor cr&iacute;tico: Arturo Prat &ndash; San Mart&iacute;n &ndash; Riquelme</h3>
-      <p>El an&aacute;lisis de densidad (KDE) confirma que la <strong>mayor concentraci&oacute;n de siniestros y v&iacute;ctimas</strong> se produce en el eje central <strong>Arturo Prat &ndash; San Mart&iacute;n &ndash; Riquelme</strong>, el principal corredor de circulaci&oacute;n del casco urbano.</p>
-      <p>Es la prioridad de intervenci&oacute;n: concentra el tr&aacute;nsito vehicular, peatonal y comercial, y es donde una inversi&oacute;n en dise&ntilde;o vial seguro tiene mayor impacto por peso.</p>
-    </div>
-    <figure>
-      <img src="seguridad-vial-cartografia.webp" alt="Cartograf&iacute;a anal&iacute;tica de siniestros de Rengo: severidad, densidad KDE, tipo, v&iacute;ctimas y evoluci&oacute;n espacio-temporal 2020-2024" width="1800" height="1754" loading="lazy" decoding="async" onclick="if(typeof openLightbox==='function'){if(typeof GALERIA_FOTOS!=='undefined'){GALERIA_FOTOS.push({src:'seguridad-vial-cartografia.png',titulo:'Cartograf&iacute;a de siniestros de tr&aacute;nsito · Rengo 2020-2024'});openLightbox(GALERIA_FOTOS.length-1)}else{window.open('seguridad-vial-cartografia.png','_blank')}}" tabindex="0" role="button" aria-label="Ampliar la cartograf&iacute;a">
-      <figcaption>Cartograf&iacute;a anal&iacute;tica (5 paneles) &middot; clic para ampliar &middot; <a href="seguridad-vial-cartografia.pdf" target="_blank" rel="noopener" style="color:var(--sv-azul2);font-weight:700">descargar PDF</a></figcaption>
-    </figure>
+    <h3>&#128205; Corredor cr&iacute;tico: Arturo Prat &ndash; San Mart&iacute;n &ndash; Riquelme</h3>
+    <p>El an&aacute;lisis de densidad espacial confirma que la <strong>mayor concentraci&oacute;n de siniestros y v&iacute;ctimas</strong> se produce en el eje central <strong>Arturo Prat &ndash; San Mart&iacute;n &ndash; Riquelme</strong>, principal corredor de circulaci&oacute;n del casco urbano, donde convergen el tr&aacute;nsito vehicular, peatonal y comercial.</p>
+    <p>Es la <strong>prioridad de intervenci&oacute;n</strong>: el punto donde una inversi&oacute;n en dise&ntilde;o vial seguro produce el mayor impacto por peso, al reducir la exposici&oacute;n justo en el tramo de mayor siniestralidad. Su tratamiento integral encabeza la cartera de proyectos.</p>
   </div>
+
+  <!-- 6b · Cards de análisis de los datos -->
+  <h3 class="sv-analisis-head">&#128202; An&aacute;lisis de los datos</h3>
+  <p class="sv-analisis-sub">Seis lecturas clave que sintetizan el diagn&oacute;stico y orientan la inversi&oacute;n.</p>
+  <div class="sv-analisis-grid" id="svAnalisis"></div>
 
   <!-- 7 · Cartera de proyectos -->
   <h3 style="font-size:16px;color:var(--sv-azul);margin:24px 0 4px">&#127959;&#65039; Cartera de proyectos de movilidad y seguridad vial</h3>
@@ -10234,16 +10244,37 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   function renderKPIs(){
     var k=DATA.meta.kpis;
     var cards=[
-      {n:nf(k.siniestros),l:'Siniestros (2020–2024)'},
-      {n:nf(k.fallecidos),l:'Personas fallecidas'},
-      {n:nf(k.victimas),l:'Víctimas totales'},
-      {n:k.variacion_2020_2024+'%',l:'Variación 2020→2024',trend:'down'},
-      {n:k.pct_urbana+'%',l:'En zona urbana',trend:'flat'},
-      {n:k.pct_regional+'%',l:'Del total regional O\'Higgins',trend:'flat'}
+      {n:nf(k.siniestros),l:'Siniestros (2020–2024)',col:'#2E6F95'},
+      {n:nf(k.fallecidos),l:'Personas fallecidas',col:'#C0392B'},
+      {n:nf(k.victimas),l:'Víctimas totales',col:'#E07A2F'},
+      {n:k.variacion_2020_2024+'%',l:'Variación 2020→2024',col:'#16a34a',trend:'down'},
+      {n:k.pct_urbana+'%',l:'En zona urbana',col:'#3FA7A0'},
+      {n:k.pct_regional+'%',l:'Del total regional O\'Higgins',col:'#1F3A5F'}
     ];
     document.getElementById('svKpis').innerHTML=cards.map(function(c){
       var t=c.trend==='down'?'<div class="sv-kpi-trend down">▼ a la baja</div>':'';
-      return '<div class="sv-kpi"><div class="sv-kpi-num">'+c.n+'</div><div class="sv-kpi-lbl">'+c.l+'</div>'+t+'</div>';
+      return '<div class="sv-kpi" style="border-top-color:'+c.col+'"><div class="sv-kpi-num" style="color:'+c.col+'">'+c.n+'</div><div class="sv-kpi-lbl">'+c.l+'</div>'+t+'</div>';
+    }).join('');
+  }
+
+  /* ── Cards de análisis (lecturas clave, calculadas desde los datos) ── */
+  function renderAnalisis(){
+    var el=document.getElementById('svAnalisis');if(!el)return;
+    var k=DATA.meta.kpis,c=DATA.byCause,t=DATA.byType,s=DATA.bySeverity,N=DATA.meta.n_registros;
+    function pct(x){return Math.round((x||0)/N*1000)/10;}
+    var impr=pct(c['Imprudencia del conductor']),alc=pct(c['Alcohol en conductor']),conduct=Math.round((impr+alc)*10)/10;
+    var colis=Math.round((pct(t['Colision'])+pct(t['Choque']))*10)/10;
+    var sinles=pct(s['Sin lesionados']),graves=(s['Grave']||0)+(s['Menos grave']||0);
+    var A=[
+      {ico:'🏙️',ac:'#3FA7A0',dato:k.pct_urbana+'%',tit:'Fenómeno urbano',txt:'870 de 905 siniestros ocurren en zona urbana; la ruralidad concentra solo el 3,9%. La política de seguridad vial es, ante todo, urbana.'},
+      {ico:'📍',ac:'#C0392B',dato:'1 eje',tit:'Concentración en un corredor',txt:'La densidad espacial revela un único gran foco sobre Prat–San Martín–Riquelme, no una dispersión homogénea. Intervenir el corredor concentra el retorno.'},
+      {ico:'🚗',ac:'#E07A2F',dato:conduct+'%',tit:'Causalidad conductual',txt:'Imprudencia del conductor ('+impr+'%) y alcohol ('+alc+'%) explican la mayoría de los siniestros: el factor humano domina sobre el de infraestructura.'},
+      {ico:'📉',ac:'#16a34a',dato:k.variacion_2020_2024+'%',tit:'Tendencia a la baja',txt:'De 198 siniestros (2020) a 156 (2024): una caída sostenida que conviene consolidar con intervención focalizada en el corredor crítico.'},
+      {ico:'💥',ac:'#2E6F95',dato:colis+'%',tit:'Mecánica dominante',txt:'Colisión y choque concentran el grueso de los eventos. El atropello (5%) es menos frecuente, pero más letal por víctima.'},
+      {ico:'⚠️',ac:'#1F3A5F',dato:k.fallecidos+' fatales',tit:'Volumen alto, letalidad baja',txt:'El '+sinles+'% no deja lesionados, pero los '+k.fallecidos+' fallecidos y '+graves+' lesionados graves justifican intervenir los puntos críticos.'}
+    ];
+    el.innerHTML=A.map(function(a){
+      return '<div class="sv-acard" style="--ac:'+a.ac+'"><div class="sv-acard-top"><span class="sv-acard-ico">'+a.ico+'</span><span class="sv-acard-titulo">'+a.tit+'</span><span class="sv-acard-dato">'+a.dato+'</span></div><div class="sv-acard-txt">'+a.txt+'</div></div>';
     }).join('');
   }
 
@@ -10358,7 +10389,7 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   function init(){
     if(inited)return;inited=true;
     fetch('seguridad-vial.json').then(function(r){return r.json();}).then(function(d){
-      DATA=d;renderKPIs();charts();legend();cartera();
+      DATA=d;renderKPIs();charts();legend();cartera();try{renderAnalisis();}catch(e){console.warn('[sv] analisis:',e);}
       waitLeaflet(function(){try{buildMap();bindMapControls();}catch(e){console.warn('[sv] mapa:',e);}});
     }).catch(function(e){console.warn('[sv] datos:',e);});
   }

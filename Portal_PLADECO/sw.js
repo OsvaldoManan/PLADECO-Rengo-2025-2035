@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.12
+// PLADECO Rengo 2025-2035 · Service Worker v68.13
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.13: v45.198 - SEGURIDAD VIAL refinada. Quitada la cartografia estatica (el mapa Leaflet + los 5 graficos la superan). Mejoras: KPIs con color semantico (siniestros azul, fallecidos rojo, victimas naranjo, variacion verde, urbana teal, regional navy); texto narrativo justificado (corredor + análisis); NUEVO bloque "Analisis de los datos" con 6 cards calculadas desde los datos (fenomeno urbano, corredor, causalidad conductual, tendencia, mecanica, letalidad). Removido seguridad-vial-cartografia.* del precache y del repo. Cache bump v68.12 -> v68.13.
 // v68.12: v45.197 - NUEVA SECCION SEGURIDAD VIAL. Diagnostico de siniestralidad de transito 2020-2024 (905 siniestros, 5 fallecidos, 360 victimas) en el Capitulo Diagnostico tras ICT. 8 bloques: idea fuerza, 6 KPIs, evolucion anual (Chart.js bar+line), composicion 2x2 (tipo/severidad/causa/temporal), mapa Leaflet interactivo (puntos por severidad + filtro por año + mapa de calor leaflet.heat + limite comunal OSM + 3 capas base), corredor critico Prat-San Martin-Riquelme con cartografia analitica (WebP), cartera de 7 proyectos (acordeon), fuentes/metodologia. Datos pre-generados: seguridad-vial.json (903 pts) + rengo-limite.geojson. Precache de datos + cartografia + leaflet.heat. Cache bump v68.11 -> v68.12.
 // v68.11: v45.196 - NAV PREV/SIGUIENTE legible. La barra de navegacion entre secciones (.pv-nav) mostraba el ID crudo "portal-cta" en vez de un titulo. FIX en secName(): (1) soporta atributo data-nav-title (override explicito), (2) busca h2 y luego h3 (#portal-cta solo tenia h3), (3) fallback final embellece el id (kebab -> Titulo) en vez de mostrarlo crudo. Ademas se agrego data-nav-title="Cierre del recorrido" a #portal-cta. Verificado: 62 secciones, 0 ids crudos, 0 vacios. Solo cambia index.html; bump por convencion.
 // v68.10: v45.195 - MODO MOVIMIENTO REDUCIDO + CAPTURA. (1) @media prefers-reduced-motion: calma todas las animaciones/transiciones (accesibilidad WCAG 2.3.3) manteniendo la pagina funcional. (2) Parametro ?nofx / ?capture activa html.nofx (sin animaciones) + tras 1,4s de 'load' detiene pollers/rAF, para que herramientas de captura/auditoria (Lighthouse, screenshots) alcancen estado idle en esta pagina pesada. Las visitas normales no se ven afectadas. Cache bump v68.9 -> v68.10.
@@ -157,7 +158,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.12';
+const CACHE_STATIC='pladeco-static-v68.13';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -177,7 +178,6 @@ const STATIC_ASSETS=[
   './datasets.json',
   './seguridad-vial.json',
   './rengo-limite.geojson',
-  './seguridad-vial-cartografia.webp',
   './sitemap.xml',
   './robots.txt',
   './og-image.jpg',
