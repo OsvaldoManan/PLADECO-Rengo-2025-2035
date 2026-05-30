@@ -6373,7 +6373,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'mvv':'🏛️','contexto':'📚','historia':'📜','educacion':'🎓','encuesta':'📋',
     /* Macro 02 · Diagnóstico */
     'dashboard':'📊','ficha-comunal':'🪪','censo':'🗂️','comparador':'⚖️','visualizaciones-avanzadas':'📈',
-    'ict-espacios-publicos':'🌳','mbht-bienestar':'💚','analisis-estrategico-censo':'🎯','proyeccion-poblacion':'👥',
+    'ict-espacios-publicos':'🌳','seguridad-vial':'🚦','mbht-bienestar':'💚','analisis-estrategico-censo':'🎯','proyeccion-poblacion':'👥',
     'datos-vivo':'⚡','graficos':'📉','mapa':'🗺️','territorio':'🌎','comparador-uv':'🔀','desigualdad':'⚠️',
     'territorial-adv':'🏘️','nna':'👶','sociedad-civil':'🤝','voz':'🗣️','suenos':'✨','foda':'🧩',
     /* Macro 03 · Planificación */
@@ -7089,6 +7089,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
           <a href="#analisis-estrategico-censo" class="qi-link is-new"><span class="qi-link-ico">&#128302;</span><span class="qi-link-txt">An&aacute;lisis Estrat&eacute;gico Censal</span></a>
           <a href="#proyeccion-poblacion" class="qi-link is-new"><span class="qi-link-ico">&#128202;</span><span class="qi-link-txt">Proyecci&oacute;n Poblaci&oacute;n 2024-2035</span></a>
           <a href="#ict-espacios-publicos" class="qi-link is-new"><span class="qi-link-ico">&#128205;</span><span class="qi-link-txt">ICT &middot; Espacios P&uacute;blicos</span></a>
+          <a href="#seguridad-vial" class="qi-link is-new"><span class="qi-link-ico">&#128680;</span><span class="qi-link-txt">Seguridad Vial</span></a>
           <a href="#mapa" class="qi-link"><span class="qi-link-ico">&#128506;</span><span class="qi-link-txt">Mapa Interactivo Comunal</span></a>
           <a href="#territorio" class="qi-link"><span class="qi-link-ico">&#127963;</span><span class="qi-link-txt">21 Unidades Vecinales</span></a>
           <a href="#comparador-uv" class="qi-link"><span class="qi-link-ico">&#9878;</span><span class="qi-link-txt">Comparador entre UVs</span></a>
@@ -10092,6 +10093,287 @@ body.dark .mbht-dl{background:var(--card);border-color:var(--border)}
 body.dark .mbht-ind,body.dark .mbht-rank-item{background:rgba(255,255,255,.04)}
 body.dark .mbht-intro{background:linear-gradient(135deg,rgba(45,154,77,.10),rgba(26,61,143,.06))}
 </style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v45.197 · SEGURIDAD VIAL Y SINIESTRALIDAD DE TRÁNSITO (2020–2024)
+     Datos: seguridad-vial.json (905 reg · 903 pts) + rengo-limite.geojson (OSM)
+     Libs ya en el portal: Leaflet 1.9.4 + Chart.js 4.4.4 · leaflet.heat lazy (CDN)
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+#seguridad-vial{--sv-azul:#1F3A5F;--sv-azul2:#2E6F95;--sv-teal:#3FA7A0;--sv-naranjo:#E07A2F;--sv-rojo:#C0392B;--sv-gris:#AEB8C2}
+.sv-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0 26px}
+.sv-kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 16px;box-shadow:var(--shadow);border-top:3px solid var(--sv-azul2);text-align:left}
+.sv-kpi-num{font-size:clamp(26px,4vw,34px);font-weight:800;line-height:1.05;color:var(--sv-azul2);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+body.dark .sv-kpi-num{color:#6fa8cf}
+.sv-kpi-lbl{font-size:12px;color:var(--text2);font-weight:600;margin-top:4px;line-height:1.3}
+.sv-kpi-trend{font-size:12px;font-weight:800;margin-top:6px;display:inline-flex;align-items:center;gap:3px}
+.sv-kpi-trend.down{color:#16a34a}.sv-kpi-trend.flat{color:var(--text2)}
+.sv-chart-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:18px}
+.sv-chart-card h3{font-size:15px;color:var(--sv-azul);margin-bottom:4px}
+body.dark .sv-chart-card h3{color:#8fb6d6}
+.sv-chart-sub{font-size:12px;color:var(--text2);margin-bottom:12px}
+.sv-chart-box{position:relative;height:300px}
+.sv-charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.sv-charts-grid .sv-chart-box{height:260px}
+.sv-map-wrap{position:relative;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:8px}
+.sv-map-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.sv-year-btns{display:flex;flex-wrap:wrap;gap:6px}
+.sv-ybtn{min-height:40px;padding:7px 13px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--text2);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;font-variant-numeric:tabular-nums;transition:all .15s}
+.sv-ybtn.active{background:var(--sv-azul2);color:#fff;border-color:var(--sv-azul2)}
+.sv-ybtn:hover{border-color:var(--sv-azul2)}
+.sv-toolbar-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sv-counter{font-size:13px;color:var(--text);font-weight:700}.sv-counter b{color:var(--sv-azul2);font-variant-numeric:tabular-nums}
+.sv-heat-toggle{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:600}
+.sv-heat-toggle input{width:16px;height:16px;accent-color:var(--sv-naranjo)}
+#svMap{height:540px;width:100%;background:#e9eef2}
+body.dark #svMap{background:#0f1a2a}
+.sv-legend{display:flex;flex-wrap:wrap;gap:14px;padding:12px 16px;border-top:1px solid var(--border);font-size:12.5px;color:var(--text2)}
+.sv-legend-item{display:inline-flex;align-items:center;gap:6px}
+.sv-legend-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(0,0,0,.25);flex-shrink:0}
+.sv-corridor{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:center;background:linear-gradient(135deg,rgba(192,57,43,.06),rgba(224,122,47,.04));border:1px solid var(--border);border-left:4px solid var(--sv-rojo);border-radius:14px;padding:22px 24px;margin:22px 0}
+.sv-corridor h3{font-size:17px;color:var(--sv-rojo);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.sv-corridor p{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:8px}
+.sv-corridor figure{margin:0}
+.sv-corridor img{width:100%;border-radius:10px;border:1px solid var(--border);cursor:zoom-in;display:block}
+.sv-corridor figcaption{font-size:11px;color:var(--text2);margin-top:6px;text-align:center}
+.sv-cartera{display:flex;flex-direction:column;gap:10px;margin:18px 0}
+.sv-acc{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sv-acc-head{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 18px;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text);min-height:44px}
+.sv-acc-head:hover{background:rgba(46,111,149,.05)}
+.sv-acc-ico{font-size:18px;flex-shrink:0}
+.sv-acc-title{flex:1;font-size:14px;font-weight:700;line-height:1.3}
+.sv-acc-chevron{transition:transform .25s;color:var(--text2);flex-shrink:0}
+.sv-acc.open .sv-acc-chevron{transform:rotate(90deg)}
+.sv-acc-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.sv-acc.open .sv-acc-body{max-height:340px}
+.sv-acc-inner{padding:0 18px 16px 48px;font-size:13.5px;color:var(--text2);line-height:1.6}
+.sv-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sv-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(46,111,149,.12);color:var(--sv-azul2)}
+.sv-tag.plazo{background:rgba(63,167,160,.15);color:#2a7e78}
+body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-tag.plazo{background:rgba(63,167,160,.22);color:#6fcfc8}
+@media(max-width:768px){.sv-charts-grid{grid-template-columns:1fr}.sv-corridor{grid-template-columns:1fr}#svMap{height:420px}.sv-chart-box{height:260px}}
+</style>
+<section id="seguridad-vial" class="reveal" aria-labelledby="svH">
+  <div class="sec-header">
+    <div class="badge badge--danger">Diagnóstico Territorial &middot; Movilidad</div>
+    <h2 id="svH">&#128680; Seguridad Vial y Siniestralidad de Tr&aacute;nsito (2020&ndash;2024)</h2>
+    <p>D&oacute;nde, cu&aacute;ndo y por qu&eacute; ocurren los siniestros de tr&aacute;nsito en Rengo &mdash; y qu&eacute; hacer al respecto.</p>
+    <p class="bloque-lectura">Entre 2020 y 2024 se registraron <strong>905 siniestros</strong> en la comuna. El patr&oacute;n es n&iacute;tido: la siniestralidad es <strong>predominantemente urbana</strong> (96,1%), se <strong>concentra en un corredor central</strong> y su causalidad es mayoritariamente <strong>conductual</strong> (imprudencia y alcohol). La buena noticia es la <strong>tendencia a la baja</strong> (&minus;21,2% entre 2020 y 2024). Este diagn&oacute;stico orienta la cartera de inversi&oacute;n en movilidad del PLADECO.</p>
+  </div>
+
+  <!-- 2 · KPIs -->
+  <div class="sv-kpis" id="svKpis" aria-label="Indicadores clave de siniestralidad"></div>
+
+  <!-- 3 · Evolución anual -->
+  <div class="sv-chart-card">
+    <h3>Evoluci&oacute;n anual</h3>
+    <div class="sv-chart-sub">Siniestros (barras) y v&iacute;ctimas (l&iacute;nea) por a&ntilde;o &middot; 2020&ndash;2024</div>
+    <div class="sv-chart-box"><canvas id="svEvolucion" aria-label="Gr&aacute;fico de evoluci&oacute;n anual de siniestros y v&iacute;ctimas"></canvas></div>
+  </div>
+
+  <!-- 4 · Composición 2×2 -->
+  <div class="sv-charts-grid">
+    <div class="sv-chart-card"><h3>Tipo de siniestro</h3><div class="sv-chart-sub">Distribuci&oacute;n por tipo</div><div class="sv-chart-box"><canvas id="svTipo"></canvas></div></div>
+    <div class="sv-chart-card"><h3>Severidad m&aacute;xima</h3><div class="sv-chart-sub">Consecuencia m&aacute;s grave por siniestro</div><div class="sv-chart-box"><canvas id="svSeveridad"></canvas></div></div>
+    <div class="sv-chart-card"><h3>Principales causas</h3><div class="sv-chart-sub">Causa basal (preliminar)</div><div class="sv-chart-box"><canvas id="svCausa"></canvas></div></div>
+    <div class="sv-chart-card"><h3>Patr&oacute;n temporal</h3><div class="sv-chart-sub">Estacionalidad mensual (suma 2020&ndash;2024)</div><div class="sv-chart-box"><canvas id="svTemporal"></canvas></div></div>
+  </div>
+
+  <!-- 5 · Mapa interactivo -->
+  <div class="sv-map-wrap">
+    <div class="sv-map-toolbar">
+      <div class="sv-year-btns" id="svYearBtns" role="group" aria-label="Filtrar por a&ntilde;o">
+        <button class="sv-ybtn active" data-y="ALL">Todos</button>
+        <button class="sv-ybtn" data-y="2020">2020</button>
+        <button class="sv-ybtn" data-y="2021">2021</button>
+        <button class="sv-ybtn" data-y="2022">2022</button>
+        <button class="sv-ybtn" data-y="2023">2023</button>
+        <button class="sv-ybtn" data-y="2024">2024</button>
+      </div>
+      <div class="sv-toolbar-right">
+        <label class="sv-heat-toggle"><input type="checkbox" id="svHeat"> Mapa de calor (v&iacute;ctimas)</label>
+        <span class="sv-counter">Mostrando <b id="svCount">0</b> siniestros</span>
+      </div>
+    </div>
+    <div id="svMap" role="application" aria-label="Mapa de siniestros de tr&aacute;nsito en Rengo"></div>
+    <div class="sv-legend" id="svLegend" aria-label="Leyenda de severidad"></div>
+  </div>
+
+  <!-- 6 · Hallazgo territorial + cartografía -->
+  <div class="sv-corridor">
+    <div>
+      <h3>&#128205; Corredor cr&iacute;tico: Arturo Prat &ndash; San Mart&iacute;n &ndash; Riquelme</h3>
+      <p>El an&aacute;lisis de densidad (KDE) confirma que la <strong>mayor concentraci&oacute;n de siniestros y v&iacute;ctimas</strong> se produce en el eje central <strong>Arturo Prat &ndash; San Mart&iacute;n &ndash; Riquelme</strong>, el principal corredor de circulaci&oacute;n del casco urbano.</p>
+      <p>Es la prioridad de intervenci&oacute;n: concentra el tr&aacute;nsito vehicular, peatonal y comercial, y es donde una inversi&oacute;n en dise&ntilde;o vial seguro tiene mayor impacto por peso.</p>
+    </div>
+    <figure>
+      <img src="seguridad-vial-cartografia.webp" alt="Cartograf&iacute;a anal&iacute;tica de siniestros de Rengo: severidad, densidad KDE, tipo, v&iacute;ctimas y evoluci&oacute;n espacio-temporal 2020-2024" width="1800" height="1754" loading="lazy" decoding="async" onclick="if(typeof openLightbox==='function'){if(typeof GALERIA_FOTOS!=='undefined'){GALERIA_FOTOS.push({src:'seguridad-vial-cartografia.png',titulo:'Cartograf&iacute;a de siniestros de tr&aacute;nsito · Rengo 2020-2024'});openLightbox(GALERIA_FOTOS.length-1)}else{window.open('seguridad-vial-cartografia.png','_blank')}}" tabindex="0" role="button" aria-label="Ampliar la cartograf&iacute;a">
+      <figcaption>Cartograf&iacute;a anal&iacute;tica (5 paneles) &middot; clic para ampliar &middot; <a href="seguridad-vial-cartografia.pdf" target="_blank" rel="noopener" style="color:var(--sv-azul2);font-weight:700">descargar PDF</a></figcaption>
+    </figure>
+  </div>
+
+  <!-- 7 · Cartera de proyectos -->
+  <h3 style="font-size:16px;color:var(--sv-azul);margin:24px 0 4px">&#127959;&#65039; Cartera de proyectos de movilidad y seguridad vial</h3>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:6px">Iniciativas derivadas del diagn&oacute;stico, con instrumento de financiamiento y horizonte. Sujetas a priorizaci&oacute;n del Concejo.</p>
+  <div class="sv-cartera" id="svCartera"></div>
+
+  <!-- 8 · Fuentes y metodología -->
+  <div class="sec-fuente"><span class="sf-icon">&#128218;</span> <strong>Fuente:</strong> CONASET &middot; Carabineros de Chile (siniestros de tr&aacute;nsito), per&iacute;odo 2020&ndash;2024 (905 registros) &middot; L&iacute;mite comunal: OpenStreetMap (aprox. al l&iacute;mite oficial BCN) &middot; Cartograf&iacute;a y procesamiento: elaboraci&oacute;n propia equipo PLADECO. <strong>Advertencias:</strong> la hora est&aacute; disponible en ~40% de los registros; la causa es preliminar; 903 de 905 siniestros est&aacute;n georreferenciados (2 sin coordenada v&aacute;lida); el % regional (7,5%) proviene de totales CONASET O'Higgins.</div>
+</section>
+<script>
+/* v45.197 · Seguridad Vial · módulo autocontenido (lazy-init vía IntersectionObserver) */
+(function(){
+  var SEC=document.getElementById('seguridad-vial');if(!SEC)return;
+  var inited=false,DATA=null,map=null,allMarkers=[],heatLayer=null,boundaryLayer=null,curYear='ALL',heatOn=false;
+  var SEVC=['#AEB8C2','#3FA7A0','#E07A2F','#E07A2F','#C0392B'];
+  var SEVL=['Sin lesionados','Leve','Menos grave','Grave','Fatal'];
+  function tk(v,f){try{var c=getComputedStyle(document.body).getPropertyValue(v).trim();return c||f;}catch(e){return f;}}
+  function nf(n){return (n||0).toLocaleString('es-CL');}
+
+  /* ── KPIs ── */
+  function renderKPIs(){
+    var k=DATA.meta.kpis;
+    var cards=[
+      {n:nf(k.siniestros),l:'Siniestros (2020–2024)'},
+      {n:nf(k.fallecidos),l:'Personas fallecidas'},
+      {n:nf(k.victimas),l:'Víctimas totales'},
+      {n:k.variacion_2020_2024+'%',l:'Variación 2020→2024',trend:'down'},
+      {n:k.pct_urbana+'%',l:'En zona urbana',trend:'flat'},
+      {n:k.pct_regional+'%',l:'Del total regional O\'Higgins',trend:'flat'}
+    ];
+    document.getElementById('svKpis').innerHTML=cards.map(function(c){
+      var t=c.trend==='down'?'<div class="sv-kpi-trend down">▼ a la baja</div>':'';
+      return '<div class="sv-kpi"><div class="sv-kpi-num">'+c.n+'</div><div class="sv-kpi-lbl">'+c.l+'</div>'+t+'</div>';
+    }).join('');
+  }
+
+  /* ── Gráficos (Chart.js) ── */
+  function charts(){
+    if(typeof Chart==='undefined')return;
+    var txt=tk('--text2','#475569'),grid='rgba(128,128,128,.15)';
+    Chart.defaults.font.family="'Inter',system-ui,sans-serif";Chart.defaults.color=txt;
+    var by=DATA.byYear;
+    new Chart(document.getElementById('svEvolucion'),{data:{labels:by.map(function(d){return d.anio;}),
+      datasets:[{type:'bar',label:'Siniestros',data:by.map(function(d){return d.siniestros;}),backgroundColor:'#2E6F95',borderRadius:5,order:2},
+                {type:'line',label:'Víctimas',data:by.map(function(d){return d.victimas;}),borderColor:'#C0392B',backgroundColor:'#C0392B',tension:.3,borderWidth:3,pointRadius:4,order:1}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid}}}}});
+    var bt=DATA.byType,btK=Object.keys(bt).sort(function(a,b){return bt[b]-bt[a];});
+    new Chart(document.getElementById('svTipo'),{type:'doughnut',data:{labels:btK,datasets:[{data:btK.map(function(k){return bt[k];}),backgroundColor:['#1F3A5F','#2E6F95','#3FA7A0','#E07A2F','#C0392B','#AEB8C2']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:11}}}},cutout:'58%'}});
+    var bs=DATA.bySeverity,bsL=SEVL.filter(function(l){return bs[l]!=null;});
+    new Chart(document.getElementById('svSeveridad'),{type:'bar',data:{labels:bsL,datasets:[{data:bsL.map(function(l){return bs[l];}),backgroundColor:bsL.map(function(l){return SEVC[SEVL.indexOf(l)];}),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid}}}}});
+    var bc=DATA.byCause,bcK=Object.keys(bc);
+    new Chart(document.getElementById('svCausa'),{type:'bar',data:{labels:bcK,datasets:[{data:bcK.map(function(k){return bc[k];}),backgroundColor:'#2E6F95',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:grid}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+    var bm=DATA.byMonth;
+    new Chart(document.getElementById('svTemporal'),{type:'line',data:{labels:bm.map(function(d){return d.mes;}),datasets:[{label:'Siniestros',data:bm.map(function(d){return d.n;}),borderColor:'#3FA7A0',backgroundColor:'rgba(63,167,160,.15)',fill:true,tension:.35,borderWidth:2.5,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid}}}}});
+  }
+
+  /* ── Mapa (Leaflet + leaflet.heat) ── */
+  function loadHeat(cb){
+    if(window.L&&L.heatLayer)return cb();
+    var s=document.createElement('script');s.src='https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js';s.onload=cb;s.onerror=cb;document.head.appendChild(s);
+  }
+  function buildMap(){
+    map=L.map('svMap',{scrollWheelZoom:false,zoomControl:true}).setView([-34.4045,-70.860],15);
+    map.on('focus',function(){map.scrollWheelZoom.enable();});map.on('blur',function(){map.scrollWheelZoom.disable();});
+    var voyager=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap, &copy; CARTO',maxZoom:19}).addTo(map);
+    var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap',maxZoom:19});
+    var esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri',maxZoom:19});
+    L.control.layers({'Calles (Voyager)':voyager,'OpenStreetMap':osm,'Satélite (Esri)':esri},null,{position:'topright'}).addTo(map);
+    /* límite comunal punteado */
+    fetch('rengo-limite.geojson').then(function(r){return r.json();}).then(function(gj){
+      boundaryLayer=L.geoJSON(gj,{style:{color:'#1F3A5F',weight:2,dashArray:'6 5',fill:false,opacity:.8}}).addTo(map);
+    }).catch(function(){});
+    /* puntos por severidad */
+    DATA.points.forEach(function(p){
+      var m=L.circleMarker([p.la,p.lo],{radius:p.s>=3?7:p.s>=1?5:4,fillColor:SEVC[p.s],color:'#fff',weight:1,fillOpacity:p.s>=1?.9:.6});
+      m.bindPopup('<b>'+p.t+'</b><br>'+SEVL[p.s]+'<br>'+p.f+' &middot; '+p.y+'<br><span style="color:#666">'+p.c+'</span>');
+      m._y=p.y;m._s=p.s;m._ll=[p.la,p.lo];allMarkers.push(m);
+    });
+    applyFilter();
+    setTimeout(function(){map.invalidateSize();},300);
+  }
+  function applyFilter(){
+    var n=0,heatPts=[];
+    allMarkers.forEach(function(m){
+      var show=(curYear==='ALL'||m._y==curYear);
+      if(show){if(!map.hasLayer(m))m.addTo(map);n++;if(m._s>=1)heatPts.push([m._ll[0],m._ll[1],m._s>=3?1:.6]);}
+      else if(map.hasLayer(m))map.removeLayer(m);
+    });
+    document.getElementById('svCount').textContent=nf(n);
+    if(heatOn){updateHeat(heatPts);}
+  }
+  function updateHeat(pts){
+    if(!window.L||!L.heatLayer)return;
+    if(heatLayer){map.removeLayer(heatLayer);heatLayer=null;}
+    heatLayer=L.heatLayer(pts,{radius:25,blur:18,maxZoom:17,gradient:{0.3:'#3FA7A0',0.6:'#E07A2F',1:'#C0392B'}}).addTo(map);
+  }
+  function bindMapControls(){
+    document.getElementById('svYearBtns').addEventListener('click',function(e){
+      var b=e.target.closest('.sv-ybtn');if(!b)return;
+      this.querySelectorAll('.sv-ybtn').forEach(function(x){x.classList.remove('active');});b.classList.add('active');
+      curYear=b.dataset.y;applyFilter();
+    });
+    document.getElementById('svHeat').addEventListener('change',function(){
+      heatOn=this.checked;
+      if(heatOn){loadHeat(function(){applyFilter();});}
+      else if(heatLayer){map.removeLayer(heatLayer);heatLayer=null;}
+    });
+  }
+
+  /* ── Leyenda ── */
+  function legend(){
+    document.getElementById('svLegend').innerHTML=SEVL.map(function(l,i){
+      return '<span class="sv-legend-item"><span class="sv-legend-dot" style="background:'+SEVC[i]+'"></span>'+l+'</span>';
+    }).join('')+'<span class="sv-legend-item" style="margin-left:auto;color:var(--text2)">&#9472;&#9472; Límite comunal</span>';
+  }
+
+  /* ── Cartera (acordeón) ── */
+  var CARTERA=[
+    {i:'🛣️',t:'Rediseño integral del corredor central',d:'Reconfiguración de Arturo Prat–San Martín–Riquelme con criterio de calle segura: cruces, veredas, segregación y reducción de velocidad de operación.',f:'FNDR · MOP Vialidad Urbana',p:'Mediano (2026–2028)'},
+    {i:'🚦',t:'Tratamiento de la intersección crítica',d:'Rediseño geométrico y semaforización inteligente del nudo de mayor siniestralidad del corredor central.',f:'SUBDERE PMU · Circular 33 MDSF',p:'Corto (2026)'},
+    {i:'🚸',t:'Pasos peatonales seguros y Zonas 30',d:'Cruces peatonales a nivel, refugios e implementación de Zonas 30 en el casco central y entornos escolares.',f:'MINVU · Circular 33',p:'Corto–Mediano'},
+    {i:'💡',t:'Iluminación peatonal de cruces y puntos negros',d:'Iluminación focalizada en los cruces de mayor riesgo nocturno identificados en el diagnóstico.',f:'SUBDERE PMU',p:'Corto'},
+    {i:'🌾',t:'Mejoramiento de accesos y cruces rurales',d:'Señalización, demarcación y tratamiento de accesos rurales a la ruta y caminos vecinales.',f:'MOP Vialidad · FNDR',p:'Mediano'},
+    {i:'🚲',t:'Red de movilidad activa',d:'Ciclovías y veredas continuas que conecten barrios con el centro y reduzcan la exposición de peatones y ciclistas.',f:'MINVU · FNDR',p:'Mediano–Largo'},
+    {i:'📊',t:'Observatorio Comunal de Seguridad Vial',d:'Monitoreo permanente de siniestralidad, indicadores y seguimiento de la cartera, articulado con CONASET.',f:'Municipal (SECPLAC) · CONASET',p:'Permanente'}
+  ];
+  function cartera(){
+    document.getElementById('svCartera').innerHTML=CARTERA.map(function(c){
+      return '<div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico">'+c.i+'</span><span class="sv-acc-title">'+c.t+'</span><span class="sv-acc-chevron">&#9654;</span></button>'+
+        '<div class="sv-acc-body"><div class="sv-acc-inner">'+c.d+'<div class="sv-tags"><span class="sv-tag">💰 '+c.f+'</span><span class="sv-tag plazo">🕒 '+c.p+'</span></div></div></div></div>';
+    }).join('');
+    document.getElementById('svCartera').addEventListener('click',function(e){
+      var h=e.target.closest('.sv-acc-head');if(!h)return;
+      var acc=h.parentElement,open=acc.classList.toggle('open');h.setAttribute('aria-expanded',open?'true':'false');
+    });
+  }
+
+  /* ── Init (Leaflet puede cargar con defer) ── */
+  function waitLeaflet(cb,tries){
+    tries=tries||0;
+    if(window.L&&L.map)return cb();
+    if(tries>60)return; /* ~12s */
+    setTimeout(function(){waitLeaflet(cb,tries+1);},200);
+  }
+  function init(){
+    if(inited)return;inited=true;
+    fetch('seguridad-vial.json').then(function(r){return r.json();}).then(function(d){
+      DATA=d;renderKPIs();charts();legend();cartera();
+      waitLeaflet(function(){try{buildMap();bindMapControls();}catch(e){console.warn('[sv] mapa:',e);}});
+    }).catch(function(e){console.warn('[sv] datos:',e);});
+  }
+  /* Disparadores robustos: el motor de vistas oculta la sección (display:none) hasta
+     navegar, por lo que IntersectionObserver no basta. Init es idempotente. */
+  function show(){init();if(map)setTimeout(function(){map.invalidateSize();},260);}
+  if('IntersectionObserver'in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){init();}});},{rootMargin:'200px'});
+    io.observe(SEC);
+  }
+  window.addEventListener('hashchange',function(){if(location.hash==='#seguridad-vial')show();});
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href="#seguridad-vial"]');if(a)setTimeout(show,160);});
+  if(location.hash==='#seguridad-vial')setTimeout(show,1400);
+})();
+</script>
 
 <section id="mbht-bienestar" class="reveal">
   <!-- ═══ BANNER INMERSIVO MBHT v45.37 ═══ -->
@@ -35004,7 +35286,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* Estructura de capítulos del portal */
     var caps=[
       {t:'Introducción',ids:['bienvenida','mvv','historia','proceso','equipo']},
-      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict','nna','foda','etnografia','comisiones','viz']},
+      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','nna','foda','etnografia','comisiones','viz']},
       {t:'Planificación',ids:['matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','glosario','fuentes']}
     ];

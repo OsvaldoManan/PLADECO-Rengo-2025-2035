@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.11
+// PLADECO Rengo 2025-2035 · Service Worker v68.12
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.12: v45.197 - NUEVA SECCION SEGURIDAD VIAL. Diagnostico de siniestralidad de transito 2020-2024 (905 siniestros, 5 fallecidos, 360 victimas) en el Capitulo Diagnostico tras ICT. 8 bloques: idea fuerza, 6 KPIs, evolucion anual (Chart.js bar+line), composicion 2x2 (tipo/severidad/causa/temporal), mapa Leaflet interactivo (puntos por severidad + filtro por año + mapa de calor leaflet.heat + limite comunal OSM + 3 capas base), corredor critico Prat-San Martin-Riquelme con cartografia analitica (WebP), cartera de 7 proyectos (acordeon), fuentes/metodologia. Datos pre-generados: seguridad-vial.json (903 pts) + rengo-limite.geojson. Precache de datos + cartografia + leaflet.heat. Cache bump v68.11 -> v68.12.
 // v68.11: v45.196 - NAV PREV/SIGUIENTE legible. La barra de navegacion entre secciones (.pv-nav) mostraba el ID crudo "portal-cta" en vez de un titulo. FIX en secName(): (1) soporta atributo data-nav-title (override explicito), (2) busca h2 y luego h3 (#portal-cta solo tenia h3), (3) fallback final embellece el id (kebab -> Titulo) en vez de mostrarlo crudo. Ademas se agrego data-nav-title="Cierre del recorrido" a #portal-cta. Verificado: 62 secciones, 0 ids crudos, 0 vacios. Solo cambia index.html; bump por convencion.
 // v68.10: v45.195 - MODO MOVIMIENTO REDUCIDO + CAPTURA. (1) @media prefers-reduced-motion: calma todas las animaciones/transiciones (accesibilidad WCAG 2.3.3) manteniendo la pagina funcional. (2) Parametro ?nofx / ?capture activa html.nofx (sin animaciones) + tras 1,4s de 'load' detiene pollers/rAF, para que herramientas de captura/auditoria (Lighthouse, screenshots) alcancen estado idle en esta pagina pesada. Las visitas normales no se ven afectadas. Cache bump v68.9 -> v68.10.
 // v68.9: v45.194 - DATOS ABIERTOS. Nueva seccion #datos-abiertos (catalogo dinamico desde datasets.json con schema.org/DataCatalog, licencia CC BY-SA 4.0, 2 datasets reales: MBHT + Proyeccion Demografica). Agregado './datasets.json' a STATIC_ASSETS para que el catalogo funcione offline. Tambien: beforeinstallprompt (invitacion PWA) y <picture> WebP en imagenes de contenido. Cache bump v68.8 -> v68.9.
@@ -156,7 +157,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.11';
+const CACHE_STATIC='pladeco-static-v68.12';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -174,6 +175,9 @@ const STATIC_ASSETS=[
   './404.html',
   './manifest.json',
   './datasets.json',
+  './seguridad-vial.json',
+  './rengo-limite.geojson',
+  './seguridad-vial-cartografia.webp',
   './sitemap.xml',
   './robots.txt',
   './og-image.jpg',
@@ -209,7 +213,8 @@ const STATIC_ASSETS=[
   './logo-pladeco.png',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
+  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
+  'https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js'
 ];
 
 /* ── Install: pre-cache static assets ── */
