@@ -116,10 +116,19 @@ error que el brief advierte). Por eso se entrega por fases.
     sutiles** (lineales con todos los stops alpha ≤ 0.12) a superficie plana — imperceptible pero
     elimina el degradado decorativo. El umbral de opacidad preserva scrims, barras de datos,
     glows radiales y divisores `var()`. 0 regresión.
-  - **Pendiente 3d (requiere revisión visual):** gradientes decorativos **visibles** (fondos de
-    tarjetas/headers prominentes, vignette de `body`, tratamientos de hero) donde el contraste
-    importa — aplanarlos a ciegas es arriesgado con la captura inhabilitada; conviene hacerlo
-    con el usuario mirando. Cian/teal: revisar decorativo vs serie de datos.
+  - **3d (v45.213) — HECHA:** **120 gradientes decorativos visibles** de fondo aplanados a su
+    color **promedio**. Cambio dominante: headers/heroes de sección navy → navy plano (texto
+    claro, alto contraste). Excluidos: pseudo-elementos (scrims/overlays), funcionales (barras),
+    `var()/hsl()`. Verificación por contraste WCAG (sin captura en este entorno): **neutro**
+    (delta +31 sobre 626 preexistentes en modo oscuro). Reversible.
+  - **Pendiente:** revisión **visual** del usuario (no pude ver el resultado) + el **contraste
+    de modo oscuro en tarjetas de tinte claro** (tema PREEXISTENTE, no introducido por 3d) +
+    cian/teal decorativo vs serie de datos.
+
+> **Rediseño institucional — estado:** íconos de línea (chrome + navegación), sin violeta, sin
+> texto-degradado, superficies planas (subtiles + visibles), cifras interactivas y
+> actualización sin interrumpir + sello de versión: **desplegados**. Pendiente: pase visual fino
+> y el contraste de modo oscuro preexistente.
 - **Fase 4 — Polish editorial:** numeración de sección (`.sec-num`), filetes y reglas
   tipográficas, tratamiento de tablas, ojos de cita, pies de fuente — "la calidad en lo
   pequeño".
