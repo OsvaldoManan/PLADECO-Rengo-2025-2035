@@ -27213,8 +27213,10 @@ function initToastTriggers(){
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting&&!toastShown.has(e.target.id)&&triggers[e.target.id]){
-        toastShown.add(e.target.id);
-        showToast(triggers[e.target.id],'info');
+        // Solo durante el PRIMER MINUTO de la visita: después no se muestran para no tapar
+        // los plugins de abajo (botón Asistente + barra inferior). El toast vive en bottom-right.
+        if(performance.now()<60000){ toastShown.add(e.target.id); showToast(triggers[e.target.id],'info'); }
+        else { obs.unobserve(e.target); }
       }
     });
   },{threshold:0.3});
