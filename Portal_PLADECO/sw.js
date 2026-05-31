@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.23
+// PLADECO Rengo 2025-2035 · Service Worker v68.24
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.24: v45.211 - ACTUALIZACION SIN INTERRUMPIR + SELLO DE VERSION. La auto-recarga al detectar version nueva ahora dispara SOLO en una pausa (pestaña al frente, sin interaccion en 15s, sin estar escribiendo, sin chatbot/modal abierto) para no cortar la lectura del vecino; guard anti-bucle por sessionStorage. Nuevo sello de version en el footer (#footerVersion, antes congelado en v45.160 porque su script apuntaba al card 'Portal en Construccion' ya eliminado) que muestra la version corriendo (consultada al SW via GET_VERSION) + boton 'Buscar actualizacion' (chequeo manual -> recarga inmediata si hay nueva, o 'estas en la ultima version'). sw.js: nueva constante RELEASE (version legible v45.x) devuelta por GET_VERSION. index.html: window.pwaUpdate{getVersion,checkNow} + logica idle-gated. Cache bump v68.23 -> v68.24.
 // v68.23: v45.210 - REGISTRO PUBLICO DE VERSIONES actualizado (Ley 20.285 Art.7 f). La bitacora (#bitacora) estaba detenida en v45.122; se agregan 4 hitos recientes en lenguaje ciudadano al tope de la tabla: v45.209 (cifras de inicio interactivas -> navegan a su seccion), v45.204-208 (rediseño institucional: iconos de linea + paleta de identidad, sin estetica decorativa ajena), v45.201-203 (modo Lectura Facil UNE 153101), v45.197 (nueva seccion Seguridad Vial). Verificado en navegador: 14 filas, las 4 nuevas encabezan. Solo cambia index.html. Cache bump v68.22 -> v68.23.
 // v68.22: v45.209 - CIFRAS DEL HEROE INTERACTIVAS. Las 6 tarjetas de cifras del hero (63.620 habitantes, 6 ejes, 225 politicas, 21 unidades vecinales, 13/17 ODS, 32 objetivos) + los 2 hitos (2026 inicio, 2035 horizonte) pasan de <div> a <a> que NAVEGAN a su seccion: habitantes->#censo, ejes/politicas/objetivos->#matriz, unidades->#territorio, ODS->#ods-sec, 2026->#cronograma-gantt, 2035->#mvv. Accesibles (aria-label descriptivo, foco visible, sin subrayado de enlace, cursor pointer, flecha sutil al hover que señala que navega). Las 6 secciones destino existen y el clic las muestra (motor de vistas por #hash). Cambia index.html (6 hero-stat + 2 ig-item) + institucional.css (seccion 7). Cache bump v68.21 -> v68.22.
 // v68.21: v45.208 - REFINAMIENTO INSTITUCIONAL Fase 3b (texto con gradiente -> tinta solida). Investigacion: el indigo brillante (#4361ee) y el magenta (#db2777) son color FUNCIONAL (semantica de datos: #4361ee=masculino/urbano, #db2777=femenino en la piramide poblacional) -> NO se tocan (el brief pide color funcional, que es lo que son). El blanco real de gradiente decorativo: los TITULOS rellenos con degradado (background-clip:text), señal generica de IA. Neutralizados 11 selectores (.hero h1 span, .viz-card h3, .mvv-header h2 span, .hero-stat .num, .proc-tl-title span, .countdown-card .cd-days, .mbht-hero-title em, drop-caps oscuros...) a tinta solida via override en institucional.css con -webkit-text-fill-color:currentColor (el texto recupera su color real, claro/oscuro segun fondo; el unico con color:transparent directo recibe color:inherit). Verificado en navegador: gradiente eliminado + color de relleno visible en todos. Pendiente Fase 3c: aplanado de gradientes decorativos de FONDO (heroes/tarjetas/divisores) -> requiere revision visual caso por caso (los funcionales -barras/mapas de calor/lineas de tiempo- se conservan). Solo cambia institucional.css. Cache bump v68.20 -> v68.21.
@@ -168,7 +169,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.23';
+const CACHE_STATIC='pladeco-static-v68.24';
+const RELEASE='v45.211'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -400,6 +402,6 @@ self.addEventListener('message',function(e){
     });
   }
   if(e.data.type==='GET_VERSION'){
-    if(e.ports[0]) e.ports[0].postMessage({version:CACHE_STATIC});
+    if(e.ports[0]) e.ports[0].postMessage({version:CACHE_STATIC,release:RELEASE});
   }
 });

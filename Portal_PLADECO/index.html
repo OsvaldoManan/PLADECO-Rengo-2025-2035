@@ -18397,26 +18397,40 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
-    <span id="footerVersion">Actualizado: 26 Mayo 2026 &middot; v45.160</span>
+    <span id="footerVersion" class="foot-ver"><span id="swVerTxt">Verificando versi&oacute;n&hellip;</span> <button type="button" id="swCheckBtn" class="foot-upd-btn" title="Buscar actualizaci&oacute;n del portal">Buscar actualizaci&oacute;n</button></span>
   </div>
 </footer>
 
-<!-- v45.160 · Sincronizacion automatica del footer-version con la version institucional del card "Portal en Construccion" -->
+<!-- v45.211 · Sello de version del footer: muestra la version corriendo (consultada al SW) + boton de actualizacion manual -->
 <script>
 (function(){
-  function sync(){
-    try{
-      var foot=document.getElementById('footerVersion');
-      var meta=document.querySelector('.construccion-meta');
-      if(!foot||!meta)return;
-      var verNode=Array.prototype.find.call(meta.children,function(s){return /v45\./.test(s.textContent||'');});
-      var dateNode=Array.prototype.find.call(meta.children,function(s){return /\d{1,2}\s+[A-Za-z]+\s+\d{4}/.test(s.textContent||'');});
-      var ver=verNode?(verNode.textContent.match(/v45\.\d+/)||[])[0]:null;
-      var date=dateNode?(dateNode.textContent.match(/\d{1,2}\s+[A-Za-z]+\s+\d{4}/)||[])[0]:null;
-      if(ver&&date){foot.textContent='Actualizado: '+date+' · '+ver;}
-    }catch(e){}
+  function setTxt(t){var e=document.getElementById('swVerTxt');if(e)e.textContent=t;}
+  function showVer(){
+    if(window.pwaUpdate&&window.pwaUpdate.getVersion){
+      window.pwaUpdate.getVersion(function(d){
+        setTxt((d&&d.release)?('Versión '+d.release):'Versión del portal');
+      });
+    }else{setTxt('Versión del portal');}
   }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',sync);}else{sync();}
+  // refrescar el sello cuando el SW cambie (nueva versión activa)
+  if(navigator.serviceWorker){navigator.serviceWorker.addEventListener('controllerchange',function(){setTimeout(showVer,300);});}
+  function init(){
+    if(navigator.serviceWorker&&navigator.serviceWorker.controller){showVer();}
+    else if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(function(){setTimeout(showVer,400);});}
+    else{setTxt('Versión del portal');}
+    var btn=document.getElementById('swCheckBtn');
+    if(btn)btn.addEventListener('click',function(){
+      if(!(window.pwaUpdate&&window.pwaUpdate.checkNow)){setTxt('Actualización no disponible');return;}
+      setTxt('Buscando actualización…');btn.disabled=true;
+      window.pwaUpdate.checkNow(function(res){
+        if(res==='updating'){setTxt('Nueva versión — actualizando…');}
+        else if(res==='latest'){setTxt('Estás en la última versión ✓');}
+        else{setTxt('No se pudo verificar');}
+        setTimeout(function(){btn.disabled=false;if(res!=='updating')showVer();},2500);
+      });
+    });
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
 })();
 </script>
 
@@ -30418,51 +30432,74 @@ function exportSectionPDF(sectionId){
 }
 
 // ── SERVICE WORKER + INVALIDACIÓN AGRESIVA v45.6 ──
-// Estrategia: el SW.js siempre se descarga fresco (updateViaCache:'none'),
-// y ante cada cambio de pestaña/foco se llama reg.update() para forzar el chequeo.
+// Estrategia de actualización: sw.js se descarga siempre fresco (updateViaCache:'none') y se
+// chequea al volver el foco + cada 30 min. Cuando hay versión nueva, se ACTIVA y se recarga
+// AUTOMÁTICAMENTE, pero SÓLO EN UNA PAUSA (pestaña al frente, sin interacción en 15s, sin estar
+// escribiendo, sin chatbot/modal abierto) para no interrumpir la lectura. Guard anti-bucle por
+// sessionStorage. window.pwaUpdate expone getVersion()/checkNow() para el sello del footer.
 if('serviceWorker' in navigator){
+  var _swReg=null,_pendingReload=false,_reloaded=false,_lastInteract=0,_manual=false,_updToast=false;
+  function _mark(){_lastInteract=Date.now();}
+  ['pointerdown','keydown','touchstart','wheel','scroll'].forEach(function(ev){window.addEventListener(ev,_mark,{passive:true});});
+  function _busy(){
+    if(_manual)return false;                                  // chequeo manual = aplicar ya
+    if(document.hidden)return true;                           // pestaña no visible
+    if(Date.now()-_lastInteract<15000)return true;            // interacción reciente (<15s)
+    var a=document.activeElement;
+    if(a&&(/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)||a.isContentEditable))return true; // escribiendo
+    if(document.querySelector('.chatbot-window.open,.chatbot.open,#chatbot.open,[aria-modal="true"],.modal.open'))return true;
+    return false;
+  }
+  function _reload(){
+    if(!_pendingReload||_reloaded||_busy())return;
+    if(!_manual){try{var last=+sessionStorage.getItem('__pwa_rl')||0;if(Date.now()-last<20000)return;}catch(_){}} // anti-bucle
+    _reloaded=true;
+    try{sessionStorage.setItem('__pwa_rl',''+Date.now());}catch(_){}
+    location.reload();
+  }
+  function _schedule(){
+    _pendingReload=true;
+    if(!_updToast){_updToast=true;if(typeof showToast==='function')showToast('Nueva versión lista — se aplicará en una pausa.','info');}
+    _reload();
+  }
+  setInterval(_reload,5000); // reintenta la recarga en cuanto haya una pausa
   navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(function(reg){
-    // Si hay un SW esperando al cargar la página, activarlo de inmediato
-    if(reg.waiting){
-      try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}
-    }
+    _swReg=reg;
+    if(reg.waiting&&navigator.serviceWorker.controller){try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}}
     reg.addEventListener('updatefound',function(){
       var nw=reg.installing;
-      if(nw){
-        nw.addEventListener('statechange',function(){
-          if(nw.state==='installed' && navigator.serviceWorker.controller){
-            // Hay una nueva versión instalada, activarla
-            try{nw.postMessage({type:'SKIP_WAITING'});}catch(_){}
-            if(typeof showToast==='function')showToast('Portal actualizado — recargando...','success');
-            setTimeout(function(){location.reload();},1200);
-          }
-        });
-      }
+      if(nw){nw.addEventListener('statechange',function(){
+        if(nw.state==='installed'&&navigator.serviceWorker.controller){
+          try{nw.postMessage({type:'SKIP_WAITING'});}catch(_){}
+          _schedule();
+        }
+      });}
     });
-    // Chequeo periódico: cada 30 minutos y al volver al foco
-    var _lastCheck=Date.now();
-    function maybeCheckSW(){
-      var now=Date.now();
-      if(now-_lastCheck<60000)return; // throttle 1 min mínimo
-      _lastCheck=now;
-      try{reg.update();}catch(_){}
-    }
+    var _lastCheck=0;
+    function maybeCheckSW(){var now=Date.now();if(now-_lastCheck<60000)return;_lastCheck=now;try{reg.update();}catch(_){}}
     window.addEventListener('focus',maybeCheckSW);
-    document.addEventListener('visibilitychange',function(){if(!document.hidden)maybeCheckSW();});
-    setInterval(maybeCheckSW,30*60*1000); // cada 30 min
+    document.addEventListener('visibilitychange',function(){if(!document.hidden){maybeCheckSW();_reload();}}); // al volver a la pestaña: buena pausa para recargar
+    setInterval(maybeCheckSW,30*60*1000);
   }).catch(function(){});
-  // Cuando el controller cambia (nuevo SW activo), recargar para usar la nueva versión
-  var _ctrlReloaded=false;
-  navigator.serviceWorker.addEventListener('controllerchange',function(){
-    if(_ctrlReloaded)return;
-    _ctrlReloaded=true;
-    location.reload();
-  });
-  // Cleanup de flags viejos de versiones anteriores
-  try{
-    sessionStorage.removeItem('__sw_reload_v');
-    sessionStorage.removeItem('__sw_ctl_reload');
-  }catch(_){}
+  navigator.serviceWorker.addEventListener('controllerchange',function(){_schedule();});
+  // API para el sello de versión del footer
+  window.pwaUpdate={
+    getVersion:function(cb){try{var ch=new MessageChannel();ch.port1.onmessage=function(e){cb(e.data||null);};if(navigator.serviceWorker.controller)navigator.serviceWorker.controller.postMessage({type:'GET_VERSION'},[ch.port2]);else cb(null);}catch(_){cb(null);}},
+    checkNow:function(done){
+      _manual=true;
+      if(!_swReg){_manual=false;done&&done('error');return;}
+      _swReg.update().then(function(){
+        setTimeout(function(){
+          if(_swReg.installing||_swReg.waiting){
+            if(_swReg.waiting){try{_swReg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}}
+            _pendingReload=true;_reload();
+            done&&done('updating');
+          }else{_manual=false;done&&done('latest');}
+        },1500);
+      }).catch(function(){_manual=false;done&&done('error');});
+    }
+  };
+  try{sessionStorage.removeItem('__sw_reload_v');sessionStorage.removeItem('__sw_ctl_reload');}catch(_){}
 }
 </script>
 
