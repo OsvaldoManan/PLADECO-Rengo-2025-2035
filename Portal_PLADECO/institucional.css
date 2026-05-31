@@ -114,3 +114,20 @@ a.ig-item:hover .ig-value{ text-decoration:underline; text-underline-offset:3px;
 .foot-upd-btn:hover{ background:rgba(255,255,255,.20); }
 .foot-upd-btn:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
 .foot-upd-btn:disabled{ opacity:.5; cursor:default; }
+
+/* ── 9 · Pulido móvil ──────────────────────────────────────────────────────── */
+/* Barra inferior duplicada (legacy v40) -> totalmente superada por #mobileBottomNav */
+#bottomNavV40{ display:none !important; }
+
+@media(max-width:768px){
+  /* El botón flotante "Presentar" estorba la nav inferior en móvil (es función de escritorio) */
+  #presBtn{ display:none !important; }
+  /* Barra inferior: sólida (el fondo --card ya es opaco) -> sin glassmorphism, máxima legibilidad */
+  .mobile-bottom-nav{ backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+  /* Áreas táctiles ≥44px (WCAG 2.5.5 / práctica móvil) */
+  #tnBurger, .tn-burger{ min-width:44px; }
+  .tn-home-btn{ min-width:40px; justify-content:center; }
+  /* Etiquetas demasiado pequeñas (9.5px) -> mínimo legible. Especificidad alta para ganar
+     a la regla !important inline del body. */
+  body .infographic-strip .ig-label{ font-size:11px !important; letter-spacing:.6px; }
+}

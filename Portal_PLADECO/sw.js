@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.28
+// PLADECO Rengo 2025-2035 · Service Worker v68.29
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.29: v45.216 - PULIDO MOVIL. Auditoria del DOM movil (375x812) + correcciones en institucional.css (seccion 9): (1) eliminada la barra inferior DUPLICADA #bottomNavV40 (2 items) que solapaba a #mobileBottomNav (4 items: Inicio/Buscar/Secciones/Tema) -> una sola barra; (2) boton flotante 'Presentar' oculto en movil (<=768px) porque tapaba la nav inferior; (3) barra inferior sin glassmorphism (el fondo --card ya es opaco); (4) areas tactiles >=44px (burger 38->44, home 26->40); (5) etiquetas de hitos (.ig-label) de 9.5px -> 11px legible. Verificado en viewport movil: 1 sola barra inferior, sin scroll horizontal, topnav sin overflow, pagina sana. Solo cambia institucional.css. Cache bump v68.28 -> v68.29.
 // v68.28: v45.215 - ONBOARDING SOLO EN EL PRIMER MINUTO. Los toasts informativos por scroll (al llegar a #semaforo / #ejes / #financiamiento) viven en bottom-right y tapaban los plugins de abajo (boton Asistente + barra inferior) cada vez que el vecino pasaba por esas secciones, en cualquier momento de la visita. Ahora SOLO se muestran durante los primeros 60s desde la carga (performance.now()<60000); despues el observer se desconecta y la esquina inferior queda libre. El toast del tour (~8s) y el tooltip 'Tienes dudas?' (~5s) ya estaban dentro del minuto y se auto-cierran (3.2s / 4s). Solo cambia index.html. Cache bump v68.27 -> v68.28.
 // v68.27: v45.214 - REGISTRO PUBLICO DE VERSIONES actualizado (Ley 20.285 Art.7 f). Agregados al tope de #bitacora 2 hitos recientes en lenguaje ciudadano: v45.213 (rediseño: superficies planas, se aplanaron los degradados decorativos) y v45.211 (actualizacion sin interrumpir + sello de version con boton 'Buscar actualizacion'). Solo cambia index.html. Cache bump v68.26 -> v68.27.
 // v68.26: v45.213 - REFINAMIENTO INSTITUCIONAL Fase 3d (aplanado de gradientes decorativos VISIBLES). 120 linear-gradient de fondo aplanados a su color PROMEDIO (preserva el tono). El cambio dominante: headers/heroes de seccion en navy degradado -> navy plano (texto claro, alto contraste). Excluidos: 36 pseudo-elementos (scrims/overlays ::before/::after, NO se tocan para no tapar contenido), 43 funcionales (barras/datos), 34 con stops var()/hsl() no parseables, 10 no-fondo. Verificacion (sin captura disponible en este entorno): auditoria de contraste WCAG por codigo -> 3d es practicamente NEUTRO (delta +31 sobre 626 fails preexistentes en modo oscuro, la mayoria falsos positivos del metodo o patrones previos de modo oscuro); 24/24 bloques JS validos; 0 regresion de violeta; entidades de acento intactas. Cambio reversible. Nota: el contraste de modo oscuro en tarjetas de tinte claro es un tema PREEXISTENTE (no introducido por 3d). Solo cambia index.html. Cache bump v68.25 -> v68.26.
@@ -173,8 +174,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.28';
-const RELEASE='v45.215'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.29';
+const RELEASE='v45.216'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
