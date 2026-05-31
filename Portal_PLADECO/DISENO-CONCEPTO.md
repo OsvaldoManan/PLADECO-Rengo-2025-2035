@@ -110,10 +110,16 @@ error que el brief advierte). Por eso se entrega por fases.
     → **se conservan** (el brief pide color funcional). El gradiente decorativo real eran los
     **títulos con relleno degradado** (`background-clip:text`, señal IA): **11 selectores
     neutralizados a tinta sólida** (`-webkit-text-fill-color:currentColor`), verificado.
-  - **Pendiente 3c:** **aplanado de gradientes decorativos de FONDO** (héroes, tarjetas,
-    divisores, overlay `body::before`) → requiere **revisión visual** caso por caso (en este
-    entorno la captura está inhabilitada); los funcionales (barras, mapas de calor, líneas de
-    tiempo) se conservan. Cian/teal: revisar si algún uso es decorativo vs serie de datos.
+  - **3c (v45.212) — HECHA (capa segura):** investigación → los grandes ofensores ya estaban
+    resueltos (orbes/glow en `display:none`; violeta y texto-degradado fuera; `.hero::before`/
+    `body::before` son **scrims de legibilidad** → se conservan). Aplanados **140 gradientes-tinte
+    sutiles** (lineales con todos los stops alpha ≤ 0.12) a superficie plana — imperceptible pero
+    elimina el degradado decorativo. El umbral de opacidad preserva scrims, barras de datos,
+    glows radiales y divisores `var()`. 0 regresión.
+  - **Pendiente 3d (requiere revisión visual):** gradientes decorativos **visibles** (fondos de
+    tarjetas/headers prominentes, vignette de `body`, tratamientos de hero) donde el contraste
+    importa — aplanarlos a ciegas es arriesgado con la captura inhabilitada; conviene hacerlo
+    con el usuario mirando. Cian/teal: revisar decorativo vs serie de datos.
 - **Fase 4 — Polish editorial:** numeración de sección (`.sec-num`), filetes y reglas
   tipográficas, tratamiento de tablas, ojos de cita, pies de fuente — "la calidad en lo
   pequeño".
