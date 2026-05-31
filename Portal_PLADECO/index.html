@@ -6232,6 +6232,18 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 <symbol id="ico-briefcase" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="11.5" rx="2"/><path d="M8 8V6.2A2.2 2.2 0 0 1 10.2 4h3.6A2.2 2.2 0 0 1 16 6.2V8M3 13.5h18"/></symbol>
 <symbol id="ico-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10.5" rx="2"/><path d="M8 10V7.2a4 4 0 0 1 8 0V10"/><path d="M12 14v3"/></symbol>
 <symbol id="ico-laptop" viewBox="0 0 24 24"><rect x="4.5" y="5" width="15" height="10.5" rx="1.5"/><path d="M2.5 19.5h19"/><path d="M10 19.5h4"/></symbol>
+<symbol id="ico-scroll" viewBox="0 0 24 24"><path d="M6 5a2 2 0 0 1 2-2h8v14a3 3 0 0 1-3 3H7"/><path d="M16 3a2 2 0 0 1 2 2v2h-2"/><path d="M7 3a2 2 0 0 0-2 2v12a3 3 0 0 0 3 3"/><path d="M9.5 8h5M9.5 12h5"/></symbol>
+<symbol id="ico-education" viewBox="0 0 24 24"><path d="M12 4 2.5 9 12 14l9.5-5z"/><path d="M6 11v5c0 1.4 2.7 3 6 3s6-1.6 6-3v-5"/><path d="M21.5 9v5.5"/></symbol>
+<symbol id="ico-tree" viewBox="0 0 24 24"><path d="M12 3 7 10.5h3.2L6 17h12l-4.2-6.5H17z"/><path d="M12 17v4"/><path d="M9.5 21h5"/></symbol>
+<symbol id="ico-heart" viewBox="0 0 24 24"><path d="M12 20S4.5 15.2 4.5 9.8A4 4 0 0 1 12 7a4 4 0 0 1 7.5 2.8C19.5 15.2 12 20 12 20Z"/></symbol>
+<symbol id="ico-bolt" viewBox="0 0 24 24"><path d="M13 2.5 5.5 13H11l-1 8.5L18.5 11H13z"/></symbol>
+<symbol id="ico-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h3.5l2 2.5H19a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="ico-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="ico-image" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M4.5 17.5l4.5-4 3.5 3 3-2.5 4 3.5"/></symbol>
+<symbol id="ico-calculator" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5h.01M8.5 18h4"/></symbol>
+<symbol id="ico-flag" viewBox="0 0 24 24"><path d="M6 21V3.5"/><path d="M6 4.5h11l-2.5 4 2.5 4H6"/></symbol>
+<symbol id="ico-cycle" viewBox="0 0 24 24"><path d="M19.5 11A7.5 7.5 0 0 0 6.5 6.5L4.5 8.5"/><path d="M4.5 13A7.5 7.5 0 0 0 17.5 17.5l2-2"/><path d="M4.5 4.5v4h4M19.5 19.5v-4h-4"/></symbol>
+<symbol id="ico-puzzle" viewBox="0 0 24 24"><path d="M9 5a1.5 1.5 0 0 1 3 0h3v3a1.5 1.5 0 0 1 0 3v3h-3a1.5 1.5 0 0 1-3 0H6v-3a1.5 1.5 0 0 1 0-3V5z"/></symbol>
 </defs></svg>
 <!-- v45.126 · Fondo base difuminado del portal · misma imagen del hero pero muy sutil -->
 <div class="portal-bg" aria-hidden="true"></div>
@@ -6416,24 +6428,26 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 (function(){
   var CAPS=['Introducción','Diagnóstico','Participación','Planificación','Gobernanza','Seguimiento','Proceso'];
   /* v45.144 · Mapa de emojis por sección para el menú hamburguesa + dropdown desktop */
+  function navIco(n){return '<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-'+n+'"></use></svg>';}
   var SEC_EMOJI={
     /* Macro 01 · Introducción */
-    'mvv':'🏛️','contexto':'📚','historia':'📜','educacion':'🎓','encuesta':'📋',
+    'mvv':navIco('institution'),'contexto':navIco('books'),'historia':navIco('scroll'),'educacion':navIco('education'),'encuesta':navIco('clipboard'),
     /* Macro 02 · Diagnóstico */
-    'dashboard':'📊','ficha-comunal':'🪪','censo':'🗂️','comparador':'⚖️','visualizaciones-avanzadas':'📈',
-    'ict-espacios-publicos':'🌳','seguridad-vial':'🚦','mbht-bienestar':'💚','analisis-estrategico-censo':'🎯','proyeccion-poblacion':'👥',
-    'datos-vivo':'⚡','graficos':'📉','mapa':'🗺️','territorio':'🌎','comparador-uv':'🔀','desigualdad':'⚠️',
-    'territorial-adv':'🏘️','nna':'👶','sociedad-civil':'🤝','voz':'🗣️','suenos':'✨','foda':'🧩',
+    'dashboard':navIco('chart'),'ficha-comunal':navIco('doc'),'censo':navIco('clipboard'),'comparador':navIco('scale'),'visualizaciones-avanzadas':navIco('trend'),
+    'ict-espacios-publicos':navIco('tree'),'seguridad-vial':navIco('traffic'),'mbht-bienestar':navIco('heart'),'analisis-estrategico-censo':navIco('target'),'proyeccion-poblacion':navIco('people'),
+    'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
+    'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
-    'matriz':'🎯','coherencia':'🔗','erd':'🌐','ods-sec':'🌱','gestion':'⚙️','argumentario':'💡','decisiones':'⚖️',
-    'resumen':'📑','diagnostico-institucional':'🏢','voz-institucional':'👥','equipo':'👤','sna':'🔄','sna-gobernanza':'🌐',
-    'etnografia':'🔬','comisiones':'🧑‍💼','viz':'📊','semaforo':'🚦','compromisos':'✅','financiamiento':'💰',
-    'cronograma-gantt':'📅','validacion-concejo':'🤲','faq-concejo':'❓',
+    'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
+    'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
+    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'compromisos':navIco('check'),'financiamiento':navIco('money'),
+    'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
     /* Macro 04 · Cierre */
-    'faq':'❓','glosario':'📖','institucional':'🏛️','timeline':'⏳','galeria':'📸','antes-despues':'🔄',
-    'cuadernillo':'📓','participa':'🙋','calculadora-uv':'🧮','presupuesto-participativo':'💵','datos-abiertos':'📊',
-    'documentos':'📁','visitas':'👁️'
+    'faq':navIco('info'),'glosario':navIco('book'),'institucional':navIco('institution'),'timeline':navIco('calendar'),'galeria':navIco('image'),'antes-despues':navIco('cycle'),
+    'cuadernillo':navIco('note'),'participa':navIco('people'),'calculadora-uv':navIco('calculator'),'presupuesto-participativo':navIco('money'),'datos-abiertos':navIco('chart'),
+    'documentos':navIco('folder'),'visitas':navIco('eye')
   };
+  window.SEC_EMOJI=SEC_EMOJI;
   /* v45.146 · Secciones excluidas del menú (huérfanas, técnicas o con nombre crudo del id) */
   var SEC_HIDE_FROM_MENU={'portal-cta':1,'timeline':1};
   /* v45.105 · La barra superior agrupa los 11 capítulos en 4 macro-partes
@@ -6450,10 +6464,10 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     var SHORT=['Bienvenida','Diagnóstico','Territorio','Diagnóstico y Participación de la Sociedad Civil','Planificación','Gobernanza','Seguimiento','Recursos','Memoria','Tu Turno','Cierre'];
     /* Mapeo a 4 macro-partes — íconos + colores institucionales */
     var MACROS=[
-      {num:'01',name:'Introducción',icon:'📖',color:'#1e3a8a',caps:[0]},
-      {num:'02',name:'Diagnóstico',icon:'🔍',color:'#9a3412',caps:[1,2,3]},
-      {num:'03',name:'Planificación',icon:'🎯',color:'#14532d',caps:[4,5,6]},
-      {num:'04',name:'Cierre',icon:'🏁',color:'#3b0764',caps:[7,8,9,10]}
+      {num:'01',name:'Introducción',icon:navIco('book'),color:'#1e3a8a',caps:[0]},
+      {num:'02',name:'Diagnóstico',icon:navIco('search'),color:'#9a3412',caps:[1,2,3]},
+      {num:'03',name:'Planificación',icon:navIco('target'),color:'#14532d',caps:[4,5,6]},
+      {num:'04',name:'Cierre',icon:navIco('flag'),color:'#3b0764',caps:[7,8,9,10]}
     ];
     var chs=PV.chapters,tabsHtml='',mhtml='';
     for(var mi=0;mi<MACROS.length;mi++){
@@ -6474,7 +6488,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         mlinks+='<div class="tn-m-sub"><div class="tn-m-sub-head">'+(capIdx+1)+' &middot; '+esc(capLabel)+'</div>';
         for(var j=0;j<visibleUnits.length;j++){
           var u=visibleUnits[j],un=esc(u.name);
-          var emo=SEC_EMOJI[u.id]||'•';
+          var emo=SEC_EMOJI[u.id]||navIco('doc');
           drop+='<a href="#'+u.id+'"><span class="tn-di">'+emo+'</span><span>'+un+'</span></a>';
           mlinks+='<a href="#'+u.id+'"><span class="tn-mi">'+emo+'</span><span>'+un+'</span></a>';
           unitsShown++;
@@ -35373,7 +35387,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
         if(!sec)return;
         var heading=sec.querySelector('h2,h3,.sec-title');
         var txt=heading?heading.textContent.trim().substring(0,45):(id.replace(/-/g,' '));
-        var ico=SE[id]||'📄';
+        var ico=SE[id]||'<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg>';
         h+='<a class="md-link" href="#'+id+'" onclick="toggleMobileDrawer()">';
         h+='<span class="md-link-ico">'+ico+'</span><span>'+txt+'</span></a>';
       });

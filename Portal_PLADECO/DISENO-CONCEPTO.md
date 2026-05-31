@@ -89,12 +89,17 @@ error que el brief advierte). Por eso se entrega por fases.
 ## Hoja de ruta del rediseño (por fases)
 - **Fase 1 — HECHA (v45.204):** fundación segura — tokens sobrios + sistema de íconos SVG +
   fin del glassmorphism del topbar. Reversible (un archivo).
-- **Fase 2 — EN CURSO (v45.205):** sprite ampliado a **39 íconos de línea**; **686 emojis**
-  del top de uso reemplazados por íconos, **solo en texto HTML** (fuera de `<script>` y de
-  atributos), con la zona JS byte-idéntica y 0 corrupción. **Pendiente 2b:** la cola larga
-  (**277** emojis en texto, 126 distintos de 1–5 usos) y los **~825 emojis que inyecta el JS**
-  (chatbot, secciones dinámicas) — estos últimos exigen editar las plantillas en los `<script>`
-  para que emitan `<svg><use>` en vez de emojis.
+- **Fase 2 — EN CURSO:**
+  - **2a (v45.205):** sprite a **39 íconos**; **686 emojis** del top reemplazados, **solo en
+    texto HTML** (fuera de `<script>`/atributos), zona JS byte-idéntica, 0 corrupción.
+  - **2b (v45.206):** sprite a **51 íconos** (+12); **iconografía de NAVEGACIÓN** migrada —
+    `SEC_EMOJI` (62 secciones) + `MACROS` (4 partes) producen `<svg><use>` vía `navIco()`,
+    render innerHTML confirmado; `window.SEC_EMOJI` expuesto para el cajón móvil. 24/24 bloques
+    JS válidos.
+  - **Pendiente 2c:** ~20 estructuras `.icon` de contenido (FODA, KPIs censo, financiamiento,
+    command palette, chatbot, cartera vial…), los emojis en **títulos de sección** (JS), la
+    **cola larga** (277 en texto, 126 distintos) y los emojis que el JS inyecta como texto/label
+    (requieren caso por caso: innerHTML→svg; textContent/Chart/title→no svg).
 - **Fase 3 — Gradientes y sombras:** revisar los 383 gradientes y ~510 sombras; conservar
   los **funcionales** (barras, mapas de calor, datos), neutralizar los **decorativos** hacia
   superficies planas con filete.
