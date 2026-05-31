@@ -16,6 +16,11 @@
   function pictoSrc(name){return 'pictogramas/'+name+'.png';}  /* ARASAAC alojados localmente */
   function announce(msg){var l=document.getElementById('lfLive');if(l){l.textContent='';setTimeout(function(){l.textContent=msg;},60);}}
 
+  /* ── métricas privacy-first (Comp. 11): contadores agregados en localStorage, sin IP ── */
+  function logLF(ev){try{var m=JSON.parse(localStorage.getItem('pladeco-lf-metrics')||'{}');m[ev]=(m[ev]||0)+1;localStorage.setItem('pladeco-lf-metrics',JSON.stringify(m));}catch(e){}}
+  window.getLFMetrics=function(){try{return JSON.parse(localStorage.getItem('pladeco-lf-metrics')||'{}');}catch(e){return{};}};
+  function logView(){var id=currentSectionId();if(DATA&&DATA.secciones[id])logLF('vista:'+id);}
+
   /* ── glosario: envuelve la 1ª aparición de cada palabra difícil ── */
   function withGlos(text, words){
     var html=esc(text);
@@ -99,7 +104,8 @@
     try{localStorage.setItem(KEY,'1');}catch(e){}
     syncToggle(true);
     if(loadError){announce('Lectura Fácil activada, pero no se pudo cargar el contenido.');return;}
-    if(DATA){decorateAdapted();maybeFallback();}
+    if(DATA){decorateAdapted();maybeFallback();logView();}
+    logLF('activaciones');
     announce('Lectura Fácil activada.');
   }
   function disable(){
@@ -136,7 +142,7 @@
     utter.onend=function(){speaking=false;updateAudioBtns(false);};
     utter.onerror=function(){speaking=false;updateAudioBtns(false);};
     speechSynthesis.cancel();speechSynthesis.speak(utter);
-    speaking=true;updateAudioBtns(true);
+    speaking=true;updateAudioBtns(true);logLF('audio');
   }
 
   /* ── listeners globales (delegación) ── */
@@ -163,7 +169,7 @@
       if(e.target.closest('[data-lf-audio]')){speak();}
     });
     /* navegación: re-inyectar (auto-reparable) tras que el motor de vistas asiente la sección */
-    window.addEventListener('hashchange',function(){stopAudio();if(on()&&DATA)setTimeout(function(){decorateAdapted();maybeFallback();},300);});
+    window.addEventListener('hashchange',function(){stopAudio();if(on()&&DATA)setTimeout(function(){decorateAdapted();maybeFallback();logView();},300);});
   }
 
   /* ── carga del JSON con manejo de error (nunca pantalla rota) ── */
