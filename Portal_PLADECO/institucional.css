@@ -63,3 +63,28 @@ body.dark .tn-util:focus-visible{outline-color:#7ea4d8}
 /* el ícono SVG hereda el blanco del topbar; aria-pressed marca estado sin depender del color */
 .tn-utils .tn-utils-group .tn-util .ico{width:17px;height:17px}
 .tn-utils .lf-toggle[aria-pressed="true"] .ico{stroke-width:2}
+
+/* ── 6 · Fase 3b · Texto con gradiente (flourish de IA) -> tinta sólida ──
+   Los títulos rellenos con degradado son una señal genérica de IA. Se neutralizan a
+   color sólido: -webkit-text-fill-color:currentColor hace que el texto use su color real
+   (claro sobre héroe oscuro, oscuro sobre tarjeta clara), sin adivinar por elemento.
+   Cargado último -> gana al <style> inline que define el degradado. */
+.hero h1 span,
+body.dark .viz-card h3,
+body.dark .mvv-header h2 span,
+.hero-stat .num,
+.hero-stat:hover .num,
+.viz-card h3,
+.proc-tl-title span,
+.countdown-card .cd-days,
+.mvv-header h2 span,
+body.dark .drop-cap::first-letter,
+body.dark .dropcap::first-letter,
+.mbht-hero-title em{
+  background:none !important;
+  -webkit-text-fill-color:currentColor !important;
+  -webkit-background-clip:border-box !important;
+  background-clip:border-box !important;
+}
+/* este tenía color:transparent directo -> que herede el color sólido del título */
+.mbht-hero-title em{ color:inherit !important; }

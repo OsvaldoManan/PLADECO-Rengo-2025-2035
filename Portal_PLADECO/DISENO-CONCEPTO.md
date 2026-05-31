@@ -105,10 +105,15 @@ error que el brief advierte). Por eso se entrega por fases.
     brief). 410 usos (294 hex + 96 rgb/rgba + 20 lavandas) → familia **navy** por rotación de
     matiz a 217 **preservando luminosidad** (contraste intacto) y bajando saturación. 0 violeta
     restante; entidades de acento (`&#225;`…) intactas; JS válido.
-  - **Pendiente 3b:** **índigo brillante** (`#4361ee`…), **cian/teal** y **magenta** —
-    contienen color **funcional** (series de gráficos, dimensión ambiental MBHT, categorías
-    semánticas) → caso por caso, no barrido. Y el **aplanado de gradientes decorativos**
-    conservando los funcionales (barras, mapas de calor, líneas de tiempo).
+  - **3b (v45.208) — HECHA:** investigación → **índigo `#4361ee` y magenta `#db2777` son
+    color FUNCIONAL** (semántica demográfica: masculino/femenino en la pirámide; urbano/rural)
+    → **se conservan** (el brief pide color funcional). El gradiente decorativo real eran los
+    **títulos con relleno degradado** (`background-clip:text`, señal IA): **11 selectores
+    neutralizados a tinta sólida** (`-webkit-text-fill-color:currentColor`), verificado.
+  - **Pendiente 3c:** **aplanado de gradientes decorativos de FONDO** (héroes, tarjetas,
+    divisores, overlay `body::before`) → requiere **revisión visual** caso por caso (en este
+    entorno la captura está inhabilitada); los funcionales (barras, mapas de calor, líneas de
+    tiempo) se conservan. Cian/teal: revisar si algún uso es decorativo vs serie de datos.
 - **Fase 4 — Polish editorial:** numeración de sección (`.sec-num`), filetes y reglas
   tipográficas, tratamiento de tablas, ojos de cita, pies de fuente — "la calidad en lo
   pequeño".
