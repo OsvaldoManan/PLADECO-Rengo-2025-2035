@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.17
+// PLADECO Rengo 2025-2035 · Service Worker v68.18
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.18: v45.205 - REFINAMIENTO INSTITUCIONAL Fase 2 (migracion de iconos). Sprite SVG ampliado a 39 simbolos de linea (monocromaticos, currentColor, trazo uniforme). Reemplazados 686 emojis -> iconos del set, SOLO en TEXTO HTML (fuera de <script>/<style> y de atributos), via script seguro: la zona script/style quedo byte-identica (JS del chatbot intacto), 0 corrupcion en atributos, todos los <use> resuelven a un symbol, geometrias validas dentro del viewBox (verificado por getBBox). Quedan 277 emojis de cola larga en texto (126 distintos de 1-5 usos) + ~825 emojis que el JS inyecta dinamicamente (chatbot, secciones dinamicas), para pasadas posteriores. Solo cambia index.html (sprite + iconos inline); sin nuevos assets. Cache bump v68.17 -> v68.18.
 // v68.17: v45.204 - REFINAMIENTO INSTITUCIONAL (fundacion). Direccion de diseno: autoridad civica, sobriedad editorial (refs GOV.UK/USWDS), no estetica generica de IA. Paso 1 (capa de fundacion, SEGURA y reversible): nuevo institucional.css cargado ULTIMO que (a) baja los tokens de radio (--radius 10->6, --r-lg 16->10, etc.) y de sombra (--sh-*) hacia valores sobrios -> menos 'todo redondeado' y menos 'card soup' SIN tocar gradientes/sombras funcionales hardcodeados; (b) instaura el SISTEMA DE ICONOS SVG de linea (sprite con 8 simbolos monocromaticos currentColor) y reemplaza los 3 emojis del chrome global (buscar/tema/LF) por iconos del set; (c) neutraliza el glassmorphism del topbar (.tn-utils-group backdrop-filter:blur -> solido sobrio). El pase editorial por seccion (gradientes decorativos, migracion total de emojis, polish tipografico) queda como fases siguientes. Nuevo: institucional.css (precacheado). Cache bump v68.16 -> v68.17.
 // v68.16: v45.203 - LECTURA FACIL · asistente en modo LF (Comp. 8). Cuando [data-lf=true], answerChat() responde desde el set finito verificado (8 pares Q/R con keywords, en lectura-facil.json) en lenguaje simple; si no hay coincidencia, da una orientacion LF generica con preguntas sugeridas. No altera el flujo normal del asistente (rama guardada por data-lf). lf-mode.js expone window.LF_ASISTENTE. Matching por keyword (substring, mayor longitud gana) verificado en node. Cache bump v68.15 -> v68.16.
 // v68.15: v45.202 - LECTURA FACIL Fase 2. Pictogramas ARASAAC (13, CC BY-NC-SA, en /pictogramas/ con creditos) integrados como apoyo visual. Contenido LF ampliado: 4 secciones N1 (¿Que es el PLADECO?, Como participar, 6 ejes, ¿Que pasa en mi barrio?=#territorio) + 2 N2 (Mision-Vision=#mvv, Historia). Glosario 15 terminos. Metricas privacy-first en localStorage (activaciones, vistas por seccion LF, uso de audio) via getLFMetrics(). Los pictogramas se cachean por la estrategia cache-first de imagenes. Cache bump v68.14 -> v68.15.
@@ -162,7 +163,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.17';
+const CACHE_STATIC='pladeco-static-v68.18';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

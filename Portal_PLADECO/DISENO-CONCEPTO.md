@@ -89,8 +89,12 @@ error que el brief advierte). Por eso se entrega por fases.
 ## Hoja de ruta del rediseño (por fases)
 - **Fase 1 — HECHA (v45.204):** fundación segura — tokens sobrios + sistema de íconos SVG +
   fin del glassmorphism del topbar. Reversible (un archivo).
-- **Fase 2 — Migración de íconos:** sustituir los emojis restantes (cabeceras de sección,
-  KPIs, navegación, listas) por íconos del set SVG, sección por sección.
+- **Fase 2 — EN CURSO (v45.205):** sprite ampliado a **39 íconos de línea**; **686 emojis**
+  del top de uso reemplazados por íconos, **solo en texto HTML** (fuera de `<script>` y de
+  atributos), con la zona JS byte-idéntica y 0 corrupción. **Pendiente 2b:** la cola larga
+  (**277** emojis en texto, 126 distintos de 1–5 usos) y los **~825 emojis que inyecta el JS**
+  (chatbot, secciones dinámicas) — estos últimos exigen editar las plantillas en los `<script>`
+  para que emitan `<svg><use>` en vez de emojis.
 - **Fase 3 — Gradientes y sombras:** revisar los 383 gradientes y ~510 sombras; conservar
   los **funcionales** (barras, mapas de calor, datos), neutralizar los **decorativos** hacia
   superficies planas con filete.
