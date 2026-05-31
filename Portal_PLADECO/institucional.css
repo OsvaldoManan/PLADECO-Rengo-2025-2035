@@ -1,0 +1,65 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   REFINAMIENTO INSTITUCIONAL · institucional.css   (cargar ÚLTIMO)
+   Realiza el "Concepto de diseño": sobriedad cívica por tokens, sin overrides
+   ciegos. Referencia: GOV.UK Design System / USWDS / diseño editorial público.
+   NO toca gradientes/sombras funcionales hardcodeados (eso es pase editorial por
+   sección, fase posterior). Aquí solo: tokens hacia sobriedad + sistema de íconos.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Radios mesurados (de "todo muy redondeado" a sobrio) ── */
+:root{
+  --radius:6px;
+  --r-xs:3px; --r-sm:5px; --r-md:7px; --r-lg:10px;
+  /* sombras más contenidas: elevar con criterio, no "card soup" */
+  --sh-sm:0 1px 2px rgba(15,34,64,.05);
+  --sh-md:0 1px 3px rgba(15,34,64,.07);
+  --sh-lg:0 4px 10px rgba(15,34,64,.09);
+  --sh-elev:0 6px 18px rgba(15,34,64,.12);
+  --shadow:0 1px 2px rgba(15,23,42,.05);
+  /* filete institucional sobrio */
+  --rule:1px solid var(--border);
+  --navy:#1F3864; --crimson:#990000;
+}
+body.dark{
+  --sh-sm:0 1px 2px rgba(0,0,0,.30);
+  --sh-md:0 1px 3px rgba(0,0,0,.35);
+  --sh-lg:0 4px 10px rgba(0,0,0,.40);
+  --sh-elev:0 6px 18px rgba(0,0,0,.45);
+  --shadow:0 1px 2px rgba(0,0,0,.35);
+}
+
+/* ── 2 · Sistema de íconos SVG de línea (un solo set, monocromático) ── */
+.ico{
+  width:1.05em; height:1.05em; flex-shrink:0;
+  fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round;
+  vertical-align:-.15em;
+}
+.ico-lg{width:1.4em;height:1.4em}
+.ico-sm{width:.9em;height:.9em}
+/* el botón de utilidad muestra el ícono centrado */
+.tn-util .ico{vertical-align:middle}
+
+/* ── 3 · Filetes y reglas tipográficas sobrias (alternativa a tarjetas elevadas) ── */
+.rule-top{border-top:var(--rule)}
+.rule-bottom{border-bottom:var(--rule)}
+/* numeración editorial de sección (utilidad, opt-in) */
+.sec-num{font-variant-numeric:tabular-nums;color:var(--navy);font-weight:800;letter-spacing:.02em}
+body.dark .sec-num{color:#7ea4d8}
+
+/* ── 4 · Foco visible y sobrio en todo el chrome (accesibilidad) ── */
+.tn-util:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+body.dark .tn-util:focus-visible{outline-color:#7ea4d8}
+
+/* ── 5 · Adiós glassmorphism del topbar: tratamiento sólido y sobrio ──
+   Especificidad .tn-utils .tn-utils-group (0,2,0) para ganar al <style> inline
+   del body que define .tn-utils-group (0,1,0) y aparece DESPUÉS en la cascada. */
+.tn-utils .tn-utils-group{
+  background:rgba(255,255,255,.07);
+  backdrop-filter:none; -webkit-backdrop-filter:none;
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:none; border-radius:7px;
+}
+/* el ícono SVG hereda el blanco del topbar; aria-pressed marca estado sin depender del color */
+.tn-utils .tn-utils-group .tn-util .ico{width:17px;height:17px}
+.tn-utils .lf-toggle[aria-pressed="true"] .ico{stroke-width:2}
