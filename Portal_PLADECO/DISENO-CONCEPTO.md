@@ -100,9 +100,15 @@ error que el brief advierte). Por eso se entrega por fases.
     command palette, chatbot, cartera vial…), los emojis en **títulos de sección** (JS), la
     **cola larga** (277 en texto, 126 distintos) y los emojis que el JS inyecta como texto/label
     (requieren caso por caso: innerHTML→svg; textContent/Chart/title→no svg).
-- **Fase 3 — Gradientes y sombras:** revisar los 383 gradientes y ~510 sombras; conservar
-  los **funcionales** (barras, mapas de calor, datos), neutralizar los **decorativos** hacia
-  superficies planas con filete.
+- **Fase 3 — Color y gradientes:**
+  - **3a (v45.207) — HECHA:** eliminado el **violeta** (identidad ajena, proscrito por el
+    brief). 410 usos (294 hex + 96 rgb/rgba + 20 lavandas) → familia **navy** por rotación de
+    matiz a 217 **preservando luminosidad** (contraste intacto) y bajando saturación. 0 violeta
+    restante; entidades de acento (`&#225;`…) intactas; JS válido.
+  - **Pendiente 3b:** **índigo brillante** (`#4361ee`…), **cian/teal** y **magenta** —
+    contienen color **funcional** (series de gráficos, dimensión ambiental MBHT, categorías
+    semánticas) → caso por caso, no barrido. Y el **aplanado de gradientes decorativos**
+    conservando los funcionales (barras, mapas de calor, líneas de tiempo).
 - **Fase 4 — Polish editorial:** numeración de sección (`.sec-num`), filetes y reglas
   tipográficas, tratamiento de tablas, ojos de cita, pies de fuente — "la calidad en lo
   pequeño".
