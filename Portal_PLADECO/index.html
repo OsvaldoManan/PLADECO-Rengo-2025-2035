@@ -26684,6 +26684,17 @@ function answerChat(q){
   if(!ql){showSuggestions();return;}
   chatHistory.add(ql);
 
+  /* 0. Modo Lectura Fácil: responder con el set finito verificado, en lenguaje simple.
+     Solo se activa con [data-lf="true"]; no altera el flujo normal del asistente. */
+  if(document.body.getAttribute('data-lf')==='true' && window.LF_ASISTENTE && window.LF_ASISTENTE.length){
+    var lfSet=window.LF_ASISTENTE, lfBest=null, lfScore=0;
+    lfSet.forEach(function(par){(par.k||[]).forEach(function(kk){var k=stripAccents(kk);if(ql.indexOf(k)>-1&&k.length>lfScore){lfScore=k.length;lfBest=par;}});});
+    if(lfBest){addBotMsg(lfBest.r);}
+    else{addBotMsg('Puedo ayudarte con cosas del plan de Rengo.\n\nPor ejemplo, pregúntame:\n• ¿Qué es el PLADECO?\n• ¿Cómo puedo participar?\n• ¿Cuántas personas viven en Rengo?');}
+    showSuggestions(lfSet.slice(0,4).map(function(p){return p.p;}));
+    return;
+  }
+
   /* 1. Quick commands */
   if(ql.startsWith('!')){
     const cmd=ql.substring(1).trim();

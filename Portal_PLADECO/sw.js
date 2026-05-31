@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.15
+// PLADECO Rengo 2025-2035 · Service Worker v68.16
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.16: v45.203 - LECTURA FACIL · asistente en modo LF (Comp. 8). Cuando [data-lf=true], answerChat() responde desde el set finito verificado (8 pares Q/R con keywords, en lectura-facil.json) en lenguaje simple; si no hay coincidencia, da una orientacion LF generica con preguntas sugeridas. No altera el flujo normal del asistente (rama guardada por data-lf). lf-mode.js expone window.LF_ASISTENTE. Matching por keyword (substring, mayor longitud gana) verificado en node. Cache bump v68.15 -> v68.16.
 // v68.15: v45.202 - LECTURA FACIL Fase 2. Pictogramas ARASAAC (13, CC BY-NC-SA, en /pictogramas/ con creditos) integrados como apoyo visual. Contenido LF ampliado: 4 secciones N1 (¿Que es el PLADECO?, Como participar, 6 ejes, ¿Que pasa en mi barrio?=#territorio) + 2 N2 (Mision-Vision=#mvv, Historia). Glosario 15 terminos. Metricas privacy-first en localStorage (activaciones, vistas por seccion LF, uso de audio) via getLFMetrics(). Los pictogramas se cachean por la estrategia cache-first de imagenes. Cache bump v68.14 -> v68.15.
 // v68.14: v45.201 - LECTURA FACIL (UNE 153101:2018 EX). Modo global persistente (conmutador en la barra junto a tema/busqueda + 5ª ruta de lectura). Carga contenido LF desde lectura-facil.json (separado del HTML para sobrevivir al versionado diario). Inyecta panel LF en secciones adaptadas (N1: ¿Que es el PLADECO?=#contexto, Como participar=#participa, 6 ejes=#matriz), con fallback honesto en las no adaptadas, glosario accesible, audio TTS (Web Speech API) y sello de validacion. Tipografia LF (>=20px, izquierda, interlineado 1.7) via [data-lf=true], convive con modo oscuro. Nuevos: lectura-facil.json, lf-mode.css, lf-mode.js (precacheados). Cache bump v68.13 -> v68.14.
 // v68.13: v45.198 - SEGURIDAD VIAL refinada. Quitada la cartografia estatica (el mapa Leaflet + los 5 graficos la superan). Mejoras: KPIs con color semantico (siniestros azul, fallecidos rojo, victimas naranjo, variacion verde, urbana teal, regional navy); texto narrativo justificado (corredor + análisis); NUEVO bloque "Analisis de los datos" con 6 cards calculadas desde los datos (fenomeno urbano, corredor, causalidad conductual, tendencia, mecanica, letalidad). Removido seguridad-vial-cartografia.* del precache y del repo. Cache bump v68.12 -> v68.13.
@@ -160,7 +161,7 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.15';
+const CACHE_STATIC='pladeco-static-v68.16';
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

@@ -174,8 +174,12 @@
 
   /* ── carga del JSON con manejo de error (nunca pantalla rota) ── */
   function load(cb){
-    fetch(JSON_URL).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){DATA=d;cb&&cb();})
-      .catch(function(){loadError=true;cb&&cb();});
+    fetch(JSON_URL).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){
+      DATA=d;
+      /* expone el set finito de preguntas LF para que el asistente responda simple en modo LF */
+      window.LF_ASISTENTE=d.asistente_lf||[];
+      cb&&cb();
+    }).catch(function(){loadError=true;cb&&cb();});
   }
 
   function init(){
