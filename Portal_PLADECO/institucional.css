@@ -88,3 +88,17 @@ body.dark .dropcap::first-letter,
 }
 /* este tenía color:transparent directo -> que herede el color sólido del título */
 .mbht-hero-title em{ color:inherit !important; }
+
+/* ── 7 · Cifras del héroe e hitos como TARJETAS-ENLACE (navegan a su sección) ──
+   Conserva el aspecto de las tarjetas; añade afordancia de clic (cursor, foco, flecha). */
+a.hero-stat, a.ig-item{ text-decoration:none; color:inherit; cursor:pointer; }
+a.hero-stat{ position:relative; }
+/* flecha diagonal sutil arriba-derecha, solo al hover/focus -> señala que navega */
+a.hero-stat::after{ content:''; position:absolute; top:9px; right:9px; width:7px; height:7px;
+  border-top:2px solid currentColor; border-right:2px solid currentColor; transform:rotate(45deg);
+  opacity:0; transition:opacity .2s; pointer-events:none; }
+a.hero-stat:hover::after, a.hero-stat:focus-visible::after{ opacity:.5; }
+a.hero-stat:focus-visible, a.ig-item:focus-visible{ outline:2px solid #fff; outline-offset:3px; border-radius:8px; }
+a.ig-item{ transition:transform .2s; }
+a.ig-item:hover{ transform:translateY(-2px); }
+a.ig-item:hover .ig-value{ text-decoration:underline; text-underline-offset:3px; }
