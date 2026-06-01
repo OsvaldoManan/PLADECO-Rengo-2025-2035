@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.31
+// PLADECO Rengo 2025-2035 · Service Worker v68.32
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.32: v45.219 - SISTEMA DE DISEÑO · paleta de EJES unificada y CVD-segura. Habia 4 paletas DISTINTAS para los mismos 6 ejes (EJES[].color, EJE_COLORS, array duplicado x3, objeto ejeColors) -> cada grafico pintaba los ejes diferente, y con 3 azules juntos (malo para daltonismo). Unificadas TODAS a una sola paleta Okabe-Ito (azul #0072B2, ambar #E69F00, verde #009E73, celeste #56B4E9, bermellon #D55E00, purpura #CC79A7), maximamente distinguible para daltonicos, orden eje 1-6. Verificado: 97 instancias Chart.js crean sin error, 24/24 bloques JS validos. Los #e63946/#3d68ae restantes son usos NO-eje (preservados). Las paletas de categorias NO-eje (doughnuts varios) siguen variadas -> pase con revision visual. Cache bump v68.31 -> v68.32.
 // v68.31: v45.218 - SISTEMA DE DISEÑO · armonizacion de MAPAS y azules de graficos. Los 8 basemaps Leaflet (vial, MBHT, UV, ICT, reportes, calor...) pasan a CARTO Positron (light_all), base NEUTRA/grayscale institucional que hace resaltar los datos (estandar OCDE/servicios publicos); se conserva OSM colorido como alternativa solo en el mapa vial + Satelite Esri. Atribucion OSM+CARTO. Azules estructurales fuera de identidad alineados al navy exacto (#1F3A5F, #1a3d8f -> #1F3864). Colores SEMANTICOS conservados: severidad vial, mapa de calor, masculino/femenino, semaforo, colores oficiales de ejes (ejeColors) y ODS. Verificado: tiles CARTO cargan (no hay mapas en blanco), 24/24 bloques JS validos. La paleta categorica por-grafico (doughnuts, ejeColors) NO se forzo global (riesgo semantico) -> pase con revision visual. Cache bump v68.30 -> v68.31.
 // v68.30: v45.217 - SISTEMA DE DISEÑO · integracion segura (Pieza 3). Tipografia de los 73 graficos Chart.js unificada a Inter (Chart.defaults.font.family: system-ui -> Inter), coherente con el portal. NO se fuerza la paleta categorica global: los colores semanticos por grafico (severidad vial, masculino/femenino, semaforo) se conservan -> el restyle de paleta es un pase por-grafico. Solo cambia index.html (1 linea). Las integraciones VISUALES restantes (diagramas en secciones, paleta de graficos, OG image como PNG, mapa de 21 UV) requieren revision visual o insumo (GeoJSON) y se haran con el usuario mirando. Cache bump v68.29 -> v68.30.
 // v68.29: v45.216 - PULIDO MOVIL. Auditoria del DOM movil (375x812) + correcciones en institucional.css (seccion 9): (1) eliminada la barra inferior DUPLICADA #bottomNavV40 (2 items) que solapaba a #mobileBottomNav (4 items: Inicio/Buscar/Secciones/Tema) -> una sola barra; (2) boton flotante 'Presentar' oculto en movil (<=768px) porque tapaba la nav inferior; (3) barra inferior sin glassmorphism (el fondo --card ya es opaco); (4) areas tactiles >=44px (burger 38->44, home 26->40); (5) etiquetas de hitos (.ig-label) de 9.5px -> 11px legible. Verificado en viewport movil: 1 sola barra inferior, sin scroll horizontal, topnav sin overflow, pagina sana. Solo cambia institucional.css. Cache bump v68.28 -> v68.29.
@@ -176,8 +177,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.31';
-const RELEASE='v45.218'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.32';
+const RELEASE='v45.219'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
