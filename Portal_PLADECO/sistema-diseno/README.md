@@ -17,9 +17,14 @@ sistema-diseno/
 │   └── 04-gobernanza-sna.svg
 ├── datos/                    · Pieza 3 — estilo de visualización de datos
 │   ├── guia-visualizacion.md
-│   ├── tpl-barras.svg
-│   ├── tpl-lineas.svg
-│   └── tpl-coropletico.svg
+│   ├── tpl-barras.svg · tpl-lineas.svg · tpl-coropletico.svg
+├── infografia/               · Pieza 4 — "el PLADECO en una página"
+│   ├── pladeco-og-1200x630.svg   (web / OG image · dark)
+│   └── pladeco-a4.svg            (impresión · papel)
+├── mapa/                     · Pieza 6 — mapa identitario
+│   ├── mapa-rengo-estructura.svg (silueta comunal real)
+│   └── README.md                 (spec del GeoJSON de las 21 UV)
+├── MANUAL-IDENTIDAD.md       · Pieza 5 — manual del sistema (formal)
 └── README.md                 · este índice + autocrítica + hoja de ruta
 ```
 
@@ -31,9 +36,9 @@ sistema-diseno/
 | 1 | **Sistema de íconos SVG** | ✅ entregado **y ya en producción** (sprite inline + standalone + mapeo) |
 | 2 | **Diagramas conceptuales** | ✅ entregado (4 SVG autocontenidos) |
 | 3 | **Estilo de visualización de datos** | ✅ entregado (`datos/`: guía + 3 plantillas SVG: barras, líneas, coroplético). Falta solo aplicar el preset a los 73 gráficos Chart.js |
-| 4 | **Infografía "el PLADECO en una página"** | ⏳ próximo (OG 1200×630 + A4) |
-| 5 | **Manual de identidad** | 🟡 núcleo en este README + concepto + tokens + mapeo; se consolidará como documento |
-| 6 | **Mapa esquemático de las 21 UV** | ⏳ requiere insumo del equipo (ver abajo) |
+| 4 | **Infografía "el PLADECO en una página"** | ✅ entregado (`infografia/`: OG 1200×630 dark + A4 papel) |
+| 5 | **Manual de identidad** | ✅ entregado (`MANUAL-IDENTIDAD.md`: principio, paleta+WCAG, tipografía, íconos, **componentes con estados**, grid, do's/don'ts, datos) |
+| 6 | **Mapa identitario** | ✅ silueta comunal real entregada (`mapa/`); subdivisión en 21 UV pendiente del GeoJSON del equipo (spec incluida) |
 
 ## Coherencia (familia visual)
 Todas las piezas comparten: **paleta** (navy `#1F3864` / crimson `#990000` / neutros, vía
