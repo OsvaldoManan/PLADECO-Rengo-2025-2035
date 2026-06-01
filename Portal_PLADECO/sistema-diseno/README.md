@@ -15,6 +15,11 @@ sistema-diseno/
 │   ├── 02-mbht-dimensiones.svg
 │   ├── 03-ejes-objetivos.svg
 │   └── 04-gobernanza-sna.svg
+├── datos/                    · Pieza 3 — estilo de visualización de datos
+│   ├── guia-visualizacion.md
+│   ├── tpl-barras.svg
+│   ├── tpl-lineas.svg
+│   └── tpl-coropletico.svg
 └── README.md                 · este índice + autocrítica + hoja de ruta
 ```
 
@@ -25,7 +30,7 @@ sistema-diseno/
 | — | **Tokens compartidos** | ✅ entregado (`tokens.css`) — la columna de coherencia |
 | 1 | **Sistema de íconos SVG** | ✅ entregado **y ya en producción** (sprite inline + standalone + mapeo) |
 | 2 | **Diagramas conceptuales** | ✅ entregado (4 SVG autocontenidos) |
-| 3 | **Estilo de visualización de datos** | 🟡 tokens de datos (Okabe-Ito + secuencial/divergente) en `tokens.css`; faltan guía + 3 plantillas SVG |
+| 3 | **Estilo de visualización de datos** | ✅ entregado (`datos/`: guía + 3 plantillas SVG: barras, líneas, coroplético). Falta solo aplicar el preset a los 73 gráficos Chart.js |
 | 4 | **Infografía "el PLADECO en una página"** | ⏳ próximo (OG 1200×630 + A4) |
 | 5 | **Manual de identidad** | 🟡 núcleo en este README + concepto + tokens + mapeo; se consolidará como documento |
 | 6 | **Mapa esquemático de las 21 UV** | ⏳ requiere insumo del equipo (ver abajo) |
