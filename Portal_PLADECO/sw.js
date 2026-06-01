@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.41
+// PLADECO Rengo 2025-2035 · Service Worker v68.42
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.42: v45.229 - EQUIPO: el titulo "Direcciones Municipales Participantes" pasa a "Direcciones y Unidades Municipales Participantes" y se agregan 2 unidades al grid #equipoDirGrid (renderEquipo): SENDA (Prevencion y Desarrollo Humano) y OLN (Oficina Local de la Ninez · Comunidad de NNA), insertadas antes del comodin "OTROS" (11 -> 13 tarjetas). Solo index.html. Verificado en navegador: 13 tarjetas, titulo actualizado, 0 errores. Cache bump v68.41 -> v68.42.
 // v68.41: v45.228 - BUSCADOR (paleta Ctrl+K): mejora de CONTENIDO y COMPOSICION. (1) Emojis -> ICONOS SVG de linea del sistema (coherencia con todo el portal: 33 secciones mapeadas a #ico-*, 0 emojis). (2) Cada seccion muestra una DESCRIPCION breve que ademas ES BUSCABLE (ej.: "presupuesto" encuentra Financiamiento; "rural" encuentra Analisis Territorial y Unidades Vecinales). (3) Items de 2 lineas: icono + titulo + descripcion + etiqueta de categoria (la etiqueta solo en modo busqueda). (4) Linea de CONTEXTO con conteo en vivo ("33 secciones en 17 categorias" / "N resultados para ..." / "Categoria X · N secciones"). (5) PIE con atajos de teclado. Caja un poco mas ancha (520->560px). Cambios en index.html (CMD_SECTIONS con svg+desc; cmdItemHtml/cmdFiltered/renderCmd + cmdEsc; HTML #cmdContext + .cmd-foot; CSS .cmd-*). Verificado en navegador: 33 iconos SVG resueltos (0 rotos, 0 emojis), busqueda por descripcion OK, contexto y pie OK, 0 errores de consola. Cache bump v68.40 -> v68.41.
 // v68.40: v45.227 - BUSCADOR del hero / paleta Ctrl+K AUTOPREDECIBLE + filtro POR CATEGORIA. Al abrir (sin escribir) muestra las 33 secciones AGRUPADAS por categoria + una barra de chips (17 categorias + "Todas") para filtrar. Al escribir pasa a lista plana de coincidencias por nombre O categoria (sin tildes). Navegacion por teclado con scroll-into-view; chips RECTANGULARES (no pill) en verde institucional AA #15803d. Cambios: index.html (HTML del #cmdCats + reescritura de openCmdPalette/searchCmd + nuevas renderCmd/setCmdCat/cmdCategories/cmdFiltered/cmdItemHtml) e institucional.css (seccion 14). Verificado en navegador: 18 chips, 33 items agrupados en 17 categorias, filtro por categoria y busqueda con/sin tilde OK, estado vacio OK, 0 errores de consola. Cache bump v68.39 -> v68.40.
 // v68.39: v45.226 - ELIMINADO el bloque "Mapa del PLADECO" (#quickIndex · indice navegable de 4 partes / 53 secciones) por decision editorial: la navegacion se mantiene en la barra superior + buscador Ctrl+K (se evita la redundancia). Quitados tambien su <script> dedicado (toggle de tabs por macro) y el paso del tour guiado que lo apuntaba (TOUR_STEPS 8 -> 7). El CSS y los scripts de reubicacion/colapso asociados quedan inertes (sin elementos que los referencien; todos con guardas null). Verificado en navegador: elemento y clases ausentes (0), tour valido (7 pasos, sin referencia colgante), Chart.js OK (134 lienzos), 0 errores de consola. Solo index.html. Cache bump v68.38 -> v68.39.
@@ -186,8 +187,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.41';
-const RELEASE='v45.228'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.42';
+const RELEASE='v45.229'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
