@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.39
+// PLADECO Rengo 2025-2035 · Service Worker v68.40
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.40: v45.227 - BUSCADOR del hero / paleta Ctrl+K AUTOPREDECIBLE + filtro POR CATEGORIA. Al abrir (sin escribir) muestra las 33 secciones AGRUPADAS por categoria + una barra de chips (17 categorias + "Todas") para filtrar. Al escribir pasa a lista plana de coincidencias por nombre O categoria (sin tildes). Navegacion por teclado con scroll-into-view; chips RECTANGULARES (no pill) en verde institucional AA #15803d. Cambios: index.html (HTML del #cmdCats + reescritura de openCmdPalette/searchCmd + nuevas renderCmd/setCmdCat/cmdCategories/cmdFiltered/cmdItemHtml) e institucional.css (seccion 14). Verificado en navegador: 18 chips, 33 items agrupados en 17 categorias, filtro por categoria y busqueda con/sin tilde OK, estado vacio OK, 0 errores de consola. Cache bump v68.39 -> v68.40.
 // v68.39: v45.226 - ELIMINADO el bloque "Mapa del PLADECO" (#quickIndex · indice navegable de 4 partes / 53 secciones) por decision editorial: la navegacion se mantiene en la barra superior + buscador Ctrl+K (se evita la redundancia). Quitados tambien su <script> dedicado (toggle de tabs por macro) y el paso del tour guiado que lo apuntaba (TOUR_STEPS 8 -> 7). El CSS y los scripts de reubicacion/colapso asociados quedan inertes (sin elementos que los referencien; todos con guardas null). Verificado en navegador: elemento y clases ausentes (0), tour valido (7 pasos, sin referencia colgante), Chart.js OK (134 lienzos), 0 errores de consola. Solo index.html. Cache bump v68.38 -> v68.39.
 // v68.38: v45.225 - TIPOGRAFIA UNICA POPPINS en todo el portal. Titulos y cuerpo comparten la familia Poppins (autoalojada en /fonts); la jerarquia la dan PESO y TAMANO, no el cambio de fuente. Reemplaza Inter (cuerpo/datos) + Source Serif 4 (titulos) + Playfair Display (display) + Neulis Cursive (acentos italic) + Georgia (citas/impresion) -> todo Poppins. Mecanismo: tokens --font-cuerpo/--font-titulo = Poppins (flip del override global * !important) + reapuntadas las excepciones hardcodeadas (monospace, Neulis, Playfair, Inter!important, Georgia print) + Chart.js (defaults x2 + chartCommon legend) -> Poppins. Eliminadas las requests/preconnect a Google Fonts (Inter/Source Serif/Playfair): sin dependencia externa, mas privado, mas rapido. Anadidas las 4 Poppins .ttf a STATIC_ASSETS para que la marca tipografica funcione offline. Solo index.html + sw.js. Cache bump v68.37 -> v68.38.
 // v68.37: v45.224 - TITULOS/SUBTITULOS en colores institucionales (jerarquia). Las cabeceras de seccion (.sec-header) ahora usan la marca: TITULO (h2) AZUL #1F3864 / #7ea4d8 dark · SUBTITULO (.sec-header p) VERDE #15803d / #5cc98a dark · ETIQUETA (.badge) NARANJO #b45309 / #fdb94d dark. Variantes claras/oscuras, todas con contraste WCAG AA. Implementado en institucional.css (seccion 12) con alta especificidad + !important para ganar la cascada existente; verificado en ambos modos. Los titulos de hero/banners con imagen usan clases propias (no .sec-header) -> no afectados. Solo institucional.css. Cache bump v68.36 -> v68.37.
@@ -184,8 +185,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.39';
-const RELEASE='v45.226'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.40';
+const RELEASE='v45.227'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

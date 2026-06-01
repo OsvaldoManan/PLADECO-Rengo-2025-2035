@@ -182,3 +182,22 @@ html body.dark .sec-header .badge{ color:#fdb94d !important; }     /* naranjo ac
 html, :root, body{
   font-family:'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
 }
+
+/* ── 14 · Buscador del hero / paleta de comandos (Ctrl+K): vista predecible + filtro por categoría ──
+   Al abrir muestra TODAS las secciones agrupadas por categoría (información autopredecible) y una
+   barra de chips para filtrar por categoría. Al escribir, pasa a lista plana de coincidencias.
+   Chips RECTANGULARES (no pill), verde institucional AA (#15803d) en estado activo. */
+.cmd-cats{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);max-height:118px;overflow-y:auto}
+.cmd-cats:empty{display:none}
+.cmd-cat-chip{font:600 11.5px/1.1 'Poppins',system-ui,-apple-system,sans-serif;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:background .14s,color .14s,border-color .14s}
+.cmd-cat-chip:hover{border-color:#15803d;color:#15803d}
+.cmd-cat-chip:focus-visible{outline:2px solid #15803d;outline-offset:2px}
+.cmd-cat-chip.active{background:#15803d;border-color:#15803d;color:#fff}
+.cmd-cat-chip .cmd-cat-n{font-size:10px;opacity:.6;font-variant-numeric:tabular-nums}
+.cmd-cat-chip.active .cmd-cat-n{opacity:.9}
+body.dark .cmd-cat-chip:hover{border-color:#5cc98a;color:#5cc98a}
+body.dark .cmd-cat-chip:focus-visible{outline-color:#5cc98a}
+.cmd-group-label{font:800 10px/1 'Poppins',system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--text2);opacity:.7;padding:12px 14px 4px}
+.cmd-results.cmd-grouped .cmd-item .cmd-sec-cat{display:none}  /* el rótulo de grupo ya nombra la categoría */
+.cmd-empty{padding:26px 18px;text-align:center;color:var(--text2);font-size:13px;line-height:1.5}
+@media(max-width:560px){ .cmd-cats{max-height:96px;padding:9px 11px} }
