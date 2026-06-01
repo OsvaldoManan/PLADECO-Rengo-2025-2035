@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.35
+// PLADECO Rengo 2025-2035 · Service Worker v68.36
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.36: v45.223 - HERO: subtitulo breve + BUSCADOR. (1) El subtitulo del hero pasa de un parrafo largo a una sola linea con fuerza: "Una decada para construir, con toda la comuna, el Rengo que sonamos." (2) Nuevo buscador con lupa debajo del subtitulo (.hero-search): card sobrio que al hacer clic abre la paleta de busqueda intuitiva existente (openCmdPalette, Ctrl+K) -> reutiliza el buscador del portal, no duplica. Usa el ico-search del sistema; placeholder + hint Ctrl+K. Verificado: clic abre la paleta (clase open + visible). Cambia index.html + institucional.css (seccion 11). Cache bump v68.35 -> v68.36.
 // v68.35: v45.222 - Boton del asistente: FONDO BLANCO. La burbuja del icono de dialogo es transparente y sobre el fondo oscuro se veia oscura; ahora el FAB lleva fondo blanco (insignia blanca) -> la burbuja se ve blanca como el icono original. Borde sutil + sombra para definirlo en cualquier seccion; icono al 74%. Solo institucional.css (seccion 10). Cache bump v68.34 -> v68.35.
 // v68.34: v45.221 - ICONO DEL ASISTENTE (chatbot) -> dialogo naranjo. Reemplazado chatbot-robot.png (robot azul) por chatbot-dialogo.png (anillo naranjo + burbuja blanca, = IconoDialogoRengo del equipo) en el boton flotante (FAB) y en el avatar del panel. Como el icono trae su propio circulo, el FAB va SIN fondo verde, SIN borde y SIN glow pulsante (institucional.css seccion 10): el icono ES el boton, con sombra sutil; el img llena el 100%. Nuevo archivo chatbot-dialogo.png copiado a Portal_PLADECO/ y precacheado. Cache bump v68.33 -> v68.34.
 // v68.33: v45.220 - LOGO DEL HEROE en BLANCO. El logo del hero pasa de Logo-Pladeco-Color.png (azul/naranjo) a Logo-Pladeco-Blanco.png (version blanca, ya versionada y en produccion HTTP 200). El hero es siempre oscuro (texto #fff, fondo transparente sobre la imagen oscura del portal, en claro y oscuro) -> el logo blanco da mas contraste y es mas institucional (monocromo sobre oscuro). Agregado Logo-Pladeco-Blanco.png al precache (es above-the-fold, carga eager). Solo cambia index.html (src del hero-logo) + sw.js. Cache bump v68.32 -> v68.33.
@@ -180,8 +181,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.35';
-const RELEASE='v45.222'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.36';
+const RELEASE='v45.223'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
