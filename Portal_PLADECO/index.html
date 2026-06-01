@@ -3549,7 +3549,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 @media(max-width:900px){.kbd-hint{display:none}}
 .cmd-palette{position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding-top:min(20vh,160px);opacity:0;pointer-events:none;transition:opacity .2s}
 .cmd-palette.open{opacity:1;pointer-events:auto}
-.cmd-box{width:520px;max-width:calc(100vw - 32px);background:var(--card);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid var(--border);overflow:hidden;transform:translateY(-12px) scale(.97);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.cmd-box{width:560px;max-width:calc(100vw - 32px);background:var(--card);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid var(--border);overflow:hidden;transform:translateY(-12px) scale(.97);transition:transform .25s cubic-bezier(.4,0,.2,1)}
 .cmd-palette.open .cmd-box{transform:translateY(0) scale(1)}
 .cmd-input-wrap{display:flex;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);gap:10px}
 .cmd-input-wrap .cmd-icon{font-size:18px;opacity:.4;flex-shrink:0}
@@ -3558,11 +3558,19 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 .cmd-input-wrap .cmd-esc{font-size:11px;background:var(--bg);color:var(--text2);padding:2px 6px;border-radius:4px;border:1px solid var(--border);font-weight:600}
 .cmd-results{max-height:320px;overflow-y:auto;padding:6px}
 .cmd-results:empty::after{content:'Escribe para buscar secciones...';display:block;padding:16px;text-align:center;font-size:12px;color:var(--text2)}
-.cmd-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:13px;color:var(--text)}
+.cmd-item{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:13px;color:var(--text)}
 .cmd-item:hover,.cmd-item.active{background:rgba(45,154,77,.08)}
-.cmd-item .cmd-sec-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;background:var(--bg);flex-shrink:0}
-.cmd-item .cmd-sec-name{font-weight:600}
-.cmd-item .cmd-sec-cat{font-size:10px;color:var(--text2);margin-left:auto}
+.cmd-item .cmd-sec-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--bg);flex-shrink:0;color:var(--text)}
+.cmd-item .cmd-sec-icon .ico{width:18px;height:18px;stroke-width:1.7}
+.cmd-sec-text{display:flex;flex-direction:column;min-width:0;flex:1;gap:1px}
+.cmd-item .cmd-sec-name{font-weight:600;font-size:13px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmd-sec-desc{font-size:11.5px;line-height:1.3;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmd-item .cmd-sec-cat{font-size:10px;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:2px 7px;align-self:center;flex-shrink:0;white-space:nowrap;margin-left:4px}
+.cmd-context{padding:9px 15px 4px;font-size:11px;color:var(--text2);font-weight:600;line-height:1.3}
+.cmd-context strong{color:var(--text);font-weight:800;font-variant-numeric:tabular-nums}
+.cmd-context:empty{display:none}
+.cmd-foot{display:flex;gap:15px;flex-wrap:wrap;align-items:center;padding:9px 15px;border-top:1px solid var(--border);background:var(--bg);font-size:10.5px;color:var(--text2)}
+.cmd-foot kbd{font:600 10px/1 'Poppins',system-ui,sans-serif;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:2px 6px;margin-right:2px;color:var(--text2)}
 
 /* ══ MEJORA 4: Lightbox swipe indicator + counter ══ */
 .lightbox-counter{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);color:#fff;font-size:12px;font-weight:600;z-index:1002;background:rgba(0,0,0,.5);padding:4px 14px;border-radius:16px;letter-spacing:1px}
@@ -18308,7 +18316,13 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
       <span class="cmd-esc">ESC</span>
     </div>
     <div class="cmd-cats" id="cmdCats"></div>
+    <div class="cmd-context" id="cmdContext"></div>
     <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-foot">
+      <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> moverse</span>
+      <span><kbd>&crarr;</kbd> abrir</span>
+      <span><kbd>Esc</kbd> cerrar</span>
+    </div>
   </div>
 </div>
 
@@ -25683,40 +25697,41 @@ setTimeout(()=>{
 // ══════════════════════════════════════════════════════
 // MEJORA: COMMAND PALETTE (Ctrl+K)
 // ══════════════════════════════════════════════════════
+/* svg = id del ícono SVG de línea del sistema (#ico-…) · desc = qué hay dentro (también se busca) */
 const CMD_SECTIONS=[
-  {id:'mvv',name:'Misión, Visión y Valores',icon:'🏛️',cat:'Institucional'},
-  {id:'dashboard',name:'Indicadores Clave',icon:'📊',cat:'Dashboard'},
-  {id:'viz',name:'Visualizaciones Interactivas',icon:'📈',cat:'Interactivo'},
-  {id:'datos-vivo',name:'Datos en Vivo',icon:'⚡',cat:'Dashboard'},
-  {id:'mapa',name:'Mapa Interactivo',icon:'🗺️',cat:'Territorio'},
-  {id:'nna',name:'Diagnóstico NNA',icon:'👶',cat:'Social'},
-  {id:'censo',name:'Censo 2024',icon:'📋',cat:'Datos'},
-  {id:'desigualdad',name:'Brechas y Desigualdad',icon:'⚖️',cat:'Social'},
-  {id:'territorial-adv',name:'Análisis Territorial',icon:'🏘️',cat:'Territorio'},
-  {id:'voz',name:'Voz Ciudadana',icon:'🗣️',cat:'Participación'},
-  {id:'gestion',name:'Gestión Municipal',icon:'🏛️',cat:'Gestión'},
-  {id:'sna',name:'Red de Actores',icon:'🔗',cat:'Gestión'},
-  {id:'etnografia',name:'Etnografías UV',icon:'📝',cat:'Territorio'},
-  {id:'ods-sec',name:'ODS Vinculados',icon:'🌍',cat:'Estrategia'},
-  {id:'suenos',name:'Sueños para Rengo',icon:'💭',cat:'Participación'},
-  {id:'ejes',name:'Ejes Estratégicos',icon:'🎯',cat:'Estrategia'},
-  {id:'foda',name:'Análisis FODA',icon:'🔍',cat:'Diagnóstico'},
-  {id:'territorio',name:'Unidades Vecinales',icon:'📍',cat:'Territorio'},
-  {id:'comparador-uv',name:'Comparador UV',icon:'⚔️',cat:'Territorio'},
-  {id:'graficos',name:'Gráficos Analíticos',icon:'📉',cat:'Interactivo'},
-  {id:'argumentario',name:'Argumentario',icon:'💡',cat:'Estrategia'},
-  {id:'resumen',name:'Resumen Ejecutivo',icon:'📄',cat:'Resumen'},
-  {id:'semaforo',name:'Semáforo de Metas',icon:'🚦',cat:'Seguimiento'},
-  {id:'financiamiento',name:'Financiamiento',icon:'💰',cat:'Gestión'},
-  {id:'comisiones',name:'Comisiones de Trabajo',icon:'👥',cat:'Participación'},
-  {id:'equipo',name:'Equipo Técnico',icon:'👨‍💼',cat:'Institucional'},
-  {id:'testimonios',name:'Testimonios',icon:'💬',cat:'Voces'},
-  {id:'compromisos',name:'Compromisos Públicos',icon:'✅',cat:'Gobernanza'},
-  {id:'antes-despues',name:'Antes y Después',icon:'🔄',cat:'Evolución'},
-  {id:'galeria',name:'Galería Fotográfica',icon:'📷',cat:'Registro'},
-  {id:'documentos',name:'Documentos',icon:'📁',cat:'Documentación'},
-  {id:'diagramas',name:'Diagramas Metodológicos (16)',icon:'📂',cat:'Documentación'},
-  {id:'encuesta',name:'Encuesta Ciudadana',icon:'📝',cat:'Participación'}
+  {id:'mvv',name:'Misión, Visión y Valores',svg:'institution',cat:'Institucional',desc:'Misión, visión, valores y proyección 2035'},
+  {id:'dashboard',name:'Indicadores Clave',svg:'trend',cat:'Dashboard',desc:'KPIs y cifras clave del plan en un panel'},
+  {id:'viz',name:'Visualizaciones Interactivas',svg:'chart',cat:'Interactivo',desc:'Gráficos y mapas para explorar los datos'},
+  {id:'datos-vivo',name:'Datos en Vivo',svg:'bolt',cat:'Dashboard',desc:'Indicadores que se actualizan en tiempo real'},
+  {id:'mapa',name:'Mapa Interactivo',svg:'map',cat:'Territorio',desc:'Mapa de Rengo: capas, UV y proyectos'},
+  {id:'nna',name:'Diagnóstico NNA',svg:'heart',cat:'Social',desc:'Niñez y adolescencia: situación y derechos'},
+  {id:'censo',name:'Censo 2024',svg:'clipboard',cat:'Datos',desc:'Población, viviendas y hogares (Censo 2024)'},
+  {id:'desigualdad',name:'Brechas y Desigualdad',svg:'scale',cat:'Social',desc:'Brechas sociales, de género y territoriales'},
+  {id:'territorial-adv',name:'Análisis Territorial',svg:'buildings',cat:'Territorio',desc:'Diagnóstico por zona urbana y rural'},
+  {id:'voz',name:'Voz Ciudadana',svg:'megaphone',cat:'Participación',desc:'Lo que la comunidad dijo en el proceso'},
+  {id:'gestion',name:'Gestión Municipal',svg:'gear',cat:'Gestión',desc:'Capacidades y desempeño del municipio'},
+  {id:'sna',name:'Red de Actores',svg:'link',cat:'Gestión',desc:'Mapa de actores e instituciones (SNA)'},
+  {id:'etnografia',name:'Etnografías UV',svg:'book',cat:'Territorio',desc:'Relatos y trabajo de campo por unidad vecinal'},
+  {id:'ods-sec',name:'ODS Vinculados',svg:'globe',cat:'Estrategia',desc:'Vínculo con los Objetivos de Desarrollo Sostenible'},
+  {id:'suenos',name:'Sueños para Rengo',svg:'bulb',cat:'Participación',desc:'Aspiraciones de los vecinos para la comuna'},
+  {id:'ejes',name:'Ejes Estratégicos',svg:'target',cat:'Estrategia',desc:'Los 6 ejes y sus objetivos estratégicos'},
+  {id:'foda',name:'Análisis FODA',svg:'eye',cat:'Diagnóstico',desc:'Fortalezas, oportunidades, debilidades y amenazas'},
+  {id:'territorio',name:'Unidades Vecinales',svg:'pin',cat:'Territorio',desc:'Las 21 UV (9 urbanas y 12 rurales)'},
+  {id:'comparador-uv',name:'Comparador UV',svg:'calculator',cat:'Territorio',desc:'Compara indicadores entre unidades vecinales'},
+  {id:'graficos',name:'Gráficos Analíticos',svg:'chart',cat:'Interactivo',desc:'Gráficos del diagnóstico comunal'},
+  {id:'argumentario',name:'Argumentario',svg:'scroll',cat:'Estrategia',desc:'Por qué importa cada decisión del plan'},
+  {id:'resumen',name:'Resumen Ejecutivo',svg:'doc',cat:'Resumen',desc:'Síntesis ejecutiva del PLADECO'},
+  {id:'semaforo',name:'Semáforo de Metas',svg:'traffic',cat:'Seguimiento',desc:'Estado de avance de las metas'},
+  {id:'financiamiento',name:'Financiamiento',svg:'money',cat:'Gestión',desc:'Fuentes de recursos y presupuesto'},
+  {id:'comisiones',name:'Comisiones de Trabajo',svg:'people',cat:'Participación',desc:'Mesas y comisiones del proceso'},
+  {id:'equipo',name:'Equipo Técnico',svg:'briefcase',cat:'Institucional',desc:'Quién elaboró el plan'},
+  {id:'testimonios',name:'Testimonios',svg:'chat',cat:'Voces',desc:'Voces de vecinos y dirigentes'},
+  {id:'compromisos',name:'Compromisos Públicos',svg:'check',cat:'Gobernanza',desc:'Compromisos asumidos por el municipio'},
+  {id:'antes-despues',name:'Antes y Después',svg:'cycle',cat:'Evolución',desc:'Transformaciones visibles en la comuna'},
+  {id:'galeria',name:'Galería Fotográfica',svg:'image',cat:'Registro',desc:'Fotografías del proceso y la comuna'},
+  {id:'documentos',name:'Documentos',svg:'folder',cat:'Documentación',desc:'Descarga informes y anexos'},
+  {id:'diagramas',name:'Diagramas Metodológicos (16)',svg:'puzzle',cat:'Documentación',desc:'16 esquemas de la metodología del plan'},
+  {id:'encuesta',name:'Encuesta Ciudadana',svg:'note',cat:'Participación',desc:'Participa respondiendo la encuesta'}
 ];
 let cmdIdx=-1, cmdQuery='', cmdCat=null;
 /* categorías distintas con conteo · orden: más nutridas primero, luego alfabético */
@@ -25726,19 +25741,24 @@ function cmdCategories(){
   return Object.keys(m).map(function(c){return {cat:c,n:m[c]};})
     .sort(function(a,b){return (b.n-a.n) || a.cat.localeCompare(b.cat,'es');});
 }
-/* filtra por categoría activa Y/O texto (nombre o categoría, sin tildes) */
+/* escape mínimo para reflejar el texto buscado sin inyectar HTML */
+function cmdEsc(s){return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+/* filtra por categoría activa Y/O texto (nombre, categoría o descripción · sin tildes) */
 function cmdFiltered(){
   const ql=stripAccents((cmdQuery||'').toLowerCase()).trim();
   return CMD_SECTIONS.filter(function(s){
     if(cmdCat && s.cat!==cmdCat) return false;
     if(!ql) return true;
-    return stripAccents(s.name.toLowerCase()).includes(ql) || stripAccents(s.cat.toLowerCase()).includes(ql);
+    return stripAccents(s.name.toLowerCase()).includes(ql)
+        || stripAccents(s.cat.toLowerCase()).includes(ql)
+        || stripAccents((s.desc||'').toLowerCase()).includes(ql);
   });
 }
 function cmdItemHtml(s){
   return '<div class="cmd-item" role="option" onclick="goToSection(\''+s.id+'\');closeCmdPalette()">'+
-    '<div class="cmd-sec-icon">'+s.icon+'</div>'+
-    '<span class="cmd-sec-name">'+s.name+'</span>'+
+    '<span class="cmd-sec-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-'+s.svg+'"></use></svg></span>'+
+    '<span class="cmd-sec-text"><span class="cmd-sec-name">'+s.name+'</span>'+
+      (s.desc?'<span class="cmd-sec-desc">'+s.desc+'</span>':'')+'</span>'+
     '<span class="cmd-sec-cat">'+s.cat+'</span>'+
   '</div>';
 }
@@ -25755,6 +25775,14 @@ function renderCmd(){
   }
   const res=document.getElementById('cmdResults');
   const list=cmdFiltered();
+  /* línea de contexto: conteo + filtro activo */
+  const ctxEl=document.getElementById('cmdContext');
+  if(ctxEl){
+    const q=(cmdQuery||'').trim();
+    if(q){ ctxEl.innerHTML='<strong>'+list.length+'</strong> '+(list.length===1?'resultado':'resultados')+' para &laquo;'+cmdEsc(q)+'&raquo;'+(cmdCat?(' en '+cmdCat):''); }
+    else if(cmdCat){ ctxEl.innerHTML='Categoría <strong>'+cmdCat+'</strong> &middot; '+list.length+' '+(list.length===1?'sección':'secciones'); }
+    else { ctxEl.innerHTML='<strong>'+CMD_SECTIONS.length+'</strong> secciones en <strong>'+cats.length+'</strong> categorías'; }
+  }
   if(!list.length){
     res.classList.remove('cmd-grouped');
     res.innerHTML='<div class="cmd-empty">Sin coincidencias.<br>Prueba con otra palabra o elige otra categoría.</div>';
