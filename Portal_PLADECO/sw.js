@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.37
+// PLADECO Rengo 2025-2035 · Service Worker v68.38
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.38: v45.225 - TIPOGRAFIA UNICA POPPINS en todo el portal. Titulos y cuerpo comparten la familia Poppins (autoalojada en /fonts); la jerarquia la dan PESO y TAMANO, no el cambio de fuente. Reemplaza Inter (cuerpo/datos) + Source Serif 4 (titulos) + Playfair Display (display) + Neulis Cursive (acentos italic) + Georgia (citas/impresion) -> todo Poppins. Mecanismo: tokens --font-cuerpo/--font-titulo = Poppins (flip del override global * !important) + reapuntadas las excepciones hardcodeadas (monospace, Neulis, Playfair, Inter!important, Georgia print) + Chart.js (defaults x2 + chartCommon legend) -> Poppins. Eliminadas las requests/preconnect a Google Fonts (Inter/Source Serif/Playfair): sin dependencia externa, mas privado, mas rapido. Anadidas las 4 Poppins .ttf a STATIC_ASSETS para que la marca tipografica funcione offline. Solo index.html + sw.js. Cache bump v68.37 -> v68.38.
 // v68.37: v45.224 - TITULOS/SUBTITULOS en colores institucionales (jerarquia). Las cabeceras de seccion (.sec-header) ahora usan la marca: TITULO (h2) AZUL #1F3864 / #7ea4d8 dark · SUBTITULO (.sec-header p) VERDE #15803d / #5cc98a dark · ETIQUETA (.badge) NARANJO #b45309 / #fdb94d dark. Variantes claras/oscuras, todas con contraste WCAG AA. Implementado en institucional.css (seccion 12) con alta especificidad + !important para ganar la cascada existente; verificado en ambos modos. Los titulos de hero/banners con imagen usan clases propias (no .sec-header) -> no afectados. Solo institucional.css. Cache bump v68.36 -> v68.37.
 // v68.36: v45.223 - HERO: subtitulo breve + BUSCADOR. (1) El subtitulo del hero pasa de un parrafo largo a una sola linea con fuerza: "Una decada para construir, con toda la comuna, el Rengo que sonamos." (2) Nuevo buscador con lupa debajo del subtitulo (.hero-search): card sobrio que al hacer clic abre la paleta de busqueda intuitiva existente (openCmdPalette, Ctrl+K) -> reutiliza el buscador del portal, no duplica. Usa el ico-search del sistema; placeholder + hint Ctrl+K. Verificado: clic abre la paleta (clase open + visible). Cambia index.html + institucional.css (seccion 11). Cache bump v68.35 -> v68.36.
 // v68.35: v45.222 - Boton del asistente: FONDO BLANCO. La burbuja del icono de dialogo es transparente y sobre el fondo oscuro se veia oscura; ahora el FAB lleva fondo blanco (insignia blanca) -> la burbuja se ve blanca como el icono original. Borde sutil + sombra para definirlo en cualquier seccion; icono al 74%. Solo institucional.css (seccion 10). Cache bump v68.34 -> v68.35.
@@ -182,8 +183,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.37';
-const RELEASE='v45.224'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.38';
+const RELEASE='v45.225'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
@@ -242,6 +243,10 @@ const STATIC_ASSETS=[
   './logo-pladeco.png',
   './Logo-Pladeco-Blanco.png',
   './chatbot-dialogo.png',
+  './fonts/Poppins-Medium.ttf',
+  './fonts/Poppins-SemiBold.ttf',
+  './fonts/Poppins-Bold.ttf',
+  './fonts/Poppins-ExtraBold.ttf',
   'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',

@@ -96,8 +96,6 @@
 </script>
 
 <!-- Preconnect & DNS prefetch para recursos externos -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
@@ -105,10 +103,8 @@
 <link rel="dns-prefetch" href="https://unpkg.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-<!-- v45.193 · Tipografia: Inter (cuerpo/datos) + Source Serif 4 (titulos institucionales) · carga NO-BLOQUEANTE (print-onload trick) · una sola request a Google Fonts -->
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"></noscript>
+<!-- v45.225 · Tipografía ÚNICA Poppins · 100% autoalojada en /fonts (@font-face más abajo en este <head>). Sin Google Fonts: cero requests a terceros, más privacidad, funciona offline. -->
+
 
 <!-- v45.181 · Preload de assets criticos above-the-fold con fetchpriority -->
 <link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.jpg" fetchpriority="high">
@@ -259,26 +255,26 @@ window.__leafletMaps=window.__leafletMaps||[];
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:500;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium_Italic.otf') format('opentype')}
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:600;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Semi_Bold_Italic.otf') format('opentype')}
 @font-face{font-family:'Neulis Cursive';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Bold_Italic.otf') format('opentype')}
-/* v45.193 · TIPOGRAFIA DELIBERADA · cuerpo=Inter (lectura/datos) · titulos=Source Serif 4 (formalidad institucional). Tokens --font-cuerpo / --font-titulo en :root al final del <style>; cada var() lleva fallback completo por seguridad de producción. */
+/* v45.225 · TIPOGRAFIA UNICA POPPINS · cuerpo y titulos comparten Poppins (familia unica; la jerarquia la dan peso y tamano). Tokens --font-cuerpo / --font-titulo en :root al final del <style> (ambos = Poppins); cada var() lleva fallback completo por seguridad de produccion. */
 html,body{font-family:var(--font-cuerpo,'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif) !important}
 
 /* OVERRIDE GLOBAL · cuerpo (Inter) en TODO el portal con !important */
 *,*::before,*::after{
   font-family:var(--font-cuerpo,'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif),'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji' !important;
 }
-/* Excepciones tecnicas: codigo y monospace conservan su fuente */
+/* Uniformidad total: incluso código y teclas usan Poppins (fuente única del portal) */
 code,kbd,pre,samp,var,tt,.mono,.code,.font-mono{
-  font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,'Courier New',monospace !important;
+  font-family:var(--font-cuerpo,'Poppins',system-ui,sans-serif) !important;
 }
-/* Neulis Cursive para acentos institucionales: italic + clases utilitarias */
+/* Énfasis (em/cite/i, citas): Poppins itálica — sin fuente cursiva decorativa */
 em,cite,i:not(.fa):not([class*="fa-"]):not([class*="icon"]),
 .font-neulis,.neulis,.cursive-accent,blockquote.quote{
-  font-family:'Neulis Cursive',var(--font-titulo,Georgia,Cambria,serif) !important;
+  font-family:var(--font-cuerpo,'Poppins',system-ui,sans-serif) !important;
   font-style:italic;
 }
-/* Titulos h1-h3 en serif institucional (Source Serif 4); h4-h6 en cuerpo */
+/* Títulos h1-h6 en Poppins (vía tokens); jerarquía por peso/tamaño, no por fuente */
 h1,h2,h3{
-  font-family:var(--font-titulo,Georgia,Cambria,'Times New Roman',serif) !important;
+  font-family:var(--font-titulo,'Poppins',system-ui,sans-serif) !important;
   font-weight:700;
 }
 h4,h5,h6{
@@ -357,7 +353,7 @@ input,textarea,select,button,optgroup{
   --pad-card:16px 18px; --pad-card-lg:18px 22px; --pad-card-sm:12px 14px;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
-body{font-family:'Inter','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease;overflow-x:hidden;max-width:100vw}
+body{font-family:'Poppins','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease;overflow-x:hidden;max-width:100vw}
 
 /* v45.75 · CSS del sidebar legacy eliminado: núcleo, mascota y modo comprimido
    (~127 líneas). El sidebar se retiró del HTML y del JS en v45.74. */
@@ -10334,7 +10330,7 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   function charts(){
     if(typeof Chart==='undefined')return;
     var txt=tk('--text2','#475569'),grid='rgba(128,128,128,.15)';
-    Chart.defaults.font.family="'Inter',system-ui,sans-serif";Chart.defaults.color=txt;
+    Chart.defaults.font.family="'Poppins',system-ui,sans-serif";Chart.defaults.color=txt;
     var by=DATA.byYear;
     new Chart(document.getElementById('svEvolucion'),{data:{labels:by.map(function(d){return d.anio;}),
       datasets:[{type:'bar',label:'Siniestros',data:by.map(function(d){return d.siniestros;}),backgroundColor:'#2E6F95',borderRadius:5,order:2},
@@ -19415,7 +19411,7 @@ function normMeta(val,m){
 // La paleta categórica NO se fuerza global: los colores semánticos por gráfico (severidad,
 // género, semáforo) se conservan; el restyle de paleta es un pase por-gráfico (ver sistema-diseno/datos).
 Chart.defaults.font.size=12;
-Chart.defaults.font.family="'Inter',system-ui,-apple-system,'Segoe UI',sans-serif";
+Chart.defaults.font.family="'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif";
 Chart.defaults.plugins.legend.labels.font={size:11,weight:'600'};
 Chart.defaults.plugins.legend.labels.boxWidth=12;
 Chart.defaults.plugins.legend.labels.padding=14;
@@ -25233,7 +25229,7 @@ var INST_DATA={
 
 /* ─── Chart instances cache (para destruir y re-renderizar) ─── */
 var INST_CHARTS={};
-function chartCommon(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,family:'Inter,sans-serif'},padding:10,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'rgba(15,45,82,.95)',padding:10,titleFont:{size:12,weight:'700'},bodyFont:{size:11.5},borderColor:'rgba(255,255,255,.1)',borderWidth:1}}};}
+function chartCommon(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,family:'Poppins,sans-serif'},padding:10,usePointStyle:true,pointStyle:'circle'}},tooltip:{backgroundColor:'rgba(15,45,82,.95)',padding:10,titleFont:{size:12,weight:'700'},bodyFont:{size:11.5},borderColor:'rgba(255,255,255,.1)',borderWidth:1}}};}
 
 /* ─── PANEL 1: Vista General ─── */
 function renderInstPanel(){
@@ -31528,7 +31524,7 @@ table th, table td{
 </style>
 
 <!-- ═══ v45.39 · MEGA ESTÉTICA · B+C+D+E+F ═══ -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
+<!-- v45.225 · Playfair Display retirado: la tipografía display ahora es Poppins (familia única del portal) -->
 <style>
 /* ═══════════════════════════════════════════════════════
    v45.39 · PAQUETE F · COLOR POR CAPÍTULO
@@ -31712,14 +31708,14 @@ table th, table td{
 .pull-quote,
 .group-divider-label,
 h2.display{
-  font-family:'Playfair Display', Georgia, 'Times New Roman', serif!important;
+  font-family:var(--font-titulo,'Poppins',system-ui,sans-serif)!important;
   letter-spacing:-.022em;
 }
 .pull-quote{
   font-style:italic;
 }
 .display-font-sans{
-  font-family:'Inter', system-ui, sans-serif!important;
+  font-family:var(--font-cuerpo,'Poppins', system-ui, sans-serif)!important;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -34409,7 +34405,7 @@ body.print-section-only > *:not(#printContent):not(script):not(style){display:no
   body, html{
     margin:0!important;padding:0!important;
     background:#fff!important;color:#000!important;
-    font-family:'Georgia','Times New Roman',serif!important;
+    font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif!important;
     font-size:11pt!important;line-height:1.5!important;
   }
 
@@ -35111,14 +35107,17 @@ body.pv-on .scroll-progress,body.pv-on .scroll-progress-v40,body.pv-on .dot-nav,
 
 /* ═══════════════════════════════════════════════════════════════════════════
    v45.193 · SISTEMA TIPOGRÁFICO UNIFICADO
-   Pareja: Source Serif 4 (títulos · formalidad institucional) + Inter (cuerpo · datos)
+   v45.225 · TIPOGRAFÍA ÚNICA POPPINS · títulos y cuerpo comparten la MISMA familia (Poppins);
+   la jerarquía la construyen el PESO y el TAMAÑO, no el cambio de fuente. Reemplaza la pareja
+   anterior (Source Serif 4 + Inter) y todas las decorativas (Playfair / Neulis / Georgia) para
+   máxima coherencia institucional. Poppins 100% autoalojada en /fonts (sin Google Fonts).
    Mobile-first · base 16px · notas ≥15px · WCAG AA · escala fluida con clamp()
    Usuario de referencia: adulto mayor de Rengo (ante la duda: más grande y espaciado)
    ═══════════════════════════════════════════════════════════════════════════ */
 :root{
-  /* ── FAMILIAS (con fallback completo) ── */
-  --font-titulo:'Source Serif 4',Georgia,Cambria,'Times New Roman',serif;
-  --font-cuerpo:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  /* ── FAMILIAS · Poppins en TODO (títulos y cuerpo idénticos) ── */
+  --font-titulo:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --font-cuerpo:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
 
   /* ── ESCALA FLUIDA DE TÍTULOS · clamp(mín móvil, preferido vw, máx desktop) ──
      En px (no rem) para ser inmune a la compresión del font-size raíz del portal
