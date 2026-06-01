@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.30
+// PLADECO Rengo 2025-2035 · Service Worker v68.31
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.31: v45.218 - SISTEMA DE DISEÑO · armonizacion de MAPAS y azules de graficos. Los 8 basemaps Leaflet (vial, MBHT, UV, ICT, reportes, calor...) pasan a CARTO Positron (light_all), base NEUTRA/grayscale institucional que hace resaltar los datos (estandar OCDE/servicios publicos); se conserva OSM colorido como alternativa solo en el mapa vial + Satelite Esri. Atribucion OSM+CARTO. Azules estructurales fuera de identidad alineados al navy exacto (#1F3A5F, #1a3d8f -> #1F3864). Colores SEMANTICOS conservados: severidad vial, mapa de calor, masculino/femenino, semaforo, colores oficiales de ejes (ejeColors) y ODS. Verificado: tiles CARTO cargan (no hay mapas en blanco), 24/24 bloques JS validos. La paleta categorica por-grafico (doughnuts, ejeColors) NO se forzo global (riesgo semantico) -> pase con revision visual. Cache bump v68.30 -> v68.31.
 // v68.30: v45.217 - SISTEMA DE DISEÑO · integracion segura (Pieza 3). Tipografia de los 73 graficos Chart.js unificada a Inter (Chart.defaults.font.family: system-ui -> Inter), coherente con el portal. NO se fuerza la paleta categorica global: los colores semanticos por grafico (severidad vial, masculino/femenino, semaforo) se conservan -> el restyle de paleta es un pase por-grafico. Solo cambia index.html (1 linea). Las integraciones VISUALES restantes (diagramas en secciones, paleta de graficos, OG image como PNG, mapa de 21 UV) requieren revision visual o insumo (GeoJSON) y se haran con el usuario mirando. Cache bump v68.29 -> v68.30.
 // v68.29: v45.216 - PULIDO MOVIL. Auditoria del DOM movil (375x812) + correcciones en institucional.css (seccion 9): (1) eliminada la barra inferior DUPLICADA #bottomNavV40 (2 items) que solapaba a #mobileBottomNav (4 items: Inicio/Buscar/Secciones/Tema) -> una sola barra; (2) boton flotante 'Presentar' oculto en movil (<=768px) porque tapaba la nav inferior; (3) barra inferior sin glassmorphism (el fondo --card ya es opaco); (4) areas tactiles >=44px (burger 38->44, home 26->40); (5) etiquetas de hitos (.ig-label) de 9.5px -> 11px legible. Verificado en viewport movil: 1 sola barra inferior, sin scroll horizontal, topnav sin overflow, pagina sana. Solo cambia institucional.css. Cache bump v68.28 -> v68.29.
 // v68.28: v45.215 - ONBOARDING SOLO EN EL PRIMER MINUTO. Los toasts informativos por scroll (al llegar a #semaforo / #ejes / #financiamiento) viven en bottom-right y tapaban los plugins de abajo (boton Asistente + barra inferior) cada vez que el vecino pasaba por esas secciones, en cualquier momento de la visita. Ahora SOLO se muestran durante los primeros 60s desde la carga (performance.now()<60000); despues el observer se desconecta y la esquina inferior queda libre. El toast del tour (~8s) y el tooltip 'Tienes dudas?' (~5s) ya estaban dentro del minuto y se auto-cierran (3.2s / 4s). Solo cambia index.html. Cache bump v68.27 -> v68.28.
@@ -175,8 +176,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.30';
-const RELEASE='v45.217'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.31';
+const RELEASE='v45.218'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
