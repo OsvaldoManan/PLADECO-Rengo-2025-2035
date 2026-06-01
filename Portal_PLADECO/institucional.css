@@ -161,3 +161,15 @@ a.ig-item:hover .ig-value{ text-decoration:underline; text-underline-offset:3px;
 .hero-search-ph{ flex:1; text-align:left; font-size:14px; color:rgba(255,255,255,.72); }
 .hero-search-kbd{ font:600 11px system-ui,sans-serif; padding:3px 8px; border:1px solid rgba(255,255,255,.28); border-radius:5px; color:rgba(255,255,255,.65); white-space:nowrap; }
 @media(max-width:560px){ .hero-search{ max-width:100%; } .hero-search-kbd{ display:none; } }
+
+/* ── 12 · Títulos y subtítulos de sección en colores institucionales (jerarquía) ──
+   Título de sección (h2) = AZUL · subtítulo (.sec-header p) = VERDE · etiqueta (.badge) = NARANJO.
+   Variantes aclaradas para modo oscuro. Alta especificidad + !important para ganar la cascada
+   existente (que ya usa !important). Tonos WCAG AA. */
+html body:not(.dark) .sec-header h2{ color:#1F3864 !important; }   /* azul · 10.9:1 */
+html body:not(.dark) .sec-header p{ color:#15803d !important; }    /* verde · 4.9:1 AA */
+html body:not(.dark) .sec-header .badge{ color:#b45309 !important; } /* naranjo/ámbar · 4.6:1 AA */
+html body.dark .sec-header h2{ color:#7ea4d8 !important; }          /* azul aclarado · 7.3:1 */
+html body.dark .sec-header p{ color:#5cc98a !important; }          /* verde aclarado */
+html body.dark .sec-header .badge{ color:#fdb94d !important; }     /* naranjo aclarado */
+/* el subtítulo conserva sus énfasis (strong/enlaces mantienen sus reglas más específicas) */

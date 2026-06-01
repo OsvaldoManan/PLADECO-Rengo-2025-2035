@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.36
+// PLADECO Rengo 2025-2035 · Service Worker v68.37
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.37: v45.224 - TITULOS/SUBTITULOS en colores institucionales (jerarquia). Las cabeceras de seccion (.sec-header) ahora usan la marca: TITULO (h2) AZUL #1F3864 / #7ea4d8 dark · SUBTITULO (.sec-header p) VERDE #15803d / #5cc98a dark · ETIQUETA (.badge) NARANJO #b45309 / #fdb94d dark. Variantes claras/oscuras, todas con contraste WCAG AA. Implementado en institucional.css (seccion 12) con alta especificidad + !important para ganar la cascada existente; verificado en ambos modos. Los titulos de hero/banners con imagen usan clases propias (no .sec-header) -> no afectados. Solo institucional.css. Cache bump v68.36 -> v68.37.
 // v68.36: v45.223 - HERO: subtitulo breve + BUSCADOR. (1) El subtitulo del hero pasa de un parrafo largo a una sola linea con fuerza: "Una decada para construir, con toda la comuna, el Rengo que sonamos." (2) Nuevo buscador con lupa debajo del subtitulo (.hero-search): card sobrio que al hacer clic abre la paleta de busqueda intuitiva existente (openCmdPalette, Ctrl+K) -> reutiliza el buscador del portal, no duplica. Usa el ico-search del sistema; placeholder + hint Ctrl+K. Verificado: clic abre la paleta (clase open + visible). Cambia index.html + institucional.css (seccion 11). Cache bump v68.35 -> v68.36.
 // v68.35: v45.222 - Boton del asistente: FONDO BLANCO. La burbuja del icono de dialogo es transparente y sobre el fondo oscuro se veia oscura; ahora el FAB lleva fondo blanco (insignia blanca) -> la burbuja se ve blanca como el icono original. Borde sutil + sombra para definirlo en cualquier seccion; icono al 74%. Solo institucional.css (seccion 10). Cache bump v68.34 -> v68.35.
 // v68.34: v45.221 - ICONO DEL ASISTENTE (chatbot) -> dialogo naranjo. Reemplazado chatbot-robot.png (robot azul) por chatbot-dialogo.png (anillo naranjo + burbuja blanca, = IconoDialogoRengo del equipo) en el boton flotante (FAB) y en el avatar del panel. Como el icono trae su propio circulo, el FAB va SIN fondo verde, SIN borde y SIN glow pulsante (institucional.css seccion 10): el icono ES el boton, con sombra sutil; el img llena el 100%. Nuevo archivo chatbot-dialogo.png copiado a Portal_PLADECO/ y precacheado. Cache bump v68.33 -> v68.34.
@@ -181,8 +182,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.36';
-const RELEASE='v45.223'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.37';
+const RELEASE='v45.224'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
