@@ -22261,32 +22261,13 @@ function toggleDark(){
 
 // ── ANIMATED HERO COUNTERS ──
 function animateCounters(){
-  const nums = document.querySelectorAll('.hero-stat .num');
-  const targets = ['63.620','6','225','21','13/17','32'];
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        nums.forEach((el,i)=>{
-          const target = targets[i];
-          if(target.includes('/')||target.includes('%')){ el.textContent=target; return; }
-          const end = parseInt(target.replace(/\./g,''));
-          const duration = 1500;
-          const start = performance.now();
-          const step = ts => {
-            const progress = Math.min((ts-start)/duration,1);
-            const eased = 1-Math.pow(1-progress,3); // easeOutCubic
-            const current = Math.floor(eased * end);
-            el.textContent = current.toLocaleString('es-CL');
-            if(progress < 1) requestAnimationFrame(step);
-            else el.textContent = target; // restaurar formato original
-          };
-          requestAnimationFrame(step);
-        });
-        obs.unobserve(e.target);
-      }
-    });
-  },{threshold:0.3});
-  obs.observe(document.querySelector('.hero'));
+  /* v45.234 · ESTÁTICO (sin conteo regresivo). Antes los KPIs del hero se animaban desde 0,
+     lo que en recargas podía dejarlos mostrando un valor menor/parcial. Ahora muestran SIEMPRE
+     su valor real y completo. (La otra animación —initCounters v45.38— también se desactivó
+     para .hero-stat .num.) Se fija el valor explícito como defensa ante cualquier carrera. */
+  var nums = document.querySelectorAll('.hero-stat .num');
+  var targets = ['63.620','6','225','21','13/17','32'];
+  nums.forEach(function(el,i){ if(targets[i]!=null) el.textContent = targets[i]; });
 }
 
 // ── UNIFIED SCROLL HANDLER (RAF-throttled, 7→1 listeners) ──
@@ -32392,7 +32373,8 @@ body.dark .pull-quote .pq-cite{color:#cbd5e1}
       '.mbht-kpi-value',
       '.mbht-chip-val',
       '.censo-kpi-value',
-      '.hero-stat .num',
+      /* '.hero-stat .num' · v45.234 DESACTIVADO: los KPIs del hero son estáticos (sin conteo
+         regresivo) para que nunca muestren un número menor al recargar. */
       '.viz-num',
       '.stat-num',
       '[data-counter]'
