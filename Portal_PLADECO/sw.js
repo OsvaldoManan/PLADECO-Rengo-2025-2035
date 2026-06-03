@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.44
+// PLADECO Rengo 2025-2035 · Service Worker v68.45
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.45: v45.232 - CAMBIO 2: cuenta regresiva DESHABILITADA (provocaba crasheo). Se comento (sin borrar, con la nota "Desactivado por crasheo — countdown deshabilitado") los 3 populadores: el bootstrap inline, la funcion updateCountdown() y la llamada + setInterval(updateCountdown,60000). No queda referencia colgante (updateCountdown ya no se invoca). Los 3 cards de la seccion "Proximos hitos" pasan a valores ESTATICOS: el ano meta (2026/2028/2035), etiqueta "ano meta" y barras con ancho fijo (96/35/12%), para que la maqueta no quede vacia ni con error. Verificado: consola sin errores; buscador, tarjetas/graficos y nav inferior siguen operativos. Solo index.html. Cache bump v68.44 -> v68.45.
 // v68.44: v45.231 - CAMBIO 1: franja superior (topnav) AMPLIADA. Altura 54px -> 66px y elementos proporcionalmente mayores (logo/escudo 30->35px, marca 13.5->15px, badge "En construccion" 10->11px, tabs de capitulos 11.5->12.5px, numeros de tab, utilidades 30->34px, boton home 28->32px, burger 38->42px). El offset del contenido es dinamico (setHeaderPad mide topnav.offsetHeight) -> body padding-top y scroll-padding-top pasan a 66px solos; se ajusto el unico 54px fijo (.tn-mpanel top). Responsive intacto (tabs/utils ocultos <1300px, burger; badge oculto <900px; logo oculto <560px manteniendo home). Verificado: sin solapamiento, sin errores. Solo index.html. Cache bump v68.43 -> v68.44.
 // v68.43: v45.230 - NUEVA SECCION #seguridad-publica: "Diagnostico de Seguridad Publica (2023-2026)" integrada al portal (chapter Diagnostico, junto a seguridad-vial), con GRAFICOS INTERACTIVOS Chart.js (no PNG). Fuente: Ley STOP - Carabineros de Chile (180 semanas, 14.765 registros). 6 graficos interactivos: ranking por categoria (21), evolucion anual, composicion por macro-grupo (doughnut), serie semanal (180 pts + media movil), focos por umbral z (21), estacionalidad mensual (doble eje). Mas KPIs, lecturas clave, nudos criticos, recomendaciones (acordeon) y tabla de indicadores PLADECO con linea base. Modulo autocontenido (IIFE, lazy-init via IntersectionObserver + hash + click), reutiliza clases .sv-* y la paleta institucional, datos embebidos (SEGD_DATA, verificados vs Resumen_Anual). Registrada en navIco, grupo de vistas Diagnostico y buscador CMD_SECTIONS. Verificado en navegador: 6 graficos instanciados con datos exactos, 0 errores. Solo index.html. Cache bump v68.42 -> v68.43.
 // v68.42: v45.229 - EQUIPO: el titulo "Direcciones Municipales Participantes" pasa a "Direcciones y Unidades Municipales Participantes" y se agregan 2 unidades al grid #equipoDirGrid (renderEquipo): SENDA (Prevencion y Desarrollo Humano) y OLN (Oficina Local de la Ninez · Comunidad de NNA), insertadas antes del comodin "OTROS" (11 -> 13 tarjetas). Solo index.html. Verificado en navegador: 13 tarjetas, titulo actualizado, 0 errores. Cache bump v68.41 -> v68.42.
@@ -189,8 +190,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.44';
-const RELEASE='v45.231'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.45';
+const RELEASE='v45.232'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';

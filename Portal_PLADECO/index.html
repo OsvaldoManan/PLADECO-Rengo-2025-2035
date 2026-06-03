@@ -6890,16 +6890,18 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg> Portal en construcci&oacute;n
     </div>
     <h3 class="cd-section-title">Pr&oacute;ximos hitos del PLADECO</h3>
-    <p class="cd-section-sub">Las fechas son las proyecciones oficiales del proceso de elaboraci&oacute;n e implementaci&oacute;n. La cuenta regresiva se actualiza cada minuto.</p>
+    <p class="cd-section-sub">Las fechas son las proyecciones oficiales del proceso de elaboraci&oacute;n e implementaci&oacute;n del Plan.</p>
   </div>
   <div class="countdown-strip" id="countdownStrip">
-    <div class="countdown-card"><div class="cd-days" id="cd1">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Aprobaci&oacute;n del Plan</div><div class="cd-date">Jun 2026</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar1"></div></div></div>
-    <div class="countdown-card"><div class="cd-days" id="cd2">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Primera Evaluaci&oacute;n</div><div class="cd-date">Dic 2028</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar2"></div></div></div>
-    <div class="countdown-card"><div class="cd-days" id="cd3">--</div><div class="cd-label">d&iacute;as restantes</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3"></div></div></div>
+    <!-- Valores estáticos: countdown deshabilitado (ver nota más abajo). Se muestra el año meta en vez de "días restantes" calculados. -->
+    <div class="countdown-card"><div class="cd-days" id="cd1">2026</div><div class="cd-label">a&ntilde;o meta</div><div class="cd-name">Aprobaci&oacute;n del Plan</div><div class="cd-date">Jun 2026</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar1" style="width:96%"></div></div></div>
+    <div class="countdown-card"><div class="cd-days" id="cd2">2028</div><div class="cd-label">a&ntilde;o meta</div><div class="cd-name">Primera Evaluaci&oacute;n</div><div class="cd-date">Dic 2028</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar2" style="width:35%"></div></div></div>
+    <div class="countdown-card"><div class="cd-days" id="cd3">2035</div><div class="cd-label">a&ntilde;o meta</div><div class="cd-name">Meta Final 2035</div><div class="cd-date">Dic 2035</div><div class="cd-bar"><div class="cd-bar-fill" id="cdBar3" style="width:12%"></div></div></div>
   </div>
   <!-- Bootstrap inline: la cuenta regresiva se popula INMEDIATAMENTE al parsear (sin esperar a updateCountdown del script principal) -->
   <script>
-  (function(){
+  // Desactivado por crasheo — countdown deshabilitado
+  /* (function(){
     try{
       var start=new Date(2025,3,1);
       var targets=[new Date(2026,5,30),new Date(2028,11,31),new Date(2035,11,31)];
@@ -6918,7 +6920,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         }
       }
     }catch(e){}
-  })();
+  })(); */
   </script>
 </section>
 
@@ -27029,7 +27031,8 @@ window.addEventListener('resize',function(){var t;clearTimeout(t);t=setTimeout(r
 // ══════════════════════════════════════════════════════
 // F4/F16: COUNTDOWN + FLIP ANIMATION
 // ══════════════════════════════════════════════════════
-function updateCountdown(){
+// Desactivado por crasheo — countdown deshabilitado
+/* function updateCountdown(){
   const start=new Date(2025,3,1); // Inicio PLADECO abril 2025
   const targets=[new Date(2026,5,30),new Date(2028,11,31),new Date(2035,11,31)];
   const ids=['cd1','cd2','cd3'];
@@ -27044,7 +27047,7 @@ function updateCountdown(){
     const bar=document.getElementById(barIds[i]);
     if(bar){const total=t-start;const elapsed=Date.now()-start;bar.style.width=Math.min(100,Math.max(0,elapsed/total*100)).toFixed(1)+'%';}
   });
-}
+} */
 
 // ══════════════════════════════════════════════════════
 // F5: PROGRESO DE LECTURA
@@ -28533,8 +28536,9 @@ function privacyAnalytics(){
 // INIT NEW FEATURES
 // ══════════════════════════════════════════════════════
 initComparadorUV();
-updateCountdown();
-setInterval(updateCountdown,60000);
+// Desactivado por crasheo — countdown deshabilitado
+// updateCountdown();
+// setInterval(updateCountdown,60000);
 initReadingProgress();
 initShareButtons();
 initFavButtons();
