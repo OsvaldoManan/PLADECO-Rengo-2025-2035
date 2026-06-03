@@ -13127,7 +13127,19 @@ body.dark .prosp-dl dd a{color:#8fb6d6}
 .prosp-disclaimer a:hover{text-decoration:underline}
 body.dark .prosp-disclaimer a{color:#8fb6d6}
 @media(max-width:860px){.prosp-grid{grid-template-columns:1fr}}
-@media(max-width:560px){.prosp-tabla{font-size:11px}.prosp-tabla th,.prosp-tabla td{padding:6px 5px}.prosp-tab{font-size:12px;padding:8px 11px}.prosp-ficha-num{font-size:26px}}
+@media(max-width:560px){
+  .prosp-tab{font-size:12px;padding:8px 11px}
+  .prosp-ficha-num{font-size:26px}
+  /* Tabla resumen APILADA en móvil: cada escenario = una tarjeta (sin scroll horizontal) */
+  .prosp-tabla{display:block!important;width:100%!important;overflow:visible!important;font-size:13px}
+  .prosp-tabla caption{display:block!important;white-space:normal;font-size:11px;line-height:1.4}
+  .prosp-tabla thead{display:none!important}
+  .prosp-tabla tbody{display:block!important;width:100%!important}
+  .prosp-tabla tr{display:block!important;width:auto!important;border:1px solid var(--border);border-radius:11px;background:var(--card);padding:4px 13px 9px;margin-bottom:10px}
+  .prosp-tabla td{display:flex!important;width:auto!important;justify-content:space-between;align-items:baseline;border:none;padding:6px 0;text-align:right;font-variant-numeric:tabular-nums}
+  .prosp-tabla td.prosp-row-head{justify-content:flex-start;font-weight:800;font-size:13.5px;color:var(--text);border-bottom:1px solid var(--border);padding:8px 0;margin-bottom:3px;text-align:left}
+  .prosp-tabla td:not(.prosp-row-head)::before{content:attr(data-label);font-weight:700;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+}
 </style>
 <section id="prospectiva" class="reveal" aria-labelledby="prospH">
   <div class="sec-header">
@@ -13258,8 +13270,8 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     var h='<table class="prosp-tabla"><caption>Valores por año y escenario · '+v.nombre+' ('+v.unidad+')</caption>'+
       '<thead><tr><th>Escenario</th><th>2024</th><th>2030</th><th>2035</th></tr></thead><tbody>';
     ORDEN.forEach(function(k){
-      h+='<tr><td><span class="prosp-dot" style="background:'+COL[k]+'"></span>'+LBLT[k]+'</td>';
-      v.trayectorias[k].forEach(function(val){ h+='<td>'+nf(val)+v.sufijo+'</td>'; });
+      h+='<tr><td class="prosp-row-head"><span class="prosp-dot" style="background:'+COL[k]+'"></span>'+LBLT[k]+'</td>';
+      v.trayectorias[k].forEach(function(val,j){ h+='<td data-label="'+ANIOS[j]+'">'+nf(val)+v.sufijo+'</td>'; });
       h+='</tr>';
     });
     h+='</tbody></table>';
