@@ -6443,7 +6443,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
-    'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
+    'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
     'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
     'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'compromisos':navIco('check'),'financiamiento':navIco('money'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
@@ -13081,6 +13081,217 @@ window.SEGD_DATA={"n":14765,"annual":{"labels":[2023,2024,2025,2026],"data":[417
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuentes:</strong> Diagn&oacute;stico participativo PLADECO 2025 &bull; Encuesta Ciudadana (n=119) &bull; Encuesta NNA (n=4.036) &bull; 120+ entrevistas cualitativas &bull; An&aacute;lisis t&eacute;cnico equipo PLADECO</div>
 </section>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v45.235 · PROSPECTIVA 2035 · ESCENARIOS · módulo autocontenido (Chart.js · lazy-init)
+     Trayectorias 2024–2035 de 4 variables-ancla bajo 3 escenarios. La línea base (2024) usa
+     CIFRAS YA PUBLICADAS en el portal; las proyecciones 2030/2035 son ESTIMACIONES
+     METODOLÓGICAS (no valores oficiales comprometidos), editables por el equipo municipal en
+     el objeto ESCENARIOS. Reutiliza .sv-*; un único gráfico que se destruye/recrea al cambiar
+     de variable (sin fugas, sin temporizadores).
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+#prospectiva{--sv-azul:#1F3864;--sv-azul2:#2E6F95;--sv-teal:#3FA7A0;--sv-naranjo:#b45309;--sv-rojo:#990000;--sv-gris:#94a3b8}
+#prospectiva .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.prosp-intro{max-width:760px;font-size:14px;line-height:1.65;color:var(--text2);margin:14px 0 4px}
+.prosp-intro em{color:var(--text2);opacity:.95}
+.prosp-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.prosp-tab{font:600 12.5px/1.15 'Poppins',system-ui,sans-serif;color:var(--text2);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 13px;cursor:pointer;white-space:nowrap;transition:background .14s,color .14s,border-color .14s}
+.prosp-tab:hover{border-color:#1F3864;color:#1F3864}
+.prosp-tab:focus-visible{outline:2px solid #1F3864;outline-offset:2px}
+.prosp-tab.active{background:#1F3864;border-color:#1F3864;color:#fff}
+body.dark .prosp-tab:hover{border-color:#7ea4d8;color:#7ea4d8}
+.prosp-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;align-items:stretch;margin-bottom:14px}
+.prosp-ficha{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.prosp-ficha-base{display:flex;flex-direction:column;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:12px}
+.prosp-ficha-num{font-size:30px;font-weight:800;color:var(--sv-azul);line-height:1;font-variant-numeric:tabular-nums}
+body.dark .prosp-ficha-num{color:#8fb6d6}
+.prosp-ficha-baselbl{font-size:11px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:5px}
+.prosp-msg{background:rgba(21,128,61,.08);border:1px solid rgba(21,128,61,.25);border-left:3px solid #15803d;border-radius:10px;padding:10px 13px;font-size:13px;font-weight:600;color:var(--text);line-height:1.5;margin-bottom:14px}
+body.dark .prosp-msg{background:rgba(45,154,77,.12)}
+.prosp-dl{margin:0;font-size:12.5px}
+.prosp-dl dt{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);margin-top:11px}
+.prosp-dl dd{margin:2px 0 0;color:var(--text);line-height:1.5}
+.prosp-dl dd a{color:var(--sv-azul);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(31,56,100,.35)}
+body.dark .prosp-dl dd a{color:#8fb6d6}
+.prosp-tabla{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0 2px}
+.prosp-tabla th:first-child,.prosp-tabla td:first-child{width:34%}
+.prosp-tabla caption{text-align:left;font-size:11px;font-weight:700;color:var(--text2);padding:4px 0 8px}
+.prosp-tabla th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);border-bottom:2px solid var(--sv-azul);padding:8px 10px}
+.prosp-tabla td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);font-variant-numeric:tabular-nums}
+.prosp-tabla td:first-child{font-weight:600}
+.prosp-tabla th:not(:first-child),.prosp-tabla td:not(:first-child){text-align:right}
+.prosp-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+.prosp-disclaimer{margin-top:14px;font-size:12px;color:var(--text2);line-height:1.55;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:rgba(180,83,9,.06);border:1px solid rgba(180,83,9,.22);border-radius:10px;padding:11px 15px}
+.prosp-disclaimer a{color:var(--sv-azul);font-weight:700;text-decoration:none;white-space:nowrap}
+.prosp-disclaimer a:hover{text-decoration:underline}
+body.dark .prosp-disclaimer a{color:#8fb6d6}
+@media(max-width:860px){.prosp-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.prosp-tabla{font-size:11px}.prosp-tabla th,.prosp-tabla td{padding:6px 5px}.prosp-tab{font-size:12px;padding:8px 11px}.prosp-ficha-num{font-size:26px}}
+</style>
+<section id="prospectiva" class="reveal" aria-labelledby="prospH">
+  <div class="sec-header">
+    <div class="badge badge--info">PLADECO &middot; Prospectiva 2035</div>
+    <h2 id="prospH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trend"></use></svg> Prospectiva 2035 &middot; Escenarios</h2>
+    <p>C&oacute;mo podr&iacute;an evolucionar cuatro variables-ancla de Rengo hasta 2035, seg&uacute;n las decisiones que tomemos hoy.</p>
+  </div>
+  <p class="prosp-intro">Un <strong>escenario</strong> es un futuro posible, no una predicci&oacute;n. Para cada variable comparamos tres caminos a 2035: <strong style="color:#475569">Tendencial</strong> (si todo sigue igual), <strong style="color:#15803d">Intervenci&oacute;n PLADECO</strong> (si aplicamos el Plan) y <strong style="color:#c0392b">Cr&iacute;tico</strong> (si ocurre un shock). La <strong>distancia entre las l&iacute;neas</strong> es, justamente, lo que el Plan puede cambiar. <em>Las cifras de 2030 y 2035 son estimaciones metodol&oacute;gicas, no valores oficiales comprometidos.</em></p>
+
+  <div class="prosp-tabs" id="prospTabs" role="tablist" aria-label="Variables-ancla del territorio"></div>
+
+  <div class="prosp-grid">
+    <div class="sv-chart-card">
+      <h3 id="prospVarName">&mdash;</h3>
+      <div class="sv-chart-sub" id="prospVarUnit">&mdash;</div>
+      <div class="sv-chart-box" style="height:340px"><canvas id="prospChart" role="img" aria-label="Trayectorias proyectadas 2024&ndash;2035"></canvas></div>
+      <p class="sr-only" id="prospChartDesc"></p>
+    </div>
+    <div class="prosp-ficha" id="prospFicha"></div>
+  </div>
+
+  <div id="prospTablaWrap"></div>
+
+  <div class="prosp-disclaimer">
+    <span><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-info"></use></svg> Proyecciones <strong>estimativas</strong> (modelo metodol&oacute;gico transparente y editable). No son metas oficiales comprometidas; la l&iacute;nea base usa cifras ya publicadas en el portal.</span>
+    <a href="#matriz"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-arrow"></use></svg> Volver a la Matriz Estrat&eacute;gica</a>
+  </div>
+
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>L&iacute;nea base (2024):</strong> Censo 2024 (envejecimiento 13,8%) &middot; diagn&oacute;stico de empleo/ingresos DDEL (formalidad 38%; mediana = 77% del promedio) &middot; Catastro ICT abril 2026, 65 puntos (ICT 48/100). <strong>M&eacute;todo:</strong> las trayectorias 2030/2035 son escenarios construidos por extrapolaci&oacute;n de la l&iacute;nea base con supuestos declarados por variable &mdash; estimaciones metodol&oacute;gicas, no valores oficiales. Editables en el objeto <code>ESCENARIOS</code> del m&oacute;dulo.</div>
+</section>
+<script>
+(function(){
+  var SEC=document.getElementById('prospectiva'); if(!SEC) return;
+
+  /* ════════════════════════════════════════════════════════════════════════
+     ESCENARIOS · OBJETO EDITABLE POR EL EQUIPO MUNICIPAL
+     ────────────────────────────────────────────────────────────────────────
+     base / anioBase  → cifra YA PUBLICADA en el portal (línea base real 2024).
+     trayectorias     → puntos [2024, 2030, 2035] por escenario:
+                          tendencial   = si todo sigue igual (sin nueva intervención)
+                          intervencion = mejora por las políticas del PLADECO
+                          critico      = shock económico/demográfico adverso
+                        ⚠ Los valores 2030/2035 son ESTIMACIONES METODOLÓGICAS
+                          (no oficiales). Editables aquí sin tocar la lógica.
+     mejorEs          → 'alto' o 'bajo' (hacia dónde es "mejor" la variable).
+     eje/palanca/supuesto/mensajeLF → textos de la ficha (mensajeLF = Lectura Fácil).
+     ════════════════════════════════════════════════════════════════════════ */
+  var ANIOS=[2024,2030,2035];
+  var ESCENARIOS=[
+    { key:'envejecimiento', nombre:'Índice de envejecimiento', unidad:'% de población de 65 años y más', sufijo:'%',
+      base:13.8, anioBase:2024, mejorEs:'bajo',
+      eje:'Eje 1 · Cuidado y Bienestar', palanca:'Programas de cuidado, salud comunitaria y arraigo de jóvenes.',
+      supuesto:'Base 13,8% (65+, Censo 2024). Por inercia demográfica, la intervención atenúa el alza pero no la revierte.',
+      mensajeLF:'Si actuamos, el envejecimiento sube más despacio. Si no hacemos nada, sube más rápido.',
+      trayectorias:{ tendencial:[13.8,16.5,19.2], intervencion:[13.8,15.4,17.0], critico:[13.8,17.6,21.8] } },
+    { key:'empleo', nombre:'Empleo formal', unidad:'% de empleo formal', sufijo:'%',
+      base:38, anioBase:2024, mejorEs:'alto',
+      eje:'Eje 2 · Calidad del Empleo', palanca:'DDEL, OMIL y formalización de MIPYMES.',
+      supuesto:'Base 38% de formalidad (62% informal/honorarios). La intervención supone formalización sostenida vía DDEL/OMIL.',
+      mensajeLF:'Si actuamos, hay más trabajo formal. Si no, sigue habiendo mucho trabajo informal.',
+      trayectorias:{ tendencial:[38,41,44], intervencion:[38,46,54], critico:[38,35,33] } },
+    { key:'brecha', nombre:'Brecha de ingresos', unidad:'mediana como % del promedio (mayor = menor brecha)', sufijo:'%',
+      base:77, anioBase:2024, mejorEs:'alto',
+      eje:'Eje 2 · DDEL', palanca:'Capacitación laboral focalizada y encadenamientos productivos.',
+      supuesto:'Mediana $754.760 = 77% del promedio $978.243. Un valor más alto = MENOR brecha (la mediana se acerca al promedio).',
+      mensajeLF:'Si actuamos, los sueldos se emparejan más. Si no, la diferencia crece.',
+      trayectorias:{ tendencial:[77,78,79], intervencion:[77,80,84], critico:[77,75,72] } },
+    { key:'ict', nombre:'Calidad de espacios públicos (ICT)', unidad:'índice ICT 0–100', sufijo:'/100',
+      base:48, anioBase:2024, mejorEs:'alto',
+      eje:'Eje 4 · FRIL/PMU', palanca:'Inversión en infraestructura, áreas verdes, iluminación y accesibilidad.',
+      supuesto:'Base ICT 48/100 (catastro abril 2026, 65 puntos). La intervención supone ejecución sostenida de FRIL/PMU/FNDR en espacios críticos y deficientes.',
+      mensajeLF:'Si actuamos, las plazas y las calles mejoran. Si no, se deterioran.',
+      trayectorias:{ tendencial:[48,51,54], intervencion:[48,60,70], critico:[48,45,41] } }
+  ];
+
+  var COL={ tendencial:'#94a3b8', intervencion:'#15803d', critico:'#c0392b' };
+  var LBL={ tendencial:'Tendencial', intervencion:'Intervención PLADECO', critico:'Crítico' };
+  var LBLT={ tendencial:'Tendencial', intervencion:'PLADECO', critico:'Crítico' };  /* etiqueta corta para la tabla (cabe en móvil sin scroll) */
+  var ORDEN=['tendencial','intervencion','critico'];
+
+  var inited=false, chart=null, active=0;
+  function tk(v,f){try{var c=getComputedStyle(document.body).getPropertyValue(v).trim();return c||f;}catch(e){return f;}}
+  function nf(v){return String(v).replace('.',',');}
+
+  function renderTabs(){
+    var el=document.getElementById('prospTabs'); if(!el) return;
+    el.innerHTML=ESCENARIOS.map(function(v,i){
+      return '<button type="button" class="prosp-tab'+(i===active?' active':'')+'" role="tab" aria-selected="'+(i===active?'true':'false')+'" data-i="'+i+'" aria-label="Ver escenarios de: '+v.nombre+'">'+v.nombre+'</button>';
+    }).join('');
+  }
+
+  function renderChart(){
+    var cv=document.getElementById('prospChart'); if(!cv || typeof Chart==='undefined') return;
+    var v=ESCENARIOS[active];
+    if(chart){ chart.destroy(); chart=null; }   /* destruir antes de recrear: sin fugas */
+    var txt=tk('--text2','#475569'), grid='rgba(128,128,128,.15)';
+    Chart.defaults.font.family="'Poppins',system-ui,sans-serif"; Chart.defaults.color=txt;
+    var all=[].concat(v.trayectorias.tendencial, v.trayectorias.intervencion, v.trayectorias.critico);
+    var mn=Math.min.apply(null,all), mx=Math.max.apply(null,all), pad=Math.max(1,(mx-mn)*0.18);
+    chart=new Chart(cv,{type:'line',
+      data:{labels:ANIOS.map(String), datasets:ORDEN.map(function(k){
+        return {label:LBL[k], data:v.trayectorias[k], borderColor:COL[k], backgroundColor:COL[k],
+          borderWidth:k==='intervencion'?3.2:2, pointRadius:4, pointHoverRadius:6, tension:.3,
+          borderDash:k==='critico'?[6,4]:[]};
+      })},
+      options:{responsive:true, maintainAspectRatio:false, interaction:{intersect:false,mode:'index'},
+        plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:10,font:{size:11.5}}},
+          tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+nf(c.parsed.y)+v.sufijo;}, title:function(it){return 'Año '+ANIOS[it[0].dataIndex];}}}},
+        scales:{x:{grid:{display:false}}, y:{suggestedMin:Math.floor(mn-pad), suggestedMax:Math.ceil(mx+pad), grid:{color:grid}, title:{display:true,text:v.unidad}}}}});
+  }
+
+  function renderFicha(){
+    var el=document.getElementById('prospFicha'); if(!el) return;
+    var v=ESCENARIOS[active];
+    el.innerHTML=
+      '<div class="prosp-ficha-base"><span class="prosp-ficha-num">'+nf(v.base)+v.sufijo+'</span><span class="prosp-ficha-baselbl">Línea base '+v.anioBase+'</span></div>'+
+      '<div class="prosp-msg">'+v.mensajeLF+'</div>'+
+      '<dl class="prosp-dl">'+
+        '<dt>Eje PLADECO</dt><dd><a href="#matriz">'+v.eje+'</a></dd>'+
+        '<dt>Palanca</dt><dd>'+v.palanca+'</dd>'+
+        '<dt>Supuesto</dt><dd>'+v.supuesto+'</dd>'+
+      '</dl>';
+  }
+
+  function renderTabla(){
+    var el=document.getElementById('prospTablaWrap'); if(!el) return;
+    var v=ESCENARIOS[active];
+    var h='<table class="prosp-tabla"><caption>Valores por año y escenario · '+v.nombre+' ('+v.unidad+')</caption>'+
+      '<thead><tr><th>Escenario</th><th>2024</th><th>2030</th><th>2035</th></tr></thead><tbody>';
+    ORDEN.forEach(function(k){
+      h+='<tr><td><span class="prosp-dot" style="background:'+COL[k]+'"></span>'+LBLT[k]+'</td>';
+      v.trayectorias[k].forEach(function(val){ h+='<td>'+nf(val)+v.sufijo+'</td>'; });
+      h+='</tr>';
+    });
+    h+='</tbody></table>';
+    el.innerHTML=h;
+  }
+
+  function renderSR(){
+    var v=ESCENARIOS[active], t=v.trayectorias;
+    var desc=v.nombre+' ('+v.unidad+'). Línea base '+v.anioBase+': '+nf(v.base)+v.sufijo+'. Proyección a 2035 — Tendencial: '+nf(t.tendencial[2])+v.sufijo+'; Intervención PLADECO: '+nf(t.intervencion[2])+v.sufijo+'; Crítico: '+nf(t.critico[2])+v.sufijo+'.';
+    var d=document.getElementById('prospChartDesc'); if(d) d.textContent=desc;
+    var nm=document.getElementById('prospVarName'); if(nm) nm.textContent=v.nombre;
+    var un=document.getElementById('prospVarUnit'); if(un) un.textContent='Trayectorias 2024–2035 · '+v.unidad;
+    var cv=document.getElementById('prospChart'); if(cv) cv.setAttribute('aria-label','Gráfico de líneas. '+desc);
+  }
+
+  function setVar(i){ active=i; renderTabs(); renderSR(); renderChart(); renderFicha(); renderTabla(); }
+
+  function init(){ if(inited) return; inited=true;
+    var tabs=document.getElementById('prospTabs');
+    if(tabs) tabs.addEventListener('click',function(e){ var b=e.target.closest('.prosp-tab'); if(!b) return; setVar(parseInt(b.dataset.i,10)||0); });
+    try{ setVar(0); }catch(e){ console.warn('[prospectiva]',e); }
+  }
+  function show(){ init(); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){init();}});},{rootMargin:'200px'});
+    io.observe(SEC);
+  }
+  window.addEventListener('hashchange',function(){ if(location.hash==='#prospectiva') show(); });
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href="#prospectiva"]'); if(a) setTimeout(show,160); });
+  if(location.hash==='#prospectiva') setTimeout(show,1400);
+})();
+</script>
 
 <!-- ═══ MATRIZ ESTRATÉGICA INTEGRADA ═══ -->
 <section id="matriz" class="me-section reveal">
@@ -25922,6 +26133,7 @@ const CMD_SECTIONS=[
   {id:'ejes',name:'Ejes Estratégicos',svg:'target',cat:'Estrategia',desc:'Los 6 ejes y sus objetivos estratégicos'},
   {id:'foda',name:'Análisis FODA',svg:'eye',cat:'Diagnóstico',desc:'Fortalezas, oportunidades, debilidades y amenazas'},
   {id:'seguridad-publica',name:'Seguridad Pública',svg:'shield',cat:'Diagnóstico',desc:'Delito registrado en Rengo (Ley STOP), 2023–2026'},
+  {id:'prospectiva',name:'Prospectiva 2035 · Escenarios',svg:'trend',cat:'Estrategia',desc:'Trayectorias 2024–2035 de 4 variables-ancla bajo 3 escenarios (tendencial/PLADECO/crítico)'},
   {id:'territorio',name:'Unidades Vecinales',svg:'pin',cat:'Territorio',desc:'Las 21 UV (9 urbanas y 12 rurales)'},
   {id:'comparador-uv',name:'Comparador UV',svg:'calculator',cat:'Territorio',desc:'Compara indicadores entre unidades vecinales'},
   {id:'graficos',name:'Gráficos Analíticos',svg:'chart',cat:'Interactivo',desc:'Gráficos del diagnóstico comunal'},
@@ -35457,7 +35669,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     var caps=[
       {t:'Introducción',ids:['bienvenida','mvv','historia','proceso','equipo']},
       {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','nna','foda','etnografia','comisiones','viz']},
-      {t:'Planificación',ids:['matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento']},
+      {t:'Planificación',ids:['prospectiva','matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','glosario','fuentes']}
     ];
     var h='';

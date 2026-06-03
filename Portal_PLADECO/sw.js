@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.47
+// PLADECO Rengo 2025-2035 · Service Worker v68.48
 // Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// v68.48: v45.235 - NUEVO MODULO #prospectiva ("Prospectiva 2035 · Escenarios"), insertado entre #mvv y #matriz (capitulo Planificacion). Muestra trayectorias 2024-2035 de 4 variables-ancla (envejecimiento 13,8% · empleo formal 38% · brecha de ingresos 77% · ICT espacios publicos 48/100) bajo 3 escenarios (Tendencial/Intervencion PLADECO/Critico) con Chart.js INTERACTIVO (lineas, selector de variable, ficha con eje->#matriz, tabla resumen, version Lectura Facil). Linea base = cifras YA PUBLICADAS; proyecciones 2030/2035 = estimaciones metodologicas declaradas (objeto ESCENARIOS editable por el equipo). Un solo grafico que se DESTRUYE/RECREA al cambiar de variable (sin fugas, sin temporizadores). Registrado en navIco, grupo de vistas Planificacion y buscador CMD_SECTIONS; entrada LF agregada a lectura-facil.json. Verificado: 4 variables, switch sin fuga (98 instancias estables), sin scroll horizontal de pagina (docOverflow=0), sin errores. index.html + lectura-facil.json. Cache bump v68.47 -> v68.48.
 // v68.47: v45.234 - FIX KPIs del hero: contador regresivo -> ESTATICO. CAUSA: DOS sistemas animaban a la vez .hero-stat .num (animateCounters + initCounters v45.38), contando desde 0; en recargas se quedaban mostrando un numero menor/parcial. FIX: (1) animateCounters ahora fija el valor real estatico (sin conteo); (2) se quito '.hero-stat .num' de los selectores de initCounters v45.38. Los KPIs muestran SIEMPRE su valor completo (63.620 / 6 / 225 / 21 / 13-17 / 32) en cada carga. Los demas contadores del portal no se tocaron. Verificado: valores correctos, 0 animando, sin errores. Solo index.html. Cache bump v68.46 -> v68.47.
 // v68.46: v45.233 - FIX layout: contenido descentrado con franja lateral. CAUSA: regla heredada del sidebar ya eliminado -> @media(min-width:901px){#main-content{margin-left:var(--sidebar-w)!important}} con --sidebar-w:0 equivalia a margin-left:0!important, anulando el margin:0 auto del contenedor y pegandolo a la IZQUIERDA (franja vacia a la derecha) en pantallas mas anchas que max-width 1440px. FIX: #main-content vuelve a centrarse (width:100% + margin-left/right:auto en >=901px; margenes 0 en movil). Resets (margin/padding 0) y box-sizing:border-box ya eran globales (no se tocaron). Verificado: 1600px -> centrado (margenes 74.8=74.8px); 390px -> ancho completo; scroll horizontal=0; sin errores. Solo index.html. Cache bump v68.45 -> v68.46.
 // v68.45: v45.232 - CAMBIO 2: cuenta regresiva DESHABILITADA (provocaba crasheo). Se comento (sin borrar, con la nota "Desactivado por crasheo — countdown deshabilitado") los 3 populadores: el bootstrap inline, la funcion updateCountdown() y la llamada + setInterval(updateCountdown,60000). No queda referencia colgante (updateCountdown ya no se invoca). Los 3 cards de la seccion "Proximos hitos" pasan a valores ESTATICOS: el ano meta (2026/2028/2035), etiqueta "ano meta" y barras con ancho fijo (96/35/12%), para que la maqueta no quede vacia ni con error. Verificado: consola sin errores; buscador, tarjetas/graficos y nav inferior siguen operativos. Solo index.html. Cache bump v68.44 -> v68.45.
@@ -192,8 +193,8 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.47';
-const RELEASE='v45.234'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_STATIC='pladeco-static-v68.48';
+const RELEASE='v45.235'; // version legible (user-facing), se muestra en el sello del footer
 const CACHE_IMG='pladeco-img-v2';
 const CACHE_TILES='pladeco-tiles-v2';
 const CACHE_RUNTIME='pladeco-runtime-v51';
