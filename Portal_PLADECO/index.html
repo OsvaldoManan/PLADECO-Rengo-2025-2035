@@ -33365,17 +33365,17 @@ body.dark{
   .main, main{padding:var(--space-lg) var(--space-md) var(--space-2xl)!important}
 }
 
-/* ═══ v45.49 · El contenedor principal despeja el sidebar fijo ═══
-   <main id="main-content"> debe quedar SIEMPRE a la derecha del sidebar
-   fijo en escritorio (≥901px) y a ancho completo en modo drawer (≤900px).
-   Anula el margin:0 auto de las reglas de distribución, que lo centraban
-   y lo dejaban oculto tras el sidebar. var(--sidebar-w) ya vale 64px
-   cuando el sidebar está comprimido, así que cubre ambos estados. */
+/* ═══ v45.233 · FIX centrado del contenedor principal ═══
+   El sidebar fue reemplazado por el topnav, así que --sidebar-w ya es 0. La regla anterior
+   (#main-content{margin-left:var(--sidebar-w)!important}) equivalía a margin-left:0!important
+   y anulaba el margin:0 auto del contenedor, dejándolo pegado a la izquierda con una franja
+   vacía a la derecha en pantallas más anchas que el max-width (--container-full: 1440px).
+   Se restaura el centrado horizontal (width:100% hasta el max-width + márgenes auto). */
 @media screen and (min-width:901px){
-  #main-content{margin-left:var(--sidebar-w)!important}
+  #main-content{width:100%;margin-left:auto!important;margin-right:auto!important}
 }
 @media screen and (max-width:900px){
-  #main-content{margin-left:0!important}
+  #main-content{margin-left:0!important;margin-right:0!important}
 }
 
 /* Grids utilitarios */
