@@ -6438,7 +6438,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'mvv':navIco('institution'),'contexto':navIco('books'),'historia':navIco('scroll'),'educacion':navIco('education'),'encuesta':navIco('clipboard'),
     /* Macro 02 · Diagnóstico */
     'dashboard':navIco('chart'),'ficha-comunal':navIco('doc'),'censo':navIco('clipboard'),'comparador':navIco('scale'),'visualizaciones-avanzadas':navIco('trend'),
-    'ict-espacios-publicos':navIco('tree'),'seguridad-vial':navIco('traffic'),'mbht-bienestar':navIco('heart'),'analisis-estrategico-censo':navIco('target'),'proyeccion-poblacion':navIco('people'),
+    'ict-espacios-publicos':navIco('tree'),'seguridad-vial':navIco('traffic'),'seguridad-publica':navIco('shield'),'mbht-bienestar':navIco('heart'),'analisis-estrategico-censo':navIco('target'),'proyeccion-poblacion':navIco('people'),
     'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
@@ -10203,6 +10203,225 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   window.addEventListener('hashchange',function(){if(location.hash==='#seguridad-vial')show();});
   document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href="#seguridad-vial"]');if(a)setTimeout(show,160);});
   if(location.hash==='#seguridad-vial')setTimeout(show,1400);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v45.230 · DIAGNÓSTICO DE SEGURIDAD PÚBLICA · módulo autocontenido (Chart.js · lazy-init)
+     Fuente: Ley STOP – Carabineros de Chile · 180 semanas (2023–2026) · 14.765 registros.
+     Reutiliza las clases .sv-* (definiendo los --sv-* en #seguridad-publica). Gráficos interactivos.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+#seguridad-publica{--sv-azul:#1F3864;--sv-azul2:#2E6F95;--sv-teal:#3FA7A0;--sv-naranjo:#b45309;--sv-rojo:#990000;--sv-gris:#AEB8C2}
+.segd-tabla{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0 4px}
+.segd-tabla th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);border-bottom:2px solid var(--sv-azul);padding:8px 9px}
+.segd-tabla td{padding:7px 9px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.segd-tabla tr:nth-child(even) td{background:rgba(31,56,100,.025)}
+.segd-tabla td b,.segd-tabla td strong{color:var(--sv-azul)}
+body.dark .segd-tabla td b,body.dark .segd-tabla td strong{color:#8fb6d6}
+.segd-nudos{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:8px 0 4px}
+.segd-nudo{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--nc,#990000);border-radius:12px;padding:14px 16px}
+.segd-nudo b{display:block;color:var(--text);font-size:14px;margin-bottom:4px}
+.segd-nudo span{font-size:13px;color:var(--text2);line-height:1.55}
+@media(max-width:768px){.segd-tabla{font-size:11.5px}.segd-tabla th,.segd-tabla td{padding:6px 6px}}
+</style>
+<section id="seguridad-publica" class="reveal" aria-labelledby="segdH">
+  <div class="sec-header">
+    <div class="badge badge--danger">Diagnóstico Territorial &middot; Seguridad Pública</div>
+    <h2 id="segdH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-shield"></use></svg> Diagn&oacute;stico de Seguridad P&uacute;blica (2023&ndash;2026)</h2>
+    <p>Qu&eacute; delitos se registran en Rengo, c&oacute;mo evolucionan y d&oacute;nde est&aacute;n los focos cr&iacute;ticos.</p>
+    <p class="bloque-lectura">Entre 2023 y 2026 se registraron <strong>14.765 hechos</strong> (&approx; 81 por semana). El delito crece de forma <strong>moderada y sostenida</strong> (+2,9% y +3,2% en a&ntilde;os completos) y est&aacute; <strong>altamente concentrado</strong>: cinco categor&iacute;as explican el <strong>65,4%</strong>. El perfil comunal combina, casi en partes iguales, <strong>violencia de convivencia</strong> (42,8%) y <strong>delitos contra la propiedad</strong> (43,3%). Los focos <em>emergentes</em> &mdash;por sobre lo estad&iacute;sticamente esperado&mdash; son el <strong>control de armas, los robos con fuerza y la Ley de Drogas</strong>.</p>
+  </div>
+
+  <div class="sv-kpis" id="segdKpis" aria-label="Indicadores clave de seguridad"></div>
+
+  <div class="sv-chart-card">
+    <h3>Ranking de registros por categor&iacute;a &middot; 2023&ndash;2026</h3>
+    <div class="sv-chart-sub">Acumulado del per&iacute;odo (a&ntilde;o a la fecha). En rojo, las 5 categor&iacute;as principales (65,4% del total).</div>
+    <div class="sv-chart-box" style="height:560px"><canvas id="segdRanking" aria-label="Ranking de delitos por categor&iacute;a"></canvas></div>
+  </div>
+
+  <div class="sv-charts-grid">
+    <div class="sv-chart-card"><h3>Evoluci&oacute;n anual</h3><div class="sv-chart-sub">Total de registros por a&ntilde;o (2026 parcial, a la semana 21)</div><div class="sv-chart-box"><canvas id="segdEvol"></canvas></div></div>
+    <div class="sv-chart-card"><h3>Composici&oacute;n por macro-grupo</h3><div class="sv-chart-sub">Participaci&oacute;n de cada gran grupo en el total del per&iacute;odo</div><div class="sv-chart-box"><canvas id="segdComp"></canvas></div></div>
+  </div>
+
+  <div class="sv-chart-card">
+    <h3>Serie semanal de registros &middot; 180 semanas</h3>
+    <div class="sv-chart-sub">Registros por semana y media m&oacute;vil de 4 semanas (ene-2023 a may-2026). El valle de nov-2025 es un vac&iacute;o de registro.</div>
+    <div class="sv-chart-box" style="height:330px"><canvas id="segdSerie"></canvas></div>
+  </div>
+
+  <div class="sv-chart-card">
+    <h3>Focos sobre lo esperado (umbral z)</h3>
+    <div class="sv-chart-sub">Umbral (z-score) promedio de la fuente por categor&iacute;a. En rojo, z&gt;1: sistem&aacute;ticamente por sobre lo esperado.</div>
+    <div class="sv-chart-box" style="height:470px"><canvas id="segdUmbral"></canvas></div>
+  </div>
+
+  <div class="sv-chart-card">
+    <h3>Estacionalidad mensual</h3>
+    <div class="sv-chart-sub">Promedio semanal por mes. La convivencia y el consumo de alcohol suben en verano; los robos a inmuebles, en invierno.</div>
+    <div class="sv-chart-box" style="height:340px"><canvas id="segdEstacional"></canvas></div>
+  </div>
+
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chart"></use></svg> Lecturas clave del diagn&oacute;stico</h3>
+  <p class="sv-analisis-sub">Seis lecturas que sintetizan la evidencia y orientan la decisi&oacute;n.</p>
+  <div class="sv-analisis-grid" id="segdAnalisis"></div>
+
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg> Nudos cr&iacute;ticos de seguridad</h3>
+  <p class="sv-analisis-sub">Focos priorizados por carga, lesividad y anomal&iacute;a estad&iacute;stica.</p>
+  <div class="segd-nudos">
+    <div class="segd-nudo" style="--nc:#990000"><b>1 &middot; Violencia interpersonal y de convivencia</b><span>VIF (1.947) y amenazas y ri&ntilde;as (2.565) lideran el per&iacute;odo y se intensifican en verano. Problema estructural, de alta carga social.</span></div>
+    <div class="segd-nudo" style="--nc:#1F3864"><b>2 &middot; Delitos contra la propiedad</b><span>Robos a inmuebles (1.705), hurtos (1.534) y da&ntilde;os (1.901) suman el 43,3%. Los robos a inmuebles son persistentes y peakean en invierno.</span></div>
+    <div class="segd-nudo" style="--nc:#990000"><b>3 &middot; Armas y robos con fuerza (emergente)</b><span>La Ley de control de armas tiene el umbral m&aacute;s alto (z=2,0) y crece +54,5%; los otros robos con fuerza se duplican. Mayor lesividad potencial.</span></div>
+    <div class="segd-nudo" style="--nc:#b45309"><b>4 &middot; Alcohol y drogas en el espacio p&uacute;blico</b><span>Consumo en v&iacute;a p&uacute;blica (1.085) con fuerte estacionalidad estival y Ley de Drogas con umbral elevado (1,47) y al alza.</span></div>
+    <div class="segd-nudo" style="--nc:#475569"><b>5 &middot; Incivilidades en alza</b><span>Suben +31,7% en 2025. De baja lesividad, pero deterioran la percepci&oacute;n de seguridad y anteceden conflictos mayores.</span></div>
+    <div class="segd-nudo" style="--nc:#3FA7A0"><b>6 &middot; Gobernanza del dato</b><span>Una semana sin registro (nov-2025) y un m&oacute;dulo operativo poblado solo desde 2024 advierten sobre la completitud del dato local.</span></div>
+  </div>
+
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-bulb"></use></svg> Recomendaci&oacute;n &middot; L&iacute;neas de acci&oacute;n</h3>
+  <p class="sv-analisis-sub">Medidas preventivas, operativas y de coordinaci&oacute;n, justificadas en los datos. Sujetas a priorizaci&oacute;n del Consejo Comunal de Seguridad P&uacute;blica.</p>
+  <div class="sv-cartera" id="segdCartera"></div>
+
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg> Estrategia PLADECO &middot; indicadores de seguimiento</h3>
+  <p class="sv-analisis-sub">Objetivo de convivencia y seguridad comunal, con indicadores de l&iacute;nea base tomada de esta base, meta y periodicidad.</p>
+  <table class="segd-tabla">
+    <thead><tr><th>Indicador</th><th>L&iacute;nea base (fuente)</th><th>Meta</th><th>Periodicidad</th><th>Responsable</th></tr></thead>
+    <tbody>
+      <tr><td><b>Total anual de registros</b></td><td>4.436 (2025)</td><td>Contener crecimiento (&le; 0% real)</td><td>Anual</td><td>Consejo Comunal Seg. P&uacute;blica</td></tr>
+      <tr><td><b>Tasa de registro (x100.000)</b></td><td>6.697 (2025)</td><td>Reducir 5% a 2027</td><td>Semestral</td><td>Direcci&oacute;n Seg. P&uacute;blica</td></tr>
+      <tr><td><b>Registros de VIF</b></td><td>584 (2025)</td><td>&minus;10% a 2027</td><td>Trimestral</td><td>DIDECO / Salud / OLN</td></tr>
+      <tr><td><b>Robos a inmuebles</b></td><td>471 (2025)</td><td>&minus;10% a 2027 (foco invierno)</td><td>Trimestral</td><td>Seg. P&uacute;blica / Carabineros</td></tr>
+      <tr><td><b>Consumo alcohol/drogas v&iacute;a p&uacute;blica</b></td><td>309 (2025)</td><td>&minus;15% en verano</td><td>Mensual (ene&ndash;mar)</td><td>Seg. P&uacute;blica / SENDA</td></tr>
+      <tr><td><b>Ley de control de armas (registros)</b></td><td>68 (2025)</td><td>Aumentar incautaciones</td><td>Semestral</td><td>Carabineros (OS-7) / Fiscal&iacute;a</td></tr>
+      <tr><td><b>Controles preventivos</b></td><td>1.684 (2025)</td><td>Sostener &ge; 1.700</td><td>Trimestral</td><td>Carabineros</td></tr>
+      <tr><td><b>Semanas con vac&iacute;o de registro</b></td><td>1 (2025)</td><td>0</td><td>Anual</td><td>Observatorio Comunal</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:var(--text2);margin-top:8px">Articulaci&oacute;n multinivel: <strong>comunal</strong> (Unidad de Seguridad P&uacute;blica, Consejo Comunal, DIDECO, SENDA, OLN) &middot; <strong>regional</strong> (Delegaci&oacute;n Presidencial y Gobierno Regional de O'Higgins) &middot; <strong>nacional</strong> (Subsecretar&iacute;a de Prevenci&oacute;n del Delito, Carabineros, PDI, Fiscal&iacute;a, SENDA).</p>
+
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuente:</strong> Ley STOP &ndash; Carabineros de Chile, Sistema de Estad&iacute;stica Delictual (leystop.carabineros.cl). Comuna de Rengo (6115) &middot; 180 semanas continuas (01/2023&ndash;21/2026) &middot; 14.765 registros &middot; extracci&oacute;n 01-06-2026. <strong>Notas:</strong> los totales usan el acumulado &laquo;a&ntilde;o a la fecha&raquo; (coinciden con el resumen oficial); 2026 es parcial (semana 21); una semana figura en 0 (vac&iacute;o de registro); los indicadores operativos existen desde 2024; el umbral es un z-score de la fuente. Elaboraci&oacute;n: equipo PLADECO Rengo.</div>
+</section>
+<script>
+window.SEGD_DATA={"n":14765,"annual":{"labels":[2023,2024,2025,2026],"data":[4179,4299,4436,1851]},"ranking":[{"l":"Amenazas y riñas","t":2565,"p":17.4},{"l":"VIF (violencia intrafamiliar)","t":1947,"p":13.2},{"l":"Daños","t":1901,"p":12.9},{"l":"Robos a inmuebles","t":1705,"p":11.5},{"l":"Hurtos","t":1534,"p":10.4},{"l":"Lesiones leves","t":1159,"p":7.8},{"l":"Consumo alcohol/drogas vía pública","t":1085,"p":7.3},{"l":"Incivilidades","t":626,"p":4.2},{"l":"Robos con violencia/intimid.","t":480,"p":3.3},{"l":"Robos de vehículos","t":369,"p":2.5},{"l":"Violaciones y delitos sexuales","t":226,"p":1.5},{"l":"Lesiones graves","t":183,"p":1.2},{"l":"Lesiones menos graves","t":179,"p":1.2},{"l":"Ley de control de armas","t":177,"p":1.2},{"l":"Receptación","t":151,"p":1.0},{"l":"Ley de drogas","t":151,"p":1.0},{"l":"Robos por sorpresa","t":125,"p":0.8},{"l":"Otros robos con fuerza","t":123,"p":0.8},{"l":"Amenazas con armas","t":61,"p":0.4},{"l":"Otros desórdenes públicos","t":15,"p":0.1},{"l":"Homicidios y femicidios","t":3,"p":0.0}],"macro":{"labels":["Convivencia y violencia","Contra la propiedad","Drogas, alcohol y armas","Orden público e incivilidades"],"data":[6323,6388,1413,641]},"umbral":[{"l":"Ley de control de armas","z":2.0},{"l":"Otros robos con fuerza","z":1.61},{"l":"Ley de drogas","z":1.47},{"l":"Robos por sorpresa","z":1.27},{"l":"Amenazas y riñas","z":0.95},{"l":"Lesiones menos graves","z":0.92},{"l":"Homicidios y femicidios","z":0.92},{"l":"Lesiones leves","z":0.78},{"l":"Receptación","z":0.65},{"l":"Daños","z":0.63},{"l":"Robos de vehículos","z":0.43},{"l":"Hurtos","z":0.42},{"l":"Robos a inmuebles","z":0.39},{"l":"VIF (violencia intrafamiliar)","z":0.28},{"l":"Lesiones graves","z":0.22},{"l":"Robos con violencia/intimid.","z":0.21},{"l":"Consumo alcohol/drogas vía pública","z":0.2},{"l":"Violaciones y delitos sexuales","z":0.19},{"l":"Otros desórdenes públicos","z":-0.71},{"l":"Incivilidades","z":-0.97},{"l":"Amenazas con armas","z":-1.32}],"weekly":[88,82,81,96,112,107,94,97,121,84,85,101,114,87,97,76,67,86,79,76,68,80,71,68,63,76,61,59,74,67,58,65,84,60,63,73,71,72,77,71,89,63,84,51,80,82,77,99,79,93,89,82,70,91,107,86,93,91,91,90,63,72,80,69,96,83,64,75,83,91,66,84,80,77,83,101,85,86,90,71,75,68,74,82,81,65,87,84,86,86,77,98,83,83,69,83,94,92,92,90,70,84,82,66,75,77,89,92,87,80,96,85,68,102,115,92,93,104,79,92,103,97,75,71,98,68,84,86,75,71,69,54,62,87,79,79,81,84,84,63,100,87,94,80,83,73,62,75,89,88,89,0,94,54,78,70,77,85,72,52,89,87,80,74,75,96,64,90,96,80,111,82,88,88,106,87,80,74,84,53],"bounds":[{"y":2023,"i":0},{"y":2024,"i":53},{"y":2025,"i":106},{"y":2026,"i":159}],"monthly":{"meses":["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],"total":[88.6,87.9,90.7,83.1,77.8,73.9,72.8,77.3,81.3,77.7,83.5,78.6],"vif":[12.2,11.9,12.4,9.8,9.8,8.6,7.1,10.7,12.0,9.9,11.8,11.8],"consumo":[7.0,8.4,9.3,5.8,5.1,5.1,3.3,6.5,3.9,6.8,5.3,4.2],"robos":[8.6,8.5,9.9,9.4,9.5,12.2,8.7,9.8,10.5,10.4,8.4,6.6]}};
+(function(){
+  var SEC=document.getElementById('seguridad-publica'); if(!SEC) return;
+  var inited=false, D=window.SEGD_DATA;
+  var NAVY='#1F3864', AZ2='#2E6F95', CR='#990000', AM='#b45309', SL='#475569', TE='#3FA7A0', GR='#AEB8C2', GREEN='#15803d';
+  function tk(v,f){try{var c=getComputedStyle(document.body).getPropertyValue(v).trim();return c||f;}catch(e){return f;}}
+  function dec(x){return String(x).replace('.',',');}
+
+  function renderKPIs(){
+    var K=[
+      {n:'14.765', l:'Registros 2023–2026', col:NAVY},
+      {n:'≈ 81', l:'Promedio por semana', col:AZ2},
+      {n:'65,4%', l:'En 5 categorías (concentración)', col:CR},
+      {n:'+3,2%', l:'Último año completo (2024→2025)', col:AM},
+      {n:'6.697', l:'Tasa de registro x100.000 (2025)', col:TE},
+      {n:'43% / 43%', l:'Propiedad / convivencia', col:SL}
+    ];
+    document.getElementById('segdKpis').innerHTML=K.map(function(c){
+      return '<div class="sv-kpi" style="border-top-color:'+c.col+'"><div class="sv-kpi-num" style="color:'+c.col+'">'+c.n+'</div><div class="sv-kpi-lbl">'+c.l+'</div></div>';
+    }).join('');
+  }
+
+  function renderAnalisis(){
+    var el=document.getElementById('segdAnalisis'); if(!el) return;
+    var A=[
+      {ic:'chart',ac:NAVY,dato:'65,4%',tit:'Alta concentración',txt:'Cinco categorías —amenazas y riñas, VIF, daños, robos a inmuebles y hurtos— explican dos de cada tres registros. Focalizar en ellas concentra el impacto.'},
+      {ic:'scale',ac:CR,dato:'43% / 43%',tit:'Doble carga equilibrada',txt:'Los delitos contra la propiedad (43,3%) y la violencia de convivencia (42,8%) pesan casi lo mismo: la política comunal debe atender ambos frentes a la vez.'},
+      {ic:'calendar',ac:AM,dato:'+14,8%',tit:'Estacionalidad doble',txt:'El verano concentra convivencia y consumo de alcohol en vía pública (que casi se triplica); los robos a inmuebles peakean en invierno. Exige dispositivos desfasados.'},
+      {ic:'warning',ac:CR,dato:'z = 2,0',tit:'Focos emergentes',txt:'El control de armas corre muy por sobre lo esperado y sube 54,5%; los robos con fuerza se duplican. Bajo volumen, pero creciente lesividad.'},
+      {ic:'trend',ac:GREEN,dato:'+3,2%',tit:'Crecimiento contenido',txt:'El total crece poco en años completos, pero su composición migra hacia hechos con arma y con fuerza, lo que deteriora la percepción de seguridad aun con cifras planas.'},
+      {ic:'clipboard',ac:SL,dato:'1 sem.',tit:'Calidad del dato',txt:'Una semana figura sin registro (nov-2025) y el módulo operativo se puebla recién desde 2024. La completitud del dato condiciona una buena focalización.'}
+    ];
+    el.innerHTML=A.map(function(a){
+      return '<div class="sv-acard" style="--ac:'+a.ac+'"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:'+a.ac+'"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-'+a.ic+'"></use></svg></span><span class="sv-acard-titulo">'+a.tit+'</span><span class="sv-acard-dato">'+a.dato+'</span></div><div class="sv-acard-txt">'+a.txt+'</div></div>';
+    }).join('');
+  }
+
+  var CARTERA=[
+    {ic:'heart',t:'Prevención de la violencia intrafamiliar (VIF)',d:'Dupla psicosocial y mediación, con campañas focalizadas en verano (ene–mar), articulando salud, SENDA y la Oficina Local de la Niñez. Justificación: 1.947 registros de VIF y pico estival.',resp:'DIDECO · Salud · SENDA · OLN',plazo:'Permanente'},
+    {ic:'home',t:'Prevención situacional de robos a inmuebles',d:'Iluminación, recuperación de espacios y alarmas comunitarias en las UV de mayor concentración, reforzadas en invierno (may–ago). Justificación: 1.705 robos a inmuebles con pico invernal.',resp:'Seg. Pública · Carabineros',plazo:'Estacional (invierno)'},
+    {ic:'shield',t:'Control de armas, drogas y robos con fuerza',d:'Intensificar controles e incautaciones (hoy ≈5 armas de fuego/año) en coordinación con OS-7 y Fiscalía. Justificación: umbral z=2,0 en Ley de armas y alza de 54,5%.',resp:'Carabineros (OS-7) · Fiscalía',plazo:'Corto'},
+    {ic:'megaphone',t:'Control del alcohol en el espacio público',d:'Reforzar fiscalización de alcohol y oferta recreativa preventiva en verano. Justificación: el consumo en vía pública casi se triplica en verano.',resp:'Seg. Pública · SENDA',plazo:'Estacional (verano)'},
+    {ic:'map',t:'Patrullaje estacional y territorial focalizado',d:'Desplegar por temporada (convivencia/alcohol en verano; intrusión en invierno) y por unidad vecinal, usando esta base como insumo de microplanificación.',resp:'Carabineros · Seg. Pública',plazo:'Permanente'},
+    {ic:'check',t:'Sostener los controles preventivos',d:'Mantener y focalizar los controles, que crecieron de 1.216 (2024) a 1.684 (2025), en los focos y horarios de mayor anomalía.',resp:'Carabineros',plazo:'Permanente'},
+    {ic:'eye',t:'Observatorio Comunal de Seguridad',d:'Institucionalizar esta base como sistema de monitoreo y focalización, asegurando cero semanas sin registro y completando el módulo operativo.',resp:'Municipal · Consejo Comunal',plazo:'Permanente'}
+  ];
+  function renderCartera(){
+    var el=document.getElementById('segdCartera'); if(!el) return;
+    el.innerHTML=CARTERA.map(function(c){
+      return '<div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-'+c.ic+'"></use></svg></span><span class="sv-acc-title">'+c.t+'</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">'+c.d+'<div class="sv-tags"><span class="sv-tag">Resp.: '+c.resp+'</span><span class="sv-tag plazo">Plazo: '+c.plazo+'</span></div></div></div></div>';
+    }).join('');
+    el.addEventListener('click',function(e){var h=e.target.closest('.sv-acc-head'); if(!h) return; var acc=h.parentElement, open=acc.classList.toggle('open'); h.setAttribute('aria-expanded',open?'true':'false');});
+  }
+
+  function charts(){
+    if(typeof Chart==='undefined') return;
+    var txt=tk('--text2','#475569'), grid='rgba(128,128,128,.15)', card=tk('--card','#ffffff');
+    Chart.defaults.font.family="'Poppins',system-ui,sans-serif"; Chart.defaults.color=txt;
+    /* 1 · ranking */
+    var rk=D.ranking;
+    new Chart(document.getElementById('segdRanking'),{type:'bar',
+      data:{labels:rk.map(function(x){return x.l;}),datasets:[{data:rk.map(function(x){return x.t;}),backgroundColor:rk.map(function(_,i){return i<5?CR:NAVY;}),borderRadius:4}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:function(c){return c.parsed.x.toLocaleString('es-CL')+' ('+dec(rk[c.dataIndex].p)+'%)';}}}},
+        scales:{x:{beginAtZero:true,grid:{color:grid}},y:{grid:{display:false},ticks:{font:{size:10.5},autoSkip:false}}}}});
+    /* 2 · evolución anual */
+    var an=D.annual;
+    new Chart(document.getElementById('segdEvol'),{type:'bar',
+      data:{labels:an.labels,datasets:[{data:an.data,backgroundColor:an.labels.map(function(y){return y===2026?'#9db3d1':NAVY;}),borderRadius:5}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:function(c){return c.parsed.y.toLocaleString('es-CL')+(c.label==='2026'?' (parcial)':'');}}}},
+        scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid}}}}});
+    /* 3 · composición doughnut */
+    var mc=D.macro, mtot=mc.data.reduce(function(a,b){return a+b;},0);
+    new Chart(document.getElementById('segdComp'),{type:'doughnut',
+      data:{labels:mc.labels,datasets:[{data:mc.data,backgroundColor:[NAVY,CR,AM,SL],borderColor:card,borderWidth:2}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10.5}}},
+        tooltip:{callbacks:{label:function(c){return c.label+': '+c.parsed.toLocaleString('es-CL')+' ('+dec(Math.round(c.parsed/mtot*1000)/10)+'%)';}}}}}});
+    /* 4 · serie semanal */
+    var wk=D.weekly, roll=wk.map(function(_,i){var a=wk.slice(Math.max(0,i-3),i+1);return Math.round(a.reduce(function(x,y){return x+y;},0)/a.length);});
+    var xlb=wk.map(function(_,i){var b='';D.bounds.forEach(function(z){if(z.i===i)b=String(z.y);});return b;});
+    new Chart(document.getElementById('segdSerie'),{type:'line',
+      data:{labels:wk.map(function(_,i){return i;}),datasets:[
+        {label:'Registros semanales',data:wk,borderColor:'#9db3d1',backgroundColor:'#9db3d1',borderWidth:1,pointRadius:0,tension:.25},
+        {label:'Media móvil 4 sem.',data:roll,borderColor:CR,backgroundColor:CR,borderWidth:2.4,pointRadius:0,tension:.3}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{position:'bottom'},
+        tooltip:{callbacks:{title:function(it){return 'Semana '+(it[0].dataIndex+1);}}}},
+        scales:{x:{grid:{display:false},ticks:{autoSkip:false,maxRotation:0,callback:function(v,i){return xlb[i];}}},y:{beginAtZero:true,grid:{color:grid}}}}});
+    /* 5 · umbral */
+    var um=D.umbral;
+    new Chart(document.getElementById('segdUmbral'),{type:'bar',
+      data:{labels:um.map(function(x){return x.l;}),datasets:[{data:um.map(function(x){return x.z;}),backgroundColor:um.map(function(x){return x.z>=1?CR:(x.z>=0?NAVY:GR);}),borderRadius:3}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:function(c){return 'z = '+dec(c.parsed.x);}}}},
+        scales:{x:{grid:{color:grid},title:{display:true,text:'Umbral (z-score) · z>1 = sobre lo esperado'}},y:{grid:{display:false},ticks:{font:{size:9.5},autoSkip:false}}}}});
+    /* 6 · estacionalidad */
+    var mo=D.monthly;
+    new Chart(document.getElementById('segdEstacional'),{type:'line',
+      data:{labels:mo.meses,datasets:[
+        {label:'Total semanal (eje der.)',data:mo.total,borderColor:NAVY,backgroundColor:NAVY,borderWidth:2,borderDash:[5,4],tension:.35,pointRadius:2,yAxisID:'y1'},
+        {label:'VIF',data:mo.vif,borderColor:CR,backgroundColor:CR,borderWidth:2.4,tension:.35,pointRadius:2,yAxisID:'y'},
+        {label:'Consumo alcohol/drogas',data:mo.consumo,borderColor:AM,backgroundColor:AM,borderWidth:2.4,tension:.35,pointRadius:2,yAxisID:'y'},
+        {label:'Robos a inmuebles',data:mo.robos,borderColor:TE,backgroundColor:TE,borderWidth:2.4,tension:.35,pointRadius:2,yAxisID:'y'}]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:10}}}},
+        scales:{x:{grid:{display:false}},y:{beginAtZero:true,position:'left',grid:{color:grid},title:{display:true,text:'Por categoría / sem.'}},y1:{beginAtZero:true,position:'right',grid:{display:false},title:{display:true,text:'Total / sem.'}}}}});
+  }
+
+  function init(){ if(inited) return; inited=true;
+    try{ renderKPIs(); renderAnalisis(); renderCartera(); }catch(e){ console.warn('[segd] render:',e); }
+    try{ charts(); }catch(e){ console.warn('[segd] charts:',e); }
+  }
+  function show(){ init(); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){init();}});},{rootMargin:'200px'});
+    io.observe(SEC);
+  }
+  window.addEventListener('hashchange',function(){ if(location.hash==='#seguridad-publica') show(); });
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href="#seguridad-publica"]'); if(a) setTimeout(show,160); });
+  if(location.hash==='#seguridad-publica') setTimeout(show,1400);
 })();
 </script>
 
@@ -25718,6 +25937,7 @@ const CMD_SECTIONS=[
   {id:'suenos',name:'Sueños para Rengo',svg:'bulb',cat:'Participación',desc:'Aspiraciones de los vecinos para la comuna'},
   {id:'ejes',name:'Ejes Estratégicos',svg:'target',cat:'Estrategia',desc:'Los 6 ejes y sus objetivos estratégicos'},
   {id:'foda',name:'Análisis FODA',svg:'eye',cat:'Diagnóstico',desc:'Fortalezas, oportunidades, debilidades y amenazas'},
+  {id:'seguridad-publica',name:'Seguridad Pública',svg:'shield',cat:'Diagnóstico',desc:'Delito registrado en Rengo (Ley STOP), 2023–2026'},
   {id:'territorio',name:'Unidades Vecinales',svg:'pin',cat:'Territorio',desc:'Las 21 UV (9 urbanas y 12 rurales)'},
   {id:'comparador-uv',name:'Comparador UV',svg:'calculator',cat:'Territorio',desc:'Compara indicadores entre unidades vecinales'},
   {id:'graficos',name:'Gráficos Analíticos',svg:'chart',cat:'Interactivo',desc:'Gráficos del diagnóstico comunal'},
@@ -35249,7 +35469,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* Estructura de capítulos del portal */
     var caps=[
       {t:'Introducción',ids:['bienvenida','mvv','historia','proceso','equipo']},
-      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','nna','foda','etnografia','comisiones','viz']},
+      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','nna','foda','etnografia','comisiones','viz']},
       {t:'Planificación',ids:['matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','glosario','fuentes']}
     ];
