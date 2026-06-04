@@ -6439,7 +6439,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'mvv':navIco('institution'),'contexto':navIco('books'),'historia':navIco('scroll'),'educacion':navIco('education'),'encuesta':navIco('clipboard'),
     /* Macro 02 · Diagnóstico */
     'dashboard':navIco('chart'),'ficha-comunal':navIco('doc'),'censo':navIco('clipboard'),'comparador':navIco('scale'),'visualizaciones-avanzadas':navIco('trend'),
-    'ict-espacios-publicos':navIco('tree'),'seguridad-vial':navIco('traffic'),'seguridad-publica':navIco('shield'),'mbht-bienestar':navIco('heart'),'analisis-estrategico-censo':navIco('target'),'proyeccion-poblacion':navIco('people'),
+    'ict-espacios-publicos':navIco('tree'),'seguridad-vial':navIco('traffic'),'seguridad-publica':navIco('shield'),'movilidad-vial':navIco('trend'),'mbht-bienestar':navIco('heart'),'analisis-estrategico-censo':navIco('target'),'proyeccion-poblacion':navIco('people'),
     'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
@@ -10425,6 +10425,234 @@ window.SEGD_DATA={"n":14765,"annual":{"labels":[2023,2024,2025,2026],"data":[417
   window.addEventListener('hashchange',function(){ if(location.hash==='#seguridad-publica') show(); });
   document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href="#seguridad-publica"]'); if(a) setTimeout(show,160); });
   if(location.hash==='#seguridad-publica') setTimeout(show,1400);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     v45.237 · SISTEMA VIAL Y MOVILIDAD (PNCV) · módulo autocontenido (Chart.js · lazy-init)
+     Datos REALES del Plan Nacional de Censo Vial (Dirección de Vialidad, MOP), censos 2015–2023,
+     filtrados a los roles de la comuna de Rengo (06-111, 06-112, 06-119) + Ruta 5 (06-091).
+     TMDA por eje = agregación de la fuente (verificada). Emisiones = estimación metodológica
+     declarada (factores en VIAL_DATA.ef). Reutiliza .sv-*; gráficos que se instancian solo si
+     existe el contenedor; sin temporizadores.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+#movilidad-vial{--sv-azul:#1F3864;--sv-azul2:#2E6F95;--sv-teal:#3FA7A0;--sv-naranjo:#b45309;--sv-rojo:#990000;--sv-gris:#94a3b8}
+#movilidad-vial .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.mv-tabla{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0}
+.mv-tabla caption{text-align:left;font-size:11px;font-weight:700;color:var(--text2);padding:4px 0 8px}
+.mv-tabla th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);border-bottom:2px solid var(--sv-azul);padding:8px 9px}
+.mv-tabla td{padding:7px 9px;border-bottom:1px solid var(--border);color:var(--text)}
+.mv-tabla th:not(:first-child),.mv-tabla td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.mv-tabla td:first-child{font-weight:600}
+.mv-tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:10px 0 4px}
+.mv-tl-item{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--tc,#1F3864);border-radius:12px;padding:13px 15px}
+.mv-tl-year{font-size:17px;font-weight:800;color:var(--sv-azul);font-variant-numeric:tabular-nums}
+body.dark .mv-tl-year{color:#8fb6d6}
+.mv-tl-item b{display:block;font-size:13px;color:var(--text);margin:3px 0 4px}
+.mv-tl-item span{font-size:12px;color:var(--text2);line-height:1.5}
+.mv-desafios{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:14px;margin:8px 0 4px}
+.mv-desafio{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--dc,#1F3864);border-radius:12px;padding:15px 17px}
+.mv-desafio b{display:block;color:var(--text);font-size:14px;margin-bottom:5px}
+.mv-desafio span{font-size:12.5px;color:var(--text2);line-height:1.6}
+.mv-refs{font-size:11.5px;color:var(--text2);line-height:1.55;margin:4px 0;padding-left:20px}
+.mv-refs li{margin-bottom:7px}
+@media(max-width:560px){
+  .mv-tabla{display:block!important;width:100%!important;overflow:visible!important}
+  .mv-tabla caption{display:block!important;white-space:normal}
+  .mv-tabla thead{display:none!important}
+  .mv-tabla tbody,.mv-tabla tr{display:block!important;width:auto!important}
+  .mv-tabla tr{border:1px solid var(--border);border-radius:11px;background:var(--card);padding:4px 13px 9px;margin-bottom:10px}
+  .mv-tabla td{display:flex!important;justify-content:space-between;align-items:baseline;border:none;padding:6px 0;text-align:right}
+  .mv-tabla td:first-child{font-weight:800;font-size:13.5px;border-bottom:1px solid var(--border);padding:8px 0;margin-bottom:3px;text-align:left}
+  .mv-tabla td:not(:first-child)::before{content:attr(data-label);font-weight:700;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+}
+</style>
+<section id="movilidad-vial" class="reveal" aria-labelledby="mvH">
+  <div class="sec-header">
+    <div class="badge badge--info">Diagnóstico Territorial &middot; Movilidad &middot; PNCV</div>
+    <h2 id="mvH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trend"></use></svg> Sistema Vial y Movilidad de la Comuna (2015&ndash;2023)</h2>
+    <p>C&oacute;mo se mueve Rengo: demanda, composici&oacute;n y emisiones de su red estructurante, seg&uacute;n el Censo Vial del MOP.</p>
+    <p class="bloque-lectura"><strong>Idea fuerza:</strong> la movilidad de Rengo crece m&aacute;s r&aacute;pido que su poblaci&oacute;n. El eje estructurante <strong>Rosario&ndash;Rengo</strong> pas&oacute; de <strong>5.505 a 8.119 veh/d&iacute;a</strong> (+47% en 8 a&ntilde;os) y el frente urbano norte <strong>Lo de Lobos</strong> creci&oacute; <strong>+75%</strong>. La red comunal cumple una doble funci&oacute;n &mdash;residencial y de conexi&oacute;n&mdash; y opera como respaldo de la Ruta 5. Un hallazgo transversal: los <strong>veh&iacute;culos pesados</strong>, que son 6&ndash;10% del flujo, generan <strong>16&ndash;33% de las emisiones</strong>. <em>Las cifras de tr&aacute;nsito son del PNCV; las emisiones son una estimaci&oacute;n metodol&oacute;gica declarada.</em></p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="sv-kpis" aria-label="Indicadores clave de movilidad">
+    <div class="sv-kpi" style="border-top-color:#1F3864"><div class="sv-kpi-num" style="color:#1F3864">8.119</div><div class="sv-kpi-lbl">TMDA eje Rosario&ndash;Rengo (2023, veh/d&iacute;a)</div></div>
+    <div class="sv-kpi" style="border-top-color:#2E6F95"><div class="sv-kpi-num" style="color:#2E6F95">+47%</div><div class="sv-kpi-lbl">Crecimiento del eje principal 2015&ndash;2023</div></div>
+    <div class="sv-kpi" style="border-top-color:#990000"><div class="sv-kpi-num" style="color:#990000">+75%</div><div class="sv-kpi-lbl">Lo de Lobos (San Mart&iacute;n) &middot; mayor alza</div></div>
+    <div class="sv-kpi" style="border-top-color:#3FA7A0"><div class="sv-kpi-num" style="color:#3FA7A0">5&middot;14</div><div class="sv-kpi-lbl">Ejes analizados &middot; estaciones de control</div></div>
+    <div class="sv-kpi" style="border-top-color:#b45309"><div class="sv-kpi-num" style="color:#b45309">16&ndash;33%</div><div class="sv-kpi-lbl">Emisiones de pesados (6&ndash;10% del flujo)</div></div>
+    <div class="sv-kpi" style="border-top-color:#475569"><div class="sv-kpi-num" style="color:#475569">2021</div><div class="sv-kpi-lbl">Censo afectado por cuarentena (leer como tendencia)</div></div>
+  </div>
+
+  <!-- 1 · GRÁFICOS INTERACTIVOS -->
+  <div class="sv-chart-card">
+    <h3>Evoluci&oacute;n de la demanda (TMDA) por eje</h3>
+    <div class="sv-chart-sub">Tr&aacute;nsito Medio Diario Anual (veh/d&iacute;a) por censo. El a&ntilde;o 2021 est&aacute; afectado por cuarentenas: interpretar como tendencia.</div>
+    <div class="sv-chart-box" style="height:360px"><canvas id="mvTmda" role="img" aria-label="Evoluci&oacute;n del TMDA por eje, 2015 a 2023"></canvas></div>
+    <p class="sr-only" id="mvTmdaDesc"></p>
+  </div>
+  <div class="sv-charts-grid">
+    <div class="sv-chart-card"><h3>Composici&oacute;n vehicular por eje (2023)</h3><div class="sv-chart-sub">Distribuci&oacute;n porcentual por tipo de veh&iacute;culo</div><div class="sv-chart-box" style="height:330px"><canvas id="mvComp"></canvas></div></div>
+    <div class="sv-chart-card"><h3>Brecha flujo &rarr; emisiones (pesados)</h3><div class="sv-chart-sub">Participaci&oacute;n de camiones, semirremolques y remolques en el flujo vs. en las emisiones de CO&#8322;</div><div class="sv-chart-box" style="height:330px"><canvas id="mvBrecha"></canvas></div></div>
+  </div>
+  <div class="sv-chart-card">
+    <h3>Demanda por estaci&oacute;n / localidad (2023)</h3>
+    <div class="sv-chart-sub">TMDA por punto de control, agrupado por eje &middot; permite comparar localidades</div>
+    <div class="sv-chart-box" style="height:430px"><canvas id="mvEst"></canvas></div>
+  </div>
+
+  <!-- 2 · LÍNEA TEMPORAL -->
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg> L&iacute;nea temporal de la movilidad comunal</h3>
+  <p class="sv-analisis-sub">Cronolog&iacute;a 2015&ndash;2023 y proyecci&oacute;n, con su dato de respaldo.</p>
+  <div class="mv-tl">
+    <div class="mv-tl-item" style="--tc:#1F3864"><div class="mv-tl-year">2015</div><b>L&iacute;nea base PNCV</b><span>Eje Rosario&ndash;Rengo: <strong>5.505</strong> veh/d&iacute;a. Red comunal mayoritariamente liviana.</span></div>
+    <div class="mv-tl-item" style="--tc:#2E6F95"><div class="mv-tl-year">2017</div><b>Censo poblacional</b><span>Rengo alcanza <strong>58.825 hab.</strong> (+15,7% vs 2002): una de las comunas m&aacute;s pobladas de O'Higgins.</span></div>
+    <div class="mv-tl-item" style="--tc:#3FA7A0"><div class="mv-tl-year">2019</div><b>Consolidaci&oacute;n San Mart&iacute;n</b><span>Crecimiento inmobiliario del frente norte; Lo de Lobos sube a <strong>2.351</strong> veh/d&iacute;a.</span></div>
+    <div class="mv-tl-item" style="--tc:#b45309"><div class="mv-tl-year">2021</div><b>Censo en pandemia</b><span>Medici&oacute;n afectada por cuarentanas (punto en cuarentena en varias estaciones). Leer como tendencia, no como nivel.</span></div>
+    <div class="mv-tl-item" style="--tc:#990000"><div class="mv-tl-year">2023</div><b>Salto de demanda</b><span>Rosario&ndash;Rengo <strong>8.119</strong> (+47% vs 2015); Lo de Lobos <strong>3.643</strong> (+75%). Conurbaci&oacute;n Rosario&ndash;Rengo.</span></div>
+    <div class="mv-tl-item" style="--tc:#475569"><div class="mv-tl-year">2035</div><b>Proyecci&oacute;n (a CAGR observado)</b><span>De mantenerse la tendencia, el eje principal superar&iacute;a los <strong>~14.600</strong> veh/d&iacute;a. <em>Estimaci&oacute;n.</em></span></div>
+  </div>
+
+  <!-- 3 · ANÁLISIS DE DATOS -->
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chart"></use></svg> An&aacute;lisis de los datos</h3>
+  <p class="sv-analisis-sub">Diagn&oacute;stico cuantitativo del sistema vial comunal.</p>
+  <div class="sv-analisis-grid">
+    <div class="sv-acard" style="--ac:#1F3864"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:#1F3864"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></span><span class="sv-acard-titulo">Jerarqu&iacute;a funcional</span><span class="sv-acard-dato">8.119</span></div><div class="sv-acard-txt"><strong>Evidencia:</strong> Rosario&ndash;Rengo concentra la mayor demanda (8.119) y el mayor &iacute;ndice de emisiones. <strong>Interpretaci&oacute;n:</strong> es la columna vertebral de la red; su est&aacute;ndar condiciona a toda la comuna.</div></div>
+    <div class="sv-acard" style="--ac:#990000"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:#990000"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trend"></use></svg></span><span class="sv-acard-titulo">Crecimiento (CAGR)</span><span class="sv-acard-dato">+7,2%</span></div><div class="sv-acard-txt"><strong>Evidencia:</strong> Lo de Lobos y Las Nieves crecen al 7,2% anual; el eje principal al 5,0%. <strong>Opini&oacute;n anal&iacute;tica:</strong> la demanda crece m&aacute;s r&aacute;pido que la poblaci&oacute;n (+15,7% en 15 a&ntilde;os) &mdash; presi&oacute;n estructural sobre la red.</div></div>
+    <div class="sv-acard" style="--ac:#b45309"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:#b45309"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg></span><span class="sv-acard-titulo">Brecha de emisiones</span><span class="sv-acard-dato">6&rarr;33%</span></div><div class="sv-acard-txt"><strong>Evidencia:</strong> los pesados son 6&ndash;10% del flujo pero 16&ndash;33% de las emisiones de CO&#8322;. <strong>Implicancia:</strong> una pol&iacute;tica de carga focalizada rinde m&aacute;s que medidas sobre el parque liviano.</div></div>
+    <div class="sv-acard" style="--ac:#3FA7A0"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:#3FA7A0"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-link"></use></svg></span><span class="sv-acard-titulo">Dependencia de Ruta 5</span><span class="sv-acard-dato">4.863</span></div><div class="sv-acard-txt"><strong>Evidencia:</strong> la Ruta 5 (Longitudinal Sur) mueve 4.863 veh/d&iacute;a en el tramo comunal. <strong>Interpretaci&oacute;n:</strong> la red local es su respaldo ante siniestros; su resiliencia es estrat&eacute;gica.</div></div>
+    <div class="sv-acard" style="--ac:#2E6F95"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:#2E6F95"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-people"></use></svg></span><span class="sv-acard-titulo">Composici&oacute;n liviana</span><span class="sv-acard-dato">~87%</span></div><div class="sv-acard-txt"><strong>Evidencia:</strong> autos + camionetas son ~87% del flujo. <strong>Implicancia:</strong> alta dependencia del veh&iacute;culo particular &mdash; espacio para transporte p&uacute;blico y movilidad activa.</div></div>
+    <div class="sv-acard" style="--ac:#475569"><div class="sv-acard-top"><span class="sv-acard-ico" style="color:#475569"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg></span><span class="sv-acard-titulo">Supuestos y l&iacute;mites</span><span class="sv-acard-dato">PNCV</span></div><div class="sv-acard-txt"><strong>M&eacute;todo:</strong> TMDA del PNCV (MOP); 2021 afectado por cuarentena; las emisiones usan factores CO&#8322; declarados por tipo de veh&iacute;culo; la proyecci&oacute;n extrapola el CAGR observado.</div></div>
+  </div>
+  <table class="mv-tabla">
+    <caption>TMDA por eje (veh/día), censos 2015–2023, CAGR y proyección 2035 (a CAGR observado · estimación)</caption>
+    <thead><tr><th>Eje (rol PNCV)</th><th>2015</th><th>2019</th><th>2021*</th><th>2023</th><th>CAGR</th><th>2035**</th></tr></thead>
+    <tbody>
+      <tr><td>Rosario&ndash;Rengo (06-111)</td><td data-label="2015">5.504</td><td data-label="2019">5.656</td><td data-label="2021*">7.649</td><td data-label="2023">8.119</td><td data-label="CAGR">+5,0%</td><td data-label="2035**">~14.580</td></tr>
+      <tr><td>Lo de Lobos (06-111)</td><td data-label="2015">2.084</td><td data-label="2019">2.351</td><td data-label="2021*">3.537</td><td data-label="2023">3.643</td><td data-label="CAGR">+7,2%</td><td data-label="2035**">~8.390</td></tr>
+      <tr><td>Rengo&ndash;Q. Tilcoco (06-112)</td><td data-label="2015">2.450</td><td data-label="2019">3.038</td><td data-label="2021*">4.266</td><td data-label="2023">3.791</td><td data-label="CAGR">+5,6%</td><td data-label="2035**">~7.290</td></tr>
+      <tr><td>Rengo&ndash;Las Nieves (06-119)</td><td data-label="2015">1.234</td><td data-label="2019">1.595</td><td data-label="2021*">2.262</td><td data-label="2023">2.155</td><td data-label="CAGR">+7,2%</td><td data-label="2035**">~4.960</td></tr>
+      <tr><td>Ruta 5 · Long. Sur (06-091)</td><td data-label="2015">3.183</td><td data-label="2019">4.199</td><td data-label="2021*">4.720</td><td data-label="2023">4.863</td><td data-label="CAGR">+5,4%</td><td data-label="2035**">~9.140</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;color:var(--text2);margin-top:6px">* 2021 afectado por cuarentenas (leer como tendencia). ** Proyecci&oacute;n a CAGR observado (estimaci&oacute;n metodol&oacute;gica, no compromiso oficial). Fuente: PNCV &mdash; Direcci&oacute;n de Vialidad, MOP.</p>
+
+  <!-- 4 · RECOMENDACIONES -->
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-bulb"></use></svg> Recomendaciones estrat&eacute;gicas &middot; priorizaci&oacute;n de inversiones</h3>
+  <p class="sv-analisis-sub">Cartera priorizada para la red comunal, articulada con el PLADECO de Rengo y la ERD de O'Higgins. Sujeta a priorizaci&oacute;n del Concejo y al Sistema Nacional de Inversiones.</p>
+  <div class="sv-cartera" id="mvCartera">
+    <div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></span><span class="sv-acc-title">1 &middot; IDIM Av. La Piscina&ndash;Orompello (corredor Rosario&ndash;Rengo)</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">Prioridad m&aacute;xima: act&uacute;a sobre el eje de mayor demanda (8.119) y mayor &iacute;ndice de emisiones. Mejora la conectividad del frente urbano norte y descomprime el casco central. <div class="sv-tags"><span class="sv-tag">Instrumento: IDIM / FNDR</span><span class="sv-tag plazo">Plazo: Corto&ndash;Mediano</span></div></div></div></div>
+    <div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-buildings"></use></svg></span><span class="sv-acc-title">2 &middot; Est&aacute;ndar estructural del corredor norte</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">Pavimento y secci&oacute;n acordes a +47% de demanda y a la carga pesada; calle segura (cruces, veredas, segregaci&oacute;n) en los tramos residencial&ndash;conexi&oacute;n.<div class="sv-tags"><span class="sv-tag">Instrumento: MOP Vialidad / FNDR</span><span class="sv-tag plazo">Plazo: Mediano</span></div></div></div></div>
+    <div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-gear"></use></svg></span><span class="sv-acc-title">3 &middot; Gesti&oacute;n de carga y mitigaci&oacute;n de emisiones</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">Dado que los pesados explican 16&ndash;33% de las emisiones, evaluar ruteo de carga, horarios y conexi&oacute;n directa a Ruta 5 para reducir su paso por &aacute;reas residenciales.<div class="sv-tags"><span class="sv-tag">Instrumento: MOP / SECTRA</span><span class="sv-tag plazo">Plazo: Mediano</span></div></div></div></div>
+    <div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-people"></use></svg></span><span class="sv-acc-title">4 &middot; Transporte p&uacute;blico y movilidad activa (San Mart&iacute;n)</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">Ante +75% en Lo de Lobos y ~87% de flujo liviano: ciclov&iacute;as, veredas continuas y mejor cobertura de locomoci&oacute;n colectiva para contener la dependencia del auto.<div class="sv-tags"><span class="sv-tag">Instrumento: MINVU / FNDR</span><span class="sv-tag plazo">Plazo: Mediano&ndash;Largo</span></div></div></div></div>
+    <div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-shield"></use></svg></span><span class="sv-acc-title">5 &middot; Seguridad vial en ejes residencial&ndash;conexi&oacute;n</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">Coordinar con el diagn&oacute;stico de <a href="#seguridad-vial">Seguridad Vial</a>: la coexistencia de tr&aacute;nsito de paso y vida de barrio exige Zonas 30, pasos seguros e iluminaci&oacute;n en el corredor central.<div class="sv-tags"><span class="sv-tag">Instrumento: SUBDERE PMU / CONASET</span><span class="sv-tag plazo">Plazo: Corto</span></div></div></div></div>
+    <div class="sv-acc"><button class="sv-acc-head" type="button" aria-expanded="false"><span class="sv-acc-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-eye"></use></svg></span><span class="sv-acc-title">6 &middot; Observatorio de Movilidad y articulaci&oacute;n multinivel</span><span class="sv-acc-chevron">&#9654;</span></button><div class="sv-acc-body"><div class="sv-acc-inner">Monitoreo permanente del TMDA y emisiones, vinculado al PLADECO de Rengo, la ERD de O'Higgins y la postulaci&oacute;n al SNI; coordinaci&oacute;n comunal&ndash;regional&ndash;nacional.<div class="sv-tags"><span class="sv-tag">Instrumento: SECPLAC / GORE</span><span class="sv-tag plazo">Plazo: Permanente</span></div></div></div></div>
+  </div>
+
+  <h4 style="font-size:13px;color:var(--sv-azul);margin:16px 0 4px;font-weight:800">Matriz de indicadores de seguimiento</h4>
+  <table class="mv-tabla">
+    <caption>Indicadores comunales de movilidad · línea base PNCV</caption>
+    <thead><tr><th>Indicador</th><th>L&iacute;nea base</th><th>Meta</th><th>Periodicidad</th></tr></thead>
+    <tbody>
+      <tr><td>TMDA eje Rosario&ndash;Rengo</td><td data-label="Base">8.119 (2023)</td><td data-label="Meta">Monitorear capacidad</td><td data-label="Periodicidad">Bienal (censo MOP)</td></tr>
+      <tr><td>Participaci&oacute;n de pesados en emisiones</td><td data-label="Base">16&ndash;33%</td><td data-label="Meta">Reducir v&iacute;a ruteo de carga</td><td data-label="Periodicidad">Bienal</td></tr>
+      <tr><td>Cobertura de locomoci&oacute;n colectiva</td><td data-label="Base">~6,6% del flujo</td><td data-label="Meta">Aumentar</td><td data-label="Periodicidad">Anual</td></tr>
+      <tr><td>Km de corredor con est&aacute;ndar seguro</td><td data-label="Base">0 (IDIM en cartera)</td><td data-label="Meta">Ejecutar La Piscina&ndash;Orompello</td><td data-label="Periodicidad">Anual</td></tr>
+      <tr><td>Km de ciclov&iacute;a / vereda continua</td><td data-label="Base">por catastrar</td><td data-label="Meta">Red conectada San Mart&iacute;n&ndash;centro</td><td data-label="Periodicidad">Anual</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 5 · DESAFÍOS NACIONALES E INTERNACIONALES -->
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-globe"></use></svg> Desaf&iacute;os nacionales e internacionales</h3>
+  <p class="sv-analisis-sub">El caso de Rengo en debates m&aacute;s amplios de movilidad y desarrollo territorial.</p>
+  <div class="mv-desafios">
+    <div class="mv-desafio" style="--dc:#1F3864"><b>Resiliencia de redes viales</b><span>La dependencia de corredores estructurantes (Ruta 5) exige redundancia: la red local como respaldo ante cortes. Debate global sobre robustez y rutas alternativas.</span></div>
+    <div class="mv-desafio" style="--dc:#15803d"><b>Descarbonizaci&oacute;n del transporte</b><span>Chile comprometi&oacute; carbono neutralidad a 2050 y metas en su NDC. El transporte es clave: electromovilidad de buses, gesti&oacute;n de carga y modos activos.</span></div>
+    <div class="mv-desafio" style="--dc:#b45309"><b>Calidad del aire y salud</b><span>Las emisiones de pesados sobre ejes residenciales impactan la salud. Integrar movilidad, uso de suelo y salud p&uacute;blica en la planificaci&oacute;n comunal.</span></div>
+    <div class="mv-desafio" style="--dc:#990000"><b>Financiamiento subnacional</b><span>La inversi&oacute;n vial comunal depende de FNDR/PMU/sectorial. La descentralizaci&oacute;n fiscal y la capacidad de formulaci&oacute;n al SNI son determinantes.</span></div>
+    <div class="mv-desafio" style="--dc:#475569"><b>Gobernanza <em>place-based</em></b><span>Enfoques de desarrollo basados en el lugar: decisiones ancladas al territorio, con coordinaci&oacute;n multinivel, capital social y <em>accountability</em> democr&aacute;tica.</span></div>
+  </div>
+
+  <!-- REFERENCIAS APA 7 -->
+  <h3 class="sv-analisis-head"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg> Referencias (APA 7)</h3>
+  <ol class="mv-refs">
+    <li>Banister, D. (2008). The sustainable mobility paradigm. <em>Transport Policy, 15</em>(2), 73&ndash;80.</li>
+    <li>Barca, F., McCann, P., &amp; Rodr&iacute;guez-Pose, A. (2012). The case for regional development intervention: Place-based versus place-neutral approaches. <em>Journal of Regional Science, 52</em>(1), 134&ndash;152.</li>
+    <li>Biblioteca del Congreso Nacional de Chile. (2006). <em>Ley N&deg; 18.695, Org&aacute;nica Constitucional de Municipalidades</em>. BCN.</li>
+    <li>Direcci&oacute;n de Vialidad, Ministerio de Obras P&uacute;blicas. (2015&ndash;2023). <em>Plan Nacional de Censo Vial: vol&uacute;menes de tr&aacute;nsito, Regi&oacute;n del Libertador General Bernardo O'Higgins</em>. MOP.</li>
+    <li>Gobierno Regional de O'Higgins. (2021). <em>Estrategia Regional de Desarrollo O'Higgins 2021&ndash;2030</em>. GORE O'Higgins.</li>
+    <li>Instituto Nacional de Estad&iacute;sticas. (2018). <em>Resultados del Censo de Poblaci&oacute;n y Vivienda 2017</em>. INE.</li>
+    <li>Ministerio del Medio Ambiente. (2020). <em>Contribuci&oacute;n Determinada a Nivel Nacional (NDC) de Chile &mdash; actualizaci&oacute;n 2020</em>. MMA.</li>
+    <li>Rodrigue, J.-P. (2020). <em>The geography of transport systems</em> (5.&ordf; ed.). Routledge.</li>
+  </ol>
+
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuente primaria:</strong> Plan Nacional de Censo Vial (PNCV), Direcci&oacute;n de Vialidad, MOP &middot; censos 2015, 2019, 2021 y 2023, Regi&oacute;n de O'Higgins &middot; roles 06-111, 06-112, 06-119 (comuna de Rengo) y 06-091 (Ruta 5). <strong>Notas:</strong> indicador base TMDA (veh/d&iacute;a); el TMDA por eje agrega las estaciones del rol (verificado contra la s&iacute;ntesis); 2021 afectado por cuarentenas; las <strong>emisiones son una estimaci&oacute;n metodol&oacute;gica</strong> con factores CO&#8322; por tipo de veh&iacute;culo (editables), no medici&oacute;n directa; las proyecciones extrapolan el CAGR observado. Procesamiento: equipo PLADECO Rengo.</div>
+</section>
+<script>
+window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","nombre":"Rosario–Rengo (estructurante norte)","rol":"06-111","ruta":"H-511","funcion":"Eje estructurante norte · enlace Ruta 5","tmda":{"2015":5504,"2019":5656,"2021":7649,"2023":8119},"cagr":5.0,"comp":{"autos":66.9,"camionetas":20.27,"c2e":4.46,"cmas":1.19,"semi":0.26,"rem":0.28,"loc":6.64},"pes_flujo":6.2,"pes_emis":15.7,"emis_idx":1836.0},{"key":"lo_de_lobos","nombre":"Ramal Lo de Lobos","rol":"06-111","ruta":"H-521","funcion":"Frente urbano norte (sector San Martín)","tmda":{"2015":2084,"2019":2351,"2021":3537,"2023":3643},"cagr":7.2,"comp":{"autos":59.08,"camionetas":27.94,"c2e":4.84,"cmas":3.29,"semi":0.77,"rem":0.76,"loc":3.32},"pes_flujo":9.7,"pes_emis":27.2,"emis_idx":838.0},{"key":"tilcoco","nombre":"Rengo–Quinta de Tilcoco","rol":"06-112","ruta":"H-60","funcion":"Conexión oriente / intercomunal","tmda":{"2015":2450,"2019":3038,"2021":4266,"2023":3791},"cagr":5.6,"comp":{"autos":63.74,"camionetas":25.48,"c2e":4.13,"cmas":2.59,"semi":0.61,"rem":2.98,"loc":0.47},"pes_flujo":10.3,"pes_emis":32.8,"emis_idx":833.0},{"key":"las_nieves","nombre":"Rengo–Las Nieves","rol":"06-119","ruta":"H-65/H-665","funcion":"Eje precordillerano","tmda":{"2015":1234,"2019":1595,"2021":2262,"2023":2155},"cagr":7.2,"comp":{"autos":62.76,"camionetas":22.42,"c2e":5.77,"cmas":1.84,"semi":0.29,"rem":0.4,"loc":6.52},"pes_flujo":8.3,"pes_emis":20.4,"emis_idx":508.0},{"key":"ruta5","nombre":"Ruta 5 · Longitudinal Sur","rol":"06-091","ruta":"H-50","funcion":"Corredor nacional (del que depende la red local)","tmda":{"2015":3183,"2019":4199,"2021":4720,"2023":4863},"cagr":5.4,"comp":{"autos":66.1,"camionetas":24.46,"c2e":3.68,"cmas":2.11,"semi":0.6,"rem":1.05,"loc":2.0},"pes_flujo":7.4,"pes_emis":23.2,"emis_idx":1022.0}],"estaciones":[{"eje":"Ruta 5","nombre":"Longitudinal Sur","tmda":5403},{"eje":"Ruta 5","nombre":"Quinta De Tilcoco","tmda":6270},{"eje":"Ruta 5","nombre":"Requinoa","tmda":2915},{"eje":"Rosario–Rengo","nombre":"Rosario","tmda":8142},{"eje":"Rosario–Rengo","nombre":"Rengo","tmda":8096},{"eje":"Rosario–Rengo","nombre":"Ruta 5 (conector)","tmda":2112},{"eje":"Rosario–Rengo","nombre":"Lo De Lobos","tmda":3643},{"eje":"Rengo–Q. Tilcoco","nombre":"Rengo","tmda":5452},{"eje":"Rengo–Q. Tilcoco","nombre":"Quinta De Tilcoco","tmda":4967},{"eje":"Rengo–Q. Tilcoco","nombre":"Camarico","tmda":954},{"eje":"Rengo–Las Nieves","nombre":"Rengo","tmda":3917},{"eje":"Rengo–Las Nieves","nombre":"Las Nieves","tmda":1506},{"eje":"Rengo–Las Nieves","nombre":"Chianquiahue","tmda":2789},{"eje":"Rengo–Las Nieves","nombre":"La Chimba","tmda":410}]};
+(function(){
+  var SEC=document.getElementById('movilidad-vial'); if(!SEC) return;
+  var D=window.VIAL_DATA, inited=false;
+  var EJE_COL={'Ruta 5':'#475569','Rosario–Rengo':'#1F3864','Rengo–Q. Tilcoco':'#b45309','Rengo–Las Nieves':'#3FA7A0'};
+  var CORTO=['Rosario–Rengo','Lo de Lobos','Q. Tilcoco','Las Nieves','Ruta 5'];
+  var LINE_COL=['#1F3864','#2E6F95','#b45309','#3FA7A0','#990000'];
+  var VLAB={autos:'Autos',camionetas:'Camionetas',c2e:'Camión 2 ejes',cmas:'Camión +2 ejes',semi:'Semirremolque',rem:'Remolque',loc:'Loc. colectiva'};
+  var VCOL={autos:'#9db3d1',camionetas:'#3FA7A0',c2e:'#b45309',cmas:'#c97014',semi:'#990000',rem:'#7a1f1f',loc:'#1F3864'};
+  var VKEYS=['autos','camionetas','c2e','cmas','semi','rem','loc'];
+  function tk(v,f){try{var c=getComputedStyle(document.body).getPropertyValue(v).trim();return c||f;}catch(e){return f;}}
+  function nf(n){return (n||0).toLocaleString('es-CL');}
+  function charts(){
+    if(typeof Chart==='undefined') return;
+    var txt=tk('--text2','#475569'), grid='rgba(128,128,128,.15)', card=tk('--card','#fff');
+    Chart.defaults.font.family="'Poppins',system-ui,sans-serif"; Chart.defaults.color=txt;
+    /* 1 · TMDA evolución por eje */
+    var c1=document.getElementById('mvTmda');
+    if(c1) new Chart(c1,{type:'line',
+      data:{labels:D.years.map(String),datasets:D.ejes.map(function(e,i){return {label:CORTO[i],data:D.years.map(function(y){return e.tmda[String(y)];}),borderColor:LINE_COL[i],backgroundColor:LINE_COL[i],borderWidth:e.key==='rosario_rengo'?3.2:2,tension:.3,pointRadius:3,pointHoverRadius:5};})},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},
+        plugins:{legend:{position:'bottom',labels:{usePointStyle:true,boxWidth:10,font:{size:11}}},
+          tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+nf(c.parsed.y)+' veh/día';}}}},
+        scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid},title:{display:true,text:'TMDA (veh/día)'}}}}});
+    var sd=document.getElementById('mvTmdaDesc'); if(sd) sd.textContent='Evolución del TMDA por eje 2015–2023. Rosario–Rengo sube de 5.504 a 8.119 veh/día; Lo de Lobos de 2.084 a 3.643. El año 2021 está afectado por cuarentenas.';
+    /* 2 · Composición por eje (barras apiladas %) */
+    var c2=document.getElementById('mvComp');
+    if(c2) new Chart(c2,{type:'bar',
+      data:{labels:CORTO,datasets:VKEYS.map(function(k){return {label:VLAB[k],data:D.ejes.map(function(e){return e.comp[k];}),backgroundColor:VCOL[k],borderWidth:0};})},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},
+          tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+String(c.parsed.y).replace('.',',')+'%';}}}},
+        scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,max:100,grid:{color:grid},title:{display:true,text:'% del flujo'}}}}});
+    /* 3 · Brecha pesados flujo vs emisiones */
+    var c3=document.getElementById('mvBrecha');
+    if(c3) new Chart(c3,{type:'bar',
+      data:{labels:CORTO,datasets:[{label:'% del flujo',data:D.ejes.map(function(e){return e.pes_flujo;}),backgroundColor:'#9db3d1',borderRadius:4},{label:'% de emisiones CO₂',data:D.ejes.map(function(e){return e.pes_emis;}),backgroundColor:'#990000',borderRadius:4}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},
+          tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+String(c.parsed.y).replace('.',',')+'%';}}}},
+        scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:grid},title:{display:true,text:'% (pesados)'}}}}});
+    /* 4 · TMDA por estación (barras horizontales) */
+    var c4=document.getElementById('mvEst');
+    if(c4){ var es=D.estaciones.slice().sort(function(a,b){return a.tmda-b.tmda;});
+      new Chart(c4,{type:'bar',
+        data:{labels:es.map(function(s){return s.nombre+' · '+s.eje;}),datasets:[{data:es.map(function(s){return s.tmda;}),backgroundColor:es.map(function(s){return EJE_COL[s.eje]||'#2E6F95';}),borderRadius:3}]},
+        options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+            tooltip:{callbacks:{label:function(c){return nf(c.parsed.x)+' veh/día';}}}},
+          scales:{x:{beginAtZero:true,grid:{color:grid},title:{display:true,text:'TMDA 2023 (veh/día)'}},y:{grid:{display:false},ticks:{font:{size:10},autoSkip:false}}}}});
+    }
+  }
+  function init(){ if(inited) return; inited=true;
+    try{ charts(); }catch(e){ console.warn('[mv] charts:',e); }
+    var cart=document.getElementById('mvCartera');
+    if(cart) cart.addEventListener('click',function(e){var h=e.target.closest('.sv-acc-head'); if(!h) return; var a=h.parentElement, o=a.classList.toggle('open'); h.setAttribute('aria-expanded',o?'true':'false');});
+  }
+  function show(){ init(); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){init();}});},{rootMargin:'200px'});
+    io.observe(SEC);
+  }
+  window.addEventListener('hashchange',function(){ if(location.hash==='#movilidad-vial') show(); });
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href="#movilidad-vial"]'); if(a) setTimeout(show,160); });
+  if(location.hash==='#movilidad-vial') setTimeout(show,1400);
 })();
 </script>
 
@@ -26145,6 +26373,7 @@ const CMD_SECTIONS=[
   {id:'ejes',name:'Ejes Estratégicos',svg:'target',cat:'Estrategia',desc:'Los 6 ejes y sus objetivos estratégicos'},
   {id:'foda',name:'Análisis FODA',svg:'eye',cat:'Diagnóstico',desc:'Fortalezas, oportunidades, debilidades y amenazas'},
   {id:'seguridad-publica',name:'Seguridad Pública',svg:'shield',cat:'Diagnóstico',desc:'Delito registrado en Rengo (Ley STOP), 2023–2026'},
+  {id:'movilidad-vial',name:'Sistema Vial y Movilidad',svg:'trend',cat:'Diagnóstico',desc:'Censo Vial PNCV: TMDA, composición y emisiones por eje, 2015–2023'},
   {id:'prospectiva',name:'Prospectiva 2035 · Escenarios',svg:'trend',cat:'Estrategia',desc:'Trayectorias 2024–2035 de 4 variables-ancla bajo 3 escenarios (tendencial/PLADECO/crítico)'},
   {id:'territorio',name:'Unidades Vecinales',svg:'pin',cat:'Territorio',desc:'Las 21 UV (9 urbanas y 12 rurales)'},
   {id:'comparador-uv',name:'Comparador UV',svg:'calculator',cat:'Territorio',desc:'Compara indicadores entre unidades vecinales'},
@@ -35680,7 +35909,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* Estructura de capítulos del portal */
     var caps=[
       {t:'Introducción',ids:['bienvenida','mvv','historia','proceso','equipo']},
-      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','nna','foda','etnografia','comisiones','viz']},
+      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','comisiones','viz']},
       {t:'Planificación',ids:['prospectiva','matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','glosario','fuentes']}
     ];
