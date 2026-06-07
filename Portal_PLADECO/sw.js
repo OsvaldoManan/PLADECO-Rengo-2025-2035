@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════════════
-// PLADECO Rengo 2025-2035 · Service Worker v68.51
-// Estrategia: network-first HTML · stale-while-revalidate assets · cache-first imágenes/tiles
+// PLADECO Rengo 2025-2035 · Service Worker v68.52
+// Estrategia: network-first HTML · stale-while-revalidate assets · imágenes precache-first→cache-first · tiles cache-first
+// v68.52: v45.239 - AUDITORIA Y LIMPIEZA DE CACHE/BASURA. (1) PRECACHE depurado: -10 entradas huerfanas (no referenciadas en ningun fuente) de STATIC_ASSETS (~1,5 MB menos por install): valores/vision/mision.png + proyeccion-2035.png (MVV antiguos -> hoy mvv-*.webp), Obra.png, hero-bg.jpg/.webp (.hero-bg desactivado desde v45.162), og-image.webp + splash-logo-2026.webp (variantes webp sin uso; OG y splash usan .jpg) y chatbot-robot.png (hoy chatbot-dialogo.png). (2) PURGA de caches obsoletas: CACHE_IMG v2->v3 y CACHE_RUNTIME v51->v52 -> el activate borra de cada dispositivo las imagenes y CSS/JS cacheados ya reemplazados. (3) FIX staleness de imagenes precacheadas: el handler de imagenes ahora consulta CACHE_STATIC (fresco en cada release) ANTES de CACHE_IMG cache-first, de modo que una imagen reemplazada con el MISMO nombre se actualiza al subir version (antes se servia la copia vieja indefinidamente); las imagenes runtime no precacheadas siguen cache-first con fallback a placeholder SVG. (4) BASURA de repo eliminada (recuperable por git): carpeta /burocracia (13 paneles de analisis), logo-rengo.svg + logo-rengo-blanco.svg (hoy escudo-rengo*.svg), Graficos/MX04_Hoja_Ruta_Metas.png y los 10 archivos huerfanos del punto 1. PRESERVADO: /pictogramas (referenciado dinamicamente por pictoSrc() en lf-mode.js) y /sistema-diseno. Verificado: sw.js node --check OK, portal carga, charts OK, 0 errores. Cache bump v68.51 -> v68.52.
 // v68.51: v45.238 - MOVILIDAD-VIAL · factores de emision CALIBRADOS a las cifras oficiales del estudio. Los factores CO2 de vehiculos pesados se escalaron (~x1.26) para que el modelo reproduzca el ancla publicada: en el eje principal Rosario-Rengo los pesados pasan a ~19% de las emisiones (antes 15,7%) y se VALIDA un crecimiento de emisiones 2015->2023 de +52,0% (estudio ~+52%). Nuevo rango por eje 19-38% (antes 16-33%). Actualizado VIAL_DATA (pes_emis x5 + emis_idx), KPI, intro, tarjeta "Brecha de emisiones" (agrega +52%), matriz de indicadores y nota de fuente. TMDA y composicion sin cambios. Verificado: grafico de brecha [19,1/32/38,2/24,4/27,6], 0 errores. Solo index.html. Cache bump v68.50 -> v68.51.
 // v68.50: v45.237 - NUEVO MODULO #movilidad-vial ("Sistema Vial y Movilidad", PNCV) en el capitulo Diagnostico. Datos REALES del Plan Nacional de Censo Vial (Direccion de Vialidad MOP), censos 2015/2019/2021/2023, extraidos de los 5 .xls regionales y filtrados a los roles de Rengo (06-111 Rosario-Rengo + Lo de Lobos, 06-112 H-60 Q.Tilcoco, 06-119 Las Nieves) + Ruta 5 (06-091). TMDA por eje VERIFICADO contra la sintesis (Rosario-Rengo 5.504->8.119 +47% CAGR 5,0%; Lo de Lobos +75%; etc.). 5 componentes: (1) 4 graficos Chart.js interactivos (TMDA por eje 2015-2023, composicion vehicular apilada, brecha flujo->emisiones de pesados, TMDA por estacion/localidad); (2) linea temporal 2015-2035; (3) analisis (cards + tabla con CAGR y proyeccion); (4) recomendaciones (cartera priorizada incl. IDIM La Piscina-Orompello + matriz de indicadores); (5) desafios nacionales/internacionales + referencias APA 7. Emisiones = estimacion metodologica declarada (factores CO2 editables). Registrado en navIco, grupo de vistas Diagnostico, buscador; entrada LF en lectura-facil.json. Tablas apiladas en movil (sin scroll horizontal). Verificado: 4 graficos OK, acordeon OK, docOverflow=0, 0 errores. index.html + lectura-facil.json. Cache bump v68.49 -> v68.50.
 // v68.49: v45.236 - PROSPECTIVA · tabla resumen APILADA en movil (<=560px): cada escenario pasa a ser una tarjeta (cabecera + filas "Año: valor" via data-label), en vez del scroll horizontal interno. Se forzo caption a display:block (la causa real del desborde: el caption largo en display:table-caption no envolvia y ensanchaba la tabla ~478px). Verificado a 390px: tabla 332=332, seccion 362=362, pagina docOverflow=0 -> CERO scroll horizontal en tabla, seccion y pagina; escritorio sin cambios. Solo index.html. Cache bump v68.48 -> v68.49.
@@ -196,11 +197,11 @@
 // v62.2: v45.2 - ICT ampliado (6 bloques metodológicos)
 // v62.1: v45.1 - AUDITORÍA INTEGRAL: 199 contraste issues → 0
 // ══════════════════════════════════════════════════════
-const CACHE_STATIC='pladeco-static-v68.51';
-const RELEASE='v45.238'; // version legible (user-facing), se muestra en el sello del footer
-const CACHE_IMG='pladeco-img-v2';
+const CACHE_STATIC='pladeco-static-v68.52';
+const RELEASE='v45.239'; // version legible (user-facing), se muestra en el sello del footer
+const CACHE_IMG='pladeco-img-v3';
 const CACHE_TILES='pladeco-tiles-v2';
-const CACHE_RUNTIME='pladeco-runtime-v51';
+const CACHE_RUNTIME='pladeco-runtime-v52';
 const MAX_IMG_CACHE=200;
 const MAX_TILE_CACHE=500;
 const MAX_RUNTIME_CACHE=80;
@@ -224,14 +225,10 @@ const STATIC_ASSETS=[
   './sitemap.xml',
   './robots.txt',
   './og-image.jpg',
-  './og-image.webp',
-  './hero-bg.jpg',
-  './hero-bg.webp',
   './Entrada-Rengo-Color-Pladeco.jpg',
   './Entrada-Rengo-Color-Pladeco.webp',
   './rengo-historia-collage.jpg',
   './rengo-historia-collage.webp',
-  './splash-logo-2026.webp',
   './mvv-mision.webp',
   './mvv-vision.webp',
   './mvv-principios.webp',
@@ -240,11 +237,6 @@ const STATIC_ASSETS=[
   './1.png',
   './2.png',
   './splash-logo-2026.jpg',
-  './chatbot-robot.png',
-  './mision.png',
-  './vision.png',
-  './valores.png',
-  './proyeccion-2035.png',
   './mvv-mision.jpg',
   './mvv-vision.jpg',
   './mvv-principios.jpg',
@@ -252,7 +244,6 @@ const STATIC_ASSETS=[
   './fuente-info.png',
   './escudo-rengo.svg',
   './escudo-rengo-blanco.svg',
-  './Obra.png',
   './logo-pladeco.png',
   './Logo-Pladeco-Blanco.png',
   './chatbot-dialogo.png',
@@ -357,24 +348,29 @@ self.addEventListener('fetch',function(e){
     return;
   }
 
-  /* 2. Imágenes → cache-first */
+  /* 2. Imágenes → precache-first (CACHE_STATIC, fresco por release) → cache-first (CACHE_IMG) → red.
+     Consultar CACHE_STATIC ANTES evita servir una imagen vieja de CACHE_IMG cuando el archivo
+     fue reemplazado con el mismo nombre en una nueva version (self-healing al subir release). */
   var isImage=/\.(png|jpe?g|gif|svg|webp|ico|avif)(\?.*)?$/i.test(url.pathname);
   if(isImage){
     e.respondWith(
-      caches.match(req).then(function(r){
-        if(r) return r;
-        return fetch(req).then(function(res){
-          if(isCacheable(req,res)){
-            var cl=res.clone();
-            caches.open(CACHE_IMG).then(function(c){
-              c.put(req,cl);
-              trimCache(CACHE_IMG,MAX_IMG_CACHE);
-            });
-          }
-          return res;
-        }).catch(function(){
-          // Si es una imagen crítica del portal y falla, devolver placeholder SVG
-          return new Response('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="#e5e7eb"/><text x="50" y="55" text-anchor="middle" fill="#9ca3af" font-size="12" font-family="sans-serif">Offline</text></svg>',{status:200,headers:{'Content-Type':'image/svg+xml'}});
+      caches.open(CACHE_STATIC).then(function(sc){return sc.match(req);}).then(function(pre){
+        if(pre) return pre;
+        return caches.match(req).then(function(r){
+          if(r) return r;
+          return fetch(req).then(function(res){
+            if(isCacheable(req,res)){
+              var cl=res.clone();
+              caches.open(CACHE_IMG).then(function(c){
+                c.put(req,cl);
+                trimCache(CACHE_IMG,MAX_IMG_CACHE);
+              });
+            }
+            return res;
+          }).catch(function(){
+            // Si es una imagen crítica del portal y falla, devolver placeholder SVG
+            return new Response('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100" height="100" fill="#e5e7eb"/><text x="50" y="55" text-anchor="middle" fill="#9ca3af" font-size="12" font-family="sans-serif">Offline</text></svg>',{status:200,headers:{'Content-Type':'image/svg+xml'}});
+          });
         });
       })
     );
