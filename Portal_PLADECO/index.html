@@ -26372,7 +26372,7 @@ const CMD_SECTIONS=[
   {id:'etnografia',name:'Etnografías UV',svg:'book',cat:'Territorio',desc:'Relatos y trabajo de campo por unidad vecinal'},
   {id:'ods-sec',name:'ODS Vinculados',svg:'globe',cat:'Estrategia',desc:'Vínculo con los Objetivos de Desarrollo Sostenible'},
   {id:'suenos',name:'Sueños para Rengo',svg:'bulb',cat:'Participación',desc:'Aspiraciones de los vecinos para la comuna'},
-  {id:'ejes',name:'Ejes Estratégicos',svg:'target',cat:'Estrategia',desc:'Los 6 ejes y sus objetivos estratégicos'},
+  {id:'matriz',name:'Matriz Estratégica · 6 Ejes',svg:'target',cat:'Estrategia',desc:'Matriz integrada: 6 ejes, objetivos y 225 acciones'},
   {id:'foda',name:'Análisis FODA',svg:'eye',cat:'Diagnóstico',desc:'Fortalezas, oportunidades, debilidades y amenazas'},
   {id:'seguridad-publica',name:'Seguridad Pública',svg:'shield',cat:'Diagnóstico',desc:'Delito registrado en Rengo (Ley STOP), 2023–2026'},
   {id:'movilidad-vial',name:'Sistema Vial y Movilidad',svg:'trend',cat:'Diagnóstico',desc:'Censo Vial PNCV: TMDA, composición y emisiones por eje, 2015–2023'},
@@ -26386,7 +26386,6 @@ const CMD_SECTIONS=[
   {id:'financiamiento',name:'Financiamiento',svg:'money',cat:'Gestión',desc:'Fuentes de recursos y presupuesto'},
   {id:'comisiones',name:'Comisiones de Trabajo',svg:'people',cat:'Participación',desc:'Mesas y comisiones del proceso'},
   {id:'equipo',name:'Equipo Técnico',svg:'briefcase',cat:'Institucional',desc:'Quién elaboró el plan'},
-  {id:'testimonios',name:'Testimonios',svg:'chat',cat:'Voces',desc:'Voces de vecinos y dirigentes'},
   {id:'compromisos',name:'Compromisos Públicos',svg:'check',cat:'Gobernanza',desc:'Compromisos asumidos por el municipio'},
   {id:'antes-despues',name:'Antes y Después',svg:'cycle',cat:'Evolución',desc:'Transformaciones visibles en la comuna'},
   {id:'galeria',name:'Galería Fotográfica',svg:'image',cat:'Registro',desc:'Fotografías del proceso y la comuna'},
@@ -26488,7 +26487,14 @@ function setCmdCat(c){
 function goToSection(id){
   const el=document.getElementById(id);
   if(!el)return;
-  el.scrollIntoView({behavior:'smooth',block:'start'});
+  /* v45.241 · FIX buscador: si el motor de vistas (pv-on) está activo, REVELAR la vista que
+     contiene la sección via PV.go (antes solo se hacía scrollIntoView sobre una sección
+     display:none, por lo que al elegir un resultado del buscador no se mostraba nada). */
+  if(window.PV && typeof window.PV.go==='function' && document.body.classList.contains('pv-on')){
+    window.PV.go(id);
+  } else {
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
   /* Flash highlight */
   el.classList.remove('scroll-flash');
   void el.offsetWidth;
