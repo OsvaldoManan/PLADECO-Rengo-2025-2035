@@ -6789,6 +6789,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 <!-- v45.106 · cb-row eliminado: la identidad municipal + PLADECO + aviso "En construccion" ahora viven en el topbar consolidado, ahorrando ~80px de altura -->
 
 
+<script>/* v45.248 · Fija el padding-top del header ANTES del primer paint de #main-content, evitando el salto (CLS) que causaba la corrección tardía de setHeaderPad (el CSS reservaba ~124px; el header real ~66px). Mismo cálculo que hdrH(). */
+(function(){try{var n=document.getElementById('topnav');if(!n)return;var h=n.offsetHeight||0;var ban=document.querySelector('.construction-banner');if(ban){var bs=getComputedStyle(ban);if(bs.position==='fixed'&&bs.display!=='none')h+=ban.offsetHeight;}if(h>0){document.body.style.setProperty('padding-top',h+'px','important');document.documentElement.style.setProperty('scroll-padding-top',h+'px','important');}}catch(e){}})();</script>
 <main class="main" id="main-content" role="main">
 
 <!-- ═══ HERO ═══ -->
