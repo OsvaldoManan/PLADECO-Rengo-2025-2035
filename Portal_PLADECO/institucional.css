@@ -201,3 +201,33 @@ body.dark .cmd-cat-chip:focus-visible{outline-color:#5cc98a}
 .cmd-results.cmd-grouped .cmd-item .cmd-sec-cat{display:none}  /* el rótulo de grupo ya nombra la categoría */
 .cmd-empty{padding:26px 18px;text-align:center;color:var(--text2);font-size:13px;line-height:1.5}
 @media(max-width:560px){ .cmd-cats{max-height:96px;padding:9px 11px} }
+
+/* ══ 15 · CONTRASTE EN MODO OSCURO (auditoría WCAG v45.251) ══
+   (a) El fondo BASE en oscuro era claro (#f8fafc del html): lo oscuro lo aportaba solo la
+   foto+overlay, que axe no puede medir y que en redes débiles puede no cargar → fondo base
+   sólido oscuro (robustez P3 + contraste medible). La foto (.portal-bg) pinta por encima
+   del fondo del body, así que el aspecto no cambia.
+   (b) Verde de número de capítulo (.pv-card-num): #15803d es AA sobre blanco (tema claro)
+   pero 3,1:1 sobre la tarjeta oscura → variante institucional clara en oscuro. */
+body.dark{background-color:#0b1624!important} /* gana al body{transparent!important} de la capa-foto; la foto pinta encima, aspecto idéntico */
+body.dark .pv-card-num{color:#5cc98a}
+/* (c) Bandas que flotaban sobre la foto con texto claro (divisores de capítulo y cabecera
+   "Explora el Plan"): scrim oscuro MEDIBLE, mismo criterio que el hero (v45.244). Si la foto
+   no carga, el texto sigue siendo legible; axe puede medirlo. */
+.group-divider-label{background:rgba(8,22,38,.78)!important;border:1px solid rgba(255,255,255,.14)!important}
+body.dark .group-divider-label{background:rgba(8,18,30,.9)!important}
+.pv-portada-head{background:rgba(8,22,38,.78);border-radius:14px;padding:16px 20px 14px;max-width:760px;margin-left:auto;margin-right:auto}
+.pv-portada-head h2{color:#f1f5f9!important} /* !important: gana a color:var(--text) del estilo base */
+.pv-portada-head p{color:rgba(241,245,249,.85)!important}
+/* (e) Hint "Explorar" al pie del hero: flotaba sobre la foto → pill medible, mismo criterio. */
+.hero-scroll-hint{background:rgba(8,22,38,.72);border-radius:999px;padding:6px 16px}
+/* (d) Acentos de capítulo demasiado oscuros para el pill oscuro (I navy · II celeste · V rosa · XI gris):
+   variantes claras del mismo matiz, AA sobre el scrim, en ambos temas. */
+.group-divider[id^="capitulo-"] .group-divider-label[data-cap="I"]{color:#7ea4d8!important}
+.group-divider[id^="capitulo-"] .group-divider-label[data-cap="II"]{color:#38bdf8!important}
+.group-divider[id^="capitulo-"] .group-divider-label[data-cap="V"]{color:#f472b6!important}
+.group-divider[id^="capitulo-"] .group-divider-label[data-cap="XI"]{color:#a8b6c8!important}
+/* (f) Badge de cabecera en OSCURO: §12 cambió el texto a ámbar claro (#fdb94d) pero el fondo
+   seguía siendo el claro de tema claro (--c-warn-soft #fef3c7) → 1,6:1 ilegible. Fondo ámbar
+   profundo a juego (par AA del sistema, mismo del disclaimer del asistente). */
+body.dark .sec-header .badge{background:#422006!important;border-color:#854d0e!important}
