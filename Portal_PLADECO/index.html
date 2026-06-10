@@ -36222,5 +36222,55 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
   window.addEventListener('hashchange',function(){setTimeout(run,1100);});
   window.__chartData=run;
 })();</script>
+<script>/* v45.252 · Emojis de señalética accesibles (§3.4 / WCAG 1.1.1): los lectores de pantalla leen
+   los emojis literalmente ("cara con monóculo", "edificio de oficinas"...) rompiendo la lectura.
+   Este pase envuelve cada emoji visible en <span aria-hidden="true"> (visual idéntico, SR lo omite).
+   Idempotente; se re-ejecuta tras navegación/clicks para cubrir contenido renderizado por JS. */
+(function(){
+  var RE=/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\u{200D}\u{20E3}\u{2139}\u{2194}-\u{2199}\u{2B05}-\u{2B07}\u{3030}\u{303D}\u{3297}\u{3299}\u{00A9}\u{00AE}\u{2122}]/u;
+  var RUN=/(?:[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\u{FE0F}\u{200D}\u{20E3}]|\s)+/gu;
+  function hideIn(root){
+    if(!root) return 0;
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      if(!RE.test(n.nodeValue)) return NodeFilter.FILTER_REJECT;
+      var p=n.parentElement;
+      if(!p) return NodeFilter.FILTER_REJECT;
+      var tag=p.tagName;
+      if(tag==='SCRIPT'||tag==='STYLE'||tag==='NOSCRIPT'||tag==='TEXTAREA') return NodeFilter.FILTER_REJECT;
+      if(p.closest('[aria-hidden="true"],svg,canvas,[data-emoji-ok]')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }});
+    var nodes=[],n; while((n=w.nextNode())) nodes.push(n);
+    var c=0;
+    nodes.forEach(function(t){
+      var txt=t.nodeValue, frag=document.createDocumentFragment(), last=0, m;
+      RUN.lastIndex=0;
+      while((m=RUN.exec(txt))){
+        if(!RE.test(m[0])) continue; /* el run debe contener al menos un emoji real (no solo espacios) */
+        if(m.index>last) frag.appendChild(document.createTextNode(txt.slice(last,m.index)));
+        var s=document.createElement('span'); s.setAttribute('aria-hidden','true'); s.textContent=m[0];
+        frag.appendChild(s); last=m.index+m[0].length; c++;
+      }
+      if(!c||last===0) return;
+      if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      t.parentNode.replaceChild(frag,t);
+    });
+    return c;
+  }
+  var busy=false;
+  function pass(){
+    if(busy) return; busy=true;
+    setTimeout(function(){
+      busy=false;
+      try{
+        ['main-content','topnav','chatPanel','mobileDrawer'].forEach(function(id){hideIn(document.getElementById(id));});
+      }catch(e){}
+    },180);
+  }
+  window.addEventListener('load',function(){setTimeout(pass,1900);});
+  document.addEventListener('click',function(){setTimeout(pass,1000);},true);
+  window.addEventListener('hashchange',function(){setTimeout(pass,1000);});
+  window.__emojiPass=pass;
+})();</script>
 </body>
 </html>
