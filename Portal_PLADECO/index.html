@@ -3372,6 +3372,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .splash-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
 /* Fallback CSS: oculta el splash a los ~3.5s aunque el JS falle (defensivo) */
 @keyframes splashAutoHide{0%,80%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
+/* v45.249 · Gate de arranque (CLS): mientras el splash está activo, el contenido bajo él NO se pinta
+   (visibility) → el re-layout del boot del motor de vistas (~3-4s) deja de generar layout-shift; al
+   ocultarse el splash, el contenido aparece ya asentado (reveal por visibility = sin movimiento).
+   Failsafe CSS step-end 6s: aunque el JS muera, el contenido se pinta solo (como el splashAutoHide).
+   Navegadores sin :has() ignoran la regla (comportamiento actual). */
+body:has(#splashScreen:not(.hidden)) :is(#main-content,#topnav,.chatbot-fab){animation:bootGate 6s step-end forwards}
+@keyframes bootGate{from{visibility:hidden}to{visibility:visible}}
 /* Defensa adicional: cualquier overlay con opacity:0 NO debe bloquear interacción */
 .chatbot-overlay:not(.show),.lightbox:not(.open),.mvv-viewer:not(.open),.cmd-palette:not(.open){visibility:hidden;pointer-events:none}
 /* v45.174 · Splash logo · nuevo emblema "Contigo Rengo · Mejor Comuna" con forma circular institucional propia */
@@ -6283,19 +6290,16 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
   <div class="splash-bar"><div class="splash-bar-fill" id="splashBarFill" style="width:5%"></div></div>
   <div class="splash-progress-text" id="splashProgress">Inicializando&hellip;</div>
 </div>
+<noscript>
+<!-- v45.249 · Degradación elegante sin JavaScript (§4.2): sin splash, contenido visible de inmediato y aviso honesto. -->
+<style>.splash-screen{display:none!important}#main-content,#topnav,.chatbot-fab{visibility:visible!important;animation:none!important}.chatbot-fab,.mobile-bottom-nav,.dot-nav,.scroll-progress{display:none!important}.nojs-aviso{background:#fef3c7;color:#713f12;border-bottom:2px solid #fcd34d;padding:12px 18px;font-size:14px;line-height:1.55;text-align:center}</style>
+<div class="nojs-aviso" role="status"><strong>Est&aacute;s viendo el portal sin JavaScript.</strong> Todo el contenido textual del PLADECO est&aacute; disponible a continuaci&oacute;n, secci&oacute;n por secci&oacute;n. Los gr&aacute;ficos interactivos, el buscador y el asistente requieren JavaScript.</div>
+</noscript>
 
 <a href="#dashboard" class="skip-link" tabindex="0">Saltar al contenido</a>
 
-<noscript>
-<div style="position:fixed;inset:0;z-index:99999;background:rgb(19, 46, 99);display:flex;align-items:center;justify-content:center;padding:32px">
-  <div style="max-width:480px;text-align:center;color:#fff;font-family:system-ui,sans-serif">
-    <div style="font-size:64px;margin-bottom:16px">&#128679;</div>
-    <h1 style="font-size:24px;font-weight:800;margin-bottom:12px">JavaScript Requerido</h1>
-    <p style="font-size:14px;line-height:1.7;opacity:.85;margin-bottom:20px">El Portal PLADECO Rengo 2025-2035 necesita JavaScript para funcionar correctamente. Por favor, activa JavaScript en la configuraci&oacute;n de tu navegador y recarga la p&aacute;gina.</p>
-    <div style="font-size:11px;opacity:.5">SECPLAC &middot; Municipalidad de Rengo</div>
-  </div>
-</div>
-</noscript>
+<!-- v45.249 · Eliminado el muro <noscript> "JavaScript Requerido" a pantalla completa (P2: degradación
+     elegante — el contenido textual se lee SIN JavaScript). Lo reemplaza el aviso .nojs-aviso junto al splash. -->
 
 <div class="scroll-progress" role="progressbar" aria-label="Progreso de lectura"><div class="scroll-progress-bar" id="scrollBar"></div></div>
 
