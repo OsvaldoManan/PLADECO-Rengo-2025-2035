@@ -166,27 +166,116 @@ window.__leafletMaps=window.__leafletMaps||[];
   if(typeof window.Chart!=='function') return;
   if(window.Chart.__safe) return;
   var RealChart=window.Chart;
-  function SafeChart(item,config){
+  /* v45.250 · LAZY CHARTS: el portal construía 96 gráficos al cargar, todos en secciones ocultas
+     por el motor de vistas (~1s de CPU aquí; 3-4s en equipos modestos). Ahora cada new Chart()
+     se ENCOLA y se construye recién cuando su sección se muestra. Un Proxy reenvía la API del
+     gráfico (pre-construcción: muta la config; post: delega en la instancia real). Fallbacks:
+     si el motor no arranca, load+4s construye todo lo visible (= comportamiento anterior);
+     beforeprint construye todo; window.__chartsEager=true desactiva el lazy (depuración). */
+  var queue=[]; var booted=false; var pending=false;
+  function canvasOf(item){
     var el=(typeof item==='string')?document.getElementById(item):item;
-    var ok=el&&(el.tagName==='CANVAS'||typeof el.getContext==='function'||el.canvas);
-    if(!ok){
+    if(el&&el.canvas)el=el.canvas;
+    return (el&&el.tagName==='CANVAS')?el:null;
+  }
+  function isShown(cv){
+    var m=document.getElementById('main-content');
+    if(!m||!m.contains(cv))return true;
+    var n=cv; while(n.parentElement&&n.parentElement!==m){n=n.parentElement;}
+    if(n.classList&&n.classList.contains('pv-hidden'))return false;
+    return getComputedStyle(n).display!=='none';
+  }
+  function recolor(ch){
+    try{
+      if(typeof getChartTextColor!=='function')return;
+      var tc=getChartTextColor(),gc=getChartGridColor();
+      if(ch.options&&ch.options.scales){Object.keys(ch.options.scales).forEach(function(k){var s=ch.options.scales[k];if(s.ticks)s.ticks.color=tc;if(s.grid)s.grid.color=gc;if(s.title)s.title.color=tc;});}
+      if(ch.options&&ch.options.plugins&&ch.options.plugins.legend&&ch.options.plugins.legend.labels){ch.options.plugins.legend.labels.color=tc;}
+      var cardColor=getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff';
+      if(ch.config&&(ch.config.type==='doughnut'||ch.config.type==='pie')){ch.data.datasets.forEach(function(ds){if(ds.borderColor)ds.borderColor=cardColor;});}
+      ch.update('none');
+    }catch(e){}
+  }
+  function build(st){
+    if(st.dead||st.real)return;
+    try{st.real=new RealChart(st.cv,st.cfg);}
+    catch(e){st.dead=true;console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return;}
+    if(st.stash){for(var k in st.stash){try{st.real[k]=st.stash[k];}catch(e){}}}
+    if((document.body&&document.body.classList.contains('dark'))!==st.qDark)recolor(st.real);
+  }
+  function flushNow(force){
+    for(var i=queue.length-1;i>=0;i--){
+      var st=queue[i];
+      if(st.dead||st.real){queue.splice(i,1);continue;}
+      if(force||isShown(st.cv)){build(st);queue.splice(i,1);}
+    }
+  }
+  function flush(force){
+    if(pending)return;pending=true;
+    requestAnimationFrame(function(){pending=false;flushNow(force);});
+  }
+  function proxyFor(st){
+    var noop=function(){};
+    return new Proxy({},{
+      get:function(_,p){
+        if(st.real){var v=st.real[p];return(typeof v==='function')?v.bind(st.real):v;}
+        switch(p){
+          case '__lazy':return true;
+          case 'canvas':return st.cv;
+          case 'ctx':return st.cv.getContext&&st.cv.getContext('2d');
+          case 'data':return(st.cfg.data=st.cfg.data||{labels:[],datasets:[]});
+          case 'options':return(st.cfg.options=st.cfg.options||{});
+          case 'config':return st.cfg;
+          case 'destroy':return function(){st.dead=true;};
+          case 'update':case 'resize':case 'render':case 'reset':case 'stop':case 'clear':case 'draw':return noop;
+          case 'toBase64Image':return function(){build(st);var a=arguments;return st.real?st.real.toBase64Image.apply(st.real,a):'';};
+        }
+        return undefined;
+      },
+      set:function(_,p,v){
+        if(st.real){st.real[p]=v;}
+        else if(p==='data'){st.cfg.data=v;}
+        else if(p==='options'){st.cfg.options=v;}
+        else{(st.stash=st.stash||{})[p]=v;}
+        return true;
+      }
+    });
+  }
+  function SafeChart(item,config){
+    var cv=canvasOf(item);
+    if(!cv){
       var id=String((item&&item.id)||item);
       (window.__chartSkipped=window.__chartSkipped||[]).push(id);
       console.warn('[Chart] gráfico omitido — canvas no encontrado:',id);
-      el=document.createElement('canvas');
+      cv=document.createElement('canvas');
     }
-    try{
-      return new RealChart(el,config);
-    }catch(e){
-      console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);
-      return null;
+    if(window.__chartsEager===true){
+      try{return new RealChart(cv,config);}catch(e){console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return null;}
     }
+    var st={cv:cv,cfg:config||{},qDark:!!(document.body&&document.body.classList.contains('dark'))};
+    queue.push(st);
+    if(booted)flush(false);
+    return proxyFor(st);
   }
   SafeChart.prototype=RealChart.prototype;
   try{Object.setPrototypeOf(SafeChart,RealChart);}catch(_){}
   SafeChart.__real=RealChart;
   SafeChart.__safe=true;
+  SafeChart.__flush=function(f){booted=true;if(f)flushNow(true);else flush(false);};
+  SafeChart.__queue=queue;
   window.Chart=SafeChart;
+  function arm(){
+    try{new MutationObserver(function(){booted=true;flush(false);}).observe(document.body,{attributes:true,attributeFilter:['class']});}catch(e){}
+    window.addEventListener('resize',function(){if(booted)flush(false);},{passive:true});
+    window.addEventListener('hashchange',function(){booted=true;flush(false);});
+    document.addEventListener('click',function(){if(booted)setTimeout(function(){flush(false);},120);},true);
+    window.addEventListener('beforeprint',function(){booted=true;flushNow(true);});
+    window.addEventListener('load',function(){
+      setTimeout(function(){booted=true;flush(false);},1200);
+      setTimeout(function(){booted=true;flush(false);},4000);
+    });
+  }
+  if(document.body){arm();}else{document.addEventListener('DOMContentLoaded',arm);}
 })();
 </script>
 
