@@ -36062,6 +36062,14 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
         c.setAttribute('role','img');
         c.setAttribute('aria-label', t?('Gráfico — '+t):'Gráfico de datos del PLADECO');
       });
+      document.querySelectorAll('.leaflet-container').forEach(function(m){
+        if(m.getAttribute('aria-label'))return;
+        var card=m.closest('figure,.viz-card,.sv-chart-card,.map-card,.sv-map,section[id]');
+        var t='';
+        if(card){var h=card.querySelector('.sec-header h2,figcaption,h2,h3,h4');if(h)t=clean(h.textContent);}
+        m.setAttribute('role','img');
+        m.setAttribute('aria-label',(t?('Mapa — '+t):'Mapa interactivo del PLADECO')+'. Mapa interactivo; los datos también se presentan en las tablas y cifras de esta sección.');
+      });
     }catch(e){}
   }
   window.addEventListener('load',function(){setTimeout(labelCharts,1600);});
