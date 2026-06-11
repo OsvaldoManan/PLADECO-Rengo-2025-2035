@@ -6557,7 +6557,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
-    'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
+    'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
     'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
     'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'compromisos':navIco('check'),'financiamiento':navIco('money'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
@@ -7376,6 +7376,210 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
      HISTORIA DE RENGO · v45.167 · Una comuna que sobrevive y se desarrolla
      con la asociatividad · seccion explicativa-evolutiva del Capitulo I
      ═══════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════ v45.254 · COMPARADOR DE INSTRUMENTOS PLADECO 2019-2031 vs 2025-2035 ═══════════
+     Fuente: "Comparador de Instrumentos PLADECO 2019-2025" (Mañán & Ramírez, dir. Castillo · SECPLAC, 2026).
+     Tabla informativa (justificación desde la introducción) + matriz comparativa dinámica de 39 variables. -->
+<section id="comparador-instrumentos" class="reveal">
+<style>
+#comparador-instrumentos .ci-tabla-info{border-collapse:collapse;width:100%;margin:14px 0 6px;font-size:13px}
+#comparador-instrumentos .ci-tabla-info caption{text-align:left;font-weight:700;font-size:13.5px;margin-bottom:8px;color:var(--text)}
+#comparador-instrumentos .ci-tabla-info th,#comparador-instrumentos .ci-tabla-info td{border:1px solid var(--border);padding:9px 12px;text-align:left;vertical-align:top}
+#comparador-instrumentos .ci-tabla-info thead th{background:#1F3864;color:#fff}
+#comparador-instrumentos .ci-tabla-info tbody th{background:rgba(31,56,100,.06);font-weight:700;width:218px;color:var(--text)}
+body.dark #comparador-instrumentos .ci-tabla-info tbody th{background:rgba(126,164,216,.08)}
+#comparador-instrumentos .ci-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 10px}
+#comparador-instrumentos .ci-chip{font:600 12px/1.1 'Poppins',system-ui,sans-serif;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 12px;cursor:pointer}
+#comparador-instrumentos .ci-chip[aria-pressed="true"]{background:#15803d;border-color:#15803d;color:#fff}
+body.dark #comparador-instrumentos .ci-chip[aria-pressed="true"]{background:#166534;border-color:#166534}
+#comparador-instrumentos .ci-buscar{flex:1;min-width:200px;max-width:340px;border:1px solid var(--border);border-radius:7px;padding:7px 12px;font:500 13px 'Poppins',system-ui,sans-serif;background:var(--card);color:var(--text)}
+#comparador-instrumentos .ci-count{font-size:11.5px;color:var(--text2);font-weight:600;white-space:nowrap}
+#comparador-instrumentos .ci-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px}
+#comparador-instrumentos table.ci-matriz{border-collapse:collapse;width:100%;font-size:12.5px;min-width:680px}
+#comparador-instrumentos .ci-matriz caption{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#comparador-instrumentos .ci-matriz th,#comparador-instrumentos .ci-matriz td{border-bottom:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top}
+#comparador-instrumentos .ci-matriz thead th{background:#1F3864;color:#fff;position:sticky;top:0;z-index:1;font-size:12px}
+#comparador-instrumentos .ci-matriz tbody th[scope="row"]{font-weight:600;color:var(--text);background:rgba(31,56,100,.04);width:24%}
+body.dark #comparador-instrumentos .ci-matriz tbody th[scope="row"]{background:rgba(126,164,216,.07)}
+#comparador-instrumentos .ci-dim-row td{background:rgba(21,128,61,.10);font-weight:800;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:#15803d}
+body.dark #comparador-instrumentos .ci-dim-row td{color:#5cc98a;background:rgba(92,201,138,.10)}
+#comparador-instrumentos .ci-est{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.04em;border-radius:99px;padding:3px 9px;margin-bottom:5px;text-transform:uppercase}
+#comparador-instrumentos .ci-est--si{background:#dcfce7;color:#166534}
+#comparador-instrumentos .ci-est--no{background:#fee2e2;color:#990000}
+#comparador-instrumentos .ci-est--parcial{background:#fef3c7;color:#92400e}
+#comparador-instrumentos .ci-est--sininfo{background:#e2e8f0;color:#334155}
+#comparador-instrumentos .ci-est--dato{background:#e8edf6;color:#1F3864}
+body.dark #comparador-instrumentos .ci-est--si{background:#14532d;color:#bbf7d0}
+body.dark #comparador-instrumentos .ci-est--no{background:#450a0a;color:#fecaca}
+body.dark #comparador-instrumentos .ci-est--parcial{background:#422006;color:#fde68a}
+body.dark #comparador-instrumentos .ci-est--sininfo{background:#1e293b;color:#cbd5e1}
+body.dark #comparador-instrumentos .ci-est--dato{background:#172554;color:#bfdbfe}
+#comparador-instrumentos .ci-obs-btn{font:600 11px 'Poppins',system-ui,sans-serif;color:#1F3864;background:transparent;border:1px solid var(--border);border-radius:6px;padding:4px 9px;cursor:pointer;margin-top:6px}
+body.dark #comparador-instrumentos .ci-obs-btn{color:#7ea4d8}
+#comparador-instrumentos .ci-obs-row td{background:rgba(31,56,100,.05);font-size:12px;color:var(--text2);border-left:3px solid #1F3864}
+body.dark #comparador-instrumentos .ci-obs-row td{background:rgba(126,164,216,.07);border-left-color:#7ea4d8}
+#comparador-instrumentos .ci-chart-box{position:relative;height:210px;margin-top:8px}
+@media(max-width:700px){
+  #comparador-instrumentos table.ci-matriz{min-width:0}
+  #comparador-instrumentos .ci-matriz thead{display:none}
+  #comparador-instrumentos .ci-matriz tbody tr{display:block;border-bottom:2px solid var(--border);padding:8px 0}
+  #comparador-instrumentos .ci-matriz tbody th[scope="row"],#comparador-instrumentos .ci-matriz tbody td{display:block;width:auto;border-bottom:none;padding:6px 10px}
+  #comparador-instrumentos .ci-matriz tbody td[data-l]::before{content:attr(data-l);display:block;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text2);margin-bottom:3px}
+  #comparador-instrumentos .ci-tabla-info tbody th{width:auto;display:block}
+  #comparador-instrumentos .ci-tabla-info tbody td{display:block}
+  #comparador-instrumentos .ci-tabla-info thead{display:none}
+}
+</style>
+<div class="sec-header">
+  <span class="badge badge--info">Marco del Plan · Comparador de instrumentos</span>
+  <h2>Del PLADECO 2019-2031 al PLADECO 2025-2035: qué cambia y por qué</h2>
+  <p>Lectura comparada, sistemática y trazable entre el instrumento anterior —aprobado por el Concejo Municipal el 21 de agosto de 2019 (Certificado N° 1074)— y el nuevo Plan en formulación. <strong>Comparar no es juzgar al instrumento previo:</strong> es un ejercicio de aprendizaje organizacional que reconoce qué se conserva, qué problemas persisten y qué evidencia nueva sustenta las decisiones.</p>
+</div>
+
+<div class="sv-kpis" role="group" aria-label="Cifras del comparador de instrumentos">
+  <div class="sv-kpi"><div class="sv-kpi-num" style="color:#1F3864">39</div><div class="sv-kpi-lbl">Variables comparadas</div></div>
+  <div class="sv-kpi"><div class="sv-kpi-num" style="color:#15803d">3</div><div class="sv-kpi-lbl">Dimensiones de análisis</div></div>
+  <div class="sv-kpi"><div class="sv-kpi-num" style="color:#b45309">228</div><div class="sv-kpi-lbl">Páginas del PLADECO 2019 analizadas</div></div>
+  <div class="sv-kpi"><div class="sv-kpi-num" style="color:#0e7490">4</div><div class="sv-kpi-lbl">Estados de codificación (Sí · No · Parcial · S/I)</div></div>
+</div>
+
+<h3 style="font-size:16px;font-weight:800;margin:20px 0 2px">¿Por qué un nuevo PLADECO? · Fundamentos de la actualización</h3>
+<p style="font-size:12.5px;color:var(--text2);margin:0 0 4px">Síntesis de la introducción del comparador: la actualización no parte de cero — se construye sobre el instrumento anterior e incorpora lo que entre 2019 y 2025 cambió en evidencia, normativa, metodología y escala de articulación.</p>
+<table class="ci-tabla-info">
+  <caption class="sr-only">Fundamentos que justifican la elaboración del PLADECO 2025-2035</caption>
+  <thead><tr><th scope="col">Fundamento</th><th scope="col">Detalle</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Continuidad institucional</th><td>Cada PLADECO se construye sobre las capacidades, decisiones y omisiones del anterior. La comparación es un dispositivo de aprendizaje organizacional que reconstruye la memoria institucional del municipio y orienta su acción futura — no un juicio sumario del instrumento previo.</td></tr>
+    <tr><th scope="row">Lo que se conserva del 2019</th><td>El PLADECO 2019-2031 fue un esfuerzo institucional relevante, ejecutado íntegramente con recursos humanos municipales: la técnica del «árbol de los sueños», el reconocimiento de la identidad barrial y rural como unidad de análisis, y 5 equipos territoriales con 119 funcionarios. El proceso 2025 conserva y fortalece estos elementos.</td></tr>
+    <tr><th scope="row">Nueva evidencia disponible</th><td>Censo de Población y Vivienda 2024 (INE) procesado a nivel de manzana; auditorías de la Contraloría General de la República 2009-2024; cartera del Banco Integrado de Proyectos (BIP); cuentas públicas y estados financieros municipales 2015-2025.</td></tr>
+    <tr><th scope="row">Nuevo marco normativo exigible</th><td>Ley 21.180 (Transformación Digital del Estado), Ley 21.430 (Garantías de la Niñez, 2022), Ley 21.364 (Sistema Nacional de Prevención y Respuesta ante Desastres, 2021), Ley 21.807 (2026, modificación LOCMUN), Ley 20.500 (participación), Convenio 169 OIT y Ley 20.422 (inclusión). Ninguna era exigible —o siquiera existía— al formularse el plan anterior.</td></tr>
+    <tr><th scope="row">Nuevo estándar metodológico</th><td>Manual PLADECO SUBDERE-IDER UFRO (2021), Matriz de Bienestar Humano Territorial (UAI-SUBDERE, 2021) y guía CEPAL-ILPES (2021): elevan el estándar de diagnóstico, indicadores y seguimiento respecto del manual disponible en 2018-2019.</td></tr>
+    <tr><th scope="row">Nueva escala de articulación</th><td>El PLADECO deja de ser un acto aislado: se alinea con la Estrategia Regional de Desarrollo O'Higgins 2024-2036 y con la Agenda 2030 (ODS). Esa coherencia multinivel es condición habilitante para acceder a financiamiento concursable (FNDR, FRIL, SUBDERE, sectoriales).</td></tr>
+  </tbody>
+</table>
+
+<h3 style="font-size:16px;font-weight:800;margin:26px 0 2px">Matriz comparativa dinámica · 39 variables</h3>
+<p style="font-size:12.5px;color:var(--text2);margin:0 0 4px">Filtra por dimensión o busca una variable. Cada fila compara ambos instrumentos y ofrece la observación técnica del comparador. Codificación: <span class="ci-est ci-est--si">Sí</span> <span class="ci-est ci-est--no">No</span> <span class="ci-est ci-est--parcial">Parcial</span> <span class="ci-est ci-est--sininfo">S/I · sin información</span> <span class="ci-est ci-est--dato">Dato</span></p>
+<div class="ci-toolbar" role="group" aria-label="Filtros de la matriz comparativa">
+  <button type="button" class="ci-chip" data-dim="0" aria-pressed="true">Todas</button>
+  <button type="button" class="ci-chip" data-dim="1" aria-pressed="false">Información del Proceso</button>
+  <button type="button" class="ci-chip" data-dim="2" aria-pressed="false">Participación &amp; Diagnóstico</button>
+  <button type="button" class="ci-chip" data-dim="3" aria-pressed="false">Planificación y Desarrollo</button>
+  <input type="search" id="ciBuscar" class="ci-buscar" placeholder="Buscar variable (ej.: censo, KPI, financiamiento)…" aria-label="Buscar en la matriz comparativa">
+  <span class="ci-count" id="ciCount" role="status" aria-live="polite"></span>
+</div>
+<div class="ci-wrap">
+  <table class="ci-matriz" id="ciMatriz">
+    <caption>Matriz comparativa de 39 variables entre el PLADECO 2019-2031 y el PLADECO 2025-2035</caption>
+    <thead><tr><th scope="col">Pregunta</th><th scope="col">PLADECO 2019-2031</th><th scope="col">PLADECO 2025-2035</th></tr></thead>
+    <tbody id="ciBody"></tbody>
+  </table>
+</div>
+
+<div class="sv-chart-card" style="margin-top:18px">
+  <h3 style="font-size:14px;font-weight:800;margin:0 0 2px">Balance de la comparación · 32 variables codificables</h3>
+  <p style="font-size:11.5px;color:var(--text2);margin:0 0 6px">Cuántas variables documenta cada instrumento (se excluyen las 7 filas puramente informativas). El gráfico se calcula desde la propia matriz.</p>
+  <div class="ci-chart-box"><canvas id="ciChart" role="img" aria-label="Gráfico: balance de estados de la comparación entre PLADECO 2019 y PLADECO 2025"></canvas></div>
+</div>
+
+<p class="sec-fuente" style="margin-top:14px"><strong>Fuente:</strong> Comparador de Instrumentos PLADECO 2019-2031 / 2025-2035 (Mañán, O. &amp; Ramírez, P.; dir. D. Castillo — Secretaría Comunal de Planificación, 2026), elaborado sobre el PLADECO 2019-2031 (228 págs., I. Municipalidad de Rengo, 2019), las estructuras V2/V3 del proceso 2025 y el Manual PLADECO SUBDERE-IDER UFRO (2021). Codificación: Sí = documentado con evidencia verificable · No = ausencia constatada · S/I = el documento 2019 no permite establecerlo · Parcial = presente con cobertura insuficiente. Documento técnico completo disponible en SECPLAC.</p>
+
+<script>
+(function(){
+  var SEC=document.getElementById('comparador-instrumentos'); if(!SEC) return;
+  /* dim: 1 Proceso · 2 Participación & Diagnóstico · 3 Planificación. e: si|no|parcial|sininfo|dato */
+  var D=[
+   {d:1,q:'¿Cuenta con Carta Gantt?',a:['no','No.'],b:['si','Carta Gantt detallada por etapas, hitos y responsables (Manual SUBDERE-IDER UFRO 2021).'],o:'El PLADECO 2019 declara la intención en su sección metodológica, pero no acompaña un documento de programación visible.'},
+   {d:1,q:'¿Cuántos años de proyección?',a:['dato','13 años (2019-2031).'],b:['dato','10 años (2025-2035).'],o:'Ambos cumplen el mínimo legal de 4 años (Art. 7°, LOCMUN). El horizonte de 10 años se alinea con la ERD O’Higgins 2024-2036 y la Agenda 2030, facilitando la evaluación intermedia.'},
+   {d:1,q:'¿Cómo fue el trabajo con los concejales?',a:['sininfo','No se documenta sistemáticamente, más allá de la votación final.'],b:['si','Trabajo con todas las comisiones del Concejo Municipal y con los directores de unidades.'],o:'Involucrar al Concejo en la formulación —y no solo en la aprobación— incrementa la legitimidad democrática del instrumento (Manual CEPAL, 2009).'},
+   {d:1,q:'¿Cómo fue la votación del Concejo Municipal?',a:['dato','Aprobado en Sesión Ordinaria N°98 (21-08-2019): 3 a favor + Alcalde; 2 abstenciones; 1 rechazo.'],b:['dato','Proceso en curso; aún no se somete a votación.'],o:'La aprobación no unánime de 2019 sugiere disensos sobre contenido o proceso. El diseño 2025 busca reducirlos mediante el involucramiento temprano del Concejo en comisiones.'},
+   {d:1,q:'¿Cuántas personas participaron de los encuentros?',a:['dato','21 encuentros ciudadanos con más de 500 asistentes; 119 funcionarios facilitadores decretados.'],b:['dato','119 ciudadanos y 116 funcionarios encuestados; 21 educadoras; 4.036 niños, niñas y adolescentes (49,6% de cobertura escolar); concejales, COSOC, organizaciones y autoridades regionales.'],o:'La cifra de 119 del proceso 2019 corresponde a funcionarios facilitadores, no a participantes ciudadanos. En 2025 se diversifica la base participativa incorporando segmentos históricamente subrepresentados.'},
+   {d:1,q:'¿Revisión del Banco Integrado de Proyectos (BIP)?',a:['sininfo','Sin información en el cuerpo del documento.'],b:['si','Sección dedicada: cartera, RATE, tasa de materialización, brecha urbano-rural y recomendaciones.'],o:'El análisis BIP vincula el PLADECO con la cartera real de inversión e identifica proyectos crónicos (SUBDERE, 2021).'},
+   {d:1,q:'¿Revisión del último Censo?',a:['parcial','Censo 2017 a nivel agregado comunal.'],b:['si','Censo 2024 a nivel de manzana (826 manzanas, 47 localidades) con 6 índices compuestos de vulnerabilidad.'],o:'El procesamiento desagregado permite identificar concentraciones de vulnerabilidad y priorizar inversión con enfoque territorial (place-based).'},
+   {d:1,q:'¿Cartografías de la comuna?',a:['parcial','Limitadas: límite comunal y división político-administrativa.'],b:['si','Cartografía sistemática: unidades vecinales, uso de suelo, vialidad, ciclovías, áreas verdes, salud, educación, MBHT y vulnerabilidad.'],o:'La cartografía detallada vuelve al PLADECO espacialmente operativo y facilita la coordinación con el Plan Regulador Comunal.'},
+   {d:1,q:'¿Revisión de instrumentos de la Municipalidad?',a:['sininfo','No se documenta revisión sistemática de instrumentos internos.'],b:['si','Revisión integrada: PADEM, PLASAM, Seguridad Pública, Cultura, PACCC, Niñez, ordenanzas y matriz normativa.'],o:'La articulación interna operacionaliza la coherencia intersectorial (Ley 18.695, Art. 6°) y evita duplicidades programáticas.'},
+   {d:1,q:'¿Temporalidad para su ejecución?',a:['si','Marcas temporales por proyecto, sin diferenciación por horizonte.'],b:['si','Segmentación explícita: corto (2026-2027), mediano (2028-2031) y largo plazo (2032-2035).'],o:'La segmentación temporal se alinea con SUBDERE (2021) y CEPAL-ILPES (2021), facilitando la programación presupuestaria anual.'},
+   {d:1,q:'¿Base de datos del proceso?',a:['si','Matrices Excel de los «árboles de los sueños», sin estructura relacional ni metadatos.'],b:['si','Base estructurada con anexos por instrumento, fuentes, fechas, actas y registros multi-formato.'],o:'La estructura relacional facilita la trazabilidad, la replicabilidad y las evaluaciones intermedias.'},
+   {d:1,q:'¿Datos cualitativos y gráficos?',a:['si','Registros de «sueños» por territorio, con escaso soporte gráfico.'],b:['si','Mapas de calor, redes, dashboards, radar, series temporales, cartografías y diagramas Sankey.'],o:'El componente gráfico fortalece la apropiación del documento por actores no técnicos (Tufte, 2001).'},
+   {d:2,q:'¿Cuántos sectores fueron considerados?',a:['dato','27 sectores aproximadamente.'],b:['dato','60 sectores reconocidos en el diagnóstico territorial.'],o:'La ampliación responde a una lectura más fina del territorio y al crecimiento de la comuna (Censo 2024 vs. Censo 2017).'},
+   {d:2,q:'¿Cuántas localidades considera?',a:['dato','18 localidades/barrios urbanos y rurales.'],b:['dato','25 localidades operativas, integradas en unidades vecinales redefinidas.'],o:'La redefinición actualiza la división organizacional comunal a las dinámicas demográficas del Censo 2024 y reconoce la policentralidad del territorio (Rosario, Rengo, Esmeralda).'},
+   {d:2,q:'¿Diagnóstico territorial de la comuna?',a:['parcial','Antecedentes generales por área de desarrollo, sin georreferenciación ni estandarización.'],b:['si','Diagnóstico integrado multidimensional: MBHT, ICVU, IDC, FONASA, PAES, delictualidad, Censo 2024 y FODA por unidad vecinal.'],o:'El diagnóstico 2025 permite identificar zonas de intervención prioritaria con base empírica robusta.'},
+   {d:2,q:'¿Entrevista / participación de concejales?',a:['sininfo','No se documenta en el cuerpo del PLADECO 2019.'],b:['si','Entrevistas y mesas de trabajo con las comisiones del Concejo Municipal.'],o:'Más deliberación en la formulación reduce el riesgo de rechazo o abstención en la aprobación.'},
+   {d:2,q:'¿Participación de autoridades regionales?',a:['sininfo','No se documenta.'],b:['si','Gobierno Regional de O’Higgins, Delegación Presidencial, SEREMI, equipo ERD-UOH y UAI.'],o:'La articulación regional es clave para la coherencia con la ERD y para el acceso a FNDR y FRIL.'},
+   {d:2,q:'¿Organizaciones funcionales y territoriales (más allá de las JJVV)?',a:['sininfo','No se documenta de manera sistemática.'],b:['si','Cámara de Comercio, Junta de Vigilancia Río Claro, transporte (GALBUS, SERVIBUS, colectivos), ferias La Piscina y Balmaceda, agentes culturales, clubes, COSOC, UCAM y Carabineros.'],o:'Incorporar actores económicos y culturales amplía la legitimidad e integra visiones que quedan fuera del circuito vecinal.'},
+   {d:2,q:'¿Participación de funcionarios?',a:['si','119 funcionarios decretados en equipos y comisiones, sin entrevistas ni entrega de información.'],b:['si','Etnografía institucional en 15 unidades, encuesta a 116 funcionarios y entrevistas directas.'],o:'La etnografía institucional accede a las prácticas reales de coordinación municipal, no solo a la estructura formal.'},
+   {d:2,q:'¿Cómo fue la participación ciudadana?',a:['si','Metodología cualitativa «Árbol de los Sueños» en 21 encuentros barriales y de localidad.'],b:['si','Etnografías social e institucional, entrevistas, talleres FODA, encuestas estructuradas y priorización participativa.'],o:'El diseño mixto convergente triangula datos cuantitativos y cualitativos, fortaleciendo la validez del diagnóstico.'},
+   {d:2,q:'¿Qué modalidades de recopilación se utilizaron?',a:['sininfo','No se documentan modalidades formales más allá de encuentros barriales y comisiones internas.'],b:['si','Bibliografía, entrevistas, focus groups, etnografía, encuestas online, análisis documental, estadístico-espacial y normativo.'],o:'La diversificación responde al estado del arte de la investigación social aplicada a la planificación.'},
+   {d:2,q:'¿Acta de participación?',a:['sininfo','Sin información sistemática.'],b:['si','Actas, asistencia, fotografías y resultados registrados por cada instancia.'],o:'El registro sistemático es requisito de transparencia activa (Ley 20.285) y evidencia auditable ante la CGR.'},
+   {d:2,q:'¿Fotografías del proceso?',a:['si','Registro limitado: aproximadamente 6 fotografías documentadas.'],b:['si','Más de 40 registros fotográficos sistematizados por instancia y territorio.'],o:'El registro fotográfico es insumo de transparencia y de comunicación pública del proceso.'},
+   {d:2,q:'¿Quiénes desarrollaron los encuentros territoriales?',a:['dato','119 funcionarios en 5 equipos (Peumo, Araucaria, Boldo, Canelo y Quillay).'],b:['dato','Conducción metodológica de 2 profesionales especializados, con apoyo del equipo SECPLAN y respaldo del Concejo y directores.'],o:'El proceso 2025 opta por conducción especializada manteniendo convocatoria amplia: eficiencia institucional y especialización técnica.'},
+   {d:2,q:'¿Cuánto tardó el levantamiento de información?',a:['dato','Aproximadamente 12 meses entre 2018 y 2019 (inferido).'],b:['dato','7 meses de levantamiento sistemático, más fases de preparación y validación.'],o:'El diseño ajustado y los instrumentos digitales reducen los costos de transacción del trabajo de campo.'},
+   {d:2,q:'¿Propuesta de los funcionarios?',a:['si','6 comisiones por área de desarrollo y trabajos internos por dirección.'],b:['si','Etnografía institucional, encuesta a 116 funcionarios y mesas con directores municipales.'],o:'Ambos procesos incorporan la perspectiva funcionaria; 2025 la sistematiza bajo el enfoque de cultura organizacional.'},
+   {d:3,q:'¿Exposición de fuentes de financiamiento?',a:['no','Los proyectos se asignan a direcciones sin fuente de financiamiento asociada.'],b:['si','Cartera con fuentes identificadas: FNDR, FRIL, SUBDERE, sectoriales, presupuesto municipal, privados y cooperación.'],o:'Identificar fuentes es condición de viabilidad de la cartera y permite estimar la capacidad real de ejecución.'},
+   {d:3,q:'¿Análisis financiero municipal?',a:['no','No.'],b:['si','Estados financieros y cuentas públicas 2015-2025: gasto en personal, ejecución, dependencia de transferencias, liquidez y solvencia.'],o:'Insumo crítico para evaluar la sostenibilidad fiscal del Plan y la capacidad de comprometer recursos propios.'},
+   {d:3,q:'¿Matriz SUBDERE para los objetivos de desarrollo?',a:['si','Organización por áreas y subáreas, con planes-programas-proyectos.'],b:['si','Matriz actualizada según Manual 2021: ejes y objetivos estratégicos con acciones segmentadas por horizonte temporal.'],o:'La matriz 2025 incorpora indicadores SMART (CEPAL-ILPES, 2021) y trazabilidad ERD → PLADECO → acciones. El detalle vigente está en la sección Matriz Estratégica de este portal.'},
+   {d:3,q:'¿Portal de acceso a la información?',a:['sininfo','No se documenta portal específico del PLADECO.'],b:['si','Plataforma digital de seguimiento con acceso ciudadano a documentos, indicadores y Carta Gantt — este mismo portal.'],o:'El portal opera como dispositivo de transparencia activa (Ley 20.285) y de accountability, en línea con la Ley 21.180.'},
+   {d:3,q:'¿Coherencia con la Estrategia Regional de Desarrollo?',a:['sininfo','No se documenta análisis de coherencia con la ERD vigente.'],b:['si','Sección de convergencias ERD O’Higgins 2024-2036 ↔ PLADECO por eje estratégico, con proyectos emblemáticos.'],o:'La coherencia con la ERD es requisito para postular a fondos regionales (FNDR) y armonizar el desarrollo multinivel (Ley 19.175).'},
+   {d:3,q:'¿Coherencia con los ODS?',a:['sininfo','Sin articulación explícita con la Agenda 2030.'],b:['si','Articulación explícita con los ODS 3, 4, 5, 6, 8, 10, 11, 13, 16 y 17.'],o:'Posiciona al PLADECO en el marco global de desarrollo sostenible y facilita la cooperación y la rendición de cuentas.'},
+   {d:3,q:'¿Cuenta con KPIs y metas?',a:['no','Los proyectos no cuentan con indicadores de resultado ni línea base.'],b:['si','10 indicadores prioritarios + KPIs por eje y metas al 2035, con línea base censal 2024 y mecanismo MRV.'],o:'La definición de KPIs y línea base es condición para una gestión basada en desempeño y para la evaluación intermedia.'},
+   {d:3,q:'¿Coherencia con instrumentos de planificación interna?',a:['no','No, o solo de manera implícita.'],b:['si','Coherencia explícita con PADEM 2026, Plan de Salud 2026-2028, Seguridad Pública, Cultura, PACCC, Niñez (OLN), PRC y ordenanzas.'],o:'La coherencia intersectorial fortalece la operatividad y reduce duplicidades; opera como condición de gobernanza.'},
+   {d:3,q:'¿Recomendaciones de literatura o bibliografía?',a:['no','Citas dispersas sin sección bibliográfica formal.'],b:['si','Bibliografía sistematizada por sección, con normativa y fuentes académicas en formato APA 7.'],o:'Formaliza el carácter técnico-académico del instrumento y permite la trazabilidad de fuentes.'},
+   {d:3,q:'¿Considera a la Contraloría General de la República?',a:['sininfo','No se documenta revisión sistemática de informes de auditoría.'],b:['si','Catálogo cronológico de 18 instrumentos de fiscalización 2009-2024 con análisis de hallazgos críticos.'],o:'Incorporar los hallazgos de la CGR previene la repetición de patrones sistémicos de incumplimiento.'},
+   {d:3,q:'¿Análisis comparado regional?',a:['no','No.'],b:['si','Benchmarking con municipios similares (clúster SNA), ICVU, IDC e Índice de Gobierno Abierto Municipal.'],o:'El benchmarking posiciona a Rengo en el sistema regional-nacional e identifica municipios de referencia.'},
+   {d:3,q:'¿Análisis de riesgo y resiliencia?',a:['no','No.'],b:['si','PACCC articulado, riesgo hídrico del Río Claro, emergencias y gestión de desastres (Ley 21.364).'],o:'Coherente con la normativa vigente y con la Política Nacional para la Reducción de Riesgos de Desastres.'},
+   {d:3,q:'¿Enfoques transversales (género, infancia, interculturalidad)?',a:['parcial','Considera grupos minoritarios y políticas propuestas, sin enfoques transversales operacionalizados.'],b:['si','Género, niñez (Ley 21.430), interculturalidad (Convenio 169 OIT, Ley 19.253), discapacidad (Ley 20.422) y antidiscriminación (Ley 20.609).'],o:'Los enfoques transversales operacionalizados son obligación normativa actual y condición de acceso a financiamiento sectorial.'}
+  ];
+  var DIMS={1:'Dimensión 1 · Información del Proceso',2:'Dimensión 2 · Participación & Diagnóstico',3:'Dimensión 3 · Planificación y Desarrollo'};
+  var EST={si:['Sí','si'],no:['No','no'],parcial:['Parcial','parcial'],sininfo:['S/I','sininfo'],dato:['Dato','dato']};
+  function esc(s){return (''+s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function badge(e){var x=EST[e]||EST.dato;return '<span class="ci-est ci-est--'+x[1]+'">'+x[0]+'</span>';}
+  var fDim=0, fTxt='';
+  function strip(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+  function render(){
+    var tb=document.getElementById('ciBody'); if(!tb) return;
+    var q=strip(fTxt.trim()); var html=''; var n=0; var lastDim=0;
+    D.forEach(function(r,i){
+      if(fDim && r.d!==fDim) return;
+      if(q && strip(r.q+' '+r.a[1]+' '+r.b[1]+' '+r.o).indexOf(q)<0) return;
+      if(r.d!==lastDim){ html+='<tr class="ci-dim-row"><td colspan="3">'+DIMS[r.d]+'</td></tr>'; lastDim=r.d; }
+      n++;
+      html+='<tr><th scope="row">'+esc(r.q)+'<br><button type="button" class="ci-obs-btn" data-obs="'+i+'" aria-expanded="false">Ver observación</button></th>'+
+        '<td data-l="PLADECO 2019-2031">'+badge(r.a[0])+'<br>'+esc(r.a[1])+'</td>'+
+        '<td data-l="PLADECO 2025-2035">'+badge(r.b[0])+'<br>'+esc(r.b[1])+'</td></tr>'+
+        '<tr class="ci-obs-row" id="ciObs'+i+'" hidden><td colspan="3"><strong>Observación:</strong> '+esc(r.o)+'</td></tr>';
+    });
+    tb.innerHTML=html;
+    var c=document.getElementById('ciCount'); if(c) c.textContent=n+' de '+D.length+' variables';
+  }
+  SEC.addEventListener('click',function(ev){
+    var chip=ev.target.closest('.ci-chip');
+    if(chip){ fDim=+chip.getAttribute('data-dim');
+      SEC.querySelectorAll('.ci-chip').forEach(function(x){x.setAttribute('aria-pressed', x===chip?'true':'false');});
+      render(); return; }
+    var ob=ev.target.closest('.ci-obs-btn');
+    if(ob){ var row=document.getElementById('ciObs'+ob.getAttribute('data-obs'));
+      if(row){ row.hidden=!row.hidden; ob.setAttribute('aria-expanded', String(!row.hidden)); ob.textContent=row.hidden?'Ver observación':'Ocultar observación'; } }
+  });
+  var inp=document.getElementById('ciBuscar');
+  if(inp) inp.addEventListener('input',function(){ fTxt=this.value; render(); });
+  render();
+  /* gráfico resumen — calculado desde la propia matriz (excluye filas "dato") */
+  try{
+    var cnt={si:[0,0],no:[0,0],parcial:[0,0],sininfo:[0,0]};
+    D.forEach(function(r){ if(r.a[0]!=='dato'&&cnt[r.a[0]])cnt[r.a[0]][0]++; if(r.b[0]!=='dato'&&cnt[r.b[0]])cnt[r.b[0]][1]++; });
+    new Chart(document.getElementById('ciChart'),{type:'bar',
+      data:{labels:['PLADECO 2019-2031','PLADECO 2025-2035'],datasets:[
+        {label:'Sí',data:[cnt.si[0],cnt.si[1]],backgroundColor:'#009E73'},
+        {label:'Parcial',data:[cnt.parcial[0],cnt.parcial[1]],backgroundColor:'#E69F00'},
+        {label:'No',data:[cnt.no[0],cnt.no[1]],backgroundColor:'#D55E00'},
+        {label:'Sin información',data:[cnt.sininfo[0],cnt.sininfo[1]],backgroundColor:'#94a3b8'}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        scales:{x:{stacked:true,beginAtZero:true,ticks:{stepSize:4}},y:{stacked:true}},
+        plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.parsed.x+' variables';}}}}}});
+  }catch(e){}
+})();
+</script>
+</section>
+
 <section id="historia" class="reveal hist-section" aria-labelledby="histTitle">
   <div class="sec-header">
     <div class="badge" style="background:rgba(184,134,11,.14);color:#b88a0b"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-note"></use></svg> Identidad comunal &middot; Linea de tiempo</div>
@@ -26493,6 +26697,7 @@ const CMD_SECTIONS=[
   {id:'seguridad-publica',name:'Seguridad Pública',svg:'shield',cat:'Diagnóstico',desc:'Delito registrado en Rengo (Ley STOP), 2023–2026'},
   {id:'movilidad-vial',name:'Sistema Vial y Movilidad',svg:'trend',cat:'Diagnóstico',desc:'Censo Vial PNCV: TMDA, composición y emisiones por eje, 2015–2023'},
   {id:'prospectiva',name:'Prospectiva 2035 · Escenarios',svg:'trend',cat:'Estrategia',desc:'Trayectorias 2024–2035 de 4 variables-ancla bajo 3 escenarios (tendencial/PLADECO/crítico)'},
+  {id:'comparador-instrumentos',name:'Comparador 2019 → 2025',svg:'scale',cat:'Estrategia',desc:'Qué cambia entre el PLADECO 2019-2031 y el 2025-2035: 39 variables comparadas y la justificación del nuevo plan'},
   {id:'territorio',name:'Unidades Vecinales',svg:'pin',cat:'Territorio',desc:'Las 21 UV (9 urbanas y 12 rurales)'},
   {id:'comparador-uv',name:'Comparador UV',svg:'calculator',cat:'Territorio',desc:'Compara indicadores entre unidades vecinales'},
   {id:'graficos',name:'Gráficos Analíticos',svg:'chart',cat:'Interactivo',desc:'Gráficos del diagnóstico comunal'},
@@ -36051,7 +36256,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     var SE=window.SEC_EMOJI||{};
     /* Estructura de capítulos del portal */
     var caps=[
-      {t:'Introducción',ids:['bienvenida','mvv','historia','proceso','equipo']},
+      {t:'Introducción',ids:['bienvenida','mvv','historia','comparador-instrumentos','proceso','equipo']},
       {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','comisiones','viz']},
       {t:'Planificación',ids:['prospectiva','matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','glosario','fuentes']}
