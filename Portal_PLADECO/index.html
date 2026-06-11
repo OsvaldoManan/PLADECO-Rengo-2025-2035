@@ -18942,6 +18942,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
   </div>
   <div class="footer-bottom">
     <span>&#169; 2026 Secretar&iacute;a de Planificaci&oacute;n Comunal &middot; Municipalidad de Rengo</span>
+    <span><a href="?vista=completa" style="color:#7ddb9d;text-decoration:underline" title="Todas las secciones en una sola p&aacute;gina lineal, para lectura continua o imprimir">Documento completo (lectura lineal / imprimir)</a></span>
     <span id="footerVersion" class="foot-ver"><span id="swVerTxt">Verificando versi&oacute;n&hellip;</span> <button type="button" id="swCheckBtn" class="foot-upd-btn" title="Buscar actualizaci&oacute;n del portal">Buscar actualizaci&oacute;n</button></span>
   </div>
 </footer>
@@ -35922,6 +35923,9 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       var mp=document.getElementById('tnMpanel');if(mp){mp.classList.remove('open');}
       var bg=document.getElementById('tnBurger');if(bg){bg.classList.remove('open');bg.setAttribute('aria-expanded','false');}
     }
+    /* v45.253 · Historial real (§4.1): pushState al navegar (Atrás/Adelante recorren las vistas);
+       navSilent evita apilar al arrancar y al responder a popstate. */
+    var navSilent=true;
     function show(key){
       hideAll(portada,key!=='portada');
       for(var u=0;u<units.length;u++){hideAll(units[u].els,key!==u);}
@@ -35938,7 +35942,12 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
           '</div>';
       }
       window.scrollTo(0,0);
-      try{history.replaceState(null,'',inV?('#'+units[key].id):'#inicio');}catch(e){}
+      try{
+        var url=inV?('#'+units[key].id):'#inicio';
+        if(navSilent||location.hash===url){history.replaceState(null,'',url);}
+        else{history.pushState(null,'',url);}
+        navSilent=false;
+      }catch(e){}
       var ds=[60,280,700];for(var d=0;d<ds.length;d++){setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},ds[d]);}
       /* v45.119 · INVALIDAR TAMAÑO de TODOS los mapas Leaflet al cambiar de vista
          (los mapas se inicializan con height:0 cuando estaban en .pv-hidden, hay que recalcular) */
@@ -35985,8 +35994,19 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     var hsh=(location.hash||'').replace('#','');
     if(!hsh||hsh==='inicio'||!go(hsh)){show('portada');}
     window.PV={show:show,go:go,units:units,chapters:chapters};
+    /* v45.253 · Atrás/Adelante del navegador recorren las vistas (popstate → mostrar sin re-apilar) */
+    window.addEventListener('popstate',function(){
+      navSilent=true;
+      var h=(location.hash||'').replace('#','');
+      if(!h||h==='inicio'||!go(h)){show('portada');}
+    });
   }
-  function boot(){try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}}
+  function boot(){
+    /* v45.253 · Vista "documento completo" (§4.1): ?vista=completa omite el motor de vistas →
+       todas las secciones fluyen linealmente (lectura continua / imprimir / exportar a PDF).
+       Los gráficos se construyen igual (el fallback del lazy construye lo visible tras load). */
+    try{if(/[?&]vista=completa\b/.test(location.search)){document.body.classList.add('vista-completa');return;}}catch(e){}
+    try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}}
   boot();
 })();
 </script>
