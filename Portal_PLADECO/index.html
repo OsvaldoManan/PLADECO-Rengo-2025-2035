@@ -16473,6 +16473,21 @@ body.dark #inversion-subdere .is-tabla tbody tr:nth-child(even) td{background:rg
 #inversion-subdere .is-est{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.03em;border-radius:99px;padding:3px 9px;text-transform:uppercase;white-space:nowrap}
 #inversion-subdere .is-eje-tag{font-size:10.5px;font-weight:700;color:#1F3864}
 body.dark #inversion-subdere .is-eje-tag{color:#7ea4d8}
+/* ── v45.258 · date card, embudo de estados, PDF ── */
+#inversion-subdere .is-datecard{display:flex;gap:12px;align-items:flex-start;background:rgba(31,56,100,.06);border:1px solid var(--border);border-left:4px solid #1F3864;border-radius:10px;padding:12px 16px;margin:6px 0 16px;font-size:12.5px;line-height:1.5;color:var(--text2)}
+#inversion-subdere .is-datecard .ico{width:20px;height:20px;color:#1F3864;flex:0 0 auto;margin-top:1px}
+#inversion-subdere .is-datecard strong{color:var(--text)}
+body.dark #inversion-subdere .is-datecard{background:rgba(126,164,216,.08);border-left-color:#7ea4d8}
+body.dark #inversion-subdere .is-datecard .ico{color:#7ea4d8}
+#inversion-subdere .is-pipe{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin:4px 0 6px}
+#inversion-subdere .is-stage{flex:1;min-width:108px;border:1px solid var(--border);border-top:3px solid var(--st,#94a3b8);border-radius:10px;padding:10px 12px;background:var(--card);cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;font-family:inherit}
+#inversion-subdere .is-stage:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+#inversion-subdere .is-stage[aria-pressed="true"]{box-shadow:0 0 0 2px var(--st)}
+#inversion-subdere .is-stage-n{font-size:24px;font-weight:900;line-height:1;color:var(--st,#1F3864)}
+#inversion-subdere .is-stage-l{font-size:10.5px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.03em;margin-top:3px}
+#inversion-subdere .is-stage-ar{display:flex;align-items:center;color:var(--text2);font-weight:900;font-size:16px;flex:0 0 auto}
+@media(max-width:760px){#inversion-subdere .is-stage-ar{display:none}#inversion-subdere .is-stage{min-width:30%}}
+#inversion-subdere .is-dl--pdf{background:#990000}
 @media(max-width:700px){
   #inversion-subdere table.is-tabla{min-width:0}
   #inversion-subdere .is-tabla thead{display:none}
@@ -16543,12 +16558,17 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     var termina=P.filter(function(p){return p._k==='cerrado';}).length;
     /* layout fijo (KPIs + toolbar + charts + timeline + tabla) */
     CONT.innerHTML=''+
+    '<div class="is-datecard"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg>'+
+      '<div><strong>Datos al 13 de junio de 2026.</strong> Cartera de '+P.length+' iniciativas extraída del Portal Ciudadano de Inversión Local de la SUBDERE (plataforma actualizada al 12-06-2026). Publicada en virtud de la transparencia activa (Ley N° 20.285); descargable en CSV, Excel y PDF. Próximamente se incorporará la georreferenciación de los proyectos.</div></div>'+
     '<div class="sv-kpis" role="group" aria-label="Cifras de inversión SUBDERE">'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#1F3864">'+P.length+'</div><div class="sv-kpi-lbl">Proyectos registrados</div></div>'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#15803d">'+fmtM(montoTot)+'</div><div class="sv-kpi-lbl">Monto total de la cartera</div></div>'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#009E73">'+termina+'</div><div class="sv-kpi-lbl">Proyectos cerrados (ejecutados)</div></div>'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#b45309">'+n25+'</div><div class="sv-kpi-lbl">Proyectos 2025 en adelante</div></div>'+
     '</div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:18px 0 3px">Línea de tiempo del ciclo de evaluación SUBDERE</h3>'+
+    '<p style="font-size:12px;color:var(--text2);margin:0 0 8px">Cada iniciativa recorre las etapas oficiales del Sistema Nacional de Inversiones. El número indica cuántos proyectos de Rengo se encuentran hoy en cada estado (toca un estado para filtrar).</p>'+
+    '<div class="is-pipe" id="isPipe"></div>'+
     '<div class="is-toolbar" role="group" aria-label="Filtros de la cartera">'+
       '<button type="button" class="is-chip" data-est="" aria-pressed="true">Todos los estados</button>'+
       estados.map(function(k){var m=EST_META[k];return '<button type="button" class="is-chip" data-est="'+k+'" aria-pressed="false"><span class="is-dot" style="background:'+m[1]+'"></span>'+esc(m[0])+'</button>';}).join('')+
@@ -16557,18 +16577,25 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
       '<input type="search" id="isBuscar" class="is-buscar" placeholder="Buscar proyecto…" aria-label="Buscar proyecto">'+
       '<button type="button" class="is-dl" id="isCSV"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> CSV</button>'+
       '<button type="button" class="is-dl is-dl--alt" id="isXLS"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> Excel</button>'+
+      '<button type="button" class="is-dl is-dl--pdf" id="isPDF"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> PDF</button>'+
       '<span class="is-count" id="isCount" role="status" aria-live="polite"></span>'+
     '</div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:20px 0 2px">Panorama de la cartera</h3>'+
     '<div class="is-charts">'+
       '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Proyectos por estado</h3><div class="is-chart-box"><canvas id="isChEstado" role="img" aria-label="Gráfico: proyectos por estado"></canvas></div></div>'+
       '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Evolución por año (N° y monto)</h3><div class="is-chart-box"><canvas id="isChAnio" role="img" aria-label="Gráfico: proyectos y monto por año"></canvas></div></div>'+
       '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Proyectos por programa</h3><div class="is-chart-box"><canvas id="isChProg" role="img" aria-label="Gráfico: proyectos por programa"></canvas></div></div>'+
-      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Relación con el PLADECO (proyectos 2025+)</h3><div class="is-chart-box"><canvas id="isChEje" role="img" aria-label="Gráfico: proyectos 2025 en adelante por eje del PLADECO"></canvas></div></div>'+
     '</div>'+
-    '<h3 style="font-size:15px;font-weight:800;margin:20px 0 2px">Línea de tiempo de la inversión</h3>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:22px 0 2px">Tipo de proyectos y alineación con el PLADECO</h3>'+
+    '<p style="font-size:12px;color:var(--text2);margin:0 0 6px">Qué tipo de obras predominan en la comuna y cómo se vinculan los proyectos <strong>2025 en adelante</strong> con los seis ejes estratégicos del Plan.</p>'+
+    '<div class="is-charts">'+
+      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Tipo de proyecto (tipología)</h3><div class="is-chart-box"><canvas id="isChTipo" role="img" aria-label="Gráfico: proyectos por tipo (tipología de obra)"></canvas></div></div>'+
+      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Alineación con los ejes del PLADECO (2025+)</h3><div class="is-chart-box"><canvas id="isChEje" role="img" aria-label="Gráfico: proyectos 2025 en adelante por eje del PLADECO"></canvas></div></div>'+
+    '</div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:22px 0 2px">Cronología de la inversión por año</h3>'+
     '<div class="is-tl" id="isTL"></div>'+
     '<h3 style="font-size:15px;font-weight:800;margin:18px 0 2px">Detalle de proyectos</h3>'+
-    '<div class="is-wrap"><table class="is-tabla" id="isTabla"><thead><tr><th>Proyecto</th><th>Programa</th><th>Estado</th><th>Año</th><th>Monto</th><th>Eje PLADECO</th></tr></thead><tbody id="isBody"></tbody></table></div>';
+    '<div class="is-wrap"><table class="is-tabla" id="isTabla"><thead><tr><th>Proyecto</th><th>Código BIP</th><th>Programa</th><th>Tipología</th><th>Estado</th><th>Año</th><th>Monto</th><th>Eje PLADECO</th></tr></thead><tbody id="isBody"></tbody></table></div>';
     buildCharts(P, anios, progs);
     bind(P);
     apply(P);
@@ -16584,12 +16611,21 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
       return true;
     });
   }
+  var PIPE_ORDER=['creacion','evaluacion','elegible','asignado','ejecucion','cerrado'];
   function apply(P){
     var L=filtered(P);
+    /* embudo del ciclo de evaluación SUBDERE (conteos totales, resalta el estado filtrado) */
+    var pc={}; P.forEach(function(p){pc[p._k]=(pc[p._k]||0)+1;});
+    var pipe=document.getElementById('isPipe');
+    if(pipe) pipe.innerHTML=PIPE_ORDER.map(function(k,i){var m=EST_META[k];
+      return '<button type="button" class="is-stage" data-est="'+k+'" aria-pressed="'+(fEstado===k)+'" title="Filtrar: '+esc(m[0])+'" style="--st:'+m[1]+'"><span class="is-stage-n">'+(pc[k]||0)+'</span><span class="is-stage-l">'+esc(m[0])+'</span></button>'+(i<5?'<span class="is-stage-ar" aria-hidden="true">›</span>':'');
+    }).join('');
     var body=document.getElementById('isBody');
     body.innerHTML=L.map(function(p){var m=EST_META[p._k];
       return '<tr><td data-l="Proyecto">'+esc(p.nombre||'(sin nombre)')+'</td>'+
+        '<td data-l="Código BIP">'+esc(p.cod||'—')+'</td>'+
         '<td data-l="Programa">'+esc(p.programa||'—')+'</td>'+
+        '<td data-l="Tipología">'+esc(p.sub||'—')+'</td>'+
         '<td data-l="Estado"><span class="is-est" style="background:'+m[1]+'22;color:'+m[1]+'">'+esc(m[0])+'</span></td>'+
         '<td data-l="Año">'+esc(p.anio||'—')+'</td>'+
         '<td data-l="Monto">'+fmtM(p.monto)+'</td>'+
@@ -16606,16 +16642,18 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     var c=document.getElementById('isCount'); if(c) c.textContent=L.length+' de '+P.length+' proyectos';
   }
   function bind(P){
-    SEC.querySelectorAll('.is-chip').forEach(function(ch){ch.addEventListener('click',function(){
-      fEstado=ch.getAttribute('data-est');
-      SEC.querySelectorAll('.is-chip').forEach(function(x){x.setAttribute('aria-pressed',x===ch?'true':'false');});
+    function setEstado(k){
+      fEstado=k;
+      SEC.querySelectorAll('.is-chip').forEach(function(x){x.setAttribute('aria-pressed', x.getAttribute('data-est')===k?'true':'false');});
       apply(P);
-    });});
+    }
+    SEC.querySelectorAll('.is-chip').forEach(function(ch){ch.addEventListener('click',function(){setEstado(ch.getAttribute('data-est'));});});
+    var pipe=document.getElementById('isPipe'); if(pipe)pipe.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.is-stage'); if(b)setEstado(b.getAttribute('data-est'));});
     var pr=document.getElementById('isProg'); if(pr)pr.addEventListener('change',function(){fProg=this.value;apply(P);});
     var an=document.getElementById('isAnio'); if(an)an.addEventListener('change',function(){fAnio=this.value;apply(P);});
     var bu=document.getElementById('isBuscar'); if(bu)bu.addEventListener('input',function(){fTxt=this.value;apply(P);});
-    var cols=['Proyecto','Programa','Estado','Año','Monto','Eje PLADECO'];
-    function rows(){return filtered(P).map(function(p){return [p.nombre||'',p.programa||'',(EST_META[p._k][0]),p.anio||'',(p.monto||''),(p.eje?('Eje '+p.eje+' '+EJES[p.eje]):'')];});}
+    var cols=['Proyecto','Código BIP','Programa','Tipología','Estado','Año','Monto ($)','Eje PLADECO'];
+    function rows(){return filtered(P).map(function(p){return [p.nombre||'',p.cod||'',p.programa||'',p.sub||'',(EST_META[p._k][0]),p.anio||'',(p.monto||0),(p.eje?('Eje '+p.eje+' · '+EJES[p.eje]):'')];});}
     var cv=document.getElementById('isCSV'); if(cv)cv.addEventListener('click',function(){
       var q=function(s){s=''+s;return /[",\n;]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};
       var csv=[cols.join(',')].concat(rows().map(function(r){return r.map(q).join(',');})).join('\n');
@@ -16625,6 +16663,20 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
       var h='<table border="1"><tr>'+cols.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr>'+
         rows().map(function(r){return '<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</table>';
       dl(new Blob(['﻿<html><head><meta charset="utf-8"></head><body>'+h+'</body></html>'],{type:'application/vnd.ms-excel'}),'inversion-subdere-rengo.xls');
+    });
+    var pf=document.getElementById('isPDF'); if(pf)pf.addEventListener('click',function(){
+      var rs=rows();
+      var th='<tr>'+cols.map(function(c){return '<th>'+esc(c)+'</th>';}).join('')+'</tr>';
+      var tr=rs.map(function(r){return '<tr>'+r.map(function(c,i){return '<td'+(i===6?' style="text-align:right">'+(c?('$'+(+c).toLocaleString("es-CL")):'—'):'>'+esc(c))+'</td>';}).join('')+'</tr>';}).join('');
+      var w=window.open('','_blank'); if(!w){alert('Permite las ventanas emergentes para descargar el PDF.');return;}
+      w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Inversión municipal SUBDERE · Rengo</title>'+
+        '<style>body{font-family:system-ui,Arial,sans-serif;color:#0f172a;padding:22px}h1{color:#1F3864;font-size:18px;margin:0 0 2px}.sub{color:#555;font-size:11px;margin:0 0 14px}table{border-collapse:collapse;width:100%}th{background:#1F3864;color:#fff;padding:5px 7px;text-align:left;font-size:9.5px}td{border:1px solid #cbd5e1;padding:4px 7px;font-size:9.5px}tr:nth-child(even) td{background:#f1f5f9}.foot{margin-top:14px;color:#777;font-size:9px}@media print{th{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>'+
+        '<h1>Inversión municipal SUBDERE · Comuna de Rengo</h1>'+
+        '<p class="sub">'+rs.length+' proyectos · Datos al 13 de junio de 2026 · Fuente: Portal Ciudadano de Inversión Local — SUBDERE En Línea · Transparencia activa (Ley N° 20.285).</p>'+
+        '<table><thead>'+th+'</thead><tbody>'+tr+'</tbody></table>'+
+        '<p class="foot">Generado desde el Portal Estratégico PLADECO Rengo 2025-2035. Clasificación por eje PLADECO: elaboración SECPLAC (preliminar).</p>'+
+        '</body></html>');
+      w.document.close(); setTimeout(function(){try{w.focus();w.print();}catch(e){}},500);
     });
   }
   function dl(blob,name){var u=URL.createObjectURL(blob);var a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1500);}
@@ -16650,6 +16702,12 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     charts.push(new Chart(document.getElementById('isChEje'),{type:'bar',
       data:{labels:['E1 Social','E2 Económico','E3 Territorio','E4 Servicios','E5 Cultura','E6 Gestión'],datasets:[{label:'Proyectos 2025+',data:byEje,backgroundColor:[1,2,3,4,5,6].map(function(e){return EJE_COL[e];}),borderRadius:3}]},
       options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:function(it){return EJES[it[0].dataIndex+1];}}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}}));
+    /* tipo de proyecto (tipología) — top 8 */
+    var byTipo={}; P.forEach(function(p){var t=((p.sub||'').trim())||'Sin clasificar'; byTipo[t]=(byTipo[t]||0)+1;});
+    var tE=Object.keys(byTipo).map(function(t){return [t,byTipo[t]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
+    charts.push(new Chart(document.getElementById('isChTipo'),{type:'bar',
+      data:{labels:tE.map(function(e){return e[0];}),datasets:[{label:'Proyectos',data:tE.map(function(e){return e[1];}),backgroundColor:'#0072B2',borderRadius:3}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:2}}}}}));
   }
 
   render();
