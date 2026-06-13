@@ -16489,11 +16489,13 @@ body.dark #inversion-subdere .is-eje-tag{color:#7ea4d8}
 <div id="isContent"></div>
 <p class="sec-fuente" id="isFuente" style="margin-top:14px"><strong>Fuente:</strong> Portal Ciudadano de Inversión Local — SUBDERE En Línea (inversionmunicipal.subdere.gov.cl), datos desde 2014. La consulta ciudadana del portal está protegida por reCAPTCHA; la cartera se incorpora a este portal tras su exportación oficial. Clasificación por eje PLADECO: elaboración SECPLAC.</p>
 
+<!-- v45.257 · Datos reales extraídos del Portal Ciudadano SUBDERE (export oficial, comuna Rengo 06115, 110 proyectos). Archivo externo precacheado para sobrevivir al versionado diario del index. -->
+<script src="subdere-data.js"></script>
 <script>
 window.SUBDERE_DATA = window.SUBDERE_DATA || {
   actualizado: '',
   fuente: 'Portal Ciudadano de Inversión Local — SUBDERE',
-  proyectos: []   /* ← poblar con la exportación real (ver comentario arriba). NO inventar datos. */
+  proyectos: []   /* fallback: si no cargó el .js externo (no inventar datos). */
 };
 (function(){
   var SEC=document.getElementById('inversion-subdere'); if(!SEC) return;
@@ -16501,14 +16503,15 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
   var EJES=['','Desarrollo Social y Comunitario','Desarrollo Económico y Productivo','Ordenamiento Territorial y Medio Ambiente','Servicios Públicos e Infraestructura','Cultura, Deporte e Identidad','Gestión Municipal y Gobernanza'];
   var EJE_COL=['#94a3b8','#0072B2','#E69F00','#009E73','#56B4E9','#D55E00','#CC79A7'];
   function estKey(e){e=(e||'').toString().toLowerCase();
-    if(/termin|ejecutad|cerrad/.test(e))return 'terminado';
-    if(/ejecuc|ejecut/.test(e))return 'ejecucion';
-    if(/aprob|asign|adjudic|financiad/.test(e))return 'aprobado';
+    if(/cerrad|terminad/.test(e))return 'cerrado';
+    if(/ejecuc/.test(e))return 'ejecucion';
+    if(/asignad|recurso/.test(e))return 'asignado';
+    if(/elegible/.test(e))return 'elegible';
     if(/evalu|admisi|revis/.test(e))return 'evaluacion';
-    if(/postul|ingres|present/.test(e))return 'postulado';
-    if(/desist|rechaz|observ|no admis|anulad/.test(e))return 'desistido';
+    if(/creacion|postul|ingres/.test(e))return 'creacion';
     return 'otro';}
-  var EST_META={postulado:['Postulado','#E69F00'],evaluacion:['En evaluación','#b45309'],aprobado:['Aprobado','#0072B2'],ejecucion:['En ejecución','#56B4E9'],terminado:['Terminado','#009E73'],desistido:['Desistido/Rechazado','#D55E00'],otro:['Otro','#94a3b8']};
+  /* 6 estados oficiales del ciclo SUBDERE, paleta CVD-safe */
+  var EST_META={creacion:['En creación','#94a3b8'],evaluacion:['En evaluación técnica','#E69F00'],elegible:['Elegible','#0072B2'],asignado:['Recursos asignados','#CC79A7'],ejecucion:['En ejecución','#56B4E9'],cerrado:['Cerrado','#009E73'],otro:['Otro','#64748b']};
   function esc(s){return (''+(s==null?'':s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function fmtM(n){ if(n==null||isNaN(n))return '—'; n=+n; if(n>=1e6)return '$'+(n/1e6).toLocaleString('es-CL',{maximumFractionDigits:1})+' MM'; if(n>=1e3)return '$'+(n/1e3).toLocaleString('es-CL',{maximumFractionDigits:0})+' M'; return '$'+n.toLocaleString('es-CL');}
   function strip(s){return (''+s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
@@ -16537,13 +16540,13 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     var estados=[...new Set(P.map(function(p){return p._k;}))];
     var n25=P.filter(function(p){return +p.anio>=2025;}).length;
     var montoTot=P.reduce(function(a,p){return a+(+p.monto||0);},0);
-    var termina=P.filter(function(p){return p._k==='terminado';}).length;
+    var termina=P.filter(function(p){return p._k==='cerrado';}).length;
     /* layout fijo (KPIs + toolbar + charts + timeline + tabla) */
     CONT.innerHTML=''+
     '<div class="sv-kpis" role="group" aria-label="Cifras de inversión SUBDERE">'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#1F3864">'+P.length+'</div><div class="sv-kpi-lbl">Proyectos registrados</div></div>'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#15803d">'+fmtM(montoTot)+'</div><div class="sv-kpi-lbl">Monto total de la cartera</div></div>'+
-      '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#009E73">'+termina+'</div><div class="sv-kpi-lbl">Proyectos terminados</div></div>'+
+      '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#009E73">'+termina+'</div><div class="sv-kpi-lbl">Proyectos cerrados (ejecutados)</div></div>'+
       '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#b45309">'+n25+'</div><div class="sv-kpi-lbl">Proyectos 2025 en adelante</div></div>'+
     '</div>'+
     '<div class="is-toolbar" role="group" aria-label="Filtros de la cartera">'+
