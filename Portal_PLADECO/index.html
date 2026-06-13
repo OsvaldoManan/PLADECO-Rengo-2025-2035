@@ -16491,18 +16491,19 @@ body.dark #inversion-subdere .is-empty .is-empty-ic{color:#7ea4d8}
 #inversion-subdere .is-dl.is-dl--alt{background:#1F3864}
 #inversion-subdere .is-dl .ico{width:14px;height:14px}
 #inversion-subdere .is-count{font-size:11.5px;color:var(--text2);font-weight:600}
-#inversion-subdere .is-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:8px 0 4px}
-#inversion-subdere .is-chart-box{position:relative;height:230px}
-#inversion-subdere .is-tl{position:relative;margin:10px 0 4px;padding-left:4px}
-#inversion-subdere .is-tl-year{display:flex;gap:12px;align-items:flex-start;padding:0 0 14px;position:relative}
-#inversion-subdere .is-tl-year::before{content:'';position:absolute;left:46px;top:26px;bottom:-2px;width:2px;background:var(--border)}
-#inversion-subdere .is-tl-year:last-child::before{display:none}
-#inversion-subdere .is-tl-num{flex:0 0 auto;width:54px;height:54px;border-radius:12px;background:#1F3864;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;z-index:1}
-body.dark #inversion-subdere .is-tl-num{background:#16294a}
-#inversion-subdere .is-tl-body{flex:1;padding-top:3px}
-#inversion-subdere .is-tl-body h4{font-size:13px;font-weight:800;margin:0 0 4px;color:var(--text)}
-#inversion-subdere .is-tl-items{display:flex;flex-direction:column;gap:5px}
-#inversion-subdere .is-tl-item{font-size:12px;color:var(--text2);display:flex;gap:8px;align-items:flex-start}
+/* ── v45.261 · gráficos más grandes ── */
+#inversion-subdere .is-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin:10px 0 6px}
+#inversion-subdere .is-chart-box{position:relative;height:320px}
+@media(max-width:700px){#inversion-subdere .is-chart-box{height:270px}}
+/* ── v45.261 · card "Análisis general" (acento navy, complementa la Lectura crimson) ── */
+#inversion-subdere .is-analisis{background:rgba(31,56,100,.045);border:1px solid var(--border);border-left:4px solid #1F3864;border-radius:12px;padding:14px 18px;margin:2px 0 6px}
+body.dark #inversion-subdere .is-analisis{background:rgba(126,164,216,.07)}
+#inversion-subdere .is-analisis-intro{font-size:12px;color:var(--text2);margin:0 0 10px;font-weight:600}
+#inversion-subdere .is-analisis ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:9px 20px}
+#inversion-subdere .is-analisis li{font-size:12.5px;line-height:1.5;color:var(--text2);padding-left:16px;position:relative}
+#inversion-subdere .is-analisis li::before{content:'';position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:2px;background:#1F3864}
+body.dark #inversion-subdere .is-analisis li::before{background:#7ea4d8}
+#inversion-subdere .is-analisis strong{color:var(--text)}
 #inversion-subdere .is-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin-top:6px}
 #inversion-subdere table.is-tabla{border-collapse:collapse;width:100%;font-size:12.5px;min-width:680px}
 #inversion-subdere .is-tabla th,#inversion-subdere .is-tabla td{border-bottom:1px solid var(--border);padding:9px 11px;text-align:left;vertical-align:top}
@@ -16610,7 +16611,13 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     var by25={}; P.filter(function(p){return +p.anio>=2025;}).forEach(function(p){if(p.eje)by25[p.eje]=(by25[p.eje]||0)+1;});
     var topEje=Object.keys(by25).sort(function(a,b){return by25[b]-by25[a];})[0];
     var ejeTopHtml=topEje?('<strong>Eje '+topEje+' · '+esc(EJES[topEje])+'</strong> ('+by25[topEje]+' de '+n25+')'):'los ejes del Plan';
-    /* layout fijo (KPIs + toolbar + charts + timeline + tabla) */
+    /* análisis general (computado de los datos reales) */
+    var progCount={}; P.forEach(function(p){if(p.programa)progCount[p.programa]=(progCount[p.programa]||0)+1;});
+    var topProg=Object.keys(progCount).sort(function(a,b){return progCount[b]-progCount[a];})[0];
+    var tipoCount={}; P.forEach(function(p){if(p.sub)tipoCount[p.sub]=(tipoCount[p.sub]||0)+1;});
+    var topTipo=Object.keys(tipoCount).sort(function(a,b){return tipoCount[b]-tipoCount[a];})[0];
+    var yMin=anios[0], yMax=anios[anios.length-1];
+    /* layout fijo (KPIs + lectura + embudo + charts + análisis + tabla filtrable) */
     CONT.innerHTML=''+
     '<div class="is-datecard"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg>'+
       '<div><strong>Datos al 13 de junio de 2026.</strong> Cartera de '+P.length+' iniciativas extraída del Portal Ciudadano de Inversión Local de la SUBDERE (plataforma actualizada al 12-06-2026). Publicada en virtud de la transparencia activa (Ley N° 20.285); descargable en CSV, Excel y PDF. Próximamente se incorporará la georreferenciación de los proyectos.</div></div>'+
@@ -16631,17 +16638,6 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     '<h3 style="font-size:15px;font-weight:800;margin:18px 0 3px">Línea de tiempo del ciclo de evaluación SUBDERE</h3>'+
     '<p style="font-size:12px;color:var(--text2);margin:0 0 8px">Cada iniciativa recorre las etapas oficiales del Sistema Nacional de Inversiones. El número indica cuántos proyectos de Rengo se encuentran hoy en cada estado (toca un estado para filtrar).</p>'+
     '<div class="is-pipe" id="isPipe"></div>'+
-    '<div class="is-toolbar" role="group" aria-label="Filtros de la cartera">'+
-      '<button type="button" class="is-chip" data-est="" aria-pressed="true">Todos los estados</button>'+
-      estados.map(function(k){var m=EST_META[k];return '<button type="button" class="is-chip" data-est="'+k+'" aria-pressed="false"><span class="is-dot" style="background:'+m[1]+'"></span>'+esc(m[0])+'</button>';}).join('')+
-      '<select class="is-sel" id="isProg" aria-label="Filtrar por programa"><option value="">Todos los programas</option>'+progs.map(function(p){return '<option value="'+esc(p)+'">'+esc(p)+'</option>';}).join('')+'</select>'+
-      '<select class="is-sel" id="isAnio" aria-label="Filtrar por año"><option value="">Todos los años</option>'+anios.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('')+'</select>'+
-      '<input type="search" id="isBuscar" class="is-buscar" placeholder="Buscar proyecto…" aria-label="Buscar proyecto">'+
-      '<button type="button" class="is-dl" id="isCSV"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> CSV</button>'+
-      '<button type="button" class="is-dl is-dl--alt" id="isXLS"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> Excel</button>'+
-      '<button type="button" class="is-dl is-dl--pdf" id="isPDF"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> PDF</button>'+
-      '<span class="is-count" id="isCount" role="status" aria-live="polite"></span>'+
-    '</div>'+
     '<h3 style="font-size:15px;font-weight:800;margin:20px 0 2px">Panorama de la cartera</h3>'+
     '<div class="is-charts">'+
       '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Proyectos por estado</h3><div class="is-chart-box"><canvas id="isChEstado" role="img" aria-label="Gráfico: proyectos por estado"></canvas></div></div>'+
@@ -16654,9 +16650,30 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
       '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Tipo de proyecto (tipología)</h3><div class="is-chart-box"><canvas id="isChTipo" role="img" aria-label="Gráfico: proyectos por tipo (tipología de obra)"></canvas></div></div>'+
       '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Alineación con los ejes del PLADECO (2025+)</h3><div class="is-chart-box"><canvas id="isChEje" role="img" aria-label="Gráfico: proyectos 2025 en adelante por eje del PLADECO"></canvas></div></div>'+
     '</div>'+
-    '<h3 style="font-size:15px;font-weight:800;margin:22px 0 2px">Cronología de la inversión por año</h3>'+
-    '<div class="is-tl" id="isTL"></div>'+
-    '<h3 style="font-size:15px;font-weight:800;margin:18px 0 2px">Detalle de proyectos</h3>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:24px 0 2px">Análisis general de la cartera</h3>'+
+    '<div class="is-analisis">'+
+      '<p class="is-analisis-intro">Una lectura de conjunto de las cinco visualizaciones anteriores:</p>'+
+      '<ul>'+
+        '<li><strong>Composición por estado.</strong> El '+pctCerr+'% de la cartera ('+termina+' de '+P.length+') está cerrada y '+enCiclo+' iniciativas siguen en el ciclo del SNI: una cartera madura, pero con flujo de proyectos todavía activo.</li>'+
+        (topProg?'<li><strong>Programas.</strong> «'+esc(topProg)+'» es el instrumento más utilizado ('+progCount[topProg]+' proyectos) y define el perfil de inversión de Rengo ante la SUBDERE.</li>':'')+
+        '<li><strong>Trayectoria y monto.</strong> La cartera abarca '+yMin+'–'+yMax+' y suma '+fmtM(montoTot)+'; cruzar número de proyectos y monto por año revela en qué períodos se concentró el mayor esfuerzo de inversión.</li>'+
+        (topTipo?'<li><strong>Tipo de obra.</strong> Predomina la tipología «'+esc(topTipo)+'» ('+tipoCount[topTipo]+' proyectos), coherente con las necesidades de infraestructura y espacio público de la comuna.</li>':'')+
+        '<li><strong>Alineación con el PLADECO.</strong> Los '+n25+' proyectos 2025+ se concentran en el '+ejeTopHtml+': la inversión más reciente ya conversa con las prioridades estratégicas del Plan.</li>'+
+      '</ul>'+
+    '</div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:24px 0 3px">Detalle de proyectos</h3>'+
+    '<p style="font-size:12px;color:var(--text2);margin:0 0 9px">Tabla dinámica: filtra por <strong>estado</strong>, <strong>programa</strong> o <strong>año</strong>, o busca por nombre. Las descargas (CSV · Excel · PDF) respetan el filtro activo.</p>'+
+    '<div class="is-toolbar" role="group" aria-label="Filtros de la cartera">'+
+      '<button type="button" class="is-chip" data-est="" aria-pressed="true">Todos los estados</button>'+
+      estados.map(function(k){var m=EST_META[k];return '<button type="button" class="is-chip" data-est="'+k+'" aria-pressed="false"><span class="is-dot" style="background:'+m[1]+'"></span>'+esc(m[0])+'</button>';}).join('')+
+      '<select class="is-sel" id="isProg" aria-label="Filtrar por programa"><option value="">Todos los programas</option>'+progs.map(function(p){return '<option value="'+esc(p)+'">'+esc(p)+'</option>';}).join('')+'</select>'+
+      '<select class="is-sel" id="isAnio" aria-label="Filtrar por año"><option value="">Todos los años</option>'+anios.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('')+'</select>'+
+      '<input type="search" id="isBuscar" class="is-buscar" placeholder="Buscar proyecto…" aria-label="Buscar proyecto">'+
+      '<button type="button" class="is-dl" id="isCSV"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> CSV</button>'+
+      '<button type="button" class="is-dl is-dl--alt" id="isXLS"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> Excel</button>'+
+      '<button type="button" class="is-dl is-dl--pdf" id="isPDF"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg> PDF</button>'+
+      '<span class="is-count" id="isCount" role="status" aria-live="polite"></span>'+
+    '</div>'+
     '<div class="is-wrap"><table class="is-tabla" id="isTabla"><thead><tr><th>Proyecto</th><th>Código BIP</th><th>Programa</th><th>Tipología</th><th>Estado</th><th>Año</th><th>Monto</th><th>Eje PLADECO</th></tr></thead><tbody id="isBody"></tbody></table></div>';
     buildCharts(P, anios, progs);
     bind(P);
@@ -16692,14 +16709,6 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
         '<td data-l="Año">'+esc(p.anio||'—')+'</td>'+
         '<td data-l="Monto">'+fmtM(p.monto)+'</td>'+
         '<td data-l="Eje PLADECO"><span class="is-eje-tag">'+(p.eje?('E'+p.eje+' · '+esc(EJES[p.eje])):'—')+'</span></td></tr>';
-    }).join('');
-    /* timeline desde lo filtrado */
-    var byYr={}; L.forEach(function(p){var y=p.anio||'s/f'; (byYr[y]=byYr[y]||[]).push(p);});
-    var yrs=Object.keys(byYr).sort(function(a,b){return (''+b).localeCompare(''+a);});
-    document.getElementById('isTL').innerHTML=yrs.map(function(y){
-      return '<div class="is-tl-year"><div class="is-tl-num">'+esc(y)+'</div><div class="is-tl-body"><h4>'+byYr[y].length+' proyecto(s)</h4><div class="is-tl-items">'+
-        byYr[y].map(function(p){var m=EST_META[p._k];return '<div class="is-tl-item"><span class="is-est" style="background:'+m[1]+'22;color:'+m[1]+'">'+esc(m[0])+'</span> '+esc(p.nombre||'')+(p.monto?(' · '+fmtM(p.monto)):'')+'</div>';}).join('')+
-      '</div></div></div>';
     }).join('');
     var c=document.getElementById('isCount'); if(c) c.textContent=L.length+' de '+P.length+' proyectos';
   }
