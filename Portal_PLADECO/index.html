@@ -16473,6 +16473,19 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
      Al poblarlo, KPIs, filtros, línea de tiempo, gráficos y descargas se activan solos. -->
 <section id="inversion-subdere" class="reveal">
 <style>
+/* ── v45.262 · P1 · APROVECHAMIENTO DEL ANCHO ──
+   Solo esta sección rompe el tope de 1440px del #main-content: full-bleed al viewport
+   con el contenido centrado a un máximo razonable (1680px). El body ya tiene
+   overflow-x:hidden + max-width:100vw, así que no genera scroll horizontal.
+   Vertical/box-sizing sin tocar (box-sizing:border-box ya es global). */
+#main-content > #inversion-subdere{
+  width:100vw !important;max-width:100vw !important;
+  margin-left:calc(50% - 50vw) !important;margin-right:calc(50% - 50vw) !important;
+  padding-left:max(40px, calc((100vw - 1680px) / 2)) !important;
+  padding-right:max(40px, calc((100vw - 1680px) / 2)) !important;
+  background:transparent !important;
+}
+@media(max-width:768px){#main-content > #inversion-subdere{padding-left:16px !important;padding-right:16px !important}}
 #inversion-subdere .is-empty{border:1px dashed var(--border);border-radius:14px;padding:26px 22px;background:rgba(31,56,100,.04);text-align:center}
 body.dark #inversion-subdere .is-empty{background:rgba(126,164,216,.06)}
 #inversion-subdere .is-empty .is-empty-ic{width:46px;height:46px;color:#1F3864;margin:0 auto 8px}
@@ -16504,6 +16517,25 @@ body.dark #inversion-subdere .is-analisis{background:rgba(126,164,216,.07)}
 #inversion-subdere .is-analisis li::before{content:'';position:absolute;left:0;top:6px;width:7px;height:7px;border-radius:2px;background:#1F3864}
 body.dark #inversion-subdere .is-analisis li::before{background:#7ea4d8}
 #inversion-subdere .is-analisis strong{color:var(--text)}
+/* ── v45.262 · bloque "Líneas de inversión" (cards por agrupación; color semántico por estado vía --st) ── */
+#inversion-subdere .is-lineas-intro{font-size:12px;color:var(--text2);margin:0 0 10px;line-height:1.55;max-width:74ch}
+#inversion-subdere .is-lineas{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:stretch;margin:6px 0 4px}
+#inversion-subdere .is-linea{display:flex;flex-direction:column;border:1px solid var(--border);border-top:3px solid var(--st,#1F3864);border-radius:12px;padding:14px 16px;background:var(--card)}
+#inversion-subdere .is-linea-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:7px}
+#inversion-subdere .is-linea-top h4{font-size:13.5px;font-weight:800;color:var(--text);margin:0;line-height:1.25}
+#inversion-subdere .is-linea-n{flex:0 0 auto;font-size:19px;font-weight:900;color:var(--st,#1F3864);line-height:1}
+#inversion-subdere .is-linea-desc{font-size:12px;line-height:1.55;color:var(--text2);margin:0 0 10px;max-width:72ch}
+#inversion-subdere .is-linea-meta{display:flex;flex-wrap:wrap;gap:3px 10px;align-items:baseline;margin-bottom:9px}
+#inversion-subdere .is-linea-monto{font-size:14.5px;font-weight:800;color:#15803d}
+body.dark #inversion-subdere .is-linea-monto{color:#5cc98a}
+#inversion-subdere .is-linea-prog{font-size:10.5px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.03em}
+#inversion-subdere .is-linea-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-top:auto;padding-top:9px;border-top:1px solid var(--border)}
+#inversion-subdere .is-linea-est{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;border-radius:99px;padding:3px 9px;white-space:nowrap}
+#inversion-subdere .is-linea-eje{font-size:11px;font-weight:700;color:#1F3864;text-decoration:none}
+body.dark #inversion-subdere .is-linea-eje{color:#7ea4d8}
+#inversion-subdere .is-linea-eje:hover{text-decoration:underline}
+#inversion-subdere .is-linea-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+#inversion-subdere .is-linea-chip{font-size:10px;font-weight:600;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:99px;padding:2px 8px}
 #inversion-subdere .is-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin-top:6px}
 #inversion-subdere table.is-tabla{border-collapse:collapse;width:100%;font-size:12.5px;min-width:680px}
 #inversion-subdere .is-tabla th,#inversion-subdere .is-tabla td{border-bottom:1px solid var(--border);padding:9px 11px;text-align:left;vertical-align:top}
@@ -16576,6 +16608,32 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     return 'otro';}
   /* 6 estados oficiales del ciclo SUBDERE, paleta CVD-safe */
   var EST_META={creacion:['En creación','#94a3b8'],evaluacion:['En evaluación técnica','#E69F00'],elegible:['Elegible','#0072B2'],asignado:['Recursos asignados','#CC79A7'],ejecucion:['En ejecución','#56B4E9'],cerrado:['Cerrado','#009E73'],otro:['Otro','#64748b']};
+  /* ═══════════════════════════════════════════════════════════════════════════
+     lineasProyectos · AGRUPACIÓN EDITABLE de la cartera (SECPLAC).
+     • El MAPEO (qué tipologías 'sub' agrupa cada línea) y los TEXTOS (título/descripción)
+       son EDITABLES por el equipo municipal. Las descripciones son borradores redactados a
+       partir de los nombres reales de los proyectos y del alcance de cada programa SUBDERE.
+     • Los NÚMEROS (N° proyectos, monto, programas, estado/eje predominante) NO se escriben
+       aquí: lineasHTML() los CALCULA filtrando los datos reales. No hay cifras inventadas.
+     • conmutables: VACÍO a propósito — el equipo lista aquí los proyectos sustituibles entre
+       sí dentro de la línea (esa relación no existe en los datos de la SUBDERE).             */
+  var lineasProyectos=[
+    {id:'areas-verdes', titulo:'Áreas verdes, veredas y espacios públicos', tipologias:['Equipamiento Comunal'], ejeRef:5,
+     descripcion:'Construcción y mejoramiento de áreas verdes, aceras y espacios públicos de barrio (Programa de Mejoramiento Urbano). Es la línea más numerosa de la cartera y responde a la demanda vecinal de entornos seguros y habitables.', conmutables:[]},
+    {id:'vialidad', titulo:'Vialidad, pavimentación y ciclovías', tipologias:['Vialidad','Sistemas de Teleprotección'], ejeRef:4,
+     descripcion:'Señalización y seguridad vial, bacheo y reparación de calzadas, y ciclovías (PMU). Aborda la conectividad interna y la seguridad del tránsito en la comuna.', conmutables:[]},
+    {id:'agua-alcantarillado', titulo:'Agua potable, alcantarillado y saneamiento sanitario', tipologias:['Obra'], ejeRef:4,
+     descripcion:'Extensión de redes de agua potable y alcantarillado y saneamiento sanitario en sectores y loteos (Programas de Mejoramiento de Barrios y de Recuperación de Ciudades). Es la línea de mayor monto de la cartera y ataca la brecha de servicios básicos.', conmutables:[]},
+    {id:'regularizacion-predial', titulo:'Regularización predial y terrenos', tipologias:['Saneamiento de Títulos','Adquisición Terreno'], ejeRef:4,
+     descripcion:'Saneamiento de títulos de dominio y adquisición de terrenos (PMB). Otorga certeza jurídica al suelo, condición previa para urbanizar e invertir.', conmutables:[]},
+    {id:'recintos-servicios', titulo:'Mejoramiento de recintos y servicios públicos', tipologias:['Servicios Básicos','Habilitación Servicios Públicos'], ejeRef:4,
+     /* línea heterogénea (drenaje, ampliaciones, servicios higiénicos): el equipo puede redistribuirla */
+     descripcion:'Intervenciones puntuales en recintos y servicios públicos: drenaje y sifones, ampliaciones y habilitación de servicios higiénicos (PMU).', conmutables:[]},
+    {id:'preinversion', titulo:'Estudios, diseños y asistencia técnica', tipologias:['Estudio','Diseño','Asistencia Técnica','Inspección Técnica'], ejeRef:6,
+     descripcion:'Etapa de preinversión: estudios, diseños de ingeniería, asistencia técnica e inspección (PMB). Prepara y habilita la cartera de obras futuras.', conmutables:[]},
+    {id:'ptrac', titulo:'Tenencia responsable de animales', tipologias:['Servicios Veterinarios','Esterilizaciones','Plan Esterilización Responsabilidad Compartida','PVET-Emergencia'], ejeRef:3,
+     descripcion:'Esterilización y atención veterinaria canina y felina (Programa de Tenencia Responsable de Animales de Compañía, PTRAC).', conmutables:[]}
+  ];
   function esc(s){return (''+(s==null?'':s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function fmtM(n){ if(n==null||isNaN(n))return '—'; n=+n; if(n>=1e6)return '$'+(n/1e6).toLocaleString('es-CL',{maximumFractionDigits:1})+' MM'; if(n>=1e3)return '$'+(n/1e3).toLocaleString('es-CL',{maximumFractionDigits:0})+' M'; return '$'+n.toLocaleString('es-CL');}
   function strip(s){return (''+s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
@@ -16594,6 +16652,36 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
     '</div>';
   }
 
+  /* Bloque "Líneas de inversión": tarjetas por agrupación. Métricas CALCULADAS de los datos
+     reales (N°, monto, programas, estado y eje predominante). Render seguro: solo grupos con datos. */
+  function lineasHTML(P){
+    if(!lineasProyectos||!lineasProyectos.length||!P.length) return '';
+    var cards=lineasProyectos.map(function(L){
+      var grp=P.filter(function(p){return L.tipologias.indexOf(p.sub)>=0;});
+      if(!grp.length) return '';
+      var monto=grp.reduce(function(a,p){return a+(+p.monto||0);},0);
+      var progs={}; grp.forEach(function(p){if(p.programa)progs[p.programa]=(progs[p.programa]||0)+1;});
+      var progList=Object.keys(progs).sort(function(a,b){return progs[b]-progs[a];});
+      var est={}; grp.forEach(function(p){est[p._k]=(est[p._k]||0)+1;});
+      var estTop=Object.keys(est).sort(function(a,b){return est[b]-est[a];})[0];
+      var em=EST_META[estTop]||EST_META.otro;
+      var ejes={}; grp.forEach(function(p){if(p.eje)ejes[p.eje]=(ejes[p.eje]||0)+1;});
+      var ejeTop=Object.keys(ejes).sort(function(a,b){return ejes[b]-ejes[a];})[0]||L.ejeRef;
+      return '<article class="is-linea" style="--st:'+em[1]+'">'+
+        '<div class="is-linea-top"><h4>'+esc(L.titulo)+'</h4><span class="is-linea-n" title="'+grp.length+' proyectos agrupados">'+grp.length+'</span></div>'+
+        '<p class="is-linea-desc">'+esc(L.descripcion)+'</p>'+
+        '<div class="is-linea-meta"><span class="is-linea-monto">'+fmtM(monto)+'</span><span class="is-linea-prog">'+progList.map(esc).join(' · ')+'</span></div>'+
+        '<div class="is-linea-foot">'+
+          '<span class="is-linea-est" style="background:'+em[1]+'22;color:'+em[1]+'" title="Estado predominante en el ciclo">'+esc(em[0])+'</span>'+
+          (ejeTop?'<a class="is-linea-eje" href="#matriz" title="Ver eje en la Matriz Estratégica">Eje '+ejeTop+' · '+esc(EJES[ejeTop])+' ↗</a>':'')+
+        '</div>'+
+        (L.conmutables&&L.conmutables.length?'<div class="is-linea-chips">'+L.conmutables.map(function(c){return '<span class="is-linea-chip">'+esc(c)+'</span>';}).join('')+'</div>':'')+
+      '</article>';
+    }).join('');
+    return '<h3 style="font-size:15px;font-weight:800;margin:24px 0 2px">Líneas de inversión · qué se ha desarrollado</h3>'+
+      '<p class="is-lineas-intro">Las '+P.length+' iniciativas, agrupadas por línea de acción afín. Cada tarjeta resume cuántos proyectos reúne, el monto asociado, el programa de financiamiento y su vínculo con un eje del PLADECO.</p>'+
+      '<div class="is-lineas">'+cards+'</div>';
+  }
   function render(){
     var P=(window.SUBDERE_DATA&&window.SUBDERE_DATA.proyectos)||[];
     if(!P.length){ destroyCharts(); emptyState(); return; }
@@ -16661,6 +16749,7 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
         '<li><strong>Alineación con el PLADECO.</strong> Los '+n25+' proyectos 2025+ se concentran en el '+ejeTopHtml+': la inversión más reciente ya conversa con las prioridades estratégicas del Plan.</li>'+
       '</ul>'+
     '</div>'+
+    lineasHTML(P)+
     '<h3 style="font-size:15px;font-weight:800;margin:24px 0 3px">Detalle de proyectos</h3>'+
     '<p style="font-size:12px;color:var(--text2);margin:0 0 9px">Tabla dinámica: filtra por <strong>estado</strong>, <strong>programa</strong> o <strong>año</strong>, o busca por nombre. Las descargas (CSV · Excel · PDF) respetan el filtro activo.</p>'+
     '<div class="is-toolbar" role="group" aria-label="Filtros de la cartera">'+
