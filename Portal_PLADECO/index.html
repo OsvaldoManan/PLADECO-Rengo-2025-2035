@@ -37226,5 +37226,25 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
   if(document.readyState!=='loading') inject(); else document.addEventListener('DOMContentLoaded',inject);
 })();
 </script>
+
+<!-- ═══ v45.274 · Bloque 1 · WebP con fallback (swap en runtime con detección de soporte) ═══
+     Cambia el src de las imágenes (aún sin cargar, son lazy) a .webp donde exista una versión
+     optimizada; si el navegador no soporta WebP, conserva el original (fallback). El enlace de
+     descarga <a href="...png" download> se mantiene en el formato original. -->
+<script>
+(function(){
+  var ok=false; try{ var c=document.createElement('canvas'); ok=!!(c.toDataURL) && c.toDataURL('image/webp').indexOf('data:image/webp')===0; }catch(e){}
+  if(!ok) return; /* sin soporte WebP -> se sirven los originales (fallback automático) */
+  /* Manifiesto de imágenes con .webp disponible (generado del set de assets; editable). */
+  var WEBP={'Logo-Pladeco-Blanco':1,'diagramas/01_composicion_gobernanza_institucional':1,'diagramas/02_composicion_pladeco_2025_2035':1,'diagramas/03_composicion_diagnostico_comunal':1,'diagramas/04_etnografia_institucional':1,'diagramas/05_etnografia_social':1,'diagramas/06_formulacion_objetivos_estrategicos':1,'diagramas/07_instancias_revision_pladeco':1,'diagramas/08_metodologia_etnografia_institucional':1,'diagramas/09_metodologia_etnografia_social':1,'diagramas/10_metodologia_foda_participacion':1,'diagramas/11_metodologia_subdere':1,'diagramas/12_niveles_participacion_ciudadana':1,'diagramas/13_objetivos_pladeco':1,'diagramas/14_proceso_analisis_censo_2024':1,'diagramas/15_proceso_formulacion_objetivos':1,'diagramas/16_proceso_diagnostico_mixto':1,'fuente-info':1,'logo-pladeco':1,'proyeccion-poblacion/fig01_trayectoria_poblacional':1,'proyeccion-poblacion/fig02_comparacion_metodos':1,'proyeccion-poblacion/fig03_estructura_etaria':1,'proyeccion-poblacion/fig04_indice_envejecimiento':1,'proyeccion-poblacion/fig05_dependencia':1,'proyeccion-poblacion/fig06_ie_distrital':1,'proyeccion-poblacion/fig07_proyeccion_distrital':1,'proyeccion-poblacion/fig08_socioeconomico':1,'proyeccion-poblacion/fig09_piramide':1,'proyeccion-poblacion/fig10_vivienda':1,'proyeccion-poblacion/mapa01_ie_2024':1,'proyeccion-poblacion/mapa02_poblacion_2024':1,'proyeccion-poblacion/mapa03_ie_2035':1,'proyeccion-poblacion/mapa04_poblacion_2035':1,'proyeccion-poblacion/mapa05_variacion_2024_2035':1,'proyeccion-poblacion/mapa06_delta_ie_2024_2035':1};
+  function swap(img){
+    if(img.complete && img.naturalWidth>0) return; /* ya cargada: no recargar */
+    var s=img.getAttribute('src')||''; var m=s.match(/^(.*)\.(png|jpe?g)$/i);
+    if(m && WEBP[m[1]]) img.setAttribute('src', m[1]+'.webp');
+  }
+  function pass(){ var im=document.images; for(var k=0;k<im.length;k++) swap(im[k]); }
+  if(document.readyState!=='loading') pass(); else document.addEventListener('DOMContentLoaded',pass);
+})();
+</script>
 </body>
 </html>
