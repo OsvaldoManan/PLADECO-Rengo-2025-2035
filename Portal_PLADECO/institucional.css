@@ -172,6 +172,17 @@ html body:not(.dark) .sec-header .badge{ color:#b45309 !important; } /* naranjo/
 html body.dark .sec-header h2{ color:#7ea4d8 !important; }          /* azul aclarado · 7.3:1 */
 html body.dark .sec-header p{ color:#5cc98a !important; }          /* verde aclarado */
 html body.dark .sec-header .badge{ color:#fdb94d !important; }     /* naranjo aclarado */
+/* §12-b · Badges con variante semántica traen su propio fondo de color (info #dbeafe, success, warn…):
+   el ámbar de arriba es SOLO para el badge liso sobre el fondo de página. Sobre un fondo claro de color
+   el ámbar baja de 4.5:1 (info: 4.11) y además borra el significado del color. Aquí cada variante recupera
+   su foreground semántico dentro de .sec-header (misma especificidad 0,3,2 + fuente posterior → gana).
+   Solo modo claro: en oscuro el fondo del badge ya se unifica a #422006 (regla §… más abajo). */
+html body:not(.dark) .sec-header .badge--info{    color:var(--c-info-strong) !important; }    /* navy  #1e3a8a · 8.3:1 */
+html body:not(.dark) .sec-header .badge--success{ color:var(--c-success-strong) !important; } /* verde · AA */
+html body:not(.dark) .sec-header .badge--warn{    color:var(--c-warn-strong) !important; }    /* ámbar oscuro #92400e · AA */
+html body:not(.dark) .sec-header .badge--danger{  color:var(--c-danger-strong) !important; }  /* rojo · AA */
+html body:not(.dark) .sec-header .badge--neutral{ color:var(--c-neutral-strong) !important; } /* gris oscuro · AA */
+html body:not(.dark) .sec-header .badge--primary{ color:#15803d !important; }                 /* verde institucional · AA */
 /* el subtítulo conserva sus énfasis (strong/enlaces mantienen sus reglas más específicas) */
 
 /* ── 13 · Tipografía ÚNICA Poppins · refuerzo de la familia única del portal ──
