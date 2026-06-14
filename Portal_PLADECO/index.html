@@ -499,6 +499,7 @@ body.dark table.chart-data-table tbody th{background:#1e293b;color:#e2e8f0}
 .chatbot-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),#1a8c4e);color:#fff;border:2px solid rgba(255,255,255,.82);box-shadow:0 6px 20px rgba(15,45,82,.3),0 2px 6px rgba(0,0,0,.16);cursor:pointer;z-index:9997;font-size:12px;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.4,.64,1),box-shadow .22s;animation:fabPulse 4.5s ease-in-out infinite}
 .chatbot-fab:hover{transform:scale(1.12) rotate(-4deg);box-shadow:0 10px 28px rgba(45,154,77,.45),0 3px 8px rgba(0,0,0,.2)}
 .chatbot-fab:active{transform:scale(1.04)}
+.chatbot-fab:focus-visible{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 7px rgba(45,154,77,.5),0 6px 20px rgba(15,45,82,.3)}
 .fab-robot{width:72%;height:72%;object-fit:contain;display:block;pointer-events:none;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.2))}
 @keyframes fabPulse{0%,100%{box-shadow:0 6px 20px rgba(15,45,82,.3),0 2px 6px rgba(0,0,0,.16)}50%{box-shadow:0 9px 26px rgba(45,154,77,.42),0 2px 6px rgba(0,0,0,.16)}}
 .chatbot-fab.hidden{display:none}
@@ -6776,7 +6777,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <button onclick="sendChatMessage()" aria-label="Enviar">&#10148;</button>
   </div>
 </div>
-<button class="chatbot-fab" id="chatFab" type="button" aria-label="Abrir asistente PLADECO Rengo"><img src="chatbot-dialogo.png" class="fab-robot" alt="" aria-hidden="true"><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
+<!-- v45.272 · ícono del lanzador en SVG (nítido, sin CLS); el PNG se conserva solo en el header del panel -->
+<button class="chatbot-fab" id="chatFab" type="button" aria-label="Abrir asistente PLADECO Rengo"><svg class="fab-robot" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="#fff" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/><circle cx="7.5" cy="9" r="1.5" fill="#1a8c4e"/><circle cx="12" cy="9" r="1.5" fill="#1a8c4e"/><circle cx="16.5" cy="9" r="1.5" fill="#1a8c4e"/></svg><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
 <script>
 /* v45.116 · IMPLEMENTACION AUTOSUFICIENTE de toggleChatbot al lado del FAB
    NO depende del script principal. Garantiza que el chatbot ABRA siempre.
@@ -30498,9 +30500,9 @@ function openKbdCheat(){document.getElementById('kbdCheat').classList.add('open'
 function closeKbdCheat(){document.getElementById('kbdCheat').classList.remove('open');}
 function v40InitKeyboardShortcuts(){
   document.addEventListener('keydown',function(e){
-    // Ignorar si está en input/textarea
-    var tag=e.target.tagName.toLowerCase();
-    var isInput=tag==='input'||tag==='textarea'||tag==='select'||e.target.isContentEditable;
+    // Ignorar si está en input/textarea (guard v45.272: e.target puede no tener tagName, p.ej. document)
+    var tag=((e.target&&e.target.tagName)||'').toLowerCase();
+    var isInput=tag==='input'||tag==='textarea'||tag==='select'||(e.target&&e.target.isContentEditable);
     // Esc cierra todo (siempre)
     if(e.key==='Escape'){
       closeCmdp();closeKbdCheat();
