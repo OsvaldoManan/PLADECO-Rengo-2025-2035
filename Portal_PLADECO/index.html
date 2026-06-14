@@ -6559,7 +6559,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     /* Macro 03 · Planificación */
     'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
     'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
-    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),
+    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
     /* Macro 04 · Cierre */
     'faq':navIco('info'),'glosario':navIco('book'),'institucional':navIco('institution'),'timeline':navIco('calendar'),'galeria':navIco('image'),'antes-despues':navIco('cycle'),
@@ -17016,6 +17016,213 @@ window.SUBDERE_DATA = window.SUBDERE_DATA || {
 </script>
 </section>
 
+
+<!-- ═══ INVERSIÓN BIP-SNI · Banco Integrado de Proyectos (v45.264) · DATOS PROVISIONALES editables por SECPLAC ═══ -->
+<section id="inversion-bip-sni" class="reveal" aria-labelledby="bipH">
+<style>
+#inversion-bip-sni .bip-prov{display:flex;gap:12px;align-items:flex-start;background:rgba(180,83,9,.08);border:1px solid var(--border);border-left:4px solid #b45309;border-radius:10px;padding:12px 16px;margin:6px 0 16px;font-size:12.5px;line-height:1.5;color:var(--text2)}
+#inversion-bip-sni .bip-prov .ico{width:20px;height:20px;color:#b45309;flex:0 0 auto;margin-top:1px}
+#inversion-bip-sni .bip-prov strong{color:var(--text)}
+#inversion-bip-sni .bip-pipe{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin:4px 0 6px}
+#inversion-bip-sni .bip-stage{flex:1;min-width:108px;border:1px solid var(--border);border-top:3px solid var(--st,#94a3b8);border-radius:10px;padding:10px 12px;background:var(--card);cursor:pointer;text-align:left;transition:transform .15s,box-shadow .15s;font-family:inherit}
+#inversion-bip-sni .bip-stage:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+#inversion-bip-sni .bip-stage[aria-pressed="true"]{box-shadow:0 0 0 2px var(--st)}
+#inversion-bip-sni .bip-stage-n{font-size:24px;font-weight:900;line-height:1;color:var(--st,#1F3864)}
+#inversion-bip-sni .bip-stage-l{font-size:10.5px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.03em;margin-top:3px}
+#inversion-bip-sni .bip-stage-ar{display:flex;align-items:center;color:var(--text2);font-weight:900;font-size:16px;flex:0 0 auto}
+@media(max-width:760px){#inversion-bip-sni .bip-stage-ar{display:none}#inversion-bip-sni .bip-stage{min-width:30%}}
+#inversion-bip-sni .bip-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 10px}
+#inversion-bip-sni .bip-chip{font:600 12px/1.1 'Poppins',system-ui,sans-serif;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+#inversion-bip-sni .bip-chip[aria-pressed="true"]{background:#1F3864;border-color:#1F3864;color:#fff}
+#inversion-bip-sni .bip-chip .bip-dot{width:9px;height:9px;border-radius:50%}
+#inversion-bip-sni .bip-sel{border:1px solid var(--border);border-radius:7px;padding:7px 10px;font:500 13px 'Poppins',system-ui,sans-serif;background:var(--card);color:var(--text)}
+#inversion-bip-sni .bip-buscar{flex:1;min-width:180px;max-width:300px;border:1px solid var(--border);border-radius:7px;padding:7px 12px;font:500 13px 'Poppins',system-ui,sans-serif;background:var(--card);color:var(--text)}
+#inversion-bip-sni .bip-count{font-size:11.5px;color:var(--text2);font-weight:600}
+#inversion-bip-sni .bip-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;margin:10px 0 6px}
+#inversion-bip-sni .bip-chart-box{position:relative;height:320px}
+@media(max-width:700px){#inversion-bip-sni .bip-chart-box{height:270px}}
+#inversion-bip-sni .bip-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin-top:6px}
+#inversion-bip-sni table.bip-tabla{border-collapse:collapse;width:100%;font-size:12.5px;min-width:720px}
+#inversion-bip-sni .bip-tabla th,#inversion-bip-sni .bip-tabla td{border-bottom:1px solid var(--border);padding:9px 11px;text-align:left;vertical-align:top}
+#inversion-bip-sni .bip-tabla thead th{background:#1F3864;color:#fff;position:sticky;top:0;font-size:12px}
+#inversion-bip-sni .bip-tabla tbody tr:nth-child(even) td{background:rgba(31,56,100,.035)}
+body.dark #inversion-bip-sni .bip-tabla tbody tr:nth-child(even) td{background:rgba(126,164,216,.05)}
+#inversion-bip-sni .bip-est{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.03em;border-radius:99px;padding:3px 9px;text-transform:uppercase;white-space:nowrap}
+#inversion-bip-sni .bip-eje-tag{font-size:10.5px;font-weight:700;color:#1F3864}
+body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
+@media(max-width:700px){
+  #inversion-bip-sni table.bip-tabla{min-width:0}
+  #inversion-bip-sni .bip-tabla thead{display:none}
+  #inversion-bip-sni .bip-tabla tbody tr{display:block;border-bottom:2px solid var(--border);padding:7px 0}
+  #inversion-bip-sni .bip-tabla td{display:block;border-bottom:none;padding:5px 10px}
+  #inversion-bip-sni .bip-tabla td[data-l]::before{content:attr(data-l);display:block;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);margin-bottom:2px}
+}
+</style>
+<div class="sec-header">
+  <span class="badge badge--info">Seguimiento · Inversión BIP-SNI</span>
+  <h2 id="bipH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chart"></use></svg> Proyectos del Banco Integrado de Proyectos (BIP) · Sistema Nacional de Inversiones</h2>
+  <p>Cartera de iniciativas de la comuna en el <strong>Banco Integrado de Proyectos (BIP)</strong> del Sistema Nacional de Inversiones (SNI), con su <strong>etapa, sector, RATE y monto</strong>, y su vinculación con los ejes del PLADECO 2025-2035.</p>
+</div>
+<div id="bipContent"></div>
+<p class="sec-fuente" style="margin-top:14px"><strong>Fuente:</strong> Banco Integrado de Proyectos (BIP) — Ministerio de Desarrollo Social y Familia · <a href="https://bip.ministeriodesarrollosocial.gob.cl" target="_blank" rel="noopener">bip.ministeriodesarrollosocial.gob.cl</a>. <strong>⚠️ Datos provisionales:</strong> la consulta BIP es dinámica y no expone un dataset estático descargable; las cifras mostradas son <strong>ejemplos ilustrativos</strong> y deben reemplazarse por los datos oficiales reales. Clasificación por eje PLADECO: elaboración SECPLAC.</p>
+<script>
+(function(){
+  var SEC=document.getElementById('inversion-bip-sni'); if(!SEC) return;
+  var CONT=document.getElementById('bipContent'); if(!CONT) return;
+  var EJES=['','Desarrollo Social y Comunitario','Desarrollo Económico y Productivo','Ordenamiento Territorial y Medio Ambiente','Servicios Públicos e Infraestructura','Cultura, Deporte e Identidad','Gestión Municipal y Gobernanza'];
+  /* ═══════════════════════════════════════════════════════════════════════════
+     proyectosBIP · DATOS PROVISIONALES (placeholder) — EDITABLE por SECPLAC.
+     Reemplazar por los datos OFICIALES del Banco Integrado de Proyectos (BIP) del SNI,
+     Ministerio de Desarrollo Social y Familia: https://bip.ministeriodesarrollosocial.gob.cl
+     La consulta BIP es dinámica y NO expone un dataset estático descargable → estos
+     registros son EJEMPLOS ILUSTRATIVOS (no cifras oficiales); cada uno lleva _prov:true.
+     Campos: bip(código) · sector · etapa(ciclo SNI) · rate(RS/FI/OT) · anio · monto($) · fuente · eje(PLADECO). */
+  var proyectosBIP=[
+    {id:1,  bip:'30XXXXX1', nombre:'(Ej.) Construcción CESFAM Rengo Oriente',          sector:'Salud',          etapa:'En ejecución',          rate:'RS', anio:2024, monto:4200000000, fuente:'FNDR',      eje:1, _prov:true},
+    {id:2,  bip:'40XXXXX2', nombre:'(Ej.) Reposición Escuela Esmeralda',               sector:'Educación',      etapa:'Recomendado (RS)',      rate:'RS', anio:2025, monto:2800000000, fuente:'Sectorial', eje:1, _prov:true},
+    {id:3,  bip:'30XXXXX3', nombre:'(Ej.) APR Rural Apalta–Los Gomeros',               sector:'Agua Potable',   etapa:'En análisis técnico',   rate:'FI', anio:2025, monto:1500000000, fuente:'SUBDERE',   eje:4, _prov:true},
+    {id:4,  bip:'30XXXXX4', nombre:'(Ej.) Mejoramiento Ruta H-60 acceso a Rengo',      sector:'Vialidad',       etapa:'Postulación',           rate:'—',  anio:2026, monto:6200000000, fuente:'FNDR',      eje:4, _prov:true},
+    {id:5,  bip:'30XXXXX5', nombre:'(Ej.) Parque Urbano Río Claro',                    sector:'Multisectorial', etapa:'Cerrado',               rate:'RS', anio:2023, monto:3100000000, fuente:'FNDR',      eje:3, _prov:true},
+    {id:6,  bip:'30XXXXX6', nombre:'(Ej.) Reposición Complejo Deportivo Rengo',        sector:'Deporte',        etapa:'En ejecución',          rate:'RS', anio:2024, monto:2400000000, fuente:'FNDR',      eje:5, _prov:true},
+    {id:7,  bip:'40XXXXX7', nombre:'(Ej.) Normalización Alcantarillado Rosario',       sector:'Agua Potable',   etapa:'Cerrado',               rate:'RS', anio:2022, monto:1900000000, fuente:'Sectorial', eje:4, _prov:true},
+    {id:8,  bip:'30XXXXX8', nombre:'(Ej.) Cuartel de Seguridad Comunitaria',           sector:'Seguridad',      etapa:'En análisis técnico',   rate:'OT', anio:2025, monto:1200000000, fuente:'FNDR',      eje:6, _prov:true},
+    {id:9,  bip:'40XXXXX9', nombre:'(Ej.) Conservación Caminos Básicos Rurales',       sector:'Vialidad',       etapa:'En ejecución',          rate:'RS', anio:2024, monto:980000000,  fuente:'Sectorial', eje:4, _prov:true},
+    {id:10, bip:'30XXX010', nombre:'(Ej.) Diseño Edificio Consistorial',               sector:'Multisectorial', etapa:'Postulación',           rate:'—',  anio:2026, monto:5400000000, fuente:'FNDR',      eje:6, _prov:true}
+  ];
+  /* 5 etapas del ciclo SNI · paleta CVD-safe (espejo de la cartera SUBDERE) */
+  var ETA_META={postulacion:['Postulación','#94a3b8'],analisis:['En análisis técnico-económico','#E69F00'],rs:['Recomendado (RS)','#0072B2'],ejecucion:['En ejecución','#56B4E9'],cerrado:['Cerrado','#009E73'],otro:['Otro','#64748b']};
+  var ETA_ORDER=['postulacion','analisis','rs','ejecucion','cerrado'];
+  function etaKey(e){e=(e||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+    if(/cerrad|terminad/.test(e))return 'cerrado';
+    if(/ejecuc/.test(e))return 'ejecucion';
+    if(/recomend|\brs\b/.test(e))return 'rs';
+    if(/anal|evalu|tecnic/.test(e))return 'analisis';
+    if(/postul|admisi|ingres/.test(e))return 'postulacion';
+    return 'otro';}
+  function esc(s){return (''+(s==null?'':s)).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmtM(n){ if(n==null||isNaN(n))return '—'; n=+n; if(n>=1e6)return '$'+(n/1e6).toLocaleString('es-CL',{maximumFractionDigits:1})+' MM'; if(n>=1e3)return '$'+(n/1e3).toLocaleString('es-CL',{maximumFractionDigits:0})+' M'; return '$'+n.toLocaleString('es-CL');}
+  function strip(s){return (''+s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
+  var charts=[];
+  function destroyCharts(){charts.forEach(function(c){try{c.destroy();}catch(e){}});charts=[];}
+  var fEtapa='', fSector='', fAnio='', fTxt='';
+
+  function render(){
+    var P=proyectosBIP||[];
+    if(!P.length){ CONT.innerHTML='<div class="bip-prov">Sección en preparación.</div>'; return; }
+    P.forEach(function(p){p._k=etaKey(p.etapa);});
+    var anios=[...new Set(P.map(function(p){return p.anio;}).filter(Boolean))].sort();
+    var sectores=[...new Set(P.map(function(p){return p.sector;}).filter(Boolean))].sort();
+    var etapas=ETA_ORDER.filter(function(k){return P.some(function(p){return p._k===k;});});
+    var n25=P.filter(function(p){return +p.anio>=2025;}).length;
+    var montoTot=P.reduce(function(a,p){return a+(+p.monto||0);},0);
+    var enEjec=P.filter(function(p){return p._k==='ejecucion';}).length;
+    CONT.innerHTML=''+
+    '<div class="bip-prov"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg>'+
+      '<div><strong>Datos provisionales (ejemplos).</strong> Esta sección está poblada con '+P.length+' proyectos de ejemplo para ilustrar la estructura. La consulta del BIP-SNI es dinámica y no permite descarga directa; SECPLAC reemplazará estos registros por los datos oficiales del Banco Integrado de Proyectos (MDSF).</div></div>'+
+    '<div class="sv-kpis" role="group" aria-label="Cifras de inversión BIP-SNI (provisionales)">'+
+      '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#1F3864">'+P.length+'</div><div class="sv-kpi-lbl">Proyectos en el BIP (ej.)</div></div>'+
+      '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#15803d">'+fmtM(montoTot)+'</div><div class="sv-kpi-lbl">Monto total (provisional)</div></div>'+
+      '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#56B4E9">'+enEjec+'</div><div class="sv-kpi-lbl">En ejecución</div></div>'+
+      '<div class="sv-kpi"><div class="sv-kpi-num" style="color:#b45309">'+n25+'</div><div class="sv-kpi-lbl">Proyectos 2025 en adelante</div></div>'+
+    '</div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:18px 0 3px">Línea de tiempo del ciclo del SNI</h3>'+
+    '<p style="font-size:12px;color:var(--text2);margin:0 0 8px">Cada iniciativa recorre las etapas del Sistema Nacional de Inversiones. El número indica cuántos proyectos (de ejemplo) hay hoy en cada etapa (toca una etapa para filtrar).</p>'+
+    '<div class="bip-pipe" id="bipPipe"></div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:20px 0 2px">Panorama de la cartera BIP</h3>'+
+    '<div class="bip-charts">'+
+      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Proyectos por etapa</h3><div class="bip-chart-box"><canvas id="bipChEtapa" role="img" aria-label="Gráfico: proyectos por etapa del ciclo SNI"></canvas></div></div>'+
+      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Evolución por año (N° y monto)</h3><div class="bip-chart-box"><canvas id="bipChAnio" role="img" aria-label="Gráfico: proyectos y monto por año"></canvas></div></div>'+
+      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Proyectos por sector</h3><div class="bip-chart-box"><canvas id="bipChSector" role="img" aria-label="Gráfico: proyectos por sector"></canvas></div></div>'+
+      '<div class="sv-chart-card"><h3 style="font-size:13px;font-weight:800;margin:0 0 6px">Alineación con los ejes del PLADECO</h3><div class="bip-chart-box"><canvas id="bipChEje" role="img" aria-label="Gráfico: proyectos por eje del PLADECO"></canvas></div></div>'+
+    '</div>'+
+    '<h3 style="font-size:15px;font-weight:800;margin:24px 0 3px">Detalle de proyectos</h3>'+
+    '<p style="font-size:12px;color:var(--text2);margin:0 0 9px">Tabla dinámica: filtra por <strong>etapa</strong>, <strong>sector</strong> o <strong>año</strong>, o busca por nombre.</p>'+
+    '<div class="bip-toolbar" role="group" aria-label="Filtros de la cartera BIP">'+
+      '<button type="button" class="bip-chip" data-eta="" aria-pressed="true">Todas las etapas</button>'+
+      etapas.map(function(k){var m=ETA_META[k];return '<button type="button" class="bip-chip" data-eta="'+k+'" aria-pressed="false"><span class="bip-dot" style="background:'+m[1]+'"></span>'+esc(m[0])+'</button>';}).join('')+
+      '<select class="bip-sel" id="bipSector" aria-label="Filtrar por sector"><option value="">Todos los sectores</option>'+sectores.map(function(s){return '<option value="'+esc(s)+'">'+esc(s)+'</option>';}).join('')+'</select>'+
+      '<select class="bip-sel" id="bipAnio" aria-label="Filtrar por año"><option value="">Todos los años</option>'+anios.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('')+'</select>'+
+      '<input type="search" id="bipBuscar" class="bip-buscar" placeholder="Buscar proyecto…" aria-label="Buscar proyecto">'+
+      '<span class="bip-count" id="bipCount" role="status" aria-live="polite"></span>'+
+    '</div>'+
+    '<div class="bip-wrap"><table class="bip-tabla" id="bipTabla"><thead><tr><th>Proyecto</th><th>Código BIP</th><th>Sector</th><th>Etapa</th><th>RATE</th><th>Año</th><th>Monto</th><th>Fuente</th><th>Eje PLADECO</th></tr></thead><tbody id="bipBody"></tbody></table></div>';
+    buildCharts(P,anios,sectores);
+    bind(P);
+    apply(P);
+  }
+  function filtered(P){
+    var q=strip(fTxt.trim());
+    return P.filter(function(p){
+      if(fEtapa && p._k!==fEtapa) return false;
+      if(fSector && p.sector!==fSector) return false;
+      if(fAnio && (''+p.anio)!==fAnio) return false;
+      if(q && strip((p.nombre||'')+' '+(p.sector||'')+' '+(p.etapa||'')).indexOf(q)<0) return false;
+      return true;
+    });
+  }
+  function apply(P){
+    var L=filtered(P);
+    var pc={}; P.forEach(function(p){pc[p._k]=(pc[p._k]||0)+1;});
+    var pipe=document.getElementById('bipPipe');
+    if(pipe) pipe.innerHTML=ETA_ORDER.map(function(k,i){var m=ETA_META[k];
+      return '<button type="button" class="bip-stage" data-eta="'+k+'" aria-pressed="'+(fEtapa===k)+'" title="Filtrar: '+esc(m[0])+'" style="--st:'+m[1]+'"><span class="bip-stage-n">'+(pc[k]||0)+'</span><span class="bip-stage-l">'+esc(m[0])+'</span></button>'+(i<ETA_ORDER.length-1?'<span class="bip-stage-ar" aria-hidden="true">›</span>':'');
+    }).join('');
+    var body=document.getElementById('bipBody');
+    body.innerHTML=L.map(function(p){var m=ETA_META[p._k];
+      return '<tr><td data-l="Proyecto">'+esc(p.nombre||'')+'</td>'+
+        '<td data-l="Código BIP">'+esc(p.bip||'—')+'</td>'+
+        '<td data-l="Sector">'+esc(p.sector||'—')+'</td>'+
+        '<td data-l="Etapa"><span class="bip-est" style="background:'+m[1]+'22;color:'+m[1]+'">'+esc(m[0])+'</span></td>'+
+        '<td data-l="RATE">'+esc(p.rate||'—')+'</td>'+
+        '<td data-l="Año">'+esc(p.anio||'—')+'</td>'+
+        '<td data-l="Monto">'+fmtM(p.monto)+'</td>'+
+        '<td data-l="Fuente">'+esc(p.fuente||'—')+'</td>'+
+        '<td data-l="Eje PLADECO"><span class="bip-eje-tag">'+(p.eje?('E'+p.eje+' · '+esc(EJES[p.eje])):'—')+'</span></td></tr>';
+    }).join('');
+    var c=document.getElementById('bipCount'); if(c) c.textContent=L.length+' de '+P.length+' proyectos';
+  }
+  function bind(P){
+    function setEtapa(k){
+      fEtapa=k;
+      SEC.querySelectorAll('.bip-chip').forEach(function(x){x.setAttribute('aria-pressed', x.getAttribute('data-eta')===k?'true':'false');});
+      apply(P);
+    }
+    SEC.querySelectorAll('.bip-chip').forEach(function(ch){ch.addEventListener('click',function(){setEtapa(ch.getAttribute('data-eta'));});});
+    var pipe=document.getElementById('bipPipe'); if(pipe)pipe.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.bip-stage'); if(b)setEtapa(b.getAttribute('data-eta'));});
+    var se=document.getElementById('bipSector'); if(se)se.addEventListener('change',function(){fSector=this.value;apply(P);});
+    var an=document.getElementById('bipAnio'); if(an)an.addEventListener('change',function(){fAnio=this.value;apply(P);});
+    var bu=document.getElementById('bipBuscar'); if(bu)bu.addEventListener('input',function(){fTxt=this.value;apply(P);});
+  }
+  function buildCharts(P,anios,sectores){
+    destroyCharts();
+    if(typeof Chart==='undefined') return;
+    var byEta={}; P.forEach(function(p){byEta[p._k]=(byEta[p._k]||0)+1;});
+    var ek=ETA_ORDER.filter(function(k){return byEta[k];});
+    charts.push(new Chart(document.getElementById('bipChEtapa'),{type:'doughnut',
+      data:{labels:ek.map(function(k){return ETA_META[k][0];}),datasets:[{data:ek.map(function(k){return byEta[k];}),backgroundColor:ek.map(function(k){return ETA_META[k][1];}),borderWidth:2,borderColor:'#fff'}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:12}}}}}}));
+    var nA=anios.map(function(a){return P.filter(function(p){return p.anio===a;}).length;});
+    var mA=anios.map(function(a){return P.filter(function(p){return p.anio===a;}).reduce(function(s,p){return s+(+p.monto||0);},0)/1e6;});
+    charts.push(new Chart(document.getElementById('bipChAnio'),{type:'bar',
+      data:{labels:anios,datasets:[{type:'bar',label:'N° proyectos',data:nA,backgroundColor:'#1F3864',yAxisID:'y',borderRadius:4},{type:'line',label:'Monto (MM$)',data:mA,borderColor:'#E69F00',backgroundColor:'#E69F00',yAxisID:'y1',tension:.3,borderWidth:2.5,pointRadius:3}]},
+      options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,position:'left',title:{display:true,text:'N°'},ticks:{font:{size:12}}},y1:{beginAtZero:true,position:'right',grid:{display:false},title:{display:true,text:'MM$'},ticks:{font:{size:12}}},x:{ticks:{font:{size:12}}}},plugins:{legend:{position:'bottom',labels:{font:{size:12}}}}}}));
+    var bySec={}; P.forEach(function(p){if(p.sector)bySec[p.sector]=(bySec[p.sector]||0)+1;});
+    var sk=Object.keys(bySec).sort(function(a,b){return bySec[b]-bySec[a];});
+    charts.push(new Chart(document.getElementById('bipChSector'),{type:'bar',
+      data:{labels:sk,datasets:[{data:sk.map(function(k){return bySec[k];}),backgroundColor:'#0072B2',borderRadius:4}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:1,font:{size:12}}},y:{ticks:{font:{size:11}}}}}}));
+    var byEje={}; P.forEach(function(p){if(p.eje)byEje[p.eje]=(byEje[p.eje]||0)+1;});
+    var jk=Object.keys(byEje).sort();
+    charts.push(new Chart(document.getElementById('bipChEje'),{type:'bar',
+      data:{labels:jk.map(function(j){return 'Eje '+j;}),datasets:[{data:jk.map(function(j){return byEje[j];}),backgroundColor:'#009E73',borderRadius:4}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{title:function(it){return EJES[+jk[it[0].dataIndex]]||('Eje '+jk[it[0].dataIndex]);}}}},scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:12}}},x:{ticks:{font:{size:12}}}}}}));
+  }
+  /* Render seguro: solo si el contenedor existe. Sin temporizadores ni cuentas regresivas. */
+  render();
+  window.__bipRender=render;
+})();
+</script>
+</section>
 
 <!-- ═══ HOJA DE VALIDACIÓN DEL CONCEJO MUNICIPAL (v45.97) ═══ -->
 <section id="validacion-concejo" class="reveal">
