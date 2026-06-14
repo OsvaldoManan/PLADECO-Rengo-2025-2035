@@ -37132,5 +37132,97 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
   window.addEventListener('hashchange',function(){setTimeout(pass,1000);});
   window.__emojiPass=pass;
 })();</script>
+
+<!-- ═══ v45.270 · Cambio 3 · NOTAS DE SECCIÓN (Lectura + Implicancia PLADECO) ═══ -->
+<style>
+.nota-seccion{margin:24px auto 6px;max-width:760px;display:grid;gap:10px}
+.nota-seccion .nota-blk{border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:10px;padding:11px 16px;background:rgba(31,56,100,.045);font-size:12.5px;line-height:1.58;color:var(--text2)}
+body.dark .nota-seccion .nota-blk{background:rgba(126,164,216,.06)}
+.nota-seccion .nota-blk strong{color:var(--text)}
+.nota-seccion .nota-imp{border-left-color:#990000;background:rgba(153,0,0,.045)}
+body.dark .nota-seccion .nota-imp{background:rgba(229,115,115,.07)}
+.nota-seccion .nota-eje{font-weight:700;color:#1F3864;text-decoration:none;white-space:nowrap}
+body.dark .nota-seccion .nota-eje{color:#7ea4d8}
+.nota-seccion .nota-eje:hover{text-decoration:underline}
+.nota-seccion .nota-borrador{display:inline-block;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#92400e;background:#fef3c7;border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:middle}
+body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
+</style>
+<script>
+(function(){
+  /* ═══════════════════════════════════════════════════════════════════════════
+     notasSeccion · EDITABLE por SECPLAC. Dos bloques al cierre de cada sección:
+       explicacion = qué muestra y cómo leerla;  recomendacion = implicancia para la gestión.
+     Texto basado en el contenido del propio portal; donde no se pueda fundamentar,
+     marcar borrador:true (sale con la etiqueta "borrador editable"). No inventar datos.
+     'eje' enlaza con la Matriz Estratégica (#matriz).                                   */
+  var EJN=['','Desarrollo Social y Comunitario','Desarrollo Económico y Productivo','Ordenamiento Territorial y Medio Ambiente','Servicios Públicos e Infraestructura','Cultura, Deporte e Identidad','Gestión Municipal y Gobernanza'];
+  var notasSeccion={
+    'censo':{eje:1,fuente:'Censo 2024 (INE)',borrador:false,
+      explicacion:'Radiografía de Rengo según el Censo 2024: 63.620 habitantes, estructura etaria, vivienda y servicios básicos. La clave de lectura es la brecha urbano-rural, más que el promedio comunal.',
+      recomendacion:'La concentración de vulnerabilidad en localidades rurales orienta a priorizar inversión en servicios básicos con enfoque territorial diferenciado.'},
+    'ficha-comunal':{eje:2,fuente:'Censo 2024 · SII · BNE · CBC',borrador:false,
+      explicacion:'Diagnóstico económico, laboral y de inversión: tejido empresarial, mercado laboral e ingresos, vacantes (BNE) y proyectos de inversión.',
+      recomendacion:'La estacionalidad del empleo y la base de microempresas orientan políticas de empleo y fomento productivo.'},
+    'desigualdad':{eje:6,fuente:'BIP 1997-2025',borrador:false,
+      explicacion:'Cómo se distribuyó la inversión histórica (BIP) en el territorio: índices de concentración y localidades sin proyectos.',
+      recomendacion:'Sugiere incorporar criterios explícitos de equidad territorial en la priorización de la cartera de inversión.'},
+    'foda':{eje:6,fuente:'Diagnóstico FODA comunal',borrador:false,
+      explicacion:'Síntesis consolidada de Fortalezas, Debilidades, Oportunidades y Amenazas comunales (80 elementos).',
+      recomendacion:'Es el insumo para priorizar objetivos: capitalizar fortalezas y oportunidades y mitigar debilidades y amenazas en la Matriz.'},
+    'matriz':{eje:6,fuente:'Matriz Estratégica PLADECO',borrador:false,
+      explicacion:'La estructura completa del Plan: 6 ejes, objetivos y 225 acciones, con su vínculo a los ODS.',
+      recomendacion:'Es el punto de verdad de la planificación: cada política debe trazar a un eje, un responsable y un indicador verificable.'},
+    'semaforo':{eje:6,fuente:'Semáforo de metas PLADECO',borrador:false,
+      explicacion:'Tablero de seguimiento de las metas a 2035 con su línea base y nivel de avance.',
+      recomendacion:'Habilita la gestión por desempeño: las metas rezagadas concentran la atención y los recursos de la gestión.'},
+    'financiamiento':{eje:6,fuente:'Financiamiento PLADECO',borrador:false,
+      explicacion:'Distribución de las acciones por plazo y la dependencia de fondos externos (FNDR y concursables).',
+      recomendacion:'La alta dependencia de fondos concursables sugiere fortalecer la formulación de proyectos para captar recursos.'},
+    'inversion-subdere':{eje:4,fuente:'SUBDERE En Línea',borrador:false,
+      explicacion:'Cartera real de 110 proyectos SUBDERE (estado, año, monto) y su alineación con los ejes del Plan.',
+      recomendacion:'La concentración de los proyectos 2025 en adelante en servicios e infraestructura confirma el foco del Eje 4.'},
+    'inversion-bip-sni':{eje:4,fuente:'BIP-SNI (MDSF) · provisional',borrador:true,
+      explicacion:'Cartera de proyectos en el BIP-SNI por etapa, sector y eje (datos provisionales de ejemplo, a reemplazar por SECPLAC).',
+      recomendacion:'Al cargar los datos oficiales, esta cartera complementará el seguimiento de la inversión sectorial y regional.'},
+    'comparador-instrumentos':{eje:6,fuente:'Comparador de Instrumentos (SECPLAC)',borrador:false,
+      explicacion:'Comparación trazable entre el PLADECO 2019-2031 y el 2025-2035 sobre 39 variables en 3 dimensiones.',
+      recomendacion:'Fundamenta la actualización del instrumento: nueva evidencia, financiamiento identificado, KPIs y articulación ERD/ODS.'},
+    'prospectiva':{eje:6,fuente:'Prospectiva 2035 (estimaciones metodológicas)',borrador:false,
+      explicacion:'Escenarios a 2035 (tendencial / intervención PLADECO / crítico) para cuatro variables-ancla. Las cifras 2030-2035 son estimaciones metodológicas, no valores oficiales.',
+      recomendacion:'La distancia entre escenarios dimensiona el efecto esperable del Plan y orienta dónde conviene intervenir.'},
+    'seguridad-publica':{eje:1,fuente:'Diagnóstico de Seguridad Pública 2023-2026',borrador:false,
+      explicacion:'Diagnóstico delictual 2023-2026: volumen, evolución y focos críticos de la seguridad comunal.',
+      recomendacion:'La concentración en pocas categorías orienta la focalización de la estrategia comunal de seguridad.'},
+    'seguridad-vial':{eje:4,fuente:'Siniestralidad de tránsito 2020-2024',borrador:false,
+      explicacion:'Siniestralidad de tránsito 2020-2024: dónde, cuándo y por qué ocurren los siniestros en la comuna.',
+      recomendacion:'La causalidad conductual y la concentración en el corredor central orientan la inversión en seguridad vial.'},
+    'movilidad-vial':{eje:4,fuente:'Plan Nacional de Censo Vial (Vialidad MOP)',borrador:false,
+      explicacion:'Demanda de tránsito (TMDA) por eje 2015-2023 y el peso de los vehículos pesados en las emisiones.',
+      recomendacion:'El crecimiento del flujo orienta la agenda de movilidad, gestión de tránsito y electromovilidad.'},
+    'nna':{eje:1,fuente:'Diagnóstico NNA 2025',borrador:false,
+      explicacion:'Diagnóstico de niñez y adolescencia: salud mental, violencia, trabajo infantil y participación.',
+      recomendacion:'Las brechas de salud mental y de escucha orientan la Política Local de Niñez (OLN).'},
+    'voz':{eje:6,fuente:'Consulta ciudadana PLADECO',borrador:false,
+      explicacion:'Resultados de la consulta ciudadana: prioridades, satisfacción de servicios e identidad local.',
+      recomendacion:'Las prioridades ciudadanas (seguridad, medio ambiente y empleo) deben reflejarse en la cartera de acciones del Plan.'}
+  };
+  window.notasSeccion=notasSeccion; /* editable desde consola/equipo */
+  function esc(s){return (''+s).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function inject(){
+    Object.keys(notasSeccion).forEach(function(id){
+      var sec=document.getElementById(id); if(!sec||sec.__notaDone) return; sec.__notaDone=true;
+      var n=notasSeccion[id];
+      var eje=n.eje?('<a class="nota-eje" href="#matriz">Eje '+n.eje+' · '+esc(EJN[n.eje])+' &#8599;</a>'):'';
+      var bor=n.borrador?'<span class="nota-borrador">borrador editable</span>':'';
+      var div=document.createElement('div');
+      div.className='nota-seccion'; div.setAttribute('role','note');
+      div.innerHTML='<div class="nota-blk nota-lec"><strong>&#128214; Lectura.</strong> '+esc(n.explicacion)+' '+bor+'</div>'+
+        '<div class="nota-blk nota-imp"><strong>&#127919; Implicancia PLADECO.</strong> '+esc(n.recomendacion)+' '+eje+'</div>';
+      sec.appendChild(div);
+    });
+  }
+  if(document.readyState!=='loading') inject(); else document.addEventListener('DOMContentLoaded',inject);
+})();
+</script>
 </body>
 </html>
