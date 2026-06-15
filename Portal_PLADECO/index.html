@@ -28282,6 +28282,12 @@ function chatNavigate(secId){
   const el=document.getElementById(secId);
   if(!el)return;
   toggleChatbot();
+  /* v45.284 · BLOQUE 6: en el motor de vistas (pv-on) la sección está oculta hasta mostrarla;
+     scrollIntoView no basta → usar PV.go para que el asistente derive DE VERDAD a la sección. */
+  if(window.PV && typeof PV.go==='function' && document.body.classList.contains('pv-on')){
+    setTimeout(function(){ try{ PV.go(secId); }catch(e){ el.scrollIntoView({behavior:'smooth',block:'start'}); } },360);
+    return;
+  }
   setTimeout(()=>{el.scrollIntoView({behavior:'smooth',block:'start'});},400);
 }
 /* v45.114 · Exponer todas las funciones del chatbot a window para acceso desde onclick HTML */
@@ -38068,6 +38074,68 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     host.querySelectorAll('.ods-tile').forEach(function(b){b.addEventListener('click',function(){sel=+b.getAttribute('data-o');render();});});
   }
   render();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 6 · ASISTENTE con base de conocimiento del propio plan (faqPlan)
+     El chatbot ya responde solo desde contenido local (CHATBOT_QA, 109 Q&A) con un fallback
+     que NO inventa y deriva a sección/contacto. Aquí se añade faqPlan: un set curado y EDITABLE
+     de preguntas frecuentes (pregunta, respuesta fundamentada en el plan, ancla de sección),
+     que se integra al motor existente (se anexa a CHATBOT_QA) y a las sugerencias. Sin
+     integraciones externas ni claves. Render seguro · sin temporizadores. -->
+<script>
+(function(){
+  /* ╔═══ EDITABLE POR SECPLAC ═══╗  faqPlan: preguntas frecuentes con respuesta fundamentada
+     en el PLADECO y su ancla de sección. shape → { q:pregunta, r:respuesta, ancla:idSección, keys:[disparadores] } */
+  var faqPlan = (window.faqPlan && !window.faqPlan.nodeType) ? window.faqPlan : [
+    {q:'¿Qué es el PLADECO?', ancla:'matriz', keys:['que es el pladeco','definicion pladeco','plan de desarrollo comunal','que es el plan'],
+     r:'El **Plan de Desarrollo Comunal (PLADECO) 2025–2035** es el principal instrumento de planificación de Rengo: define hacia dónde avanza la comuna en la década y cómo se priorizan recursos e inversiones. Se estructura en **6 ejes**, **32 objetivos** y **225 acciones**, construido con la participación de las 21 unidades vecinales.'},
+    {q:'¿Cuántas acciones tiene el plan y cómo se les hace seguimiento?', ancla:'poa', keys:['cuantas acciones','225 acciones','seguimiento','plan operativo','poa','avance de acciones','estado de las acciones'],
+     r:'El plan tiene **225 acciones**. Su seguimiento operativo está en el **Plan Operativo Anual (POA)**: cada acción con su responsable, plazo, financiamiento, estado y % de avance, filtrable por eje, responsable, año, estado o financiamiento.'},
+    {q:'¿Cuáles son los 6 ejes estratégicos?', ancla:'matriz', keys:['6 ejes','ejes estrategicos','cuales son los ejes','ejes del plan'],
+     r:'Los 6 ejes son:\n• **1** Cultura, Turismo, Deporte y Bienestar Social\n• **2** Desarrollo Económico\n• **3** Educación\n• **4** Urbano y Medio Ambiente\n• **5** Seguridad\n• **6** Gestión Municipal\n\nCada eje agrupa objetivos y acciones en la Matriz Estratégica.'},
+    {q:'¿Cómo se conecta el diagnóstico con las acciones y las metas?', ancla:'trazabilidad', keys:['trazabilidad','el loop','como se conecta','del diagnostico a la meta','diagnostico decision eje accion meta'],
+     r:'A través de la **Trazabilidad del loop**: cada dato de diagnóstico sustenta una decisión, que se materializa en un eje, que se concreta en acciones, que se miden con metas. Puedes recorrer el loop en ambos sentidos para cualquiera de los 6 ejes.'},
+    {q:'¿Cómo se miden las metas del plan?', ancla:'metas-trayectoria', keys:['como se miden las metas','metas','semaforo','kpi','indicadores','comparador temporal','metas 2035'],
+     r:'Con el **Semáforo de Metas** (16 KPIs con color de estado: verde/amarillo/rojo) y el **Comparador Temporal**, que muestra para cada KPI la línea base 2024, el valor real por año y las metas 2028 y 2035.'},
+    {q:'¿Cuántos ODS aborda el PLADECO?', ancla:'ods-sec', keys:['ods','objetivos de desarrollo sostenible','agenda 2030','cuantos ods','13 de 17'],
+     r:'El plan publica **13 ODS** como foco prioritario. Según la Matriz, **16 de los 17** reciben al menos una contribución de las 225 acciones (solo queda fuera el ODS 14, Vida Submarina). El Tablero ODS muestra qué ejes trabajan cada objetivo.'},
+    {q:'¿Cuáles son las 6 decisiones del plan?', ancla:'decisiones', keys:['6 decisiones','decisiones','que decide el plan','decisiones normativas'],
+     r:'Son 6 decisiones normativas explícitas:\n• **D01** Captación externa de fondos\n• **D02** Formalización del empleo\n• **D03** Inversión por brecha\n• **D04** Articulación institucional\n• **D05** Rendición pública trimestral\n• **D06** Beneficiario nombrado\n\nCada una dice qué elige y qué descarta el plan.'},
+    {q:'¿Cuánta población tiene Rengo?', ancla:'censo', keys:['poblacion','habitantes','cuanta gente','cuantos habitantes','censo'],
+     r:'Según el **Censo 2024 (INE)**, Rengo tiene **63.620 habitantes** (30.925 hombres y 32.695 mujeres). La proyección al 2035 es de **65.786 habitantes**.'},
+    {q:'¿Cómo puedo participar en el PLADECO?', ancla:'participa', keys:['como participo','participar','participacion','tu turno'],
+     r:'El portal tiene una sección **¡Tu Turno!**: puedes votar tu prioridad, reportar un problema con foto desde el mapa, descargar el cuadernillo de tu Unidad Vecinal y participar del presupuesto participativo.'},
+    {q:'¿Quién está a cargo del PLADECO?', ancla:'equipo', keys:['quien esta a cargo','responsable del plan','secplac','quien lidera'],
+     r:'El PLADECO es liderado por la **SECPLAC** (Secretaría Comunal de Planificación), con apoyo de las direcciones municipales. La validación final corresponde al **Honorable Concejo Municipal**.'},
+    {q:'¿Cómo se financia el plan?', ancla:'financiamiento', keys:['financiamiento','como se financia','fondos','plata','recursos','presupuesto'],
+     r:'El financiamiento combina recursos municipales y fondos externos concursables (**FNDR, FRIL, PMU, sectoriales**). La decisión D01 crea una Oficina de Gestión de Proyectos para captar más fondos externos.'},
+    {q:'¿En qué plazo se ejecuta el plan?', ancla:'cronograma-gantt', keys:['plazo','cuando se ejecuta','cronograma','horizonte','2025 2035'],
+     r:'El PLADECO cubre **2025–2035**. Las acciones se priorizan por plazo: **corto** (2026–2028), **mediano** (2029–2031) y **largo** (2032–2035). Revisa el cronograma de implementación.'},
+    {q:'¿Cómo se prioriza la inversión territorial?', ancla:'decisiones', keys:['priorizar inversion','inversion territorial','equidad territorial','donde se invierte','brecha'],
+     r:'Con la decisión **D03 (Inversión por brecha)**: priorizar FRIL, PMU y FNDR según el menor Índice de Calidad Territorial (zonas periféricas y críticas), no por cercanía política. Meta: reducir la brecha territorial de >40 a <25 puntos.'},
+    {q:'¿Dónde descargo los documentos del PLADECO?', ancla:'documentos', keys:['descargar','documentos','entregables','bajar el plan','pdf'],
+     r:'En la sección **Documentos** del portal puedes descargar los entregables oficiales del plan.'}
+  ];
+  window.faqPlan = faqPlan;
+
+  /* integrar faqPlan al motor del chatbot existente (se anexa a CHATBOT_QA, no se reescribe nada) */
+  function kdeQ(q){ return (q||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[¿?¡!.,]/g,'').split(/\s+/).filter(function(w){return w.length>3;}); }
+  if(typeof CHATBOT_QA!=='undefined' && CHATBOT_QA && typeof CHATBOT_QA.push==='function'){
+    faqPlan.forEach(function(f){
+      var keys=(f.keys&&f.keys.length)?f.keys.slice():[];
+      keys.push(f.q.toLowerCase().replace(/[¿?¡!]/g,'').trim()); /* la pregunta exacta como disparador fuerte */
+      kdeQ(f.q).forEach(function(w){ if(keys.indexOf(w)<0) keys.push(w); });
+      CHATBOT_QA.push({ keys:keys, sec:f.ancla, cat:'faqPlan', ans:f.r, follow:[] });
+    });
+  }
+  /* sugerencias visibles para descubrir las FAQ de los nuevos módulos de gestión */
+  if(typeof CHAT_SUGGESTIONS!=='undefined' && CHAT_SUGGESTIONS && typeof CHAT_SUGGESTIONS.push==='function'){
+    ['Seguimiento de acciones (POA)','Trazabilidad del plan','Comparador de metas','Tablero ODS'].forEach(function(s){
+      if(CHAT_SUGGESTIONS.indexOf(s)<0) CHAT_SUGGESTIONS.push(s);
+    });
+  }
 })();
 </script>
 </body>
