@@ -6560,7 +6560,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     /* Macro 03 · Planificación */
     'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
     'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
-    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
+    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'poa':navIco('clipboard'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
     /* Macro 04 · Cierre */
     'faq':navIco('info'),'glosario':navIco('book'),'institucional':navIco('institution'),'galeria':navIco('image'),'antes-despues':navIco('cycle'),
@@ -16064,6 +16064,78 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     </div>
   </div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuentes:</strong> PLADECO Rengo 2025-2035, L&iacute;nea Base 2024 y Metas Escalonadas &bull; INE, Censo 2024 &bull; CASEN 2022 &bull; CPLT &bull; MINEDUC &bull; Municipalidad de Rengo</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 1 · PLAN OPERATIVO ANUAL (POA) sobre las 225 acciones
+     Vista de GESTIÓN que complementa la Matriz (#matriz) y el Semáforo (#semaforo)
+     SIN alterarlos. DATOS: reutiliza el array _POL (225 acciones reales del plan:
+     responsable, plazo, financiamiento, ODS). El SEGUIMIENTO (estado/avance/año)
+     no existe aún en el plan → vive en POA_ESTADO (objeto EDITABLE y PROVISIONAL,
+     ver <script> "BLOQUE 1 · POA" al final del body). Render seguro, sin temporizadores.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<style id="poa-css">
+#poa .poa-prov-banner{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:var(--rad-md,12px);padding:12px 16px;font-size:13px;line-height:1.6;color:#78350f;margin:0 0 18px}
+body.dark #poa .poa-prov-banner{background:#3a2e0c;border-color:#854d0e;color:#fde9b8}
+#poa .poa-prov-banner code{background:rgba(0,0,0,.07);padding:1px 6px;border-radius:5px;font-size:12px}
+body.dark #poa .poa-prov-banner code{background:rgba(255,255,255,.12)}
+#poa .poa-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+#poa .poa-kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--rad-lg,14px);padding:16px 18px;box-shadow:var(--sh-md)}
+#poa .poa-kpi-num{font-size:30px;font-weight:900;line-height:1;color:var(--blue,#1F3864);letter-spacing:-.02em}
+#poa .poa-kpi-lbl{font-size:12.5px;color:var(--text2);margin-top:6px;line-height:1.45}
+#poa .poa-kpi--avance{grid-column:1/-1}
+#poa .poa-eje-bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 16px;margin-top:10px}
+#poa .poa-eje-bar .l{display:flex;justify-content:space-between;margin-bottom:3px;color:var(--text2);font-weight:600;font-size:11.5px}
+#poa .poa-eje-bar .track{height:8px;border-radius:99px;background:var(--border);overflow:hidden}
+#poa .poa-eje-bar .fill{height:100%;border-radius:99px;transition:width .3s}
+#poa .poa-filters{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:14px}
+#poa .poa-fgroup{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+#poa .poa-fgroup-lbl{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);margin-right:2px}
+#poa .poa-chip{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;font-family:inherit}
+#poa .poa-chip:hover{border-color:#15803d;color:#15803d}
+#poa .poa-chip.active{background:var(--blue,#1F3864);border-color:var(--blue,#1F3864);color:#fff}
+#poa .poa-sel,#poa .poa-search{padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:12.5px;font-family:inherit;max-width:230px}
+#poa .poa-search{min-width:160px}
+#poa .poa-count{font-size:12.5px;color:var(--text2);margin-bottom:8px;font-weight:600}
+#poa .poa-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rad-lg,14px);background:var(--card)}
+#poa table.poa-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:900px}
+#poa .poa-table thead th{position:sticky;top:0;background:var(--blue,#1F3864);color:#fff;text-align:left;padding:10px 12px;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;z-index:1}
+#poa .poa-table tbody td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+#poa .poa-table tbody tr:last-child td{border-bottom:none}
+#poa .poa-table tbody tr:hover{background:rgba(31,56,100,.045)}
+body.dark #poa .poa-table tbody tr:hover{background:rgba(255,255,255,.04)}
+#poa .poa-acc-t{font-weight:700;color:var(--text);text-decoration:none}
+#poa .poa-acc-t:hover{color:var(--blue,#1F3864);text-decoration:underline}
+#poa .poa-acc-meta{display:block;font-size:11px;color:var(--text3);margin-top:2px;font-weight:500;max-width:42ch}
+#poa .poa-ejebadge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+#poa .poa-est{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;text-transform:capitalize}
+#poa .poa-est.e0{background:#f1f5f9;color:#475569}
+#poa .poa-est.e1{background:#fef3c7;color:#92400e}
+#poa .poa-est.e2{background:#dcfce7;color:#166534}
+body.dark #poa .poa-est.e0{background:#1e293b;color:#cbd5e1}
+body.dark #poa .poa-est.e1{background:#422006;color:#fcd9a5}
+body.dark #poa .poa-est.e2{background:#052e16;color:#bbf7d0}
+#poa .poa-av{display:flex;align-items:center;gap:7px;min-width:92px;margin-bottom:3px}
+#poa .poa-av .track{flex:1;height:7px;border-radius:99px;background:var(--border);overflow:hidden}
+#poa .poa-av .fill{height:100%;border-radius:99px;background:#15803d}
+#poa .poa-av .pct{font-size:11px;font-weight:700;color:var(--text2);min-width:30px;text-align:right}
+#poa .poa-metalink{font-size:11px;color:#15803d;text-decoration:none;font-weight:600;white-space:nowrap}
+#poa .poa-metalink:hover{text-decoration:underline}
+#poa .poa-empty{padding:30px;text-align:center;color:var(--text2)}
+@media(max-width:600px){#poa .poa-kpi-num{font-size:24px}}
+</style>
+<section id="poa" class="reveal" aria-labelledby="poaH">
+  <div class="sec-header">
+    <div class="badge badge--success">Gesti&oacute;n &middot; Seguimiento</div>
+    <h2 id="poaH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg> Plan Operativo Anual (POA)</h2>
+    <p>Las <strong>225 acciones</strong> de la Matriz convertidas en instrumento de gesti&oacute;n: responsable, plazo, financiamiento, estado y avance, en una vista filtrable. Complementa la <a href="#matriz">Matriz Estrat&eacute;gica</a> y el <a href="#semaforo">Sem&aacute;foro de Metas</a> &mdash; no los modifica.</p>
+  </div>
+  <div class="poa-prov-banner" role="note"><strong>Seguimiento provisional.</strong> El <em>responsable, plazo, financiamiento y ODS</em> provienen del propio plan (Matriz, 225 acciones). El <strong>estado de ejecuci&oacute;n</strong> y el <strong>% de avance</strong> a&uacute;n no se levantan: parten en &laquo;no iniciada / 0&nbsp;%&raquo; y son editables por SECPLAC en el objeto <code>POA_ESTADO</code>.</div>
+  <div class="poa-kpis" id="poaKpis"></div>
+  <div class="poa-filters" id="poaFilters"></div>
+  <div class="poa-count" id="poaCount"></div>
+  <div class="poa-table-wrap"><table class="poa-table" id="poaTable"><thead><tr><th>#</th><th>Acci&oacute;n</th><th>Eje</th><th>Responsable</th><th>Plazo / A&ntilde;o</th><th>Financiamiento</th><th>Estado</th><th>Avance &middot; Meta</th></tr></thead><tbody id="poaBody"></tbody></table></div>
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></span> <strong>Fuente:</strong> Matriz Estrat&eacute;gica PLADECO Rengo 2025-2035 (225 acciones; responsable, plazo, financiamiento y ODS del propio plan). Estado y avance: <strong>seguimiento provisional</strong> a cargo de SECPLAC (objeto <code>POA_ESTADO</code>, editable).</div>
 </section>
 
 <!-- ═══ COMPROMISOS ═══ -->
@@ -37299,6 +37371,154 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
   }
   function pass(){ var im=document.images; for(var k=0;k<im.length;k++) swap(im[k]); }
   if(document.readyState!=='loading') pass(); else document.addEventListener('DOMContentLoaded',pass);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 1 · PLAN OPERATIVO ANUAL (POA) — lógica + datos editables
+     Reutiliza _POL (225 acciones reales). NO duplica ni altera datos del plan.
+     El SEGUIMIENTO (estado/avance/año) vive en objetos EDITABLES y PROVISIONALES.
+     Render seguro (solo si existe el contenedor) · sin temporizadores · sin dependencias.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var body=document.getElementById('poaBody');
+  if(!body || typeof _POL==='undefined' || !_POL.length) return; /* render seguro */
+
+  /* ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  DATOS EDITABLES POR SECPLAC — PROVISIONALES                            ║
+     ╚═══════════════════════════════════════════════════════════════════════╝
+     POA_ESTADO · overlay de SEGUIMIENTO por id de acción (1–225). VACÍO por defecto:
+     toda acción parte en 'no iniciada' / 0 %. Completar a medida que se ejecutan.
+     shape → { idAccion: { estado:'no iniciada'|'en curso'|'cerrada', avance:0..100, anio:2026..2035 } } */
+  var POA_ESTADO = window.POA_ESTADO || {
+    /* Ejemplos PROVISIONALES (descomentar y reemplazar por datos reales de gestión):
+    13: { estado:'en curso',    avance:25, anio:2026 },
+    1 : { estado:'no iniciada', avance:0,  anio:2027 }, */
+  };
+  window.POA_ESTADO = POA_ESTADO;
+
+  /* POA_META_LINK · vínculo acción→meta del Semáforo (id de METAS_SEG, 1–16). PROVISIONAL/VACÍO.
+     Donde no exista vínculo directo, el POA enlaza por EJE al Semáforo (vínculo real del plan). */
+  var POA_META_LINK = window.POA_META_LINK || {
+    /* 13: 13,   // acción 13 → meta 'Acciones PLADECO ejecutadas' (ejemplo provisional) */
+  };
+  window.POA_META_LINK = POA_META_LINK;
+
+  /* ───────── lógica (no editable) ───────── */
+  var ESTADOS=['no iniciada','en curso','cerrada'];
+  var PLAZO_LBL={C:'Corto',M:'Mediano',L:'Largo'};
+  function anioSug(pl){return pl==='C'?'2026–2028':pl==='M'?'2029–2031':pl==='L'?'2032–2035':'—';}
+  var _EJE_FB_L=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
+  var _EJE_FB_C=['#0072B2','#E69F00','#009E73','#56B4E9','#D55E00','#CC79A7'];
+  var EJE_LBL=(typeof EJES!=='undefined'&&EJES&&EJES.length>=6)?EJES.map(function(e){return e.short||e.name;}):_EJE_FB_L;
+  var EJE_COL=(typeof EJES!=='undefined'&&EJES&&EJES.length>=6)?EJES.map(function(e){return e.color;}):_EJE_FB_C;
+  function ejeLbl(id){return EJE_LBL[id-1]||('Eje '+id);}
+  function ejeCol(id){return EJE_COL[id-1]||'#1F3864';}
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+
+  /* accionesPOA = _POL (real) + POA_ESTADO (overlay provisional) */
+  function buildPOA(){
+    return _POL.map(function(p){
+      var ov=POA_ESTADO[p[0]]||{};
+      var est=ESTADOS.indexOf(ov.estado)>=0?ov.estado:'no iniciada';
+      var av=(typeof ov.avance==='number')?Math.max(0,Math.min(100,ov.avance)):0;
+      return {id:p[0],eje:p[1],oe:p[2]||'',oeNom:p[3]||'',area:p[4]||'',titulo:p[5]||'',
+        resp:(p[13]||'').trim(),fin:(p[14]||'').trim(),plazo:(p[12]||'').trim(),ods:(p[15]||'').trim(),
+        estado:est,avance:av,anio:ov.anio||anioSug((p[12]||'').trim())};
+    });
+  }
+  var DATA=buildPOA();
+  window.accionesPOA=DATA; /* expuesto para consola/inspección */
+
+  /* fuentes de financiamiento para el filtro (match por substring sobre el texto real del plan) */
+  var FIN_FUENTES=['Municipal','FNDR','FRIL','Sectorial','GORE','SUBDERE','Privad','SERNATUR','SERCOTEC','Otros'];
+  function finMatch(txt,f){var t=(txt||'').toLowerCase();if(f==='Otros'){return !FIN_FUENTES.slice(0,9).some(function(x){return t.indexOf(x.toLowerCase())>=0;});}return t.indexOf(f.toLowerCase())>=0;}
+
+  var F={eje:0,estado:'',fin:'',plazo:'',resp:'',q:''};
+  var RESP_UNIQ=(function(){var s={};DATA.forEach(function(a){if(a.resp)s[a.resp]=1;});return Object.keys(s).sort();})();
+
+  function filtered(){
+    return DATA.filter(function(a){
+      if(F.eje && a.eje!==F.eje) return false;
+      if(F.estado && a.estado!==F.estado) return false;
+      if(F.plazo && a.plazo!==F.plazo) return false;
+      if(F.resp && a.resp!==F.resp) return false;
+      if(F.fin && !finMatch(a.fin,F.fin)) return false;
+      if(F.q){var hay=(a.titulo+' '+a.area+' '+a.oeNom+' '+a.resp+' '+a.ods).toLowerCase();if(hay.indexOf(F.q)<0) return false;}
+      return true;
+    });
+  }
+
+  function renderKpis(){
+    var box=document.getElementById('poaKpis');if(!box)return;
+    var total=DATA.length;
+    var conRP=DATA.filter(function(a){return a.resp && a.plazo;}).length;
+    var pctRP=total?Math.round(conRP/total*100):0;
+    var sum=[0,0,0,0,0,0],cnt=[0,0,0,0,0,0];
+    DATA.forEach(function(a){if(a.eje>=1&&a.eje<=6){sum[a.eje-1]+=a.avance;cnt[a.eje-1]++;}});
+    var avEje=sum.map(function(s,i){return cnt[i]?Math.round(s/cnt[i]):0;});
+    var avGlobal=total?Math.round(DATA.reduce(function(t,a){return t+a.avance;},0)/total):0;
+    var byEst=[0,0,0];DATA.forEach(function(a){byEst[ESTADOS.indexOf(a.estado)]++;});
+    var bars=avEje.map(function(v,i){return '<div class="poa-eje-bar"><div class="l"><span>'+esc(ejeLbl(i+1))+'</span><span>'+v+'%</span></div><div class="track"><div class="fill" style="width:'+v+'%;background:'+ejeCol(i+1)+'"></div></div></div>';}).join('');
+    box.innerHTML=
+      '<div class="poa-kpi"><div class="poa-kpi-num">'+total+'</div><div class="poa-kpi-lbl">Acciones en el Plan Operativo <span style="color:var(--text3)">(las 225 de la Matriz)</span></div></div>'+
+      '<div class="poa-kpi"><div class="poa-kpi-num">'+pctRP+'%</div><div class="poa-kpi-lbl">Acciones con <strong>responsable y plazo</strong> asignados <span style="color:var(--text3)">('+conRP+' de '+total+')</span></div></div>'+
+      '<div class="poa-kpi"><div class="poa-kpi-num">'+avGlobal+'%</div><div class="poa-kpi-lbl">Avance global <em>(provisional)</em> &middot; '+byEst[2]+' cerradas / '+byEst[1]+' en curso / '+byEst[0]+' no iniciadas</div></div>'+
+      '<div class="poa-kpi poa-kpi--avance"><div class="poa-kpi-lbl" style="margin:0 0 2px;font-weight:700;color:var(--text)">% de avance por eje <em style="font-weight:500;color:var(--text3)">(provisional &mdash; se actualiza al completar <code>POA_ESTADO</code>)</em></div><div class="poa-eje-bars">'+bars+'</div></div>';
+  }
+
+  function metaLinkFor(a){
+    var has=POA_META_LINK[a.id];
+    if(has) return '<a class="poa-metalink" href="#semaforo" title="Meta vinculada del Semáforo">&#9673; Meta '+esc(has)+'</a>';
+    return '<a class="poa-metalink" href="#semaforo" title="Metas del Eje '+a.eje+' en el Semáforo">Sem&aacute;foro &rsaquo;</a>';
+  }
+
+  function renderRows(){
+    var list=filtered();
+    var c=document.getElementById('poaCount');
+    if(c) c.textContent=list.length+' '+(list.length===1?'acción':'acciones')+(list.length!==DATA.length?(' de '+DATA.length):'');
+    if(!list.length){body.innerHTML='<tr><td colspan="8" class="poa-empty">No hay acciones con esos filtros. <button class="poa-chip" type="button" onclick="window.__poaReset&&window.__poaReset()">Limpiar filtros</button></td></tr>';return;}
+    var h='';
+    list.forEach(function(a){
+      var ei=ESTADOS.indexOf(a.estado);if(ei<0)ei=0;
+      h+='<tr>'+
+        '<td><span style="font-weight:800;color:'+ejeCol(a.eje)+'">'+a.id+'</span></td>'+
+        '<td><a class="poa-acc-t" href="#matriz" title="Ver esta acción en la Matriz">'+esc(a.titulo)+'</a><span class="poa-acc-meta">'+esc(a.oe)+(a.area?' &middot; '+esc(a.area):'')+'</span></td>'+
+        '<td><span class="poa-ejebadge" style="background:'+ejeCol(a.eje)+'22;color:'+ejeCol(a.eje)+'">'+esc(ejeLbl(a.eje))+'</span></td>'+
+        '<td>'+esc(a.resp||'—')+'</td>'+
+        '<td>'+(a.plazo?(esc(PLAZO_LBL[a.plazo]||a.plazo)+' <span style="color:var(--text3)">&middot; '+esc(a.anio)+'</span>'):'—')+'</td>'+
+        '<td>'+esc(a.fin||'—')+'</td>'+
+        '<td><span class="poa-est e'+ei+'">'+esc(a.estado)+'</span></td>'+
+        '<td><div class="poa-av"><div class="track"><div class="fill" style="width:'+a.avance+'%"></div></div><span class="pct">'+a.avance+'%</span></div>'+metaLinkFor(a)+'</td>'+
+      '</tr>';
+    });
+    body.innerHTML=h;
+  }
+
+  function renderFilters(){
+    var box=document.getElementById('poaFilters');if(!box)return;
+    function chips(group,opts){
+      return opts.map(function(o){return '<button type="button" class="poa-chip'+(String(F[group])===String(o.v)?' active':'')+'" data-g="'+group+'" data-v="'+esc(o.v)+'">'+esc(o.l)+'</button>';}).join('');
+    }
+    var ejeOpts=[{v:0,l:'Todos'}].concat([1,2,3,4,5,6].map(function(i){return {v:i,l:ejeLbl(i)};}));
+    var estOpts=[{v:'',l:'Todos'},{v:'no iniciada',l:'No iniciada'},{v:'en curso',l:'En curso'},{v:'cerrada',l:'Cerrada'}];
+    var plzOpts=[{v:'',l:'Todos'},{v:'C',l:'Corto'},{v:'M',l:'Mediano'},{v:'L',l:'Largo'}];
+    box.innerHTML=
+      '<div class="poa-fgroup"><span class="poa-fgroup-lbl">Eje</span>'+chips('eje',ejeOpts)+'</div>'+
+      '<div class="poa-fgroup"><span class="poa-fgroup-lbl">Estado</span>'+chips('estado',estOpts)+'</div>'+
+      '<div class="poa-fgroup"><span class="poa-fgroup-lbl">Plazo</span>'+chips('plazo',plzOpts)+'</div>'+
+      '<div class="poa-fgroup"><select class="poa-sel" id="poaResp" aria-label="Filtrar por responsable / unidad"><option value="">Todas las unidades / responsables</option>'+RESP_UNIQ.map(function(r){return '<option value="'+esc(r)+'"'+(F.resp===r?' selected':'')+'>'+esc(r)+'</option>';}).join('')+'</select></div>'+
+      '<div class="poa-fgroup"><select class="poa-sel" id="poaFin" aria-label="Filtrar por financiamiento"><option value="">Todo financiamiento</option>'+FIN_FUENTES.map(function(f){return '<option value="'+esc(f)+'"'+(F.fin===f?' selected':'')+'>'+esc(f)+'</option>';}).join('')+'</select></div>'+
+      '<div class="poa-fgroup"><input type="search" class="poa-search" id="poaQ" placeholder="Buscar acción…" aria-label="Buscar acción" value="'+esc(F.q)+'"></div>';
+    box.querySelectorAll('.poa-chip').forEach(function(b){b.addEventListener('click',function(){var g=b.getAttribute('data-g'),v=b.getAttribute('data-v');F[g]=(g==='eje')?(+v):v;renderFilters();renderRows();});});
+    var rsel=document.getElementById('poaResp');if(rsel)rsel.addEventListener('change',function(){F.resp=rsel.value;renderRows();});
+    var fsel=document.getElementById('poaFin');if(fsel)fsel.addEventListener('change',function(){F.fin=fsel.value;renderRows();});
+    var q=document.getElementById('poaQ');if(q)q.addEventListener('input',function(){F.q=q.value.toLowerCase().trim();renderRows();});
+  }
+  window.__poaReset=function(){F={eje:0,estado:'',fin:'',plazo:'',resp:'',q:''};renderFilters();renderRows();};
+
+  renderKpis();renderFilters();renderRows();
 })();
 </script>
 </body>
