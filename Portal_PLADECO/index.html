@@ -6469,6 +6469,16 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 .tn-home-btn svg{display:block;width:17px;height:17px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.32))}
 @media(max-width:600px){.tn-home-btn{width:30px;height:30px}.tn-home-btn svg{width:15px;height:15px}}
 .tn-burger{display:none;width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);cursor:pointer;flex-shrink:0;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:0}
+/* v45.287 · BLOQUE 3 · sección "Apariencia y herramientas" del menú móvil (tema/búsqueda/Lectura Fácil) */
+.tn-mtools{padding:14px 16px 16px;border-top:1px solid rgba(255,255,255,.13);margin-top:4px}
+.tn-mtools-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:10px}
+.tn-mtools-row{display:flex;gap:8px}
+.tn-mtool{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 6px;border-radius:11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s,border-color .15s;text-align:center;line-height:1.2}
+.tn-mtool:hover{background:rgba(255,255,255,.15)}
+.tn-mtool:focus-visible{outline:2px solid #f59e0b;outline-offset:2px}
+.tn-mtool .ico{width:20px;height:20px}
+.tn-mtool .tnm-ico{font-size:18px;line-height:1}
+.tn-mtool[aria-pressed="true"]{background:rgba(45,154,77,.32);border-color:rgba(45,154,77,.65)}
 .tn-burger span{width:20px;height:2px;background:#fff;border-radius:2px;transition:.22s}
 .tn-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
 .tn-burger.open span:nth-child(2){opacity:0}
@@ -6620,6 +6630,13 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       tabsHtml+='<div class="tn-tab tn-macro" data-macro="'+mi+'" style="--mc:'+M.color+'"><button class="tn-tab-btn" type="button" title="Parte '+M.num+' &middot; '+esc(M.name)+'"><span class="tn-tab-num">'+M.num+'</span>'+M.icon+' '+esc(M.name)+'<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop tn-drop-macro">'+drop+'</div></div>';
       mhtml+='<div class="tn-mgroup tn-mgroup-macro" style="--mc:'+M.color+'"><button class="tn-mgroup-btn" type="button"><span class="tn-tab-num">'+M.num+'</span>'+M.icon+' '+esc(M.name)+'<span class="tn-mchev">&#9662;</span></button><div class="tn-mlinks">'+mlinks+'</div></div>';
     }
+    /* v45.287 · BLOQUE 3 · Sección "Apariencia y herramientas" dentro del menú hamburguesa:
+       en móvil .tn-utils está oculto, así que se reubican aquí tema/búsqueda/Lectura Fácil. */
+    mhtml+='<div class="tn-mtools" role="group" aria-label="Apariencia y herramientas"><div class="tn-mtools-h">Apariencia y herramientas</div><div class="tn-mtools-row">'+
+      '<button type="button" id="tnmSearch" class="tn-mtool" aria-label="Buscar en el portal (Ctrl K)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg><span>Buscar</span></button>'+
+      '<button type="button" id="tnmTheme" class="tn-mtool" aria-pressed="false" aria-label="Cambiar tema claro u oscuro"><span class="tnm-ico" id="tnmThemeIco">&#127769;</span><span id="tnmThemeTxt">Tema oscuro</span></button>'+
+      '<button type="button" id="tnmLF" class="tn-mtool" aria-pressed="false" aria-label="Activar o desactivar el modo Lectura F&aacute;cil"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-book"></use></svg><span>Lectura F&aacute;cil</span></button>'+
+    '</div></div>';
     tnTabs.innerHTML=tabsHtml;
     var mp=document.getElementById('tnMpanel'); if(mp){mp.innerHTML=mhtml;}
     wire();
@@ -6646,12 +6663,16 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     var tnEl=document.getElementById('topnav');
     if(tnEl){tnEl.addEventListener('click',onNavClick);}
     var burger=document.getElementById('tnBurger'), mp=document.getElementById('tnMpanel');
+    /* v45.287 · BLOQUE 3 · estado de los controles móviles de Apariencia/Herramientas */
+    function syncMTheme(){var b=document.getElementById('tnmTheme');if(!b)return;var dk=document.body.classList.contains('dark');b.setAttribute('aria-pressed',dk?'true':'false');var ic=document.getElementById('tnmThemeIco'),tx=document.getElementById('tnmThemeTxt');if(ic)ic.innerHTML=dk?'&#9728;&#65039;':'&#127769;';if(tx)tx.textContent=dk?'Tema claro':'Tema oscuro';}
+    function syncMLF(){var b=document.getElementById('tnmLF');if(!b)return;b.setAttribute('aria-pressed',(document.body.getAttribute('data-lf')==='true')?'true':'false');}
     if(burger&&mp){
       burger.addEventListener('click',function(e){
         e.stopPropagation();
         var open=mp.classList.toggle('open');
         burger.classList.toggle('open',open);
         burger.setAttribute('aria-expanded',open?'true':'false');
+        if(open){syncMTheme();syncMLF();}
       });
       mp.addEventListener('click',function(e){
         var t=e.target;
@@ -6666,6 +6687,15 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
           burger.setAttribute('aria-expanded','false');
         }
       });
+      /* Los controles móviles DELEGAN en los controles reales del topbar (existen aunque .tn-utils
+         esté oculto en móvil): mismo comportamiento y misma persistencia (localStorage). */
+      var mT=document.getElementById('tnmTheme');
+      if(mT)mT.addEventListener('click',function(){var d=document.getElementById('tnTheme');if(d){d.click();}else if(typeof setTheme==='function'){setTheme(document.body.classList.contains('dark')?'light':'dark');}else{document.body.classList.toggle('dark');}setTimeout(syncMTheme,70);});
+      var mS=document.getElementById('tnmSearch');
+      if(mS)mS.addEventListener('click',function(){mp.classList.remove('open');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');if(typeof openCmdPalette==='function')openCmdPalette();});
+      var mL=document.getElementById('tnmLF');
+      if(mL)mL.addEventListener('click',function(){var l=document.getElementById('lfToggle');if(l){l.click();}setTimeout(syncMLF,90);});
+      syncMTheme();syncMLF();
     }
     var th=document.getElementById('tnTheme');
     if(th){
@@ -31016,10 +31046,11 @@ function _initReporteCiudadano(){
 }
 function closeRepForm(){
   var f=document.getElementById('repForm');
+  if(!f)return; /* guard: el handler global de Escape llama aquí aunque el formulario no exista en la vista */
   f.classList.remove('show');f.setAttribute('aria-hidden','true');
-  document.getElementById('repTipo').value='';
-  document.getElementById('repDescripcion').value='';
-  document.getElementById('repFotoLbl').textContent='📷 Adjuntar foto (opcional)';
+  var t=document.getElementById('repTipo'); if(t)t.value='';
+  var d=document.getElementById('repDescripcion'); if(d)d.value='';
+  var fl=document.getElementById('repFotoLbl'); if(fl)fl.textContent='📷 Adjuntar foto (opcional)';
   _repFotoData=null;_repClickLatLng=null;
 }
 function onRepFotoSelect(inp){
