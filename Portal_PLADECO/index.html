@@ -37842,5 +37842,121 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
   renderFilters();render();
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 3 · GLOSARIO (objeto) + TOOLTIPS DE SIGLAS accesibles
+     El objeto `glosario` se CONSTRUYE leyendo la sección #glosario existente (70 términos) —
+     fuente única, cero definiciones nuevas. Se enriquecen las siglas inline del cuerpo del texto
+     con un tooltip accesible (hover + foco de teclado, patrón WAI-ARIA con aria-describedby),
+     SIN alterar el texto sustantivo: solo se envuelve la 1ª aparición de cada sigla por sección.
+     Compatible con Lectura Fácil (omite .lf-panel) y con las secciones dinámicas (las omite).
+     Render seguro · sin temporizadores · sin dependencias. -->
+<style id="sigla-css">
+.sigla-tip{text-decoration:underline dotted;text-decoration-color:var(--accent,#2d9a4d);text-underline-offset:2px;cursor:help;font:inherit;color:inherit}
+.sigla-tip:hover,.sigla-tip:focus-visible{text-decoration-style:solid;background:rgba(45,154,77,.10);border-radius:3px}
+.sigla-tip:focus-visible{outline:none;box-shadow:0 0 0 2px var(--accent,#2d9a4d)}
+.sigla-tooltip{position:fixed;z-index:9999;max-width:300px;background:#0c1f36;color:#fff;font-size:12.5px;line-height:1.5;padding:9px 12px;border-radius:9px;box-shadow:0 6px 20px rgba(0,0,0,.3);pointer-events:none}
+.sigla-tooltip strong{color:#7fe3a3}
+.sigla-tooltip .st-def{display:block;margin-top:3px;color:rgba(255,255,255,.85);font-size:12px}
+.sigla-tooltip .st-more{display:block;margin-top:5px;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:#9db3d1}
+</style>
+<script>
+(function(){
+  function run(){
+    var main=document.getElementById('main-content')||document.body;
+    /* 1) objeto glosario DESDE la sección #glosario (fuente única, real) */
+    function buildGlosario(){
+      var g={}, arts=document.querySelectorAll('#glosario .glosario-term');
+      for(var i=0;i<arts.length;i++){
+        var acEl=arts[i].querySelector('.glosario-acronym'); if(!acEl)continue;
+        var ac=(acEl.textContent||'').trim(); if(!ac)continue;
+        g[ac]={nombre:((arts[i].querySelector('h3')||{}).textContent||'').trim(),
+               def:((arts[i].querySelector('p')||{}).textContent||'').trim(),
+               cat:arts[i].getAttribute('data-cat')||''};
+      }
+      return g;
+    }
+    var glosario=buildGlosario();
+    /* ═══ EDITABLE POR SECPLAC ═══ glosarioExtra: siglas que NO están en #glosario
+       (nomenclatura pública estándar). Se fusionan sin pisar las 70 del glosario. */
+    var glosarioExtra=(window.glosarioExtra && !window.glosarioExtra.nodeType) ? window.glosarioExtra : {
+      SNI:{nombre:'Sistema Nacional de Inversiones', def:'Sistema que norma el proceso de inversión pública en Chile (MIDESO + DIPRES).', cat:'plan'},
+      BIP:{nombre:'Banco Integrado de Proyectos', def:'Plataforma donde se registran y siguen los proyectos de inversión pública del SNI.', cat:'plan'},
+      RATE:{nombre:'Resultado del Análisis Técnico-Económico', def:'Calificación que el SNI asigna a un proyecto (RS recomendado, FI, OT, etc.).', cat:'plan'}
+    };
+    Object.keys(glosarioExtra).forEach(function(k){ if(!glosario[k]) glosario[k]=glosarioExtra[k]; });
+    window.glosario=glosario; /* own-property: prevalece sobre el acceso-por-nombre de <section id="glosario"> */
+
+    /* 2) siglas a enlazar: claves tipo acrónimo (MAYÚSCULAS, 3–8) */
+    var keys=Object.keys(glosario).filter(function(k){return /^[A-ZÁÉÍÓÚÑ]{3,8}$/.test(k);});
+    if(!keys.length) return;
+    keys.sort(function(a,b){return b.length-a.length;});
+    var RE=new RegExp('\\b('+keys.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')\\b','g');
+
+    /* 3) auto-enlazador: 1ª aparición de cada sigla POR SECCIÓN */
+    var SKIP={A:1,ABBR:1,BUTTON:1,CODE:1,SCRIPT:1,STYLE:1,SVG:1,SELECT:1,TEXTAREA:1,INPUT:1,H1:1};
+    var SKIP_ID={glosario:1,glosarioGrid:1,poaBody:1,poaFilters:1,trazaLoop:1,mtrGrid:1,semaforoGrid:1,polContent:1,chatMessages:1,chatPanel:1};
+    function skip(node){
+      for(var el=node.parentNode; el && el!==document.body; el=el.parentNode){
+        if(el.nodeType!==1) continue;
+        if(SKIP[el.tagName]) return true;
+        if(el.id && SKIP_ID[el.id]) return true;
+        if(el.isContentEditable) return true;
+        if(el.classList && (el.classList.contains('lf-panel')||el.classList.contains('chatbot-panel')||el.classList.contains('no-sigla')||el.classList.contains('sigla-tip'))) return true;
+      }
+      return false;
+    }
+    function wrapNode(tn, seen){
+      var txt=tn.nodeValue; RE.lastIndex=0;
+      if(!RE.test(txt)) return; RE.lastIndex=0;
+      var frag=document.createDocumentFragment(), last=0, m, changed=false;
+      while((m=RE.exec(txt))){
+        var sig=m[1];
+        if(seen[sig]) continue; /* solo 1ª aparición por sección */
+        seen[sig]=1; changed=true;
+        if(m.index>last) frag.appendChild(document.createTextNode(txt.slice(last,m.index)));
+        var ab=document.createElement('abbr');
+        ab.className='sigla-tip'; ab.tabIndex=0; ab.setAttribute('data-sigla',sig); ab.textContent=sig;
+        frag.appendChild(ab);
+        last=m.index+sig.length;
+      }
+      if(!changed) return;
+      if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      tn.parentNode.replaceChild(frag,tn);
+    }
+    var secs=main.querySelectorAll('section'), wrapped=0;
+    for(var s=0;s<secs.length;s++){
+      if(secs[s].id==='glosario') continue;
+      var seen={}, tw=document.createTreeWalker(secs[s], NodeFilter.SHOW_TEXT, null), batch=[], n;
+      while((n=tw.nextNode())){ if(n.nodeValue && /[A-Z]{3}/.test(n.nodeValue) && !skip(n)) batch.push(n); }
+      for(var b=0;b<batch.length;b++){ var before=Object.keys(seen).length; wrapNode(batch[b], seen); wrapped+=Object.keys(seen).length-before; }
+    }
+    window.__siglasWrapped=wrapped;
+
+    /* 4) tooltip accesible compartido (patrón WAI-ARIA) */
+    var tip=document.createElement('div'); tip.id='siglaTip'; tip.className='sigla-tooltip'; tip.setAttribute('role','tooltip'); tip.hidden=true;
+    document.body.appendChild(tip);
+    function esc(x){var d=document.createElement('div');d.textContent=(x==null?'':x);return d.innerHTML;}
+    var curAb=null;
+    function show(ab){
+      var sg=ab.getAttribute('data-sigla'), g=glosario[sg]; if(!g) return;
+      tip.innerHTML='<strong>'+esc(sg)+'</strong> &middot; '+esc(g.nombre)+(g.def?'<span class="st-def">'+esc(g.def)+'</span>':'')+'<span class="st-more">Glosario PLADECO</span>';
+      tip.hidden=false; curAb=ab; ab.setAttribute('aria-describedby','siglaTip');
+      var r=ab.getBoundingClientRect(), tw2=tip.offsetWidth, th=tip.offsetHeight;
+      var left=Math.max(8, Math.min(window.innerWidth-tw2-8, r.left));
+      var top=r.bottom+6; if(top+th>window.innerHeight-8) top=r.top-th-6;
+      tip.style.left=left+'px'; tip.style.top=Math.max(8,top)+'px';
+    }
+    function hide(){ tip.hidden=true; if(curAb){curAb.removeAttribute('aria-describedby');curAb=null;} }
+    document.addEventListener('mouseover',function(e){var a=e.target.closest?e.target.closest('.sigla-tip'):null;if(a)show(a);});
+    document.addEventListener('mouseout',function(e){var a=e.target.closest?e.target.closest('.sigla-tip'):null;if(a)hide();});
+    document.addEventListener('focusin',function(e){var a=e.target.closest?e.target.closest('.sigla-tip'):null;if(a)show(a);});
+    document.addEventListener('focusout',function(e){var a=e.target.closest?e.target.closest('.sigla-tip'):null;if(a)hide();});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')hide();});
+    window.addEventListener('scroll',function(){if(curAb)hide();},{passive:true});
+  }
+  if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
+})();
+</script>
 </body>
 </html>
