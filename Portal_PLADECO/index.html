@@ -6558,7 +6558,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
-    'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),
+    'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),'trazabilidad':navIco('cycle'),
     'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
     'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'poa':navIco('clipboard'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
@@ -15563,6 +15563,59 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
       <a href="#cronograma-gantt" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg></span> Cronograma + Pr&oacute;ximos pasos</a>
     </div>
   </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 2 · TRAZABILIDAD DEL LOOP (diagnóstico → decisión → eje → acción → meta)
+     Modela las relaciones que el portal YA sustenta y deja vacío lo que falta (no inventa):
+       · diagnóstico→eje : derivado de notasSeccion.eje (real)
+       · eje→decisión    : transcrito VERBATIM del "Mapa de Articulación" de #matriz (editable)
+       · eje→acción      : derivado de _POL[1] (real, exacto)
+       · eje→meta        : derivado de METAS_SEG.eje (real, exacto)
+       · acción→meta directa: no existe aún → se enlaza por eje (POA_META_LINK queda preparado)
+     Objeto editable window.trazabilidad. Render seguro, sin temporizadores. (<script> al final del body) -->
+<style id="traza-css">
+#trazabilidad .traza-eje-sel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px}
+#trazabilidad .tz-chip{padding:6px 13px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+#trazabilidad .tz-chip:hover{border-color:var(--c);color:var(--c)}
+#trazabilidad .tz-chip.active{background:var(--c);border-color:var(--c);color:#fff}
+#trazabilidad .tz-flow{display:flex;align-items:stretch;gap:8px;overflow-x:auto;padding-bottom:6px}
+#trazabilidad .tz-node{flex:1 1 0;min-width:184px;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--nc);border-radius:12px;padding:13px 14px;display:flex;flex-direction:column;gap:8px}
+#trazabilidad .tz-node-h{display:flex;flex-direction:column;gap:2px;border-bottom:1px dashed var(--border);padding-bottom:7px}
+#trazabilidad .tz-node-t{font-size:12px;font-weight:800;color:var(--nc);letter-spacing:.02em}
+#trazabilidad .tz-node-s{font-size:10.5px;color:var(--text3);font-weight:600}
+#trazabilidad .tz-node-b{display:flex;flex-direction:column;gap:5px}
+#trazabilidad .tz-arrow{display:flex;align-items:center;color:var(--text3);font-size:20px;font-weight:700;flex:0 0 auto}
+#trazabilidad .tz-link{font-size:12px;color:var(--text);text-decoration:none;font-weight:600;line-height:1.35;border-left:2px solid var(--border);padding-left:8px}
+#trazabilidad .tz-link:hover{color:var(--blue,#1F3864);border-left-color:var(--blue,#1F3864)}
+#trazabilidad .tz-big{font-size:18px;font-weight:900;color:#2d9a4d;border:none;padding:0}
+#trazabilidad .tz-sub{font-size:11px;color:var(--text2);text-decoration:none}
+#trazabilidad .tz-sub:hover{text-decoration:underline}
+#trazabilidad .tz-eje{display:flex;flex-direction:column;gap:3px;text-decoration:none;color:var(--text);font-weight:700;font-size:12.5px;line-height:1.3}
+#trazabilidad .tz-eje-n{display:inline-block;align-self:flex-start;background:var(--c);color:#fff;font-size:11px;font-weight:800;padding:1px 9px;border-radius:99px}
+#trazabilidad .tz-dec{display:block;text-decoration:none;color:var(--text);border-left:2px solid #f59e0b;padding-left:8px}
+#trazabilidad .tz-dec-cod{font-weight:900;color:#f59e0b;font-size:12px}
+#trazabilidad .tz-dec-rol{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
+#trazabilidad .tz-dec-t{display:block;font-size:11.5px;font-weight:600;color:var(--text);margin-top:1px}
+#trazabilidad .tz-meta-v{display:block;font-size:10.5px;color:var(--text3);font-weight:700}
+#trazabilidad .tz-empty{font-size:11.5px;color:var(--text3);font-style:italic}
+#trazabilidad .traza-foot{margin-top:14px;padding:11px 15px;background:rgba(96,135,199,.06);border-radius:10px;font-size:12px;line-height:1.55;color:var(--text2)}
+@media(max-width:760px){
+  #trazabilidad .tz-flow{flex-direction:column;overflow:visible}
+  #trazabilidad .tz-arrow{transform:rotate(90deg);align-self:center;height:18px}
+  #trazabilidad .tz-node{min-width:0}
+}
+</style>
+<section id="trazabilidad" class="reveal" aria-labelledby="trazaH">
+  <div class="sec-header">
+    <div class="badge" style="background:rgba(96,135,199,.12);color:#6087c7">El Loop del Plan</div>
+    <h2 id="trazaH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-cycle"></use></svg> Trazabilidad: del diagn&oacute;stico a la meta</h2>
+    <p>El PLADECO cierra un <strong>loop</strong>: cada <strong>dato de diagn&oacute;stico</strong> sustenta una <strong>decisi&oacute;n</strong>, que se materializa en un <strong>eje</strong>, que se concreta en <strong>acciones</strong>, que se miden con <strong>metas</strong>. Elige un eje y rec&oacute;rrelo en ambos sentidos &mdash; cada eslab&oacute;n enlaza a su secci&oacute;n.</p>
+  </div>
+  <div class="traza-eje-sel" id="trazaEjeSel"></div>
+  <div class="traza-loop" id="trazaLoop"></div>
+  <div class="traza-foot">Vínculos <strong>reales</strong>: diagn&oacute;stico&rarr;eje (notas de secci&oacute;n), eje&rarr;acci&oacute;n (<a href="#matriz">Matriz</a>), eje&rarr;meta (<a href="#semaforo">Sem&aacute;foro</a>). El eje&rarr;decisi&oacute;n se transcribe del <a href="#matriz">Mapa de Articulaci&oacute;n</a>. El v&iacute;nculo directo <em>acci&oacute;n&rarr;meta</em> a&uacute;n no se fija en el plan: queda preparado (<code>POA_META_LINK</code>) y, mientras tanto, se enlaza por eje.</div>
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-link"></use></svg></span> <strong>Fuente:</strong> relaciones internas del PLADECO Rengo 2025-2035 &mdash; Matriz Estrat&eacute;gica, Mapa de Articulaci&oacute;n, Sem&aacute;foro de Metas y notas de secci&oacute;n. No se crean v&iacute;nculos nuevos: se modelan los que el plan ya sostiene.</div>
 </section>
 
 <!-- ═══ RESUMEN EJECUTIVO ═══ -->
@@ -37519,6 +37572,112 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
   window.__poaReset=function(){F={eje:0,estado:'',fin:'',plazo:'',resp:'',q:''};renderFilters();renderRows();};
 
   renderKpis();renderFilters();renderRows();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 2 · TRAZABILIDAD DEL LOOP — lógica + datos editables
+     Reutiliza _POL, METAS_SEG, EJES y notasSeccion. NO altera datos.
+     Render seguro (solo si existe el contenedor) · sin temporizadores · sin dependencias.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var loop=document.getElementById('trazaLoop');
+  if(!loop || typeof _POL==='undefined' || !_POL.length) return; /* render seguro */
+
+  /* ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  DATOS EDITABLES POR SECPLAC                                            ║
+     ╚═══════════════════════════════════════════════════════════════════════╝
+     trazabilidad.decisiones · las 6 decisiones normativas (de la sección #decisiones). REAL.
+     trazabilidad.ejeDecision · eje (taxonomía EJES/_POL, 1–6) → decisión, transcrito VERBATIM
+       del "Mapa de Articulación" publicado en #matriz. Editable.
+     trazabilidad.diagnosticoExtra · anclas de diagnóstico añadidas a mano por eje (opcional);
+       el grueso del diagnóstico→eje se DERIVA de notasSeccion en runtime (no se hardcodea).
+     NOTA: la sección <section id="trazabilidad"> publica window.trazabilidad como acceso-por-nombre
+       del DOM (elemento), por eso descartamos cualquier valor con .nodeType antes de usar el predefinido. */
+  var trazabilidad = (window.trazabilidad && !window.trazabilidad.nodeType) ? window.trazabilidad : {
+    decisiones:{
+      D01:{dim:'Financiero',    titulo:'Captación externa sobre cobertura propia'},
+      D02:{dim:'Económico',     titulo:'Formalización sobre crecimiento agregado'},
+      D03:{dim:'Territorial',   titulo:'Inversión por brecha sobre proximidad política'},
+      D04:{dim:'Institucional', titulo:'Articulación sobre expansión estructural'},
+      D05:{dim:'Político',      titulo:'Rendición pública trimestral sobre anual interna'},
+      D06:{dim:'Social',        titulo:'Beneficiario nombrado sobre política universal genérica'}
+    },
+    ejeDecision:{
+      1:{principal:'D06',apoyo:['D04']},
+      2:{principal:'D02',apoyo:['D01']},
+      3:{principal:'D03',apoyo:['D04']},
+      4:{principal:'D03',apoyo:['D01']},
+      5:{principal:'D06',apoyo:['D04']},
+      6:{principal:'D04',apoyo:['D05']}
+    },
+    diagnosticoExtra:{ /* 1:[{label:'Censo 2024',ancla:'censo'}], */ }
+  };
+  window.trazabilidad = trazabilidad;
+
+  /* ───────── lógica (no editable) ───────── */
+  var _EJE_FB_L=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
+  var _EJE_FB_C=['#0072B2','#E69F00','#009E73','#56B4E9','#D55E00','#CC79A7'];
+  var hasEjes=(typeof EJES!=='undefined'&&EJES&&EJES.length>=6);
+  var EJE_LBL=hasEjes?EJES.map(function(e){return e.short||e.name;}):_EJE_FB_L;
+  var EJE_NOM=hasEjes?EJES.map(function(e){return e.name;}):_EJE_FB_L;
+  var EJE_COL=hasEjes?EJES.map(function(e){return e.color;}):_EJE_FB_C;
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+
+  function diagDeEje(eje){
+    var out=[];
+    try{
+      var ns=window.notasSeccion||{};
+      Object.keys(ns).forEach(function(id){
+        if(ns[id] && +ns[id].eje===+eje){
+          var el=document.getElementById(id);
+          var h2=el?el.querySelector('.sec-header h2'):null;
+          out.push({ancla:id,label:((h2&&h2.textContent)||id).replace(/\s+/g,' ').trim()});
+        }
+      });
+    }catch(e){}
+    var ex=(trazabilidad.diagnosticoExtra||{})[eje]||[];
+    ex.forEach(function(d){out.push(d);});
+    return out;
+  }
+  function accDeEje(eje){var n=0;for(var i=0;i<_POL.length;i++){if(_POL[i][1]===eje)n++;}return n;}
+  function metasDeEje(eje){
+    if(typeof METAS_SEG==='undefined'||!METAS_SEG) return [];
+    return METAS_SEG.filter(function(m){return m.eje===eje;});
+  }
+
+  var curEje=1;
+  function decChip(cod,rol){
+    var d=trazabilidad.decisiones[cod];if(!d)return '';
+    return '<a href="#decisiones" class="tz-dec" title="'+esc(d.dim)+' · ir a Decisiones"><span class="tz-dec-cod">'+esc(cod)+'</span> <span class="tz-dec-rol">'+rol+'</span><span class="tz-dec-t">'+esc(d.titulo)+'</span></a>';
+  }
+  function node(t,sub,bodyHtml,col){return '<div class="tz-node" style="--nc:'+col+'"><div class="tz-node-h"><span class="tz-node-t">'+t+'</span><span class="tz-node-s">'+sub+'</span></div><div class="tz-node-b">'+bodyHtml+'</div></div>';}
+  function arrow(){return '<div class="tz-arrow" aria-hidden="true">&rarr;</div>';}
+
+  function renderLoop(){
+    var eje=curEje, col=EJE_COL[eje-1]||'#1F3864';
+    var diag=diagDeEje(eje), acc=accDeEje(eje), metas=metasDeEje(eje);
+    var ed=trazabilidad.ejeDecision[eje]||{principal:null,apoyo:[]};
+    var diagHtml=diag.length?diag.slice(0,6).map(function(d){return '<a href="#'+esc(d.ancla)+'" class="tz-link">'+esc(d.label)+'</a>';}).join(''):'<span class="tz-empty">Sin diagnóstico vinculado aún (editable)</span>';
+    var decHtml=(ed.principal?decChip(ed.principal,'Principal'):'<span class="tz-empty">Por confirmar</span>')+(ed.apoyo||[]).map(function(c){return decChip(c,'Apoyo');}).join('');
+    var metaHtml=metas.length?metas.map(function(m){return '<a href="#semaforo" class="tz-link" title="Ver en el Semáforo">'+esc(m.ind)+'<span class="tz-meta-v">'+esc(m.lb)+esc(m.u)+' &rarr; '+esc(m.m35)+esc(m.u)+' (2035)</span></a>';}).join(''):'<span class="tz-empty">Sin meta directa (ver Semáforo)</span>';
+    loop.innerHTML='<div class="tz-flow">'+
+      node('1 &middot; Diagnóstico','Qué muestra la realidad', diagHtml, '#6087c7')+arrow()+
+      node('2 &middot; Decisión','Qué elige el plan', decHtml, '#f59e0b')+arrow()+
+      node('3 &middot; Eje','Dónde actúa', '<a href="#matriz" class="tz-eje" style="--c:'+col+'"><span class="tz-eje-n">Eje '+eje+'</span>'+esc(EJE_NOM[eje-1])+'</a>', col)+arrow()+
+      node('4 &middot; Acción','Qué hace concretamente', '<a href="#poa" class="tz-big">'+acc+' acciones</a><a href="#matriz" class="tz-sub">Ver en la Matriz &rsaquo;</a>', '#2d9a4d')+arrow()+
+      node('5 &middot; Meta','Cómo se mide', metaHtml, '#15803d')+
+    '</div>';
+  }
+  function renderSel(){
+    var sel=document.getElementById('trazaEjeSel');if(!sel)return;
+    var h='<span class="poa-fgroup-lbl" style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);margin-right:4px">Elige un eje</span>';
+    for(var i=1;i<=6;i++){h+='<button type="button" class="tz-chip'+(i===curEje?' active':'')+'" data-e="'+i+'" style="--c:'+(EJE_COL[i-1]||'#1F3864')+'">Eje '+i+' &middot; '+esc(EJE_LBL[i-1])+'</button>';}
+    sel.innerHTML=h;
+    sel.querySelectorAll('.tz-chip').forEach(function(b){b.addEventListener('click',function(){curEje=+b.getAttribute('data-e');renderSel();renderLoop();});});
+  }
+  renderSel();renderLoop();
 })();
 </script>
 </body>
