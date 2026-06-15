@@ -6560,7 +6560,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     /* Macro 03 · Planificación */
     'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),'trazabilidad':navIco('cycle'),
     'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
-    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'poa':navIco('clipboard'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
+    'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'poa':navIco('clipboard'),'metas-trayectoria':navIco('trend'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
     /* Macro 04 · Cierre */
     'faq':navIco('info'),'glosario':navIco('book'),'institucional':navIco('institution'),'galeria':navIco('image'),'antes-despues':navIco('cycle'),
@@ -16117,6 +16117,63 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     </div>
   </div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuentes:</strong> PLADECO Rengo 2025-2035, L&iacute;nea Base 2024 y Metas Escalonadas &bull; INE, Censo 2024 &bull; CASEN 2022 &bull; CPLT &bull; MINEDUC &bull; Municipalidad de Rengo</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 7 · COMPARADOR TEMPORAL DE METAS (extiende el Semáforo)
+     METAS_SEG (Semáforo) ya trae línea base 2024 + meta 2028 + meta 2035, pero NO la serie
+     anual real. Aquí se añade esa serie como overlay EDITABLE y PROVISIONAL (window.metasSemaforo)
+     y se visualiza la trayectoria (sparkline SVG, sin dependencias). Conecta con POA (#poa) y
+     Trazabilidad (#trazabilidad). Render seguro, sin temporizadores. (<script> al final del body) -->
+<style id="mtr-css">
+#metas-trayectoria .mtr-prov-banner{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:var(--rad-md,12px);padding:12px 16px;font-size:13px;line-height:1.6;color:#78350f;margin:0 0 16px}
+body.dark #metas-trayectoria .mtr-prov-banner{background:#3a2e0c;border-color:#854d0e;color:#fde9b8}
+#metas-trayectoria .mtr-prov-banner code{background:rgba(0,0,0,.07);padding:1px 6px;border-radius:5px;font-size:12px}
+body.dark #metas-trayectoria .mtr-prov-banner code{background:rgba(255,255,255,.12)}
+#metas-trayectoria .mtr-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:11px;color:var(--text2);margin-bottom:14px}
+#metas-trayectoria .mtr-legend span{display:inline-flex;align-items:center;gap:5px}
+#metas-trayectoria .mtr-lg-line{width:18px;height:0;border-top:2px dashed #15803d;opacity:.7}
+#metas-trayectoria .mtr-lg-real{width:18px;height:0;border-top:2px solid var(--blue,#1F3864)}
+#metas-trayectoria .mtr-lg-tgt{width:9px;height:9px;border-radius:50%;background:#15803d}
+#metas-trayectoria .mtr-filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:16px}
+#metas-trayectoria .mtr-chip{padding:5px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+#metas-trayectoria .mtr-chip:hover{border-color:#15803d;color:#15803d}
+#metas-trayectoria .mtr-chip.active{background:var(--blue,#1F3864);border-color:var(--blue,#1F3864);color:#fff}
+#metas-trayectoria .mtr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+#metas-trayectoria .mtr-card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mc,#1F3864);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+#metas-trayectoria .mtr-card-h{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+#metas-trayectoria .mtr-name{font-size:13.5px;font-weight:800;color:var(--text);line-height:1.3}
+#metas-trayectoria .mtr-eje{font-size:10px;font-weight:700;color:var(--text3);margin-top:2px}
+#metas-trayectoria .mtr-dot{width:13px;height:13px;border-radius:50%;flex:0 0 auto;margin-top:3px}
+#metas-trayectoria .mtr-spark{width:100%;height:48px;display:block;overflow:visible}
+#metas-trayectoria .mtr-vals{display:flex;justify-content:space-between;gap:6px}
+#metas-trayectoria .mtr-val{text-align:center;flex:1}
+#metas-trayectoria .mtr-val .y{display:block;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text3)}
+#metas-trayectoria .mtr-val .v{display:block;font-size:14px;font-weight:800;color:var(--text);margin-top:1px}
+#metas-trayectoria .mtr-val.is-meta .v{color:#15803d}
+#metas-trayectoria .mtr-meta-info{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10.5px;color:var(--text2);border-top:1px dashed var(--border);padding-top:8px}
+#metas-trayectoria .mtr-meta-info b{color:var(--text);font-weight:700}
+#metas-trayectoria .mtr-prov-tag{font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#92400e;background:#fef3c7;padding:1px 7px;border-radius:99px}
+body.dark #metas-trayectoria .mtr-prov-tag{background:#422006;color:#fcd9a5}
+#metas-trayectoria .mtr-links{display:flex;gap:12px;flex-wrap:wrap}
+#metas-trayectoria .mtr-links a{font-size:11px;color:#15803d;text-decoration:none;font-weight:600}
+#metas-trayectoria .mtr-links a:hover{text-decoration:underline}
+</style>
+<section id="metas-trayectoria" class="reveal" aria-labelledby="mtrH">
+  <div class="sec-header">
+    <div class="badge badge--success">Seguimiento &middot; Serie temporal</div>
+    <h2 id="mtrH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trend"></use></svg> Comparador Temporal de Metas</h2>
+    <p>Extiende el <a href="#semaforo">Sem&aacute;foro</a>: cada uno de los <strong>16 KPIs</strong> con su trayectoria <strong>l&iacute;nea base 2024 &rarr; valor real por a&ntilde;o &rarr; meta 2028 &rarr; meta 2035</strong>, adem&aacute;s del color de estado. As&iacute; se ve no solo d&oacute;nde queremos llegar, sino c&oacute;mo avanzamos a&ntilde;o a a&ntilde;o.</p>
+  </div>
+  <div class="mtr-prov-banner" role="note"><strong>Valor real anual: provisional.</strong> La l&iacute;nea base 2024 y las metas 2028/2035 provienen del Sem&aacute;foro (no se duplican). La serie de <em>valores reales por a&ntilde;o</em> a&uacute;n no se levanta: es editable por SECPLAC en <code>metasSemaforo</code> y cada a&ntilde;o sin dato queda provisional hasta el primer reporte de seguimiento.</div>
+  <div class="mtr-legend">
+    <span><span class="mtr-lg-line"></span> Trayectoria planificada (base &rarr; metas)</span>
+    <span><span class="mtr-lg-real"></span> Valor real medido</span>
+    <span><span class="mtr-lg-tgt"></span> Meta 2028 / 2035</span>
+  </div>
+  <div class="mtr-filters" id="mtrFilters"></div>
+  <div class="mtr-grid" id="mtrGrid"></div>
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trend"></use></svg></span> <strong>Fuente:</strong> Sem&aacute;foro de Metas PLADECO (l&iacute;nea base 2024 + metas escalonadas 2028/2035). Serie de valores reales por a&ntilde;o: <strong>seguimiento provisional</strong> a cargo de SECPLAC (objeto <code>metasSemaforo</code>, editable).</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
@@ -37678,6 +37735,111 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     sel.querySelectorAll('.tz-chip').forEach(function(b){b.addEventListener('click',function(){curEje=+b.getAttribute('data-e');renderSel();renderLoop();});});
   }
   renderSel();renderLoop();
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 7 · COMPARADOR TEMPORAL DE METAS — lógica + datos editables
+     Reutiliza METAS_SEG (línea base + metas) y EJES. NO altera datos.
+     Render seguro (solo si existe el contenedor) · sin temporizadores · sparkline SVG nativo. -->
+<script>
+(function(){
+  var grid=document.getElementById('mtrGrid');
+  if(!grid || typeof METAS_SEG==='undefined' || !METAS_SEG || !METAS_SEG.length) return; /* render seguro */
+
+  /* ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  DATOS EDITABLES POR SECPLAC — PROVISIONALES                            ║
+     ╚═══════════════════════════════════════════════════════════════════════╝
+     metasSemaforo · overlay TEMPORAL por id de meta (= METAS_SEG.id, 1–16).
+     La línea base (2024) y las metas (2028/2035) viven en METAS_SEG (Semáforo) — NO se duplican.
+     Aquí se añade lo que el plan aún no tiene: la SERIE ANUAL REAL + periodicidad + responsable.
+     shape → { metaId: { periodicidad:'anual', responsable:'…', serieReal:{ 2025:val, 2026:val, … } } }
+     serieReal: solo años CON dato real medido (2024 se toma de la línea base). Vacío = provisional. */
+  var metasSemaforo = (window.metasSemaforo && !window.metasSemaforo.nodeType) ? window.metasSemaforo : {
+    /* Ejemplo PROVISIONAL (descomentar y reemplazar por mediciones reales):
+    13: { periodicidad:'anual', responsable:'SECPLAC', serieReal:{ 2025:8, 2026:18 } }, */
+  };
+  window.metasSemaforo = metasSemaforo;
+
+  /* ───────── lógica (no editable) ───────── */
+  var _EJE_FB_L=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
+  var _EJE_FB_C=['#0072B2','#E69F00','#009E73','#56B4E9','#D55E00','#CC79A7'];
+  var hasEjes=(typeof EJES!=='undefined'&&EJES&&EJES.length>=6);
+  var EJE_LBL=hasEjes?EJES.map(function(e){return e.short||e.name;}):_EJE_FB_L;
+  var EJE_COL=hasEjes?EJES.map(function(e){return e.color;}):_EJE_FB_C;
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  var YEARS=[2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035];
+
+  function estadoColor(m){
+    var cls;
+    if(m.tipo==='up'){var gap=m.m35-m.lb;cls=gap>40?'red':gap>20?'amber':'green';}
+    else{var ratio=m.lb/(m.m35||1);cls=ratio>2?'red':ratio>1.3?'amber':'green';}
+    return cls==='green'?'#22c55e':cls==='amber'?'#f59e0b':'#ef4444';
+  }
+  function serieDe(m){
+    var ov=metasSemaforo[m.id]||{};
+    var s={2024:m.lb}; /* 2024 = línea base (real) */
+    if(ov.serieReal){Object.keys(ov.serieReal).forEach(function(y){if(ov.serieReal[y]!=null)s[+y]=+ov.serieReal[y];});}
+    return s;
+  }
+  function sparkline(m){
+    var W=260,H=48,padX=8,padY=9, serie=serieDe(m);
+    var vals=[m.lb,m.m28,m.m35];
+    YEARS.forEach(function(y){if(serie[y]!=null)vals.push(serie[y]);});
+    var vmin=Math.min.apply(null,vals),vmax=Math.max.apply(null,vals);
+    if(vmax===vmin)vmax=vmin+1;
+    function X(y){return padX+(y-2024)/11*(W-2*padX);}
+    function Y(v){return H-padY-((v-vmin)/(vmax-vmin))*(H-2*padY);}
+    var col=EJE_COL[m.eje-1]||'#1F3864';
+    var planned='M'+X(2024).toFixed(1)+','+Y(m.lb).toFixed(1)+' L'+X(2028).toFixed(1)+','+Y(m.m28).toFixed(1)+' L'+X(2035).toFixed(1)+','+Y(m.m35).toFixed(1);
+    var realYears=YEARS.filter(function(y){return serie[y]!=null;});
+    var realPath=realYears.map(function(y,i){return (i?'L':'M')+X(y).toFixed(1)+','+Y(serie[y]).toFixed(1);}).join(' ');
+    var realDots=realYears.map(function(y){return '<circle cx="'+X(y).toFixed(1)+'" cy="'+Y(serie[y]).toFixed(1)+'" r="3" fill="'+col+'"/>';}).join('');
+    var tgt='<circle cx="'+X(2028).toFixed(1)+'" cy="'+Y(m.m28).toFixed(1)+'" r="3.5" fill="none" stroke="#15803d" stroke-width="1.6"/>'+
+            '<circle cx="'+X(2035).toFixed(1)+'" cy="'+Y(m.m35).toFixed(1)+'" r="3.5" fill="#15803d"/>';
+    return '<svg class="mtr-spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Trayectoria de '+esc(m.ind)+': base 2024 '+esc(m.lb)+esc(m.u)+', meta 2028 '+esc(m.m28)+esc(m.u)+', meta 2035 '+esc(m.m35)+esc(m.u)+'">'+
+      '<path d="'+planned+'" fill="none" stroke="#15803d" stroke-width="1.4" stroke-dasharray="4 3" opacity=".55"/>'+
+      (realPath?'<path d="'+realPath+'" fill="none" stroke="'+col+'" stroke-width="2"/>':'')+
+      realDots+tgt+
+    '</svg>';
+  }
+
+  var curEje=0;
+  function render(){
+    var list=METAS_SEG.filter(function(m){return !curEje||m.eje===curEje;});
+    var h='';
+    list.forEach(function(m){
+      var col=EJE_COL[m.eje-1]||'#1F3864';
+      var ov=metasSemaforo[m.id]||{};
+      var serie=serieDe(m);
+      var realYrs=YEARS.filter(function(y){return y>2024 && serie[y]!=null;});
+      var prov=realYrs.length===0;
+      h+='<div class="mtr-card" style="--mc:'+col+'">'+
+        '<div class="mtr-card-h"><div><div class="mtr-name">'+esc(m.ind)+'</div><div class="mtr-eje">Eje '+m.eje+' &middot; '+esc(EJE_LBL[m.eje-1])+'</div></div><div class="mtr-dot" title="Color de estado (según la ambición de la meta, igual que el Semáforo)" style="background:'+estadoColor(m)+'"></div></div>'+
+        sparkline(m)+
+        '<div class="mtr-vals">'+
+          '<div class="mtr-val"><span class="y">Base 2024</span><span class="v">'+esc(m.lb)+esc(m.u)+'</span></div>'+
+          '<div class="mtr-val is-meta"><span class="y">Meta 2028</span><span class="v">'+esc(m.m28)+esc(m.u)+'</span></div>'+
+          '<div class="mtr-val is-meta"><span class="y">Meta 2035</span><span class="v">'+esc(m.m35)+esc(m.u)+'</span></div>'+
+        '</div>'+
+        '<div class="mtr-meta-info">'+
+          '<span>Real: '+(prov?'<span class="mtr-prov-tag">provisional</span>':('<b>'+realYrs.length+'</b> año(s) con dato'))+'</span>'+
+          '<span>Periodicidad: <b>'+esc(ov.periodicidad||'anual')+'</b></span>'+
+          '<span>Responsable: <b>'+esc(ov.responsable||'por asignar')+'</b></span>'+
+        '</div>'+
+        '<div class="mtr-links"><a href="#semaforo">Semáforo &rsaquo;</a><a href="#poa">Acciones (POA) &rsaquo;</a><a href="#trazabilidad">Trazabilidad &rsaquo;</a></div>'+
+      '</div>';
+    });
+    grid.innerHTML=h;
+  }
+  function renderFilters(){
+    var box=document.getElementById('mtrFilters');if(!box)return;
+    var h='<button type="button" class="mtr-chip'+(curEje===0?' active':'')+'" data-e="0">Todos los ejes</button>';
+    for(var i=1;i<=6;i++){h+='<button type="button" class="mtr-chip'+(curEje===i?' active':'')+'" data-e="'+i+'">Eje '+i+'</button>';}
+    box.innerHTML=h;
+    box.querySelectorAll('.mtr-chip').forEach(function(b){b.addEventListener('click',function(){curEje=+b.getAttribute('data-e');renderFilters();render();});});
+  }
+  renderFilters();render();
 })();
 </script>
 </body>
