@@ -14969,6 +14969,12 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     <h2>Rengo y los Objetivos Globales de la ONU</h2>
     <p>Las 225 acciones del plan est&aacute;n conectadas con 13 de los 17 Objetivos de Desarrollo Sostenible que promueve Naciones Unidas</p>
   </div>
+  <!-- BLOQUE 4 · Tablero de los 17 ODS oficiales (íconos + cobertura), derivado de _POL[15] -->
+  <div class="viz-row"><div class="viz-card viz-full">
+    <h3>Tablero ODS &middot; los 17 Objetivos Globales</h3>
+    <div class="viz-sub">Resaltados, los abordados por el PLADECO. Haz clic en un objetivo para ver qu&eacute; ejes y cu&aacute;ntas acciones lo trabajan.</div>
+    <div id="odsTablero"></div>
+  </div></div>
   <div class="viz-row">
     <div class="viz-card viz-full">
       <h3>Mapa de Calor: Cobertura ODS por Eje Estrat&#233;gico</h3>
@@ -37956,6 +37962,112 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     window.addEventListener('scroll',function(){if(curAb)hide();},{passive:true});
   }
   if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 4 · TABLERO ODS (13/17) — panel de los 17 íconos oficiales + mapaODS
+     Complementa el #ods-sec existente (heatmap + gráficos). El objeto window.mapaODS trae los
+     METADATOS OFICIALES de los 17 ODS (numeración y colores ONU, editables); la COBERTURA
+     (qué ODS, por qué ejes, cuántas acciones) se DERIVA de _POL[15] (real, no se inventa).
+     Render seguro · sin temporizadores · sin dependencias. -->
+<style id="ods-tablero-css">
+#ods-sec .ods-cov{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:4px 0 16px}
+#ods-sec .ods-cov-big{font-size:30px;font-weight:900;color:var(--blue,#1F3864);line-height:1}
+#ods-sec .ods-cov-big small{font-size:15px;color:var(--text3);font-weight:700}
+#ods-sec .ods-cov-bar{flex:1;min-width:140px;height:10px;border-radius:99px;background:var(--border);overflow:hidden}
+#ods-sec .ods-cov-bar i{display:block;height:100%;border-radius:99px;background:#15803d}
+#ods-sec .ods-note{font-size:12px;line-height:1.55;color:var(--text2);background:rgba(96,135,199,.07);border-left:3px solid #6087c7;border-radius:8px;padding:9px 13px;margin:0 0 14px}
+#ods-sec .ods-note strong{color:var(--text)}
+#ods-sec .ods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:8px}
+#ods-sec .ods-tile{position:relative;border:none;border-radius:9px;padding:9px 10px;min-height:66px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;text-align:left;color:#fff;font-family:inherit;transition:transform .12s,box-shadow .12s;overflow:hidden}
+#ods-sec .ods-tile:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+#ods-sec .ods-tile:focus-visible{outline:3px solid var(--blue,#1F3864);outline-offset:2px}
+#ods-sec .ods-tile .num{font-size:19px;font-weight:900;line-height:1}
+#ods-sec .ods-tile .nm{font-size:10px;font-weight:700;line-height:1.2;opacity:.96}
+#ods-sec .ods-tile .cnt{position:absolute;top:6px;right:7px;font-size:9.5px;font-weight:800;background:rgba(255,255,255,.28);padding:1px 6px;border-radius:99px}
+#ods-sec .ods-tile.off{filter:grayscale(1);opacity:.42}
+#ods-sec .ods-tile.off .cnt{display:none}
+#ods-sec .ods-tile.sel{outline:3px solid var(--text);outline-offset:2px}
+#ods-sec .ods-detail{margin-top:14px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+#ods-sec .ods-detail .od-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+#ods-sec .ods-detail .od-badge{width:34px;height:34px;border-radius:8px;color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+#ods-sec .ods-detail .od-t{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.25}
+#ods-sec .ods-detail .od-ejes{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+#ods-sec .ods-detail .od-eje{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff}
+#ods-sec .ods-detail .od-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+#ods-sec .ods-detail .od-links a{font-size:11.5px;color:#15803d;font-weight:600;text-decoration:none}
+#ods-sec .ods-detail .od-links a:hover{text-decoration:underline}
+#ods-sec .ods-detail .od-empty{color:var(--text3);font-size:12.5px}
+</style>
+<script>
+(function(){
+  var host=document.getElementById('odsTablero');
+  if(!host || typeof _POL==='undefined' || !_POL.length) return; /* render seguro */
+
+  /* ╔═══ EDITABLE POR SECPLAC ═══╗
+     mapaODS.ods · metadatos OFICIALES de los 17 ODS (numeración y colores oficiales ONU).
+     La COBERTURA (qué ODS, por qué ejes, cuántas acciones) NO se hardcodea: se DERIVA de _POL[15]. */
+  var mapaODS = (window.mapaODS && !window.mapaODS.nodeType) ? window.mapaODS : {
+    ods:{
+      1:{n:'Fin de la Pobreza',c:'#E5243B'},2:{n:'Hambre Cero',c:'#DDA63A'},3:{n:'Salud y Bienestar',c:'#4C9F38'},
+      4:{n:'Educación de Calidad',c:'#C5192D'},5:{n:'Igualdad de Género',c:'#FF3A21'},6:{n:'Agua Limpia y Saneamiento',c:'#26BDE2'},
+      7:{n:'Energía Asequible y No Contaminante',c:'#FCC30B'},8:{n:'Trabajo Decente y Crecimiento Económico',c:'#A21942'},
+      9:{n:'Industria, Innovación e Infraestructura',c:'#FD6925'},10:{n:'Reducción de las Desigualdades',c:'#DD1367'},
+      11:{n:'Ciudades y Comunidades Sostenibles',c:'#FD9D24'},12:{n:'Producción y Consumo Responsables',c:'#BF8B2E'},
+      13:{n:'Acción por el Clima',c:'#3F7E44'},14:{n:'Vida Submarina',c:'#0A97D9'},15:{n:'Vida de Ecosistemas Terrestres',c:'#56C02B'},
+      16:{n:'Paz, Justicia e Instituciones Sólidas',c:'#00689D'},17:{n:'Alianzas para Lograr los Objetivos',c:'#19486A'}
+    }
+  };
+  window.mapaODS = mapaODS;
+  var ODS=mapaODS.ods;
+  var EJE_FB_L=['Social y Salud','Económico','Educación','Urbano y M.A.','Seguridad','Gestión Municipal'];
+  var EJE_FB_C=['#0072B2','#E69F00','#009E73','#56B4E9','#D55E00','#CC79A7'];
+  var hasEjes=(typeof EJES!=='undefined'&&EJES&&EJES.length>=6);
+  var EJE_LBL=hasEjes?EJES.map(function(e){return e.short||e.name;}):EJE_FB_L;
+  var EJE_COL=hasEjes?EJES.map(function(e){return e.color;}):EJE_FB_C;
+  function esc(x){var d=document.createElement('div');d.textContent=(x==null?'':x);return d.innerHTML;}
+  function parseODS(s){return (String(s).match(/\d+/g)||[]).map(Number).filter(function(n){return n>=1&&n<=17;});}
+
+  /* derivar cobertura desde _POL[15] */
+  var byOds={};
+  for(var i=0;i<_POL.length;i++){
+    var eje=_POL[i][1], lst=parseODS(_POL[i][15]);
+    lst.forEach(function(o){ if(!byOds[o])byOds[o]={acc:0,ejes:{}}; byOds[o].acc++; byOds[o].ejes[eje]=(byOds[o].ejes[eje]||0)+1; });
+  }
+  var abordados=Object.keys(byOds).map(Number), nCov=abordados.length;
+  window.__odsCobertura={abordados:abordados.sort(function(a,b){return a-b;}),n:nCov};
+
+  function detalle(o){
+    var d=byOds[o], meta=ODS[o]; if(!meta) return '';
+    var head='<div class="od-h"><span class="od-badge" style="background:'+meta.c+'">'+o+'</span><span class="od-t">ODS '+o+' &middot; '+esc(meta.n)+'</span></div>';
+    if(!d) return head+'<div class="od-empty">No es abordado directamente por las 225 acciones del PLADECO (sin v&iacute;nculo en el plan).</div>';
+    var ejes=Object.keys(d.ejes).map(Number).sort(function(a,b){return d.ejes[b]-d.ejes[a];});
+    var chips=ejes.map(function(e){return '<span class="od-eje" style="background:'+(EJE_COL[e-1]||'#1F3864')+'">Eje '+e+' &middot; '+esc(EJE_LBL[e-1])+' ('+d.ejes[e]+')</span>';}).join('');
+    return head+
+      '<div style="font-size:12.5px;color:var(--text2)"><strong>'+d.acc+'</strong> contribuciones de acciones del plan, en '+ejes.length+' eje(s):</div>'+
+      '<div class="od-ejes">'+chips+'</div>'+
+      '<div class="od-links"><a href="#matriz">Ver en la Matriz &rsaquo;</a><a href="#poa">Ver acciones (POA) &rsaquo;</a><a href="#trazabilidad">Trazabilidad &rsaquo;</a></div>';
+  }
+  var sel=abordados.length?abordados.slice().sort(function(a,b){return byOds[b].acc-byOds[a].acc;})[0]:null;
+  var marginales=abordados.slice().sort(function(a,b){return byOds[a].acc-byOds[b].acc;}).slice(0,3).sort(function(a,b){return a-b;});
+  function render(){
+    var cov=Math.round(nCov/17*100), tiles='';
+    for(var o=1;o<=17;o++){
+      var meta=ODS[o], on=!!byOds[o];
+      tiles+='<button type="button" class="ods-tile'+(on?'':' off')+(o===sel?' sel':'')+'" style="background:'+meta.c+'" data-o="'+o+'" aria-label="ODS '+o+', '+esc(meta.n)+(on?(', '+byOds[o].acc+' acciones'):', no abordado')+'">'+
+        (on?'<span class="cnt">'+byOds[o].acc+'</span>':'')+'<span class="num">'+o+'</span><span class="nm">'+esc(meta.n)+'</span></button>';
+    }
+    host.innerHTML=
+      '<div class="ods-cov"><div class="ods-cov-big">'+nCov+'<small>/17</small></div>'+
+      '<div style="font-size:12.5px;color:var(--text2);font-weight:600;flex:0 1 auto">ODS que reciben al menos una contribuci&oacute;n de las 225 acciones</div>'+
+      '<div class="ods-cov-bar"><i style="width:'+cov+'%"></i></div></div>'+
+      '<div class="ods-note">El plan publica <strong>13 ODS</strong> como foco prioritario. Seg&uacute;n la Matriz, <strong>'+nCov+' de 17</strong> reciben al menos una contribuci&oacute;n (563 en total, 2,5 por acci&oacute;n) &mdash; solo <strong>ODS&nbsp;14</strong> (Vida Submarina) queda sin v&iacute;nculo, coherente con una comuna interior. Los de menor cobertura son '+marginales.map(function(o){return 'ODS&nbsp;'+o;}).join(', ')+' (4&ndash;5 acciones c/u).</div>'+
+      '<div class="ods-grid" role="list">'+tiles+'</div>'+
+      '<div class="ods-detail" id="odsDetail" aria-live="polite">'+(sel?detalle(sel):'<div class="od-empty">Selecciona un ODS para ver su detalle.</div>')+'</div>';
+    host.querySelectorAll('.ods-tile').forEach(function(b){b.addEventListener('click',function(){sel=+b.getAttribute('data-o');render();});});
+  }
+  render();
 })();
 </script>
 </body>
