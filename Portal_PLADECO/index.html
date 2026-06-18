@@ -9401,6 +9401,15 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
 #situacion-financiera .fin-fin-li{font-size:11.5px;color:var(--text2);display:flex;align-items:center;gap:6px}
 #situacion-financiera .fin-fin-li b{color:var(--text)}
 #situacion-financiera .fin-fin-sw{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
+#situacion-financiera .fin-cx-intro{font-size:13px;line-height:1.6;color:var(--text2);margin:0 0 12px}
+#situacion-financiera .fin-cx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-bottom:14px}
+#situacion-financiera .fin-cx-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px 15px}
+#situacion-financiera .fin-cx-n{font-size:22px;font-weight:900;color:var(--text);letter-spacing:-.02em;line-height:1}
+#situacion-financiera .fin-cx-l{font-size:12px;font-weight:700;color:var(--text);margin-top:5px;line-height:1.3}
+#situacion-financiera .fin-cx-s{font-size:10.5px;color:var(--text2);margin-top:3px;line-height:1.4}
+#situacion-financiera .fin-cx-nota{font-size:11.5px;line-height:1.6;color:var(--text2);background:rgba(96,135,199,.07);border-left:3px solid #6087c7;border-radius:8px;padding:10px 13px;margin-bottom:8px}
+#situacion-financiera .fin-cx-nota strong{color:var(--text)}
+#situacion-financiera .fin-cx-fuente{font-size:10.5px;color:var(--text3);margin-bottom:22px}
 #situacion-financiera .fin-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card);margin-bottom:22px}
 #situacion-financiera table.fin-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
 #situacion-financiera .fin-table th,#situacion-financiera .fin-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
@@ -9428,6 +9437,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <div class="fin-kpis" id="finKpis"></div>
   <h3 class="fin-sub">Estructura de financiamiento</h3>
   <div id="finFinanciamiento"></div>
+  <h3 class="fin-sub">Contexto comunal <span class="n">&middot; por qu&eacute; la recaudaci&oacute;n propia es baja</span></h3>
+  <div id="finContexto"></div>
   <h3 class="fin-sub">Balance y resultados <span class="n">&middot; MM$ (millones de pesos)</span></h3>
   <div class="fin-table-wrap" id="finResumen"></div>
   <h3 class="fin-sub">Indicadores financieros clave</h3>
@@ -9485,7 +9496,20 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
       {t:'Rigidez por gasto en personal', d:'74,0% del gasto total (umbral CGR 70%); personal a contrata +15,8% en 2023-2024.', tipo:'neg'},
       {t:'Baja ejecución de inversiones', d:'32,2% en 2024 vs 76% en 2018; ~MM$3.526/año sin ejecutar (infraestructura postergada).', tipo:'neg'}
     ],
-    alerta:'Si la brecha entre el crecimiento del gasto (CAGR 10,3%) y de los ingresos (8,7%) se mantiene, el primer <b>déficit operacional</b> llegaría hacia <b>2027-2028</b>. La señal está activa desde 2021: requiere acción preventiva en el presupuesto 2026.'
+    alerta:'Si la brecha entre el crecimiento del gasto (CAGR 10,3%) y de los ingresos (8,7%) se mantiene, el primer <b>déficit operacional</b> llegaría hacia <b>2027-2028</b>. La señal está activa desde 2021: requiere acción preventiva en el presupuesto 2026.',
+    /* CONTEXTO COMUNAL — datos de fuentes oficiales que explican la estructura financiera (sin inventar):
+       BCN Reporte Comunal de Rengo 2024 (economía y finanzas municipales 2022) · CASEN 2022 · SINIM · proyección INE 2024. */
+    contexto:{
+      fuente:'BCN, Reporte Comunal de Rengo 2024 (economía y finanzas municipales 2022) · CASEN 2022 · proyección INE 2024 · SINIM',
+      intro:'La base tributaria de Rengo &mdash;economía de agroindustria y comercio, con más de 4.300 empresas&mdash; explica el 9% de ingresos propios: poca recaudación municipal directa frente a una alta demanda social.',
+      datos:[
+        {n:'13.234', l:'trabajadores en agricultura (2022)', s:'El sector que más empleo concentra en la comuna'},
+        {n:'1.483', l:'empresas de comercio (2022)', s:'El rubro con más empresas; le sigue agricultura (842)'},
+        {n:'13,6%', l:'pobreza multidimensional (CASEN 2022)', s:'5,4% de pobreza por ingresos'},
+        {n:'65.786', l:'habitantes (proyección INE 2024)', s:'Censo 2024: 63.620 habitantes'}
+      ],
+      nota:'Según SINIM, los ingresos de la <strong>gestión municipal</strong> 2022 fueron MM$14.189 con 60,7% de dependencia del FCM. La cifra de los EEFF consolidados (MM$59.733 en 2024) es mayor porque integra los <strong>servicios traspasados</strong> de Salud y Educación &mdash;lo que eleva la dependencia de transferencias al 75,2%&mdash;.'
+    }
   };
   window.estadosFinancieros = estadosFinancieros;
   var EF=estadosFinancieros;
@@ -9510,6 +9534,13 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   var bar=fin.map(function(f){return '<div class="fin-fin-seg" style="flex:'+f.pct+';background:'+f.color+'" title="'+f.fuente+' '+f.pct+'%">'+f.pct+'%</div>';}).join('');
   var leg=fin.map(function(f){return '<span class="fin-fin-li"><span class="fin-fin-sw" style="background:'+f.color+'"></span><b>'+f.fuente+' '+f.pct+'%</b> · '+f.detalle+'</span>';}).join('');
   set('finFinanciamiento','<div class="fin-fin-bar">'+bar+'</div><div class="fin-fin-leg">'+leg+'</div>');
+
+  /* Contexto comunal (datos oficiales que explican la estructura financiera) */
+  if(EF.contexto){
+    var cx=EF.contexto;
+    var cards=(cx.datos||[]).map(function(d){return '<div class="fin-cx-card"><div class="fin-cx-n">'+d.n+'</div><div class="fin-cx-l">'+d.l+'</div><div class="fin-cx-s">'+(d.s||'')+'</div></div>';}).join('');
+    set('finContexto','<p class="fin-cx-intro">'+(cx.intro||'')+'</p><div class="fin-cx-grid">'+cards+'</div>'+(cx.nota?('<div class="fin-cx-nota">'+cx.nota+'</div>'):'')+(cx.fuente?('<div class="fin-cx-fuente">Fuente: '+cx.fuente+'</div>'):''));
+  }
 
   /* Balance y resultados */
   if(EF.resumen){
