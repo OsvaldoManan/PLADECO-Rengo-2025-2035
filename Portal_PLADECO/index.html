@@ -38565,11 +38565,15 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     BLOQUE ARS/SNA · Métricas de red (movilidad de la información) para las 2 redes:
-     Sociedad Civil (#snaMetricsSoc) e Institucional (#snaMetricsInst). Las métricas se COMPUTAN
-     de las MISMAS aristas que dibujan los grafos (re-derivadas de SC_SNA_THEMES / INST_SNA_DIRS):
-     grado, intermediación (Brandes/betweenness → brokers), densidad y motivo (tema). No se inventa nada.
-     Render seguro · sin temporizadores · sin dependencias. -->
+     BLOQUE ARS/SNA · Análisis de red (movilidad de la información) para las 2 redes:
+     Sociedad Civil (#snaMetricsSoc) e Institucional (#snaMetricsInst). TODAS las métricas se COMPUTAN
+     de las MISMAS aristas que dibujan los grafos (re-derivadas de SC_SNA_THEMES / INST_SNA_DIRS) — no se inventa nada:
+       · Centralidad por actor: grado · intermediación (Brandes/betweenness → brokers) · cercanía · influencia (eigenvector)
+       · Indicadores de red: densidad · grado medio · centralización (Freeman) · clustering medio · diámetro · camino medio · componentes
+       · Subgrupos: comunidades por modularidad (greedy) + Q
+       · Resiliencia: puntos de articulación (Tarjan → puntos únicos de falla) + nodos periféricos
+       · Motivo de las conexiones (tema/categoría)
+     Render seguro · sin temporizadores · sin dependencias · theme-aware · números neutros. -->
 <style id="sna-metrics-css">
 .sna-metrics{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:24px}
 .sna-m-head h4{font-size:14px;font-weight:800;color:var(--text);margin:0 0 3px}
@@ -38600,6 +38604,22 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
 .sna-m-broker-item b{color:var(--text)}
 .sna-m-note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--text2);background:rgba(96,135,199,.07);border-left:3px solid #6087c7;border-radius:8px;padding:10px 13px}
 .sna-m-note strong{color:var(--text)}
+.sna-m-tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sna-m-num{font-weight:800;color:var(--text);text-align:center;font-variant-numeric:tabular-nums}
+.sna-m-legend{font-size:10px;color:var(--text3);line-height:1.5;margin-top:8px}
+.sna-m-legend b{color:var(--text2);font-weight:700}
+.sna-m-comm{display:flex;flex-direction:column;gap:8px}
+.sna-m-comm-item{display:flex;gap:8px;font-size:11px;line-height:1.45;align-items:flex-start}
+.sna-m-comm-item i{width:10px;height:10px;border-radius:3px;flex:0 0 auto;margin-top:2px}
+.sna-m-comm-item .cn{color:var(--text);font-weight:700}
+.sna-m-comm-item .cm{color:var(--text2)}
+.sna-m-crit{display:flex;flex-direction:column;gap:9px;font-size:11px;line-height:1.5}
+.sna-m-crit .ck{font-weight:700;color:var(--text);display:block;margin-bottom:1px}
+.sna-m-crit .cv{color:var(--text2)}
+.sna-m-crit .warn{color:var(--danger-txt,#b91c1c);font-weight:800}
+.sna-m-crit .ok{color:var(--success-txt,#15803d);font-weight:800}
+.sna-m-xlink{margin-top:12px;font-size:11px;color:var(--text2)}
+.sna-m-xlink a{color:var(--text);font-weight:700;text-decoration:underline}
 @media(max-width:640px){.sna-m-grid{grid-template-columns:1fr}.sna-m-mrow{grid-template-columns:92px 1fr 28px}}
 </style>
 <script>
@@ -38615,8 +38635,10 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
     var degree={},N=ids.length,E=0;
     ids.forEach(function(n){degree[n]=Object.keys(adj[n]).length;E+=degree[n];}); E=E/2;
     var density=N>1?(2*E)/(N*(N-1)):0;
-    var btw={};ids.forEach(function(n){btw[n]=0;});
-    ids.forEach(function(s){ /* Brandes (no ponderado, no dirigido) */
+    /* Brandes (intermediación) + BFS de todos los pares (cercanía, diámetro, camino medio) */
+    var btw={},closeness={},ecc={},distSum=0,distCount=0,diameter=0;
+    ids.forEach(function(n){btw[n]=0;});
+    ids.forEach(function(s){
       var S=[],P={},sig={},d={};
       ids.forEach(function(t){P[t]=[];sig[t]=0;d[t]=-1;});
       sig[s]=1;d[s]=0;var Q=[s];
@@ -38624,30 +38646,91 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
         for(var w in adj[v]){if(d[w]<0){d[w]=d[v]+1;Q.push(w);}if(d[w]===d[v]+1){sig[w]+=sig[v];P[w].push(v);}}}
       var dl={};ids.forEach(function(t){dl[t]=0;});
       while(S.length){var w=S.pop();P[w].forEach(function(v){dl[v]+=(sig[v]/sig[w])*(1+dl[w]);});if(w!==s)btw[w]+=dl[w];}
+      var sum=0,reach=0,ec=0;
+      ids.forEach(function(t){ if(d[t]>0){ sum+=d[t]; reach++; if(d[t]>ec)ec=d[t]; distSum+=d[t]; distCount++; if(d[t]>diameter)diameter=d[t]; } });
+      closeness[s]= sum>0 ? (reach/sum)*(reach/(N-1)) : 0; /* Wasserman-Faust (normalizada, robusta a desconexión) */
+      ecc[s]=ec;
     });
     ids.forEach(function(n){btw[n]=btw[n]/2;});
-    return {degree:degree,degW:degW,btw:btw,N:N,E:E,density:density,tc:tc};
+    var avgPath = distCount>0 ? distSum/distCount : 0;
+    /* Componentes conexos */
+    var seen={},components=0;
+    ids.forEach(function(s){ if(seen[s])return; components++; var Q=[s]; seen[s]=1; while(Q.length){var v=Q.shift(); for(var w in adj[v]){ if(!seen[w]){seen[w]=1;Q.push(w);} } } });
+    /* Centralidad de influencia (eigenvector, iteración de potencia) */
+    var eig={}; ids.forEach(function(n){eig[n]=1;});
+    for(var it=0; it<200; it++){ var nx={},norm=0; ids.forEach(function(n){var s2=0; for(var w in adj[n]) s2+=eig[w]; nx[n]=s2; norm+=s2*s2;}); norm=Math.sqrt(norm)||1; ids.forEach(function(n){eig[n]=nx[n]/norm;}); }
+    /* Coef. de clustering local + medio */
+    var clustering={},clusSum=0;
+    ids.forEach(function(n){ var nb=Object.keys(adj[n]),k=nb.length; if(k<2){clustering[n]=0;return;} var links=0; for(var i=0;i<nb.length;i++)for(var j=i+1;j<nb.length;j++){ if(adj[nb[i]][nb[j]])links++; } clustering[n]=(2*links)/(k*(k-1)); clusSum+=clustering[n]; });
+    var avgClustering = N? clusSum/N : 0;
+    /* Centralización de grado (Freeman) */
+    var maxDeg=Math.max.apply(null,ids.map(function(n){return degree[n];}))||0;
+    var sumDiff=ids.reduce(function(a,n){return a+(maxDeg-degree[n]);},0);
+    var centralization = (N>2)? sumDiff/((N-1)*(N-2)) : 0;
+    /* Puntos de articulación (Tarjan) */
+    var disc={},low={},vis={},ap={},timer={t:0};
+    function apdfs(u,parent){ vis[u]=1; disc[u]=low[u]=(++timer.t); var children=0;
+      for(var w in adj[u]){ if(!vis[w]){ children++; apdfs(w,u); low[u]=Math.min(low[u],low[w]); if(parent!==null && low[w]>=disc[u]) ap[u]=1; } else if(w!==parent){ low[u]=Math.min(low[u],disc[w]); } }
+      if(parent===null && children>1) ap[u]=1;
+    }
+    ids.forEach(function(n){ if(!vis[n]) apdfs(n,null); });
+    var articulation=ids.filter(function(n){return ap[n];}).sort(function(a,b){return degree[b]-degree[a];});
+    /* Comunidades (modularidad greedy) */
+    var m=E, comm={}; ids.forEach(function(n,i){comm[n]=i;});
+    function Qof(cm){ var groups={}; ids.forEach(function(n){ (groups[cm[n]]=groups[cm[n]]||[]).push(n); }); var Q=0; for(var c in groups){ var nn=groups[c],Lc=0,Dc=0,sset={}; nn.forEach(function(x){sset[x]=1;}); nn.forEach(function(x){ Dc+=degree[x]; for(var w in adj[x]){ if(sset[w])Lc++; } }); Lc/=2; Q+=(Lc/m)-Math.pow(Dc/(2*m),2); } return Q; }
+    if(m>0){ var improved=true;
+      while(improved){ improved=false; var curQ=Qof(comm), bestGain=1e-9, bestPair=null, seenPair={};
+        ids.forEach(function(u){ for(var w in adj[u]){ var cu=comm[u],cw=comm[w]; if(cu===cw) continue; var key=Math.min(cu,cw)+'_'+Math.max(cu,cw); if(seenPair[key]) continue; seenPair[key]=1;
+          var trial={}; ids.forEach(function(x){trial[x]=(comm[x]===cw)?cu:comm[x];});
+          var gain=Qof(trial)-curQ; if(gain>bestGain){bestGain=gain;bestPair=[cu,cw];}
+        } });
+        if(bestPair){ var a2=bestPair[0],b2=bestPair[1]; ids.forEach(function(x){ if(comm[x]===b2) comm[x]=a2; }); improved=true; }
+      }
+    }
+    var modularity = m>0?Qof(comm):0;
+    var cgroups={}; ids.forEach(function(n){ (cgroups[comm[n]]=cgroups[comm[n]]||[]).push(n); });
+    var communities=Object.keys(cgroups).map(function(k){return cgroups[k];});
+    communities.forEach(function(c){ c.sort(function(a,b){return degree[b]-degree[a];}); });
+    communities.sort(function(a,b){return b.length-a.length;});
+    return {adj:adj,degree:degree,degW:degW,btw:btw,N:N,E:E,density:density,tc:tc,
+      closeness:closeness,eigen:eig,ecc:ecc,clustering:clustering,avgClustering:avgClustering,
+      components:components,diameter:diameter,avgPath:avgPath,centralization:centralization,
+      articulation:articulation,communities:communities,modularity:modularity};
   }
   function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
   function render(cid,cfg){
     var host=document.getElementById(cid); if(!host) return;
     var ids=cfg.nodes.map(function(n){return n.id;}), meta={};
     cfg.nodes.forEach(function(n){meta[n.id]=n;});
+    if(ids.length<2){host.innerHTML='';return;}
     var A=analyze(ids,cfg.edges);
     var maxBtw=Math.max.apply(null,ids.map(function(n){return A.btw[n];}))||1;
     var sumBtw=ids.reduce(function(s,n){return s+A.btw[n];},0)||1;
+    var maxClose=Math.max.apply(null,ids.map(function(n){return A.closeness[n];}))||1;
+    var maxEig=Math.max.apply(null,ids.map(function(n){return A.eigen[n];}))||1;
     var rankBtw=ids.slice().sort(function(a,b){return A.btw[b]-A.btw[a];});
     var broker={}; rankBtw.slice(0,3).forEach(function(n){ if(A.btw[n]>maxBtw*0.15) broker[n]=1; });
     var rows=ids.slice().sort(function(a,b){return A.degree[b]-A.degree[a]||A.btw[b]-A.btw[a];});
     function st(v,l){return '<div class="sna-m-stat"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>';}
-    var stats='<div class="sna-m-stats">'+st(A.N,'Nodos')+st(A.E,'Aristas')+st(Math.round(A.density*100)+'%','Densidad')+st((A.N?2*A.E/A.N:0).toFixed(1),'Grado promedio')+'</div>';
+    var stats='<div class="sna-m-stats">'
+      +st(A.N,'Nodos')+st(A.E,'Aristas')+st(Math.round(A.density*100)+'%','Densidad')
+      +st((A.N?2*A.E/A.N:0).toFixed(1),'Grado medio')
+      +st(Math.round(A.centralization*100)+'%','Centralización')
+      +st(Math.round(A.avgClustering*100)+'%','Clustering')
+      +st(A.diameter,'Diámetro')
+      +st(A.communities.length,'Comunidades')
+      +'</div>';
     var trs=rows.map(function(n){
       var bp=Math.round(A.btw[n]/maxBtw*100), m=meta[n];
-      return '<tr><td class="sna-m-node">'+esc(m.name)+(m.type?'<small>'+esc(m.type)+'</small>':'')+(broker[n]?'<span class="sna-m-broker">broker</span>':'')+'</td>'+
-        '<td class="sna-m-deg">'+A.degree[n]+'</td>'+
-        '<td><div class="sna-m-bar"><i style="width:'+Math.max(bp,2)+'%;background:'+(m.color||'#6087c7')+'"></i></div></td></tr>';
+      var cl=Math.round(A.closeness[n]/maxClose*100), eg=Math.round(A.eigen[n]/maxEig*100);
+      return '<tr><td class="sna-m-node">'+esc(m.name)+(m.type?'<small>'+esc(m.type)+'</small>':'')+(broker[n]?'<span class="sna-m-broker">broker</span>':'')+'</td>'
+        +'<td class="sna-m-deg">'+A.degree[n]+'</td>'
+        +'<td><div class="sna-m-bar"><i style="width:'+Math.max(bp,2)+'%;background:'+(m.color||'#6087c7')+'"></i></div></td>'
+        +'<td class="sna-m-num">'+cl+'</td>'
+        +'<td class="sna-m-num">'+eg+'</td></tr>';
     }).join('');
-    var table='<div><div class="sna-m-h">Centralidad e intermediación</div><table class="sna-m-table"><thead><tr><th>'+cfg.nodeLabel+'</th><th style="text-align:center">Grado</th><th>Intermediación</th></tr></thead><tbody>'+trs+'</tbody></table></div>';
+    var legend='<div class="sna-m-legend"><b>Grado</b>: conexiones directas · <b>Interm.</b>: control del flujo (puente) · <b>Cercanía</b>: rapidez para alcanzar a toda la red · <b>Influencia</b>: vínculo con actores bien conectados (eigenvector). Cercanía e influencia en escala 0&ndash;100 (relativa al máximo).</div>';
+    var table='<div><div class="sna-m-h">Centralidad por '+esc(cfg.nodeLabel.toLowerCase())+'</div><div class="sna-m-tablewrap"><table class="sna-m-table"><thead><tr><th>'+cfg.nodeLabel+'</th><th style="text-align:center">Grado</th><th>Interm.</th><th style="text-align:center">Cercanía</th><th style="text-align:center">Influencia</th></tr></thead><tbody>'+trs+'</tbody></table></div>'+legend+'</div>';
     var themes=Object.keys(A.tc).sort(function(a,b){return A.tc[b]-A.tc[a];});
     var maxT=Math.max.apply(null,themes.map(function(t){return A.tc[t];}))||1;
     var motivo=themes.map(function(t){var tm=cfg.theme(t),w=Math.round(A.tc[t]/maxT*100);
@@ -38657,8 +38740,26 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
     var brokers = top.length ? top.map(function(n){return '<div class="sna-m-broker-item"><b>'+esc(meta[n].name)+'</b> &mdash; '+Math.round(A.btw[n]/sumBtw*100)+'% de la intermediación · grado '+A.degree[n]+'</div>';}).join('')
       : '<div class="sna-m-broker-item">Red casi completa: las conexiones son directas y no requieren intermediarios marcados.</div>';
     var col2='<div><div class="sna-m-h">Motivo de las conexiones</div><div style="font-size:10px;color:var(--text3);margin:-4px 0 8px;line-height:1.4">Vínculos por tema · una conexión puede responder a varios motivos (por eso la suma supera el nº de aristas distintas).</div><div class="sna-m-motivo">'+motivo+'</div><div class="sna-m-brokers"><div class="sna-m-h">Brokers / intermediarios</div>'+brokers+'</div></div>';
-    var note='<div class="sna-m-note"><strong>Movilidad de la información:</strong> '+cfg.noteFn(A,top,meta)+'</div>';
-    host.innerHTML='<div class="sna-m-head"><h4>'+esc(cfg.title)+'</h4><p>'+cfg.subtitle+'</p></div>'+stats+'<div class="sna-m-grid">'+table+col2+'</div>'+note;
+    var commHtml=A.communities.map(function(c,i){
+      var col=(meta[c[0]]&&meta[c[0]].color)||'#6087c7';
+      var names=c.map(function(x){return esc(meta[x].name);}).join(', ');
+      return '<div class="sna-m-comm-item"><i style="background:'+col+'"></i><div><span class="cn">Subgrupo '+(i+1)+' ('+c.length+')</span> <span class="cm">'+names+'</span></div></div>';
+    }).join('');
+    var commBlock='<div><div class="sna-m-h">Subgrupos (comunidades estructurales)</div><div class="sna-m-comm">'+commHtml+'</div><div class="sna-m-legend" style="margin-top:9px">Detectados por <b>modularidad</b> (Q = '+A.modularity.toFixed(2)+') sobre la estructura de la red &mdash; distinto de los temas (motivo). '+(A.modularity>=0.3?'Q&ge;0,30: subgrupos bien diferenciados.':(A.modularity>=0.15?'Subgrupos moderadamente diferenciados.':'Subgrupos poco diferenciados: la red no se fragmenta en bloques nítidos.'))+'</div></div>';
+    var periph=ids.filter(function(n){return A.degree[n]<=2;}).sort(function(a,b){return A.degree[a]-A.degree[b];});
+    var ri='';
+    ri+='<div><span class="ck">Conectividad</span><span class="cv">'+(A.components===1?'1 componente &mdash; toda la red está conectada: la información puede circular entre todos.':A.components+' componentes &mdash; la red está fragmentada en bloques aislados.')+'</span></div>';
+    ri+='<div><span class="ck">Distancia de la información</span><span class="cv">camino medio '+A.avgPath.toFixed(2)+' pasos · diámetro '+A.diameter+' (lo más lejos que viaja un dato entre dos actores).</span></div>';
+    if(A.articulation.length){ ri+='<div><span class="ck">Puntos de articulación (nodos críticos)</span><span class="cv"><span class="warn">'+A.articulation.map(function(n){return esc(meta[n].name);}).join(', ')+'</span> &mdash; su salida fragmentaría la red; son cuellos de botella del flujo de información.</span></div>'; }
+    else { ri+='<div><span class="ck">Puntos de articulación</span><span class="cv"><span class="ok">Ninguno</span> &mdash; red redundante (sin punto único de falla): existen rutas alternativas para la información.</span></div>'; }
+    if(periph.length){ ri+='<div><span class="ck">Nodos periféricos / dependientes</span><span class="cv">'+periph.map(function(n){return esc(meta[n].name)+' (grado '+A.degree[n]+')';}).join(', ')+' &mdash; acceso frágil, vía pocos vínculos.</span></div>'; }
+    var resBlock='<div><div class="sna-m-h">Resiliencia y movilidad de la información</div><div class="sna-m-crit">'+ri+'</div></div>';
+    var note='<div class="sna-m-note"><strong>Lectura:</strong> '+cfg.noteFn(A,rankBtw,meta)+'</div>';
+    var xlink=cfg.xlink?('<div class="sna-m-xlink">'+cfg.xlink+'</div>'):'';
+    host.innerHTML='<div class="sna-m-head"><h4>'+esc(cfg.title)+'</h4><p>'+cfg.subtitle+'</p></div>'+stats
+      +'<div class="sna-m-grid">'+table+col2+'</div>'
+      +'<div class="sna-m-grid" style="margin-top:18px">'+commBlock+resBlock+'</div>'
+      +note+xlink;
   }
   function run(){
     /* GRAFO A — Sociedad Civil */
@@ -38667,10 +38768,18 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
       var thA={}; SC_SNA_THEMES.forEach(function(t){thA[t.id]={name:t.name,color:t.color};});
       render('snaMetricsSoc',{
         title:'Análisis de red (ARS) · movilidad de la información',
-        subtitle:'Métricas computadas sobre las aristas reales: <b>grado</b> = nº de actores con tema en común; <b>intermediación</b> = rol de puente en el flujo de información entre clústers temáticos.',
+        subtitle:'Métricas computadas sobre las aristas reales (re-derivadas de los <b>9 temas comunes</b>): centralidad (grado, cercanía, influencia), intermediación (<b>brokers</b>), subgrupos por modularidad y resiliencia del flujo de información.',
         nodes:SC_SNA_ACTORS, nodeLabel:'Actor', edges:eA,
         theme:function(id){return thA[id]||{name:id,color:'#6087c7'};},
-        noteFn:function(A,top,meta){return 'la red articula <strong>'+A.N+' actores</strong> con <strong>'+A.E+' vínculos</strong> temáticos (densidad '+Math.round(A.density*100)+'%). '+(top.length?('El flujo se apoya sobre todo en <strong>'+esc(meta[top[0]].name)+'</strong>'+(top[1]?' y <strong>'+esc(meta[top[1]].name)+'</strong>':'')+', puente entre temas; los actores de un solo tema dependen de esos brokers para alcanzar al resto.'):'');}
+        xlink:'Para el sistema completo de 41 actores (municipio + sociedad civil + servicios + instancias formales) y su lectura policéntrica, ver <a href="#sna-gobernanza" onclick="event.preventDefault();if(window.PV&&PV.go)PV.go(\'sna-gobernanza\');">Red de Gobernanza del PLADECO &rarr;</a>',
+        noteFn:function(A,rank,meta){
+          var b=rank.filter(function(n){return A.btw[n]>0;}).slice(0,2);
+          var ap=A.articulation.map(function(n){return esc(meta[n].name);});
+          var s='la red de <strong>'+A.N+' actores</strong> (densidad '+Math.round(A.density*100)+'%) está marcadamente <strong>centralizada</strong> ('+Math.round(A.centralization*100)+'%): el flujo de información depende sobre todo de '+(b.length?('<strong>'+esc(meta[b[0]].name)+'</strong>'+(b[1]?' y <strong>'+esc(meta[b[1]].name)+'</strong>':'')):'unos pocos nodos')+'. ';
+          if(ap.length) s+='Existe un <strong>punto único de falla</strong> ('+ap.join(', ')+'): si se desconecta, parte de la red queda aislada, lo que vuelve frágil la movilidad de la información. ';
+          s+='Recomendación: tejer vínculos redundantes hacia los actores periféricos para no depender de un solo puente.';
+          return s;
+        }
       });
     }
     /* GRAFO B — Institucional */
@@ -38679,11 +38788,15 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
       var eB=[]; for(var i=0;i<INST_SNA_DIRS.length;i++)for(var j=i+1;j<INST_SNA_DIRS.length;j++){(INST_SNA_DIRS[i].cat||[]).forEach(function(c){if((INST_SNA_DIRS[j].cat||[]).indexOf(c)>=0)eB.push({source:INST_SNA_DIRS[i].id,target:INST_SNA_DIRS[j].id,theme:c});});}
       render('snaMetricsInst',{
         title:'Análisis de red (ARS) · movilidad de la información',
-        subtitle:'Métricas computadas sobre las aristas temáticas: <b>grado</b> = direcciones con categoría en común; <b>intermediación</b> = rol de puente en el flujo de coordinación.',
+        subtitle:'Métricas computadas sobre las aristas temáticas (re-derivadas de las <b>5 categorías</b> compartidas): centralidad (grado, cercanía, influencia), intermediación (<b>brokers</b>), subgrupos por modularidad y resiliencia del flujo de coordinación.',
         nodes:INST_SNA_DIRS.map(function(d){return {id:d.id,name:d.name,type:(d.cat||[]).join(' · '),color:d.color};}),
         nodeLabel:'Dirección', edges:eB,
         theme:function(id){return thB[id]||{name:id,color:'#6087c7'};},
-        noteFn:function(A,top,meta){return 'las <strong>'+A.N+' direcciones</strong> se conectan por categorías compartidas formando una red <strong>'+(A.density>=0.5?'densa':'moderada')+'</strong> ('+Math.round(A.density*100)+'%). '+(top.length?('Las direcciones más conectadas y con mayor rol de puente concentran la coordinación: <strong>'+esc(meta[top[0]].name)+'</strong>'+(top[1]?', <strong>'+esc(meta[top[1]].name)+'</strong>':'')+(top[2]?' y <strong>'+esc(meta[top[2]].name)+'</strong>':'')+'. '):'')+'Una red tan densa facilita el flujo, pero concentra la articulación en pocas direcciones (riesgo de cuello de botella).';}
+        xlink:'Para el sistema completo de 41 actores (municipio + sociedad civil + servicios + instancias formales) y su lectura policéntrica, ver <a href="#sna-gobernanza" onclick="event.preventDefault();if(window.PV&&PV.go)PV.go(\'sna-gobernanza\');">Red de Gobernanza del PLADECO &rarr;</a>',
+        noteFn:function(A,rank,meta){
+          var t=rank.slice(0,3), hub=t.map(function(n){return esc(meta[n].name);});
+          return 'la red de <strong>'+A.N+' direcciones</strong> es <strong>densa</strong> ('+Math.round(A.density*100)+'%) y <strong>redundante</strong> (sin punto único de falla; camino medio '+A.avgPath.toFixed(2)+'): la información fluye por múltiples rutas. El reverso es la <strong>concentración</strong> &mdash; '+hub.join(', ')+' (grado '+A.degree[t[0]]+') canalizan casi toda la coordinación y pueden volverse cuello de botella. La baja modularidad (Q = '+A.modularity.toFixed(2)+') confirma que opera como un solo bloque cohesionado más que como subgrupos diferenciados.';
+        }
       });
     }
   }
