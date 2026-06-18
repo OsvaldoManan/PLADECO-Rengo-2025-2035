@@ -9410,6 +9410,11 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
 #situacion-financiera .fin-cx-nota{font-size:11.5px;line-height:1.6;color:var(--text2);background:rgba(96,135,199,.07);border-left:3px solid #6087c7;border-radius:8px;padding:10px 13px;margin-bottom:8px}
 #situacion-financiera .fin-cx-nota strong{color:var(--text)}
 #situacion-financiera .fin-cx-fuente{font-size:10.5px;color:var(--text3);margin-bottom:22px}
+#situacion-financiera .fin-recom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+#situacion-financiera .fin-recom{display:flex;gap:11px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 14px;align-items:flex-start}
+#situacion-financiera .fin-recom-n{flex:0 0 auto;width:32px;height:32px;border-radius:8px;background:var(--blue,#1F3864);color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
+#situacion-financiera .fin-recom-t{font-size:12.5px;font-weight:800;color:var(--text)}
+#situacion-financiera .fin-recom-d{font-size:11.5px;color:var(--text2);line-height:1.5;margin-top:2px}
 #situacion-financiera .fin-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card);margin-bottom:22px}
 #situacion-financiera table.fin-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
 #situacion-financiera .fin-table th,#situacion-financiera .fin-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
@@ -9443,11 +9448,15 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <div class="fin-table-wrap" id="finResumen"></div>
   <h3 class="fin-sub">Indicadores financieros clave</h3>
   <div class="fin-table-wrap" id="finIndicadores"></div>
+  <h3 class="fin-sub">Composici&oacute;n y rigidez del gasto <span class="n">&middot; 2024</span></h3>
+  <div id="finGasto"></div>
   <h3 class="fin-sub">Hallazgos del diagn&oacute;stico</h3>
   <div class="fin-hall" id="finHallazgos"></div>
   <div class="fin-alerta" id="finAlerta"></div>
   <h3 class="fin-sub">Respaldo documental <span class="n">&middot; cuentas públicas 2013-2025</span></h3>
   <div id="finRespaldo"></div>
+  <h3 class="fin-sub">Recomendaciones del informe <span class="n">&middot; plan de acci&oacute;n financiero</span></h3>
+  <div id="finRecom"></div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> <strong>Fuente:</strong> Estados Financieros I. Municipalidad de Rengo 2018/2021/2023/2024 (Direcci&oacute;n de Administraci&oacute;n y Finanzas), entregados a la Contralor&iacute;a General de la Rep&uacute;blica &middot; Marco CGR: NICSP, Res. N&deg;16/2015, Dictamen E-72639/2021, Res. Ex. N&deg;6.619/2022 &middot; Informe de diagn&oacute;stico SECPLAC, PLADECO Rengo 2025-2035.</div>
 </section>
 <script>
@@ -9529,7 +9538,29 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
       ],
       nota:'Confirma el rol del municipio como <strong>ejecutor de proyectos financiados externamente</strong> (coherente con el EEFF: el CAPEX corre vía FNDR, BIP y FAEP). Las cuentas públicas recientes (2022-2024) mantienen el patrón: proyectos financiados por GORE/FNDR, FRIL, Subdere y convenios sectoriales.',
       fuente:'Cuentas Públicas I. Municipalidad de Rengo 2013-2025 · Cuenta Pública 2015, Resumen Proyectos Ejecutados (SECPLAN)'
-    }
+    },
+    /* COMPOSICIÓN Y RIGIDEZ DEL GASTO 2024 — datos del Informe EEFF (Contraloría). EDITABLE. */
+    gasto:{
+      composicion:[
+        {f:'Personal', pct:74.0, monto:'MM$46.235', color:'#c0352a'},
+        {f:'Bienes y servicios', pct:22.9, monto:'MM$14.284', color:'#f5921d'},
+        {f:'Inversión y otros', pct:3.1, monto:'inversión directa <2%', color:'#6087c7'}
+      ],
+      evolucionPersonal:'El gasto en personal creció <strong>+84,5%</strong> entre 2018 y 2024 (MM$25.065 &rarr; MM$46.235), muy por encima de los ingresos (+64,8%): esa brecha es la que comprime el resultado del ejercicio.',
+      dotacion:[{k:'Planta', pct:49.5, color:'#1F3864'},{k:'Contrata', pct:20.9, color:'#6087c7'},{k:'Honorarios', pct:29.6, color:'#f5921d'}],
+      dotacionNota:'La contrata creció +15,8% en 2023-2024 sin rediseño de procesos.'
+    },
+    /* RECOMENDACIONES R1-R8 del Informe EEFF (Contraloría) — plan de acción financiero. EDITABLE. */
+    recomendaciones:[
+      {n:'R1', t:'Ingresos propios', d:'Actualizar el catastro de patentes y derechos. Meta: 9% &rarr; 12% en 3 años.'},
+      {n:'R2', t:'Gestión de liquidez', d:'Art. 13 bis Ley 18.695: invertir MM$4.000 de excedentes &rarr; MM$150-200/año.'},
+      {n:'R3', t:'Ejecución presupuestaria', d:'Metas trimestrales; alerta si la inversión queda bajo 20% al cierre del 1er trimestre.'},
+      {n:'R4', t:'Racionalización de personal', d:'Congelar contrata/honorarios 24 meses; reasignar 5% de la masa salarial a inversión. Meta: personal 72% en 2027.'},
+      {n:'R5', t:'Fortalecimiento de inversión', d:'2 profesionales en formulación BIP/FNDR. Ejecución: 60% (2025), 70% (2026), 76% (2027).'},
+      {n:'R6', t:'Control de gestión', d:'Tablero mensual de indicadores financieros, publicado en transparencia activa.'},
+      {n:'R7', t:'Gestión de deudores', d:'Política de cobro de MM$432.716; recuperar 30% en 18 meses (~MM$130).'},
+      {n:'R8', t:'Planificación financiera', d:'Plan Financiero de Mediano Plazo (3 años) con escenarios de FCM ±15%. Aprobación 1er semestre 2026.'}
+    ]
   };
   window.estadosFinancieros = estadosFinancieros;
   var EF=estadosFinancieros;
@@ -9592,6 +9623,22 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
       '<div class="fin-fin-bar">'+bar2+'</div><div class="fin-fin-leg">'+leg2+'</div>'+
       (R2.nota?('<div class="fin-cx-nota">'+R2.nota+'</div>'):'')+
       (R2.fuente?('<div class="fin-cx-fuente">Fuente: '+R2.fuente+'</div>'):''));
+  }
+
+  /* Composición y rigidez del gasto (Informe EEFF) */
+  if(EF.gasto){
+    var G=EF.gasto;
+    var gbar=(G.composicion||[]).map(function(c){return '<div class="fin-fin-seg" style="flex:'+c.pct+';background:'+c.color+'" title="'+c.f+' '+c.pct+'%">'+(c.pct>=8?(String(c.pct).replace('.',',')+'%'):'')+'</div>';}).join('');
+    var gleg=(G.composicion||[]).map(function(c){return '<span class="fin-fin-li"><span class="fin-fin-sw" style="background:'+c.color+'"></span><b>'+c.f+' '+String(c.pct).replace('.',',')+'%</b> &middot; '+c.monto+'</span>';}).join('');
+    var dot=(G.dotacion||[]).map(function(d){return '<span class="fin-fin-li"><span class="fin-fin-sw" style="background:'+d.color+'"></span><b>'+d.k+' '+String(d.pct).replace('.',',')+'%</b></span>';}).join('');
+    set('finGasto','<div class="fin-fin-bar">'+gbar+'</div><div class="fin-fin-leg">'+gleg+'</div>'+
+      (G.evolucionPersonal?('<div class="fin-cx-nota">'+G.evolucionPersonal+'</div>'):'')+
+      '<div style="font-size:12px;font-weight:700;color:var(--text);margin:6px 0 6px">Dotación de personal</div><div class="fin-fin-leg">'+dot+'</div>'+
+      (G.dotacionNota?('<div class="fin-cx-fuente">'+G.dotacionNota+'</div>'):''));
+  }
+  /* Recomendaciones R1-R8 (Informe EEFF) */
+  if(EF.recomendaciones){
+    set('finRecom','<div class="fin-recom-grid">'+(EF.recomendaciones||[]).map(function(r){return '<div class="fin-recom"><span class="fin-recom-n">'+r.n+'</span><div><div class="fin-recom-t">'+r.t+'</div><div class="fin-recom-d">'+r.d+'</div></div></div>';}).join('')+'</div>');
   }
 })();
 </script>
