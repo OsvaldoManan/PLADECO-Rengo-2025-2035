@@ -9446,6 +9446,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <h3 class="fin-sub">Hallazgos del diagn&oacute;stico</h3>
   <div class="fin-hall" id="finHallazgos"></div>
   <div class="fin-alerta" id="finAlerta"></div>
+  <h3 class="fin-sub">Respaldo documental <span class="n">&middot; cuentas públicas 2013-2025</span></h3>
+  <div id="finRespaldo"></div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> <strong>Fuente:</strong> Estados Financieros I. Municipalidad de Rengo 2018/2021/2023/2024 (Direcci&oacute;n de Administraci&oacute;n y Finanzas), entregados a la Contralor&iacute;a General de la Rep&uacute;blica &middot; Marco CGR: NICSP, Res. N&deg;16/2015, Dictamen E-72639/2021, Res. Ex. N&deg;6.619/2022 &middot; Informe de diagn&oacute;stico SECPLAC, PLADECO Rengo 2025-2035.</div>
 </section>
 <script>
@@ -9509,6 +9511,24 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
         {n:'65.786', l:'habitantes (proyección INE 2024)', s:'Censo 2024: 63.620 habitantes'}
       ],
       nota:'Según SINIM, los ingresos de la <strong>gestión municipal</strong> 2022 fueron MM$14.189 con 60,7% de dependencia del FCM. La cifra de los EEFF consolidados (MM$59.733 en 2024) es mayor porque integra los <strong>servicios traspasados</strong> de Salud y Educación &mdash;lo que eleva la dependencia de transferencias al 75,2%&mdash;.'
+    },
+    /* RESPALDO DOCUMENTAL — datos de las CUENTAS PÚBLICAS municipales aportadas (2013-2025).
+       Cifras de inversión por fuente: Cuenta Pública 2015, "Resumen Proyectos Ejecutados" (SECPLAN),
+       inversión pública comunal 2012-2015 = $11.306 millones. EDITABLE. */
+    respaldo:{
+      intro:'El diagnóstico se corrobora con una década de <strong>cuentas públicas municipales (2013-2025)</strong>, además de los EEFF auditados. Un patrón documentado en ellas: la inversión pública comunal se financia mayoritariamente con <strong>fondos externos concursables</strong>, no con recursos propios.',
+      inversionTitulo:'Inversión pública ejecutada 2012-2015 por fuente &mdash; $11.306 millones (Cuenta Pública 2015)',
+      inversionFuente:[
+        {f:'Municipal (aporte propio)', pct:28.1, color:'#2d9a4d'},
+        {f:'FRIL', pct:20.2, color:'#f5921d'},
+        {f:'FNDR', pct:11.3, color:'#c0352a'},
+        {f:'SERVIU', pct:10.3, color:'#6087c7'},
+        {f:'PMB', pct:9.9, color:'#8b5cf6'},
+        {f:'PMU', pct:6.6, color:'#0891b2'},
+        {f:'Otros fondos', pct:13.6, color:'#94a3b8'}
+      ],
+      nota:'Confirma el rol del municipio como <strong>ejecutor de proyectos financiados externamente</strong> (coherente con el EEFF: el CAPEX corre vía FNDR, BIP y FAEP). Las cuentas públicas recientes (2022-2024) mantienen el patrón: proyectos financiados por GORE/FNDR, FRIL, Subdere y convenios sectoriales.',
+      fuente:'Cuentas Públicas I. Municipalidad de Rengo 2013-2025 · Cuenta Pública 2015, Resumen Proyectos Ejecutados (SECPLAN)'
     }
   };
   window.estadosFinancieros = estadosFinancieros;
@@ -9560,6 +9580,19 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   set('finHallazgos',(EF.hallazgos||[]).map(function(h){return '<div class="fin-hall-card" style="--hc:'+(COL[h.tipo]||'#6087c7')+'"><div class="fin-hall-t">'+h.t+'</div><div class="fin-hall-d">'+h.d+'</div></div>';}).join(''));
   /* Alerta */
   set('finAlerta', EF.alerta ? ('<strong>&#9888; Alerta financiera:</strong> '+EF.alerta) : '');
+
+  /* Respaldo documental — cuentas públicas (inversión por fuente) */
+  if(EF.respaldo){
+    var R2=EF.respaldo;
+    var fs=R2.inversionFuente||[];
+    var bar2=fs.map(function(f){return '<div class="fin-fin-seg" style="flex:'+f.pct+';background:'+f.color+'" title="'+f.f+' '+f.pct+'%">'+(f.pct>=8?(f.pct+'%'):'')+'</div>';}).join('');
+    var leg2=fs.map(function(f){return '<span class="fin-fin-li"><span class="fin-fin-sw" style="background:'+f.color+'"></span><b>'+f.f+' '+String(f.pct).replace('.',',')+'%</b></span>';}).join('');
+    set('finRespaldo','<p class="fin-cx-intro">'+(R2.intro||'')+'</p>'+
+      (R2.inversionTitulo?('<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px">'+R2.inversionTitulo+'</div>'):'')+
+      '<div class="fin-fin-bar">'+bar2+'</div><div class="fin-fin-leg">'+leg2+'</div>'+
+      (R2.nota?('<div class="fin-cx-nota">'+R2.nota+'</div>'):'')+
+      (R2.fuente?('<div class="fin-cx-fuente">Fuente: '+R2.fuente+'</div>'):''));
+  }
 })();
 </script>
 
