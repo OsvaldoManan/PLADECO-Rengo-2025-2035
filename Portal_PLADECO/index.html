@@ -9040,6 +9040,8 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
         <div id="snaInstGraph" style="width:100%;height:540px;cursor:grab"></div>
         <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-bulb"></use></svg> Click en chips de tema &middot; Hover en arista para ver detalle &middot; Drag para reorganizar</div>
       </div>
+      <!-- BLOQUE ARS · métricas de red computadas de las aristas reales (grado, intermediación/brokers, densidad, motivo) -->
+      <div id="snaMetricsInst" class="sna-metrics"></div>
 
       <div style="margin-bottom:14px">
         <h3 style="font-size:15px;color:var(--text);margin:0"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chart"></use></svg> Diagrama Sankey &middot; Flujo Direcciones &rarr; Categor&#237;as &rarr; FODA</h3>
@@ -9057,7 +9059,7 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
             <span style="font-size:22px"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></span>
             <strong style="color:#16a34a;font-size:12px">NODO M&#193;S CENTRAL</strong>
           </div>
-          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)"><strong>DIDECO</strong> es el actor con mayor centralidad en la red institucional: se conecta con todas las 6 dimensiones y articula con 11 de las 14 direcciones principales.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)"><strong>DIDECO</strong> encabeza la centralidad de la red institucional &mdash;grado&nbsp;14: se vincula con las 14 direcciones restantes&mdash; y es uno de los principales <em>brokers</em> del flujo de informaci&#243;n, junto con <strong>DDEL</strong> y el <strong>Depto. de Salud</strong> (intermediaci&#243;n &asymp;21% cada uno). Ver m&#233;tricas ARS al inicio de la secci&#243;n.</div>
         </div>
         <div style="background:rgba(96, 135, 199,.08);border:1px solid rgba(96, 135, 199,.2);border-radius:10px;padding:14px">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
@@ -9076,9 +9078,9 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
         <div style="background:rgba(245,146,29,.08);border:1px solid rgba(245,146,29,.2);border-radius:10px;padding:14px">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
             <span style="font-size:22px"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-plug"></use></svg></span>
-            <strong style="color:#f5921d;font-size:12px">DIRECCIONES PUENTE</strong>
+            <strong style="color:#f5921d;font-size:12px">DIRECCIONES PUENTE &middot; ROL FUNCIONAL</strong>
           </div>
-          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)"><strong>SECPLAN, GABINETE y DIRECCI&#211;N DE CONTROL</strong> act&#250;an como puente entre Planificaci&#243;n y Gesti&#243;n: requieren reforzamiento para fluidificar la coordinaci&#243;n inter-direcciones.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:var(--text2)"><strong>SECPLAN, GABINETE y DIRECCI&#211;N DE CONTROL</strong> articulan Planificaci&#243;n y Gesti&#243;n: funciones transversales que conviene reforzar para fluidificar la coordinaci&#243;n. <em>Es una lectura distinta de la intermediaci&#243;n calculada en el grafo (<em>betweenness</em>), que recae en DIDECO, DDEL y Salud por su amplitud tem&#225;tica &mdash; ambas son complementarias (ver m&#233;tricas ARS al inicio).</em></div>
         </div>
       </div>
     </div>
@@ -13533,6 +13535,8 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
         <div id="snaGraphContainer" style="width:100%;height:540px;cursor:grab"></div>
         <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(15,45,82,.92);color:rgba(255,255,255,.92);padding:5px 14px;border-radius:14px;font-size:10.5px;font-weight:500;pointer-events:none;white-space:nowrap"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-bulb"></use></svg> Arrastra los nodos &middot; Hover para resaltar conexiones &middot; Doble clic para fijar</div>
       </div>
+      <!-- BLOQUE ARS · métricas de red computadas de las aristas reales (grado, intermediación/brokers, densidad, motivo) -->
+      <div id="snaMetricsSoc" class="sna-metrics"></div>
       <!-- Articulaciones Estratégicas: 9 proyectos colaborativos -->
       <div style="margin-bottom:14px">
         <h3 style="font-size:15px;color:var(--text);margin:0"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-plug"></use></svg> Articulaciones Estrat&#233;gicas &middot; 9 Proyectos de Trabajo Conjunto</h3>
@@ -38559,5 +38563,132 @@ body.dark{
    conservando el color y borde de cada categoría (se invierte sin perder identidad). */
 body.dark .sna-theme-chip:not(.active){background:#152844!important}
 </style>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE ARS/SNA · Métricas de red (movilidad de la información) para las 2 redes:
+     Sociedad Civil (#snaMetricsSoc) e Institucional (#snaMetricsInst). Las métricas se COMPUTAN
+     de las MISMAS aristas que dibujan los grafos (re-derivadas de SC_SNA_THEMES / INST_SNA_DIRS):
+     grado, intermediación (Brandes/betweenness → brokers), densidad y motivo (tema). No se inventa nada.
+     Render seguro · sin temporizadores · sin dependencias. -->
+<style id="sna-metrics-css">
+.sna-metrics{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:24px}
+.sna-m-head h4{font-size:14px;font-weight:800;color:var(--text);margin:0 0 3px}
+.sna-m-head p{font-size:11.5px;color:var(--text2);margin:0 0 14px;line-height:1.5}
+.sna-m-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(116px,1fr));gap:10px;margin-bottom:16px}
+.sna-m-stat{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center}
+.sna-m-stat .v{font-size:22px;font-weight:900;color:var(--text);line-height:1}
+.sna-m-stat .l{font-size:10.5px;color:var(--text2);margin-top:3px;font-weight:600}
+.sna-m-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+.sna-m-h{font-size:12px;font-weight:800;color:var(--text);margin:0 0 8px}
+.sna-m-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.sna-m-table th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);padding:0 6px 6px;border-bottom:1px solid var(--border)}
+.sna-m-table td{padding:5px 6px;border-bottom:1px solid var(--border);vertical-align:middle}
+.sna-m-table tbody tr:last-child td{border-bottom:none}
+.sna-m-node{font-weight:700;color:var(--text)}
+.sna-m-node small{display:block;font-weight:500;color:var(--text3);font-size:9.5px}
+.sna-m-deg{font-weight:800;color:var(--text);text-align:center}
+.sna-m-bar{position:relative;background:var(--border);border-radius:99px;height:8px;min-width:54px;overflow:hidden}
+.sna-m-bar i{position:absolute;left:0;top:0;height:100%;border-radius:99px}
+.sna-m-broker{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:#c0352a;padding:1px 5px;border-radius:99px;margin-left:5px;vertical-align:middle}
+.sna-m-motivo{display:flex;flex-direction:column;gap:6px}
+.sna-m-mrow{display:grid;grid-template-columns:118px 1fr 30px;align-items:center;gap:8px;font-size:11px}
+.sna-m-mrow .mn{color:var(--text);font-weight:600;display:flex;align-items:center;gap:5px;min-width:0}
+.sna-m-mrow .mn i{width:9px;height:9px;border-radius:2px;flex:0 0 auto;display:inline-block}
+.sna-m-mrow .mc{font-weight:800;color:var(--text);text-align:right}
+.sna-m-brokers{margin-top:14px}
+.sna-m-broker-item{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:5px}
+.sna-m-broker-item b{color:var(--text)}
+.sna-m-note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--text2);background:rgba(96,135,199,.07);border-left:3px solid #6087c7;border-radius:8px;padding:10px 13px}
+.sna-m-note strong{color:var(--text)}
+@media(max-width:640px){.sna-m-grid{grid-template-columns:1fr}.sna-m-mrow{grid-template-columns:92px 1fr 28px}}
+</style>
+<script>
+(function(){
+  function analyze(ids,edges){
+    var adj={},degW={},tc={};
+    ids.forEach(function(n){adj[n]={};degW[n]=0;});
+    edges.forEach(function(e){
+      if(e.source===e.target||!(e.source in adj)||!(e.target in adj))return;
+      adj[e.source][e.target]=1;adj[e.target][e.source]=1;degW[e.source]++;degW[e.target]++;
+      tc[e.theme]=(tc[e.theme]||0)+1;
+    });
+    var degree={},N=ids.length,E=0;
+    ids.forEach(function(n){degree[n]=Object.keys(adj[n]).length;E+=degree[n];}); E=E/2;
+    var density=N>1?(2*E)/(N*(N-1)):0;
+    var btw={};ids.forEach(function(n){btw[n]=0;});
+    ids.forEach(function(s){ /* Brandes (no ponderado, no dirigido) */
+      var S=[],P={},sig={},d={};
+      ids.forEach(function(t){P[t]=[];sig[t]=0;d[t]=-1;});
+      sig[s]=1;d[s]=0;var Q=[s];
+      while(Q.length){var v=Q.shift();S.push(v);
+        for(var w in adj[v]){if(d[w]<0){d[w]=d[v]+1;Q.push(w);}if(d[w]===d[v]+1){sig[w]+=sig[v];P[w].push(v);}}}
+      var dl={};ids.forEach(function(t){dl[t]=0;});
+      while(S.length){var w=S.pop();P[w].forEach(function(v){dl[v]+=(sig[v]/sig[w])*(1+dl[w]);});if(w!==s)btw[w]+=dl[w];}
+    });
+    ids.forEach(function(n){btw[n]=btw[n]/2;});
+    return {degree:degree,degW:degW,btw:btw,N:N,E:E,density:density,tc:tc};
+  }
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  function render(cid,cfg){
+    var host=document.getElementById(cid); if(!host) return;
+    var ids=cfg.nodes.map(function(n){return n.id;}), meta={};
+    cfg.nodes.forEach(function(n){meta[n.id]=n;});
+    var A=analyze(ids,cfg.edges);
+    var maxBtw=Math.max.apply(null,ids.map(function(n){return A.btw[n];}))||1;
+    var sumBtw=ids.reduce(function(s,n){return s+A.btw[n];},0)||1;
+    var rankBtw=ids.slice().sort(function(a,b){return A.btw[b]-A.btw[a];});
+    var broker={}; rankBtw.slice(0,3).forEach(function(n){ if(A.btw[n]>maxBtw*0.15) broker[n]=1; });
+    var rows=ids.slice().sort(function(a,b){return A.degree[b]-A.degree[a]||A.btw[b]-A.btw[a];});
+    function st(v,l){return '<div class="sna-m-stat"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>';}
+    var stats='<div class="sna-m-stats">'+st(A.N,'Nodos')+st(A.E,'Aristas')+st(Math.round(A.density*100)+'%','Densidad')+st((A.N?2*A.E/A.N:0).toFixed(1),'Grado promedio')+'</div>';
+    var trs=rows.map(function(n){
+      var bp=Math.round(A.btw[n]/maxBtw*100), m=meta[n];
+      return '<tr><td class="sna-m-node">'+esc(m.name)+(m.type?'<small>'+esc(m.type)+'</small>':'')+(broker[n]?'<span class="sna-m-broker">broker</span>':'')+'</td>'+
+        '<td class="sna-m-deg">'+A.degree[n]+'</td>'+
+        '<td><div class="sna-m-bar"><i style="width:'+Math.max(bp,2)+'%;background:'+(m.color||'#6087c7')+'"></i></div></td></tr>';
+    }).join('');
+    var table='<div><div class="sna-m-h">Centralidad e intermediación</div><table class="sna-m-table"><thead><tr><th>'+cfg.nodeLabel+'</th><th style="text-align:center">Grado</th><th>Intermediación</th></tr></thead><tbody>'+trs+'</tbody></table></div>';
+    var themes=Object.keys(A.tc).sort(function(a,b){return A.tc[b]-A.tc[a];});
+    var maxT=Math.max.apply(null,themes.map(function(t){return A.tc[t];}))||1;
+    var motivo=themes.map(function(t){var tm=cfg.theme(t),w=Math.round(A.tc[t]/maxT*100);
+      return '<div class="sna-m-mrow"><span class="mn"><i style="background:'+(tm.color||'#6087c7')+'"></i>'+esc(tm.name)+'</span><div class="sna-m-bar"><i style="width:'+Math.max(w,3)+'%;background:'+(tm.color||'#6087c7')+'"></i></div><span class="mc">'+A.tc[t]+'</span></div>';
+    }).join('');
+    var top=rankBtw.filter(function(n){return A.btw[n]>0;}).slice(0,3);
+    var brokers = top.length ? top.map(function(n){return '<div class="sna-m-broker-item"><b>'+esc(meta[n].name)+'</b> &mdash; '+Math.round(A.btw[n]/sumBtw*100)+'% de la intermediación · grado '+A.degree[n]+'</div>';}).join('')
+      : '<div class="sna-m-broker-item">Red casi completa: las conexiones son directas y no requieren intermediarios marcados.</div>';
+    var col2='<div><div class="sna-m-h">Motivo de las conexiones</div><div style="font-size:10px;color:var(--text3);margin:-4px 0 8px;line-height:1.4">Vínculos por tema · una conexión puede responder a varios motivos (por eso la suma supera el nº de aristas distintas).</div><div class="sna-m-motivo">'+motivo+'</div><div class="sna-m-brokers"><div class="sna-m-h">Brokers / intermediarios</div>'+brokers+'</div></div>';
+    var note='<div class="sna-m-note"><strong>Movilidad de la información:</strong> '+cfg.noteFn(A,top,meta)+'</div>';
+    host.innerHTML='<div class="sna-m-head"><h4>'+esc(cfg.title)+'</h4><p>'+cfg.subtitle+'</p></div>'+stats+'<div class="sna-m-grid">'+table+col2+'</div>'+note;
+  }
+  function run(){
+    /* GRAFO A — Sociedad Civil */
+    if(typeof SC_SNA_ACTORS!=='undefined'&&typeof SC_SNA_THEMES!=='undefined'&&document.getElementById('snaMetricsSoc')){
+      var eA=[]; SC_SNA_THEMES.forEach(function(t){for(var i=0;i<t.actors.length;i++)for(var j=i+1;j<t.actors.length;j++)eA.push({source:t.actors[i],target:t.actors[j],theme:t.id});});
+      var thA={}; SC_SNA_THEMES.forEach(function(t){thA[t.id]={name:t.name,color:t.color};});
+      render('snaMetricsSoc',{
+        title:'Análisis de red (ARS) · movilidad de la información',
+        subtitle:'Métricas computadas sobre las aristas reales: <b>grado</b> = nº de actores con tema en común; <b>intermediación</b> = rol de puente en el flujo de información entre clústers temáticos.',
+        nodes:SC_SNA_ACTORS, nodeLabel:'Actor', edges:eA,
+        theme:function(id){return thA[id]||{name:id,color:'#6087c7'};},
+        noteFn:function(A,top,meta){return 'la red articula <strong>'+A.N+' actores</strong> con <strong>'+A.E+' vínculos</strong> temáticos (densidad '+Math.round(A.density*100)+'%). '+(top.length?('El flujo se apoya sobre todo en <strong>'+esc(meta[top[0]].name)+'</strong>'+(top[1]?' y <strong>'+esc(meta[top[1]].name)+'</strong>':'')+', puente entre temas; los actores de un solo tema dependen de esos brokers para alcanzar al resto.'):'');}
+      });
+    }
+    /* GRAFO B — Institucional */
+    if(typeof INST_SNA_DIRS!=='undefined'&&document.getElementById('snaMetricsInst')){
+      var thB=(typeof SNA_INST_THEME_MAP!=='undefined')?SNA_INST_THEME_MAP:{};
+      var eB=[]; for(var i=0;i<INST_SNA_DIRS.length;i++)for(var j=i+1;j<INST_SNA_DIRS.length;j++){(INST_SNA_DIRS[i].cat||[]).forEach(function(c){if((INST_SNA_DIRS[j].cat||[]).indexOf(c)>=0)eB.push({source:INST_SNA_DIRS[i].id,target:INST_SNA_DIRS[j].id,theme:c});});}
+      render('snaMetricsInst',{
+        title:'Análisis de red (ARS) · movilidad de la información',
+        subtitle:'Métricas computadas sobre las aristas temáticas: <b>grado</b> = direcciones con categoría en común; <b>intermediación</b> = rol de puente en el flujo de coordinación.',
+        nodes:INST_SNA_DIRS.map(function(d){return {id:d.id,name:d.name,type:(d.cat||[]).join(' · '),color:d.color};}),
+        nodeLabel:'Dirección', edges:eB,
+        theme:function(id){return thB[id]||{name:id,color:'#6087c7'};},
+        noteFn:function(A,top,meta){return 'las <strong>'+A.N+' direcciones</strong> se conectan por categorías compartidas formando una red <strong>'+(A.density>=0.5?'densa':'moderada')+'</strong> ('+Math.round(A.density*100)+'%). '+(top.length?('Las direcciones más conectadas y con mayor rol de puente concentran la coordinación: <strong>'+esc(meta[top[0]].name)+'</strong>'+(top[1]?', <strong>'+esc(meta[top[1]].name)+'</strong>':'')+(top[2]?' y <strong>'+esc(meta[top[2]].name)+'</strong>':'')+'. '):'')+'Una red tan densa facilita el flujo, pero concentra la articulación en pocas direcciones (riesgo de cuello de botella).';}
+      });
+    }
+  }
+  if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
+})();
+</script>
 </body>
 </html>
