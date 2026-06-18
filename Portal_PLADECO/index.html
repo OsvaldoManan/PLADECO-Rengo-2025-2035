@@ -9384,94 +9384,151 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
      SECPLAC con las cuentas públicas 2015-2025. NO se inventan montos. Números en color neutro,
      el color queda como acento decorativo (borde). Render seguro, sin temporizadores. -->
 <style id="finmun-css">
-#situacion-financiera .fin-prov{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.6;color:#78350f;margin:0 0 18px}
-body.dark #situacion-financiera .fin-prov{background:#3a2e0c;border-color:#854d0e;color:#fde9b8}
-#situacion-financiera .fin-prov code{background:rgba(0,0,0,.07);padding:1px 6px;border-radius:5px;font-size:12px}
-body.dark #situacion-financiera .fin-prov code{background:rgba(255,255,255,.12)}
-#situacion-financiera .fin-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:22px}
+#situacion-financiera .fin-thesis{background:rgba(96,135,199,.07);border-left:4px solid #6087c7;border-radius:10px;padding:11px 15px;font-size:13px;line-height:1.55;color:var(--text);margin:0 0 20px}
+#situacion-financiera .fin-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:22px}
 #situacion-financiera .fin-kpi{position:relative;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--kc,#1F3864);border-radius:14px;padding:15px 18px;box-shadow:var(--sh-md)}
-#situacion-financiera .fin-kpi-num{font-size:30px;font-weight:900;line-height:1;color:var(--text);letter-spacing:-.02em}
-#situacion-financiera .fin-kpi-num .u{font-size:16px;font-weight:800;color:var(--text3)}
-#situacion-financiera .fin-kpi-num .ref{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:0}
-#situacion-financiera .fin-kpi-lbl{font-size:12.5px;font-weight:700;color:var(--text);margin-top:7px;line-height:1.35}
-#situacion-financiera .fin-kpi-ctx{font-size:11px;color:var(--text2);margin-top:5px;line-height:1.5}
-#situacion-financiera .fin-prov-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#92400e;background:#fef3c7;padding:1px 7px;border-radius:99px;vertical-align:middle}
-body.dark #situacion-financiera .fin-prov-tag{background:#422006;color:#fcd9a5}
-#situacion-financiera .fin-sub{font-size:14px;font-weight:800;color:var(--text);margin:4px 0 10px}
-#situacion-financiera .fin-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card)}
-#situacion-financiera table.fin-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:580px}
-#situacion-financiera .fin-table th,#situacion-financiera .fin-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right}
+#situacion-financiera .fin-kpi-dot{position:absolute;top:13px;right:14px;width:11px;height:11px;border-radius:50%}
+#situacion-financiera .fin-kpi-num{font-size:28px;font-weight:900;line-height:1;color:var(--text);letter-spacing:-.02em}
+#situacion-financiera .fin-kpi-num .u{font-size:15px;font-weight:800;color:var(--text3)}
+#situacion-financiera .fin-kpi-lbl{font-size:12.5px;font-weight:700;color:var(--text);margin-top:8px;line-height:1.3}
+#situacion-financiera .fin-kpi-ref{font-size:10.5px;font-weight:700;color:var(--text3);margin-top:3px}
+#situacion-financiera .fin-kpi-ctx{font-size:11px;color:var(--text2);margin-top:6px;line-height:1.5}
+#situacion-financiera .fin-sub{font-size:15px;font-weight:800;color:var(--text);margin:8px 0 12px}
+#situacion-financiera .fin-sub .n{font-size:11px;font-weight:700;color:var(--text3)}
+#situacion-financiera .fin-fin-bar{display:flex;height:38px;border-radius:9px;overflow:hidden;margin-bottom:10px;border:1px solid var(--border)}
+#situacion-financiera .fin-fin-seg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800;min-width:0;overflow:hidden}
+#situacion-financiera .fin-fin-leg{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:22px}
+#situacion-financiera .fin-fin-li{font-size:11.5px;color:var(--text2);display:flex;align-items:center;gap:6px}
+#situacion-financiera .fin-fin-li b{color:var(--text)}
+#situacion-financiera .fin-fin-sw{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
+#situacion-financiera .fin-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card);margin-bottom:22px}
+#situacion-financiera table.fin-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
+#situacion-financiera .fin-table th,#situacion-financiera .fin-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
 #situacion-financiera .fin-table tbody tr:last-child td{border-bottom:none}
 #situacion-financiera .fin-table th:first-child,#situacion-financiera .fin-table td:first-child{text-align:left;font-weight:700}
 #situacion-financiera .fin-table thead th{background:var(--blue,#1F3864);color:#fff;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
-#situacion-financiera .fin-empty{padding:26px 18px;text-align:center;color:var(--text2);font-size:13px;line-height:1.6}
+#situacion-financiera .fin-table .ref-col{color:var(--text3);font-weight:600;font-size:11px;text-align:left}
+#situacion-financiera .fin-table tr.tot td{font-weight:800;border-top:2px solid var(--border)}
+#situacion-financiera .fin-hall{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:22px}
+#situacion-financiera .fin-hall-card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--hc,#6087c7);border-radius:11px;padding:13px 15px}
+#situacion-financiera .fin-hall-t{font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px}
+#situacion-financiera .fin-hall-d{font-size:11.5px;color:var(--text2);line-height:1.5}
+#situacion-financiera .fin-alerta{background:rgba(220,38,38,.07);border:1px solid rgba(220,38,38,.28);border-left:4px solid #dc2626;border-radius:12px;padding:13px 16px;font-size:12.5px;line-height:1.6;color:var(--text)}
+body.dark #situacion-financiera .fin-alerta{background:rgba(220,38,38,.13)}
+#situacion-financiera .fin-alerta b{color:#b91c1c}
+body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
 </style>
 <section id="situacion-financiera" class="reveal" aria-labelledby="finmunH">
   <div class="sec-header">
     <div class="badge badge--info">Diagn&oacute;stico &middot; Finanzas municipales</div>
     <h2 id="finmunH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg> Situaci&oacute;n Financiera Municipal</h2>
-    <p>Los estados financieros del municipio como base del diagn&oacute;stico: de qu&eacute; dependen los ingresos, en qu&eacute; se concentra el gasto y cu&aacute;nto margen real queda para invertir. Complementa el <a href="#financiamiento">Financiamiento del PLADECO</a> (fondos para las acciones) con la salud financiera de base de la Municipalidad.</p>
+    <p>Los estados financieros del municipio &mdash;auditados por la Contralor&iacute;a General de la Rep&uacute;blica&mdash; como base del diagn&oacute;stico: de qu&eacute; dependen los ingresos, en qu&eacute; se concentra el gasto y cu&aacute;nto margen real queda para invertir. An&aacute;lisis de los ejercicios <strong>2018, 2021, 2023 y 2024</strong>. Complementa el <a href="#financiamiento">Financiamiento del PLADECO</a> (fondos para las acciones) con la salud financiera de base de la Municipalidad.</p>
   </div>
-  <div class="fin-prov" role="note"><strong>Serie anual provisional.</strong> Los <em>indicadores</em> destacados provienen del propio diagn&oacute;stico del portal (FODA / Decisiones). La <em>serie de ingresos y gastos por a&ntilde;o</em> a&uacute;n no se carga: es editable por SECPLAC en el objeto <code>estadosFinancieros</code> con las cuentas p&uacute;blicas y estados financieros municipales 2015-2025.</div>
+  <div class="fin-thesis" id="finThesis"></div>
   <div class="fin-kpis" id="finKpis"></div>
-  <h3 class="fin-sub">Ingresos y gastos por a&ntilde;o</h3>
-  <div class="fin-table-wrap"><table class="fin-table"><thead><tr><th>A&ntilde;o</th><th>Ingresos propios</th><th>FCM / transf.</th><th>Otros</th><th>Gasto corriente</th><th>Inversi&oacute;n</th></tr></thead><tbody id="finBody"></tbody></table></div>
-  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> <strong>Fuente:</strong> Indicadores: diagn&oacute;stico PLADECO Rengo 2025-2035 (FODA, Decisiones normativas). Serie anual: cuentas p&uacute;blicas y estados financieros municipales &middot; SINIM/SUBDERE &mdash; <strong>provisional</strong>, a cargo de SECPLAC.</div>
+  <h3 class="fin-sub">Estructura de financiamiento</h3>
+  <div id="finFinanciamiento"></div>
+  <h3 class="fin-sub">Balance y resultados <span class="n">&middot; MM$ (millones de pesos)</span></h3>
+  <div class="fin-table-wrap" id="finResumen"></div>
+  <h3 class="fin-sub">Indicadores financieros clave</h3>
+  <div class="fin-table-wrap" id="finIndicadores"></div>
+  <h3 class="fin-sub">Hallazgos del diagn&oacute;stico</h3>
+  <div class="fin-hall" id="finHallazgos"></div>
+  <div class="fin-alerta" id="finAlerta"></div>
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> <strong>Fuente:</strong> Estados Financieros I. Municipalidad de Rengo 2018/2021/2023/2024 (Direcci&oacute;n de Administraci&oacute;n y Finanzas), entregados a la Contralor&iacute;a General de la Rep&uacute;blica &middot; Marco CGR: NICSP, Res. N&deg;16/2015, Dictamen E-72639/2021, Res. Ex. N&deg;6.619/2022 &middot; Informe de diagn&oacute;stico SECPLAC, PLADECO Rengo 2025-2035.</div>
 </section>
 <script>
 (function(){
-  var kbox=document.getElementById('finKpis');
-  if(!kbox) return; /* render seguro */
-  /* ╔═══ EDITABLE POR SECPLAC ═══╗
-     estadosFinancieros · estados financieros del municipio. Los 3 primeros indicadores son cifras
-     REALES ya publicadas en el portal; el 4º y la serie anual son PROVISIONALES (completar). */
+  var host=document.getElementById('finKpis');
+  if(!host) return; /* render seguro */
+  /* ╔═══════════════════════════════════════════════════════════════════════╗
+     ║  DATOS REALES — EDITABLE POR SECPLAC                                    ║
+     ╚═══════════════════════════════════════════════════════════════════════╝
+     estadosFinancieros · Informe de diagnóstico de los Estados Financieros entregados a la
+     Contraloría General de la República (ejercicios 2018, 2021, 2023, 2024). Cifras del informe;
+     montos en MM$ (millones de pesos). Para actualizar, edita este objeto. */
   var estadosFinancieros = (window.estadosFinancieros && !window.estadosFinancieros.nodeType) ? window.estadosFinancieros : {
     unidad:'MM$ (millones de pesos)',
-    indicadores:[
-      {k:'fcm', label:'Dependencia del Fondo Com&uacute;n Municipal (FCM)', valor:55.8, u:'%', real:true, color:'#c0352a', ctx:'M&aacute;s de la mitad de los ingresos provienen de transferencias redistributivas; reducir esta dependencia es una decisi&oacute;n del plan.'},
-      {k:'gc', label:'Gasto corriente sobre el gasto total', valor:82.1, u:'%', real:true, color:'#b45309', ctx:'La operaci&oacute;n y el personal absorben la mayor parte; deja escaso margen para inversi&oacute;n.'},
-      {k:'cap', label:'Captaci&oacute;n externa de fondos', valor:6.28, u:'%', real:true, ref:13.89, color:'#b45309', ctx:'Muy por debajo del 13,89% promedio regional (Decisi&oacute;n D01: Oficina de Gesti&oacute;n de Proyectos).'},
-      {k:'aut', label:'Autonom&iacute;a financiera (ingresos propios / total)', valor:null, u:'%', real:false, color:'#1F3864', ctx:'A completar con las cuentas p&uacute;blicas.'}
+    tesis:'Municipio financieramente <strong>sólido pero operacionalmente rígido</strong>: fuerte en solvencia y patrimonio, débil en composición del gasto y en ejecución de inversiones (Informe EEFF 2018-2024).',
+    kpis:[
+      {label:'Autonomía financiera', val:'92,8', u:'%', ref:'Referencia ≥60% (SUBDERE)', estado:'bien', ctx:'Patrimonio sobre activo. Cuartil superior regional, sin deuda de largo plazo.'},
+      {label:'Razón corriente', val:'6,42', u:'x', ref:'Referencia ≥2,0x', estado:'bien', ctx:'Liquidez 3,2× el mínimo; sugiere excedente de caja ocioso (MM$4.000-5.000).'},
+      {label:'Dependencia de transferencias', val:'75,2', u:'%', ref:'Deseable ≤60%', estado:'critico', ctx:'Del Estado Central (FCM + sectoriales): principal riesgo estructural.'},
+      {label:'Gasto en personal', val:'74,0', u:'%', ref:'Umbral CGR ≤70%', estado:'alerta', ctx:'Supera el umbral de alerta de la CGR; rigidez presupuestaria.'},
+      {label:'Ejecución de inversiones', val:'32,2', u:'%', ref:'Era 76% en 2018', estado:'critico', ctx:'Cayó 43,8 pp en 6 años; ~MM$3.526/año sin ejecutar.'},
+      {label:'Ingresos propios', val:'9', u:'%', ref:'Meta del informe: 12%', estado:'alerta', ctx:'Base tributaria limitada (resto: FCM 16% + transferencias 75%).'}
     ],
-    /* SERIE ANUAL — PROVISIONAL/VACÍA. Completar por SECPLAC.
-       shape por año: {anio, ingresosPropios, fcm, otros, gastoCorriente, inversion} en MM$ */
-    serie:[
-      /* {anio:2023, ingresosPropios:null, fcm:null, otros:null, gastoCorriente:null, inversion:null}, */
+    financiamiento:[
+      {fuente:'Ingresos propios', pct:9, detalle:'Patentes, permisos, contribuciones, derechos', color:'#2d9a4d'},
+      {fuente:'Fondo Común Municipal', pct:16, detalle:'FCM · distribución intercomunal', color:'#f5921d'},
+      {fuente:'Transferencias del Estado Central', pct:75, detalle:'Salud, Educación, FNDR, FAEP, JUNAEB', color:'#c0352a'}
     ],
-    fuente:'Cuentas p&uacute;blicas y estados financieros municipales · SINIM/SUBDERE'
+    resumen:{ cols:[2018,2021,2023,2024], filas:[
+      {k:'Total activos',          v:[18315,25549,33684,36463]},
+      {k:'Total pasivo',           v:[2573,1773,2278,2636]},
+      {k:'Patrimonio',             v:[15742,23777,31406,33827]},
+      {k:'Total ingresos',         v:[36250,38136,51528,59733]},
+      {k:'Total gastos',           v:[34943,41736,54712,62499]},
+      {k:'Resultado del ejercicio',v:[1307,3683,3184,2765], tot:true}
+    ]},
+    indicadores:{ cols:[2018,2021,2023,2024], filas:[
+      {k:'Razón corriente',              v:['3,17x','5,86x','5,77x','6,42x'], ref:'≥2,0x'},
+      {k:'Autonomía financiera',         v:['85,9%','93,1%','93,2%','92,8%'], ref:'≥60% (SUBDERE)'},
+      {k:'Dependencia de transferencias',v:['71,3%','73,5%','74,8%','75,2%'], ref:'≤60% deseable'},
+      {k:'Gasto en personal / total',    v:['71,7%','73,4%','74,4%','74,0%'], ref:'≤70% (CGR)'}
+    ]},
+    hallazgos:[
+      {t:'Crecimiento patrimonial sólido', d:'+115% en 2018-2024 (CAGR 12,1% real); autonomía 92,8%, sin deuda de largo plazo.', tipo:'pos'},
+      {t:'Liquidez con costo de oportunidad', d:'Razón corriente 6,42x; disponibilidades MM$14.261 (2,6 meses). Excedente MM$4.000-5.000 ocioso.', tipo:'neu'},
+      {t:'Superávit recurrente, pero decreciente', d:'De MM$3.683 (2021) a MM$2.765 (2024): −24,9%. La brecha gastos/ingresos anticipa déficit.', tipo:'alerta'},
+      {t:'Dependencia estructural de transferencias', d:'75,2% del Estado Central; un cambio en el FCM comprometería MM$8.000-12.000 al año.', tipo:'neg'},
+      {t:'Rigidez por gasto en personal', d:'74,0% del gasto total (umbral CGR 70%); personal a contrata +15,8% en 2023-2024.', tipo:'neg'},
+      {t:'Baja ejecución de inversiones', d:'32,2% en 2024 vs 76% en 2018; ~MM$3.526/año sin ejecutar (infraestructura postergada).', tipo:'neg'}
+    ],
+    alerta:'Si la brecha entre el crecimiento del gasto (CAGR 10,3%) y de los ingresos (8,7%) se mantiene, el primer <b>déficit operacional</b> llegaría hacia <b>2027-2028</b>. La señal está activa desde 2021: requiere acción preventiva en el presupuesto 2026.'
   };
   window.estadosFinancieros = estadosFinancieros;
+  var EF=estadosFinancieros;
+  var COL={bien:'#16a34a',alerta:'#f59e0b',critico:'#dc2626',neu:'#6087c7',pos:'#16a34a',neg:'#dc2626'};
+  function nf(n){ try{return (+n).toLocaleString('es-CL');}catch(e){return ''+n;} }
+  function set(id,html){var el=document.getElementById(id);if(el)el.innerHTML=html;}
 
-  function nfmt(v){ if(v==null||v==='') return null; try{return (+v).toLocaleString('es-CL');}catch(e){return ''+v;} }
-  function dec(v){ return (v==null)?null:String(v).replace('.',','); }
+  set('finThesis', EF.tesis||'');
 
-  /* KPIs */
-  var kh='';
-  (estadosFinancieros.indicadores||[]).forEach(function(i){
-    var val = (i.valor==null)
-      ? '<span class="fin-prov-tag">por completar</span>'
-      : dec(i.valor)+'<span class="u">'+(i.u||'')+'</span>'+(i.ref!=null?(' <span class="ref">vs '+dec(i.ref)+'% reg.</span>'):'');
-    kh+='<div class="fin-kpi" style="--kc:'+(i.color||'#1F3864')+'">'+
-      '<div class="fin-kpi-num">'+val+'</div>'+
-      '<div class="fin-kpi-lbl">'+i.label+(i.real?'':' ')+'</div>'+
-      '<div class="fin-kpi-ctx">'+(i.ctx||'')+'</div>'+
-    '</div>';
-  });
-  kbox.innerHTML=kh;
+  /* KPIs — número en color neutro; el estado se muestra como punto + borde (acento decorativo) */
+  host.innerHTML=(EF.kpis||[]).map(function(i){
+    var c=COL[i.estado]||'#6087c7';
+    return '<div class="fin-kpi" style="--kc:'+c+'"><span class="fin-kpi-dot" style="background:'+c+'"></span>'+
+      '<div class="fin-kpi-num">'+i.val+'<span class="u">'+(i.u||'')+'</span></div>'+
+      '<div class="fin-kpi-lbl">'+i.label+'</div>'+
+      '<div class="fin-kpi-ref">'+(i.ref||'')+'</div>'+
+      '<div class="fin-kpi-ctx">'+(i.ctx||'')+'</div></div>';
+  }).join('');
 
-  /* Serie anual */
-  var body=document.getElementById('finBody');
-  if(body){
-    var s=(estadosFinancieros.serie||[]).filter(function(r){return r&&r.anio;});
-    if(!s.length){
-      body.innerHTML='<tr><td colspan="6" class="fin-empty">A&uacute;n sin datos cargados. Completa <code>estadosFinancieros.serie</code> con los ingresos y gastos por a&ntilde;o (en '+ (estadosFinancieros.unidad||'MM$') +') y la tabla se construir&aacute; aqu&iacute;.</td></tr>';
-    } else {
-      body.innerHTML = s.sort(function(a,b){return a.anio-b.anio;}).map(function(r){
-        function c(v){var n=nfmt(v);return '<td>'+(n==null?'<span style="color:var(--text3)">&mdash;</span>':n)+'</td>';}
-        return '<tr><td>'+r.anio+'</td>'+c(r.ingresosPropios)+c(r.fcm)+c(r.otros)+c(r.gastoCorriente)+c(r.inversion)+'</tr>';
-      }).join('');
-    }
+  /* Estructura de financiamiento (barra apilada + leyenda) */
+  var fin=EF.financiamiento||[];
+  var bar=fin.map(function(f){return '<div class="fin-fin-seg" style="flex:'+f.pct+';background:'+f.color+'" title="'+f.fuente+' '+f.pct+'%">'+f.pct+'%</div>';}).join('');
+  var leg=fin.map(function(f){return '<span class="fin-fin-li"><span class="fin-fin-sw" style="background:'+f.color+'"></span><b>'+f.fuente+' '+f.pct+'%</b> · '+f.detalle+'</span>';}).join('');
+  set('finFinanciamiento','<div class="fin-fin-bar">'+bar+'</div><div class="fin-fin-leg">'+leg+'</div>');
+
+  /* Balance y resultados */
+  if(EF.resumen){
+    var R=EF.resumen;
+    var th='<th>Indicador</th>'+R.cols.map(function(c){return '<th>'+c+'</th>';}).join('');
+    var rows=R.filas.map(function(f){return '<tr'+(f.tot?' class="tot"':'')+'><td>'+f.k+'</td>'+f.v.map(function(x){return '<td>'+nf(x)+'</td>';}).join('')+'</tr>';}).join('');
+    set('finResumen','<table class="fin-table"><thead><tr>'+th+'</tr></thead><tbody>'+rows+'</tbody></table>');
   }
+  /* Indicadores por año + referencia */
+  if(EF.indicadores){
+    var I=EF.indicadores;
+    var th2='<th>Indicador</th>'+I.cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'<th>Referencia</th>';
+    var rows2=I.filas.map(function(f){return '<tr><td>'+f.k+'</td>'+f.v.map(function(x){return '<td>'+x+'</td>';}).join('')+'<td class="ref-col">'+(f.ref||'')+'</td></tr>';}).join('');
+    set('finIndicadores','<table class="fin-table"><thead><tr>'+th2+'</tr></thead><tbody>'+rows2+'</tbody></table>');
+  }
+  /* Hallazgos */
+  set('finHallazgos',(EF.hallazgos||[]).map(function(h){return '<div class="fin-hall-card" style="--hc:'+(COL[h.tipo]||'#6087c7')+'"><div class="fin-hall-t">'+h.t+'</div><div class="fin-hall-d">'+h.d+'</div></div>';}).join(''));
+  /* Alerta */
+  set('finAlerta', EF.alerta ? ('<strong>&#9888; Alerta financiera:</strong> '+EF.alerta) : '');
 })();
 </script>
 
