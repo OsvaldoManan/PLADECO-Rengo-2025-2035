@@ -9415,6 +9415,19 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
 #situacion-financiera .fin-recom-n{flex:0 0 auto;width:32px;height:32px;border-radius:8px;background:var(--blue,#1F3864);color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
 #situacion-financiera .fin-recom-t{font-size:12.5px;font-weight:800;color:var(--text)}
 #situacion-financiera .fin-recom-d{font-size:11.5px;color:var(--text2);line-height:1.5;margin-top:2px}
+#situacion-financiera .fin-traj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+#situacion-financiera .fin-traj-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 14px}
+#situacion-financiera .fin-traj-h{font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px}
+#situacion-financiera .fin-spark{width:100%;height:42px;display:block;margin-bottom:6px}
+#situacion-financiera .fin-traj-v{font-size:11px;color:var(--text2)}
+#situacion-financiera .fin-traj-v b{color:var(--text);font-weight:800}
+#situacion-financiera .fin-traj-nota{font-size:10.5px;font-weight:700;margin-top:3px}
+#situacion-financiera .fin-ref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+#situacion-financiera .fin-ref-col{min-width:0}
+#situacion-financiera .fin-ref-h{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--blue,#1F3864);margin-bottom:7px}
+body.dark #situacion-financiera .fin-ref-h{color:#7ea4d8}
+#situacion-financiera .fin-ref-list{margin:0;padding-left:16px}
+#situacion-financiera .fin-ref-list li{font-size:11px;line-height:1.55;color:var(--text2);margin-bottom:6px}
 #situacion-financiera .fin-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card);margin-bottom:22px}
 #situacion-financiera table.fin-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
 #situacion-financiera .fin-table th,#situacion-financiera .fin-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
@@ -9453,10 +9466,14 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <h3 class="fin-sub">Hallazgos del diagn&oacute;stico</h3>
   <div class="fin-hall" id="finHallazgos"></div>
   <div class="fin-alerta" id="finAlerta"></div>
+  <h3 class="fin-sub">Perspectiva longitudinal y proyecci&oacute;n <span class="n">&middot; 2018-2027</span></h3>
+  <div id="finTrayectoria"></div>
   <h3 class="fin-sub">Respaldo documental <span class="n">&middot; cuentas públicas 2013-2025</span></h3>
   <div id="finRespaldo"></div>
   <h3 class="fin-sub">Recomendaciones del informe <span class="n">&middot; plan de acci&oacute;n financiero</span></h3>
   <div id="finRecom"></div>
+  <h3 class="fin-sub">Fuentes y referencias</h3>
+  <div class="fin-ref-grid" id="finReferencias"></div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> <strong>Fuente:</strong> Estados Financieros I. Municipalidad de Rengo 2018/2021/2023/2024 (Direcci&oacute;n de Administraci&oacute;n y Finanzas), entregados a la Contralor&iacute;a General de la Rep&uacute;blica &middot; Marco CGR: NICSP, Res. N&deg;16/2015, Dictamen E-72639/2021, Res. Ex. N&deg;6.619/2022 &middot; Informe de diagn&oacute;stico SECPLAC, PLADECO Rengo 2025-2035.</div>
 </section>
 <script>
@@ -9560,7 +9577,45 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
       {n:'R6', t:'Control de gestión', d:'Tablero mensual de indicadores financieros, publicado en transparencia activa.'},
       {n:'R7', t:'Gestión de deudores', d:'Política de cobro de MM$432.716; recuperar 30% en 18 meses (~MM$130).'},
       {n:'R8', t:'Planificación financiera', d:'Plan Financiero de Mediano Plazo (3 años) con escenarios de FCM ±15%. Aprobación 1er semestre 2026.'}
-    ]
+    ],
+    /* PERSPECTIVA LONGITUDINAL — trayectoria 2018-2024 + proyección 2025-2027 (Informe EEFF). EDITABLE. */
+    trayectoria:{
+      intro:'La lectura longitudinal 2018-2024 muestra dos fuerzas en tensión: el <strong>patrimonio crece</strong>, pero el <strong>resultado se comprime</strong> y la <strong>rigidez aumenta</strong>. La proyección define la ventana de acción.',
+      cols:[2018,2021,2023,2024],
+      series:[
+        {k:'Patrimonio', u:'MM$', v:[15742,23777,31406,33827], color:'#16a34a', nota:'+115% (CAGR 12,1% real)'},
+        {k:'Resultado del ejercicio', u:'MM$', v:[1307,3683,3184,2765], color:'#dc2626', nota:'cae desde 2021 (−24,9%)'},
+        {k:'Dependencia de transferencias', u:'%', v:[71.3,73.5,74.8,75.2], color:'#c0352a', nota:'sube de forma sostenida'},
+        {k:'Gasto en personal', u:'%', v:[71.7,73.4,74.4,74.0], color:'#b45309', nota:'sobre el umbral CGR (70%)'}
+      ],
+      escenarios:[
+        {t:'Escenario base (sin reforma)', tipo:'neg', d:'Con remuneraciones +6%/año e ingresos +4%, el gasto en personal llegaría a 78-80% del gasto total hacia 2026 y dejaría menos del 5% para inversión &rarr; déficit operacional en 2027 con alta probabilidad.'},
+        {t:'Escenario de reforma moderada', tipo:'pos', d:'Estabilizar la contrata, congelar nuevas incorporaciones 24 meses y reasignar 5% de la masa salarial a inversión &rarr; recuperar la ejecución de inversión al 76% (nivel 2018) en 3 años y mantener el superávit sobre MM$2.400/año.'}
+      ]
+    },
+    /* FUENTES Y REFERENCIAS (citas) — del Informe EEFF (sección 10) + fuentes complementarias. EDITABLE. */
+    referencias:{
+      documentos:[
+        'Ordinario N° 063/389 (2019) &mdash; Estados Financieros al 31.12.2018. DAF, I. Municipalidad de Rengo.',
+        'Ordinario N° 261 (2022) &mdash; Estados Financieros al 31.12.2021. DAF, I. Municipalidad de Rengo.',
+        'Estados Financieros al 31.12.2023. DAF, I. Municipalidad de Rengo.',
+        'Ordinario N° 275 (2025) &mdash; Estados Financieros al cierre del ejercicio 2024. DAF, I. Municipalidad de Rengo.',
+        'Cuentas Públicas I. Municipalidad de Rengo 2013-2025.'
+      ],
+      normativa:[
+        'Contraloría General de la República &mdash; Dictamen N° E-72639 (29.01.2021): presentación de EEFF municipales.',
+        'CGR &mdash; Resolución N° 16 (2015): Manual del Sistema de Contabilidad General de la Nación.',
+        'CGR &mdash; Resolución Exenta N° 6.619 (2022): modelo de alertas de gestión financiera municipal.',
+        'Ley N° 18.695 &mdash; Orgánica Constitucional de Municipalidades.',
+        'Ley N° 18.834 &mdash; Estatuto Administrativo.'
+      ],
+      complementarias:[
+        'BCN &mdash; Reporte Comunal de Rengo 2024 (economía y finanzas municipales 2022).',
+        'Encuesta CASEN 2022 (Ministerio de Desarrollo Social y Familia).',
+        'SINIM &mdash; Sistema Nacional de Información Municipal (SUBDERE).',
+        'Proyección de población INE 2024.'
+      ]
+    }
   };
   window.estadosFinancieros = estadosFinancieros;
   var EF=estadosFinancieros;
@@ -9639,6 +9694,41 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   /* Recomendaciones R1-R8 (Informe EEFF) */
   if(EF.recomendaciones){
     set('finRecom','<div class="fin-recom-grid">'+(EF.recomendaciones||[]).map(function(r){return '<div class="fin-recom"><span class="fin-recom-n">'+r.n+'</span><div><div class="fin-recom-t">'+r.t+'</div><div class="fin-recom-d">'+r.d+'</div></div></div>';}).join('')+'</div>');
+  }
+
+  /* Perspectiva longitudinal: trayectoria 2018-2024 (sparklines) + escenarios 2025-2027 */
+  if(EF.trayectoria){
+    var T=EF.trayectoria, tcols=T.cols||[];
+    function tnf(n){try{return (+n).toLocaleString('es-CL');}catch(e){return ''+n;}}
+    function spark(vals,col){
+      var W=240,H=42,padX=6,padY=8;
+      var vmin=Math.min.apply(null,vals),vmax=Math.max.apply(null,vals); if(vmax===vmin)vmax=vmin+1;
+      var y0=tcols[0],y1=tcols[tcols.length-1]||1;
+      function X(i){return (padX+((tcols[i]-y0)/((y1-y0)||1))*(W-2*padX));}
+      function Y(v){return (H-padY-((v-vmin)/(vmax-vmin))*(H-2*padY));}
+      var path=vals.map(function(v,i){return (i?'L':'M')+X(i).toFixed(1)+','+Y(v).toFixed(1);}).join(' ');
+      var dots=vals.map(function(v,i){return '<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(v).toFixed(1)+'" r="2.6" fill="'+col+'"/>';}).join('');
+      return '<svg class="fin-spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Tendencia"><path d="'+path+'" fill="none" stroke="'+col+'" stroke-width="2"/>'+dots+'</svg>';
+    }
+    var tcards=(T.series||[]).map(function(s){
+      var fmt=function(x){return s.u==='%'?(String(x).replace('.',',')+'%'):tnf(x);};
+      return '<div class="fin-traj-card"><div class="fin-traj-h">'+s.k+(s.u==='MM$'?' (MM$)':'')+'</div>'+spark(s.v,s.color)+
+        '<div class="fin-traj-v">'+tcols[0]+': <b>'+fmt(s.v[0])+'</b> &rarr; '+tcols[tcols.length-1]+': <b>'+fmt(s.v[s.v.length-1])+'</b></div>'+
+        '<div class="fin-traj-nota" style="color:'+s.color+'">'+(s.nota||'')+'</div></div>';
+    }).join('');
+    var tesc=(T.escenarios||[]).map(function(e){var c=(e.tipo==='pos')?'#16a34a':'#dc2626';return '<div class="fin-hall-card" style="--hc:'+c+'"><div class="fin-hall-t">'+e.t+'</div><div class="fin-hall-d">'+e.d+'</div></div>';}).join('');
+    set('finTrayectoria',(T.intro?('<p class="fin-cx-intro">'+T.intro+'</p>'):'')+
+      '<div class="fin-traj-grid">'+tcards+'</div>'+
+      '<div style="font-size:12px;font-weight:700;color:var(--text);margin:8px 0 8px">Proyección 2025-2027 (Informe EEFF)</div><div class="fin-hall">'+tesc+'</div>');
+  }
+  /* Fuentes y referencias (citas) */
+  if(EF.referencias){
+    var RF=EF.referencias;
+    function lst(arr){return '<ul class="fin-ref-list">'+(arr||[]).map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';}
+    set('finReferencias',
+      '<div class="fin-ref-col"><div class="fin-ref-h">Documentos oficiales</div>'+lst(RF.documentos)+'</div>'+
+      '<div class="fin-ref-col"><div class="fin-ref-h">Marco normativo</div>'+lst(RF.normativa)+'</div>'+
+      '<div class="fin-ref-col"><div class="fin-ref-h">Fuentes complementarias</div>'+lst(RF.complementarias)+'</div>');
   }
 })();
 </script>
