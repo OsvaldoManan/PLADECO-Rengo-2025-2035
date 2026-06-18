@@ -6570,7 +6570,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
     'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),'trazabilidad':navIco('cycle'),
-    'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
+    'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'situacion-financiera':navIco('money'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
     'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'poa':navIco('clipboard'),'metas-trayectoria':navIco('trend'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
     /* Macro 04 · Cierre */
@@ -9375,6 +9375,105 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
   </div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuentes:</strong> Entrevistas Etnogr&#225;ficas a Funcionarios y Directores Municipales &bull; PLADECO Rengo 2025-2035 &bull; 115 personas (101 funcionarios + 14 directores) &bull; 30 direcciones &bull; 46 unidades &bull; 1.855 respuestas analizadas &bull; Metodolog&#237;a: Etnograf&#237;a Institucional (Dorothy E. Smith) &bull; PLADECO 2025-2035 Entrevistas Organizado.xlsx</div>
 </section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     SITUACIÓN FINANCIERA MUNICIPAL (Diagnóstico) — estados financieros del municipio.
+     Andamiaje EDITABLE: window.estadosFinancieros. Los 3 primeros indicadores son cifras
+     REALES ya publicadas en el portal (FODA/Decisiones: FCM 55,8% · gasto corriente 82,1% ·
+     captación 6,28% vs 13,89% regional). La serie anual está VACÍA/PROVISIONAL: la completa
+     SECPLAC con las cuentas públicas 2015-2025. NO se inventan montos. Números en color neutro,
+     el color queda como acento decorativo (borde). Render seguro, sin temporizadores. -->
+<style id="finmun-css">
+#situacion-financiera .fin-prov{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:12px;padding:12px 16px;font-size:13px;line-height:1.6;color:#78350f;margin:0 0 18px}
+body.dark #situacion-financiera .fin-prov{background:#3a2e0c;border-color:#854d0e;color:#fde9b8}
+#situacion-financiera .fin-prov code{background:rgba(0,0,0,.07);padding:1px 6px;border-radius:5px;font-size:12px}
+body.dark #situacion-financiera .fin-prov code{background:rgba(255,255,255,.12)}
+#situacion-financiera .fin-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:22px}
+#situacion-financiera .fin-kpi{position:relative;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--kc,#1F3864);border-radius:14px;padding:15px 18px;box-shadow:var(--sh-md)}
+#situacion-financiera .fin-kpi-num{font-size:30px;font-weight:900;line-height:1;color:var(--text);letter-spacing:-.02em}
+#situacion-financiera .fin-kpi-num .u{font-size:16px;font-weight:800;color:var(--text3)}
+#situacion-financiera .fin-kpi-num .ref{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:0}
+#situacion-financiera .fin-kpi-lbl{font-size:12.5px;font-weight:700;color:var(--text);margin-top:7px;line-height:1.35}
+#situacion-financiera .fin-kpi-ctx{font-size:11px;color:var(--text2);margin-top:5px;line-height:1.5}
+#situacion-financiera .fin-prov-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#92400e;background:#fef3c7;padding:1px 7px;border-radius:99px;vertical-align:middle}
+body.dark #situacion-financiera .fin-prov-tag{background:#422006;color:#fcd9a5}
+#situacion-financiera .fin-sub{font-size:14px;font-weight:800;color:var(--text);margin:4px 0 10px}
+#situacion-financiera .fin-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:14px;background:var(--card)}
+#situacion-financiera table.fin-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:580px}
+#situacion-financiera .fin-table th,#situacion-financiera .fin-table td{padding:9px 12px;border-bottom:1px solid var(--border);text-align:right}
+#situacion-financiera .fin-table tbody tr:last-child td{border-bottom:none}
+#situacion-financiera .fin-table th:first-child,#situacion-financiera .fin-table td:first-child{text-align:left;font-weight:700}
+#situacion-financiera .fin-table thead th{background:var(--blue,#1F3864);color:#fff;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+#situacion-financiera .fin-empty{padding:26px 18px;text-align:center;color:var(--text2);font-size:13px;line-height:1.6}
+</style>
+<section id="situacion-financiera" class="reveal" aria-labelledby="finmunH">
+  <div class="sec-header">
+    <div class="badge badge--info">Diagn&oacute;stico &middot; Finanzas municipales</div>
+    <h2 id="finmunH"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg> Situaci&oacute;n Financiera Municipal</h2>
+    <p>Los estados financieros del municipio como base del diagn&oacute;stico: de qu&eacute; dependen los ingresos, en qu&eacute; se concentra el gasto y cu&aacute;nto margen real queda para invertir. Complementa el <a href="#financiamiento">Financiamiento del PLADECO</a> (fondos para las acciones) con la salud financiera de base de la Municipalidad.</p>
+  </div>
+  <div class="fin-prov" role="note"><strong>Serie anual provisional.</strong> Los <em>indicadores</em> destacados provienen del propio diagn&oacute;stico del portal (FODA / Decisiones). La <em>serie de ingresos y gastos por a&ntilde;o</em> a&uacute;n no se carga: es editable por SECPLAC en el objeto <code>estadosFinancieros</code> con las cuentas p&uacute;blicas y estados financieros municipales 2015-2025.</div>
+  <div class="fin-kpis" id="finKpis"></div>
+  <h3 class="fin-sub">Ingresos y gastos por a&ntilde;o</h3>
+  <div class="fin-table-wrap"><table class="fin-table"><thead><tr><th>A&ntilde;o</th><th>Ingresos propios</th><th>FCM / transf.</th><th>Otros</th><th>Gasto corriente</th><th>Inversi&oacute;n</th></tr></thead><tbody id="finBody"></tbody></table></div>
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> <strong>Fuente:</strong> Indicadores: diagn&oacute;stico PLADECO Rengo 2025-2035 (FODA, Decisiones normativas). Serie anual: cuentas p&uacute;blicas y estados financieros municipales &middot; SINIM/SUBDERE &mdash; <strong>provisional</strong>, a cargo de SECPLAC.</div>
+</section>
+<script>
+(function(){
+  var kbox=document.getElementById('finKpis');
+  if(!kbox) return; /* render seguro */
+  /* ╔═══ EDITABLE POR SECPLAC ═══╗
+     estadosFinancieros · estados financieros del municipio. Los 3 primeros indicadores son cifras
+     REALES ya publicadas en el portal; el 4º y la serie anual son PROVISIONALES (completar). */
+  var estadosFinancieros = (window.estadosFinancieros && !window.estadosFinancieros.nodeType) ? window.estadosFinancieros : {
+    unidad:'MM$ (millones de pesos)',
+    indicadores:[
+      {k:'fcm', label:'Dependencia del Fondo Com&uacute;n Municipal (FCM)', valor:55.8, u:'%', real:true, color:'#c0352a', ctx:'M&aacute;s de la mitad de los ingresos provienen de transferencias redistributivas; reducir esta dependencia es una decisi&oacute;n del plan.'},
+      {k:'gc', label:'Gasto corriente sobre el gasto total', valor:82.1, u:'%', real:true, color:'#b45309', ctx:'La operaci&oacute;n y el personal absorben la mayor parte; deja escaso margen para inversi&oacute;n.'},
+      {k:'cap', label:'Captaci&oacute;n externa de fondos', valor:6.28, u:'%', real:true, ref:13.89, color:'#b45309', ctx:'Muy por debajo del 13,89% promedio regional (Decisi&oacute;n D01: Oficina de Gesti&oacute;n de Proyectos).'},
+      {k:'aut', label:'Autonom&iacute;a financiera (ingresos propios / total)', valor:null, u:'%', real:false, color:'#1F3864', ctx:'A completar con las cuentas p&uacute;blicas.'}
+    ],
+    /* SERIE ANUAL — PROVISIONAL/VACÍA. Completar por SECPLAC.
+       shape por año: {anio, ingresosPropios, fcm, otros, gastoCorriente, inversion} en MM$ */
+    serie:[
+      /* {anio:2023, ingresosPropios:null, fcm:null, otros:null, gastoCorriente:null, inversion:null}, */
+    ],
+    fuente:'Cuentas p&uacute;blicas y estados financieros municipales · SINIM/SUBDERE'
+  };
+  window.estadosFinancieros = estadosFinancieros;
+
+  function nfmt(v){ if(v==null||v==='') return null; try{return (+v).toLocaleString('es-CL');}catch(e){return ''+v;} }
+  function dec(v){ return (v==null)?null:String(v).replace('.',','); }
+
+  /* KPIs */
+  var kh='';
+  (estadosFinancieros.indicadores||[]).forEach(function(i){
+    var val = (i.valor==null)
+      ? '<span class="fin-prov-tag">por completar</span>'
+      : dec(i.valor)+'<span class="u">'+(i.u||'')+'</span>'+(i.ref!=null?(' <span class="ref">vs '+dec(i.ref)+'% reg.</span>'):'');
+    kh+='<div class="fin-kpi" style="--kc:'+(i.color||'#1F3864')+'">'+
+      '<div class="fin-kpi-num">'+val+'</div>'+
+      '<div class="fin-kpi-lbl">'+i.label+(i.real?'':' ')+'</div>'+
+      '<div class="fin-kpi-ctx">'+(i.ctx||'')+'</div>'+
+    '</div>';
+  });
+  kbox.innerHTML=kh;
+
+  /* Serie anual */
+  var body=document.getElementById('finBody');
+  if(body){
+    var s=(estadosFinancieros.serie||[]).filter(function(r){return r&&r.anio;});
+    if(!s.length){
+      body.innerHTML='<tr><td colspan="6" class="fin-empty">A&uacute;n sin datos cargados. Completa <code>estadosFinancieros.serie</code> con los ingresos y gastos por a&ntilde;o (en '+ (estadosFinancieros.unidad||'MM$') +') y la tabla se construir&aacute; aqu&iacute;.</td></tr>';
+    } else {
+      body.innerHTML = s.sort(function(a,b){return a.anio-b.anio;}).map(function(r){
+        function c(v){var n=nfmt(v);return '<td>'+(n==null?'<span style="color:var(--text3)">&mdash;</span>':n)+'</td>';}
+        return '<tr><td>'+r.anio+'</td>'+c(r.ingresosPropios)+c(r.fcm)+c(r.otros)+c(r.gastoCorriente)+c(r.inversion)+'</tr>';
+      }).join('');
+    }
+  }
+})();
+</script>
 
 
 <!-- ═══════════════════════════════════════════════════════════════════
