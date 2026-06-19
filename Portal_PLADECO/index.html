@@ -9779,6 +9779,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
       <canvas id="chartSocCap"></canvas>
     </div>
   </div>
+  <!-- BLOQUE 3 · Fichas metodológicas de los índices institucionales (estilo ICT) -->
+  <div id="indicesMetodo"></div>
   <div class="viz-row">
     <div class="viz-card viz-full">
       <h3>Matriz de Tensiones Institucionales</h3>
@@ -22731,21 +22733,31 @@ function renderCGRChart(){
 
 // ── ETHNOGRAPHY: CAPACITY RADAR ──
 function renderCapacity(){
+  /* Datos centralizados en window.indicesInstitucionales.capacidad (Bloque 3); fallback a los valores históricos. */
+  var IX=(window.indicesInstitucionales||{}).capacidad, D=IX&&IX.dimensiones;
+  var L=D?D.map(function(d){return d.name;}):['Transparencia','Inversión','Innovación','Planificación','Personal','Participación','Tecnología','Coordinación'];
+  var d1=D?D.map(function(d){return d.v1;}):[95,85,35,40,50,38,30,45];
+  var d2=D?D.map(function(d){return d.v2;}):[98,90,70,80,80,75,80,85];
   new Chart(document.getElementById('chartCapacity'),{type:'radar',data:{
-    labels:['Transparencia','Inversión','Innovación','Planificación','Personal','Participación','Tecnología','Coordinación'],
+    labels:L,
     datasets:[
-      {label:'Estado actual',data:[95,85,35,40,50,38,30,45],borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee',pointHoverRadius:8},
-      {label:'Meta 2035',data:[98,90,70,80,80,75,80,85],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:3,pointBackgroundColor:'#22c55e'}
+      {label:(IX&&IX.serie1)||'Estado actual',data:d1,borderColor:'#4361ee',backgroundColor:'rgba(67,97,238,.12)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4361ee',pointHoverRadius:8},
+      {label:(IX&&IX.serie2)||'Meta 2035',data:d2,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',borderWidth:2,borderDash:[5,5],pointRadius:3,pointBackgroundColor:'#22c55e'}
     ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1200},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:10},backdropColor:'transparent',callback:v=>v+'%'},pointLabels:{font:{size:11,weight:'600'}},grid:{color:'rgba(0,0,0,.06)'}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
 // ── ETHNOGRAPHY: SOCIAL CAPITAL ──
 function renderSocCap(){
+  /* Datos centralizados en window.indicesInstitucionales.capitalSocial (Bloque 3); fallback a los valores históricos. */
+  var IX=(window.indicesInstitucionales||{}).capitalSocial, D=IX&&IX.dimensiones;
+  var L=D?D.map(function(d){return d.name;}):['Org. comunitarias','Participación formal','Confianza institucional','Identidad territorial','Redes informales','Capital agrícola'];
+  var d1=D?D.map(function(d){return d.v1;}):[72,38,32,28,65,80];
+  var d2=D?D.map(function(d){return d.v2;}):[90,75,70,65,85,90];
   new Chart(document.getElementById('chartSocCap'),{type:'bar',data:{
-    labels:['Org. comunitarias','Participación formal','Confianza institucional','Identidad territorial','Redes informales','Capital agrícola'],
+    labels:L,
     datasets:[
-      {label:'Nivel actual',data:[72,38,32,28,65,80],backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
-      {label:'Potencial estimado',data:[90,75,70,65,85,90],backgroundColor:'#22c55e44',borderColor:'#22c55e',borderWidth:1,borderRadius:4,borderDash:[4,4]}
+      {label:(IX&&IX.serie1)||'Nivel actual',data:d1,backgroundColor:'#4361ee88',borderColor:'#4361ee',borderWidth:1,borderRadius:4},
+      {label:(IX&&IX.serie2)||'Potencial estimado',data:d2,backgroundColor:'#22c55e44',borderColor:'#22c55e',borderWidth:1,borderRadius:4,borderDash:[4,4]}
     ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000},scales:{y:{max:100,grid:{color:getChartGridColor()},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},maxRotation:45}}},plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}},tooltip:{backgroundColor:'#0f2940',cornerRadius:8,callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}}}});
 }
 
@@ -39070,6 +39082,84 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   window.renderMetaLabels=renderMetaLabels;
   if(document.readyState==='complete') renderMetaLabels(); else window.addEventListener('load',renderMetaLabels,{once:true});
   setTimeout(renderMetaLabels,1200);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 3 · METODOLOGÍA EXPLÍCITA DE LOS ÍNDICES INSTITUCIONALES (al estilo ICT).
+     Datos centralizados y EDITABLES en window.indicesInstitucionales (dimensiones, escala 0-100,
+     normalización, ponderación, fuente/fecha). renderCapacity/renderSocCap leen de este objeto.
+     Los puntajes son VALORACIÓN EXPERTA provisional; indicadores y ponderación por validar (no inventados). -->
+<style id="idx-metodo-css">
+.idx-metodo-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.idx-metodo{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.idx-metodo h4{font-size:13px;font-weight:800;color:var(--text);margin:0 0 6px}
+.idx-tag{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--warning-txt,#92400e);background:rgba(245,158,11,.13);border-radius:99px;padding:1px 7px;margin-bottom:8px}
+.idx-metodo .idx-row{font-size:11px;color:var(--text2);line-height:1.55;margin-bottom:5px}
+.idx-metodo .idx-row b{color:var(--text)}
+.idx-tbl{width:100%;border-collapse:collapse;font-size:10.5px;margin-top:9px}
+.idx-tbl th,.idx-tbl td{border-bottom:1px solid var(--border);padding:4px 7px;text-align:left}
+.idx-tbl th{font-size:9px;text-transform:uppercase;letter-spacing:.03em;color:var(--text3);font-weight:700}
+.idx-tbl td.n{text-align:center;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.idx-foot{font-size:9.5px;color:var(--text3);line-height:1.5;margin-top:9px;padding-top:8px;border-top:1px dashed var(--border)}
+@media(max-width:760px){.idx-metodo-wrap{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  window.indicesInstitucionales = (window.indicesInstitucionales && !window.indicesInstitucionales.nodeType) ? window.indicesInstitucionales : {
+    capacidad:{
+      nombre:'Capacidad Institucional', tipo:'Valoración experta (provisional)',
+      queMide:'Grado de desarrollo de funciones municipales clave para implementar el PLADECO (transparencia, inversión, innovación, planificación, personal, participación, tecnología, coordinación).',
+      queNoMide:'No mide desempeño individual ni satisfacción usuaria; no reemplaza una auditoría de gestión ni una medición con indicadores administrativos.',
+      escala:'0–100, derivada de valoración ordinal 1–5 (5≈100, 4≈75, 3≈50, 2≈25, 1≈0), mismo criterio del ICT.',
+      normalizacion:'Promedio de las dimensiones. Ponderación diferenciada por dimensión: por validar SECPLAC.',
+      ponderacion:'equiponderado (por validar)',
+      serie1:'Estado actual', serie2:'Meta 2035',
+      fuente:'Valoración experta SECPLAC sobre los hallazgos del levantamiento etnográfico (40+ entrevistas, 21 UV)', fecha:'2025',
+      nota:'Valoración experta provisional: los indicadores por dimensión y la ponderación quedan por completar/validar; el índice aún no es recomponible a nivel de indicador con los datos actuales.',
+      dimensiones:[
+        {name:'Transparencia',v1:95,v2:98,ind:[]},{name:'Inversión',v1:85,v2:90,ind:[]},
+        {name:'Innovación',v1:35,v2:70,ind:[]},{name:'Planificación',v1:40,v2:80,ind:[]},
+        {name:'Personal',v1:50,v2:80,ind:[]},{name:'Participación',v1:38,v2:75,ind:[]},
+        {name:'Tecnología',v1:30,v2:80,ind:[]},{name:'Coordinación',v1:45,v2:85,ind:[]}
+      ]
+    },
+    capitalSocial:{
+      nombre:'Capital Social Comunitario', tipo:'Valoración experta (provisional)',
+      queMide:'Cohesión social y participación de la comunidad: organizaciones, participación formal, confianza institucional, identidad territorial, redes informales y capital agrícola.',
+      queNoMide:'No mide capital social individual ni resultados de bienestar; es una lectura agregada desde el diagnóstico participativo.',
+      escala:'0–100, derivada de valoración ordinal 1–5 (mismo criterio del ICT).',
+      normalizacion:'Promedio de las dimensiones. Ponderación diferenciada: por validar SECPLAC.',
+      ponderacion:'equiponderado (por validar)',
+      serie1:'Nivel actual', serie2:'Potencial estimado',
+      fuente:'Valoración experta SECPLAC + diagnóstico participativo (95 organizaciones · 472 participantes)', fecha:'2024–2025',
+      nota:'Valoración experta provisional: los indicadores por dimensión y la ponderación quedan por completar/validar; el índice aún no es recomponible a nivel de indicador con los datos actuales.',
+      dimensiones:[
+        {name:'Org. comunitarias',v1:72,v2:90,ind:[]},{name:'Participación formal',v1:38,v2:75,ind:[]},
+        {name:'Confianza institucional',v1:32,v2:70,ind:[]},{name:'Identidad territorial',v1:28,v2:65,ind:[]},
+        {name:'Redes informales',v1:65,v2:85,ind:[]},{name:'Capital agrícola',v1:80,v2:90,ind:[]}
+      ]
+    }
+  };
+  function ficha(ix){
+    var rows=ix.dimensiones.map(function(d){return '<tr><td>'+esc(d.name)+'</td><td class="n">'+d.v1+'</td><td class="n">'+d.v2+'</td><td>'+(d.ind&&d.ind.length?esc(d.ind.join(', ')):'<span class="rsa-pend">por completar</span>')+'</td></tr>';}).join('');
+    return '<div class="idx-metodo"><span class="idx-tag">'+esc(ix.tipo)+'</span><h4>Ficha metodológica · '+esc(ix.nombre)+'</h4>'
+      +'<div class="idx-row"><b>Qué mide:</b> '+esc(ix.queMide)+'</div>'
+      +'<div class="idx-row"><b>Qué NO mide:</b> '+esc(ix.queNoMide)+'</div>'
+      +'<div class="idx-row"><b>Escala:</b> '+esc(ix.escala)+'</div>'
+      +'<div class="idx-row"><b>Normalización:</b> '+esc(ix.normalizacion)+'</div>'
+      +'<div class="idx-row"><b>Ponderación:</b> '+esc(ix.ponderacion)+'</div>'
+      +'<table class="idx-tbl"><thead><tr><th>Dimensión</th><th style="text-align:center">'+esc(ix.serie1)+'</th><th style="text-align:center">'+esc(ix.serie2)+'</th><th>Indicadores</th></tr></thead><tbody>'+rows+'</tbody></table>'
+      +'<div class="idx-foot"><b>Fuente:</b> '+esc(ix.fuente)+' · <b>Corte:</b> '+esc(ix.fecha)+'. '+esc(ix.nota)+'</div></div>';
+  }
+  function renderIndicesFichas(){
+    var host=document.getElementById('indicesMetodo'); if(!host) return;
+    var II=window.indicesInstitucionales; if(!II) return;
+    host.innerHTML='<div class="idx-metodo-wrap">'+ficha(II.capacidad)+ficha(II.capitalSocial)+'</div>';
+  }
+  window.renderIndicesFichas=renderIndicesFichas;
+  if(document.readyState==='complete') renderIndicesFichas(); else window.addEventListener('load',renderIndicesFichas,{once:true});
 })();
 </script>
 </body>
