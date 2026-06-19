@@ -39032,5 +39032,45 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   if(document.readyState==='complete') runRSA(); else window.addEventListener('load',runRSA,{once:true});
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 7 · VIGENCIA DEL DATO · etiqueta homogénea "Fuente + fecha de corte" por
+     elemento del diagnóstico (#etnografia). Metadata centralizada y EDITABLE en
+     window.metadataIndicadores. El control "Ver datos / Descargar CSV" ya es genérico
+     para todos los gráficos Chart.js (v45.246). Render seguro · sin temporizadores. -->
+<style id="dato-meta-css">
+.dato-meta{font-size:10px;color:var(--text3);line-height:1.5;margin-top:9px;padding-top:8px;border-top:1px dashed var(--border)}
+.dato-meta b{color:var(--text2);font-weight:700}
+.dato-meta .dm-tag{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:99px;padding:1px 7px;margin-right:5px;vertical-align:middle}
+.dato-meta a{color:var(--text2);font-weight:700;text-decoration:underline}
+</style>
+<script>
+(function(){
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  /* EDITABLE por SECPLAC · metadata de vigencia por elemento de datos del diagnóstico.
+     tipo: 'Fuente oficial' | 'Evidencia cualitativa' | 'Valoración experta (provisional)' | 'Síntesis metodológica' */
+  window.metadataIndicadores = (window.metadataIndicadores && !window.metadataIndicadores.nodeType) ? window.metadataIndicadores : {
+    chartDomains:{tipo:'Evidencia cualitativa', fuente:'Levantamiento etnográfico PLADECO · 40+ entrevistas en profundidad y observación participante en 21 UV', fecha:'2025'},
+    chartCGR:{tipo:'Fuente oficial', fuente:'Registros de la Contraloría General de la República (CGR)', fecha:'2010–2024'},
+    chartCapacity:{tipo:'Valoración experta (provisional)', fuente:'Valoración experta SECPLAC sobre los hallazgos etnográficos', fecha:'2025'},
+    chartSocCap:{tipo:'Valoración experta (provisional)', fuente:'Valoración experta SECPLAC + diagnóstico participativo (95 organizaciones · 472 participantes)', fecha:'2024–2025'},
+    chartTensions:{tipo:'Síntesis metodológica', fuente:'Análisis de campo de fuerzas (Lewin) sobre el trabajo de campo PLADECO', fecha:'2025'}
+  };
+  function labelHTML(m){ return '<span class="dm-tag">'+esc(m.tipo||'Fuente')+'</span><b>Fuente:</b> '+esc(m.fuente)+' · <b>Corte:</b> '+esc(m.fecha)+(m.enlace?(' · <a href="'+esc(m.enlace)+'">ver</a>'):''); }
+  function renderMetaLabels(){
+    var M=window.metadataIndicadores; if(!M) return;
+    Object.keys(M).forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      var card=el.closest('.viz-card')||el.parentElement; if(!card) return;
+      if(card.querySelector(':scope > .dato-meta')) return; /* idempotente */
+      var div=document.createElement('div'); div.className='dato-meta'; div.innerHTML=labelHTML(M[id]);
+      card.appendChild(div);
+    });
+  }
+  window.renderMetaLabels=renderMetaLabels;
+  if(document.readyState==='complete') renderMetaLabels(); else window.addEventListener('load',renderMetaLabels,{once:true});
+  setTimeout(renderMetaLabels,1200);
+})();
+</script>
 </body>
 </html>
