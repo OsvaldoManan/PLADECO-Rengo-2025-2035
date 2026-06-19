@@ -9750,7 +9750,7 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <div class="sec-header">
     <div class="badge" style="background:#fce7f3;color:#db2777">Lo que escuchamos en terreno</div>
     <h2>Voces desde los Barrios y las Instituciones</h2>
-    <p>26 descubrimientos clave recogidos en m&aacute;s de 40 entrevistas y visitas a las 21 unidades vecinales de Rengo</p>
+    <p>28 descubrimientos clave recogidos en m&aacute;s de 40 entrevistas y visitas a las 21 unidades vecinales de Rengo</p>
   </div>
   <div class="domain-stats" id="domainStats"></div>
   <div class="ethno-tabs" id="ethnoTabs"></div>
@@ -9758,7 +9758,7 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <div class="viz-row">
     <div class="viz-card">
       <h3>Hallazgos por Dominio</h3>
-      <div class="viz-sub">Distribuci&#243;n de los 26 hallazgos etnogr&#225;ficos identificados</div>
+      <div class="viz-sub">Distribuci&#243;n de los 28 hallazgos etnogr&#225;ficos identificados (5 dominios)</div>
       <canvas id="chartDomains"></canvas>
     </div>
     <div class="viz-card">
@@ -9767,6 +9767,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
       <canvas id="chartCGR"></canvas>
     </div>
   </div>
+  <!-- BLOQUE 5 · Ficha de método cualitativo de los 28 hallazgos -->
+  <div id="metodoCualitativoFicha"></div>
   <div class="viz-row">
     <div class="viz-card">
       <h3>Capacidad Institucional</h3>
@@ -39160,6 +39162,53 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   }
   window.renderIndicesFichas=renderIndicesFichas;
   if(document.readyState==='complete') renderIndicesFichas(); else window.addEventListener('load',renderIndicesFichas,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 5 · NOTA DE MÉTODO CUALITATIVO de los 28 hallazgos etnográficos.
+     Objeto EDITABLE window.metodoCualitativo (técnica, N y perfil, codificación temática,
+     saturación, validación, limitaciones, fuente APA). Coherente con la fuente ya declarada.
+     Render seguro · sin temporizadores. -->
+<style id="mcual-css">
+.mcual{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:20px}
+.mcual h4{font-size:13.5px;font-weight:800;color:var(--text);margin:0 0 8px}
+.mcual-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 18px}
+.mcual-grid>div,.mcual-lim{font-size:11.5px;color:var(--text2);line-height:1.55}
+.mcual-grid b,.mcual-lim b{color:var(--text)}
+.mcual-lim{margin-top:11px;padding:9px 12px;background:rgba(245,158,11,.07);border-left:3px solid #f59e0b;border-radius:8px}
+@media(max-width:680px){.mcual-grid{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  window.metodoCualitativo = (window.metodoCualitativo && !window.metodoCualitativo.nodeType) ? window.metodoCualitativo : {
+    enfoque:'Estudio cualitativo de enfoque etnográfico (institutional ethnography), exploratorio-descriptivo.',
+    tecnicas:'Entrevistas semiestructuradas en profundidad · observación participante en terreno · revisión documental (registros municipales, CPLT, CGR, SECPLAC).',
+    n:'40+ entrevistas en profundidad.',
+    perfil:'Dirigentes vecinales, concejales, directores y funcionarios municipales, líderes culturales, COSOC, adultos mayores, regantes, entre otros actores del territorio.',
+    cobertura:'21 unidades vecinales (urbanas y rurales).',
+    codificacion:'Codificación temática en 5 dominios (Social, Inst.-Operativo, Inst.-Directivo, Político, Convergencia); 28 hallazgos agrupados por dominio. Cada hallazgo conserva su evidencia de respaldo.',
+    saturacion:'Consolidación por saturación temática: nuevas entrevistas dejaron de aportar categorías nuevas dentro de cada dominio.',
+    validacion:'Triangulación entre fuentes (entrevistas + observación + documentos) y contraste con la evidencia cuantitativa del diagnóstico (encuestas y registros administrativos).',
+    limitaciones:'Hallazgos cualitativos: describen percepciones y patrones, no son estadísticamente representativos ni generalizables a toda la población. Selección de actores intencionada (no probabilística); hay subjetividad del informante y del equipo. Deben leerse junto a la evidencia cuantitativa, no en reemplazo de ella.',
+    fuenteAPA:'Diagnóstico cualitativo PLADECO Rengo 2025: 40+ entrevistas en profundidad y observación participante en 21 unidades vecinales (dirigentes, concejales, directores, COSOC, adultos mayores). Equipo SECPLAC, Municipalidad de Rengo.'
+  };
+  function renderMetodoCualitativo(){
+    var host=document.getElementById('metodoCualitativoFicha'); if(!host) return;
+    var M=window.metodoCualitativo; if(!M) return;
+    function row(k,v){return '<div><b>'+k+':</b> '+esc(v)+'</div>';}
+    host.innerHTML='<div class="mcual"><span class="idx-tag" style="color:#db2777;background:rgba(219,39,119,.12)">Método cualitativo</span>'
+      +'<h4>Ficha de método · 28 hallazgos etnográficos</h4>'
+      +'<div class="mcual-grid">'
+      +row('Enfoque',M.enfoque)+row('Técnicas',M.tecnicas)+row('N°',M.n)+row('Perfil de actores',M.perfil)
+      +row('Cobertura',M.cobertura)+row('Codificación temática',M.codificacion)+row('Saturación',M.saturacion)+row('Validación',M.validacion)
+      +'</div>'
+      +'<div class="mcual-lim"><b>Limitaciones:</b> '+esc(M.limitaciones)+'</div>'
+      +'<div class="idx-foot"><b>Fuente (APA):</b> '+esc(M.fuenteAPA)+'</div></div>';
+  }
+  window.renderMetodoCualitativo=renderMetodoCualitativo;
+  if(document.readyState==='complete') renderMetodoCualitativo(); else window.addEventListener('load',renderMetodoCualitativo,{once:true});
 })();
 </script>
 </body>
