@@ -9769,6 +9769,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   </div>
   <!-- BLOQUE 5 · Ficha de método cualitativo de los 28 hallazgos -->
   <div id="metodoCualitativoFicha"></div>
+  <!-- BLOQUE 4 · Tablero de cumplimiento CGR (registro estructurado de las 24 fiscalizaciones) -->
+  <div id="cgrTracker"></div>
   <div class="viz-row">
     <div class="viz-card">
       <h3>Capacidad Institucional</h3>
@@ -39209,6 +39211,86 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   }
   window.renderMetodoCualitativo=renderMetodoCualitativo;
   if(document.readyState==='complete') renderMetodoCualitativo(); else window.addEventListener('load',renderMetodoCualitativo,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     BLOQUE 4 · HISTORIAL CGR COMO TABLERO DE CUMPLIMIENTO (accountability).
+     window.fiscalizacionesCGR (EDITABLE): registro estructurado por observación. El AÑO proviene
+     de fuente oficial (CGR_DATA); materia/dirección/estado quedan "por completar" (informes CGR).
+     Vista filtrable (año/dirección/estado) + KPI % subsanadas. Vincula con Eje 6 y #matriz.
+     Render seguro · sin temporizadores. -->
+<style id="cgr-tracker-css">
+.cgr-tracker{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px 17px;margin-bottom:20px}
+.cgr-tracker h4{font-size:13.5px;font-weight:800;color:var(--text);margin:0 0 4px}
+.cgr-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:10px;margin:12px 0 14px}
+.cgr-kpi{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center}
+.cgr-kpi .v{font-size:21px;font-weight:900;color:var(--text);line-height:1}
+.cgr-kpi .l{font-size:9.5px;color:var(--text2);margin-top:3px;font-weight:600}
+.cgr-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
+.cgr-filters label{font-size:10px;color:var(--text3);font-weight:700;display:inline-flex;gap:5px;align-items:center}
+.cgr-filters select{font-family:inherit;font-size:11px;padding:5px 8px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.cgr-twrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cgr-tbl{width:100%;border-collapse:collapse;font-size:11px;min-width:520px}
+.cgr-tbl th{text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.03em;color:var(--text3);font-weight:700;padding:0 8px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+.cgr-tbl td{padding:5px 8px;border-bottom:1px solid var(--border);vertical-align:middle}
+.cgr-tbl tbody tr:last-child td{border-bottom:none}
+.cgr-tbl td.n{text-align:center;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.cgr-est{display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;border-radius:99px;padding:1px 7px}
+.cgr-est.cgr-ok{color:var(--success-txt,#15803d);background:rgba(22,163,74,.12)}
+.cgr-est.cgr-wip{color:var(--warning-txt,#92400e);background:rgba(245,158,11,.14)}
+.cgr-est.cgr-pend{color:var(--danger-txt,#b91c1c);background:rgba(220,38,38,.1)}
+.cgr-tracker a{color:var(--text);font-weight:700;text-decoration:underline;cursor:pointer}
+</style>
+<script>
+(function(){
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  /* EDITABLE por SECPLAC · una fila por observación CGR. anio = fuente oficial (CGR_DATA);
+     materia/direccion/estado = "por completar" desde los informes CGR. estado: 'subsanada' | 'en proceso' | 'pendiente' | null. */
+  window.fiscalizacionesCGR = (window.fiscalizacionesCGR && !window.fiscalizacionesCGR.nodeType) ? window.fiscalizacionesCGR : (function(){
+    var src=(typeof CGR_DATA!=='undefined')?CGR_DATA:[]; var arr=[],id=1;
+    src.forEach(function(d){ for(var i=0;i<d.n;i++){ arr.push({id:id++, anio:d.y, materia:null, direccion:null, estado:null}); } });
+    return arr;
+  })();
+  var ESTADOS=[['subsanada','Subsanada','cgr-ok'],['en proceso','En proceso','cgr-wip'],['pendiente','Pendiente','cgr-pend']];
+  function badge(est){ if(est==null) return '<span class="rsa-pend">por completar</span>'; var m=ESTADOS.filter(function(e){return e[0]===est;})[0]; return m?'<span class="cgr-est '+m[2]+'">'+esc(m[1])+'</span>':esc(est); }
+  function renderCGRTracker(){
+    var host=document.getElementById('cgrTracker'); if(!host) return;
+    var A=window.fiscalizacionesCGR; if(!A||!A.length) return;
+    var years=Array.from(new Set(A.map(function(x){return x.anio;}))).sort(function(a,b){return a-b;});
+    var dirs=Array.from(new Set(A.map(function(x){return x.direccion;}).filter(Boolean))).sort();
+    function opt(v,l){return '<option value="'+esc(v)+'">'+esc(l)+'</option>';}
+    host.innerHTML='<div class="cgr-tracker"><h4>Tablero de cumplimiento &middot; Fiscalizaciones CGR (2010&ndash;2024)</h4>'
+      +'<div class="idx-row" style="font-size:11px;color:var(--text2);line-height:1.55">Registro estructurado de las <b>24 observaciones</b> de Contraloría como instrumento de <i>accountability</i> (<b>Eje 6 &middot; Gestión Estratégica</b>). El <b>año</b> proviene de fuente oficial (CGR); <b>materia, dirección responsable y estado</b> (subsanada / en proceso / pendiente) quedan <span class="rsa-pend">por completar</span> desde los informes CGR.</div>'
+      +'<div class="cgr-kpis" id="cgrKpis"></div>'
+      +'<div class="cgr-filters">'
+      +'<label>Año <select id="cgrFy"><option value="">Todos</option>'+years.map(function(y){return opt(y,y);}).join('')+'</select></label>'
+      +'<label>Dirección <select id="cgrFd"><option value="">Todas</option>'+dirs.map(function(d){return opt(d,d);}).join('')+'</select></label>'
+      +'<label>Estado <select id="cgrFe"><option value="">Todos</option>'+ESTADOS.map(function(e){return opt(e[0],e[1]);}).join('')+'<option value="__null">Por completar</option></select></label>'
+      +'</div>'
+      +'<div class="cgr-twrap"><table class="cgr-tbl"><thead><tr><th>#</th><th>Año</th><th>Materia</th><th>Dirección responsable</th><th>Estado</th></tr></thead><tbody id="cgrTbody"></tbody></table></div>'
+      +'<div class="idx-foot"><b>Fuente:</b> Registros de la Contraloría General de la República (CGR) &middot; 24 instrumentos de fiscalización 2010&ndash;2024. Campos de detalle <b>por completar</b> desde los informes CGR. Vincula con la debilidad de control interno del diagnóstico &rarr; <a onclick="if(window.PV&&PV.go)PV.go(\'matriz\')">Matriz Estratégica (Eje 6)</a>.</div>'
+      +'</div>';
+    function update(){
+      var fy=document.getElementById('cgrFy').value, fd=document.getElementById('cgrFd').value, fe=document.getElementById('cgrFe').value;
+      var rows=A.filter(function(x){
+        if(fy&&String(x.anio)!==fy) return false;
+        if(fd&&x.direccion!==fd) return false;
+        if(fe){ if(fe==='__null'){ if(x.estado!=null) return false; } else if(x.estado!==fe) return false; }
+        return true;
+      });
+      var tb=document.getElementById('cgrTbody');
+      tb.innerHTML=rows.length?rows.map(function(x){return '<tr><td class="n">'+x.id+'</td><td class="n">'+x.anio+'</td><td>'+(x.materia?esc(x.materia):'<span class="rsa-pend">por completar</span>')+'</td><td>'+(x.direccion?esc(x.direccion):'<span class="rsa-pend">por completar</span>')+'</td><td>'+badge(x.estado)+'</td></tr>';}).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:12px">Sin observaciones para el filtro seleccionado.</td></tr>';
+      var tot=A.length, sub=A.filter(function(x){return x.estado==='subsanada';}).length, wip=A.filter(function(x){return x.estado==='en proceso';}).length, pen=A.filter(function(x){return x.estado==='pendiente';}).length, sd=A.filter(function(x){return x.estado==null;}).length;
+      var pct=(tot-sd)>0?Math.round(sub/tot*100)+'%':'pendiente';
+      function kpi(v,l){return '<div class="cgr-kpi"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>';}
+      document.getElementById('cgrKpis').innerHTML=kpi(tot,'Observaciones')+kpi(sub||'—','Subsanadas')+kpi(wip||'—','En proceso')+kpi(pen||'—','Pendientes')+kpi(pct,'% subsanadas');
+    }
+    ['cgrFy','cgrFd','cgrFe'].forEach(function(id){var s=document.getElementById(id);if(s)s.addEventListener('change',update);});
+    update();
+  }
+  window.renderCGRTracker=renderCGRTracker;
+  if(document.readyState==='complete') renderCGRTracker(); else window.addEventListener('load',renderCGRTracker,{once:true});
 })();
 </script>
 </body>
