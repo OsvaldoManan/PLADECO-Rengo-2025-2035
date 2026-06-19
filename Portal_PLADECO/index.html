@@ -39588,11 +39588,19 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
      informe de simulación). Objetos EDITABLES window.finRiesgoFCM / window.finBenchmarkSINIM.
      Reutiliza clases fin-* de la sección. Render seguro · sin temporizadores. -->
 <style id="fin-fcm-css">
-#situacion-financiera .fin-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid #6087c7;border-radius:10px;padding:11px 14px;font-size:12px;line-height:1.6;color:var(--text2);margin-bottom:16px}
+#situacion-financiera .fin-lead{font-size:13px;color:var(--text2);line-height:1.7;text-align:justify;hyphens:auto;margin:0 0 16px}
+#situacion-financiera .fin-lead b{color:var(--text)}
+#situacion-financiera .fin-block-h{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--blue,#1F3864);margin:24px 0 11px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
+#situacion-financiera .fin-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:10px;padding:12px 15px;font-size:12px;line-height:1.65;color:var(--text2);margin-bottom:16px;text-align:justify;hyphens:auto}
 #situacion-financiera .fin-note b{color:var(--text)}
-#situacion-financiera .fin-note ol{margin:6px 0 0;padding-left:18px}#situacion-financiera .fin-note li{margin-bottom:5px}
-#situacion-financiera .fin-fuente-min{font-size:10.5px;color:var(--text3);line-height:1.5;margin:-6px 0 20px}
-#situacion-financiera .fin-note.coh{border-left-color:#1F3864}
+#situacion-financiera .fin-note.coh{border-left-color:#6087c7;background:rgba(96,135,199,.06)}
+#situacion-financiera .fin-alerta{text-align:justify;hyphens:auto}
+#situacion-financiera .fin-rec{list-style:none;counter-reset:fr;margin:0 0 16px;padding:0;display:grid;gap:9px}
+#situacion-financiera .fin-rec li{counter-increment:fr;position:relative;padding-left:32px;font-size:12px;line-height:1.55;color:var(--text2);text-align:justify;hyphens:auto}
+#situacion-financiera .fin-rec li::before{content:counter(fr);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:#1F3864;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+#situacion-financiera .fin-rec li b{color:var(--text)}
+#situacion-financiera .fin-fuente-min{font-size:10.5px;color:var(--text3);line-height:1.5;margin:2px 0 22px;font-style:italic}
 #situacion-financiera .fin-chart{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:18px}
 #situacion-financiera .fin-chart h5{font-size:12.5px;font-weight:800;color:var(--text);margin:0 0 2px}
 #situacion-financiera .fin-chart .fc-sub{font-size:11px;color:var(--text2);line-height:1.45;margin-bottom:10px}
@@ -39608,7 +39616,7 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
       {v:'55,8%', l:'del ingreso municipal proviene del FCM (2024): es la mayor fuente y, a la vez, la principal vulnerabilidad financiera de Rengo.', c:'#b45309'},
       {v:'0,56', l:'elasticidad ingreso–FCM: cada caída del fondo se traslada casi en la misma proporción al presupuesto comunal.', c:'#b45309'},
       {v:'MM$1.191', l:'pérdida en el escenario severo (−12%): equivale a un año completo de la inversión municipal de Rengo.', c:'#b91c1c'},
-      {v:'~US$70M', l:'del costo de la exención de contribuciones queda sin compensar a nivel nacional, según estimación del Gobierno.', c:'#6087c7'}
+      {v:'~US$70M', l:'del costo de la exención de contribuciones queda sin compensar a nivel nacional, según estimación del Gobierno.', c:'#1F3864'}
     ],
     escenarios:[
       {n:'E0 · Compensación plena', rec:'0%', perd:'0', ing:'17.779', caida:'0,0%', brecha:'719'},
@@ -39639,7 +39647,7 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   window.finBenchmarkSINIM = (window.finBenchmarkSINIM && !window.finBenchmarkSINIM.nodeType) ? window.finBenchmarkSINIM : {
     intro:'Serie presupuestaria <b>SINIM 2020-2024</b> (SUBDERE) de Rengo frente a comunas comparables de O’Higgins (San Fernando, Machalí, San Vicente, Santa Cruz) y la mediana regional. En el quinquenio el FCM creció <b>+92,5%</b> y los ingresos propios permanentes <b>+84,8%</b>, pero la dependencia del FCM subió de 51% a 55% del ingreso.',
     kpis:[
-      {v:'+92,5%', l:'creció el FCM en el quinquenio (MM$5.155 → MM$9.923): el ingreso depende cada vez más del fondo.', c:'#6087c7'},
+      {v:'+92,5%', l:'creció el FCM en el quinquenio (MM$5.155 → MM$9.923): el ingreso depende cada vez más del fondo.', c:'#1F3864'},
       {v:'+84,8%', l:'crecieron los ingresos propios permanentes (IPP): esfuerzo recaudador real, aún insuficiente para reducir la dependencia.', c:'#15803d'},
       {v:'82%', l:'del gasto es corriente (rigidez): por sobre el promedio comparable (75,8%), deja poco espacio para inversión.', c:'#b45309'},
       {v:'72%', l:'de ejecución presupuestaria 2024: cayó desde 86% en 2020 y queda bajo el promedio comparable (85,3%).', c:'#b91c1c'}
@@ -39660,22 +39668,25 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   };
   function nf(n){try{return Number(n).toLocaleString('es-CL');}catch(e){return n;}}
   function gc(){try{return (typeof getChartGridColor==='function')?getChartGridColor():'rgba(0,0,0,.08)';}catch(e){return 'rgba(0,0,0,.08)';}}
-  function cards(arr){return '<div class="fin-hall">'+arr.map(function(k){return '<div class="fin-hall-card" style="--hc:'+(k.c||'#6087c7')+'"><div class="fin-hall-t">'+k.v+'</div><div class="fin-hall-d">'+k.l+'</div></div>';}).join('')+'</div>';}
+  function cards(arr){return '<div class="fin-hall">'+arr.map(function(k){return '<div class="fin-hall-card" style="--hc:'+(k.c||'#1F3864')+'"><div class="fin-hall-t">'+k.v+'</div><div class="fin-hall-d">'+k.l+'</div></div>';}).join('')+'</div>';}
   function eqCards(arr){return '<div class="fin-hall">'+arr.map(function(k){return '<div class="fin-hall-card" style="--hc:#b45309"><div class="fin-hall-t">'+k.t+'</div><div class="fin-hall-d">'+k.d+'</div></div>';}).join('')+'</div>';}
   function chartBox(id,t,sub){return '<div class="fin-chart"><h5>'+t+'</h5><div class="fc-sub">'+sub+'</div><div class="fc-canvas"><canvas id="'+id+'"></canvas></div></div>';}
   function renderFinFCM(){
     var h=document.getElementById('finFCM'); if(!h) return; var F=window.finRiesgoFCM; if(!F) return;
     var esc='<div class="fin-table-wrap"><table class="fin-table"><thead><tr><th>Escenario</th><th>Recorte FCM</th><th>Pérdida (MM$)</th><th>Ingreso total (MM$)</th><th>Caída ingreso</th><th>Brecha gasto–ingreso (MM$)</th></tr></thead><tbody>'
       +F.escenarios.map(function(e){return '<tr'+(e.sev?' class="tot"':'')+'><td>'+e.n+'</td><td>'+e.rec+'</td><td>'+e.perd+'</td><td>'+e.ing+'</td><td>'+e.caida+'</td><td>'+e.brecha+'</td></tr>';}).join('')+'</tbody></table></div>';
-    var rec='<div class="fin-note"><b>Recomendaciones (informe):</b><ol>'+F.recomendaciones.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ol></div>';
-    h.innerHTML='<p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin:0 0 14px">'+F.intro+'</p>'
-      +(F.coherencia?'<div class="fin-note coh">'+F.coherencia+'</div>':'')
+    var rec='<ol class="fin-rec">'+F.recomendaciones.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ol>';
+    h.innerHTML='<p class="fin-lead">'+F.intro+'</p>'
       +cards(F.kpis)
-      +'<div style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--blue,#1F3864);margin:6px 0 8px">Escenarios de estrés del FCM (base 2024)</div>'+esc
+      +(F.coherencia?'<div class="fin-note coh">'+F.coherencia+'</div>':'')
+      +'<div class="fin-block-h">Simulación de escenarios de estrés (base 2024)</div>'
+      +esc
       +chartBox('finChartEsc','Ingreso vs. gasto devengado por escenario','El gasto es rígido: cada recorte del FCM amplía la brecha (millones de pesos).')
       +eqCards(F.equivalencias)
+      +'<div class="fin-block-h">Exposición comparada con otras comunas</div>'
       +'<div class="fin-note">'+F.comparada+'</div>'
       +chartBox('finChartExp','Exposición comparada al FCM (2024)','Participación del FCM en el ingreso por comuna: a mayor %, mayor transmisión de un recorte. Rengo, en rojo.')
+      +'<div class="fin-block-h">Recomendaciones del informe</div>'
       +rec
       +'<div class="fin-alerta">'+F.nota+'</div>'
       +'<div class="fin-fuente-min">'+F.fuente+'</div>';
@@ -39684,9 +39695,11 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
     var h=document.getElementById('finBenchmark'); if(!h) return; var B=window.finBenchmarkSINIM; if(!B) return;
     var tbl='<div class="fin-table-wrap"><table class="fin-table"><thead><tr><th>Indicador (2024)</th><th>Rengo</th><th>Prom. comparables</th><th>Mediana región</th></tr></thead><tbody>'
       +B.bench.map(function(b){return '<tr><td>'+b.i+'</td><td style="font-weight:800;color:var(--text)">'+b.r+'</td><td>'+b.c+'</td><td>'+b.g+'</td></tr>';}).join('')+'</tbody></table></div>';
-    h.innerHTML='<p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin:0 0 14px">'+B.intro+'</p>'
+    h.innerHTML='<p class="fin-lead">'+B.intro+'</p>'
       +cards(B.kpis)
+      +'<div class="fin-block-h">Evolución 2020-2024</div>'
       +chartBox('finChartTray','Trayectoria FCM e ingresos propios (2020-2024)','Ambos crecen, pero el FCM lo hace más rápido (+92,5% vs +84,8%): la dependencia aumenta. Millones de pesos.')
+      +'<div class="fin-block-h">Comparación con comunas comparables (2024)</div>'
       +tbl
       +chartBox('finChartComp','Rengo vs. promedio de comunas comparables (2024)','Rengo (rojo) frente al promedio de San Fernando, Machalí, San Vicente y Santa Cruz.')
       +'<div class="fin-note">'+B.lectura+'</div>'
@@ -39700,16 +39713,16 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
     var leg={legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}}};
     if(F&&F.chartEsc){ var CE=F.chartEsc;
       mkChart('finChartEsc',{type:'bar',data:{labels:CE.labels,datasets:[
-        {type:'bar',label:'Ingreso total (MM$)',data:CE.ingreso,backgroundColor:CE.ingreso.map(function(v,i){return i===3?'#b45309':'#6087c7';}),borderRadius:3,order:2},
+        {type:'bar',label:'Ingreso total (MM$)',data:CE.ingreso,backgroundColor:CE.ingreso.map(function(v,i){return i===3?'#b45309':'#1F3864';}),borderRadius:3,order:2},
         {type:'line',label:'Gasto devengado 2024 (fijo)',data:CE.labels.map(function(){return CE.gasto;}),borderColor:'#b91c1c',borderWidth:2,borderDash:[5,4],pointRadius:0,order:1}
       ]},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},scales:{y:yg,x:xg},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.dataset.label+': $'+nf(c.raw)+' M';}}}},leg)}});
     }
     if(F&&F.exposicion){
-      mkChart('finChartExp',{type:'bar',data:{labels:F.exposicion.map(function(x){return x.m;}),datasets:[{label:'Participación del FCM en el ingreso (%)',data:F.exposicion.map(function(x){return x.v;}),backgroundColor:F.exposicion.map(function(x){return x.m==='Rengo'?'#990000':'#6087c7';}),borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:gc()},ticks:{callback:function(v){return v+'%';},font:{size:10}}},x:xg},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.raw+'% del ingreso';}}}},{legend:{display:false}})}});
+      mkChart('finChartExp',{type:'bar',data:{labels:F.exposicion.map(function(x){return x.m;}),datasets:[{label:'Participación del FCM en el ingreso (%)',data:F.exposicion.map(function(x){return x.v;}),backgroundColor:F.exposicion.map(function(x){return x.m==='Rengo'?'#990000':'#1F3864';}),borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:gc()},ticks:{callback:function(v){return v+'%';},font:{size:10}}},x:xg},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.raw+'% del ingreso';}}}},{legend:{display:false}})}});
     }
     if(B&&B.serie){ var S=B.serie;
       mkChart('finChartTray',{type:'line',data:{labels:S.anos,datasets:[
-        {label:'FCM (MM$)',data:S.fcm,borderColor:'#6087c7',backgroundColor:'rgba(96,135,199,.10)',borderWidth:2.4,tension:.3,pointRadius:3,fill:true},
+        {label:'FCM (MM$)',data:S.fcm,borderColor:'#1F3864',backgroundColor:'rgba(31,56,100,.10)',borderWidth:2.4,tension:.3,pointRadius:3,fill:true},
         {label:'Ingresos propios permanentes (MM$)',data:S.ipp,borderColor:'#15803d',borderWidth:2.4,tension:.3,pointRadius:3}
       ]},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},scales:{y:yg,x:xg},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.dataset.label+': $'+nf(c.raw)+' M';}}}},leg)}});
     }
