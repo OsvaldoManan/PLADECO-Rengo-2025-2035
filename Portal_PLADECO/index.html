@@ -13453,6 +13453,7 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
       <button class="sc-tab-btn" onclick="switchSCTab('foda',this)" role="tab" aria-selected="false"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg> FODA por Actor</button>
       <button class="sc-tab-btn" onclick="switchSCTab('cruce',this)" role="tab" aria-selected="false"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg> Cruce de Datos</button>
       <button class="sc-tab-btn" onclick="switchSCTab('sna',this)" role="tab" aria-selected="false"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-plug"></use></svg> Red SNA &middot; Articulaciones</button>
+      <button class="sc-tab-btn" onclick="switchSCTab('rsa',this)" role="tab" aria-selected="false"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-institution"></use></svg> Actores &middot; RSA</button>
     </div>
 
     <!-- PANEL 1: MAPA -->
@@ -13695,6 +13696,10 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
         </div>
       </div>
     </div>
+    </div>
+    <!-- PANEL RSA · Sociedad Civil (Mendelow + Mitchell-Agle-Wood) -->
+    <div class="sc-tab-panel" id="sc-panel-rsa" style="padding:22px">
+      <div id="rsaContainerSoc"></div>
     </div>
   </div>
 
@@ -27330,6 +27335,7 @@ function switchSCTab(tabId,btn){
   if(tabId==='foda') renderSCFoda();
   if(tabId==='cruce') renderSCCruce();
   if(tabId==='sna') renderSNAGraph();
+  if(tabId==='rsa'&&typeof renderRSASoc==='function') renderRSASoc();
   if(tabId==='mapa' && window.map && map.invalidateSize) setTimeout(function(){map.invalidateSize();},100);
 }
 
@@ -38929,17 +38935,18 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
     +'<h6>Limitaciones</h6>Poder e interés de las direcciones son <i>proxies editables</i>, no medidas directas. El interés y la urgencia de actores externos están <b>pendientes de validación</b> y no deben leerse como definitivos. La saliencia mostrada es <b>provisional</b> (se calcula con poder + legitimidad; se afina al completar la urgencia). No se ha inventado dato alguno: los campos no derivables quedan marcados como «por validar».'
     +'<h6>Fuentes (APA)</h6>Mendelow, A. L. (1991). Environmental scanning: The impact of the stakeholder concept. <i>Proceedings of the 2nd ICIS</i>. · Mitchell, R. K., Agle, B. R., &amp; Wood, D. J. (1997). Toward a theory of stakeholder identification and salience. <i>Academy of Management Review, 22</i>(4), 853–886. · Freeman, R. E. (1984). <i>Strategic Management: A Stakeholder Approach</i>. Pitman. · Diagnóstico Institucional PLADECO Rengo 2025–2035 (N = 115; 1.855 respuestas) para la red base.';
   window.gotoInstTab=function(id){var bs=document.querySelectorAll('.sc-tab-btn');for(var i=0;i<bs.length;i++){var oc=bs[i].getAttribute('onclick')||'';if(oc.indexOf("switchInstTab('"+id+"'")>=0){bs[i].click();bs[i].scrollIntoView({block:'center'});return;}}};
-  function renderRSA(){
-    var host=document.getElementById('rsaContainer'); if(!host) return;
-    var A=window.rsaActores; if(!A||!A.length) return;
-    var TC={int:{c:'#1F3864',l:'Dirección municipal'},ipf:{c:'#b45309',l:'Instancia de participación'},ext:{c:'#0891b2',l:'Externo / supramunicipal'}};
-    function chip(a){return '<span class="rsa-chip"><i style="background:'+TC[a.tipo].c+'"></i>'+esc(a.n)+'</span>';}
+  window.gotoSCTab=function(id){var bs=document.querySelectorAll('.sc-tab-btn');for(var i=0;i<bs.length;i++){var oc=bs[i].getAttribute('onclick')||'';if(oc.indexOf("switchSCTab('"+id+"'")>=0){bs[i].click();bs[i].scrollIntoView({block:'center'});return;}}};
+  function renderRSAInto(host,A,cfg){
+    if(!host||!A||!A.length) return;
+    var TC=cfg.TC;
+    function chip(a){return '<span class="rsa-chip"><i style="background:'+(TC[a.tipo]?TC[a.tipo].c:'#6087c7')+'"></i>'+esc(a.n)+'</span>';}
+    function tlabel(a){return TC[a.tipo]?TC[a.tipo].l:a.tipo;}
     var pa=function(a){return a.poder>=4;}, ia=function(a){return a.interes!=null&&a.interes>=4;};
     var known=A.filter(function(a){return a.interes!=null;}), tray=A.filter(function(a){return a.interes==null;});
     var q1=known.filter(function(a){return pa(a)&&ia(a);}), q2=known.filter(function(a){return pa(a)&&!ia(a);}),
         q3=known.filter(function(a){return !pa(a)&&ia(a);}), q4=known.filter(function(a){return !pa(a)&&!ia(a);});
     function qbox(cls,t,d,arr){return '<div class="rsa-q '+cls+'"><h5>'+t+'</h5><div class="qd">'+d+'</div>'+(arr.length?arr.map(chip).join(''):'<span style="font-size:10px;color:var(--text3)">— sin actores —</span>')+'</div>';}
-    var head='<div><h3 style="font-size:15px;color:var(--text);margin:0"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-institution"></use></svg> Análisis Relacional / de Stakeholders (RSA)</h3><div class="rsa-sub" style="margin-top:2px">Posición estratégica y atributos de cada actor del PLADECO &mdash; <b>poder, interés, legitimidad, urgencia</b> y tipo de <b>relación</b> &mdash; según Mendelow (1991) y Mitchell, Agle &amp; Wood (1997). Complementa al SNA (estructura de la red) con una lectura de actores.</div></div>';
+    var head='<div><h3 style="font-size:15px;color:var(--text);margin:0"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-institution"></use></svg> Análisis Relacional / de Stakeholders (RSA)</h3><div class="rsa-sub" style="margin-top:2px">'+(cfg.sub||'Posición estratégica y atributos de cada actor &mdash; <b>poder, interés, legitimidad, urgencia</b> y tipo de <b>relación</b> &mdash; según Mendelow (1991) y Mitchell, Agle &amp; Wood (1997). Complementa al SNA (estructura de la red) con una lectura de actores.')+'</div></div>';
     var vs='<div class="rsa-vs"><div class="sna"><h5>SNA &mdash; ¿cómo fluye la información?</h5><p>Describe la <b>estructura</b> de la red: quién se conecta con quién, brokers, densidad, subgrupos. Métrica base: <b>centralidad</b>.</p></div><div class="rsa"><h5>RSA &mdash; ¿a quién priorizar y cómo gestionarlo?</h5><p>Describe la <b>posición y los atributos</b> de cada actor: poder, interés, legitimidad, urgencia. Métrica base: <b>poder×interés</b> y saliencia.</p></div></div><div class="rsa-box"><b>Son complementarios, no redundantes.</b> La centralidad del SNA alimenta el eje de <i>poder</i> del RSA: un actor central tiende a tener más poder relacional. Pero un actor puede ser central y de bajo interés (gestionar distinto), o periférico y de alto interés (no descuidar).</div>';
     var matrix='<h4 class="rsa-h4">Matriz Poder × Interés (Mendelow)</h4><div class="rsa-sub">Eje vertical: <b>poder</b> (arriba = mayor) · eje horizontal: <b>interés</b> (derecha = mayor). Clasificación derivada de los atributos del registro.</div><div class="rsa-mtx">'
       +qbox('q2','Mantener satisfecho','Alto poder · bajo interés',q2)
@@ -38947,32 +38954,82 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
       +qbox('q4','Monitorear','Bajo poder · bajo interés',q4)
       +qbox('q3','Mantener informado','Bajo poder · alto interés',q3)
       +'</div>';
-    var trayHtml='<div class="rsa-tray"><h5>Por posicionar &middot; interés <span class="rsa-pend">por validar SECPLAC</span></h5><div style="font-size:10px;color:var(--text3);margin-bottom:8px">Actores externos: su <b>poder</b> se deriva del mandato formal (financiamiento, fiscalización, competencia sectorial); su <b>interés/posición</b> frente al PLADECO debe asignarlo SECPLAC antes de ubicarlos en la matriz.</div>'+(tray.length?tray.map(chip).join(''):'<span style="font-size:10px;color:var(--text3)">—</span>')+'</div>';
-    var legend='<div class="rsa-legend"><i style="background:#1F3864"></i>Dirección municipal &nbsp;&nbsp;<i style="background:#b45309"></i>Instancia de participación &nbsp;&nbsp;<i style="background:#0891b2"></i>Externo / supramunicipal</div>';
+    var trayHtml='<div class="rsa-tray"><h5>Por posicionar &middot; interés <span class="rsa-pend">por validar SECPLAC</span></h5><div style="font-size:10px;color:var(--text3);margin-bottom:8px">'+cfg.trayNote+'</div>'+(tray.length?tray.map(chip).join(''):'<span style="font-size:10px;color:var(--text3)">—</span>')+'</div>';
+    var legend='<div class="rsa-legend">'+cfg.legend+'</div>';
     function salience(a){ if(a.poder>=4&&a.legit==='alta') return 'Dominante'; if(a.legit==='alta') return 'Dependiente'; return 'Latente'; }
     var relMap={colab:['Colaboración','rsa-rel-colab'],dep:['Dependencia','rsa-rel-dep'],tension:['Tensión','rsa-rel-tension']};
     var sorted=A.slice().sort(function(x,y){return y.poder-x.poder || (y.interes||0)-(x.interes||0);});
     var trows=sorted.map(function(a){
       var inter=(a.interes==null)?'<span class="rsa-pend">por validar</span>':String(a.interes);
       var rel=relMap[a.rel]||['—',''];
-      return '<tr><td>'+chip(a)+'</td><td style="color:var(--text2)">'+TC[a.tipo].l+'</td><td class="rsa-num">'+a.poder+'</td><td class="rsa-num">'+inter+'</td><td>'+(a.legit==='alta'?'Alta':'Media')+'</td><td><span class="rsa-pend">por validar</span></td><td class="'+rel[1]+'">'+rel[0]+'</td><td>'+salience(a)+' <span style="color:var(--text3);font-size:9px">prov.</span></td></tr>';
+      return '<tr><td>'+chip(a)+'</td><td style="color:var(--text2)">'+tlabel(a)+'</td><td class="rsa-num">'+a.poder+'</td><td class="rsa-num">'+inter+'</td><td>'+(a.legit==='alta'?'Alta':'Media')+'</td><td><span class="rsa-pend">por validar</span></td><td class="'+rel[1]+'">'+rel[0]+'</td><td>'+salience(a)+' <span style="color:var(--text3);font-size:9px">prov.</span></td></tr>';
     }).join('');
-    var table='<h4 class="rsa-h4">Registro de actores</h4><div class="rsa-sub">Poder y legitimidad <b>derivados</b> (centralidad en la red / mandato formal); interés y urgencia <b>editables, por validar SECPLAC</b>. Saliencia provisional (Mitchell-Agle-Wood): se afina al completar la urgencia.</div><div class="rsa-twrap"><table class="rsa-tbl"><thead><tr><th>Actor</th><th>Tipo</th><th style="text-align:center">Poder</th><th style="text-align:center">Interés</th><th>Legitimidad</th><th>Urgencia</th><th>Relación</th><th>Saliencia</th></tr></thead><tbody>'+trows+'</tbody></table></div>';
-    var nT=A.filter(function(a){return a.rel==='tension';}).map(function(a){return esc(a.n);});
-    var nD=A.filter(function(a){return a.rel==='dep';}).map(function(a){return esc(a.n);});
-    var gov='<h4 class="rsa-h4">Implicancias para la gobernanza &middot; Eje 6 (Gestión Estratégica)</h4><div class="rsa-gov"><ul>'
-      +'<li><b>Jugadores clave (gestionar de cerca):</b> SECPLAN (conduce el plan), Gabinete y Concejo Municipal (aprueba) concentran poder e interés &mdash; núcleo de la gobernanza del PLADECO.</li>'
-      +'<li><b>Brokers críticos (del SNA):</b> DDEL, DIDECO y Depto. de Salud articulan la red interna &mdash; conviene situarlos como nodos de las <b>mesas inter-direcciones</b> para que circule la información.</li>'
-      +'<li><b>Dependencias externas a coordinar:</b> '+nD.join(', ')+' &mdash; financiamiento y competencias sectoriales: una <b>mesa de coordinación multinivel</b> (convenios, programación FNDR/sectorial).</li>'
-      +'<li><b>Tensiones a gestionar:</b> '+nT.join(', ')+' &mdash; relación de fiscalización/cumplimiento: protocolos y reportería temprana (ver <a onclick="if(window.PV&&PV.go)PV.go(\'etnografia\')">Matriz de Tensiones</a>).</li>'
-      +'<li><b>Mantener informadas:</b> las unidades operativas (alto interés, menor poder) requieren información del avance para sostener la implementación.</li>'
-      +'</ul></div>';
-    var links='<div class="rsa-links">Integración: <a onclick="if(window.gotoInstTab)gotoInstTab(\'red\')">Red SNA (estructura) &uarr;</a> &middot; <a onclick="if(window.PV&&PV.go)PV.go(\'sna-gobernanza\')">Red de Gobernanza (41 actores) &rarr;</a> &middot; <a onclick="if(window.PV&&PV.go)PV.go(\'etnografia\')">Matriz de Tensiones &rarr;</a></div>';
-    var details='<details class="rsa-details"><summary>Marco metodológico · cómo se derivó cada atributo · limitaciones · fuentes (APA)</summary><div class="dd">'+RSA_METHOD+'</div></details>';
+    var table='<h4 class="rsa-h4">Registro de actores</h4><div class="rsa-sub">Poder y legitimidad <b>derivados</b> (centralidad en la red / representatividad o mandato formal); interés y urgencia <b>editables, por validar SECPLAC</b>. Saliencia provisional (Mitchell-Agle-Wood): se afina al completar la urgencia.</div><div class="rsa-twrap"><table class="rsa-tbl"><thead><tr><th>Actor</th><th>Tipo</th><th style="text-align:center">Poder</th><th style="text-align:center">Interés</th><th>Legitimidad</th><th>Urgencia</th><th>Relación</th><th>Saliencia</th></tr></thead><tbody>'+trows+'</tbody></table></div>';
+    var ctx={ nT:A.filter(function(a){return a.rel==='tension';}).map(function(a){return esc(a.n);}),
+              nD:A.filter(function(a){return a.rel==='dep';}).map(function(a){return esc(a.n);}),
+              q3:q3.map(function(a){return esc(a.n);}) };
+    var gov=(typeof cfg.gov==='function')?cfg.gov(ctx):(cfg.gov||'');
+    var links=cfg.links||'';
+    var details='<details class="rsa-details"><summary>Marco metodológico · cómo se derivó cada atributo · limitaciones · fuentes (APA)</summary><div class="dd">'+cfg.method+'</div></details>';
     host.innerHTML=head+vs+matrix+trayHtml+legend+table+gov+details+links;
   }
+  /* ── Config INSTITUCIONAL ── */
+  var INST_TC={int:{c:'#1F3864',l:'Dirección municipal'},ipf:{c:'#b45309',l:'Instancia de participación'},ext:{c:'#0891b2',l:'Externo / supramunicipal'}};
+  var INST_CFG={ TC:INST_TC,
+    trayNote:'Actores externos: su <b>poder</b> se deriva del mandato formal (financiamiento, fiscalización, competencia sectorial); su <b>interés/posición</b> frente al PLADECO debe asignarlo SECPLAC antes de ubicarlos en la matriz.',
+    legend:'<i style="background:#1F3864"></i>Dirección municipal &nbsp;&nbsp;<i style="background:#b45309"></i>Instancia de participación &nbsp;&nbsp;<i style="background:#0891b2"></i>Externo / supramunicipal',
+    method:RSA_METHOD,
+    links:'<div class="rsa-links">Integración: <a onclick="if(window.gotoInstTab)gotoInstTab(\'red\')">Red SNA (estructura) &uarr;</a> &middot; <a onclick="if(window.PV&&PV.go)PV.go(\'sna-gobernanza\')">Red de Gobernanza (41 actores) &rarr;</a> &middot; <a onclick="if(window.PV&&PV.go)PV.go(\'etnografia\')">Matriz de Tensiones &rarr;</a></div>',
+    gov:function(ctx){return '<h4 class="rsa-h4">Implicancias para la gobernanza &middot; Eje 6 (Gestión Estratégica)</h4><div class="rsa-gov"><ul>'
+      +'<li><b>Jugadores clave (gestionar de cerca):</b> SECPLAN (conduce el plan), Gabinete y Concejo Municipal (aprueba) concentran poder e interés &mdash; núcleo de la gobernanza del PLADECO.</li>'
+      +'<li><b>Brokers críticos (del SNA):</b> DDEL, DIDECO y Depto. de Salud articulan la red interna &mdash; conviene situarlos como nodos de las <b>mesas inter-direcciones</b> para que circule la información.</li>'
+      +'<li><b>Dependencias externas a coordinar:</b> '+ctx.nD.join(', ')+' &mdash; financiamiento y competencias sectoriales: una <b>mesa de coordinación multinivel</b> (convenios, programación FNDR/sectorial).</li>'
+      +'<li><b>Tensiones a gestionar:</b> '+ctx.nT.join(', ')+' &mdash; relación de fiscalización/cumplimiento: protocolos y reportería temprana (ver <a onclick="if(window.PV&&PV.go)PV.go(\'etnografia\')">Matriz de Tensiones</a>).</li>'
+      +'<li><b>Mantener informadas:</b> las unidades operativas (alto interés, menor poder) requieren información del avance para sostener la implementación.</li>'
+      +'</ul></div>';}
+  };
+  function renderRSA(){ renderRSAInto(document.getElementById('rsaContainer'), window.rsaActores, INST_CFG); }
   window.renderRSA=renderRSA;
-  if(document.readyState==='complete') renderRSA(); else window.addEventListener('load',renderRSA,{once:true});
+  /* ── Config SOCIEDAD CIVIL ── EDITABLE por SECPLAC. poder/legit derivados (centralidad SNA SC + representatividad); interes/urg "por validar" donde no es derivable. */
+  window.rsaActoresSoc = (window.rsaActoresSoc && !window.rsaActoresSoc.nodeType) ? window.rsaActoresSoc : [
+    {id:'jjvvr',n:'JJVV Rurales',tipo:'org',poder:5,interes:5,legit:'alta',urg:null,rel:'colab'},
+    {id:'jjvvu',n:'JJVV Urbanas',tipo:'org',poder:5,interes:5,legit:'alta',urg:null,rel:'colab'},
+    {id:'cosoc',n:'COSOC',tipo:'org',poder:4,interes:5,legit:'alta',urg:null,rel:'colab'},
+    {id:'ucam',n:'UCAM (Adulto Mayor)',tipo:'org',poder:3,interes:4,legit:'alta',urg:null,rel:'colab'},
+    {id:'jv',n:'Junta Vigilancia Río Claro',tipo:'func',poder:3,interes:4,legit:'alta',urg:null,rel:'tension'},
+    {id:'comerc',n:'Cámara de Comercio',tipo:'func',poder:3,interes:4,legit:'media',urg:null,rel:'colab'},
+    {id:'transp',n:'Transporte',tipo:'func',poder:3,interes:4,legit:'media',urg:null,rel:'dep'},
+    {id:'cultural',n:'Org. Culturales',tipo:'func',poder:2,interes:4,legit:'media',urg:null,rel:'dep'},
+    {id:'huasos',n:'Huasos / Rural',tipo:'func',poder:2,interes:4,legit:'media',urg:null,rel:'colab'},
+    {id:'nna',n:'NNA',tipo:'func',poder:2,interes:4,legit:'media',urg:null,rel:'dep'},
+    {id:'mamb',n:'Medio Ambiente',tipo:'func',poder:2,interes:4,legit:'media',urg:null,rel:'colab'},
+    {id:'carab',n:'Carabineros',tipo:'serv',poder:3,interes:null,legit:'alta',urg:null,rel:'colab'},
+    {id:'bomb',n:'Bomberos',tipo:'serv',poder:2,interes:null,legit:'alta',urg:null,rel:'colab'},
+    {id:'muni',n:'Municipalidad (DIDECO)',tipo:'inst',poder:5,interes:5,legit:'alta',urg:null,rel:'colab'}
+  ];
+  var SOC_TC={org:{c:'#1F3864',l:'Org. territorial / representativa'},func:{c:'#0891b2',l:'Org. funcional / sectorial'},serv:{c:'#64748b',l:'Servicio público'},inst:{c:'#b45309',l:'Contraparte institucional'}};
+  var RSA_METHOD_SOC='<h6>Marco</h6>Matriz Poder × Interés (Mendelow, 1991) + saliencia (Mitchell, Agle &amp; Wood, 1997). El RSA complementa al SNA de la sociedad civil: la centralidad en la red informa el <i>poder relacional</i> de cada organización.'
+    +'<h6>Cómo se derivó cada atributo</h6><b>Poder</b> (derivado, 1–5): centralidad en la red SNA de la sociedad civil + representatividad/escala (JJVV: 50 urbanas / 24 rurales; COSOC como consejo de la sociedad civil). <b>Legitimidad</b> (derivada): alta en organismos formales/representativos (JJVV Ley 19.418, COSOC Ley 18.695, juntas de vigilancia); media en organizaciones sectoriales. <b>Interés</b>: derivado de las prioridades expresadas por cada actor en el <b>diagnóstico participativo</b> (95 organizaciones, 472 participantes); para servicios públicos que aparecen en la red (Carabineros, Bomberos), <b>por validar SECPLAC</b>. <b>Urgencia</b>: <b>por validar SECPLAC</b> (no medida). <b>Relación</b> con el municipio/proceso: colaboración / dependencia / tensión.'
+    +'<h6>Limitaciones</h6>Los nodos agregan <b>tipos de actor</b> (p. ej. «JJVV Rurales» reúne 24 juntas), no organizaciones individuales. Poder e interés son <i>proxies editables</i>; la urgencia (y el interés de los servicios públicos) quedan <b>por validar</b>. La saliencia es <b>provisional</b>. No se ha inventado dato alguno.'
+    +'<h6>Fuentes (APA)</h6>Mendelow, A. L. (1991). Environmental scanning. <i>Proceedings of the 2nd ICIS</i>. · Mitchell, R. K., Agle, B. R., &amp; Wood, D. J. (1997). Toward a theory of stakeholder identification and salience. <i>Academy of Management Review, 22</i>(4), 853–886. · Freeman, R. E. (1984). <i>Strategic Management: A Stakeholder Approach</i>. · Diagnóstico Sociedad Civil Rengo 2024–2025 (95 organizaciones, 472 participantes; sept. 2024 – abr. 2025).';
+  var SOC_CFG={ TC:SOC_TC,
+    sub:'Posición estratégica y atributos de cada actor de la <b>sociedad civil</b> y su contraparte municipal &mdash; poder, interés, legitimidad, urgencia y relación &mdash; según Mendelow (1991) y Mitchell, Agle &amp; Wood (1997). Complementa al SNA (estructura de la red) con una lectura de actores.',
+    trayNote:'Servicios públicos que aparecen en la red comunitaria: su <b>poder</b> se deriva de su rol institucional; su <b>interés/posición</b> específica frente al PLADECO debe validarla SECPLAC antes de ubicarlos en la matriz.',
+    legend:'<i style="background:#1F3864"></i>Org. territorial / representativa &nbsp;&nbsp;<i style="background:#0891b2"></i>Org. funcional / sectorial &nbsp;&nbsp;<i style="background:#64748b"></i>Servicio público &nbsp;&nbsp;<i style="background:#b45309"></i>Contraparte institucional',
+    method:RSA_METHOD_SOC,
+    links:'<div class="rsa-links">Integración: <a onclick="if(window.gotoSCTab)gotoSCTab(\'sna\')">Red SNA de la sociedad civil &uarr;</a> &middot; <a onclick="if(window.PV&&PV.go)PV.go(\'sna-gobernanza\')">Red de Gobernanza (41 actores) &rarr;</a> &middot; <a onclick="if(window.PV&&PV.go)PV.go(\'etnografia\')">Matriz de Tensiones &rarr;</a></div>',
+    gov:function(ctx){return '<h4 class="rsa-h4">Implicancias para la gobernanza &middot; Eje 6 (Gestión Estratégica)</h4><div class="rsa-gov"><ul>'
+      +'<li><b>Jugadores clave (gestionar de cerca):</b> las Uniones Comunales de JJVV (urbana y rural), el COSOC y la Municipalidad concentran poder e interés &mdash; núcleo de la participación comunal; fortalecer el COSOC y las Uniones Comunales como interlocutores formales.</li>'
+      +'<li><b>Brokers críticos (del SNA):</b> JJVV Rurales (puente y <b>punto único de falla</b> de la red) y JJVV Urbanas articulan al resto &mdash; nodos naturales de las <b>mesas vecinales</b>; tejer vínculos redundantes hacia los actores periféricos (Medio Ambiente, Junta de Vigilancia).</li>'
+      +'<li><b>Mantener informadas / empoderar:</b> '+ctx.q3.join(', ')+' &mdash; alto interés y menor poder: requieren información del avance y apoyo (FONDEVE, Escuela de Dirigentes).</li>'
+      +'<li><b>Tensiones a gestionar:</b> '+(ctx.nT.length?ctx.nT.join(', ')+', ':'')+'además de las tensiones urbano-rural y generacional (adultos–NNA) del diagnóstico (ver <a onclick="if(window.PV&&PV.go)PV.go(\'etnografia\')">Matriz de Tensiones</a>).</li>'
+      +'<li><b>Dependencias:</b> '+ctx.nD.join(', ')+' &mdash; organizaciones que dependen de apoyo/financiamiento municipal (FONDEVE, subvenciones): reglas claras y trazables.</li>'
+      +'</ul></div>';}
+  };
+  function renderRSASoc(){ renderRSAInto(document.getElementById('rsaContainerSoc'), window.rsaActoresSoc, SOC_CFG); }
+  window.renderRSASoc=renderRSASoc;
+  function runRSA(){ renderRSA(); renderRSASoc(); }
+  if(document.readyState==='complete') runRSA(); else window.addEventListener('load',runRSA,{once:true});
 })();
 </script>
 </body>
