@@ -6570,7 +6570,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
     'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),'trazabilidad':navIco('cycle'),
-    'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'situacion-financiera':navIco('money'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
+    'resumen':navIco('doc'),'diagnostico-institucional':navIco('institution'),'situacion-financiera':navIco('money'),'cuenta-publica':navIco('clipboard'),'voz-institucional':navIco('people'),'equipo':navIco('people'),'sna':navIco('cycle'),'sna-gobernanza':navIco('globe'),
     'etnografia':navIco('search'),'comisiones':navIco('briefcase'),'viz':navIco('chart'),'semaforo':navIco('traffic'),'poa':navIco('clipboard'),'metas-trayectoria':navIco('trend'),'compromisos':navIco('check'),'financiamiento':navIco('money'),'inversion-subdere':navIco('money'),'inversion-bip-sni':navIco('chart'),
     'cronograma-gantt':navIco('calendar'),'validacion-concejo':navIco('check'),'faq-concejo':navIco('info'),
     /* Macro 04 · Cierre */
@@ -9741,6 +9741,62 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CUENTA PÚBLICA · Una década de rendición de cuentas (2013-2025)
+     MVP: marco legal Art.67 · KPIs · timeline · trayectoria (Chart.js) ·
+     lazo Plan↔Cuenta · repositorio. Datos en window.cuentasPublicas (editable).
+     ═══════════════════════════════════════════════════════════════════ -->
+<section id="cuenta-publica" class="reveal">
+  <div class="sec-header">
+    <div class="badge" style="background:#e0e7ff;color:#3730a3"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg> Rendici&oacute;n de cuentas</div>
+    <h2>Cuenta P&uacute;blica &middot; Una d&eacute;cada de rendici&oacute;n (2013&ndash;2025)</h2>
+    <p>El espejo del PLADECO: lo que el plan proyecta, la Cuenta P&uacute;blica lo rinde cada abril. Doce informes 2013&ndash;2025 que muestran qu&eacute; se hizo, con qu&eacute; recursos y con qu&eacute; resultados.</p>
+  </div>
+
+  <!-- Marco legal -->
+  <div class="cp-legal">
+    <div class="cp-legal-h"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-institution"></use></svg> Marco legal &middot; Art. 67, Ley N&deg; 18.695 (Org&aacute;nica de Municipalidades)</div>
+    <p class="cp-legal-sub">El alcalde debe rendir cuenta <strong>a m&aacute;s tardar en abril de cada a&ntilde;o</strong>, ante el Concejo Municipal, el COSOC y el Consejo Comunal de Seguridad P&uacute;blica. El informe abarca, como m&iacute;nimo:</p>
+    <div class="cp-legal-grid">
+      <div class="cp-duty"><b>a)</b> Balance de ejecuci&oacute;n presupuestaria y estado de situaci&oacute;n financiera (ingresos, gastos y pasivos).</div>
+      <div class="cp-duty"><b>b)</b> Avance y cumplimiento del <strong>Plan Comunal de Desarrollo</strong> (PLADECO).</div>
+      <div class="cp-duty"><b>c)</b> Gesti&oacute;n del Plan Comunal de Seguridad P&uacute;blica y del Consejo Comunal de Seguridad.</div>
+      <div class="cp-duty"><b>d)</b> Inversiones efectuadas, proyectos concluidos y en ejecuci&oacute;n, con sus fuentes de financiamiento.</div>
+    </div>
+    <div class="cp-legal-foot">Perfeccionado por la Ley N&deg; 20.742 (2014, materias de seguridad municipal) y circulares SUBDERE (resumen accesible a la comunidad). <em>Fuente: Cuenta P&uacute;blica Gesti&oacute;n 2024 (abril 2025).</em></div>
+  </div>
+
+  <!-- KPIs de la década -->
+  <div id="cpKpis"></div>
+
+  <!-- Banner provisional / nota metodológica -->
+  <div id="cpProv"></div>
+
+  <h3 class="cp-h"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clock"></use></svg> Una d&eacute;cada en el tiempo</h3>
+  <div id="cpTimeline"></div>
+
+  <h3 class="cp-h"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trend"></use></svg> Trayectoria de la d&eacute;cada</h3>
+  <div class="viz-row">
+    <div class="viz-card"><h3>Saneamiento financiero</h3><div class="viz-sub">Patrimonio neto y resultado anual (millones de pesos)</div><canvas id="cpFinanzas"></canvas></div>
+    <div class="viz-card"><h3>Transparencia activa</h3><div class="viz-sub">&Iacute;ndice de Transparencia Activa (CPLT, %)</div><canvas id="cpTransparencia"></canvas></div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card"><h3>Educaci&oacute;n municipal (DAEM)</h3><div class="viz-sub">Matr&iacute;cula municipal y traspaso desde el municipio</div><canvas id="cpEducacion"></canvas></div>
+    <div class="viz-card"><h3>Salud municipal (APS)</h3><div class="viz-sub">Prestaciones y dotaci&oacute;n profesional</div><canvas id="cpSalud"></canvas></div>
+  </div>
+  <div class="viz-row">
+    <div class="viz-card viz-full"><h3>Inversi&oacute;n SECPLA</h3><div class="viz-sub">Cartera de inversi&oacute;n municipal por a&ntilde;o (millones de pesos)</div><canvas id="cpInversion"></canvas></div>
+  </div>
+
+  <h3 class="cp-h"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-link"></use></svg> El lazo: Plan &harr; Cuenta P&uacute;blica</h3>
+  <div id="cpLazo"></div>
+
+  <h3 class="cp-h"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg> Repositorio documental</h3>
+  <div id="cpRepo"></div>
+
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuente:</strong> 12 Cuentas P&uacute;blicas de la I. Municipalidad de Rengo 2013&ndash;2025 (Art. 67, Ley N&deg; 18.695) &middot; Diagn&oacute;stico decenal SECPLAC &middot; Series de referencia, por validar contra cada cuenta (ver nota metodol&oacute;gica).</div>
+</section>
 
 <!-- ═══════════════════════════════════════════════════════════════════
      SECCI&Oacute;N B · PANEL DE VOZ INSTITUCIONAL · v45.124
@@ -37565,7 +37621,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* Estructura de capítulos del portal */
     var caps=[
       {t:'Introducción',ids:['bienvenida','mvv','historia','comparador-instrumentos','proceso','equipo']},
-      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','comisiones','viz']},
+      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','cuenta-publica','comisiones','viz']},
       {t:'Planificación',ids:['prospectiva','matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento','inversion-subdere']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','glosario','fuentes']}
     ];
@@ -39291,6 +39347,124 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   }
   window.renderCGRTracker=renderCGRTracker;
   if(document.readyState==='complete') renderCGRTracker(); else window.addEventListener('load',renderCGRTracker,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     SECCIÓN CUENTA PÚBLICA · datos + render (MVP). window.cuentasPublicas EDITABLE.
+     Series de referencia del diagnóstico decenal (anclas confirmadas + años interpolados, por validar).
+     Gráficos Chart.js con guarda + reintento; timeline/lazo/repo en HTML. Render seguro, sin temporizadores propios. -->
+<style id="cp-css">
+#cuenta-publica .cp-legal{background:var(--card);border:1px solid var(--border);border-left:4px solid #3730a3;border-radius:12px;padding:15px 18px;margin-bottom:18px}
+#cuenta-publica .cp-legal-h{font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px}
+#cuenta-publica .cp-legal-sub{font-size:12px;color:var(--text2);line-height:1.55;margin:0 0 10px}
+#cuenta-publica .cp-legal-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
+#cuenta-publica .cp-duty{font-size:11.5px;color:var(--text2);line-height:1.5}#cuenta-publica .cp-duty b{color:#3730a3}
+#cuenta-publica .cp-legal-foot{font-size:10.5px;color:var(--text3);margin-top:10px;padding-top:8px;border-top:1px dashed var(--border)}
+#cuenta-publica .cp-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+#cuenta-publica .cp-kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;border-top:3px solid #3730a3;text-align:center}
+#cuenta-publica .cp-kpi .v{font-size:22px;font-weight:900;color:var(--text);line-height:1.1}
+#cuenta-publica .cp-kpi .l{font-size:10.5px;color:var(--text2);margin-top:4px;font-weight:600;line-height:1.3}
+#cuenta-publica .cp-prov{font-size:11px;line-height:1.6;color:var(--text2);background:rgba(245,158,11,.08);border-left:3px solid #f59e0b;border-radius:8px;padding:10px 14px;margin-bottom:18px}
+#cuenta-publica .cp-prov b{color:var(--text)} #cuenta-publica .cp-prov code{font-size:10px;background:var(--bg);padding:1px 4px;border-radius:4px}
+#cuenta-publica .cp-h{font-size:15px;color:var(--text);margin:22px 0 12px;display:flex;align-items:center;gap:7px}
+#cuenta-publica .cp-tl{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin-bottom:8px}
+#cuenta-publica .cp-tl-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;border-top:3px solid #1F3864}
+#cuenta-publica .cp-tl-item.gap{border-top-color:#cbd5e1}
+#cuenta-publica .cp-tl-y{font-size:15px;font-weight:900;color:var(--text)}
+#cuenta-publica .cp-tl-d{font-size:9.5px;color:var(--text3);margin:1px 0 5px;text-transform:uppercase;letter-spacing:.03em;font-weight:700}
+#cuenta-publica .cp-tl-h{font-size:10.5px;color:var(--text2);line-height:1.4}
+#cuenta-publica .cp-lazo{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:6px}
+#cuenta-publica .cp-lazo-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:13px 15px;border-top:3px solid #990000}
+#cuenta-publica .cp-lazo-card .d{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#990000;margin-bottom:4px}
+#cuenta-publica .cp-lazo-card h5{font-size:12.5px;font-weight:800;color:var(--text);margin:0 0 5px}
+#cuenta-publica .cp-lazo-card p{font-size:11px;color:var(--text2);line-height:1.5;margin:0 0 8px}
+#cuenta-publica .cp-lazo-card a{font-size:11px;color:var(--text);font-weight:700;text-decoration:underline;cursor:pointer}
+#cuenta-publica .cp-repo-note{font-size:11px;color:var(--text2);line-height:1.55;margin-bottom:10px}
+#cuenta-publica .cp-repo{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+#cuenta-publica .cp-repo-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+#cuenta-publica .cp-repo-item.gap{border-style:dashed;opacity:.72}
+#cuenta-publica .cp-repo-y{font-size:14px;font-weight:800;color:var(--text)}
+#cuenta-publica .cp-repo-m{font-size:9.5px;color:var(--text3);margin:2px 0 6px}
+#cuenta-publica .cp-repo-b{display:inline-block;font-size:9.5px;font-weight:700;color:var(--text2);background:var(--card);border:1px solid var(--border);border-radius:99px;padding:2px 8px}
+#cuenta-publica .viz-card canvas{min-height:240px;max-height:320px}
+@media(max-width:680px){#cuenta-publica .cp-legal-grid{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+  function esc(s){var d=document.createElement('div');d.textContent=(s==null?'':s);return d.innerHTML;}
+  function nf(n){try{return Number(n).toLocaleString('es-CL');}catch(e){return n;}}
+  window.cuentasPublicas = (window.cuentasPublicas && !window.cuentasPublicas.nodeType) ? window.cuentasPublicas : {
+    kpis:[
+      {v:'12', l:'Cuentas Públicas · 2013–2025'},
+      {v:'−$1.460M → +$9.400M', l:'Patrimonio neto (saneamiento)'},
+      {v:'97,89%', l:'Transparencia activa (CPLT, 2025)'},
+      {v:'+900%', l:'Inversión SECPLA (cartera)'}
+    ],
+    serie:{
+      anos:[2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],
+      patrimonio:[-1460,-800,200,800,1919,2400,3500,5200,6800,8100,8800,9400],
+      superavit:[-304,200,450,600,800,750,820,900,-50,2085,1642,1500],
+      transparencia:[16.41,40,60,75,94.97,96,97,90.73,92,95,96.5,97.89],
+      matricula:[9500,9400,9250,9100,9000,9100,9200,9844,9100,9400,9600,9700],
+      traspaso:[1155,900,700,500,0,0,0,0,0,0,0,0],
+      salud_anos:[2012,2013,2015,2017,2018,2019,2021,2023],
+      salud_prestaciones:[188486,210000,250000,325058,380000,420000,460000,520000],
+      salud_dotacion:[6295,7000,7800,9059,11000,12500,14000,15500],
+      inv_anos:[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],
+      inversion:[2000,3200,4800,7500,12000,18211,8000,5000,9500,15000,20000]
+    },
+    anclas:{2016:'Transparencia 94,97% (CPLT)',2017:'Prestaciones de salud: 325.058',2018:'Matrícula municipal: 9.844 · CPLT 90,73%',2025:'Transparencia 97,89% (CPLT)'},
+    repo:[
+      {y:2013,mb:'13 MB'},{y:2014,mb:'16 MB'},{y:2015,mb:'19 MB'},{y:2016,mb:'28 MB'},
+      {y:2017,mb:'13 MB'},{y:2018,mb:'18 MB'},{y:2019,mb:'47 MB'},{y:2020,mb:'30 MB'},
+      {y:2021,mb:'5,9 MB'},{y:2022,mb:'30 MB'},{y:2023,mb:'133 MB'},{y:2024,mb:null,gap:true},{y:2025,mb:'60 MB'}
+    ],
+    lazo:[
+      {d:'Deber a)', t:'Ejecución financiera', p:'El balance presupuestario y la situación financiera, en los estados financieros auditados del portal.', go:'situacion-financiera', gl:'Situación financiera'},
+      {d:'Deber b)', t:'Avance del PLADECO', p:'El cumplimiento del plan se sigue en la matriz estratégica y el semáforo de metas.', go:'matriz', gl:'Matriz estratégica'},
+      {d:'Deber c)', t:'Seguridad pública', p:'La gestión del Plan Comunal de Seguridad y del Consejo Comunal de Seguridad.', go:'seguridad-publica', gl:'Seguridad pública'},
+      {d:'Deber d)', t:'Inversiones y proyectos', p:'Las inversiones efectuadas y sus fuentes (FNDR, sectorial, recursos propios).', go:'financiamiento', gl:'Financiamiento'}
+    ],
+    prov:'<b>Nota metodológica.</b> Las series de trayectoria provienen del <b>diagnóstico decenal SECPLAC</b> construido sobre las 12 Cuentas Públicas. Hay <b>puntos-ancla confirmados</b> en cuentas específicas (transparencia 97,89% en la cuenta 2025; prestaciones de salud 325.058 en 2017; matrícula 9.844 en 2018; CPLT 94,97% en 2016); <b>varios años intermedios son estimaciones/interpolaciones</b> del análisis, <b>por validar</b> contra cada cuenta. No se dispone de Cuenta Pública 2024 (la cuenta 2025 rinde la gestión 2024). Editable en <code>window.cuentasPublicas</code>.'
+  };
+  function renderCPStatic(){
+    var C=window.cuentasPublicas; if(!C) return;
+    var k=document.getElementById('cpKpis'); if(k&&!k.dataset.done){k.dataset.done='1';k.className='cp-kpis';k.innerHTML=C.kpis.map(function(x){return '<div class="cp-kpi"><div class="v">'+x.v+'</div><div class="l">'+esc(x.l)+'</div></div>';}).join('');}
+    var pv=document.getElementById('cpProv'); if(pv&&!pv.dataset.done){pv.dataset.done='1';pv.className='cp-prov';pv.innerHTML=C.prov;}
+    var tl=document.getElementById('cpTimeline'); if(tl&&!tl.dataset.done){tl.dataset.done='1';tl.className='cp-tl';
+      tl.innerHTML=C.repo.map(function(r){var an=C.anclas[r.y];
+        return '<div class="cp-tl-item'+(r.gap?' gap':'')+'"><div class="cp-tl-y">'+r.y+'</div><div class="cp-tl-d">'+(r.gap?'Sin informe':'Cuenta Pública')+'</div><div class="cp-tl-h">'+(r.gap?'No disponible en el repositorio':(an?esc(an):'Rinde la gestión del año anterior'))+'</div></div>';}).join('');}
+    var lz=document.getElementById('cpLazo'); if(lz&&!lz.dataset.done){lz.dataset.done='1';
+      lz.innerHTML='<p class="cp-repo-note">La Cuenta Pública es donde el PLADECO <b>se rinde</b>: cada deber legal del Art. 67 conecta con una parte del plan en este portal.</p><div class="cp-lazo">'+C.lazo.map(function(x){return '<div class="cp-lazo-card"><div class="d">'+esc(x.d)+'</div><h5>'+esc(x.t)+'</h5><p>'+esc(x.p)+'</p><a onclick="if(window.PV&&PV.go)PV.go(\''+x.go+'\')">'+esc(x.gl)+' &rarr;</a></div>';}).join('')+'</div>';}
+    var rp=document.getElementById('cpRepo'); if(rp&&!rp.dataset.done){rp.dataset.done='1';
+      rp.innerHTML='<p class="cp-repo-note">Catálogo de los 12 informes (2013–2025). Los PDF completos son documentos gráficos extensos (6–133 MB); se publican en el <b>portal de transparencia municipal</b> conforme a la Ley N° 18.695 (Art. 67) y la Ley N° 20.285. Cada cuenta rinde la gestión del año anterior; no se dispone del informe correspondiente a 2024.</p><div class="cp-repo">'+C.repo.map(function(r){return '<div class="cp-repo-item'+(r.gap?' gap':'')+'"><div class="cp-repo-y">'+r.y+'</div><div class="cp-repo-m">'+(r.gap?'no disponible':'PDF · '+r.mb)+'</div><span class="cp-repo-b">'+(r.gap?'—':'documento oficial')+'</span></div>';}).join('')+'</div>';}
+  }
+  function gc(){try{return (typeof getChartGridColor==='function')?getChartGridColor():'rgba(0,0,0,.08)';}catch(e){return 'rgba(0,0,0,.08)';}}
+  function mk(id,cfg){var cv=document.getElementById(id); if(!cv) return; if(window.Chart&&Chart.getChart&&Chart.getChart(cv)) return; new Chart(cv,cfg);}
+  function renderCPCharts(){
+    if(typeof Chart==='undefined'){ renderCPCharts._t=(renderCPCharts._t||0)+1; if(renderCPCharts._t<25) setTimeout(renderCPCharts,400); return; }
+    var C=window.cuentasPublicas; if(!C) return; var S=C.serie;
+    var baseY={grid:{color:gc()},ticks:{font:{size:10}}}, baseX={grid:{display:false},ticks:{font:{size:10}}};
+    var leg={legend:{position:'bottom',labels:{boxWidth:10,font:{size:10},usePointStyle:true}}};
+    mk('cpFinanzas',{data:{labels:S.anos,datasets:[
+      {type:'bar',label:'Resultado anual (M$)',data:S.superavit,backgroundColor:S.superavit.map(function(v){return v>=0?'#15803d':'#b91c1c';}),borderRadius:3,order:2},
+      {type:'line',label:'Patrimonio neto (M$)',data:S.patrimonio,borderColor:'#1F3864',backgroundColor:'rgba(31,56,100,.10)',borderWidth:2.4,tension:.3,pointRadius:3,fill:true,order:1}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},scales:{y:baseY,x:baseX},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.dataset.label+': $'+nf(c.raw)+' M';}}}},leg)}});
+    mk('cpTransparencia',{type:'line',data:{labels:S.anos,datasets:[{label:'Índice CPLT (%)',data:S.transparencia,borderColor:'#3730a3',backgroundColor:'rgba(55,48,163,.12)',borderWidth:2.4,tension:.3,pointRadius:3,fill:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:Object.assign({min:0,max:105,ticks:{callback:function(v){return v+'%';},font:{size:10}}},{grid:{color:gc()}}),x:baseX},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.raw+'%';}}}},leg)}});
+    mk('cpEducacion',{data:{labels:S.anos,datasets:[
+      {type:'line',label:'Matrícula municipal',data:S.matricula,borderColor:'#1F3864',backgroundColor:'rgba(31,56,100,.08)',borderWidth:2.4,tension:.3,pointRadius:3,yAxisID:'y',order:1},
+      {type:'bar',label:'Traspaso municipal (M$)',data:S.traspaso,backgroundColor:'#d9930088',borderColor:'#b45309',borderWidth:1,borderRadius:3,yAxisID:'y1',order:2}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},scales:{y:Object.assign({position:'left',ticks:{font:{size:10}}},{grid:{color:gc()}}),y1:{position:'right',grid:{display:false},ticks:{font:{size:10}}},x:baseX},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+nf(c.raw);}}}},leg)}});
+    mk('cpSalud',{data:{labels:S.salud_anos,datasets:[
+      {type:'bar',label:'Prestaciones de salud',data:S.salud_prestaciones,backgroundColor:'#0891b288',borderColor:'#0e7490',borderWidth:1,borderRadius:3,yAxisID:'y',order:2},
+      {type:'line',label:'Dotación (horas)',data:S.salud_dotacion,borderColor:'#1F3864',borderWidth:2.4,tension:.3,pointRadius:3,yAxisID:'y1',order:1}
+    ]},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},scales:{y:Object.assign({position:'left',ticks:{font:{size:10}}},{grid:{color:gc()}}),y1:{position:'right',grid:{display:false},ticks:{font:{size:10}}},x:baseX},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+nf(c.raw);}}}},leg)}});
+    mk('cpInversion',{type:'bar',data:{labels:S.inv_anos,datasets:[{label:'Inversión SECPLA (M$)',data:S.inversion,backgroundColor:'#1F3864',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:Object.assign({ticks:{font:{size:10}}},{grid:{color:gc()}}),x:baseX},plugins:Object.assign({tooltip:{callbacks:{label:function(c){return '$'+nf(c.raw)+' M';}}}},{legend:{display:false}})}});
+  }
+  function runCP(){ renderCPStatic(); renderCPCharts(); }
+  window.renderCuentaPublica=runCP;
+  if(document.readyState==='complete') runCP(); else window.addEventListener('load',runCP,{once:true});
 })();
 </script>
 </body>
