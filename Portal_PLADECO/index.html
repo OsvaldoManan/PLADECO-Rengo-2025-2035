@@ -9496,6 +9496,10 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <div class="fin-alerta" id="finAlerta"></div>
   <h3 class="fin-sub">Perspectiva longitudinal y proyecci&oacute;n <span class="n">&middot; 2018-2027</span></h3>
   <div id="finTrayectoria"></div>
+  <h3 class="fin-sub">Riesgo del Fondo Com&uacute;n Municipal <span class="n">&middot; impacto de la «Ley Miscel&aacute;nea»</span></h3>
+  <div id="finFCM"></div>
+  <h3 class="fin-sub">Benchmarking presupuestario <span class="n">&middot; Rengo vs. comunas comparables (SINIM 2020-2024)</span></h3>
+  <div id="finBenchmark"></div>
   <h3 class="fin-sub">Respaldo documental <span class="n">&middot; cuentas públicas 2013-2025</span></h3>
   <div id="finRespaldo"></div>
   <h3 class="fin-sub">Recomendaciones del informe <span class="n">&middot; plan de acci&oacute;n financiero</span></h3>
@@ -39575,6 +39579,102 @@ body.dark .sna-theme-chip:not(.active){background:#152844!important}
   }
   window.renderApendice=renderApendice;
   if(document.readyState==='complete') renderApendice(); else window.addEventListener('load',renderApendice,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     SITUACIÓN FINANCIERA · 2 bloques nuevos: Riesgo FCM (Ley Miscelánea, simulación)
+     y Benchmarking SINIM 2020-2024 (Rengo vs comparables). Datos reales (SINIM/SUBDERE +
+     informe de simulación). Objetos EDITABLES window.finRiesgoFCM / window.finBenchmarkSINIM.
+     Reutiliza clases fin-* de la sección. Render seguro · sin temporizadores. -->
+<style id="fin-fcm-css">
+#situacion-financiera .fin-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid #6087c7;border-radius:10px;padding:11px 14px;font-size:12px;line-height:1.6;color:var(--text2);margin-bottom:16px}
+#situacion-financiera .fin-note b{color:var(--text)}
+#situacion-financiera .fin-note ol{margin:6px 0 0;padding-left:18px}#situacion-financiera .fin-note li{margin-bottom:5px}
+#situacion-financiera .fin-fuente-min{font-size:10.5px;color:var(--text3);line-height:1.5;margin:-6px 0 20px}
+</style>
+<script>
+(function(){
+  window.finRiesgoFCM = (window.finRiesgoFCM && !window.finRiesgoFCM.nodeType) ? window.finRiesgoFCM : {
+    intro:'El <b>Fondo Común Municipal (FCM)</b> financia el <b>55,8% de los ingresos</b> de Rengo (MM$9.923 de MM$17.779 en 2024) y equivale al 61% de sus ingresos propios: un <b>receptor neto altamente dependiente</b>. La «ley miscelánea» (Ley de Reconstrucción y Desarrollo) propone eximir de contribuciones la primera vivienda de adultos mayores de 65 años &mdash;principal fuente del FCM&mdash;. Con elasticidad <b>0,56</b>, cada −10% del FCM reduce el ingreso total de Rengo en −5,6%.',
+    kpis:[
+      {v:'55,8%', l:'del ingreso total proviene del FCM (2024)', c:'#b45309'},
+      {v:'0,56', l:'elasticidad: −10% FCM → −5,6% ingreso', c:'#b45309'},
+      {v:'MM$1.191', l:'pérdida en escenario severo (−12%) ≈ 1 año de inversión', c:'#b91c1c'},
+      {v:'~US$70M', l:'del costo de la exención sin compensar (nivel país)', c:'#6087c7'}
+    ],
+    escenarios:[
+      {n:'E0 · Compensación plena', rec:'0%', perd:'0', ing:'17.779', caida:'0,0%', brecha:'719'},
+      {n:'E1 · Erosión leve', rec:'−3%', perd:'298', ing:'17.481', caida:'−1,7%', brecha:'1.016'},
+      {n:'E2 · Erosión moderada', rec:'−7%', perd:'695', ing:'17.084', caida:'−3,9%', brecha:'1.413'},
+      {n:'E3 · Erosión severa', rec:'−12%', perd:'1.191', ing:'16.588', caida:'−6,7%', brecha:'1.909', sev:true},
+      {n:'E4 · Shock', rec:'−20%', perd:'1.985', ing:'15.794', caida:'−11,2%', brecha:'2.703'}
+    ],
+    equivalencias:[
+      {t:'1 año de inversión', d:'La pérdida severa (MM$1.191) equivale a un año completo de la inversión municipal de Rengo.'},
+      {t:'17,3% del gasto en personal', d:'O al 17,3% del gasto anual en personal del municipio.'},
+      {t:'$18.100 por habitante', d:'El impacto per cápita del escenario severo.'},
+      {t:'+19% de IPP', d:'Compensarlo solo con recursos propios exigiría subir los ingresos propios permanentes ~19%.'}
+    ],
+    comparada:'<b>Exposición comparada.</b> Ante un recorte uniforme del 10% del FCM, el ingreso de Rengo caería <b>−5,6%</b>: la 2ª mayor exposición del grupo comparable (solo tras San Vicente, −5,7%) y más del doble que Machalí (−2,5%), la comuna más autónoma. La diferencia no es de tamaño, sino de estructura: a mayor dependencia del FCM, mayor transmisión del recorte al presupuesto.',
+    recomendaciones:[
+      'Monitorear la exposición al FCM (FCM/ingreso total) en el cuadro de mando y actualizar la simulación con cada cambio legislativo.',
+      'Reducir la dependencia estructural fortaleciendo los ingresos propios permanentes (catastros, patentes, derechos, morosidad).',
+      'Incidir para que la compensación del FCM sea una <b>regla estructural permanente</b>, no una glosa presupuestaria anual.',
+      'Proteger el espacio de inversión y reforzar la captación de fondos externos (FNDR, sectoriales).',
+      'Elaborar un plan financiero plurianual con escenarios (base / moderado / severo) y medidas de contención activables.'
+    ],
+    nota:'<b>Ejercicio de sensibilidad, no una predicción.</b> Dimensiona la exposición del municipio ante distintos grados de erosión del FCM (asume gasto devengado constante y efectos de primera ronda). La magnitud efectiva dependerá del texto final de la ley y del alcance y permanencia de la compensación.',
+    fuente:'Fuente: Informe «Impacto de la Ley Miscelánea en el FCM &mdash; Rengo» (simulación de escenarios con datos SINIM 2024). · BioBioChile (2026); El Mostrador (2026); SUBDERE-SINIM (2025); TGR (2024); Oates (1999); Ter-Minassian (1997).'
+  };
+  window.finBenchmarkSINIM = (window.finBenchmarkSINIM && !window.finBenchmarkSINIM.nodeType) ? window.finBenchmarkSINIM : {
+    intro:'Serie presupuestaria <b>SINIM 2020-2024</b> (SUBDERE) de Rengo frente a comunas comparables de O’Higgins (San Fernando, Machalí, San Vicente, Santa Cruz) y la mediana regional. En el quinquenio el FCM creció <b>+92,5%</b> y los ingresos propios permanentes <b>+84,8%</b>, pero la dependencia del FCM subió de 51% a 55% del ingreso.',
+    kpis:[
+      {v:'+92,5%', l:'FCM 2020→2024 (MM$5.155 → MM$9.923)', c:'#6087c7'},
+      {v:'+84,8%', l:'Ingresos propios permanentes (IPP)', c:'#15803d'},
+      {v:'82%', l:'rigidez del gasto (corriente/total), sobre el promedio comparable', c:'#b45309'},
+      {v:'72%', l:'ejecución presupuestaria 2024 (cayó desde 86% en 2020)', c:'#b91c1c'}
+    ],
+    bench:[
+      {i:'Participación del FCM en el ingreso (%)', r:'55', c:'38,5', g:'55'},
+      {i:'Dependencia FCM / ingresos propios (%)', r:'61', c:'47,8', g:'67'},
+      {i:'Rigidez · gasto corriente/total (%)', r:'82', c:'75,8', g:'77'},
+      {i:'Personal / gasto corriente (%)', r:'46', c:'40,0', g:'44'},
+      {i:'Inversión / gasto total (%)', r:'6', c:'9,3', g:'10'},
+      {i:'Ejecución presupuestaria (%)', r:'72', c:'85,3', g:'86'},
+      {i:'Disponibilidad por habitante (M$/hab)', r:'270', c:'310,8', g:'423'}
+    ],
+    lectura:'<b>Lectura.</b> Rengo destaca por su <b>alta dependencia del FCM</b> (55% vs 38,5% del promedio comparable) y su <b>alta rigidez</b> (82% vs 75,8%), con <b>menor ejecución</b> (72% vs 85,3%) y <b>menor disponibilidad por habitante</b> (270 vs 310,8 M$/hab). Machalí, con FCM de solo 25% del ingreso, es la referencia de autonomía hacia la que conviene converger.',
+    fuente:'Fuente: SUBDERE &mdash; Sistema Nacional de Información Municipal (SINIM), Datos Municipales, comuna de Rengo, serie 2020-2024 (extracción 19-06-2026). https://datos.sinim.gov.cl'
+  };
+  function cards(arr){return '<div class="fin-hall">'+arr.map(function(k){return '<div class="fin-hall-card" style="--hc:'+(k.c||'#6087c7')+'"><div class="fin-hall-t">'+k.v+'</div><div class="fin-hall-d">'+k.l+'</div></div>';}).join('')+'</div>';}
+  function eqCards(arr){return '<div class="fin-hall">'+arr.map(function(k){return '<div class="fin-hall-card" style="--hc:#b45309"><div class="fin-hall-t">'+k.t+'</div><div class="fin-hall-d">'+k.d+'</div></div>';}).join('')+'</div>';}
+  function renderFinFCM(){
+    var h=document.getElementById('finFCM'); if(!h) return; var F=window.finRiesgoFCM; if(!F) return;
+    var esc='<div class="fin-table-wrap"><table class="fin-table"><thead><tr><th>Escenario</th><th>Recorte FCM</th><th>Pérdida (MM$)</th><th>Ingreso total (MM$)</th><th>Caída ingreso</th><th>Brecha gasto–ingreso (MM$)</th></tr></thead><tbody>'
+      +F.escenarios.map(function(e){return '<tr'+(e.sev?' class="tot"':'')+'><td>'+e.n+'</td><td>'+e.rec+'</td><td>'+e.perd+'</td><td>'+e.ing+'</td><td>'+e.caida+'</td><td>'+e.brecha+'</td></tr>';}).join('')+'</tbody></table></div>';
+    var rec='<div class="fin-note"><b>Recomendaciones (informe):</b><ol>'+F.recomendaciones.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ol></div>';
+    h.innerHTML='<p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin:0 0 14px">'+F.intro+'</p>'
+      +cards(F.kpis)
+      +'<div style="font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--blue,#1F3864);margin:6px 0 8px">Escenarios de estrés del FCM (base 2024)</div>'+esc
+      +eqCards(F.equivalencias)
+      +'<div class="fin-note">'+F.comparada+'</div>'
+      +rec
+      +'<div class="fin-alerta">'+F.nota+'</div>'
+      +'<div class="fin-fuente-min">'+F.fuente+'</div>';
+  }
+  function renderFinBenchmark(){
+    var h=document.getElementById('finBenchmark'); if(!h) return; var B=window.finBenchmarkSINIM; if(!B) return;
+    var tbl='<div class="fin-table-wrap"><table class="fin-table"><thead><tr><th>Indicador (2024)</th><th>Rengo</th><th>Prom. comparables</th><th>Mediana región</th></tr></thead><tbody>'
+      +B.bench.map(function(b){return '<tr><td>'+b.i+'</td><td style="font-weight:800;color:var(--text)">'+b.r+'</td><td>'+b.c+'</td><td>'+b.g+'</td></tr>';}).join('')+'</tbody></table></div>';
+    h.innerHTML='<p style="font-size:12.5px;color:var(--text2);line-height:1.6;margin:0 0 14px">'+B.intro+'</p>'
+      +cards(B.kpis)+tbl
+      +'<div class="fin-note">'+B.lectura+'</div>'
+      +'<div class="fin-fuente-min">'+B.fuente+'</div>';
+  }
+  function run(){ renderFinFCM(); renderFinBenchmark(); }
+  window.renderFinExtra=run;
+  if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
 })();
 </script>
 </body>
