@@ -1849,6 +1849,21 @@ body.dark section + section::before{background:rgba(255,255,255,.06)}
 /* ── Leaflet Map ── */
 .map-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);height:500px;position:relative;z-index:1}
 .map-wrap .leaflet-container{height:100%;width:100%;border-radius:var(--radius)}
+/* ── Ficha de honestidad cartográfica (.map-meta · B1) ── */
+.map-meta{font-size:11px;line-height:1.62;color:var(--text2);background:var(--card);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:0 10px 10px 0;padding:11px 15px;margin:12px 0 4px}
+.map-meta .mm-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+.map-meta .mm-tag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;background:#1F3864;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.map-meta .mm-title{font-size:11.5px;font-weight:700;color:var(--text)}
+.map-meta .mm-row{margin:3px 0}
+.map-meta .mm-row b{color:var(--text);font-weight:600}
+.map-meta .mm-warn{display:flex;gap:8px;align-items:flex-start;background:#fef3c7;border:1px solid #f0c64a;border-radius:8px;padding:8px 11px;margin:7px 0 3px;color:#7a4f01;font-size:10.8px;line-height:1.55}
+.map-meta .mm-warn svg{width:15px;height:15px;flex:0 0 15px;margin-top:1px;fill:#b45309}
+.map-meta .mm-warn b{color:#7a4f01;font-weight:800}
+body.dark .map-meta{border-left-color:#7ea4d8}
+body.dark .map-meta .mm-tag{background:#3b5a96}
+body.dark .map-meta .mm-warn{background:rgba(245,158,11,.13);border-color:rgba(245,158,11,.42);color:#fcd34d}
+body.dark .map-meta .mm-warn svg{fill:#fbbf24}
+body.dark .map-meta .mm-warn b{color:#fcd34d}
 .map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8}
 .map-legend .legend-item{display:flex;align-items:center;gap:6px}
 .map-legend .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -39736,6 +39751,97 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   function run(){ renderFinFCM(); renderFinBenchmark(); renderFinCharts(); }
   window.renderFinExtra=run;
   if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     HONESTIDAD CARTOGRÁFICA · B1 (rediseño de mapas)
+     Ficha .map-meta bajo cada mapa Leaflet: qué muestra (conteo/índice/
+     densidad), normalización y denominador, cobertura georreferenciada,
+     geodesia (datum + límite), fuente y corte. Incluye el caveat explícito
+     "densidad ≠ riesgo" en el mapa de siniestros. Objeto EDITABLE
+     window.mapasMetadata (clave = id del contenedor del mapa).
+     No introduce dependencias ni temporizadores nuevos.
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  window.mapasMetadata = (window.mapasMetadata && !window.mapasMetadata.nodeType) ? window.mapasMetadata : {
+    mapContainer:{
+      after:'#mapContainer',
+      tipo:'Mapa coroplético', titulo:'Mapa Territorial Interactivo',
+      muestra:'Valor por localidad (25) según la capa activa: población (stock), inversión BIP (M$) o número de proyectos BIP.',
+      norm:'Las capas <b>Inversión BIP</b> y <b>Proyectos BIP</b> son <b>conteos absolutos</b>, no tasas per cápita: una localidad grande tiende a concentrar más por tamaño. El denominador poblacional (Censo 2024) está disponible para derivar tasas y queda <b>pendiente</b>; entretanto, no comparar magnitudes entre localidades de tamaño muy distinto sin normalizar.',
+      cobertura:'25 de 25 localidades georreferenciadas.',
+      geodesia:'Datum WGS84 (coordenadas geográficas).',
+      fuente:'INE Censo 2024 · IGM · SECPLA, Catastro de Unidades Vecinales y Cartografía Comunal 2025', corte:'2024–2025'
+    },
+    mapCensoVuln:{
+      after:'#mapCensoVuln',
+      tipo:'Mapa de índice', titulo:'Mapa de Vulnerabilidad Territorial',
+      muestra:'Índice Compuesto Ponderado (ICP) de vulnerabilidad por localidad (24); el área del círculo es proporcional a la población.',
+      norm:'El ICP es un <b>índice ya normalizado (0–1; 1 = máxima vulnerabilidad)</b>, no un conteo: es el promedio de 6 dimensiones (servicios básicos, capital humano, brecha digital, precariedad habitacional, entre otras). Detalle y ponderaciones en la ficha metodológica de los índices.',
+      cobertura:'24 localidades; ICP calculado sobre 826 manzanas censales.',
+      geodesia:'Datum WGS84.',
+      fuente:'Elaboración propia con datos INE Censo 2024', corte:'2024'
+    },
+    ictMap:{
+      after:'.ict-map-wrap',
+      tipo:'Mapa de puntos · índice', titulo:'Mapa de Espacios Públicos (ICT)',
+      muestra:'65 espacios públicos georreferenciados, coloreados por estado de conservación (Índice de Calidad Territorial, ICT 0–100) y agrupables por zona.',
+      norm:'El ICT es un <b>índice normalizado 0–100</b> derivado de una evaluación ordinal en terreno; no es un conteo. El color codifica el estado, no la cantidad.',
+      cobertura:'65 de 65 puntos georreferenciados (100%, registro GPS en terreno).',
+      geodesia:'Datum WGS84.',
+      fuente:'Catastro SECPLAC — levantamiento en terreno', corte:'Abril 2026'
+    },
+    svMap:{
+      after:'.sv-map-wrap',
+      tipo:'Mapa de calor + puntos', titulo:'Mapa de Siniestros de Tránsito (2020–2024)',
+      warn:'<b>Densidad ≠ riesgo.</b> La capa de calor refleja la <b>concentración absoluta de siniestros/víctimas, no una tasa ajustada por exposición</b> (flujo vehicular o peatonal). Los ejes de alto tránsito aparecen «calientes» sin que ello implique, por sí solo, mayor riesgo por viaje. La tasa por exposición queda <b>pendiente</b> por falta de aforos.',
+      muestra:'Siniestros de tránsito georreferenciados por severidad (puntos) y una capa opcional de calor por víctimas.',
+      norm:'Cada punto codifica la severidad (fatal / grave / leve / solo daños); la capa de calor pondera por número de víctimas.',
+      cobertura:'903 de 905 siniestros georreferenciados (2 sin coordenada válida, excluidos del mapa).',
+      geodesia:'Datum WGS84 · <b>límite comunal aproximado (OpenStreetMap)</b>, referencial: no es el límite administrativo oficial (BCN / IDE Chile).',
+      fuente:'CONASET · Carabineros de Chile', corte:'2020–2024'
+    }
+  };
+
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function richEsc(s){ /* permite el subconjunto <b>…</b> y «» ya presentes en los textos */
+    return String(s==null?'':s).replace(/&(?!amp;|lt;|gt;)/g,'&amp;'); }
+  var WARN_SVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 1 21h22L12 2zm0 6 6.5 11h-13L12 8zm-1 3v4h2v-4h-2zm0 5v2h2v-2h-2z"/></svg>';
+
+  function metaHTML(m){
+    var h='<div class="mm-head"><span class="mm-tag">'+esc(m.tipo||'Mapa')+'</span>'+
+          (m.titulo?'<span class="mm-title">'+esc(m.titulo)+'</span>':'')+'</div>';
+    if(m.warn) h+='<div class="mm-warn">'+WARN_SVG+'<span>'+richEsc(m.warn)+'</span></div>';
+    if(m.muestra)   h+='<div class="mm-row"><b>Qué muestra:</b> '+richEsc(m.muestra)+'</div>';
+    if(m.norm)      h+='<div class="mm-row"><b>Normalización:</b> '+richEsc(m.norm)+'</div>';
+    if(m.cobertura) h+='<div class="mm-row"><b>Cobertura georreferenciada:</b> '+richEsc(m.cobertura)+'</div>';
+    if(m.geodesia)  h+='<div class="mm-row"><b>Geodesia:</b> '+richEsc(m.geodesia)+'</div>';
+    if(m.fuente)    h+='<div class="mm-row"><b>Fuente:</b> '+richEsc(m.fuente)+(m.corte?(' · <b>Corte:</b> '+esc(m.corte)):'')+'</div>';
+    return h;
+  }
+
+  function renderMapasMetadata(){
+    var M=window.mapasMetadata; if(!M) return;
+    Object.keys(M).forEach(function(id){
+      var m=M[id];
+      var el=document.getElementById(id); if(!el) return;
+      /* punto de inserción: el contenedor mismo o su wrapper declarado */
+      var anchor=el;
+      if(m.after && m.after.charAt(0)==='.'){ anchor=el.closest(m.after)||el; }
+      /* idempotente: no duplicar si ya existe la ficha tras el ancla */
+      var next=anchor.nextElementSibling;
+      if(next && next.classList && next.classList.contains('map-meta') && next.getAttribute('data-mm')===id) return;
+      var div=document.createElement('div');
+      div.className='map-meta'; div.setAttribute('data-mm',id); div.setAttribute('role','note');
+      div.innerHTML=metaHTML(m);
+      anchor.insertAdjacentElement('afterend',div);
+    });
+  }
+  window.renderMapasMetadata=renderMapasMetadata;
+  if(document.readyState!=='loading') renderMapasMetadata(); else window.addEventListener('DOMContentLoaded',renderMapasMetadata,{once:true});
+  window.addEventListener('load',renderMapasMetadata,{once:true});
 })();
 </script>
 </body>
