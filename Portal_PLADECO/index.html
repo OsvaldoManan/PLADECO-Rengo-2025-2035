@@ -135,7 +135,12 @@ window.__leafletMaps=window.__leafletMaps||[];
     var orig=L.map;
     L.map=function(){
       var m=orig.apply(L,arguments);
-      try{window.__leafletMaps.push(m);}catch(e){}
+      /* dedup: el patch de L.Map.prototype.initialize (abajo) YA registra la instancia
+         durante la construcción; sin esta guarda cada mapa quedaba duplicado en el arreglo. */
+      try{ if(window.__leafletMaps.indexOf(m)<0) window.__leafletMaps.push(m); }catch(e){}
+      /* v45.309 · B2-4 · enmienda cartográfica compartida (escala+norte+basemap theme-aware),
+         diferida un tick para que termine la cadena .setView()/tileLayer del init. */
+      try{ if(window.__pladecoMapEnhance){ setTimeout(function(){window.__pladecoMapEnhance(m);},0); } }catch(e){}
       return m;
     };
     /* Si la propiedad L.Map se usa directamente con new, también patcharlo */
@@ -1864,6 +1869,19 @@ body.dark .map-meta .mm-tag{background:#3b5a96}
 body.dark .map-meta .mm-warn{background:rgba(245,158,11,.13);border-color:rgba(245,158,11,.42);color:#fcd34d}
 body.dark .map-meta .mm-warn svg{fill:#fbbf24}
 body.dark .map-meta .mm-warn b{color:#fcd34d}
+/* ── Chrome cartográfico compartido · B2-4 (barra de escala + flecha norte; basemap theme-aware vía JS) ── */
+.leaflet-control-scale{margin-left:8px!important;margin-bottom:8px!important}
+.leaflet-control-scale-line{background:rgba(255,255,255,.85);color:#1f2937;border:2px solid #64748b;border-top:none;font-size:10px;font-weight:600;line-height:1.2;padding:1px 6px;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+body.dark .leaflet-control-scale-line{background:rgba(17,24,39,.85);color:#e5e7eb;border-color:#94a3b8}
+.pl-north{width:33px;height:33px;background:rgba(255,255,255,.92);border:1px solid #cbd5e1;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;margin-left:8px!important;margin-bottom:6px!important}
+.pl-north svg{width:23px;height:23px;display:block}
+.pl-north .pl-n-arrow{fill:#990000}
+.pl-north .pl-n-body{fill:#1F3864}
+.pl-north .pl-n-txt{fill:#1F3864;font-weight:800}
+body.dark .pl-north{background:rgba(17,24,39,.92);border-color:#475569}
+body.dark .pl-north .pl-n-arrow{fill:#e06666}
+body.dark .pl-north .pl-n-body{fill:#9db8e0}
+body.dark .pl-north .pl-n-txt{fill:#9db8e0}
 .map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8}
 .map-legend .legend-item{display:flex;align-items:center;gap:6px}
 .map-legend .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -11060,7 +11078,7 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
     var voyager=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap, &copy; CARTO',maxZoom:19}).addTo(map);
     var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap',maxZoom:19});
     var esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri',maxZoom:19});
-    L.control.layers({'Mapa claro (CARTO)':voyager,'OpenStreetMap':osm,'Satélite (Esri)':esri},null,{position:'topright'}).addTo(map);
+    L.control.layers({'Mapa base (CARTO)':voyager,'OpenStreetMap':osm,'Satélite (Esri)':esri},null,{position:'topright'}).addTo(map);
     /* límite comunal punteado */
     fetch('rengo-limite.geojson').then(function(r){return r.json();}).then(function(gj){
       boundaryLayer=L.geoJSON(gj,{style:{color:'#1F3864',weight:2,dashArray:'6 5',fill:false,opacity:.8}}).addTo(map);
@@ -39842,6 +39860,77 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   window.renderMapasMetadata=renderMapasMetadata;
   if(document.readyState!=='loading') renderMapasMetadata(); else window.addEventListener('DOMContentLoaded',renderMapasMetadata,{once:true});
   window.addEventListener('load',renderMapasMetadata,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     CHROME CARTOGRÁFICO COMPARTIDO · B2-4 (rediseño de mapas)
+     Enmienda ADITIVA, aplicada a TODAS las instancias L.map del portal en
+     un único punto (el wrapper de L.map ya existente): (1) basemap
+     theme-aware -intercambia CARTO light_all <-> dark_all según body.dark,
+     sin tocar capas alternativas como el satélite Esri-; (2) barra de
+     ESCALA métrica; (3) FLECHA NORTE. Idempotente (flag __plEnhanced),
+     event-driven (MutationObserver del tema, sin temporizadores de polling),
+     sin dependencias nuevas (todo es Leaflet core ya cargado).
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function basemapOf(map){
+    var found=null;
+    try{ map.eachLayer(function(l){
+      if(l instanceof L.TileLayer && /cartocdn\.com\/(?:light|dark)_all/.test(l._url||'')) found=l;
+    }); }catch(e){}
+    return found;
+  }
+  function applyTheme(map){
+    if(!map) return;
+    var bm=map.__plBasemap; if(!bm||!bm._url) return;
+    var dark=document.body.classList.contains('dark');
+    var want=dark?'dark_all':'light_all';
+    if(bm._url.indexOf(want)<0){ try{ bm.setUrl(bm._url.replace(/(?:light|dark)_all/, want)); }catch(e){} }
+  }
+  function makeNorth(){
+    var NorthCtl=L.Control.extend({
+      options:{position:'bottomleft'},
+      onAdd:function(){
+        var d=L.DomUtil.create('div','pl-north');
+        d.setAttribute('role','img'); d.setAttribute('aria-label','Orientación: el norte apunta hacia arriba'); d.title='Norte';
+        d.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+
+          '<polygon class="pl-n-arrow" points="12,2 17,14 12,11.5"/>'+
+          '<polygon class="pl-n-body" points="12,2 12,11.5 7,14"/>'+
+          '<text class="pl-n-txt" x="12" y="22" text-anchor="middle" font-size="8">N</text></svg>';
+        L.DomEvent.disableClickPropagation(d);
+        return d;
+      }
+    });
+    return new NorthCtl();
+  }
+  function enhance(map){
+    if(!map || map.__plEnhanced || typeof L==='undefined' || !L.control) return;
+    map.__plEnhanced=true;
+    try{
+      map.__plBasemap=basemapOf(map);
+      applyTheme(map);
+      L.control.scale({metric:true,imperial:false,position:'bottomleft',maxWidth:130}).addTo(map);
+      makeNorth().addTo(map);
+    }catch(e){ try{console.warn('mapEnhance',e);}catch(_){} }
+  }
+  window.__pladecoMapEnhance=enhance;
+  function sweep(){ try{(window.__leafletMaps||[]).forEach(enhance);}catch(e){} }
+  function retheme(){ try{(window.__leafletMaps||[]).forEach(applyTheme);}catch(e){} }
+  var _watched=false;
+  function watchTheme(){
+    if(_watched) return; _watched=true;
+    try{
+      var mo=new MutationObserver(function(muts){
+        for(var i=0;i<muts.length;i++){ if(muts[i].attributeName==='class'){ retheme(); break; } }
+      });
+      mo.observe(document.body,{attributes:true,attributeFilter:['class']});
+    }catch(e){}
+  }
+  if(document.readyState!=='loading'){ sweep(); watchTheme(); }
+  else window.addEventListener('DOMContentLoaded',function(){ sweep(); watchTheme(); },{once:true});
+  window.addEventListener('load',sweep,{once:true});
 })();
 </script>
 </body>
