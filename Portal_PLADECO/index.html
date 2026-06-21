@@ -1882,9 +1882,18 @@ body.dark .pl-north{background:rgba(17,24,39,.92);border-color:#475569}
 body.dark .pl-north .pl-n-arrow{fill:#e06666}
 body.dark .pl-north .pl-n-body{fill:#9db8e0}
 body.dark .pl-north .pl-n-txt{fill:#9db8e0}
-.map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8}
+.map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8;max-width:215px;color:var(--text2)}
+.map-legend strong{color:var(--text)}
+.map-legend hr{border:none;border-top:1px solid var(--border);margin:4px 0}
 .map-legend .legend-item{display:flex;align-items:center;gap:6px}
 .map-legend .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+/* Leyenda de tamaño (símbolo proporcional · cortes de clase reales) · B2-4 */
+.map-legend .lg-metric{font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:.03em;font-weight:800;margin:7px 0 4px;line-height:1.3}
+.map-legend .lg-sizes{display:flex;align-items:flex-end;gap:12px;margin:2px 0 1px;line-height:1.2}
+.map-legend .lg-size{display:flex;flex-direction:column;align-items:center;gap:3px}
+.map-legend .lg-circ{border-radius:50%;background:rgba(31,56,100,.16);border:1.5px solid #1F3864;flex-shrink:0}
+.map-legend .lg-size em{font-size:8.5px;font-style:normal;color:var(--text2);white-space:nowrap}
+body.dark .map-legend .lg-circ{border-color:#7ea4d8;background:rgba(126,164,216,.22)}
 .map-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .map-ctrl-btn{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--card);transition:all .2s;color:var(--text2)}
 .map-ctrl-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -21139,7 +21148,7 @@ const RESUMEN_ITEMS=[
 ];
 
 // ── RENDER MAP ──
-let mapInstance, mapMarkers = [], currentMapLayer = 'pop';
+let mapInstance, mapMarkers = [], currentMapLayer = 'pop', mapLegendDiv = null;
 function renderMap(){
   if(!document.getElementById('mapContainer')||typeof L==='undefined') return;
   try{
@@ -21157,7 +21166,8 @@ function renderMap(){
   const legend = L.control({position:'bottomright'});
   legend.onAdd = function(){
     const div = L.DomUtil.create('div','map-legend');
-    div.innerHTML = '<strong>Localidades</strong><br><div class="legend-item"><span class="legend-dot" style="background:#4361ee"></span> Urbano</div><div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span> Rural</div>';
+    div.setAttribute('aria-live','polite');
+    mapLegendDiv = div;
     return div;
   };
   legend.addTo(mapInstance);
@@ -21182,6 +21192,40 @@ function updateMapMarkers(mode){
     marker.bindPopup(`<div style="font-family:'Inter',system-ui,sans-serif;min-width:180px"><strong style="font-size:14px">${u.name}</strong><br><span style="font-size:11px;color:${u.tipo==='Urbano'?'#4361ee':'#22c55e'};font-weight:600">${u.tipo} — ${u.uv}</span><hr style="margin:6px 0;border-color:#e2e8f0"><table style="font-size:11px;width:100%"><tr><td>Población</td><td style="text-align:right;font-weight:700">${u.pob.toLocaleString('es-CL')}</td></tr><tr><td>NNA</td><td style="text-align:right;font-weight:700">${u.nna.toLocaleString('es-CL')}</td></tr><tr><td>Proyectos BIP</td><td style="text-align:right;font-weight:700">${u.bip}</td></tr><tr><td>Inversión</td><td style="text-align:right;font-weight:700">${invStr}</td></tr></table></div>`);
     mapMarkers.push(marker);
   });
+  updateMapLegend(mode);
+}
+/* Leyenda DINÁMICA por capa: color + tamaño con cortes de clase reales (mín/mediana/máx).
+   Antes la leyenda era estática 'Urbano/Rural' y mentía en las capas Inversión/Proyectos
+   (donde el color cambia a con/sin registro). B2-4 · símbolo proporcional honesto. */
+function mapSizeRefs(mode){
+  let vals, rfn, fmt;
+  if(mode==='pop'){ vals=UV_DATA.map(u=>u.pob).filter(v=>v>0); const mx=Math.max.apply(null,vals); rfn=v=>Math.max(6,v/mx*25); fmt=v=>v.toLocaleString('es-CL'); }
+  else if(mode==='inv'){ vals=UV_DATA.map(u=>u.inv).filter(v=>v>0); const mx=Math.max.apply(null,vals); rfn=v=>Math.max(5,v/mx*30); fmt=v=>'$'+(v/1000).toLocaleString('es-CL',{maximumFractionDigits:0})+'M'; }
+  else { vals=UV_DATA.map(u=>u.bip).filter(v=>v>0); const mx=Math.max.apply(null,vals); rfn=v=>Math.max(5,v/mx*25); fmt=v=>''+v; }
+  if(!vals.length) return [];
+  vals.sort((a,b)=>a-b);
+  const lo=vals[0], hi=vals[vals.length-1], mid=vals[Math.floor((vals.length-1)/2)];
+  const uniq=[]; [hi,mid,lo].forEach(v=>{ if(uniq.indexOf(v)<0) uniq.push(v); });
+  return uniq.map(v=>({r:rfn(v),label:fmt(v)}));
+}
+function updateMapLegend(mode){
+  if(!mapLegendDiv) return;
+  const CFG={
+    pop:{title:'Población',metric:'Tamaño ∝ población (hab)',cols:[['#4361ee','Urbano'],['#22c55e','Rural']]},
+    inv:{title:'Inversión BIP',metric:'Tamaño ∝ inversión (M$)',cols:[['#f59e0b','Con inversión'],['#94a3b8','Sin registro']]},
+    bip:{title:'Proyectos BIP',metric:'Tamaño ∝ nº de proyectos',cols:[['#809fd2','Con proyectos'],['#94a3b8','Sin registro']]}
+  }[mode]||{};
+  const refs=mapSizeRefs(mode);
+  const maxR=refs.length?Math.max.apply(null,refs.map(x=>x.r)):1;
+  const sc=Math.min(1,17/maxR);
+  let html='<strong>'+(CFG.title||'')+'</strong>';
+  (CFG.cols||[]).forEach(c=>{ html+='<div class="legend-item"><span class="legend-dot" style="background:'+c[0]+'"></span> '+c[1]+'</div>'; });
+  if(refs.length){
+    html+='<div class="lg-metric">'+CFG.metric+'</div><div class="lg-sizes">';
+    refs.forEach(x=>{ const d=Math.max(7,Math.round(x.r*sc*2)); html+='<div class="lg-size"><span class="lg-circ" style="width:'+d+'px;height:'+d+'px"></span><em>'+x.label+'</em></div>'; });
+    html+='</div>';
+  }
+  mapLegendDiv.innerHTML=html;
 }
 function setMapLayer(btn,mode){
   currentMapLayer=mode;
@@ -24706,9 +24750,8 @@ function renderCensoMapaVuln(){
   if(bounds.length>0) map.fitBounds(bounds,{padding:[30,30],maxZoom:13});
   var legend=L.control({position:'bottomright'});
   legend.onAdd=function(){
-    var div=L.DomUtil.create('div','info legend');
-    div.style.cssText='background:rgba(255,255,255,.95);padding:10px 14px;border-radius:10px;font-size:11px;line-height:1.8;box-shadow:0 2px 12px rgba(0,0,0,.18);border:1px solid rgba(0,0,0,.08)';
-    div.innerHTML='<strong style="font-size:12px">ICP Vulnerabilidad</strong><br><span style="display:inline-block;width:12px;height:12px;background:#22c55e;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &lt;0.22 Bajo<br><span style="display:inline-block;width:12px;height:12px;background:#eab308;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.22-0.28 Medio<br><span style="display:inline-block;width:12px;height:12px;background:#f97316;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.28-0.32 Alto<br><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &gt;0.32 Cr&iacute;tico<br><hr style="margin:4px 0;border-color:rgba(0,0,0,.1)"><span style="font-size:11px;color:#666">Tama&ntilde;o = poblaci&oacute;n</span>';
+    var div=L.DomUtil.create('div','map-legend');
+    div.innerHTML='<strong style="font-size:12px">ICP Vulnerabilidad</strong><br><span style="display:inline-block;width:12px;height:12px;background:#22c55e;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &lt;0.22 Bajo<br><span style="display:inline-block;width:12px;height:12px;background:#eab308;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.22-0.28 Medio<br><span style="display:inline-block;width:12px;height:12px;background:#f97316;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.28-0.32 Alto<br><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &gt;0.32 Cr&iacute;tico<hr><span style="font-size:11px">Tama&ntilde;o = poblaci&oacute;n</span>';
     return div;
   };
   legend.addTo(map);
