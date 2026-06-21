@@ -201,8 +201,22 @@ window.__leafletMaps=window.__leafletMaps||[];
       ch.update('none');
     }catch(e){}
   }
+  /* Sistema de diseño v45.313 · CROMO LEGIBLE sobre la config ANTES de construir:
+     piso de fuente de ejes >=11px (corrige los font:{size:10} ilegibles) + tooltip
+     theme-aware desde el token --chart-tooltip-bg. Aplica a los 159 gráficos sin tocar
+     datos. Se llama en AMBAS rutas de construcción del shim (lazy build + eager).
+     (El plugin global no sirve: Chart.register no propaga al RealChart con este shim.) */
+  function applyChrome(cfg){
+    try{
+      var o=cfg&&cfg.options; if(!o) return;
+      if(o.scales){ for(var sk in o.scales){ var sc=o.scales[sk]; if(sc&&typeof sc==='object'){ sc.ticks=sc.ticks||{}; sc.ticks.font=sc.ticks.font||{}; var fz=sc.ticks.font.size; if(fz==null||fz<11) sc.ticks.font.size=11; } } }
+      o.plugins=o.plugins||{}; o.plugins.tooltip=o.plugins.tooltip||{};
+      var tt=getComputedStyle(document.body).getPropertyValue('--chart-tooltip-bg').trim(); if(tt) o.plugins.tooltip.backgroundColor=tt;
+    }catch(e){}
+  }
   function build(st){
     if(st.dead||st.real)return;
+    applyChrome(st.cfg);
     try{st.real=new RealChart(st.cv,st.cfg);}
     catch(e){st.dead=true;console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return;}
     if(st.stash){for(var k in st.stash){try{st.real[k]=st.stash[k];}catch(e){}}}
@@ -255,6 +269,7 @@ window.__leafletMaps=window.__leafletMaps||[];
       cv=document.createElement('canvas');
     }
     if(window.__chartsEager===true){
+      applyChrome(config);
       try{return new RealChart(cv,config);}catch(e){console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return null;}
     }
     var st={cv:cv,cfg:config||{},qDark:!!(document.body&&document.body.classList.contains('dark'))};
@@ -21616,10 +21631,19 @@ Chart.defaults.plugins.tooltip.cornerRadius=10;
 Chart.defaults.plugins.tooltip.backgroundColor='#0f2940';
 Chart.defaults.animation.duration=1000;
 // Adaptive chart colors for dark mode
-function getChartTextColor(){return document.body.classList.contains('dark')?'#94a3b8':'#5c6b7f';}
-function getChartGridColor(){return document.body.classList.contains('dark')?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)';}
+// Sistema de diseño v45.313 · ahora leen los tokens --chart-axis / --chart-grid (theme-aware,
+// invierten solos vía body.dark); fallback a los valores históricos por seguridad de producción.
+function getChartTextColor(){try{var v=getComputedStyle(document.body).getPropertyValue('--chart-axis').trim();if(v)return v;}catch(e){}return document.body.classList.contains('dark')?'#94a3b8':'#5c6b7f';}
+function getChartGridColor(){try{var v=getComputedStyle(document.body).getPropertyValue('--chart-grid').trim();if(v)return v;}catch(e){}return document.body.classList.contains('dark')?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)';}
 Chart.defaults.color=getChartTextColor();
 Chart.defaults.borderColor=getChartGridColor();
+Chart.defaults.plugins.tooltip.backgroundColor=(function(){try{var v=getComputedStyle(document.body).getPropertyValue('--chart-tooltip-bg').trim();if(v)return v;}catch(e){}return '#0f2940';})();
+/* Paleta compartida (para el pase por-gráfico de colores) + plugin global de legibilidad. */
+window.CHART_PALETTE=function(){var s=getComputedStyle(document.body);return [1,2,3,4,5,6,7,8].map(function(i){return (s.getPropertyValue('--chart-'+i).trim())||'#1F3864';});};
+window.CHART_SEMANTIC=function(){var s=getComputedStyle(document.body);function v(n,f){return (s.getPropertyValue(n).trim())||f;}return {pos:v('--chart-pos','#15803d'),neg:v('--chart-neg','#b91c1c'),warn:v('--chart-warn','#b45309'),neutral:v('--chart-neutral','#64748b')};};
+/* NOTA: el piso de fuente de ejes (>=11px) + tooltip theme-aware se aplican en la ruta de
+   construcción del shim SafeChart (función build()), no por plugin global: Chart.register no
+   propaga al RealChart con este shim. Ver "cromo legible" en build(). */
 
 // ── RENDER RADAR (improved tooltips) ──
 function renderRadar(){
