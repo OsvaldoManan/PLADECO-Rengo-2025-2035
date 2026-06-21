@@ -208,10 +208,24 @@ window.__leafletMaps=window.__leafletMaps||[];
      (El plugin global no sirve: Chart.register no propaga al RealChart con este shim.) */
   function applyChrome(cfg){
     try{
-      var o=cfg&&cfg.options; if(!o) return;
-      if(o.scales){ for(var sk in o.scales){ var sc=o.scales[sk]; if(sc&&typeof sc==='object'){ sc.ticks=sc.ticks||{}; sc.ticks.font=sc.ticks.font||{}; var fz=sc.ticks.font.size; if(fz==null||fz<11) sc.ticks.font.size=11; } } }
-      o.plugins=o.plugins||{}; o.plugins.tooltip=o.plugins.tooltip||{};
-      var tt=getComputedStyle(document.body).getPropertyValue('--chart-tooltip-bg').trim(); if(tt) o.plugins.tooltip.backgroundColor=tt;
+      var o=cfg&&cfg.options;
+      if(o){
+        if(o.scales){ for(var sk in o.scales){ var sc=o.scales[sk]; if(sc&&typeof sc==='object'){ sc.ticks=sc.ticks||{}; sc.ticks.font=sc.ticks.font||{}; var fz=sc.ticks.font.size; if(fz==null||fz<11) sc.ticks.font.size=11; } } }
+        o.plugins=o.plugins||{}; o.plugins.tooltip=o.plugins.tooltip||{};
+        var tt=getComputedStyle(document.body).getPropertyValue('--chart-tooltip-bg').trim(); if(tt) o.plugins.tooltip.backgroundColor=tt;
+      }
+      /* Paleta compartida SOLO para datasets sin color (no pisa el color semántico intencional). */
+      var pal=(window.CHART_PALETTE&&window.CHART_PALETTE())||null;
+      if(pal&&pal.length&&cfg&&cfg.data&&cfg.data.datasets){
+        var t=cfg.type;
+        cfg.data.datasets.forEach(function(ds,i){
+          if(ds&&ds.backgroundColor==null&&ds.borderColor==null){
+            var c=pal[i%pal.length];
+            if(t==='line'||t==='radar'){ ds.borderColor=c; ds.backgroundColor=c+'22'; }
+            else { ds.backgroundColor=c; }
+          }
+        });
+      }
     }catch(e){}
   }
   function build(st){
