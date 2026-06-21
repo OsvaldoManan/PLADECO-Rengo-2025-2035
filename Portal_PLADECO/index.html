@@ -1882,6 +1882,40 @@ body.dark .pl-north{background:rgba(17,24,39,.92);border-color:#475569}
 body.dark .pl-north .pl-n-arrow{fill:#e06666}
 body.dark .pl-north .pl-n-body{fill:#9db8e0}
 body.dark .pl-north .pl-n-txt{fill:#9db8e0}
+/* ── Territorios prioritarios · cruce de capas (B6) ── */
+.tp-map-card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin:14px 0}
+.tp-toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px;border-bottom:1px solid var(--border);align-items:center}
+.tp-tb-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--text2);margin-right:2px}
+.tp-layer-btn{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;padding:6px 12px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);color:var(--text2);cursor:pointer;transition:border-color .15s,color .15s,opacity .15s}
+.tp-layer-btn .tp-sw{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.tp-layer-btn[aria-pressed="false"]{opacity:.5}
+.tp-layer-btn[aria-pressed="true"]{color:var(--text);border-color:currentColor}
+.tp-layer-btn:focus-visible{outline:2px solid #1F3864;outline-offset:2px}
+.tp-map-wrap{height:480px;position:relative}
+.tp-map-wrap #tpMap{height:100%;width:100%}
+.tp-prov{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#7a4f01;background:#fef3c7;border:1px solid #f0c64a;border-radius:99px;padding:1px 6px;vertical-align:middle;margin-left:5px}
+body.dark .tp-prov{color:#fcd34d;background:rgba(245,158,11,.13);border-color:rgba(245,158,11,.4)}
+.tp-rank-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;margin-top:14px;background:var(--card)}
+.tp-rank{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+.tp-rank th,.tp-rank td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
+.tp-rank th{font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--text2);background:var(--bg);font-weight:800}
+.tp-rank td.n,.tp-rank th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tp-rank tbody tr:hover{background:var(--bg)}
+.tp-rank .tp-rk{font-weight:800;color:var(--text2);text-align:center}
+.tp-rank tbody tr.tp-top td{background:rgba(153,0,0,.045)}
+body.dark .tp-rank tbody tr.tp-top td{background:rgba(224,102,102,.08)}
+.tp-icp-pill{display:inline-block;min-width:48px;text-align:center;font-weight:800;color:#fff;border-radius:6px;padding:2px 7px;font-size:11px}
+.tp-ctx{color:var(--text2);font-size:11px}
+.tp-ctx b{color:var(--text);font-weight:700}
+.tp-note{font-size:11.5px;line-height:1.62;color:var(--text2);background:var(--card);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:0 10px 10px 0;padding:12px 15px;margin:10px 0 2px}
+.tp-note b{color:var(--text)}
+.tp-note .tp-n-h{font-weight:800;color:var(--text);display:block;margin-bottom:3px}
+body.dark .tp-note{border-left-color:#7ea4d8}
+.tp-cta{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:700;color:#1F3864;text-decoration:none;border:1.5px solid #1F3864;border-radius:8px;padding:7px 13px}
+.tp-cta:hover{background:#1F3864;color:#fff}
+body.dark .tp-cta{color:#9db8e0;border-color:#9db8e0}
+body.dark .tp-cta:hover{background:#9db8e0;color:#0f1b2d}
+@media(max-width:640px){.tp-map-wrap{height:380px}}
 .map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8;max-width:215px;color:var(--text2)}
 .map-legend strong{color:var(--text)}
 .map-legend hr{border:none;border-top:1px solid var(--border);margin:4px 0}
@@ -6608,7 +6642,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     /* Macro 02 · Diagnóstico */
     'dashboard':navIco('chart'),'ficha-comunal':navIco('doc'),'censo':navIco('clipboard'),'comparador':navIco('scale'),'visualizaciones-avanzadas':navIco('trend'),
     'ict-espacios-publicos':navIco('tree'),'seguridad-vial':navIco('traffic'),'seguridad-publica':navIco('shield'),'movilidad-vial':navIco('trend'),'mbht-bienestar':navIco('heart'),'analisis-estrategico-censo':navIco('target'),'proyeccion-poblacion':navIco('people'),
-    'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
+    'datos-vivo':navIco('bolt'),'graficos':navIco('chart'),'mapa':navIco('map'),'territorios-prioritarios':navIco('target'),'territorio':navIco('globe'),'comparador-uv':navIco('scale'),'desigualdad':navIco('warning'),
     'territorial-adv':navIco('buildings'),'nna':navIco('people'),'sociedad-civil':navIco('people'),'voz':navIco('megaphone'),'suenos':navIco('bulb'),'foda':navIco('puzzle'),
     /* Macro 03 · Planificación */
     'comparador-instrumentos':navIco('scale'),'prospectiva':navIco('trend'),'matriz':navIco('target'),'coherencia':navIco('link'),'erd':navIco('globe'),'ods-sec':navIco('tree'),'gestion':navIco('gear'),'argumentario':navIco('bulb'),'decisiones':navIco('scale'),'trazabilidad':navIco('cycle'),
@@ -13308,6 +13342,22 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
   </div>
   <div class="map-wrap" id="mapContainer"></div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuentes:</strong> INE, Censo Nacional de Poblaci&oacute;n y Vivienda 2024 &bull; Instituto Geogr&aacute;fico Militar (IGM) &bull; Municipalidad de Rengo, Catastro de Unidades Vecinales &bull; SECPLA Rengo, Cartograf&iacute;a Comunal 2025</div>
+</section>
+
+<!-- ═══ TERRITORIOS PRIORITARIOS · CRUCE DE CAPAS (B6) ═══ -->
+<section id="territorios-prioritarios" class="reveal">
+  <div class="sec-header">
+    <div class="badge badge--warn">S&iacute;ntesis territorial</div>
+    <h2>Territorios prioritarios &middot; Cruce de capas</h2>
+    <p>Las 24 localidades ordenadas por vulnerabilidad (ICP), con la cobertura de espacios p&uacute;blicos (ICT) y la siniestralidad de tr&aacute;nsito como <strong>contexto</strong>.</p>
+  </div>
+  <div id="tpIntro"></div>
+  <div class="tp-map-card">
+    <div class="tp-toolbar" id="tpToolbar" role="group" aria-label="Capas del mapa"></div>
+    <div class="tp-map-wrap"><div id="tpMap" role="application" aria-label="Mapa de cruce de capas: vulnerabilidad, espacios p&uacute;blicos y siniestros"></div></div>
+  </div>
+  <div id="tpRanking"></div>
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuentes:</strong> &Iacute;ndice ICP &mdash; elaboraci&oacute;n propia con datos INE Censo 2024 (24 localidades) &bull; ICT &mdash; Catastro SECPLAC de espacios p&uacute;blicos (65 puntos, abril 2026) &bull; Siniestros &mdash; CONASET / Carabineros (2020&ndash;2024). El ranking se ancla en el ICP (dato directo por localidad); ICT y siniestros son <strong>contexto derivado</strong> por cercan&iacute;a al centroide (provisional, no atribuci&oacute;n administrativa).</div>
 </section>
 
 <!-- ═══ TERRITORIO ═══ -->
@@ -37736,7 +37786,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* Estructura de capítulos del portal */
     var caps=[
       {t:'Introducción',ids:['bienvenida','mvv','historia','comparador-instrumentos','proceso','equipo']},
-      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','cuenta-publica','comisiones','viz']},
+      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','territorios-prioritarios','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','cuenta-publica','comisiones','viz']},
       {t:'Planificación',ids:['prospectiva','matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento','inversion-subdere']},
       {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','metodologia','glosario','fuentes']}
     ];
@@ -39974,6 +40024,199 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   if(document.readyState!=='loading'){ sweep(); watchTheme(); }
   else window.addEventListener('DOMContentLoaded',function(){ sweep(); watchTheme(); },{once:true});
   window.addEventListener('load',sweep,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     TERRITORIOS PRIORITARIOS · CRUCE DE CAPAS · B6 (rediseño de mapas)
+     Enfoque validado por el usuario: ICP-ANCLADO + contexto provisional.
+     El ranking de las 24 localidades se ORDENA por el ICP (dato real, limpio,
+     por localidad). ICT (65 puntos) y siniestros (903 puntos) NO se funden en
+     un puntaje: se muestran como CONTEXTO derivado por cercanía al centroide
+     (join espacial declarado, radio editable), marcados 'provisional'. No se
+     calcula tasa de siniestros por exposición (denominadores rurales chicos
+     -> volátil): se reportan conteos absolutos cercanos. Objeto EDITABLE
+     window.territoriosPrioritarios. Mapa overlay con toggles (hereda escala/
+     norte/basemap theme-aware del enhancer B2-4). Capa de inversión preparada
+     y pendiente de georreferencia.
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var CFG = window.territoriosPrioritarios = (window.territoriosPrioritarios && !window.territoriosPrioritarios.nodeType) ? window.territoriosPrioritarios : {
+    anclaje:'ICP',               /* el ranking se ordena por ICP; sin ponderación de capas (decisión del usuario) */
+    joinRadiusKm:2.5,            /* radio de atribución de puntos al centroide más cercano (editable) */
+    topPrioritario:6,            /* nº de localidades destacadas como prioritarias */
+    inversionPendiente:true,     /* capa de inversión preparada, pendiente de geo */
+    provisional:{ ict:true, siniestros:true }
+  };
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function nf(n){ return (n==null?0:n).toLocaleString('es-CL'); }
+  function hav(la1,lo1,la2,lo2){ var R=6371,dLa=(la2-la1)*Math.PI/180,dLo=(lo2-lo1)*Math.PI/180,a=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)*Math.sin(dLo/2); return 2*R*Math.asin(Math.min(1,Math.sqrt(a))); }
+  function icpColor(v){ if(v<0.22)return '#22c55e'; if(v<0.28)return '#eab308'; if(v<0.32)return '#f97316'; return '#dc2626'; }
+  function icpLevel(v){ if(v<0.22)return 'Bajo'; if(v<0.28)return 'Medio'; if(v<0.32)return 'Alto'; return 'Crítico'; }
+  /* asigna un punto (lat,lng) a la localidad cuyo centroide es el más cercano, si está dentro del radio */
+  function assign(lat,lng,locs){ var bi=-1,bd=1e9; for(var i=0;i<locs.length;i++){ var d=hav(lat,lng,locs[i].lat,locs[i].lng); if(d<bd){bd=d;bi=i;} } return bd<=CFG.joinRadiusKm?bi:-1; }
+
+  var ICT_SCOREMAP={"Excelente":5,"Bueno":4,"Regular":3,"Deficiente":2,"Crítico":1};
+  var st={ map:null, built:false, locs:null, ictCtx:null, sinCtx:null, sinPoints:null, sinReady:false,
+           layers:{icp:null,ict:null,sin:null}, on:{icp:true,ict:false,sin:false} };
+
+  function getLocs(){ return (typeof CENSO_LOCALIDADES_GEO!=='undefined')?CENSO_LOCALIDADES_GEO:[]; }
+  function getICT(){ return (typeof ICT_ESPACIOS!=='undefined')?ICT_ESPACIOS:[]; }
+
+  /* ── join de contexto (sincrónico para ICT; siniestros tras fetch) ── */
+  function computeICTContext(locs){
+    var ctx=locs.map(function(){return {n:0,bad:0};});
+    getICT().forEach(function(e){
+      if(typeof e.lat!=='number'||typeof e.lng!=='number') return;
+      var i=assign(e.lat,e.lng,locs); if(i<0) return;
+      ctx[i].n++; var sc=ICT_SCOREMAP[e.estado]||3; if(sc<=2) ctx[i].bad++;
+    });
+    return ctx;
+  }
+  function computeSinContext(locs,pts){
+    var ctx=locs.map(function(){return {n:0};});
+    pts.forEach(function(p){
+      var la=p.la, lo=p.lo; if(typeof la!=='number'||typeof lo!=='number') return;
+      var i=assign(la,lo,locs); if(i<0) return; ctx[i].n++;
+    });
+    return ctx;
+  }
+
+  /* ── mapa overlay ── */
+  function waitLeaflet(cb,t){ t=t||0; if(typeof L!=='undefined'&&L.map){return cb();} if(t>120)return; setTimeout(function(){waitLeaflet(cb,t+1);},50); }
+  function buildMap(){
+    if(st.built||!$('tpMap')||typeof L==='undefined') return;
+    st.built=true;
+    var locs=st.locs;
+    var map=L.map('tpMap',{scrollWheelZoom:false,zoomControl:true}).setView([-34.40,-70.855],12);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+    st.map=map;
+    /* capa ICP (vulnerabilidad) */
+    var gICP=L.layerGroup();
+    var bounds=[];
+    locs.forEach(function(d){
+      bounds.push([d.lat,d.lng]);
+      var r=Math.max(6,Math.min(28,Math.sqrt(d.pob)*0.13));
+      L.circleMarker([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:1.5,fillOpacity:.62}).bindPopup(
+        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:'+icpColor(d.icp)+';font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700">'+d.icp.toFixed(3)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
+      ).addTo(gICP);
+    });
+    st.layers.icp=gICP; if(st.on.icp) gICP.addTo(map);
+    /* capa ICT (espacios públicos) */
+    var gICT=L.layerGroup();
+    getICT().forEach(function(e){
+      if(typeof e.lat!=='number'||typeof e.lng!=='number') return;
+      var sc=ICT_SCOREMAP[e.estado]||3, col=sc<=2?'#c0352a':(sc===3?'#c49b0a':'#1a7a4a');
+      L.circleMarker([e.lat,e.lng],{radius:4.5,fillColor:col,color:'#fff',weight:1,fillOpacity:.9}).bindPopup(
+        '<div style="min-width:150px"><strong>'+esc(e.nombre)+'</strong><br><span style="font-size:11px;color:'+col+';font-weight:600">'+esc(e.estado)+' · '+esc(e.tipologia||'')+'</span></div>'
+      ).addTo(gICT);
+    });
+    st.layers.ict=gICT; if(st.on.ict) gICT.addTo(map);
+    /* capa siniestros (se rellena tras fetch) */
+    st.layers.sin=L.layerGroup(); if(st.on.sin) st.layers.sin.addTo(map);
+    if(bounds.length) map.fitBounds(bounds,{padding:[28,28],maxZoom:13});
+    setTimeout(function(){ try{map.invalidateSize();}catch(e){} },300);
+    buildToolbar();
+  }
+  function fillSinLayer(){
+    if(!st.layers.sin||!st.sinPoints) return;
+    st.layers.sin.clearLayers();
+    st.sinPoints.forEach(function(p){
+      if(typeof p.la!=='number'||typeof p.lo!=='number') return;
+      var sev=p.s>=3?'#b91c1c':(p.s>=1?'#e07a2f':'#64748b');
+      L.circleMarker([p.la,p.lo],{radius:p.s>=3?4:3,fillColor:sev,color:sev,weight:0,fillOpacity:.45}).addTo(st.layers.sin);
+    });
+  }
+
+  /* ── toolbar (toggles de capa + leyenda) ── */
+  var LAYERS=[
+    {k:'icp',label:'Vulnerabilidad (ICP)',sw:'#dc2626',prov:false},
+    {k:'ict',label:'Espacios públicos (ICT)',sw:'#c0352a',prov:true},
+    {k:'sin',label:'Siniestros',sw:'#b91c1c',prov:true}
+  ];
+  function buildToolbar(){
+    var tb=$('tpToolbar'); if(!tb) return;
+    var h='<span class="tp-tb-label">Capas</span>';
+    LAYERS.forEach(function(L0){
+      var dis=(L0.k==='sin'&&!st.sinReady);
+      h+='<button type="button" class="tp-layer-btn" data-k="'+L0.k+'" aria-pressed="'+(st.on[L0.k]?'true':'false')+'"'+(dis?' disabled title="Cargando…"':'')+'>'+
+         '<span class="tp-sw" style="background:'+L0.sw+'"></span>'+esc(L0.label)+(L0.prov?'<span class="tp-prov">prov.</span>':'')+'</button>';
+    });
+    tb.innerHTML=h;
+    tb.querySelectorAll('.tp-layer-btn').forEach(function(b){
+      b.addEventListener('click',function(){
+        var k=this.getAttribute('data-k'); toggleLayer(k);
+        this.setAttribute('aria-pressed',st.on[k]?'true':'false');
+      });
+    });
+  }
+  function toggleLayer(k){
+    if(!st.map||!st.layers[k]) return;
+    st.on[k]=!st.on[k];
+    if(st.on[k]) st.layers[k].addTo(st.map); else st.map.removeLayer(st.layers[k]);
+  }
+
+  /* ── nota metodológica + ranking ── */
+  function renderIntro(){
+    var el=$('tpIntro'); if(!el) return;
+    el.innerHTML='<div class="tp-note"><span class="tp-n-h">Cómo leer este cruce</span>'+
+      'El <b>ranking se ordena por el ICP</b> (Índice Compuesto Ponderado de vulnerabilidad, 0–1), el único dato limpio por localidad: <b>las primeras filas son las prioritarias</b>. '+
+      'La cobertura de <b>espacios públicos (ICT)</b> y los <b>siniestros</b> se muestran como <b>contexto</b>, atribuidos a la localidad por <b>cercanía al centroide</b> (radio '+CFG.joinRadiusKm+' km) — son <b>provisionales</b>, no una atribución administrativa. '+
+      'No se calcula tasa de siniestros por población: los denominadores rurales pequeños la volverían engañosa, así que se reportan <b>conteos absolutos cercanos</b>. '+
+      'La capa de <b>inversión</b> queda preparada y pendiente de georreferencia.</div>';
+  }
+  function renderRanking(){
+    var el=$('tpRanking'); if(!el) return;
+    var locs=st.locs, ict=st.ictCtx, sin=st.sinCtx;
+    var order=locs.map(function(d,i){return {d:d,i:i};}).sort(function(a,b){return b.d.icp-a.d.icp;});
+    var h='<div class="tp-legend-row"><span class="tp-lg"><span style="background:#22c55e"></span> Bajo</span><span class="tp-lg"><span style="background:#eab308"></span> Medio</span><span class="tp-lg"><span style="background:#f97316"></span> Alto</span><span class="tp-lg"><span style="background:#dc2626"></span> Crítico</span><span style="color:var(--text2);font-size:10.5px">· ICP: 1 = máxima vulnerabilidad</span></div>';
+    h+='<div class="tp-rank-wrap"><table class="tp-rank"><thead><tr>'+
+       '<th class="tp-rk">#</th><th>Localidad</th><th>Área</th><th class="n">Población</th><th class="n">ICP</th><th>Nivel</th>'+
+       '<th>Espacios ICT<span class="tp-prov">contexto</span></th><th>Siniestros<span class="tp-prov">contexto</span></th></tr></thead><tbody>';
+    order.forEach(function(o,rk){
+      var d=o.d, i=o.i, top=rk<CFG.topPrioritario;
+      var ic=ict?ict[i]:null, sc=sin?sin[i]:null;
+      var ictTxt = ic ? (ic.n>0 ? '<b>'+ic.n+'</b> espacio'+(ic.n===1?'':'s')+(ic.bad>0?' · '+ic.bad+' en mal estado':'') : '—') : '—';
+      var sinTxt = st.sinReady ? (sc ? (sc.n>0 ? '<b>'+sc.n+'</b> cercano'+(sc.n===1?'':'s') : '—') : '—') : '<span style="opacity:.6">cargando…</span>';
+      h+='<tr class="'+(top?'tp-top':'')+'"><td class="tp-rk">'+(rk+1)+'</td>'+
+         '<td><b>'+esc(d.loc)+'</b></td><td>'+esc(d.area)+'</td><td class="n">'+nf(d.pob)+'</td>'+
+         '<td class="n"><span class="tp-icp-pill" style="background:'+icpColor(d.icp)+'">'+d.icp.toFixed(3)+'</span></td>'+
+         '<td>'+icpLevel(d.icp)+'</td>'+
+         '<td class="tp-ctx">'+ictTxt+'</td><td class="tp-ctx">'+sinTxt+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+    h+='<a class="tp-cta" href="#matriz" onclick="try{if(window.PV&&PV.go){PV.go(\'matriz\');return false;}}catch(e){}">Llevar a la Matriz Estratégica (Eje 6 · priorización) →</a>';
+    el.innerHTML=h;
+  }
+
+  /* ── orquestación ── */
+  function init(){
+    if(st._init) { return; }
+    var locs=getLocs(); if(!locs.length) return;
+    st._init=true;
+    st.locs=locs;
+    st.ictCtx=computeICTContext(locs);
+    renderIntro(); renderRanking();
+    waitLeaflet(buildMap);
+    /* siniestros: fetch self-contained (cache del SW); contexto + capa */
+    fetch('seguridad-vial.json').then(function(r){return r.json();}).then(function(d){
+      st.sinPoints=(d&&d.points)||[]; st.sinReady=true;
+      st.sinCtx=computeSinContext(locs,st.sinPoints);
+      fillSinLayer(); buildToolbar(); renderRanking();
+    }).catch(function(){ st.sinReady=false; /* queda 'cargando…'->mostramos pendiente */ st.sinCtx=null; renderRanking(); });
+  }
+  window.renderTerritoriosPrioritarios=init;
+  /* lazy-init: el motor de vistas oculta la sección hasta navegar -> IntersectionObserver + reintentos */
+  function boot(){
+    var SEC=$('territorios-prioritarios'); if(!SEC) return;
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ init(); if(st.map) setTimeout(function(){try{st.map.invalidateSize();}catch(_){}}, 250); } }); },{rootMargin:'250px'});
+      io.observe(SEC);
+    } else { init(); }
+  }
+  if(document.readyState!=='loading') boot(); else window.addEventListener('DOMContentLoaded',boot,{once:true});
 })();
 </script>
 </body>
