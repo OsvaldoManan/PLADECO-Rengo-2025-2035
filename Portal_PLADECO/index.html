@@ -1943,6 +1943,18 @@ body.dark .tp-note{border-left-color:#7ea4d8}
 body.dark .tp-cta{color:#9db8e0;border-color:#9db8e0}
 body.dark .tp-cta:hover{background:#9db8e0;color:#0f1b2d}
 @media(max-width:640px){.tp-map-wrap{height:380px}}
+/* ── Rutas de lectura · secciones complementarias (v45.318) ── */
+.sec-rel{margin:26px 0 4px;padding:14px 16px 15px;background:var(--card);border:1px solid var(--border);border-radius:var(--rad-md);box-shadow:var(--sh-card)}
+.sec-rel .sr-h{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:10px}
+.sec-rel .sr-h svg{width:14px;height:14px;fill:currentColor;flex:0 0 14px}
+.sec-rel .sr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:9px}
+.sec-rel a.sr-card{display:block;text-decoration:none;color:inherit;background:var(--bg);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:0 var(--rad-sm) var(--rad-sm) 0;padding:9px 12px;transition:border-color .18s,transform .18s,box-shadow .18s}
+.sec-rel a.sr-card:hover{transform:translateY(-2px);box-shadow:var(--sh-card-hover);border-left-color:#990000}
+.sec-rel a.sr-card:focus-visible{outline:2px solid #1F3864;outline-offset:2px}
+.sec-rel .sr-t{font-size:12.5px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px}
+.sec-rel .sr-d{font-size:11px;color:var(--text2);line-height:1.45}
+body.dark .sec-rel a.sr-card{border-left-color:#7ea4d8}
+body.dark .sec-rel a.sr-card:hover{border-left-color:#ff5252}
 .map-legend{background:var(--card);padding:12px 16px;border-radius:8px;box-shadow:var(--shadow);font-size:11px;line-height:1.8;max-width:215px;color:var(--text2)}
 .map-legend strong{color:var(--text)}
 .map-legend hr{border:none;border-top:1px solid var(--border);margin:4px 0}
@@ -40247,6 +40259,113 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     } else { init(); }
   }
   if(document.readyState!=='loading') boot(); else window.addEventListener('DOMContentLoaded',boot,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RUTAS DE LECTURA · secciones complementarias (v45.318)
+     Objetivo: reducir la SENSACIÓN de dispersión sin fusionar ni borrar
+     contenido. El diagnóstico mostró que las secciones "redundantes" son en
+     realidad COMPLEMENTARIAS (4 FODA de lentes distintos; 2 comparadores de
+     escala distinta —comunas vs unidades vecinales—; etnografía vs voz
+     ciudadana; los 3 módulos de seguridad). En vez de fusionarlas —lo que
+     borraría análisis y rompería anclas—, cada sección declara sus hermanas
+     y se enlazan entre sí. Objeto EDITABLE window.seccionesRelacionadas.
+     Aditivo, idempotente, sin dependencias ni temporizadores.
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  window.seccionesRelacionadas = (window.seccionesRelacionadas && !window.seccionesRelacionadas.nodeType) ? window.seccionesRelacionadas : {
+    /* ── Familia FODA · 4 miradas del mismo territorio, con fuentes distintas ── */
+    'foda':[
+      {sec:'voz',anchor:'fodaEntrev',t:'FODA cualitativo · voz ciudadana',d:'La misma matriz, desde más de 120 entrevistas a la comunidad.'},
+      {sec:'diagnostico-institucional',t:'FODA institucional',d:'Mirada interna: 904 menciones de funcionarios y directores.'},
+      {sec:'sociedad-civil',t:'FODA por actor social',d:'Cómo lo ve cada tipo de organización de la comuna.'}
+    ],
+    'voz':[
+      {sec:'foda',t:'FODA Comunal consolidado',d:'La contraparte técnico-territorial: 80 elementos del diagnóstico.'},
+      {sec:'etnografia',t:'Voces desde los barrios y las instituciones',d:'El levantamiento etnográfico en profundidad que complementa esta voz.'},
+      {sec:'sociedad-civil',t:'Sociedad civil organizada',d:'95 organizaciones y 472 participantes, con su propio FODA.'}
+    ],
+    'etnografia':[
+      {sec:'voz',t:'Voz de la ciudadanía',d:'La mirada ciudadana amplia, con encuestas y sueños 2035.'},
+      {sec:'diagnostico-institucional',t:'Etnografía institucional',d:'La contraparte interna: 115 entrevistas a funcionarios y directores.'},
+      {sec:'sociedad-civil',t:'Sociedad civil organizada',d:'El tejido asociativo que sostiene estos hallazgos.'}
+    ],
+    'diagnostico-institucional':[
+      {sec:'etnografia',t:'Voces desde los barrios',d:'La mirada territorial que complementa este diagnóstico interno.'},
+      {sec:'foda',t:'FODA Comunal consolidado',d:'El FODA técnico-territorial de la comuna completa.'},
+      {sec:'sociedad-civil',t:'Sociedad civil organizada',d:'La contraparte externa de la red de gobernanza.'}
+    ],
+    'sociedad-civil':[
+      {sec:'voz',t:'Voz de la ciudadanía',d:'Lo que expresan las personas, más allá de las organizaciones.'},
+      {sec:'etnografia',t:'Voces desde los barrios y las instituciones',d:'El trabajo etnográfico en las 21 unidades vecinales.'},
+      {sec:'foda',t:'FODA Comunal consolidado',d:'Cómo se integra este diagnóstico en el FODA de la comuna.'}
+    ],
+    /* ── Comparadores · misma herramienta, dos escalas ── */
+    'comparador':[
+      {sec:'comparador-uv',t:'Comparador de Unidades Vecinales',d:'La misma lógica, hacia adentro: compara territorios de Rengo.'},
+      {sec:'territorio',t:'21 Unidades Vecinales',d:'La ficha de cada territorio que alimenta la comparación.'}
+    ],
+    'comparador-uv':[
+      {sec:'comparador',t:'Comparador con comunas vecinas',d:'La misma lógica, hacia afuera: Rengo frente a la provincia y la región.'},
+      {sec:'territorios-prioritarios',t:'Territorios prioritarios',d:'El cruce de capas que prioriza dónde intervenir primero.'}
+    ],
+    /* ── Seguridad · tres módulos de un mismo desafío ── */
+    'seguridad-vial':[
+      {sec:'seguridad-publica',t:'Seguridad pública',d:'La otra cara del desafío: delitos y percepción de seguridad.'},
+      {sec:'movilidad-vial',t:'Sistema vial y movilidad',d:'La infraestructura donde ocurren estos siniestros.'}
+    ],
+    'seguridad-publica':[
+      {sec:'seguridad-vial',t:'Seguridad vial y siniestralidad',d:'Los siniestros de tránsito, georreferenciados (2020-2024).'},
+      {sec:'movilidad-vial',t:'Sistema vial y movilidad',d:'Cómo se mueve la comuna y qué infraestructura lo permite.'}
+    ],
+    'movilidad-vial':[
+      {sec:'seguridad-vial',t:'Seguridad vial y siniestralidad',d:'Dónde esta red vial concentra siniestros y víctimas.'},
+      {sec:'seguridad-publica',t:'Seguridad pública',d:'El diagnóstico de delitos y percepción en la comuna.'}
+    ]
+  };
+
+  var ICO='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.6-3.6a2.5 2.5 0 1 1 3.5 3.5l-1.4 1.4a1 1 0 0 1-1.4-1.4l1.4-1.4a.5.5 0 1 0-.7-.7L12 13.4a1 1 0 0 1-1.4 0zm2.8-2.8a1 1 0 0 1 0 1.4l-3.6 3.6a2.5 2.5 0 1 1-3.5-3.5l1.4-1.4a1 1 0 1 1 1.4 1.4l-1.4 1.4a.5.5 0 1 0 .7.7L12 10.6a1 1 0 0 1 1.4 0z"/></svg>';
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function go(sec,anchor,ev){
+    try{
+      if(window.PV && typeof window.PV.go==='function'){
+        if(ev) ev.preventDefault();
+        window.PV.go(sec);
+        if(anchor){ var a=document.getElementById(anchor); if(a) setTimeout(function(){ try{a.scrollIntoView({block:'start'});}catch(_){} },60); }
+        return false;
+      }
+    }catch(e){}
+    return true; /* sin motor de vistas: deja el href normal */
+  }
+  window.__srGo=go;
+
+  function render(){
+    var M=window.seccionesRelacionadas; if(!M) return;
+    Object.keys(M).forEach(function(id){
+      var sec=document.getElementById(id); if(!sec) return;
+      if(sec.querySelector(':scope > .sec-rel')) return; /* idempotente */
+      var items=(M[id]||[]).filter(function(it){ return it && document.getElementById(it.sec); });
+      if(!items.length) return;
+      var h='<div class="sr-h">'+ICO+'Continuar la lectura · secciones complementarias</div><div class="sr-grid">';
+      items.forEach(function(it){
+        var href='#'+(it.anchor||it.sec);
+        h+='<a class="sr-card" href="'+esc(href)+'" onclick="return window.__srGo(\''+esc(it.sec)+'\','+(it.anchor?("'"+esc(it.anchor)+"'"):'null')+',event);">'+
+           '<div class="sr-t">'+esc(it.t)+'</div><div class="sr-d">'+esc(it.d)+'</div></a>';
+      });
+      h+='</div>';
+      var div=document.createElement('div');
+      div.className='sec-rel'; div.setAttribute('role','navigation');
+      div.setAttribute('aria-label','Secciones complementarias'); div.innerHTML=h;
+      var fuente=sec.querySelector(':scope > .sec-fuente');
+      if(fuente) sec.insertBefore(div,fuente); else sec.appendChild(div);
+    });
+  }
+  window.renderSeccionesRelacionadas=render;
+  if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
+  window.addEventListener('load',render,{once:true});
 })();
 </script>
 </body>
