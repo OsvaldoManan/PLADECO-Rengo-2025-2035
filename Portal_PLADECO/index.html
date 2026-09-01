@@ -6312,7 +6312,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
 .cg-scroll::-webkit-scrollbar-track{background:var(--bg-soft)}
 .cg-scroll::-webkit-scrollbar-thumb{background:#c2410c80;border-radius:4px}
 .cg-scroll::-webkit-scrollbar-thumb:hover{background:#c2410c}
-.cg-chart{display:grid;grid-template-columns:280px repeat(42,minmax(22px,1fr));font-size:12px;position:relative;min-width:1280px}
+.cg-chart{display:grid;grid-template-columns:var(--cg-label,280px) repeat(var(--cg-cols,42),minmax(var(--cg-colw,22px),1fr));font-size:12px;position:relative;min-width:var(--cg-minw,1280px)}
 /* Header row 1 corner + meses (corner ocupa 2 filas) */
 .cg-h-corner{grid-row:1 / 3;grid-column:1;background:linear-gradient(135deg,#0c1f36,#1F3864);color:#fff;padding:10px 12px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid #c2410c;border-right:2px solid #c2410c;display:flex;align-items:center;position:sticky;left:0;z-index:4}
 .cg-h-month{grid-row:1;background:#0c1f36;color:#fff;padding:8px 4px;font-size:11px;font-weight:800;letter-spacing:.04em;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);border-left:1px solid rgba(255,255,255,.15);text-transform:uppercase}
@@ -6388,7 +6388,7 @@ body.dark .pol-meta-box:nth-child(3){background:rgba(209,250,229,.08)}
   .cg-kpi-num{font-size:15px}
   .cg-cta-download{flex-direction:column;align-items:stretch!important;text-align:center}
   .cg-cta-download a{justify-content:center}
-  .cg-chart{font-size:10px;grid-template-columns:180px repeat(42,minmax(18px,1fr));min-width:990px}
+  .cg-chart{font-size:10px;--cg-label:180px;--cg-colw:18px}
   .cg-h-corner{padding:7px 8px;font-size:11px}
   .cg-h-month{padding:5px 2px;font-size:11px}
   .cg-h-month .cg-h-year{font-size:11px}
@@ -26408,6 +26408,14 @@ function cgSyncKpis(){
 function cgRender(){
   var c=document.getElementById('cgChart');if(!c) return;
   cgSyncKpis();
+  /* v45.329 · el nº de columnas de la grilla estaba escrito a mano en el CSS ('repeat(42,...)')
+     y al pasar el cronograma a 54 semanas las 12 columnas extra quedaban IMPLICITAS y se
+     comprimian (julio y agosto salian estrechos). Ahora se derivan de CG_WEEKS, junto con el
+     ancho minimo del lienzo, de modo que el Gantt escale solo si se agregan o quitan meses. */
+  var _n=CG_WEEKS.length, _lab=parseInt(getComputedStyle(c).getPropertyValue('--cg-label'))||280,
+      _cw=parseInt(getComputedStyle(c).getPropertyValue('--cg-colw'))||22;
+  c.style.setProperty('--cg-cols', _n);
+  c.style.setProperty('--cg-minw', (_lab + _n*_cw) + 'px');
   var html='';
   // Header row 1: corner + months (each spans its weeks)
   html+='<div class="cg-h-corner">Macroproceso / Actividad</div>';
