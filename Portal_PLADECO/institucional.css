@@ -19,6 +19,33 @@
   /* filete institucional sobrio */
   --rule:1px solid var(--border);
   --navy:#1F3864; --crimson:#990000;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     v45.321 · CONSOLIDACIÓN DE RADIOS Y SOMBRAS (cierra la fragmentación)
+     JERARQUÍA DE CAPAS DE TOKENS DEL PORTAL (de menor a mayor precedencia):
+       1) index.html :root canónico  → --rad-*, --shadow*, --sh-card*, --radius
+       2) index.html :root "v36.0"   → --r-*, --sh-sm..2xl, escala tipográfica
+       3) index.html :root "v45.35"  → --space-*, --gap-*, --surface-*, --text-1..5
+       4) ESTE ARCHIVO (carga ÚLTIMO) → manda sobre los anteriores.
+     PROBLEMA QUE RESUELVE: el refinamiento de arriba bajó --radius y --r-* a la escala
+     sobria, pero la familia --rad-* (81 usos en index.html) quedó fuera. Resultado: el
+     portal renderizaba TRES radios "medianos" distintos a la vez —12px (--rad-md),
+     7px (--r-md) y 6px (--radius)—, que es la causa de que secciones distintas
+     parecieran de autores distintos. Aquí se alinea --rad-* a la MISMA escala sobria,
+     de modo que exista un solo criterio de radio en todo el portal.
+     Lo mismo con --sh-card/--sh-card-hover, que habían quedado con la sombra pesada
+     anterior ("card soup") mientras el resto ya usaba sombras contenidas.
+     PARA REVERTIR al estado previo: eliminar este bloque (no hay nada más que deshacer).
+     ═══════════════════════════════════════════════════════════════════════ */
+  --rad-xs:3px; --rad-sm:5px; --rad-md:7px; --rad-lg:10px; --rad-xl:14px;
+  /* --rad-full se mantiene en 9999px (píldoras, avatares, badges redondos) */
+  --sh-card:var(--shadow);
+  --sh-card-hover:var(--sh-lg);
+}
+body.dark{
+  /* la sombra de tarjeta sigue a --shadow, que ya tiene su variante oscura más abajo */
+  --sh-card:var(--shadow);
+  --sh-card-hover:var(--sh-lg);
 }
 body.dark{
   --sh-sm:0 1px 2px rgba(0,0,0,.30);
