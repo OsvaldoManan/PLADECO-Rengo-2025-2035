@@ -335,3 +335,41 @@ body.dark .anest-table .anest-pond{ color:var(--success-txt,#5cc98a); }
 /* chip de filtro activo: texto blanco sobre verde medio (3,89:1) -> verde accesible detrás */
 #metas-trayectoria .mtr-chip.active{ background:#15803d; color:#fff; border-color:#15803d; }
 body.dark #metas-trayectoria .mtr-chip.active{ background:#48c76e; color:#0b1624; border-color:#48c76e; }
+
+/* ── v45.325 (3ª tanda) · fondos FIJOS: aquí el texto NO puede seguir a un token
+   theme-aware, porque el fondo no invierte. Se usan colores fijos y accesibles.
+   (Estas reglas van después de la conversión a tokens de index.html, así que la corrigen.) */
+.cmp-delta.up{ color:#065f46; }                      /* sobre #d1fae5 fijo · antes 3,32:1 */
+.cmp-delta.down{ color:#991b1b; }                    /* sobre #fee2e2 fijo */
+.compromiso-item.cumplido .comp-estado{ color:#065f46; }
+.compromiso-item.en-curso .comp-estado{ color:#92400e; }   /* sobre #fef3c7 fijo · antes 2,86:1 */
+.compromiso-item.pendiente .comp-estado{ color:#991b1b; }  /* sobre #fee2e2 fijo */
+
+/* franja naranja de la ficha comunal: el fondo #f89f2d es fijo · antes 2,10:1 y 1,98:1 */
+.ficha-strip-num{ color:#0c1f36; text-shadow:none; }
+.ficha-strip-txt{ color:rgba(12,31,54,.86); }
+
+/* botón "Descargar" de los paquetes gráficos: blanco sobre el verde medio de acento
+   · antes 3,60:1 en claro y 2,17:1 en oscuro (mismo caso que .diag-btn.primary) */
+.graf-pack .gp-btn.primary{ background:#15803d; color:#fff; }
+.graf-pack .gp-btn.primary:hover{ background:#126c34; }
+body.dark .graf-pack .gp-btn.primary{ background:#48c76e; color:#0b1624; }
+.graf-pack .gp-btn:hover{ background:#15803d; color:#fff; }
+body.dark .graf-pack .gp-btn:hover{ background:#48c76e; color:#0b1624; }
+
+/* ── v45.325 · GUARDA CONTRA LA INVERSIÓN AL REVÉS ────────────────────────────
+   Regresión detectada y corregida en la propia auditoría: al pasar los colores de
+   texto a tokens theme-aware, los elementos cuyo FONDO es un claro FIJO (inline o
+   por regla) quedaban con el token pálido del modo oscuro sobre fondo claro →
+   ilegibles (p. ej. las tarjetas "7 En Curso" / "3 Pendientes" de Compromisos).
+   Estos selectores de atributo fijan un texto oscuro accesible siempre que el fondo
+   claro esté declarado inline, y sirven además de red para casos futuros. */
+[style*="background:#d1fae5" i], [style*="background: #d1fae5" i],
+[style*="background:#dcfce7" i], [style*="background:#ecfdf5" i]{ color:#065f46!important; }
+
+[style*="background:#fef3c7" i], [style*="background: #fef3c7" i],
+[style*="background:#fff7ed" i], [style*="background:#fefce8" i]{ color:#92400e!important; }
+
+[style*="background:#fee2e2" i], [style*="background: #fee2e2" i]{ color:#991b1b!important; }
+
+[style*="background:#dbeafe" i], [style*="background: #dbeafe" i]{ color:#1e3a8a!important; }
