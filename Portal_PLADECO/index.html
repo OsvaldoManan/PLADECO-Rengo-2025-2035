@@ -12,7 +12,12 @@
 <meta name="keywords" content="PLADECO, Rengo, plan desarrollo comunal, municipalidad rengo, censo 2024, sociedad civil, planificaci&#243;n territorial, O'Higgins, vulnerabilidad socioterritorial, espacios p&#250;blicos">
 <meta name="author" content="Municipalidad de Rengo · SECPLAC">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
-<meta name="theme-color" content="#1A6B3A">
+<!-- v45.320 · UNICA meta theme-color del portal (antes había 4). El navegador usa la PRIMERA
+     cuyo media coincide: esta no tiene media, así que siempre ganaba y dejaba muertas a las 3
+     navy que estaban más abajo. Se unificó al navy institucional (era #1A6B3A verde, que además
+     provocaba un destello verde antes de que corriera el JS). El toggle de tema la actualiza
+     dinámicamente (querySelector toma esta misma) entre #0c1f36 (claro) y #0b1624 (oscuro). -->
+<meta name="theme-color" content="#0c1f36">
 <meta name="generator" content="Portal PLADECO Rengo">
 <link rel="canonical" href="https://osvaldomanan.github.io/PLADECO-Rengo-2025-2035/Portal_PLADECO/">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml">
@@ -315,9 +320,8 @@ window.__leafletMaps=window.__leafletMaps||[];
 
 <!-- Manifest e iconos -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0c1f36">
-<meta name="theme-color" content="#0c1f36" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0b1624" media="(prefers-color-scheme: dark)">
+<!-- v45.320 · las 3 metas theme-color que estaban aquí se eliminaron: eran código muerto
+     (la meta sin media del inicio del <head> siempre ganaba) y duplicaban el mismo color. -->
 <meta name="color-scheme" content="light dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21239,7 +21243,17 @@ const RESUMEN_ITEMS=[
 // ── RENDER MAP ──
 let mapInstance, mapMarkers = [], currentMapLayer = 'pop', mapLegendDiv = null;
 function renderMap(){
-  if(!document.getElementById('mapContainer')||typeof L==='undefined') return;
+  /* v45.320 · FIX: antes hacía `typeof L==='undefined' -> return` y se rendía en SILENCIO si
+     Leaflet (CDN, defer) aún no había cargado cuando corría el batch de render => el mapa
+     quedaba vacío. Ahora reintenta (máx. 6 s) igual que svMap/#tpMap, y es idempotente. */
+  var _el=document.getElementById('mapContainer');
+  if(!_el||_el.classList.contains('leaflet-container')) return;
+  renderMap._t=(renderMap._t||0)+1;
+  if(typeof L==='undefined'||!L.map){ if(renderMap._t<=120) setTimeout(renderMap,50); return; }
+  /* espera además a que esté instalado el wrapper de L.map (se instala por polling porque
+     Leaflet carga con defer): si el mapa se crea antes, NO queda registrado en __leafletMaps
+     y se pierde la escala, la flecha norte y el basemap theme-aware. Máx. 2 s. */
+  if(!L.__patched && renderMap._t<=40){ setTimeout(renderMap,50); return; }
   try{
   mapInstance = L.map('mapContainer').setView([-34.385, -70.855], 12);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
@@ -24825,8 +24839,16 @@ function renderCensoHeatmap(){
 }
 
 function renderCensoMapaVuln(){
+  /* v45.320 · FIX: corre dentro del batch requestIdleCallback del censo; si Leaflet aún no
+     estaba cargado se rendía en silencio y el mapa quedaba VACÍO (observado en pruebas).
+     Ahora reintenta (máx. 6 s) e es idempotente si ya se construyó. */
   var el=document.getElementById('mapCensoVuln');
-  if(!el||typeof L==='undefined') return;
+  if(!el||el.classList.contains('leaflet-container')) return;
+  renderCensoMapaVuln._t=(renderCensoMapaVuln._t||0)+1;
+  if(typeof L==='undefined'||!L.map){ if(renderCensoMapaVuln._t<=120) setTimeout(renderCensoMapaVuln,50); return; }
+  /* igual que renderMap: espera al wrapper de L.map para no perder el registro (escala,
+     norte y basemap theme-aware dependen de __leafletMaps). Máx. 2 s. */
+  if(!L.__patched && renderCensoMapaVuln._t<=40){ setTimeout(renderCensoMapaVuln,50); return; }
   try{
   var map=L.map('mapCensoVuln',{scrollWheelZoom:false}).setView([-34.39,-70.855],12);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
@@ -32829,12 +32851,26 @@ if('serviceWorker' in navigator){
     try{sessionStorage.setItem('__pwa_rl',''+Date.now());}catch(_){}
     location.reload();
   }
+  /* v45.320 · el reintento ya NO corre durante toda la sesión. Antes había un
+     setInterval(_reload,5000) permanente que se ejecutaba ~720 veces/hora aunque no hubiera
+     ninguna actualización pendiente (el caso normal). Ahora el reloj arranca SOLO cuando el
+     SW avisa que hay versión nueva (_schedule) y se detiene al recargar. */
+  var _rlTimer=null;
+  function _startReloadWatch(){
+    if(_rlTimer||_reloaded) return;
+    _rlTimer=setInterval(function(){
+      if(_reloaded||!_pendingReload){ clearInterval(_rlTimer); _rlTimer=null; return; }
+      _reload();
+    },5000);
+  }
   function _schedule(){
     _pendingReload=true;
     if(!_updToast){_updToast=true;if(typeof showToast==='function')showToast('Nueva versión lista — se aplicará en una pausa.','info');}
     _reload();
+    _startReloadWatch();               // reintenta hasta encontrar una pausa
   }
-  setInterval(_reload,5000); // reintenta la recarga en cuanto haya una pausa
+  /* si la pestaña vuelve a primer plano con una actualización pendiente, reintenta al instante */
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden&&_pendingReload) _reload(); });
   navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(function(reg){
     _swReg=reg;
     if(reg.waiting&&navigator.serviceWorker.controller){try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}}
