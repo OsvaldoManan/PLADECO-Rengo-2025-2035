@@ -269,3 +269,69 @@ body.dark .group-divider-label{background:rgba(8,18,30,.9)!important}
    seguía siendo el claro de tema claro (--c-warn-soft #fef3c7) → 1,6:1 ilegible. Fondo ámbar
    profundo a juego (par AA del sistema, mismo del disclaimer del asistente). */
 body.dark .sec-header .badge{background:#422006!important;border-color:#854d0e!important}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.324 · CORRECCIONES DE CONTRASTE WCAG AA (auditoría medida en runtime)
+   Bloque agrupado a propósito: carga último, es fácil de revisar y de revertir
+   (basta eliminarlo). Cada regla indica el ratio ANTES y la causa.
+   Dos causas raíz recurrentes:
+     (a) paleta Okabe-Ito (segura para RELLENOS) usada como COLOR DE TEXTO pequeño;
+     (b) elementos sobre fondos FIJOS (siempre claros u oscuros) que usan tokens
+         de texto theme-aware, y por eso se invierten al revés en un tema.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* (a) Insignias de estado de la cartera SUBDERE · antes 2,71:1 claro / 3,66:1 oscuro.
+   El color del estado se conserva como identidad en el fondo teñido y el borde. */
+#inversion-subdere .is-est{ color:var(--text)!important; border:1px solid currentColor; }
+
+/* (a) Ponderadores del análisis estratégico · antes 3,03:1. Verde de texto accesible. */
+.anest-table .anest-pond{ color:var(--success-txt,#15803d); }
+
+/* (a) Metas: valor de meta y enlaces verdes fijos · antes 3,15:1 en oscuro. */
+#metas-trayectoria .mtr-val.is-meta .v{ color:var(--success-txt,#15803d); }
+#metas-trayectoria a{ color:var(--success-txt,#15803d); }
+
+/* (b) Botón dentro de la cabecera navy de la tabla · antes 1,13:1 (navy sobre navy). */
+#comparador-instrumentos thead th .ci-obs-btn,
+#comparador-instrumentos th .ci-obs-btn{ color:#fff; border-color:rgba(255,255,255,.45); }
+body.dark #comparador-instrumentos th .ci-obs-btn{ color:#fff; }
+
+/* (b) Celda de objetivos de la Matriz: su fondo es SIEMPRE claro (no invierte),
+   así que el texto no puede seguir a var(--text) · antes 1,00:1 en oscuro. */
+.me-oep-col .me-oe-text{ color:#1e293b; }
+
+/* (b) Etiquetas de la línea histórica: viven sobre una superficie SIEMPRE oscura
+   · antes 1,81:1 en modo claro (el token --text2 se volvía oscuro). */
+.hist-tag{ color:rgba(255,255,255,.88); }
+
+/* (a) Botón primario de diagramas: blanco sobre el verde medio --accent
+   · antes 3,60:1 en claro y 2,17:1 en oscuro. */
+.diag-btn.primary{ background:#15803d; color:#fff; }
+.diag-btn.primary:hover{ background:#126c34; }
+body.dark .diag-btn.primary{ background:#48c76e; color:#0b1624; }
+body.dark .diag-btn.primary:hover{ background:#5cd97f; }
+
+/* ── v45.324 (2ª tanda) · causa dominante: el verde de acento como COLOR DE TEXTO ──
+   #2d9a4d rinde ~3,0:1 sobre blanco: sirve como relleno, no como texto pequeño. El portal
+   ya tiene --success-txt para esto (#15803d claro / #5cc98a oscuro). Se captura también el
+   uso INLINE con selectores de atributo, que es como está escrito en gran parte del HTML. */
+[style*="color:#2d9a4d"],
+[style*="color: #2d9a4d"],
+[style*="color:var(--accent)"]{ color:var(--success-txt,#15803d)!important; }
+
+/* ámbar de la línea histórica como texto (2,66-2,87:1) -> ámbar accesible */
+[style*="color:#b88a0b"],
+[style*="color: #b88a0b"]{ color:var(--warning-txt,#92400e)!important; }
+
+/* insignia de estado del ciclo en SUBDERE · mismo patrón inline que .is-est (2,71:1) */
+#inversion-subdere .is-linea-est{ color:var(--text)!important; border:1px solid currentColor; }
+
+/* ponderadores: #15803d sobre su propio tinte verde daba 4,38:1 (marginal) -> se oscurece */
+.anest-table .anest-pond{ color:#126c34; }
+body.dark .anest-table .anest-pond{ color:var(--success-txt,#5cc98a); }
+
+/* valores de meta del comparador temporal · el selector real es .mtr-val > .v (3,15:1 oscuro) */
+#metas-trayectoria .mtr-val .v{ color:var(--success-txt,#15803d); }
+/* chip de filtro activo: texto blanco sobre verde medio (3,89:1) -> verde accesible detrás */
+#metas-trayectoria .mtr-chip.active{ background:#15803d; color:#fff; border-color:#15803d; }
+body.dark #metas-trayectoria .mtr-chip.active{ background:#48c76e; color:#0b1624; border-color:#48c76e; }
