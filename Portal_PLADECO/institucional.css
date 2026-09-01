@@ -373,3 +373,33 @@ body.dark .graf-pack .gp-btn:hover{ background:#48c76e; color:#0b1624; }
 [style*="background:#fee2e2" i], [style*="background: #fee2e2" i]{ color:#991b1b!important; }
 
 [style*="background:#dbeafe" i], [style*="background: #dbeafe" i]{ color:#1e3a8a!important; }
+
+/* ── v45.326 (4ª tanda) · TEXTO SOBRE SUPERFICIES FIJAS ──────────────────────
+   Última causa raíz de la auditoría: elementos que viven sobre un fondo que NO
+   invierte (tarjeta oscura fija, cabecera navy, insignia clara fija) pero cuyo
+   texto sí seguía a un token theme-aware, invirtiéndose al revés en un tema. */
+
+/* Tarjetas de la línea histórica: su fondo es navy FIJO (#142036) en ambos temas, pero
+   TODO su texto (título, párrafo y destacados) usaba var(--text), que en modo CLARO es
+   casi negro => las 5 tarjetas quedaban ILEGIBLES en claro (~1,10:1). Solo funcionaban
+   en modo oscuro. Se fija texto claro en la tarjeta y los descendientes lo heredan. */
+.hist-card{ color:#e2e8f0; }
+.hist-card p, .hist-card li, .hist-card h4, .hist-card .hist-card-title,
+.hist-card .hist-card-text, .hist-card strong, .hist-card b, .hist-card em{ color:inherit; }
+
+/* Pie de la tabla de unidades vecinales: celdas con fondo navy fijo y texto oscuro (1,54:1) */
+.uv-table tfoot td, .uv-table tfoot th{ color:#fff; }
+
+/* TODA cabecera de tabla: la regla global 'table th{background:navy!important}' pinta
+   de navy tambien los th fuera de <thead> (cabeceras de fila), que se quedaban con
+   texto oscuro (1,26:1). Se completa lo ya hecho para 'section table thead th'. */
+table th{ color:#fff!important; }
+
+/* Destacados dentro del recuadro naranja de la ERD: color navy fijo sobre fondo
+   traslúcido que en oscuro queda oscuro (1,02:1) -> heredan el color del párrafo. */
+.erd-io strong, .erd-io b, .erd-io em{ color:inherit; }
+
+/* Insignias con fondo claro FIJO: texto oscuro accesible en ambos temas */
+.arg-tag{ color:#991b1b; }
+.ict-hall-stat{ color:#8a4d0e; }                 /* antes #c97014 · 3,44:1 */
+.movilidad-vial .sv-tag, #movilidad-vial .sv-tag{ color:#1f5c58; }  /* antes #2a7e78 · 4,18:1 */
