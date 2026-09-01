@@ -1842,12 +1842,14 @@ body.dark{--bg:#0b1624;--card:#132035;--text:#e2e8f0;--text2:#94a3b8;--text-seco
   --chart-grid:rgba(255,255,255,.10); --chart-axis:#cbd5e1; --chart-tooltip-bg:#1e293b;
 }
 /* Respeta preferencia del sistema si no hay theme explicito */
-@media (prefers-color-scheme: dark){
-  body:not(.light){
-    --c-text-3:#a5a299;
-    --c-text-footnote:#a5a299;
-  }
-}
+/* v45.323 · BLOQUE ELIMINADO (bug de contraste en modo claro).
+   Decía: @media (prefers-color-scheme: dark){ body:not(.light){ --c-text-3:#a5a299; --c-text-footnote:#a5a299 } }
+   El portal NUNCA agrega la clase 'light' al body: su modo claro es la AUSENCIA de '.dark'.
+   Por eso, a todo usuario con el SO en modo oscuro que usara el portal en modo CLARO se le
+   aplicaban los tokens de texto del modo oscuro (#a5a299) sobre fondo blanco => 2,55:1,
+   por debajo del mínimo AA de 4,5:1 (afectaba notas al pie y textos terciarios: '.dato-meta',
+   sublabels de KPI, etc.). Era además REDUNDANTE: el bloque body.dark de arriba ya define
+   ambos tokens con ese mismo valor, y el JS ya aplica '.dark' según la preferencia del SO. */
 body.dark .sidebar{background:#0c0c1d}
 body.dark .hero{background:transparent !important}
 body.dark .uv-table th{background:#0f172a}
@@ -16851,7 +16853,10 @@ body.dark #poa .poa-table tbody tr:hover{background:rgba(255,255,255,.04)}
 #poa .poa-acc-t{font-weight:700;color:var(--text);text-decoration:none}
 #poa .poa-acc-t:hover{color:var(--blue,#1F3864);text-decoration:underline}
 #poa .poa-acc-meta{display:block;font-size:11px;color:var(--text3);margin-top:2px;font-weight:500;max-width:42ch}
-#poa .poa-ejebadge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap}
+/* v45.323 · texto legible: el color del eje queda en el fondo teñido y el borde (identidad),
+   no en el texto —la paleta Okabe-Ito rinde 2,31-3,87:1 como texto pequeño sobre blanco—. */
+#poa .poa-ejebadge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;color:var(--text);border:1px solid transparent}
+#poa .poa-idnum{font-weight:800;color:var(--text)}
 #poa .poa-est{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;text-transform:capitalize}
 #poa .poa-est.e0{background:#f1f5f9;color:#475569}
 #poa .poa-est.e1{background:#fef3c7;color:#92400e}
@@ -16863,7 +16868,10 @@ body.dark #poa .poa-est.e2{background:#052e16;color:#bbf7d0}
 #poa .poa-av .track{flex:1;height:7px;border-radius:99px;background:var(--border);overflow:hidden}
 #poa .poa-av .fill{height:100%;border-radius:99px;background:#15803d}
 #poa .poa-av .pct{font-size:11px;font-weight:700;color:var(--text2);min-width:30px;text-align:right}
-#poa .poa-metalink{font-size:11px;color:#15803d;text-decoration:none;font-weight:600;white-space:nowrap}
+/* v45.323 · contraste en modo oscuro: usaba el verde #15803d fijo (variante de modo CLARO),
+   que sobre las superficies oscuras daba 3,15:1. Pasa al token theme-aware --success-txt
+   (#15803d en claro / #5cc98a en oscuro), que ya existe para exactamente este caso. */
+#poa .poa-metalink{font-size:11px;color:var(--success-txt,#15803d);text-decoration:none;font-weight:600;white-space:nowrap}
 #poa .poa-metalink:hover{text-decoration:underline}
 #poa .poa-empty{padding:30px;text-align:center;color:var(--text2)}
 @media(max-width:600px){#poa .poa-kpi-num{font-size:24px}}
@@ -35899,7 +35907,13 @@ section table thead th{
   font-weight:var(--fw-bold)!important;
   letter-spacing:var(--ls-wider)!important;
   text-transform:uppercase;
-  color:var(--text-2)!important;
+  /* v45.323 · FIX DE CONTRASTE: antes color:var(--text-2)!important (gris oscuro #1e293b).
+     La regla `table th{background:rgb(19,46,99)!important}` (capa anterior) pinta TODAS las
+     cabeceras de tabla en navy, mientras esta regla —de mayor especificidad— les imponía
+     texto oscuro => 1,11:1, cabeceras ilegibles en POA, Situación Financiera, Censo, ERD…
+     Se pasa a blanco, que es lo que ya declaran todas las reglas específicas del portal
+     (.poa-table, .fin-table, .chart-data-table, .uv-table, .comp-table, .is-tabla). */
+  color:#fff!important;
   border-bottom:2px solid var(--border-3)!important;
 }
 section table tbody td{
@@ -38396,9 +38410,14 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     list.forEach(function(a){
       var ei=ESTADOS.indexOf(a.estado);if(ei<0)ei=0;
       h+='<tr>'+
-        '<td><span style="font-weight:800;color:'+ejeCol(a.eje)+'">'+a.id+'</span></td>'+
+        /* v45.323 · contraste: el nº de acción ya no se pinta con el color del eje (la paleta
+           Okabe-Ito es segura para RELLENOS pero da 2,3-3,9:1 como texto pequeño). La identidad
+           del eje la sigue entregando la insignia de la columna contigua. */
+        '<td><span class="poa-idnum">'+a.id+'</span></td>'+
         '<td><a class="poa-acc-t" href="#matriz" title="Ver esta acción en la Matriz">'+esc(a.titulo)+'</a><span class="poa-acc-meta">'+esc(a.oe)+(a.area?' &middot; '+esc(a.area):'')+'</span></td>'+
-        '<td><span class="poa-ejebadge" style="background:'+ejeCol(a.eje)+'22;color:'+ejeCol(a.eje)+'">'+esc(ejeLbl(a.eje))+'</span></td>'+
+        /* v45.323 · el color del eje se conserva como identidad (fondo teñido + borde), pero el
+           TEXTO pasa a var(--text) por CSS: antes el texto iba en el color del eje (2,31-3,87:1). */
+        '<td><span class="poa-ejebadge" style="background:'+ejeCol(a.eje)+'22;border-color:'+ejeCol(a.eje)+'66">'+esc(ejeLbl(a.eje))+'</span></td>'+
         '<td>'+esc(a.resp||'—')+'</td>'+
         '<td>'+(a.plazo?(esc(PLAZO_LBL[a.plazo]||a.plazo)+' <span style="color:var(--text3)">&middot; '+esc(a.anio)+'</span>'):'—')+'</td>'+
         '<td>'+esc(a.fin||'—')+'</td>'+
