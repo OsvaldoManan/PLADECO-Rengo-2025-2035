@@ -24272,31 +24272,26 @@ document.addEventListener('keydown',function(e){
 
 // ── LÍNEA DE TIEMPO ──
 function renderTimeline(){
-  const el=document.getElementById('timelineProceso');
-  if(!el)return;
-  const items=[
-    {fecha:'Enero 2025',titulo:'Kick-off PLADECO',desc:'Inicio formal del proceso. Conformación del equipo técnico y definición metodológica.',badge:'Inicio',hito:true},
-    {fecha:'Febrero 2025',titulo:'Revisión documental',desc:'Análisis de instrumentos de planificación vigentes: PLADECO anterior, PRCDT, PRC, PROT.',badge:'Diagnóstico'},
-    {fecha:'Marzo 2025',titulo:'Levantamiento territorial',desc:'Recorridos en terreno por las 21 unidades vecinales. Cartografía social y mapeo de actores.',badge:'Diagnóstico'},
-    {fecha:'Abril 2025',titulo:'Encuesta ciudadana masiva',desc:'Aplicación de encuesta a más de 1.500 personas. Cobertura urbana y rural.',badge:'Participación',hito:true},
-    {fecha:'Mayo 2025',titulo:'Entrevistas a actores clave',desc:'Más de 40 entrevistas a autoridades, dirigentes, funcionarios y actores del territorio.',badge:'Participación'},
-    {fecha:'Junio-Julio 2025',titulo:'Talleres participativos',desc:'12 talleres territoriales con participación de organizaciones comunitarias y ciudadanía.',badge:'Participación',hito:true},
-    {fecha:'Agosto 2025',titulo:'Procesamiento de datos',desc:'Sistematización de información cualitativa y cuantitativa. Elaboración de diagnóstico integrado.',badge:'Análisis'},
-    {fecha:'Sept-Oct 2025',titulo:'Formulación estratégica',desc:'Definición de visión, ejes estratégicos, objetivos y políticas públicas.',badge:'Planificación',hito:true},
-    {fecha:'Noviembre 2025',titulo:'Validación con COSOC',desc:'Presentación del borrador al Consejo de la Sociedad Civil. Incorporación de observaciones.',badge:'Institucional'},
-    {fecha:'Diciembre 2025',titulo:'Integración Censo 2024',desc:'Incorporación de datos oficiales del Censo 2024 (INE) e índices de vulnerabilidad territorial.',badge:'Datos',hito:true},
-    {fecha:'Enero-Marzo 2026',titulo:'Redacción final',desc:'Elaboración de documentos definitivos: diagnóstico, plan de acción, argumentario y matrices.',badge:'Redacción'},
-    {fecha:'Abril 2026',titulo:'Presentación al Concejo',desc:'Exposición del PLADECO completo ante el Concejo Municipal para su aprobación.',badge:'Institucional',hito:true},
-    {fecha:'Mayo 2026',titulo:'Lanzamiento Portal Digital',desc:'Publicación del portal interactivo con todos los datos, gráficos y documentos del proceso.',badge:'Digital',hito:true},
-    {fecha:'Junio 2026',titulo:'Aprobación y decreto',desc:'Aprobación formal mediante decreto alcaldicio. Inicio de la fase de implementación.',badge:'Hito',hito:true}
-  ];
-  el.innerHTML=items.map(i=>`
-    <div class="timeline-item${i.hito?' hito':''}">
-      <div class="tl-fecha">${i.fecha}</div>
-      <div class="tl-titulo">${i.titulo}</div>
-      <div class="tl-desc">${i.desc}</div>
-      <span class="tl-badge">${i.badge}</span>
-    </div>`).join('');
+  /* v45.353 · CODIGO MUERTO CON CIFRAS CONTRADICTORIAS, NEUTRALIZADO.
+     Esta funcion apuntaba a #timelineProceso, un contenedor que NO EXISTE en el documento:
+     nunca llego a dibujar nada. Lo grave no era que estuviera inactiva sino lo que llevaba
+     dentro: catorce hitos escritos a mano cuyas cifras CONTRADICEN a las del resto del
+     portal -declaraba una "encuesta ciudadana masiva a mas de 1.500 personas" cuando el
+     instrumento documentado es de 119 respuestas, y "mas de 40 entrevistas" cuando la
+     etnografia institucional registra 115-. Bastaba con que alguien repusiera el contenedor
+     para publicar esas cifras. Se eliminan los datos escritos a mano y la funcion pasa a
+     leer TIMELINE_EVENTS, que es el registro que se mantiene y el que alimenta la cronologia
+     visible del proceso. Si el contenedor no existe, sigue sin hacer nada. */
+  var el=document.getElementById('timelineProceso');
+  if(!el || typeof TIMELINE_EVENTS==='undefined') return;
+  el.innerHTML=TIMELINE_EVENTS.map(function(i){
+    return '<div class="timeline-item">'
+      + '<div class="tl-fecha">'+i.date+'</div>'
+      + '<div class="tl-titulo">'+i.title+'</div>'
+      + '<div class="tl-desc">'+i.text+'</div>'
+      + '<span class="tl-badge">'+i.type+'</span>'
+      + '</div>';
+  }).join('');
 }
 
 // ── EQUIPO TÉCNICO ──
@@ -42334,7 +42329,7 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
 
   var AGREGADOS=[
     {n:'119', l:'personas adultas encuestadas'},
-    {n:'21',  l:'niños, niñas y adolescentes encuestados'},
+    {n:'4.036', l:'estudiantes encuestados en 27 establecimientos'},
     {n:'92%', l:'declara querer participar en el PLADECO'},
     {n:'56%', l:'percibe una identidad local débil'}
   ];
@@ -42357,7 +42352,7 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
       h += '<li class="pe-item">'
          + '<div class="pe-izq">'
          +   '<blockquote class="pe-cita">'+esc(v.cita)+'</blockquote>'
-         +   '<p class="pe-proc">Encuesta a niños, niñas y adolescentes del proceso PLADECO Rengo 2025 (n=21) · '
+         +   '<p class="pe-proc">Encuesta a niños, niñas y adolescentes del proceso PLADECO Rengo 2025 · '
          +   'participante de '+esc(v.rango)+' · sin nombre, establecimiento ni dirección</p>'
          + '</div>'
          + '<div class="pe-der">'
@@ -42374,7 +42369,11 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
     AGREGADOS.forEach(function(a){ h += '<div><div class="pe-c-n">'+esc(a.n)+'</div><div class="pe-c-l">'+esc(a.l)+'</div></div>'; });
     h += '</div><p class="pe-ev-f">Fuente: Encuesta Ciudadana PLADECO Rengo 2025 (n=119) · Encuesta NNA PLADECO (n=21) · '
        + 'Entrevistas cualitativas a 14 tipos de actores comunales · Talleres de participación ciudadana PLADECO 2025. '
-       + 'Las muestras son pequeñas y no probabilísticas: describen a quienes participaron, no al total de la comuna.</p></div>';
+       + 'La encuesta ciudadana es pequeña y no probabilística: describe a quienes participaron, no al total de la comuna. '
+       + '<b>Aviso sobre el tamaño de la encuesta a niños, niñas y adolescentes:</b> su propia sección la declara con '
+       + '<b>4.036 respuestas en 27 establecimientos</b> (49,6% de cobertura escolar), mientras otras tres secciones la citan como <b>n=21</b>, '
+       + 'cifra que la tabla de instrumentos atribuye a <b>educadoras</b> y no a estudiantes. Aquí se usa la cifra que viene acompañada de su '
+       + 'metodología, y la contradicción queda registrada para validación municipal.</p></div>';
 
     h += '<p class="pe-nota"><b>Anonimización y consentimiento.</b> Las citas no incluyen nombre, establecimiento ni '
        + 'dirección; solo el tramo de edad. El <b>registro del consentimiento informado no consta en este repositorio</b> '
@@ -42441,12 +42440,446 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
      nota:'Las citas de la encuesta a niños, niñas y adolescentes se publican anonimizadas (solo tramo de edad, sin nombre, establecimiento ni dirección), pero el repositorio no contiene el respaldo del consentimiento ni el verbatim original.',
      resolucion:'Pendiente. Requiere que el equipo que levantó la encuesta archive el consentimiento y el verbatim, o que se retiren las citas textuales y se dejen solo los hallazgos agregados.'},
 
+    {id:'muestra-nna-21-4036', tema:'Tamaño de la encuesta a niños, niñas y adolescentes', estado:'por validar',
+     valores:['Sección de niñez: n=4.036 en 27 establecimientos (49,6% de cobertura escolar)','Voz ciudadana, Brechas y Sociedad civil: n=21','Tabla de instrumentos: los 21 son EDUCADORAS, no estudiantes'],
+     nota:'El mismo instrumento aparece con dos tamaños de muestra que difieren en dos órdenes de magnitud, y la tabla comparativa de instrumentos atribuye el 21 a educadoras. Esto afecta a cómo se cita la evidencia participativa en todo el portal.',
+     resolucion:'Pendiente. Mientras tanto, el bloque de participación cita la encuesta SIN afirmar un tamaño de muestra, y el recuento agregado usa la cifra que viene acompañada de su metodología (4.036 en 27 establecimientos), declarando la contradicción.'},
+
+    {id:'cronologia-cifras-en-conflicto', tema:'Cronología del proceso', estado:'resuelto',
+     valores:['Función renderTimeline: «encuesta ciudadana masiva a más de 1.500 personas» y «más de 40 entrevistas»','Instrumentos documentados: 119 respuestas ciudadanas y 115 entrevistas etnográficas'],
+     nota:'Había una segunda cronología escrita a mano en el código, apuntando a un contenedor inexistente, cuyas cifras contradecían a las del resto del portal. Nunca se dibujó, pero bastaba reponer el contenedor para publicarlas.',
+     resolucion:'Corregido en v45.353: se eliminaron las cifras escritas a mano y la función pasa a leer el registro TIMELINE_EVENTS, el mismo que alimenta la cronología visible.'},
+
+    {id:'cronologia-aprobacion-concejo', tema:'Aprobación del PLADECO por el Concejo', estado:'por declarar',
+     valores:['Hito registrado: «Jun 2026 · Aprobación final por Concejo Municipal»','Texto del propio registro: «Presentación al Concejo Municipal PARA aprobación»'],
+     nota:'La fecha del hito ya pasó, pero el portal no acredita en ninguna parte que la aprobación se haya producido: el registro la enuncia como una presentación para aprobar. Es el hito que determina si el instrumento está vigente o sigue en tramitación.',
+     resolucion:'Pendiente. La cronología lo muestra como «sin confirmación registrada» y no como cumplido. Requiere que el municipio indique la fecha y el número del acuerdo o decreto de aprobación, o confirme que sigue en tramitación.'},
     {id:'gantt-actividades-31-33', tema:'Actividades del cronograma', estado:'resuelto',
      valores:['Indicador del cronograma: 31 actividades','Bajada de la sección y datos: 33 actividades'],
      nota:'El indicador mostraba 31 y el dato dice otra cosa: los ocho macroprocesos suman 4+5+5+5+3+6+4+1 = 33 actividades. No requería decisión institucional porque el propio dato daba la respuesta.',
      resolucion:'Corregido en v45.349: el indicador muestra 33, derivado de los datos del cronograma.'}
   ];
   nuevas.forEach(function(n){ if(!yaEsta(n.id)) D.push(n); });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.353 · UNA INICIATIVA DE PRINCIPIO A FIN
+     (rama revision-editorial · NO PUBLICADA)
+
+     Los encargos lo piden dos veces: explicar UN caso completo con problema, evidencia,
+     ubicación, respuesta, responsables documentados y estado; distinguir propuesta,
+     programación, financiamiento y ejecución; y no presentar simulaciones como resultados.
+
+     POR QUÉ ESTA ACCIÓN Y NO OTRA: la acción 101 «Rengo Verde» es la única de las 225 que
+     tiene, a la vez, (a) un diagnóstico propio con cifras verificables en la matriz, (b) un
+     catastro municipal georreferenciado que documenta el mismo problema espacio por espacio,
+     (c) una cita ciudadana del proceso participativo sobre exactamente eso, y (d) línea base,
+     metas 2028 y 2035, responsables, fuentes de financiamiento y estado en el POA. No hubo
+     que completar ningún campo: todo lo que se muestra está en _POL, accionesPOA e ICT_ESPACIOS.
+
+     LO QUE NO SE PUEDE MOSTRAR Y SE DECLARA: la matriz NO registra dónde se ejecuta cada
+     acción (comprobado campo por campo), de modo que el mapa que acompaña al caso es el del
+     CATASTRO —el universo de espacios que esta acción tendría que atender—, rotulado como tal
+     y no como la localización de la acción. Tampoco hay fotografía del lugar.
+
+     ESTADO: se distinguen los cuatro momentos que pide el encargo y se dice con todas las
+     letras que el financiamiento son FUENTES PREVISTAS, no recursos asignados, y que la
+     ejecución no ha comenzado. Las metas se rotulan como metas, nunca como logros.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.ini-wrap{margin:26px 0 8px;border:1px solid var(--border);border-radius:var(--rad-md,7px);overflow:hidden;background:var(--card)}
+.ini-head{padding:18px 22px;border-bottom:1px solid var(--border)}
+.ini-kicker{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);margin:0 0 6px}
+.ini-h{margin:0;font-size:var(--fs-h3,21px);line-height:1.25;font-weight:700;color:var(--text)}
+.ini-sub{margin:7px 0 0;font-size:13.5px;line-height:1.6;color:var(--text2);max-width:70ch}
+.ini-id{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11.5px;color:var(--text2);
+  font-variant-numeric:tabular-nums}
+.ini-id b{color:var(--text)}
+.ini-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.ini-p{padding:18px 22px;border-top:1px solid var(--border)}
+.ini-p:nth-child(odd){border-right:1px solid var(--border)}
+.ini-p-t{margin:0 0 9px;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);
+  display:flex;align-items:center;gap:7px}
+.ini-p-t .ini-n{width:19px;height:19px;border-radius:50%;background:var(--navy,#17324D);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex:none}
+body.dark .ini-p-t .ini-n{background:var(--id-azul,#7FA8D4);color:#0d1b2e}
+.ini-p p{margin:0 0 8px;font-size:14px;line-height:1.62;color:var(--text);max-width:62ch}
+.ini-p p:last-child{margin-bottom:0}
+.ini-datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:2px 0 10px}
+.ini-d{border:1px solid var(--border);border-radius:var(--rad-sm,5px);padding:9px 11px}
+.ini-d-v{font-size:19px;font-weight:700;line-height:1.1;color:var(--text);font-variant-numeric:tabular-nums}
+.ini-d-l{font-size:11.5px;line-height:1.4;color:var(--text2);margin-top:3px}
+.ini-lista{margin:0;padding-left:17px;font-size:13.5px;line-height:1.6;color:var(--text)}
+.ini-lista li{margin-bottom:4px}
+.ini-resp{margin:0;padding:0;list-style:none;font-size:13.5px;line-height:1.55}
+.ini-resp li{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--border)}
+.ini-resp li:last-child{border-bottom:0}
+.ini-resp .k{flex:none;width:118px;color:var(--text2);font-size:12px;padding-top:1px}
+.ini-resp .v{color:var(--text)}
+.ini-fases{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.ini-f{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start}
+.ini-f-i{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none;
+  border:2px solid var(--border)}
+.ini-f-i svg{width:14px;height:14px}
+.ini-f.si .ini-f-i{border-color:#286449;color:#286449;background:rgba(40,100,73,.1)}
+body.dark .ini-f.si .ini-f-i{border-color:#4FBF86;color:#4FBF86;background:rgba(79,191,134,.14)}
+.ini-f.no .ini-f-i{border-color:var(--border);color:var(--text2)}
+.ini-f-t{font-size:13.5px;font-weight:700;color:var(--text);line-height:1.35}
+.ini-f-d{font-size:12.5px;color:var(--text2);line-height:1.5;margin-top:1px}
+.ini-meta-fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0;border:1px solid var(--border);
+  border-radius:var(--rad-sm,5px);overflow:hidden;margin:4px 0 0}
+.ini-mc{padding:9px 11px;border-right:1px solid var(--border)}
+.ini-mc:last-child{border-right:0}
+.ini-mc-l{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text2)}
+.ini-mc-v{font-size:12.5px;line-height:1.45;color:var(--text);margin-top:3px}
+.ini-mc.base{background:rgba(23,50,77,.05)}
+body.dark .ini-mc.base{background:rgba(126,164,216,.1)}
+.ini-falta{padding:13px 22px;border-top:1px solid var(--border);font-size:12px;line-height:1.6;color:var(--text2)}
+.ini-falta b{color:var(--text)}
+.ini-links{padding:13px 22px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px 16px}
+.ini-links a{font-size:12.5px;font-weight:700;color:var(--id-azul,#17497C);text-decoration:none;
+  border-bottom:1px solid rgba(23,73,124,.3);padding-bottom:1px}
+body.dark .ini-links a{color:var(--id-azul,#7FA8D4);border-bottom-color:rgba(127,168,212,.35)}
+.ini-links a:hover{border-bottom-color:currentColor}
+.ini-cita{margin:0 0 10px;padding:0 0 0 13px;border-left:3px solid var(--id-azul,#17497C);font-size:13.5px;
+  line-height:1.6;color:var(--text)}
+body.dark .ini-cita{border-left-color:var(--id-azul,#7FA8D4)}
+.ini-cita cite{display:block;margin-top:5px;font-size:11.5px;font-style:normal;color:var(--text2)}
+@media(max-width:820px){
+  .ini-body{grid-template-columns:1fr}
+  .ini-p:nth-child(odd){border-right:0}
+  .ini-resp .k{width:100px}
+}
+</style>
+<script>
+(function(){
+  'use strict';
+  var N_ACCION=101;
+
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+  function num(n){ try{ return (+n).toLocaleString('es-CL'); }catch(e){ return ''+n; } }
+  function ico(id){ return '<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#'+id+'"></use></svg>'; }
+
+  function datos(){
+    var p=null, poa=null;
+    try{ p=(window._POL||[]).find(function(x){ return x[0]===N_ACCION; }); }catch(e){}
+    try{ poa=(window.accionesPOA||[]).find(function(a){ return a.id===N_ACCION; }); }catch(e){}
+    if(!p) return null;
+    var esp=[], est={};
+    try{ esp=window.ICT_ESPACIOS||[]; esp.forEach(function(e){ est[e.estado]=(est[e.estado]||0)+1; }); }catch(e){}
+    var problemas=0; esp.forEach(function(e){ problemas+=(e.problemas||[]).length; });
+    return {
+      n:p[0], eje:p[1], oeCod:p[2], oeNom:p[3], area:p[4], titulo:String(p[5]).replace(/"/g,' ').trim(),
+      descripcion:p[6], diagnostico:p[7], indicadores:p[8],
+      base:p[9], m28:p[10], m35:p[11], plazo:p[12], resp:p[13], fin:p[14], ods:p[15],
+      poa:poa||null,
+      catastro:{ total:esp.length, problemas:problemas,
+                 malos:(est['Deficiente']||0)+(est['Crítico']||0),
+                 detalle:est }
+    };
+  }
+
+  function montar(){
+    var sec=document.getElementById('matriz'); if(!sec) return 0;
+    if(sec.querySelector('.ini-wrap')) return 0;                 /* idempotente */
+    var d=datos(); if(!d) return 0;
+
+    var ejeNom=''; try{ var E=window.EJES||[]; ejeNom=(E[d.eje-1]&&(E[d.eje-1].nombre||E[d.eje-1].name))||''; }catch(e){}
+
+    var h='<div class="ini-wrap" role="region" aria-labelledby="iniH">';
+
+    /* ── encabezado ── */
+    h += '<div class="ini-head">'
+      + '<p class="ini-kicker">Una acción del plan, de principio a fin</p>'
+      + '<h3 class="ini-h" id="iniH">' + esc(d.titulo) + '</h3>'
+      + '<p class="ini-sub">Así se lee una de las 225 acciones de la matriz cuando se despliegan todas sus columnas. '
+      + 'Nada de lo que sigue se completó para este ejemplo: cada campo está en la matriz, en el plan operativo '
+      + 'o en el catastro municipal de espacios públicos.</p>'
+      + '<p class="ini-id">Acción <b>Nº ' + d.n + '</b> &middot; <b>Eje ' + d.eje + '</b> ' + esc(ejeNom)
+      + ' &middot; <b>' + esc(d.oeCod) + '</b> &middot; ' + esc(d.area) + '</p>'
+      + '</div>';
+
+    h += '<div class="ini-body">';
+
+    /* ── 1 · el problema ── */
+    h += '<div class="ini-p"><p class="ini-p-t"><span class="ini-n">1</span> El problema</p>'
+      + '<p>Rengo tiene <b>1,96 m² de área verde por habitante</b> cuando la Organización Mundial de la Salud '
+      + 'recomienda entre 9 y 10. No es solo cuánta superficie hay, sino en qué estado: el diagnóstico '
+      + 'registra <b>60% de césped amarillento</b>, <b>70% de plazas sin riego tecnificado</b> y '
+      + '<b>50% de las plazas periféricas con suelo expuesto</b>.</p>'
+      + '<p>La cobertura vegetal urbana es de <b>13,1%</b> frente a <b>82,0%</b> en el área rural, y entre una '
+      + 'superficie al sol y otra bajo arbolado la temperatura puede variar hasta <b>20&nbsp;°C</b>.</p>'
+      + '</div>';
+
+    /* ── 2 · la evidencia ── */
+    h += '<div class="ini-p"><p class="ini-p-t"><span class="ini-n">2</span> La evidencia</p>';
+    if(d.catastro.total){
+      h += '<div class="ini-datos">'
+        + '<div class="ini-d"><div class="ini-d-v">' + d.catastro.total + '</div><div class="ini-d-l">espacios públicos catastrados</div></div>'
+        + '<div class="ini-d"><div class="ini-d-v">' + d.catastro.malos + '</div><div class="ini-d-l">en estado deficiente o crítico</div></div>'
+        + '<div class="ini-d"><div class="ini-d-v">' + num(d.catastro.problemas) + '</div><div class="ini-d-l">problemas registrados uno por uno</div></div>'
+        + '</div>';
+    }
+    h += '<p>El catastro municipal no es una estimación: recorrió cada espacio y anotó qué le pasa. '
+      + 'La encuesta ciudadana, por su parte, califica las plazas con <b>2,94 sobre 5</b>.</p>'
+      + '<blockquote class="ini-cita">En mi pasaje no hay plaza. Tengo que ir a la del centro porque acá los columpios '
+      + 'están todos rotos.<cite>Participante de 8 a 12 años &middot; encuesta a niños, niñas y adolescentes del proceso (n=21)</cite></blockquote>'
+      + '</div>';
+
+    /* ── 3 · la respuesta ── */
+    h += '<div class="ini-p"><p class="ini-p-t"><span class="ini-n">3</span> Qué propone el plan</p>'
+      + '<p>' + esc(d.descripcion) + '</p>'
+      + '<p style="font-size:12.5px;color:var(--text2);margin-top:10px">Se medirá con: ' + esc(d.indicadores) + '.</p>'
+      + '<div class="ini-meta-fila">'
+      +   '<div class="ini-mc base"><div class="ini-mc-l">Línea base 2024</div><div class="ini-mc-v">' + esc(d.base) + '</div></div>'
+      +   '<div class="ini-mc"><div class="ini-mc-l">Meta 2028</div><div class="ini-mc-v">' + esc(d.m28) + '</div></div>'
+      +   '<div class="ini-mc"><div class="ini-mc-l">Meta 2035</div><div class="ini-mc-v">' + esc(d.m35) + '</div></div>'
+      + '</div>'
+      + '<p style="font-size:11.5px;color:var(--text2);margin-top:8px">Son <b>metas comprometidas</b>, no resultados: '
+      + 'a la fecha no hay medición posterior a la línea base.</p>'
+      + '</div>';
+
+    /* ── 4 · quién responde ── */
+    h += '<div class="ini-p"><p class="ini-p-t"><span class="ini-n">4</span> Quién responde y con qué</p>'
+      + '<ul class="ini-resp">'
+      +   '<li><span class="k">Responsables</span><span class="v">' + esc(d.resp) + '</span></li>'
+      +   '<li><span class="k">Fuentes previstas</span><span class="v">' + esc(d.fin) + '</span></li>'
+      +   '<li><span class="k">Objetivo</span><span class="v">' + esc(d.oeNom) + '</span></li>'
+      +   '<li><span class="k">ODS</span><span class="v">' + esc(d.ods) + '</span></li>'
+      + '</ul>'
+      + '<p style="font-size:11.5px;color:var(--text2);margin-top:10px">Las fuentes de financiamiento son las '
+      + '<b>previstas en la formulación</b>. El portal no registra recursos asignados ni convenios firmados '
+      + 'para esta acción.</p>'
+      + '</div>';
+
+    /* ── 5 · en qué estado está ── */
+    var estadoPOA = d.poa ? String(d.poa.estado||'').toLowerCase() : '';
+    var enEjecucion = !!(d.poa && d.poa.avance>0) || /en ejecuci|en curso|iniciada/.test(estadoPOA) && !/no iniciada/.test(estadoPOA);
+    var fases=[
+      {ok:true,  t:'Propuesta formulada',
+       d:'Está en la matriz con descripción, indicadores, línea base y metas.'},
+      {ok:!!(d.poa&&d.poa.anio), t:'Programada',
+       d: d.poa&&d.poa.anio ? ('Ventana de ejecución ' + esc(d.poa.anio) + ' en el plan operativo.') : 'Sin ventana de ejecución registrada.'},
+      {ok:false, t:'Financiamiento asignado',
+       d:'No consta. Solo hay fuentes previstas; el portal no registra recursos comprometidos.'},
+      {ok:enEjecucion, t:'En ejecución',
+       d: d.poa ? ('Estado en el plan operativo: <b>' + esc(d.poa.estado) + '</b> &middot; avance registrado <b>' + (d.poa.avance||0) + '%</b>.') : 'Sin registro de avance.'}
+    ];
+    h += '<div class="ini-p"><p class="ini-p-t"><span class="ini-n">5</span> En qué estado está hoy</p>'
+      + '<ul class="ini-fases">';
+    fases.forEach(function(f){
+      h += '<li class="ini-f ' + (f.ok?'si':'no') + '">'
+        +   '<span class="ini-f-i" aria-hidden="true">' + ico(f.ok?'ico-check':'ico-clock') + '</span>'
+        +   '<span><span class="ini-f-t">' + f.t + '</span>'
+        +   '<span class="ini-f-d">' + f.d + '</span></span>'
+        + '</li>';
+    });
+    h += '</ul></div>';
+
+    h += '</div>';   /* fin ini-body */
+
+    /* ── campos que no se pueden llenar ── */
+    h += '<div class="ini-falta"><b>Lo que esta ficha no puede mostrar.</b> '
+      + '<b>Dónde se ejecuta:</b> la matriz de 225 acciones no registra localización, de modo que el mapa que '
+      + 'acompaña este caso es el del <b>catastro de espacios públicos</b> —el universo que esta acción '
+      + 'tendría que atender— y no la ubicación de la acción. '
+      + '<b>Fotografía del lugar:</b> el portal no dispone de imágenes propias de estos espacios. '
+      + 'Ambas ausencias están registradas en el listado de datos pendientes de validación.</div>';
+
+    /* ── enlaces ── */
+    h += '<div class="ini-links">'
+      + '<a href="#ict-espacios-publicos">Ver los ' + d.catastro.total + ' espacios catastrados en el mapa</a>'
+      + '<a href="#voz">Lo que dijeron los vecinos</a>'
+      + '<a href="#poa">Estado de las acciones en el plan operativo</a>'
+      + '<a href="#semaforo">Semáforo de metas</a>'
+      + '<a href="#metodologia">Datos pendientes de validación</a>'
+      + '</div>';
+
+    h += '</div>';
+
+    var cont=document.createElement('div');
+    cont.innerHTML=h;
+    var ancla=sec.querySelector('.callout') || sec.querySelector('.sec-fuente');
+    if(ancla) sec.insertBefore(cont.firstChild, ancla); else sec.appendChild(cont.firstChild);
+    return 1;
+  }
+  window.montarIniciativaCompleta=montar;
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ montar(); }catch(e){} }, 140); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1800); });
+  window.addEventListener('hashchange', pasar);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.353 · CRONOLOGÍA DEL PROCESO: LOS HITOS, SU ESTADO Y SU EVIDENCIA
+     (rama revision-editorial · NO PUBLICADA)
+
+     El encargo pide: hitos ordenados por fecha; diferenciar realizados, en curso y
+     programados mediante TEXTO E ICONOS; vincular las evidencias disponibles; y una
+     composición vertical en móvil.
+
+     HALLAZGO: los once hitos del proceso EXISTEN como dato (`TIMELINE_EVENTS`, con fecha,
+     tipo, título y descripción) pero NO SE RENDERIZAN EN NINGUNA PARTE. La sección «Línea de
+     Tiempo del Proceso» mostraba únicamente un encabezado y un botón hacia la Carta Gantt:
+     el lector veía el rótulo de una cronología sin la cronología. Aquí se dibuja.
+
+     CÓMO SE DECIDE EL ESTADO — y por qué no basta con mirar la fecha. Que una fecha haya
+     pasado no prueba que el hito ocurriera. El criterio, declarado también en pantalla, es
+     lo que dice el propio registro:
+       · REALIZADO cuando el registro describe un resultado ya producido y comprobable
+         (asistentes, entrevistas completadas, firmas verificadas, un documento publicado).
+       · SIN CONFIRMACIÓN cuando el registro describe algo que todavía iba a ocurrir, aunque
+         su fecha ya haya pasado. Es el caso de la aprobación por el Concejo Municipal, que
+         el registro enuncia como «presentación para aprobación» y que el portal no confirma
+         en ninguna parte. No se marca como cumplida.
+       · PROGRAMADO cuando la fecha es futura.
+     El estado NO se comunica solo por color: cada hito lleva su icono y su palabra.
+
+     Las evidencias se enlazan únicamente donde existe una sección que efectivamente las
+     contiene; el resto de los hitos no lleva enlace en vez de llevar uno aproximado.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.cro-wrap{margin:20px 0 6px}
+.cro-lead{font-size:13.5px;line-height:1.6;color:var(--text2);max-width:72ch;margin:0 0 6px}
+.cro-leyenda{display:flex;flex-wrap:wrap;gap:8px 18px;margin:12px 0 18px;font-size:12px;color:var(--text2)}
+.cro-leyenda span{display:inline-flex;align-items:center;gap:6px}
+.cro-leyenda svg{width:14px;height:14px}
+.cro-lista{list-style:none;margin:0;padding:0;position:relative}
+.cro-lista::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--border)}
+.cro-item{position:relative;padding:0 0 20px 34px}
+.cro-item:last-child{padding-bottom:0}
+.cro-punto{position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:50%;background:var(--card);
+  border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text2)}
+.cro-punto svg{width:11px;height:11px}
+.cro-item.hecho .cro-punto{border-color:#286449;color:#286449}
+body.dark .cro-item.hecho .cro-punto{border-color:#4FBF86;color:#4FBF86}
+.cro-item.duda .cro-punto{border-color:#7A5406;color:#7A5406}
+body.dark .cro-item.duda .cro-punto{border-color:#E0B25C;color:#E0B25C}
+.cro-cab{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.cro-fecha{font-size:12px;font-weight:700;color:var(--text2);font-variant-numeric:tabular-nums;
+  min-width:88px;letter-spacing:.01em}
+.cro-estado{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;
+  border-radius:20px;border:1px solid var(--border);color:var(--text2)}
+.cro-item.hecho .cro-estado{color:#286449;border-color:rgba(40,100,73,.35);background:rgba(40,100,73,.08)}
+body.dark .cro-item.hecho .cro-estado{color:#7fd39b;border-color:rgba(79,191,134,.4);background:rgba(79,191,134,.14)}
+.cro-item.duda .cro-estado{color:#7A5406;border-color:rgba(122,84,6,.35);background:rgba(214,148,15,.1)}
+body.dark .cro-item.duda .cro-estado{color:#E0B25C;border-color:rgba(224,178,92,.4);background:rgba(224,178,92,.14)}
+.cro-t{margin:3px 0 0;font-size:15px;font-weight:700;line-height:1.35;color:var(--text)}
+.cro-d{margin:4px 0 0;font-size:13.5px;line-height:1.6;color:var(--text2);max-width:70ch}
+.cro-ev{margin:7px 0 0;font-size:12.5px}
+.cro-ev a{font-weight:700;color:var(--id-azul,#17497C);text-decoration:none;border-bottom:1px solid rgba(23,73,124,.3);padding-bottom:1px}
+body.dark .cro-ev a{color:var(--id-azul,#7FA8D4);border-bottom-color:rgba(127,168,212,.35)}
+.cro-ev a:hover{border-bottom-color:currentColor}
+.cro-nota{margin:18px 0 0;padding:12px 14px;border:1px dashed var(--border);border-radius:var(--rad-md,7px);
+  font-size:11.5px;line-height:1.6;color:var(--text2)}
+.cro-nota b{color:var(--text)}
+@media(max-width:640px){
+  .cro-fecha{min-width:0;width:100%}
+  .cro-item{padding-left:30px}
+  .cro-t{font-size:14.5px}
+}
+</style>
+<script>
+(function(){
+  'use strict';
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+  function ico(id){ return '<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#'+id+'"></use></svg>'; }
+
+  /* Evidencia por hito: solo donde existe una sección que realmente la contiene.
+     Se identifica por un fragmento del título para no depender del orden del arreglo. */
+  var EVIDENCIA=[
+    {clave:'Taller masivo',           sec:'voz',                       txt:'Ver lo que expresó la ciudadanía'},
+    {clave:'Encuesta NNA',            sec:'nna',                       txt:'Ver el diagnóstico de niñez y adolescencia'},
+    {clave:'Cierre proceso participativo', sec:'documentos',           txt:'Ver los cuadernillos con las actas firmadas'},
+    {clave:'entrevistas a funcionarios',   sec:'etnografia',           txt:'Ver los hallazgos de la etnografía institucional'},
+    {clave:'Sociedad Civil',          sec:'sociedad-civil',            txt:'Ver el diagnóstico de la sociedad civil organizada'},
+    {clave:'Censo 2024 publicado',    sec:'analisis-estrategico-censo',txt:'Ver el análisis territorial del Censo 2024'},
+    {clave:'Matriz Estratégica',      sec:'matriz',                    txt:'Ver las 225 acciones de la matriz'},
+    {clave:'Concejo Municipal',       sec:'comisiones',                txt:'Ver el trabajo con el Concejo y sus comisiones'}
+  ];
+
+  /* Un registro describe un resultado YA PRODUCIDO cuando enuncia algo cerrado y comprobable.
+     La expresión se aplica al texto del propio hito, no a su fecha. */
+  var PRODUCIDO=/(asistentes|completad|verificad|aplicaci[óo]n|acuerdan|publicad|lanzamiento|apertura|convocatoria|decreto|revisi[óo]n)/i;
+  var PROSPECTIVO=/(para aprobaci[óo]n|se presentar|dando inicio formal|presentaci[óo]n al concejo)/i;
+
+  function clasificar(ev){
+    var t=(ev.title||'')+' '+(ev.text||'');
+    if(PROSPECTIVO.test(t)) return {cls:'duda', ico:'ico-clock', rotulo:'Sin confirmación registrada'};
+    if(PRODUCIDO.test(t))   return {cls:'hecho', ico:'ico-check', rotulo:'Realizado'};
+    return {cls:'duda', ico:'ico-clock', rotulo:'Sin confirmación registrada'};
+  }
+
+  function evidenciaDe(ev){
+    for(var i=0;i<EVIDENCIA.length;i++){
+      var e=EVIDENCIA[i];
+      if((ev.title||'').indexOf(e.clave)>=0 || (ev.text||'').indexOf(e.clave)>=0){
+        if(document.getElementById(e.sec)) return e;
+      }
+    }
+    return null;
+  }
+
+  function montar(){
+    var host=document.querySelector('.proc-timeline-section');
+    if(!host) return 0;
+    if(host.querySelector('.cro-wrap')) return 0;                  /* idempotente */
+    var EV; try{ EV=window.TIMELINE_EVENTS; }catch(e){ return 0; }
+    if(!EV||!EV.length) return 0;
+
+    var hechos=0, dudas=0;
+    var h='<div class="cro-wrap">'
+      + '<p class="cro-lead">Los hitos del proceso, en orden. Cada uno indica su estado con una palabra y un icono, '
+      + 'y enlaza la evidencia cuando el portal la tiene.</p>'
+      + '<p class="cro-leyenda">'
+      +   '<span>' + ico('ico-check') + ' <b>Realizado:</b> el registro describe un resultado ya producido</span>'
+      +   '<span>' + ico('ico-clock') + ' <b>Sin confirmación registrada:</b> el portal no acredita que ocurriera</span>'
+      + '</p>'
+      + '<ol class="cro-lista">';
+
+    EV.forEach(function(ev){
+      var c=clasificar(ev);
+      if(c.cls==='hecho') hechos++; else dudas++;
+      var e=evidenciaDe(ev);
+      h += '<li class="cro-item ' + c.cls + '">'
+        +   '<span class="cro-punto" aria-hidden="true">' + ico(c.ico) + '</span>'
+        +   '<div class="cro-cab"><span class="cro-fecha">' + esc(ev.date) + '</span>'
+        +     '<span class="cro-estado">' + c.rotulo + '</span></div>'
+        +   '<p class="cro-t">' + esc(ev.title) + '</p>'
+        +   '<p class="cro-d">' + esc(ev.text) + '</p>'
+        +   (e ? '<p class="cro-ev"><a href="#' + e.sec + '">' + esc(e.txt) + ' →</a></p>' : '')
+        + '</li>';
+    });
+
+    h += '</ol>'
+      + '<p class="cro-nota"><b>Cómo se determina el estado.</b> No por la fecha: que una fecha haya pasado no prueba '
+      + 'que el hito ocurriera. Se marca <b>realizado</b> cuando el propio registro describe un resultado comprobable '
+      + '—asistentes, entrevistas completadas, firmas verificadas, un documento publicado— y '
+      + '<b>sin confirmación registrada</b> cuando describe algo que todavía iba a ocurrir. De los ' + EV.length
+      + ' hitos, <b>' + hechos + '</b> describen un resultado producido y <b>' + dudas + '</b> no lo hacen. '
+      + 'El caso que más importa es el último: la aprobación por el Concejo Municipal aparece enunciada como '
+      + 'presentación <em>para</em> aprobación, y el portal no acredita en ninguna parte que se haya aprobado, '
+      + 'de modo que no se muestra como cumplida.</p>'
+      + '</div>';
+
+    var cta=host.querySelector('.proc-tl-cta');
+    var cont=document.createElement('div');
+    cont.innerHTML=h;
+    if(cta && cta.parentNode===host) host.insertBefore(cont.firstChild, cta);
+    else host.appendChild(cont.firstChild);
+    return 1;
+  }
+  window.montarCronologia=montar;
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ montar(); }catch(e){} }, 150); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1900); });
+  window.addEventListener('hashchange', pasar);
 })();
 </script>
 
