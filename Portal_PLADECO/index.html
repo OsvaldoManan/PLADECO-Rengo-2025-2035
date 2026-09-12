@@ -24694,57 +24694,16 @@ function renderDocsEnhanced(){
 
 // ── KPI COUNT-UP ANIMATION ──
 function animateKPIs(){
-  const kpis=document.querySelectorAll('#dashboard .kpi-value');
-  if(!kpis.length)return;
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        kpis.forEach(el=>{
-          const text=el.textContent.trim();
-          // Extract numeric part
-          const match=text.match(/^([\d.,]+)/);
-          if(!match)return;
-          const numStr=match[1];
-          const suffix=text.slice(numStr.length);
-          // Parse: commas as decimal separators, dots as thousands
-          const cleaned=numStr.replace(/\./g,'').replace(',','.');
-          const target=parseFloat(cleaned);
-          if(isNaN(target))return;
-          // Determine formatting
-          const hasDecimal=numStr.includes(',');
-          const decimalPart=hasDecimal?numStr.split(',')[1]:'';
-          const decimals=decimalPart.length;
-          const hasThousandsDot=numStr.indexOf('.')!==-1&&numStr.indexOf('.')<numStr.length-3;
-          el.classList.add('counting');
-          const duration=1400;
-          const start=performance.now();
-          const step=ts=>{
-            const progress=Math.min((ts-start)/duration,1);
-            const eased=1-Math.pow(1-progress,3);
-            const current=eased*target;
-            let formatted;
-            if(decimals>0){
-              formatted=current.toFixed(decimals).replace('.',',');
-            }else{
-              formatted=Math.floor(current).toString();
-            }
-            // Add thousand dots if original had them
-            if(hasThousandsDot){
-              const parts=formatted.split(',');
-              parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-              formatted=parts.join(',');
-            }
-            el.textContent=formatted+suffix;
-            if(progress<1){requestAnimationFrame(step);}
-            else{el.textContent=text;el.classList.remove('counting');}
-          };
-          requestAnimationFrame(step);
-        });
-        obs.unobserve(e.target);
-      }
-    });
-  },{threshold:0.2});
-  obs.observe(document.getElementById('dashboard'));
+  /* v45.350 · §14 · SIN CONTEO ANIMADO. Antes los indicadores del panel se animaban desde 0
+     durante 1,4 s leyendo el texto ya escrito, reformateandolo en cada fotograma y volviendo
+     a escribirlo. Son informacion esencial: durante la animacion el lector ve una cifra que no
+     es la real, y cualquier interrupcion (recarga, cambio de seccion, pestana en segundo plano)
+     puede dejar a la vista un valor parcial. Es el mismo motivo por el que los contadores de la
+     portada se dejaron estaticos en v45.234. Aqui la cifra se muestra completa desde el primer
+     momento; se conserva la funcion y su llamada para no alterar el orden de arranque. */
+  var kpis=document.querySelectorAll('#dashboard .kpi-value');
+  if(!kpis.length) return;
+  kpis.forEach(function(el){ el.classList.remove('counting'); });
 }
 
 // ── SECTION SCROLL REVEAL ──
@@ -26877,16 +26836,18 @@ function cgInit(){
   },{rootMargin:'200px'});
   obs.observe(sec);
 })();
-/* v45.349 · RESPALDO DE ARRANQUE. El observador de arriba es la unica via de inicio del
-   Gantt y depende de que la seccion llegue a intersecar el viewport. Al verificar, el
-   cronograma NO se dibujaba nunca: la seccion nace con display:none (motor de vistas PV),
-   el desplazamiento no ocurre en la ventana sino en un contenedor interno, y el observador
-   no llegaba a dispararse; el usuario veia el encabezado, los KPI y un area de grafico
-   VACIA. Como #cronograma-gantt es ademas uno de los tres accesos de la portada
-   ('Consultar avances'), el fallo dejaba sin contenido una de las entradas principales.
-   Aqui se anade la misma via de arranque que usan los demas bloques del portal: al cargar
-   y al cambiar de seccion, si el lienzo sigue vacio y la seccion esta desplegada, se inicia.
-   No sustituye al observador ni pisa el estado del usuario: solo actua si no hay contenido. */
+/* v45.350 · ARRANQUE AL ABRIR LA SECCION (no es una correccion de fallo).
+   CORRECCION DE UN DIAGNOSTICO PROPIO: un primer pase concluyo que el Gantt 'no se dibujaba
+   nunca'. Era FALSO y la causa era la comprobacion, no el portal: al automatizar la revision,
+   window.scrollTo no movia la pagina, de modo que la seccion nunca llegaba a intersecar el
+   viewport y el observador -que funciona bien- no tenia por que dispararse. Con un
+   desplazamiento real el cronograma se dibuja correctamente, igual que los graficos.
+   QUE APORTA ESTO, entonces: el observador inicia el Gantt cuando la seccion entra en el
+   viewport, es decir despues de desplazarse. Quien llega a #cronograma-gantt desde el acceso
+   'Consultar avances' de la portada ve primero el encabezado y los KPI, y el area del grafico
+   aparece vacia hasta que se desplaza. Con esto el cronograma esta listo al abrir la seccion.
+   Solo actua si el lienzo sigue vacio y la seccion esta desplegada: no sustituye al observador
+   ni pisa el estado del usuario. */
 (function(){
   function arrancar(){
     try{
@@ -42165,6 +42126,312 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
   if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
   window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1500); setTimeout(pasar,3400); });
   window.addEventListener('hashchange', pasar);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.350 · §10 · FICHA DE LECTURA DE LOS GRÁFICOS PRIORITARIOS
+     (rama revision-editorial · NO PUBLICADA)
+
+     El §10 pide seleccionar entre tres y cinco gráficos relevantes y darles título
+     informativo, unidad, período, territorio, fuente y una interpretación de hasta
+     cincuenta palabras, además de una tabla equivalente. La tabla equivalente ya existe
+     para todos los gráficos del portal (mecanismo genérico «Ver datos», v45.341), de modo
+     que aquí se completa lo que faltaba.
+
+     CÓMO SE ELIGIERON LOS CINCO: son los que sostienen las decisiones del plan —la
+     estructura de la población, el ranking territorial de vulnerabilidad, la brecha entre
+     campo y ciudad, la comparación con el país y la única trayectoria institucional con
+     serie larga—. Se descartaron los gráficos de apoyo y los que repiten una cifra ya
+     presente en su propio texto.
+
+     CÓMO SE ESCRIBIERON LAS LECTURAS: leyendo los datos reales de cada instancia de
+     Chart.js, no el texto que rodea al gráfico. Cada cifra citada está en la serie. Ninguna
+     lectura supera las cincuenta palabras y ninguna añade una causa, una proyección ni una
+     valoración que el dato no sostenga.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.gf-ficha{margin:10px 0 4px;padding:12px 14px;border:1px solid var(--border);border-left:3px solid var(--id-azul,#17497C);border-radius:var(--rad-md,7px);background:transparent}
+body.dark .gf-ficha{border-left-color:var(--id-azul,#7FA8D4)}
+.gf-t{margin:0 0 7px;font-size:14px;font-weight:700;line-height:1.35;color:var(--text)}
+.gf-meta{margin:0 0 8px;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:11.5px;color:var(--text2)}
+.gf-meta b{color:var(--text);font-weight:600}
+.gf-lee{margin:0;font-size:13px;line-height:1.6;color:var(--text);max-width:68ch}
+.gf-fte{margin:8px 0 0;font-size:11px;line-height:1.5;color:var(--text2)}
+@media(max-width:640px){ .gf-meta{gap:3px 12px} .gf-t{font-size:13.5px} }
+</style>
+<script>
+(function(){
+  'use strict';
+  window.FICHAS_GRAFICO = (window.FICHAS_GRAFICO && !window.FICHAS_GRAFICO.nodeType) ? window.FICHAS_GRAFICO : {
+
+    chartCensoPiramide:{
+      titulo:'Rengo tiene casi tantas personas mayores como menores de edad',
+      unidad:'Personas', periodo:'Censo 2024', territorio:'Comuna de Rengo',
+      lectura:'Las personas de 60 años y más (12.523) ya casi igualan a las de 0 a 17 (14.827): 19,7% frente a 23,3% de la población. El grupo más numeroso es el de 25 a 44 años, con 19.059 personas. Hay 32.695 mujeres y 30.925 hombres.',
+      naturaleza:'Valores observados. No hay estimaciones ni metas en este gráfico.',
+      fuente:'INE, Censo de Población y Vivienda 2024'
+    },
+
+    chartCensoVulnRank:{
+      titulo:'Las quince localidades más vulnerables de la comuna son todas rurales',
+      unidad:'Índice ICP (0 a 1; a mayor valor, mayor vulnerabilidad)',
+      periodo:'Cálculo sobre Censo 2024', territorio:'Localidades de Rengo',
+      lectura:'El Trebal Huilquío encabeza con 0,348 y Cerrillos cierra el grupo con 0,282: un rango estrecho que apunta a un problema del conjunto rural y no de una localidad aislada. El índice promedia seis dimensiones de vulnerabilidad.',
+      naturaleza:'Índice calculado (elaboración propia), no una medición directa. Ordena localidades entre sí; no mide carencias en términos absolutos.',
+      fuente:'Elaboración propia equipo PLADECO con datos INE, Censo 2024'
+    },
+
+    chartCensoBrechaUR:{
+      titulo:'La brecha entre campo y ciudad se concentra en los servicios básicos',
+      unidad:'Índices de vulnerabilidad (0 a 1)', periodo:'Cálculo sobre Censo 2024',
+      territorio:'Área urbana y área rural de Rengo',
+      lectura:'La mayor diferencia está en los servicios básicos: 0,370 en lo rural frente a 0,135 en lo urbano, casi el triple. El déficit de capital humano es el valor más alto en ambas áreas (0,484 y 0,424). El índice compuesto marca 0,269 rural y 0,194 urbano.',
+      naturaleza:'Índices calculados (elaboración propia). Comparan las dos áreas entre sí.',
+      fuente:'Elaboración propia equipo PLADECO con datos INE, Censo 2024'
+    },
+
+    chartRengoVsNac:{
+      titulo:'Rengo está bajo el promedio del país en cinco de los seis indicadores comparados',
+      unidad:'Cada barra tiene su propia unidad: años, m² por habitante o porcentaje',
+      periodo:'Último dato disponible por indicador', territorio:'Comuna de Rengo y total país',
+      lectura:'Rengo supera al país solo en transparencia (97,89% frente a 81,76%). Las distancias mayores están en deserción escolar media, más del doble (11,6% frente a 5,3%), y en áreas verdes por habitante (1,96 m² frente a 4,5). Las seis barras no comparten unidad.',
+      naturaleza:'Valores observados. Al no compartir unidad, las barras no son comparables entre sí: cada par se lee por separado.',
+      fuente:'CASEN 2022 · MINEDUC · Consejo para la Transparencia (CPLT) · SUBDERE'
+    },
+
+    chartTransp:{
+      titulo:'La transparencia municipal pasó del 16% al 98% en doce años',
+      unidad:'Porcentaje de cumplimiento del índice CPLT', periodo:'2012 a 2024, medición bienal',
+      territorio:'Municipalidad de Rengo y promedio nacional',
+      lectura:'Rengo partió en 16,4% en 2012, muy por debajo del promedio nacional (35%), y ya lo superaba en 2014 (45,2% frente a 42%). En 2024 alcanza 97,89% frente a 81,76% nacional.',
+      naturaleza:'Valores observados de una serie oficial. No incluye proyecciones.',
+      fuente:'Consejo para la Transparencia (CPLT), Índice de Transparencia Activa 2012-2024'
+    }
+  };
+
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+
+  function montar(){
+    var n=0;
+    Object.keys(window.FICHAS_GRAFICO).forEach(function(id){
+      var cv=document.getElementById(id); if(!cv) return;
+      var host=cv.closest('.viz-card') || cv.parentElement; if(!host) return;
+      if(host.querySelector('.gf-ficha[data-gf="'+id+'"]')) return;      /* idempotente */
+      var f=window.FICHAS_GRAFICO[id];
+      var d=document.createElement('div');
+      d.className='gf-ficha'; d.setAttribute('data-gf',id); d.setAttribute('role','note');
+      d.innerHTML='<p class="gf-t">'+esc(f.titulo)+'</p>'
+        + '<ul class="gf-meta">'
+        + '<li><b>Unidad:</b> '+esc(f.unidad)+'</li>'
+        + '<li><b>Período:</b> '+esc(f.periodo)+'</li>'
+        + '<li><b>Territorio:</b> '+esc(f.territorio)+'</li>'
+        + '</ul>'
+        + '<p class="gf-lee">'+esc(f.lectura)+'</p>'
+        + '<p class="gf-fte">'+esc(f.naturaleza)+' <b>Fuente:</b> '+esc(f.fuente)+'</p>';
+      host.appendChild(d);
+      n++;
+    });
+    return n;
+  }
+  window.montarFichasGrafico=montar;
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ montar(); }catch(e){} }, 120); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1600); setTimeout(pasar,3600); });
+  window.addEventListener('hashchange', pasar);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.350 · §12 · PARTICIPACIÓN CON EVIDENCIA
+     (rama revision-editorial · NO PUBLICADA)
+
+     El §12 pide hasta tres testimonios reales y pertinentes, identificar su procedencia,
+     respetar anonimización y consentimiento, y relacionar cada tema con una prioridad
+     documentada; y, si faltan citas utilizables, presentar hallazgos agregados con fuente.
+
+     QUÉ HABÍA: el portal ya guardaba cinco citas de la Encuesta NNA del proceso (n=21) en
+     VOZ_NNA, pero se mostraban sueltas, sin decir qué dato del diagnóstico las respalda ni a
+     qué prioridad del plan corresponden. No se inventó ninguna: se seleccionaron tres de las
+     cinco existentes, las tres que tienen un dato comprobable detrás, y se dejaron íntegras.
+
+     HALLAZGO AL CRUZARLAS CON LOS EJES: las etiquetas de eje que traían las citas NO
+     coinciden con la numeración oficial de EJES —«Eje 5 · Medio Ambiente» cuando medio
+     ambiente está en el Eje 4, «Eje 1 · Desarrollo Económico» cuando es el Eje 2—. Tres de
+     las cinco estaban mal numeradas. Aquí se usa la numeración oficial y la diferencia queda
+     registrada; no se corrigió el dato de origen porque la asignación temática la debe
+     validar el equipo municipal.
+
+     ANONIMIZACIÓN: las citas no traen nombre, establecimiento ni dirección, solo el tramo de
+     edad. El registro del consentimiento no consta en el repositorio y queda como pendiente.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.pe-bloque{margin:22px 0 6px}
+.pe-h{margin:0 0 4px;font-size:var(--fs-h3,19px);font-weight:700;line-height:1.25;color:var(--text)}
+.pe-intro{margin:0 0 16px;font-size:13.5px;line-height:1.6;color:var(--text2);max-width:68ch}
+.pe-lista{margin:0;padding:0;list-style:none;display:grid;gap:16px}
+.pe-item{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:0;border:1px solid var(--border);border-radius:var(--rad-md,7px);overflow:hidden}
+.pe-izq{padding:16px 18px;background:var(--card)}
+.pe-der{padding:16px 18px;background:var(--bg2,var(--bg));border-left:1px solid var(--border)}
+.pe-cita{margin:0;font-size:15px;line-height:1.62;color:var(--text);font-style:normal}
+.pe-cita::before{content:"\201C";font-size:30px;line-height:0;vertical-align:-.32em;color:var(--id-azul,#17497C);margin-right:3px}
+.pe-cita::after{content:"\201D";font-size:30px;line-height:0;vertical-align:-.32em;color:var(--id-azul,#17497C);margin-left:2px}
+body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D4)}
+.pe-proc{margin:10px 0 0;font-size:11.5px;line-height:1.55;color:var(--text2)}
+.pe-ev-t{margin:0 0 6px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text2)}
+.pe-ev-d{margin:0;font-size:13.5px;line-height:1.55;color:var(--text)}
+.pe-ev-p{margin:9px 0 0;font-size:12px;line-height:1.5;color:var(--text)}
+.pe-ev-p b{font-weight:700}
+.pe-ev-f{margin:8px 0 0;font-size:11px;line-height:1.5;color:var(--text2)}
+.pe-agreg{margin:18px 0 0;padding:14px 16px;border:1px solid var(--border);border-radius:var(--rad-md,7px)}
+.pe-agreg-t{margin:0 0 9px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text2)}
+.pe-cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 10px}
+.pe-c-n{font-size:20px;font-weight:700;line-height:1.1;color:var(--text);font-variant-numeric:tabular-nums}
+.pe-c-l{font-size:12px;line-height:1.4;color:var(--text);margin-top:2px}
+.pe-nota{margin:14px 0 0;padding:11px 13px;border:1px dashed var(--border);border-radius:var(--rad-md,7px);font-size:11.5px;line-height:1.6;color:var(--text2)}
+.pe-nota b{color:var(--text)}
+@media(max-width:760px){ .pe-item{grid-template-columns:1fr} .pe-der{border-left:0;border-top:1px solid var(--border)} }
+</style>
+<script>
+(function(){
+  'use strict';
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+
+  /* Selección: tres de las cinco citas que ya existían en VOZ_NNA, elegidas porque cada una
+     tiene detrás un dato comprobable del diagnóstico. Se referencian por índice para no
+     duplicar el texto: si el equipo corrige una cita en el origen, aquí se actualiza sola. */
+  var SEL=[
+    {i:0,
+     eje:4, ejeNombre:'Desarrollo Urbano, Vivienda, Infraestructura, Vialidad y Medio Ambiente',
+     dato:'Rengo tiene <b>1,96 m² de área verde por habitante</b>, cuando la OMS recomienda entre 9 y 15. El catastro municipal registra <b>65 espacios públicos</b> con su estado documentado uno por uno.',
+     fuente:'Diagnóstico PLADECO Rengo 2025 · Catastro SECPLAC de espacios públicos (65 puntos, abril 2026)'},
+    {i:4,
+     eje:5, ejeNombre:'Seguridad Pública y Gestión de Riesgos y Emergencias',
+     dato:'La <b>iluminación pública obtiene 2,9 sobre 5</b> en la encuesta ciudadana, entre los servicios peor evaluados junto con atención de salud (2,9), calles y tránsito (2,8) y seguridad del sector (2,8).',
+     fuente:'Encuesta Ciudadana PLADECO Rengo 2025 (n=119)'},
+    {i:2,
+     eje:2, ejeNombre:'Desarrollo Económico Comunal',
+     dato:'La <b>deserción en enseñanza media llega a 11,6% en Rengo frente a 5,3% nacional</b>, y la escolaridad promedio es de 11,1 años frente a 12,1 del país.',
+     fuente:'MINEDUC · CASEN 2022 · Diagnóstico PLADECO Rengo 2025'}
+  ];
+
+  var AGREGADOS=[
+    {n:'119', l:'personas adultas encuestadas'},
+    {n:'21',  l:'niños, niñas y adolescentes encuestados'},
+    {n:'92%', l:'declara querer participar en el PLADECO'},
+    {n:'56%', l:'percibe una identidad local débil'}
+  ];
+
+  function montar(){
+    var sec=document.getElementById('voz'); if(!sec) return 0;
+    if(sec.querySelector('.pe-bloque')) return 0;                 /* idempotente */
+    var V; try{ V=VOZ_NNA; }catch(e){ return 0; }
+    if(!V||!V.length) return 0;
+
+    var h='<div class="pe-bloque">'
+      + '<p class="pe-h">Lo que dijeron, y qué dato lo respalda</p>'
+      + '<p class="pe-intro">Tres de las cinco frases recogidas en la encuesta a niños, niñas y adolescentes del proceso. '
+      + 'Junto a cada una, el dato del diagnóstico que la respalda y el eje del plan al que corresponde. '
+      + 'Son citas textuales del proceso participativo, no ejemplos redactados para esta página.</p>'
+      + '<ol class="pe-lista">';
+
+    SEL.forEach(function(s){
+      var v=V[s.i]; if(!v) return;
+      h += '<li class="pe-item">'
+         + '<div class="pe-izq">'
+         +   '<blockquote class="pe-cita">'+esc(v.cita)+'</blockquote>'
+         +   '<p class="pe-proc">Encuesta a niños, niñas y adolescentes del proceso PLADECO Rengo 2025 (n=21) · '
+         +   'participante de '+esc(v.rango)+' · sin nombre, establecimiento ni dirección</p>'
+         + '</div>'
+         + '<div class="pe-der">'
+         +   '<p class="pe-ev-t">Qué dato lo respalda</p>'
+         +   '<p class="pe-ev-d">'+s.dato+'</p>'
+         +   '<p class="pe-ev-p"><b>Eje '+s.eje+'</b> · '+esc(s.ejeNombre)+'</p>'
+         +   '<p class="pe-ev-f">Fuente: '+esc(s.fuente)+'</p>'
+         + '</div>'
+         + '</li>';
+    });
+    h += '</ol>';
+
+    h += '<div class="pe-agreg"><p class="pe-agreg-t">Lo que dice el conjunto</p><div class="pe-cifras">';
+    AGREGADOS.forEach(function(a){ h += '<div><div class="pe-c-n">'+esc(a.n)+'</div><div class="pe-c-l">'+esc(a.l)+'</div></div>'; });
+    h += '</div><p class="pe-ev-f">Fuente: Encuesta Ciudadana PLADECO Rengo 2025 (n=119) · Encuesta NNA PLADECO (n=21) · '
+       + 'Entrevistas cualitativas a 14 tipos de actores comunales · Talleres de participación ciudadana PLADECO 2025. '
+       + 'Las muestras son pequeñas y no probabilísticas: describen a quienes participaron, no al total de la comuna.</p></div>';
+
+    h += '<p class="pe-nota"><b>Anonimización y consentimiento.</b> Las citas no incluyen nombre, establecimiento ni '
+       + 'dirección; solo el tramo de edad. El <b>registro del consentimiento informado no consta en este repositorio</b> '
+       + 'y queda como pendiente de respaldo documental por parte del equipo municipal, junto con el verbatim original.'
+       + '<br><b>Numeración de ejes.</b> Las citas guardadas traen una etiqueta de eje que no coincide con la numeración '
+       + 'oficial del plan en tres de los cinco casos. Aquí se muestra la numeración oficial; la asignación temática '
+       + 'definitiva la debe validar el equipo municipal.</p>';
+
+    h += '</div>';
+
+    var d=document.createElement('div');
+    d.innerHTML=h;
+    var pie=sec.querySelector('.sec-fuente');
+    if(pie) sec.insertBefore(d.firstChild, pie); else sec.appendChild(d.firstChild);
+    return 1;
+  }
+  window.montarParticipacionEvidencia=montar;
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ montar(); }catch(e){} }, 130); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1700); });
+  window.addEventListener('hashchange', pasar);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.350 · §1 y §13 · NUEVAS ENTRADAS DEL REGISTRO DE DISCREPANCIAS
+     (rama revision-editorial · NO PUBLICADA)
+
+     Hallazgos de esta revisión que requieren una decisión institucional y que, siguiendo el
+     criterio del encargo, SE REGISTRAN EN VEZ DE RESOLVERSE POR INTUICIÓN. Se añaden al
+     registro existente para que aparezcan en la tabla de #metodologia. El bloque se ejecuta
+     al analizarse la página, antes de que la tabla se dibuje.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var D = window.discrepanciasDatos;
+  if(!D || !D.push) return;
+  function yaEsta(id){ return D.some(function(x){ return x && x.id===id; }); }
+  var nuevas=[
+    {id:'uv-tres-registros', tema:'Unidades vecinales', estado:'por validar',
+     valores:['UV_DATA: 25 filas (21 UV + 4 localidades sin UV)','CUV_UVS: 21 unidades vecinales','CENSO_LOCALIDADES_GEO: 24 localidades censales'],
+     nota:'El portal mantiene TRES registros territoriales que no concuerdan. El mismo código designa lugares distintos: UV-11 es Chanqueahue con 1.420 habitantes en un registro y Rosario Oriente con 117 en el otro. Además, ocho localidades de la capa censal (Cerrillos, El Trebal Huilquío, El Placer, Las Nieves, Chapetón, Camarico, Rosario Oriente y La Ariana) no existen en la tabla territorial. No son erratas: son universos distintos que hoy se presentan como si fueran el mismo.',
+     resolucion:'Pendiente. La ficha territorial y la cartografía se anclan en UV_DATA, que es el único registro con coordenadas completas y fuentes declaradas; el cuadernillo y la calculadora siguen usando el otro. Requiere que SECPLAC defina cuál es el registro oficial.'},
+
+    {id:'acciones-sin-territorio', tema:'Localización de las acciones', estado:'por validar',
+     valores:['_POL: 16 columnas, ninguna territorial','accionesPOA: 13 campos, ninguno territorial'],
+     nota:'Se comprobó campo por campo: ni la matriz operativa ni el POA registran dónde se ejecuta cada acción. Por eso la ficha territorial no puede mostrar "acciones del plan en este territorio" sin inventar la relación, y ese campo se oculta declarando su ausencia.',
+     resolucion:'Pendiente. Requiere que el equipo municipal incorpore un campo de localización (unidad vecinal o localidad) a la matriz, o declare que las acciones son de alcance comunal.'},
+
+    {id:'voz-nna-ejes', tema:'Etiquetas de eje en las citas ciudadanas', estado:'por validar',
+     valores:['Citas NNA: «Eje 5 · Medio Ambiente», «Eje 1 · Desarrollo Económico»','Numeración oficial: Eje 4 es Urbano y Medio Ambiente; Eje 2 es Desarrollo Económico'],
+     nota:'Tres de las cinco citas guardadas traen una etiqueta de eje que no corresponde a la numeración oficial del plan. El texto de las citas no está en cuestión; sí la asignación temática.',
+     resolucion:'Pendiente. El bloque de participación muestra la numeración oficial y deja constancia; la asignación definitiva la debe validar el equipo municipal.'},
+
+    {id:'identidad-logotipo-escudo', tema:'Colores institucionales', estado:'por validar',
+     valores:['Escudo comunal (escudo-rengo.svg): #17497C azul, #D6940F ocre, #AD2910 terracota','Logotipos del plan: azul #1040c0 / #0030a0 y naranja #e07020 / #ff5000'],
+     nota:'Los colores del logotipo del PLADECO no coinciden con los del escudo comunal, y no hay manual de marca en el repositorio. La paleta del portal se ancló en el escudo por ser la fuente institucional verificable.',
+     resolucion:'Pendiente. Requiere que el municipio indique cuál es la identidad cromática vigente o entregue el manual de marca.'},
+
+    {id:'consentimiento-citas', tema:'Respaldo de las citas ciudadanas', estado:'por validar',
+     valores:['Citas publicadas: sí','Registro de consentimiento informado: no consta en el repositorio'],
+     nota:'Las citas de la encuesta a niños, niñas y adolescentes se publican anonimizadas (solo tramo de edad, sin nombre, establecimiento ni dirección), pero el repositorio no contiene el respaldo del consentimiento ni el verbatim original.',
+     resolucion:'Pendiente. Requiere que el equipo que levantó la encuesta archive el consentimiento y el verbatim, o que se retiren las citas textuales y se dejen solo los hallazgos agregados.'},
+
+    {id:'gantt-actividades-31-33', tema:'Actividades del cronograma', estado:'resuelto',
+     valores:['Indicador del cronograma: 31 actividades','Bajada de la sección y datos: 33 actividades'],
+     nota:'El indicador mostraba 31 y el dato dice otra cosa: los ocho macroprocesos suman 4+5+5+5+3+6+4+1 = 33 actividades. No requería decisión institucional porque el propio dato daba la respuesta.',
+     resolucion:'Corregido en v45.349: el indicador muestra 33, derivado de los datos del cronograma.'}
+  ];
+  nuevas.forEach(function(n){ if(!yaEsta(n.id)) D.push(n); });
 })();
 </script>
 
