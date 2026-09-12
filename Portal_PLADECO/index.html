@@ -6708,7 +6708,10 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 .tn-m-sub-head{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);opacity:.78;padding:8px 4px 4px;margin-top:4px}
 html{scroll-padding-top:150px}
 /* v45.56 · ancho de lectura cómodo + menús de 2 columnas para capítulos largos */
-section:not(.hero) p{max-width:720px!important}
+/* v45.336 · §4 · esta regla imponia 720px LITERAL con !important y ganaba a --ancho-lectura,
+   por lo que las lineas llegaban a 95-98 caracteres reales. Ahora usa el token, que es lo que
+   el propio sistema ya definia para la medida de lectura. */
+section:not(.hero) p{max-width:var(--ancho-lectura,58ch)!important}
 /* v45.70 · dropdowns a 1 columna (cada capítulo tiene pocas secciones) */
 /* v45.57 · Inicio (hero) en escritorio — más compacto + mejor uso del ancho */
 @media(min-width:1000px){
@@ -37807,7 +37810,12 @@ body.dark .pv-nav-ctx,body.dark .pv-nav .pv-d{color:#5cc98a}
   --fw-body:400;--fw-medium:500;--fw-semibold:600;--fw-bold:700;--fw-extra:800;--fw-black:900;
 
   /* ── ANCHO DE LECTURA ── */
-  --ancho-lectura:70ch; /* 65–75 caracteres por línea */
+  /* v45.336 · §4 · 70ch resolvia a 720px y en ese ancho caben 95-98 caracteres REALES
+     (medido con Range, contando los glifos de la primera linea): la unidad 'ch' toma el ancho
+     del "0", mas ancho que las minusculas, asi que 70ch NO equivale a 70 caracteres de texto.
+     Se ajusta a 54ch para caer dentro de los 60-75 caracteres que pide el encargo.
+     El cuerpo (16px) y el interlineado (1,6) ya cumplian y no se tocaron. */
+  --ancho-lectura:58ch;
 }
 
 /* ── Render base: nitidez del serif y leading cómodo en ambos modos ── */
