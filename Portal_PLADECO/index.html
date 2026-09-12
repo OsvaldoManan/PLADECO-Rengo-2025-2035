@@ -2517,6 +2517,11 @@ body.dark .crosslink-card:hover{background:rgba(67,97,238,.05)}
 .meta-card{background:var(--card);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
 .meta-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
 .meta-card .mc-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+/* v45.340 · §7 · valor observado y aviso de lectura del semáforo */
+.meta-card .mc-val.mc-obs .v-num{color:var(--text2);opacity:.85}
+.meta-card .mc-val.mc-obs .v-lbl{color:var(--warning-txt,#92400e);font-weight:700}
+.sem-aviso{font-size:12.5px;line-height:1.6;color:var(--text2);background:var(--card);border:1px solid var(--border);border-left:3px solid #b45309;border-radius:var(--rad-md,7px);padding:12px 15px;margin:0 0 16px;max-width:none!important}
+.sem-aviso b{color:var(--text)}
 .meta-card .mc-light{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px currentColor}
 .meta-card .mc-light.green{background:#22c55e;color:#22c55e}
 .meta-card .mc-light.amber{background:#f59e0b;color:var(--warning-txt,#92400e)}
@@ -23377,13 +23382,30 @@ function renderSemaforo(){
     return `<div class="meta-card">
       <div class="mc-header"><span class="mc-light ${lightCls}"></span><span class="mc-title">${m.ind}</span><span class="mc-eje" style="background:${m.color}22;color:${m.color}">Eje ${m.eje}</span></div>
       <div class="mc-values">
-        <div class="mc-val current"><span class="v-num">${m.lb}${m.u}</span><span class="v-lbl">Base 2024</span></div>
+        <div class="mc-val"><span class="v-num">${m.lb}${m.u}</span><span class="v-lbl">Línea base 2024</span></div>
+        <div class="mc-val mc-obs"><span class="v-num">${(m.obs==null||m.obs==='')?'—':(m.obs+m.u)}</span><span class="v-lbl">${(m.obs==null||m.obs==='')?'Pendiente de medición':'Valor observado'}</span></div>
         <div class="mc-val"><span class="v-num">${m.m28}${m.u}</span><span class="v-lbl">Meta 2028</span></div>
         <div class="mc-val"><span class="v-num">${m.m35}${m.u}</span><span class="v-lbl">Meta 2035</span></div>
       </div>
       <div class="mc-track"><div class="mc-track-fill" style="width:${progress.toFixed(0)}%;background:linear-gradient(90deg,${barColor},${barColor}99)"></div></div>
     </div>`;
   }).join('');
+  /* v45.340 · §7 · Aviso metodológico: el color del semáforo se calcula con la razón
+     línea base / meta 2035, es decir mide la MAGNITUD DEL DESAFÍO, no el avance logrado.
+     Sin esta aclaración un rojo se lee como "meta incumplida" cuando el instrumento
+     todavía no reporta ejecución. Se inserta una sola vez, sobre la grilla. */
+  try{
+    var _semGrid=document.getElementById('semaforoGrid');
+    if(_semGrid && !document.getElementById('semAviso')){
+      var av=document.createElement('p');
+      av.id='semAviso'; av.className='sem-aviso';
+      av.innerHTML='<b>Cómo leer este tablero.</b> El color indica la <b>magnitud del desafío</b> '+
+        '(distancia entre la línea base y la meta 2035), no el avance alcanzado. '+
+        'La columna <b>valor observado</b> aparece como <i>pendiente de medición</i> mientras el '+
+        'PLADECO no reporte ejecución: no debe confundirse con un valor cero.';
+      _semGrid.parentNode.insertBefore(av, _semGrid);
+    }
+  }catch(e){}
 }
 /* Semáforo filter + summary */
 function initSemaforoFilter(){
