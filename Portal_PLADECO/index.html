@@ -769,10 +769,16 @@ body.dark .dsf-kicker{color:#fca5a5}
 .ejp-card{display:flex;flex-direction:column;gap:5px;text-decoration:none;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--ejc,#1F3864);border-radius:var(--rad-md,7px);padding:16px 18px 17px;box-shadow:var(--sh-card);transition:transform .18s,box-shadow .18s,border-color .18s;min-height:100%}
 .ejp-card:hover{transform:translateY(-3px);box-shadow:var(--sh-card-hover)}
 .ejp-card:focus-visible{outline:2px solid var(--ejc,#1F3864);outline-offset:3px}
+/* v45.344 · §6 · icono por eje (familia SVG existente) + enlace explícito */
+.ejp-top{display:flex;align-items:center;gap:8px}
+.ejp-ico{width:19px;height:19px;flex:0 0 19px;fill:none;stroke:var(--ejc,#1F3864);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .ejp-num{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text2)}
+.ejp-ver{margin-top:10px;font-size:12px;font-weight:700;color:var(--success-txt,#15803d);display:inline-flex;align-items:center;gap:5px}
+.ejp-card:hover .ejp-ver{text-decoration:underline;text-underline-offset:3px}
 .ejp-name{font-size:16px;font-weight:800;color:var(--text);line-height:1.25}
 .ejp-desc{font-size:12.5px;line-height:1.5;color:var(--text2);margin-top:1px}
 .ejp-meta{margin-top:auto;padding-top:9px;font-size:11.5px;font-weight:700;color:var(--text2)}
+.ejp-card{position:relative}
 .ejp-foot{font-size:12.5px;color:var(--text2);margin:16px 0 0}
 .ejp-foot a{color:var(--success-txt,#15803d);font-weight:700}
 /* v45.335 · §6 · Tabla de datos pendientes de validación (en #metodologia).
@@ -41301,21 +41307,35 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       if(!ancla) return;
       function esc(t){var d=document.createElement('div');d.textContent=(t==null?'':t);return d.innerHTML;}
       var totalOE=E.reduce(function(a,e){return a+((e.oes||[]).length||e.nOE||0);},0);
+      /* v45.344 · §6 · el nº de acciones se DERIVA de _POL (la matriz operativa) y no de
+         EJES[].nAcc, que está desactualizado (suma 200 frente a las 225 filas reales).
+         Se comprobó que cada acción pertenece a UN SOLO eje -0 acciones compartidas y 0 ids
+         duplicados-, de modo que los conteos por eje SÍ son sumables y dan exactamente 225.
+         Iconos de la familia SVG ya existente en el portal, uno por eje. */
+      var ACC={}, totalAcc=0;
+      try{ (window._POL||[]).forEach(function(p){ var k=String(p[1]); ACC[k]=(ACC[k]||0)+1; totalAcc++; }); }catch(e){}
+      var ICO={1:'ico-heart',2:'ico-briefcase',3:'ico-education',4:'ico-mountain',5:'ico-shield',6:'ico-institution'};
       var h=''
        + '<div class="ejp-inner">'
        +   '<div class="ejp-head">'
        +     '<span class="ejp-kicker">Las prioridades de desarrollo</span>'
        +     '<h2 class="ejp-title">Seis ejes ordenan el plan</h2>'
        +     '<p class="ejp-lead">Cada eje agrupa objetivos estratégicos y las acciones que los concretan. '
-       +       'El plan define <b>' + E.length + ' ejes</b> y <b>' + totalOE + ' objetivos estratégicos</b>.</p>'
+       +       'El plan define <b>' + E.length + ' ejes</b> y <b>' + totalOE + ' objetivos estratégicos</b>'
+       +       (totalAcc?(', con <b>' + totalAcc + ' acciones</b> distribuidas entre ellos. Cada acción pertenece a un solo eje, por lo que los totales por eje son sumables.'):'.')
+       +     '</p>'
        +   '</div><div class="ejp-grid">';
       E.forEach(function(e){
         var nOE=(e.oes||[]).length||e.nOE||0;
+        var nAcc=ACC[String(e.id)]||0;
+        var ico=ICO[e.id]||'ico-target';
         h += '<a class="ejp-card" href="#matriz" style="--ejc:'+esc(e.color||'#1F3864')+'">'
-           +   '<span class="ejp-num">Eje '+esc(e.id)+'</span>'
+           +   '<span class="ejp-top"><svg class="ico ejp-ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#'+ico+'"></use></svg>'
+           +     '<span class="ejp-num">Eje '+esc(e.id)+'</span></span>'
            +   '<span class="ejp-name">'+esc(e.short||e.name)+'</span>'
            +   '<span class="ejp-desc">'+esc(e.name||'')+'</span>'
-           +   '<span class="ejp-meta">'+nOE+' objetivos estratégicos</span>'
+           +   '<span class="ejp-meta">'+nOE+' objetivos'+(nAcc?(' &middot; '+nAcc+' acciones'):'')+'</span>'
+           +   '<span class="ejp-ver">Ver objetivos y acciones <span aria-hidden="true">&rarr;</span></span>'
            + '</a>';
       });
       h += '</div><p class="ejp-foot">Consulta el detalle de objetivos y acciones en la <a href="#matriz">Matriz Estratégica</a>.</p></div>';
