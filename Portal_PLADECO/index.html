@@ -42883,5 +42883,248 @@ body.dark .cro-ev a{color:var(--id-azul,#7FA8D4);border-bottom-color:rgba(127,16
 })();
 </script>
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.354 · §11 · PROCEDENCIA DE LAS IMÁGENES Y ROTULADO DE LAS PROYECCIONES
+     (rama revision-editorial · NO PUBLICADA)
+
+     El encargo pide pies con lugar, fecha y autoría CUANDO SE CONOZCAN, y identificar
+     explícitamente cualquier visualización de una propuesta.
+
+     MEDIDO: de 57 imágenes que no son logotipos ni iconos, 56 no tenían pie. Pero al mirar
+     qué son, no todas admiten el mismo tratamiento:
+       · 16 son el registro fotográfico del proceso participativo. Su autoría y su procedencia
+         SÍ constan —equipo de comunicaciones de la Municipalidad, proceso PLADECO 2025—, pero
+         el lugar y la fecha de cada toma NO están registrados en ninguna parte. Se acredita
+         lo que consta y se declara lo que falta, en vez de inventar un pie por fotografía.
+       · 4 son fotografías institucionales cuyo texto alternativo ya describe la escena: ese
+         texto pasa a ser pie visible, con su autoría.
+       · 16 son figuras de la PROYECCIÓN demográfica, es decir visualizaciones de un modelo y
+         no de un dato observado. El encargo pide identificarlas explícitamente y hasta ahora
+         nada las distinguía de un gráfico de datos reales. Se rotulan.
+
+     No se escribe ningún pie que el proyecto no pueda respaldar.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.img-cred{margin:12px 0 0;padding:11px 14px;border:1px solid var(--border);border-left:3px solid var(--id-azul,#17497C);
+  border-radius:var(--rad-md,7px);font-size:12px;line-height:1.6;color:var(--text2)}
+body.dark .img-cred{border-left-color:var(--id-azul,#7FA8D4)}
+.img-cred b{color:var(--text)}
+.mvv-pie{margin:7px 0 0;font-size:12px;line-height:1.55;color:var(--text2)}
+.mvv-pie b{color:var(--text);font-weight:600}
+.proy-aviso{margin:0 0 16px;padding:13px 16px;border:1px solid var(--border);border-left:4px solid var(--ocre,#D6940F);
+  border-radius:var(--rad-md,7px);background:transparent}
+.proy-aviso p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text);max-width:74ch}
+.proy-aviso p+p{margin-top:7px;font-size:12px;color:var(--text2)}
+.proy-aviso b{font-weight:700}
+.proy-tag{position:absolute;top:8px;left:8px;z-index:2;font-size:10px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 8px;border-radius:20px;background:rgba(23,50,77,.92);color:#fff;
+  pointer-events:none}
+.proy-gallery-card{position:relative}
+</style>
+<script>
+(function(){
+  'use strict';
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+
+  /* ── 1 · galería del proceso: se acredita lo que consta, se declara lo que falta ── */
+  function galeria(){
+    var s=document.getElementById('galeria'); if(!s) return 0;
+    if(s.querySelector('.img-cred')) return 0;
+    var n=s.querySelectorAll('.galeria-card').length;
+    if(!n) return 0;
+    var d=document.createElement('div');
+    d.className='img-cred'; d.setAttribute('role','note');
+    d.innerHTML='<b>Procedencia de estas ' + n + ' fotografías.</b> Provienen del <b>registro fotográfico del proceso '
+      + 'participativo PLADECO Rengo 2025</b> —talleres territoriales, entrevistas a funcionarios y directores y mesas '
+      + 'temáticas— y su autoría corresponde al <b>equipo de comunicaciones de la Municipalidad de Rengo</b>. '
+      + 'No se han retocado ni recortado de manera que cambie lo que muestran.'
+      + '<br><b>Lo que no consta:</b> el lugar y la fecha exactos de cada toma no están registrados, de modo que no se '
+      + 'les atribuye un pie individual. Completar esa información queda como pendiente de archivo municipal.';
+    var pie=s.querySelector('.sec-fuente');
+    if(pie) s.insertBefore(d, pie); else s.appendChild(d);
+    return 1;
+  }
+
+  /* ── 2 · fotografías institucionales: el texto alternativo ya describe la escena ── */
+  function institucionales(){
+    var s=document.getElementById('mvv'); if(!s) return 0;
+    var n=0;
+    s.querySelectorAll('img.mvv-institutional-photo').forEach(function(im){
+      var cont=im.closest('picture') || im.parentElement;
+      if(!cont || !cont.parentElement) return;
+      if(cont.parentElement.querySelector('.mvv-pie')) return;          /* idempotente */
+      var alt=(im.getAttribute('alt')||'').trim();
+      if(!alt) return;
+      var p=document.createElement('p');
+      p.className='mvv-pie';
+      p.innerHTML=esc(alt) + '. <b>Elaboración SECPLAC</b>, Municipalidad de Rengo · proceso PLADECO 2025-2035.';
+      cont.parentElement.insertBefore(p, cont.nextSibling);
+      n++;
+    });
+    return n;
+  }
+
+  /* ── 3 · las figuras de proyección son de un MODELO, no de un dato observado ── */
+  function proyecciones(){
+    var s=document.getElementById('proyeccion-poblacion'); if(!s) return 0;
+    var n=0;
+    if(!s.querySelector('.proy-aviso')){
+      var av=document.createElement('div');
+      av.className='proy-aviso'; av.setAttribute('role','note');
+      av.innerHTML='<p><b>Estas figuras muestran una proyección, no un dato observado.</b> Representan el resultado de '
+        + 'un modelo demográfico construido por el equipo PLADECO sobre los Censos 2002, 2017 y 2024 del INE: '
+        + 'describen cómo evolucionaría la población si se mantienen los supuestos del modelo, no lo que ha ocurrido.</p>'
+        + '<p>El único dato censado es el de 2024: <b>63.620 habitantes</b>. Cualquier cifra referida a años '
+        + 'posteriores es estimación y así debe citarse.</p>';
+      var h=s.querySelector('.sec-header');
+      if(h && h.nextSibling) s.insertBefore(av, h.nextSibling); else s.insertBefore(av, s.firstChild);
+      n++;
+    }
+    s.querySelectorAll('.proy-gallery-card').forEach(function(c){
+      if(c.querySelector('.proy-tag')) return;
+      var t=document.createElement('span');
+      t.className='proy-tag'; t.textContent='Proyección';
+      c.insertBefore(t, c.firstChild);
+      n++;
+    });
+    return n;
+  }
+
+  function montar(){
+    var n=0;
+    try{ n+=galeria(); }catch(e){}
+    try{ n+=institucionales(); }catch(e){}
+    try{ n+=proyecciones(); }catch(e){}
+    return n;
+  }
+  window.montarProcedenciaImagenes=montar;
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ montar(); }catch(e){} }, 160); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,2000); });
+  window.addEventListener('hashchange', pasar);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.354 · §10 · COMPOSICIÓN DE LOS GRÁFICOS EN MÓVIL
+     (rama revision-editorial · NO PUBLICADA)
+
+     El encargo lo dice con todas las letras: «en móvil, adapta la composición del gráfico;
+     no reduzcas simplemente toda la imagen hasta volver ilegibles sus etiquetas».
+
+     MEDIDO a 390 px de ancho: los gráficos de barras horizontales conservan su proporción de
+     escritorio y quedan en 297 × 148 px. En el ranking de vulnerabilidad eso son QUINCE
+     localidades repartidas en 148 px de alto: unos 10 px por barra, con nombres como
+     «El Trebal Huilquío» que no caben. El gráfico no está mal hecho: está comprimido.
+
+     QUÉ HACE ESTE BLOQUE, solo en pantallas de 768 px o menos y solo donde hace falta:
+       · A los gráficos de categorías en horizontal les da la ALTURA que necesitan —un mínimo
+         de 24 px por categoría— en vez de heredar la proporción del escritorio. El gráfico
+         crece hacia abajo, que es la dirección en la que un móvil tiene espacio de sobra.
+       · A los gráficos de categorías en vertical con muchas etiquetas les activa el salteo
+         automático de rótulos cuando cada uno dispondría de menos de 28 px, para que los que
+         se muestren se lean enteros en lugar de superponerse todos.
+     No cambia ningún dato, ningún color ni ningún eje de valores: solo el espacio que ocupa
+     la composición. Al volver a escritorio se restituye la proporción original.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  var CORTE=768;          /* a partir de aquí se considera composición de móvil */
+  var MIN_CAT=24;         /* alto mínimo por categoría en barras horizontales */
+  var MIN_ROT=28;         /* ancho mínimo por rótulo antes de saltear en barras verticales */
+  var MAX_ALTO=760;       /* tope para que un gráfico no se vuelva interminable */
+
+  function instancia(cv){
+    try{ return (window.Chart && Chart.__real && Chart.__real.getChart) ? Chart.__real.getChart(cv) : null; }
+    catch(e){ return null; }
+  }
+
+  function adaptar(){
+    if(typeof Chart==='undefined') return 0;
+    var movil = window.innerWidth <= CORTE;
+    var n=0;
+    document.querySelectorAll('canvas').forEach(function(cv){
+      if(!cv.getClientRects().length) return;
+      var ch=instancia(cv); if(!ch||!ch.options) return;
+      var tipo=ch.config && ch.config.type;
+      if(tipo!=='bar') return;                                  /* solo barras de categorías */
+      var cats=(ch.data && ch.data.labels && ch.data.labels.length) || 0;
+      if(!cats) return;
+      var cont=cv.parentElement; if(!cont) return;
+      var horizontal = (ch.options.indexAxis === 'y');
+
+      if(!movil){
+        /* restituir lo que hubiéramos tocado */
+        if(cv.dataset.gmAdaptado){
+          if(cv.dataset.gmAspect==='1') ch.options.maintainAspectRatio=true;
+          cont.style.height=cv.dataset.gmAltoPrevio||'';
+          cv.style.removeProperty('height'); cv.style.removeProperty('max-height');
+          try{ var ejes=ch.options.scales||{}; Object.keys(ejes).forEach(function(k){
+            if(ejes[k]&&ejes[k].ticks&&cv.dataset.gmAutoSkip==='1') ejes[k].ticks.autoSkip=false; }); }catch(e){}
+          delete cv.dataset.gmAdaptado;
+          try{ ch.resize(); ch.update('none'); }catch(e){}
+          n++;
+        }
+        return;
+      }
+
+      var caja=cv.getBoundingClientRect();
+
+      if(horizontal){
+        var necesario=Math.min(MAX_ALTO, Math.max(160, cats*MIN_CAT + 56));
+        if(caja.height >= necesario-4) return;                  /* ya tiene espacio */
+        if(!cv.dataset.gmAdaptado){
+          cv.dataset.gmAspect = ch.options.maintainAspectRatio ? '1' : '0';
+          cv.dataset.gmAltoPrevio = cont.style.height || '';
+        }
+        ch.options.maintainAspectRatio=false;
+        cont.style.height = necesario + 'px';
+        /* el lienzo trae una altura fija de 240px en @media(max-width:768px) que gana al
+           contenedor: sin esto, un ranking de 15 categorias se quedaba en 16px por barra. */
+        cv.style.setProperty('height', necesario + 'px', 'important');
+        cv.style.setProperty('max-height', necesario + 'px', 'important');
+        cv.dataset.gmAdaptado='1';
+        try{ ch.resize(); ch.update('none'); }catch(e){}
+        n++;
+      } else {
+        var porRotulo = caja.width / cats;
+        if(porRotulo >= MIN_ROT) return;
+        try{
+          var ejes=ch.options.scales||{};
+          var eje = ejes.x || ejes[Object.keys(ejes)[0]];
+          if(!eje) return;
+          eje.ticks = eje.ticks || {};
+          if(eje.ticks.autoSkip===true) return;                 /* ya estaba */
+          if(!cv.dataset.gmAdaptado) cv.dataset.gmAutoSkip='1';
+          eje.ticks.autoSkip=true;
+          eje.ticks.maxRotation=eje.ticks.maxRotation!=null?eje.ticks.maxRotation:45;
+          cv.dataset.gmAdaptado='1';
+          ch.update('none');
+          n++;
+        }catch(e){}
+      }
+    });
+    return n;
+  }
+
+  window.adaptarGraficosMovil=adaptar;
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ adaptar(); }catch(e){} }, 220); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,2200); setTimeout(pasar,4200); });
+  window.addEventListener('hashchange', pasar);
+  window.addEventListener('resize', pasar);
+  /* los gráficos se crean con carga diferida: re-pasar cuando aparecen */
+  try{
+    new MutationObserver(pasar).observe(document.getElementById('main-content')||document.body,
+      {childList:true, subtree:true});
+  }catch(e){}
+})();
+</script>
+
 </body>
 </html>
