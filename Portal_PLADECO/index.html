@@ -30594,6 +30594,10 @@ function renderSankeyFlow(){
 // BUSCADOR FULL-TEXT DEL PORTAL
 // ══════════════════════════════════════════════════════
 var _portalSearchIndex=null;
+function _sinTildes(s){
+  try{ return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  catch(e){ return String(s).toLowerCase(); }
+}
 function buildPortalSearchIndex(){
   if(_portalSearchIndex) return _portalSearchIndex;
   var idx=[];
@@ -30624,7 +30628,15 @@ function buildPortalSearchIndex(){
         break;
       }
     }
-    idx.push({id:id,title:title,text:text,textLower:text.toLowerCase(),cat:cat});
+    /* v45.351 · §13 · el indice guarda tambien una version SIN TILDES. Al verificar, buscar
+       'participacion' devolvia 1 resultado y 'participacion' con tilde devolvia 20: quien
+       escribe sin tildes -lo habitual al teclear rapido- no encontraba nada. La version sin
+       tildes conserva la LONGITUD del original (en espanol cada caracter acentuado se compone
+       de uno solo), de modo que las posiciones siguen sirviendo para recortar el extracto. */
+    var textNorm=_sinTildes(text);
+    if(textNorm.length!==text.length) textNorm=text.toLowerCase();   /* salvaguarda */
+    idx.push({id:id,title:title,text:text,textLower:text.toLowerCase(),
+              textNorm:textNorm, titleNorm:_sinTildes(title), cat:cat});
   });
   _portalSearchIndex=idx;
   return idx;
@@ -30633,20 +30645,21 @@ function buildPortalSearchIndex(){
 function searchPortal(query){
   var idx=buildPortalSearchIndex();
   if(!query||query.length<2) return [];
-  var q=query.toLowerCase().trim();
+  var q=_sinTildes(query).trim();
   var results=[];
   idx.forEach(function(s){
-    var titleHit=s.title.toLowerCase().indexOf(q)>=0;
-    var textHit=s.textLower.indexOf(q)>=0;
+    var sn=s.textNorm||s.textLower, tn=s.titleNorm||s.title.toLowerCase();
+    var titleHit=tn.indexOf(q)>=0;
+    var textHit=sn.indexOf(q)>=0;
     if(!titleHit && !textHit) return;
     // Score: título vale más, frecuencia importa
     var score=0;
     if(titleHit) score+=100;
-    var matches=(s.textLower.match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length;
+    var matches=(sn.match(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length;
     score+=matches;
     // Snippet centrado en el primer match
     var snippet='';
-    var pos=s.textLower.indexOf(q);
+    var pos=sn.indexOf(q);
     if(pos>=0){
       var start=Math.max(0,pos-60);
       var end=Math.min(s.text.length,pos+q.length+90);
@@ -31732,19 +31745,21 @@ function closeCmdp(){
   document.getElementById('cmdpOverlay').classList.remove('open');
 }
 function cmdpUpdateResults(q){
-  q=q.toLowerCase().trim();
+  q=(typeof _sinTildes==='function'?_sinTildes(q):String(q).toLowerCase()).trim();
   var body=document.getElementById('cmdpBody');
   // Acciones que matchean
   var actions=CMDP_ACTIONS.filter(function(a){
     if(!q)return true;
-    return a.title.toLowerCase().indexOf(q)>=0||(a.desc&&a.desc.toLowerCase().indexOf(q)>=0);
+    var _t=(typeof _sinTildes==='function'?_sinTildes(a.title):a.title.toLowerCase());
+    var _d=a.desc?(typeof _sinTildes==='function'?_sinTildes(a.desc):a.desc.toLowerCase()):'';
+    return _t.indexOf(q)>=0||(_d&&_d.indexOf(q)>=0);
   });
   // Búsqueda en secciones (usando _portalSearchIndex existente)
   var sections=[];
   if(typeof buildPortalSearchIndex==='function'&&q.length>=2){
     try{
       var idx=buildPortalSearchIndex();
-      sections=idx.filter(function(s){return s.title.toLowerCase().indexOf(q)>=0||s.textLower.indexOf(q)>=0;}).slice(0,6).map(function(s){
+      sections=idx.filter(function(s){return (s.titleNorm||s.title.toLowerCase()).indexOf(q)>=0||(s.textNorm||s.textLower).indexOf(q)>=0;}).slice(0,6).map(function(s){
         return {cat:'secciones',icon:'📄',title:s.title,desc:'Sección · '+(s.cat||'Portal'),href:'#'+s.id};
       });
     }catch(e){}

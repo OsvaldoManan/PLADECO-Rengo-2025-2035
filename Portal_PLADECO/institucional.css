@@ -598,3 +598,22 @@ body .hero .hero-title, body .hero h1{
 }
 /* Márgenes laterales: el contenedor bajaba a 14 px en móvil; el mínimo pedido es 16. */
 body #main-content.main, body .main, body main{ padding-inline:clamp(16px, 3.2vw, 48px)!important; }  /* el id gana a la clase: en <=900px habia #main-content{padding-left:14px!important} */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.351 · §6 y §15 · ÁREA TÁCTIL MÍNIMA DE LOS CONTROLES SOLO DE ICONO
+   Medidos los 85 controles visibles, cinco quedaban bajo 44×44 px: el botón de
+   favorito (36×36), el de cerrar del asistente (36×44), el de cerrar la ayuda de
+   teclado (20×42) y dos de la barra superior (40×44). Se amplía el área de
+   pulsación con un pseudo-elemento centrado, de modo que la zona sensible llegue a
+   44×44 SIN cambiar el tamaño visible del control ni mover nada a su alrededor.
+   (Comprobado antes: ninguno de estos botones usa ::after para otra cosa.)
+   ═══════════════════════════════════════════════════════════════════════════ */
+body .fav-toggle, body .chatbot-close, body .kbd-cheat-close,
+body .tn-home-btn, body .sec-print-btn{ position:relative; }
+body .fav-toggle::after, body .chatbot-close::after, body .kbd-cheat-close::after,
+body .tn-home-btn::after, body .sec-print-btn::after{
+  content:""; position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:44px; height:44px;
+  border-radius:inherit;
+}
