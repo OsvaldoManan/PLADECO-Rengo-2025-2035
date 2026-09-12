@@ -13646,8 +13646,8 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
 <section id="mapa" class="reveal">
   <div class="sec-header">
     <div class="badge badge--info">Georreferenciado</div>
-    <h2>Mapa Territorial Interactivo</h2>
-    <p>25 localidades con datos de poblaci&#243;n, inversi&#243;n BIP y participaci&#243;n ciudadana</p>
+    <h2>Explora tu territorio</h2>
+    <p>Elige una localidad o unidad vecinal &#8212; en el selector, en la lista o sobre el mapa &#8212; y consulta su ficha con los datos disponibles y su procedencia.</p>
   </div>
   <div class="map-controls">
     <button class="map-ctrl-btn active" onclick="setMapLayer(this,'pop')">Poblaci&#243;n</button>
@@ -28604,7 +28604,7 @@ const CMD_SECTIONS=[
   {id:'dashboard',name:'Indicadores Clave',svg:'trend',cat:'Dashboard',desc:'KPIs y cifras clave del plan en un panel'},
   {id:'viz',name:'Visualizaciones Interactivas',svg:'chart',cat:'Interactivo',desc:'Gráficos y mapas para explorar los datos'},
   {id:'datos-vivo',name:'Datos en Vivo',svg:'bolt',cat:'Dashboard',desc:'Indicadores que se actualizan en tiempo real'},
-  {id:'mapa',name:'Mapa Interactivo',svg:'map',cat:'Territorio',desc:'Mapa de Rengo: capas, UV y proyectos'},
+  {id:'mapa',name:'Explora tu territorio',svg:'map',cat:'Territorio',desc:'Mapa y ficha por localidad o unidad vecinal'},
   {id:'nna',name:'Diagnóstico NNA',svg:'heart',cat:'Social',desc:'Niñez y adolescencia: situación y derechos'},
   {id:'censo',name:'Censo 2024',svg:'clipboard',cat:'Datos',desc:'Población, viviendas y hogares (Censo 2024)'},
   {id:'desigualdad',name:'Brechas y Desigualdad',svg:'scale',cat:'Social',desc:'Brechas sociales, de género y territoriales'},
@@ -40486,7 +40486,7 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     mapContainer:{
       after:'#mapContainer',
       tipo:'Mapa coroplético', titulo:'Mapa Territorial Interactivo',
-      muestra:'Valor por localidad (25) según la capa activa: población (stock), inversión BIP (M$) o número de proyectos BIP.',
+      muestra:'Valor por territorio (25: 21 unidades vecinales y 4 localidades rurales sin UV constituida) según la capa activa: población (stock), inversión BIP (M$) o número de proyectos BIP.',
       norm:'Las capas <b>Inversión BIP</b> y <b>Proyectos BIP</b> son <b>conteos absolutos</b>, no tasas per cápita: una localidad grande tiende a concentrar más por tamaño. El denominador poblacional (Censo 2024) está disponible para derivar tasas y queda <b>pendiente</b>; entretanto, no comparar magnitudes entre localidades de tamaño muy distinto sin normalizar.',
       cobertura:'25 de 25 localidades georreferenciadas.',
       geodesia:'Datum WGS84 (coordenadas geográficas).',
@@ -41382,5 +41382,432 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   window.addEventListener('load',sync,{once:true});
 })();
 </script>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.345 · §7 + §8 · «EXPLORA TU TERRITORIO» Y FICHA TERRITORIAL REUTILIZABLE
+     El §7 pide reutilizar la cartografía verificada, añadir un selector por localidad
+     o unidad vecinal, ofrecer una lista equivalente para quien no use el mapa, y que al
+     elegir un territorio se muestre nombre, localización, datos disponibles y acceso al
+     detalle, con fuente, fecha y leyenda visibles. El §8 pide una ficha con información
+     suficiente, validada en un territorio antes de extenderla, que OCULTE los campos sin
+     información y registre su ausencia.
+
+     DIAGNÓSTICO PREVIO (verificado en el código, no supuesto):
+     · La cartografía verificada ya existe: #mapContainer (Leaflet) se alimenta de UV_DATA
+       (25 filas con lat/lng) y su leyenda ya calcula cortes reales por capa. Se REUTILIZA:
+       no se crea un segundo mapa ni se añade ninguna dependencia.
+     · UV_DATA es el único registro territorial con coordenadas completas y con fuentes
+       declaradas en la propia sección. Es, por tanto, el ancla de la ficha.
+     · CENSO_LOCALIDADES_GEO (24 localidades con ICP) coincide por nombre con 14 de las 25
+       filas de UV_DATA. Para las unidades vecinales de Rengo y de Rosario el ICP existe a
+       escala de localidad censal, no por unidad vecinal: se muestra declarando esa escala.
+       Donde no hay correspondencia, el campo NO se muestra (no se reparte ni se estima).
+     · ICT_ESPACIOS (65 espacios catastrados, con problemas documentados) no trae unidad
+       vecinal. Se asocia por cercanía al centroide con radio máximo declarado, exactamente
+       con el mismo criterio y la misma advertencia que ya usa #territorios-prioritarios.
+     · CAMPOS QUE NO SE PUEDEN LLENAR Y POR ESO SE OCULTAN (ver el pie de cada ficha):
+       (a) fotografía propia del territorio — el repositorio no tiene ninguna;
+       (b) acciones del plan vinculadas — ni _POL ni accionesPOA registran localización;
+       (c) desafío redactado por unidad vecinal — sólo existe en un segundo registro de UV
+           (CUV_UVS) cuyos nombres y poblaciones CONTRADICEN a UV_DATA para el mismo código.
+       Las tres ausencias quedan declaradas en la propia ficha y en el registro de
+       discrepancias de #metodologia.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+/* §7 · barra de elección de territorio */
+.et-pick{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 12px}
+.et-pick label{display:block;font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--text2);margin-bottom:5px}
+.et-pick select{min-width:250px;max-width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--rad-md,7px);background:var(--card);color:var(--text);font-size:13.5px;font-family:inherit}
+.et-pick .et-clear{padding:9px 14px;border:1px solid var(--border);border-radius:var(--rad-md,7px);background:var(--card);color:var(--text2);font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit}
+.et-pick .et-clear:hover{color:var(--text)}
+/* lista equivalente al mapa */
+.et-lista{margin:0 0 14px;border:1px solid var(--border);border-radius:var(--rad-md,7px);background:var(--card)}
+.et-lista>summary{cursor:pointer;padding:10px 14px;font-size:12.5px;font-weight:800;color:var(--text);list-style:none}
+.et-lista>summary::-webkit-details-marker{display:none}
+.et-lista>summary::before{content:"\25B8";display:inline-block;margin-right:7px;color:var(--text2);transition:transform .15s ease}
+.et-lista[open]>summary::before{transform:rotate(90deg)}
+.et-lista-body{padding:2px 14px 14px}
+.et-grupo{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);margin:10px 0 6px}
+.et-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.et-chips li{margin:0}
+.et-chip{padding:5px 11px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;line-height:1.5}
+.et-chip:hover{border-color:#1F3864;color:#1F3864}
+body.dark .et-chip:hover{border-color:#7ea4d8;color:#7ea4d8}
+.et-chip[aria-pressed="true"]{background:#1F3864;border-color:#1F3864;color:#fff;font-weight:700}
+body.dark .et-chip[aria-pressed="true"]{background:#7ea4d8;border-color:#7ea4d8;color:#0d1b2e}
+.et-chip .et-chip-uv{opacity:.65;font-size:10.5px;margin-left:5px;font-variant-numeric:tabular-nums}
+/* §8 · ficha territorial */
+.et-ficha{margin:16px 0 0}
+.et-ficha:focus{outline:2px solid #1F3864;outline-offset:3px}
+.et-card{border:1px solid var(--border);border-left:4px solid #1F3864;border-radius:var(--rad-md,7px);background:var(--card);padding:18px 20px}
+body.dark .et-card{border-left-color:#7ea4d8}
+.et-card.is-rural{border-left-color:#15803d}
+body.dark .et-card.is-rural{border-left-color:#5fb97f}
+.et-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:4px}
+.et-head h3{margin:0;font-size:19px;line-height:1.25;color:var(--text)}
+.et-tag{font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:rgba(31,56,100,.1);color:#1F3864;border:1px solid rgba(31,56,100,.25)}
+body.dark .et-tag{background:rgba(126,164,216,.16);color:#a9c6e8;border-color:rgba(126,164,216,.35)}
+.et-tag.is-rural{background:rgba(21,128,61,.1);color:#15803d;border-color:rgba(21,128,61,.28)}
+body.dark .et-tag.is-rural{background:rgba(95,185,127,.16);color:#7fd39b;border-color:rgba(95,185,127,.35)}
+.et-sintesis{font-size:14px;line-height:1.62;color:var(--text);margin:8px 0 2px;max-width:66ch}
+.et-loc{font-size:12px;color:var(--text2);margin:8px 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.et-loc code{font-variant-numeric:tabular-nums;font-size:11.5px}
+.et-mini{padding:5px 12px;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--text);font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer}
+.et-mini:hover{border-color:#1F3864;color:#1F3864}
+body.dark .et-mini:hover{border-color:#7ea4d8;color:#7ea4d8}
+.et-blk{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.et-blk-t{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--text2);margin:0 0 9px}
+.et-inds{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.et-ind{border:1px solid var(--border);border-radius:var(--rad-md,7px);padding:11px 13px;background:transparent}
+.et-ind-v{font-size:22px;font-weight:800;line-height:1.1;color:var(--text);font-variant-numeric:tabular-nums}
+.et-ind-n{font-size:12px;color:var(--text);margin-top:3px;font-weight:600}
+.et-ind-f{font-size:10.5px;color:var(--text2);margin-top:4px;line-height:1.45}
+.et-ind.is-sin .et-ind-v{font-size:15px;font-weight:700;color:var(--text2)}
+.et-icp{display:flex;flex-wrap:wrap;gap:14px;align-items:baseline;font-size:13px;color:var(--text)}
+.et-icp b{font-size:18px;font-variant-numeric:tabular-nums}
+.et-nota{font-size:11.5px;line-height:1.55;color:var(--text2);margin:8px 0 0}
+.et-esp{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+.et-esp>li{border:1px solid var(--border);border-radius:var(--rad-md,7px);padding:10px 12px}
+.et-esp-h{font-size:13px;font-weight:700;color:var(--text)}
+.et-esp-m{font-size:11px;color:var(--text2);margin-top:2px}
+.et-esp-p{font-size:12px;color:var(--text);margin:6px 0 0;padding-left:16px}
+.et-esp-p li{border:0;padding:0;margin:0 0 2px;list-style:disc}
+.et-links{display:flex;flex-wrap:wrap;gap:8px 16px}
+.et-links a{font-size:12.5px;font-weight:700;color:#1F3864;text-decoration:none;border-bottom:1px solid rgba(31,56,100,.3);padding-bottom:1px}
+body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
+.et-links a:hover{border-bottom-color:currentColor}
+.et-falta{margin-top:14px;padding:11px 13px;border:1px dashed var(--border);border-radius:var(--rad-md,7px);font-size:11.5px;line-height:1.6;color:var(--text2)}
+.et-falta b{color:var(--text)}
+.et-falta ul{margin:6px 0 0;padding-left:18px}
+.et-vacio{font-size:13px;color:var(--text2);padding:14px 16px;border:1px dashed var(--border);border-radius:var(--rad-md,7px)}
+@media(max-width:640px){
+  .et-pick select{min-width:0;width:100%}
+  .et-card{padding:15px 15px}
+  .et-head h3{font-size:17px}
+}
+</style>
+<script>
+(function(){
+  'use strict';
+  var RADIO_KM = 2.0;            /* radio máximo para asociar espacios catastrados */
+  var MAX_ESP  = 3;
+  var FUENTE = {
+    censo:'INE, Censo de Población y Vivienda 2024',
+    bip:'Banco Integrado de Proyectos (BIP), MIDESO — acumulado 1997-2025',
+    icp:'ICP, Índice Compuesto Ponderado de vulnerabilidad — elaboración propia PLADECO con datos INE Censo 2024, 24 localidades',
+    ict:'Catastro SECPLAC de espacios públicos — 65 puntos, abril 2026'
+  };
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':t); return d.innerHTML; }
+  function norm(s){ return String(s==null?'':s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim(); }
+  function num(n){ try{ return (+n).toLocaleString('es-CL'); }catch(e){ return ''+n; } }
+  function uvs(){ try{ return (typeof UV_DATA!=='undefined'&&UV_DATA.length)?UV_DATA:[]; }catch(e){ return []; } }
+  function geo(){ try{ return (typeof CENSO_LOCALIDADES_GEO!=='undefined')?CENSO_LOCALIDADES_GEO:[]; }catch(e){ return []; } }
+  function ict(){ try{ return (typeof ICT_ESPACIOS!=='undefined')?ICT_ESPACIOS:[]; }catch(e){ return []; } }
+  function mapaRengo(){
+    try{
+      var L=window.__leafletMaps||[];
+      for(var i=0;i<L.length;i++){ if(L[i]&&L[i]._container&&L[i]._container.id==='mapContainer') return L[i]; }
+    }catch(e){}
+    return null;
+  }
+  function km(a,b,c,d){
+    var R=6371, p=Math.PI/180;
+    var dla=(c-a)*p, dlo=(d-b)*p;
+    var h=Math.sin(dla/2)*Math.sin(dla/2)+Math.cos(a*p)*Math.cos(c*p)*Math.sin(dlo/2)*Math.sin(dlo/2);
+    return 2*R*Math.asin(Math.min(1,Math.sqrt(h)));
+  }
+  var GUION = String.fromCharCode(8212);   /* — usado como "sin código UV" en UV_DATA */
+
+  /* ── ICP: sólo por coincidencia de nombre; para las UV de Rengo y Rosario el dato
+        existe a escala de localidad censal y se muestra DECLARANDO esa escala. ── */
+  function icpDe(u){
+    var G=geo(); if(!G.length) return null;
+    var n=norm(u.name), i, m=null, escala='localidad';
+    for(i=0;i<G.length;i++){ if(norm(G[i].loc)===n){ m=G[i]; break; } }
+    if(!m){
+      var raiz = /^rengo /.test(n) ? 'rengo' : (/^rosario /.test(n) ? 'rosario' : null);
+      if(!raiz) return null;
+      for(i=0;i<G.length;i++){ if(norm(G[i].loc)===raiz){ m=G[i]; escala='agrupada'; break; } }
+      if(!m) return null;
+    }
+    var orden=G.slice().sort(function(a,b){ return b.icp-a.icp; });
+    var pos=0; for(i=0;i<orden.length;i++){ if(orden[i]===m){ pos=i+1; break; } }
+    return {loc:m.loc, icp:m.icp, pos:pos, total:orden.length, escala:escala};
+  }
+
+  /* ── Espacios públicos catastrados: asociación por cercanía al centroide.
+        Mismo criterio (y misma advertencia) que #territorios-prioritarios. ── */
+  function espaciosDe(u){
+    var E=ict(); if(!E.length||!u.lat||!u.lng) return [];
+    var out=[];
+    E.forEach(function(e){
+      if(!e.lat||!e.lng) return;
+      var d=km(+u.lat,+u.lng,+e.lat,+e.lng);
+      if(d<=RADIO_KM) out.push({e:e,d:d});
+    });
+    out.sort(function(a,b){ return a.d-b.d; });
+    return out.slice(0,MAX_ESP);
+  }
+
+  function sintesis(u){
+    var t = (u.tipo==='Rural') ? 'Localidad rural' : 'Sector urbano';
+    var s = t + ' de la comuna de Rengo con <b>' + num(u.pob) + ' habitantes</b> censados en 2024';
+    if(u.nna>0) s += ', de los cuales ' + num(u.nna) + ' son niños, niñas y adolescentes';
+    s += '. ';
+    if(u.bip>0){
+      s += 'Registra <b>' + num(u.bip) + (u.bip===1?' proyecto':' proyectos') + '</b> en el Banco Integrado de Proyectos';
+      if(u.inv>0) s += ', por $' + num(Math.round(u.inv/1000)) + ' millones acumulados';
+      s += '.';
+    } else {
+      s += 'No tiene proyectos registrados a su nombre en el Banco Integrado de Proyectos: es <b>ausencia de registro</b> en esa fuente y no equivale a cero inversión.';
+    }
+    return s;
+  }
+
+  function ficha(u){
+    var rural = (u.tipo==='Rural');
+    var hayMapa = !!document.getElementById('mapContainer');   /* el boton existe si existe el mapa; volar() espera a que Leaflet lo registre */
+    var h = '<div class="et-card' + (rural?' is-rural':'') + '">';
+    h += '<div class="et-head"><h3>' + esc(u.name) + '</h3>'
+       + '<span class="et-tag' + (rural?' is-rural':'') + '">' + esc(u.tipo) + '</span>'
+       + '<span class="et-tag' + (rural?' is-rural':'') + '">' + (u.uv && u.uv!==GUION ? esc(u.uv) : 'Sin unidad vecinal constituida') + '</span>'
+       + '</div>';
+    h += '<p class="et-sintesis">' + sintesis(u) + '</p>';
+
+    /* localización — dato verificable y acceso a la cartografía ya validada */
+    h += '<p class="et-loc"><span>Centroide referencial <code>' + (+u.lat).toFixed(5) + ', ' + (+u.lng).toFixed(5) + '</code></span>'
+       + (hayMapa ? '<button type="button" class="et-mini" data-et-fly="' + esc(u.id) + '">Centrar en el mapa</button>' : '')
+       + '</p>';
+
+    /* hasta tres indicadores, cada uno con su fuente */
+    h += '<div class="et-blk"><p class="et-blk-t">Indicadores disponibles</p><div class="et-inds">';
+    h += '<div class="et-ind"><div class="et-ind-v">' + num(u.pob) + '</div><div class="et-ind-n">Habitantes</div><div class="et-ind-f">' + esc(FUENTE.censo) + '</div></div>';
+    if(u.nna>0){
+      h += '<div class="et-ind"><div class="et-ind-v">' + num(u.nna) + '</div><div class="et-ind-n">Niños, niñas y adolescentes</div><div class="et-ind-f">' + esc(FUENTE.censo) + '</div></div>';
+    }
+    if(u.bip>0){
+      h += '<div class="et-ind"><div class="et-ind-v">' + num(u.bip) + '</div><div class="et-ind-n">Proyectos BIP'
+         + (u.inv>0 ? ' &middot; $' + num(Math.round(u.inv/1000)) + ' millones' : '')
+         + '</div><div class="et-ind-f">' + esc(FUENTE.bip) + '</div></div>';
+    } else {
+      h += '<div class="et-ind is-sin"><div class="et-ind-v">Sin registro</div><div class="et-ind-n">Proyectos BIP</div><div class="et-ind-f">' + esc(FUENTE.bip) + '. Ausencia de registro, que no equivale a cero.</div></div>';
+    }
+    h += '</div></div>';
+
+    /* vulnerabilidad — sólo si hay correspondencia; con su escala declarada */
+    var ic = icpDe(u);
+    if(ic){
+      h += '<div class="et-blk"><p class="et-blk-t">Vulnerabilidad relativa</p>'
+         + '<p class="et-icp"><span><b>' + String(ic.icp).replace('.',',') + '</b> ICP</span>'
+         + '<span>Posición ' + ic.pos + ' de ' + ic.total + ' localidades, de mayor a menor vulnerabilidad</span></p>'
+         + '<p class="et-nota">Un ICP más alto indica mayor vulnerabilidad. '
+         + (ic.escala==='agrupada'
+             ? 'El índice está calculado para la localidad censal de <b>' + esc(ic.loc) + '</b>, que agrupa varias unidades vecinales: <b>no es un valor propio de esta unidad</b>.'
+             : 'Corresponde a la localidad de <b>' + esc(ic.loc) + '</b>.')
+         + ' Fuente: ' + esc(FUENTE.icp) + '.</p></div>';
+    }
+
+    /* desafíos documentados — catastro de espacios públicos por cercanía */
+    var esp = espaciosDe(u);
+    if(esp.length){
+      h += '<div class="et-blk"><p class="et-blk-t">Problemas documentados en espacios públicos cercanos</p><ul class="et-esp">';
+      esp.forEach(function(x){
+        var e=x.e;
+        h += '<li><div class="et-esp-h">' + esc(e.nombre) + '</div>'
+           + '<div class="et-esp-m">' + esc(e.tipologia) + ' &middot; estado ' + esc(String(e.estado).toLowerCase()) + ' &middot; a ' + x.d.toFixed(1).replace('.',',') + ' km del centroide</div>';
+        if(e.problemas && e.problemas.length){
+          h += '<ul class="et-esp-p">';
+          e.problemas.slice(0,2).forEach(function(p){ h += '<li>' + esc(p) + '</li>'; });
+          h += '</ul>';
+        }
+        h += '</li>';
+      });
+      h += '</ul><p class="et-nota"><b>Cómo se asocian.</b> El catastro no registra unidad vecinal, de modo que estos espacios se asocian por <b>cercanía al centroide</b> (radio de ' + String(RADIO_KM).replace('.',',') + ' km, máximo ' + MAX_ESP + '). Es una aproximación provisional de contexto, <b>no una atribución administrativa</b>. Fuente: ' + esc(FUENTE.ict) + '.</p></div>';
+    }
+
+    /* dónde profundizar — todos los destinos existen en el portal */
+    h += '<div class="et-blk"><p class="et-blk-t">Dónde profundizar</p><div class="et-links">'
+       + '<a href="#territorio">Tabla completa de los territorios</a>'
+       + '<a href="#comparador-uv">Comparar con otra unidad vecinal</a>'
+       + '<a href="#territorios-prioritarios">Ranking de prioridad territorial</a>'
+       + '<a href="#ict-espacios-publicos">Catastro de espacios públicos</a>'
+       + '<a href="#cuadernillo">Cuadernillo por unidad vecinal</a>'
+       + '</div></div>';
+
+    /* campos ocultos por falta de dato — se declaran, no se rellenan */
+    var faltan=[];
+    faltan.push('<b>Fotografía del territorio</b>: el portal no dispone de imágenes propias por localidad.');
+    faltan.push('<b>Acciones del plan vinculadas</b>: la matriz de 225 acciones no registra localización, de modo que atribuir acciones a este territorio requiere validación municipal.');
+    if(!ic) faltan.push('<b>Índice de vulnerabilidad (ICP)</b>: no hay una localidad con este nombre en la capa censal de 24 localidades.');
+    if(!esp.length) faltan.push('<b>Espacios públicos catastrados</b>: ninguno del catastro queda a menos de ' + String(RADIO_KM).replace('.',',') + ' km de este centroide.');
+    faltan.push('<b>Desafío redactado por unidad vecinal</b>: existe en un segundo registro de unidades vecinales cuyos nombres y poblaciones no coinciden con esta tabla para el mismo código, y conciliarlos requiere validación municipal.');
+    h += '<div class="et-falta"><b>Campos sin información en esta ficha</b> (se declaran en vez de completarse):<ul><li>' + faltan.join('</li><li>') + '</li></ul></div>';
+
+    h += '</div>';
+    return h;
+  }
+
+  /* ── selección y sincronía con la cartografía ── */
+  function porId(id){ var A=uvs(); for(var i=0;i<A.length;i++){ if(A[i].id===id) return A[i]; } return null; }
+  function pintar(id, opts){
+    opts=opts||{};
+    var u=porId(id), cont=document.getElementById('etFicha');
+    if(!cont||!u) return;
+    cont.innerHTML=ficha(u);
+    var sel=document.getElementById('etSel'); if(sel&&sel.value!==id) sel.value=id;
+    [].forEach.call(document.querySelectorAll('.et-chip[data-et-id]'), function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-et-id')===id ? 'true' : 'false');
+    });
+    var lim=document.querySelector('.et-clear'); if(lim) lim.hidden=false;
+    if(opts.fly!==false) volar(u);
+    if(opts.focus){ try{ cont.focus({preventScroll:true}); }catch(e){} }
+  }
+  function limpiar(){
+    var cont=document.getElementById('etFicha');
+    if(cont) cont.innerHTML='<p class="et-vacio">Elige un territorio en el selector, en la lista o en el mapa para ver su ficha.</p>';
+    var sel=document.getElementById('etSel'); if(sel) sel.value='';
+    [].forEach.call(document.querySelectorAll('.et-chip[data-et-id]'), function(b){ b.setAttribute('aria-pressed','false'); });
+    var lim=document.querySelector('.et-clear'); if(lim) lim.hidden=true;
+  }
+  function volar(u, intento){
+    if(!u||!u.lat||!u.lng) return;
+    var m=mapaRengo();
+    if(!m){ intento=(intento||0)+1; if(intento<=14) setTimeout(function(){ volar(u,intento); },300); return; }
+    try{
+      m.invalidateSize();
+      m.flyTo([+u.lat,+u.lng], 14, {duration:.7});
+      setTimeout(function(){
+        try{
+          m.eachLayer(function(l){
+            if(l && l.getLatLng && l.getPopup && l.getPopup()){
+              var ll=l.getLatLng();
+              if(Math.abs(ll.lat-(+u.lat))<1e-6 && Math.abs(ll.lng-(+u.lng))<1e-6) l.openPopup();
+            }
+          });
+        }catch(e){}
+      }, 760);
+    }catch(e){}
+  }
+  function engancharMarcadores(){
+    var m=mapaRengo(); if(!m) return;
+    try{
+      m.eachLayer(function(l){
+        if(!l || !l.getLatLng || !l.setRadius || l.__etHook) return;   /* sólo circleMarker de datos */
+        var ll=l.getLatLng(), A=uvs(), i;
+        for(i=0;i<A.length;i++){
+          if(Math.abs(A[i].lat-ll.lat)<1e-6 && Math.abs(A[i].lng-ll.lng)<1e-6){
+            l.__etHook=1;
+            (function(id){ l.on('click', function(){ pintar(id,{fly:false}); }); })(A[i].id);
+            break;
+          }
+        }
+      });
+    }catch(e){}
+  }
+
+  function montar(){
+    var sec=document.getElementById('mapa'); if(!sec) return;
+    if(sec.querySelector('.et-pick')){ engancharMarcadores(); return; }
+    var A=uvs(); if(!A.length) return;
+    var wrap=sec.querySelector('.map-wrap'); if(!wrap) return;
+    var ctrl=sec.querySelector('.map-controls') || wrap;
+
+    var urb=A.filter(function(u){ return u.tipo!=='Rural'; });
+    var rur=A.filter(function(u){ return u.tipo==='Rural'; });
+    function ops(list){
+      return list.map(function(u){
+        return '<option value="'+esc(u.id)+'">'+esc(u.name)+(u.uv&&u.uv!==GUION?' ('+esc(u.uv)+')':'')+'</option>';
+      }).join('');
+    }
+    function chips(list){
+      return list.map(function(u){
+        return '<li><button type="button" class="et-chip" data-et-id="'+esc(u.id)+'" aria-pressed="false">'+esc(u.name)
+             + (u.uv&&u.uv!==GUION?'<span class="et-chip-uv">'+esc(u.uv)+'</span>':'')+'</button></li>';
+      }).join('');
+    }
+    var box=document.createElement('div');
+    box.innerHTML =
+      '<div class="et-pick">'
+      + '<div><label for="etSel">Elige tu territorio</label>'
+      + '<select id="etSel"><option value="">Selecciona una localidad o unidad vecinal</option>'
+      + '<optgroup label="Urbanas">'+ops(urb)+'</optgroup><optgroup label="Rurales">'+ops(rur)+'</optgroup></select></div>'
+      + '<button type="button" class="et-clear" hidden>Quitar selección</button>'
+      + '</div>'
+      + '<details class="et-lista"><summary>Lista completa de los '+A.length+' territorios (alternativa al mapa)</summary>'
+      + '<div class="et-lista-body">'
+      + '<p class="et-grupo">Urbanas ('+urb.length+')</p><ul class="et-chips">'+chips(urb)+'</ul>'
+      + '<p class="et-grupo">Rurales ('+rur.length+')</p><ul class="et-chips">'+chips(rur)+'</ul>'
+      + '</div></details>';
+    while(box.firstChild) sec.insertBefore(box.firstChild, ctrl);
+
+    /* escala, procedencia y fecha visibles junto a la cartografía */
+    var conUV=A.filter(function(u){ return u.uv && u.uv!==GUION; }).length;
+    var sinUV=A.length-conUV;
+    var nota=document.createElement('div');
+    nota.className='terr-escala'; nota.setAttribute('role','note');
+    nota.innerHTML='<b>Qué muestra este mapa.</b> '+A.length+' territorios: <b>'+conUV+' unidades vecinales</b> con código asignado y <b>'+sinUV+' localidades rurales</b> sin unidad vecinal constituida. La unidad de análisis es mixta y no son equivalentes entre sí.'
+      + ' Los puntos son <b>centroides referenciales</b>, no límites administrativos. La leyenda, abajo a la derecha del mapa, cambia con la capa elegida; la ficha metodológica bajo el mapa detalla fuente, cobertura y fecha de corte.';
+    wrap.parentNode.insertBefore(nota, wrap);
+
+    var f=document.createElement('div');
+    f.id='etFicha'; f.className='et-ficha'; f.setAttribute('role','region');
+    f.setAttribute('aria-label','Ficha del territorio seleccionado');
+    f.setAttribute('aria-live','polite'); f.tabIndex=-1;
+    /* la ficha va al final del contenido, NO pegada al mapa: el enhancer de fichas
+       metodologicas comprueba que su hermano siguiente sea .map-meta y, si se interpone
+       otro nodo, inserta una copia en cada pasada (duplicado observado al verificar). */
+    var pie=sec.querySelector('.sec-fuente');
+    if(pie) sec.insertBefore(f, pie); else sec.appendChild(f);
+    limpiar();
+
+    sec.addEventListener('change', function(ev){
+      var t=ev.target; if(!t||t.id!=='etSel') return;
+      if(t.value) pintar(t.value,{}); else limpiar();
+    });
+    sec.addEventListener('click', function(ev){
+      var b=(ev.target&&ev.target.closest)?ev.target.closest('.et-chip,.et-clear,[data-et-fly]'):null;
+      if(!b) return;
+      if(b.classList.contains('et-clear')){ limpiar(); return; }
+      if(b.hasAttribute('data-et-fly')){ var u=porId(b.getAttribute('data-et-fly')); if(u) volar(u); return; }
+      var id=b.getAttribute('data-et-id'); if(id) pintar(id,{focus:true});
+    });
+    engancharMarcadores();
+  }
+
+  /* El mapa recrea TODOS los marcadores en cada cambio de capa (updateMapMarkers vacia el
+     array y los vuelve a dibujar), asi que enganchar una sola vez no basta: al verificar,
+     0 de 25 marcadores conservaban el clic. Se envuelve la funcion global para reenganchar
+     despues de cada redibujo, y se complementa con un sondeo acotado por si Leaflet (CDN,
+     defer) crea el mapa despues del arranque. */
+  function envolverRedibujo(){
+    try{
+      if(typeof window.updateMapMarkers==='function' && !window.updateMapMarkers.__etPatch){
+        var orig=window.updateMapMarkers;
+        var w=function(){ var r=orig.apply(this,arguments); setTimeout(engancharMarcadores,0); return r; };
+        w.__etPatch=1; window.updateMapMarkers=w; return true;
+      }
+    }catch(e){}
+    return false;
+  }
+  function sondear(){
+    if(sondear.__on) return; sondear.__on=1;
+    var n=0;
+    var t=setInterval(function(){
+      n++; envolverRedibujo(); engancharMarcadores();
+      var m=mapaRengo(), ok=false;
+      if(m){ try{ m.eachLayer(function(l){ if(l&&l.setRadius&&l.__etHook) ok=true; }); }catch(e){} }
+      if(ok||n>=25){ clearInterval(t); sondear.__on=0; }
+    }, 400);
+  }
+
+  /* el componente es reutilizable desde fuera: misma ficha, cualquier territorio */
+  window.fichaTerritorial = function(id){ pintar(id,{}); };
+
+  function arranque(){ montar(); envolverRedibujo(); sondear(); }
+  if(document.readyState!=='loading') arranque(); else window.addEventListener('DOMContentLoaded',arranque,{once:true});
+  window.addEventListener('load', arranque, {once:true});
+  window.addEventListener('hashchange', function(){ setTimeout(arranque, 500); });
+})();
+</script>
+
 </body>
 </html>
