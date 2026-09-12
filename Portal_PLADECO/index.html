@@ -25141,11 +25141,19 @@ function renderCensoMapaVuln(){
   try{
   var map=L.map('mapCensoVuln',{scrollWheelZoom:false}).setView([-34.39,-70.855],12);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+  /* v45.355 · §9 · ESCALA SECUENCIAL, NO SEMAFORO. El indice de vulnerabilidad es una
+     CANTIDAD sin punto medio significativo, y se pintaba con cuatro tonos distintos
+     -verde, amarillo, naranja, rojo-: eso es una escala divergente de tipo semaforo, que
+     el encargo pide reservar para cuando existe una referencia central, y ademas se apoya
+     en el par verde-rojo, el peor para daltonismo. Se sustituye por una rampa de UN SOLO
+     TONO -la terracota del escudo comunal- donde a mayor vulnerabilidad, mas oscuro: se
+     lee como 'mas cantidad de lo mismo' y se distingue por luminosidad, no por color.
+     Los cortes de clase y los nombres de nivel no cambian. */
   function icpColor(v){
-    if(v<0.22) return '#22c55e';
-    if(v<0.28) return '#eab308';
-    if(v<0.32) return '#f97316';
-    return '#dc2626';
+    if(v<0.22) return '#E8B49A';
+    if(v<0.28) return '#D07E5C';
+    if(v<0.32) return '#AC4A2C';
+    return '#7A2313';
   }
   var bounds=[];
   CENSO_LOCALIDADES_GEO.forEach(function(d){
@@ -40655,7 +40663,8 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function nf(n){ return (n==null?0:n).toLocaleString('es-CL'); }
   function hav(la1,lo1,la2,lo2){ var R=6371,dLa=(la2-la1)*Math.PI/180,dLo=(lo2-lo1)*Math.PI/180,a=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)*Math.sin(dLo/2); return 2*R*Math.asin(Math.min(1,Math.sqrt(a))); }
-  function icpColor(v){ if(v<0.22)return '#22c55e'; if(v<0.28)return '#eab308'; if(v<0.32)return '#f97316'; return '#dc2626'; }
+  function icpColor(v){ /* v45.355 · rampa secuencial de un solo tono (terracota del escudo): a mayor vulnerabilidad, mas oscuro. Ver nota en el otro icpColor. */
+    if(v<0.22)return '#E8B49A'; if(v<0.28)return '#D07E5C'; if(v<0.32)return '#AC4A2C'; return '#7A2313'; }
   function icpLevel(v){ if(v<0.22)return 'Bajo'; if(v<0.28)return 'Medio'; if(v<0.32)return 'Alto'; return 'Crítico'; }
   /* asigna un punto (lat,lng) a la localidad cuyo centroide es el más cercano, si está dentro del radio */
   function assign(lat,lng,locs){ var bi=-1,bd=1e9; for(var i=0;i<locs.length;i++){ var d=hav(lat,lng,locs[i].lat,locs[i].lng); if(d<bd){bd=d;bi=i;} } return bd<=CFG.joinRadiusKm?bi:-1; }
@@ -40702,7 +40711,7 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       bounds.push([d.lat,d.lng]);
       var r=Math.max(6,Math.min(28,Math.sqrt(d.pob)*0.13));
       L.circleMarker([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:1.5,fillOpacity:.62}).bindPopup(
-        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:'+icpColor(d.icp)+';font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700">'+d.icp.toFixed(3)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
+        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:var(--text);font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700">'+d.icp.toFixed(3)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
       ).addTo(gICP);
     });
     st.layers.icp=gICP; if(st.on.icp) gICP.addTo(map);
