@@ -705,6 +705,29 @@ html body.dark .sec-header p strong{color:#ffffff !important}
 .intro-rutas .ir-legacy{margin-top:0!important}
 body.dark .intro-rutas{background:#0a1526}
 @media(max-width:640px){ .intro-rutas{padding:22px 0 26px} .intro-rutas-inner{padding:0 14px} }
+
+/* v45.334 · §3D y §4 · "Las prioridades de desarrollo": los 6 ejes en retícula 3×2 en
+   escritorio, con adaptación progresiva (3×2 → 2×3 → 1 columna). Color CONSISTENTE por eje
+   tomado de EJES[].color (paleta Okabe-Ito ya usada en los gráficos del portal): se aplica
+   como filete superior e identidad, NUNCA como color de texto pequeño (rinde 2,3-3,9:1). */
+.ejes-prioridades{padding:36px 0 8px}
+.ejp-inner{max-width:1180px;margin:0 auto;padding:0 20px}
+.ejp-head{margin-bottom:20px;max-width:70ch}
+.ejp-kicker{display:block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--success-txt,#15803d);margin-bottom:6px}
+.ejp-title{font-size:clamp(19px,2.2vw,25px);font-weight:800;color:var(--text);line-height:1.2;margin:0 0 8px}
+.ejp-lead{font-size:14px;line-height:1.6;color:var(--text2);margin:0;max-width:68ch}
+.ejp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ejp-card{display:flex;flex-direction:column;gap:5px;text-decoration:none;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--ejc,#1F3864);border-radius:var(--rad-md,7px);padding:16px 18px 17px;box-shadow:var(--sh-card);transition:transform .18s,box-shadow .18s,border-color .18s;min-height:100%}
+.ejp-card:hover{transform:translateY(-3px);box-shadow:var(--sh-card-hover)}
+.ejp-card:focus-visible{outline:2px solid var(--ejc,#1F3864);outline-offset:3px}
+.ejp-num{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text2)}
+.ejp-name{font-size:16px;font-weight:800;color:var(--text);line-height:1.25}
+.ejp-desc{font-size:12.5px;line-height:1.5;color:var(--text2);margin-top:1px}
+.ejp-meta{margin-top:auto;padding-top:9px;font-size:11.5px;font-weight:700;color:var(--text2)}
+.ejp-foot{font-size:12.5px;color:var(--text2);margin:16px 0 0}
+.ejp-foot a{color:var(--success-txt,#15803d);font-weight:700}
+@media(max-width:980px){ .ejp-grid{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:620px){ .ejp-grid{grid-template-columns:1fr} .ejp-inner{padding:0 14px} .ejes-prioridades{padding:26px 0 4px} }
 .hero .hero-estado .he-sep{opacity:.45}
 /* v45.331 · §2 · Acciones del hero con jerarquía explícita: una primaria sólida y dos
    secundarias de contorno. Foco visible (§9) y área táctil >=44px. */
@@ -40693,6 +40716,57 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     });
   }
   window.renderSeccionesRelacionadas=render;
+  if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
+  window.addEventListener('load',render,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.334 · §3D · "Las prioridades de desarrollo" · retícula 3×2 de los 6 ejes
+     El §4 pide los seis ejes en retícula de tres por dos con color consistente por eje.
+     La clase .eje-card existía en CSS (con reglas de hover y responsive) pero NO se usaba
+     en el HTML: era CSS muerto de una presentación anterior. Aquí se reconstruye leyendo
+     el objeto EJES ya existente (id, short, name, color, nOE), sin duplicar datos.
+     NOTA DE DATOS: se muestran los OBJETIVOS (nOE) y no las acciones, porque el nº de
+     acciones está en discrepancia entre las dos estructuras del portal (EJES suma 200 y
+     _POL contiene 225). Esa discrepancia queda registrada para validación institucional.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function render(){
+    try{
+      if(document.getElementById('ejes-prioridades')) return;      /* idempotente */
+      var E=(typeof EJES!=='undefined')?EJES:null;
+      if(!E||!E.length) return;
+      var ancla=document.getElementById('intro-rutas'); if(!ancla) return;
+      function esc(t){var d=document.createElement('div');d.textContent=(t==null?'':t);return d.innerHTML;}
+      var totalOE=E.reduce(function(a,e){return a+((e.oes||[]).length||e.nOE||0);},0);
+      var h=''
+       + '<div class="ejp-inner">'
+       +   '<div class="ejp-head">'
+       +     '<span class="ejp-kicker">Las prioridades de desarrollo</span>'
+       +     '<h2 class="ejp-title">Seis ejes ordenan el plan</h2>'
+       +     '<p class="ejp-lead">Cada eje agrupa objetivos estratégicos y las acciones que los concretan. '
+       +       'El plan define <b>' + E.length + ' ejes</b> y <b>' + totalOE + ' objetivos estratégicos</b>.</p>'
+       +   '</div><div class="ejp-grid">';
+      E.forEach(function(e){
+        var nOE=(e.oes||[]).length||e.nOE||0;
+        h += '<a class="ejp-card" href="#matriz" style="--ejc:'+esc(e.color||'#1F3864')+'">'
+           +   '<span class="ejp-num">Eje '+esc(e.id)+'</span>'
+           +   '<span class="ejp-name">'+esc(e.short||e.name)+'</span>'
+           +   '<span class="ejp-desc">'+esc(e.name||'')+'</span>'
+           +   '<span class="ejp-meta">'+nOE+' objetivos estratégicos</span>'
+           + '</a>';
+      });
+      h += '</div><p class="ejp-foot">Consulta el detalle de objetivos y acciones en la <a href="#matriz">Matriz Estratégica</a>.</p></div>';
+      var sec=document.createElement('section');
+      sec.id='ejes-prioridades'; sec.className='ejes-prioridades';
+      sec.setAttribute('aria-labelledby','ejpTitle');
+      sec.innerHTML=h;
+      var t=sec.querySelector('.ejp-title'); if(t) t.id='ejpTitle';
+      ancla.parentNode.insertBefore(sec, ancla.nextSibling);
+    }catch(e){}
+  }
   if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
   window.addEventListener('load',render,{once:true});
 })();
