@@ -686,11 +686,49 @@ html body.dark .sec-header p strong{color:#ffffff !important}
 .hero h1{font-size:42px;font-weight:800;line-height:1.15;margin-bottom:12px;color:#fff}
 .hero h1 span{color:#c9d77e}
 .hero .sub{font-size:18px;opacity:.7;margin-bottom:36px;font-weight:300}
+/* v45.331 · §2 · Título textual principal del hero (antes el h1 era sr-only) + sello de
+   estado. Cuerpo y medida de línea según §4: ~60-75 caracteres por línea. */
+/* v45.331 · medida del título: a 19ch envolvía en 3 líneas (166px). A 26ch entra en 2. */
+.hero .hero-title{font-weight:800;line-height:1.15;color:#fff;margin:2px auto 10px;max-width:26ch;letter-spacing:-.01em;text-wrap:balance}
+/* el atributo hidden no bastaba: .hero-scroll-hint declara display:flex en otra regla */
+.hero .hero-scroll-hint[hidden]{display:none!important}
+.hero .hero-title .hero-title-yr{display:inline;font-size:.62em;font-weight:700;color:#c9d77e;letter-spacing:.02em;white-space:nowrap}
+.hero .sub{font-size:16.5px;opacity:.9;margin:0 auto 14px;font-weight:400;line-height:1.6;max-width:62ch}
+.hero .hero-estado{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;font-size:12px;line-height:1.5;color:rgba(255,255,255,.88);background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:6px 14px;margin:0 auto 20px}
+.hero .hero-estado b{font-weight:700;color:#fff}
+/* v45.331 · §3A · Sección "Presentación y accesos", extraída del hero.
+   Superficie navy propia: el bloque conserva su diseño de texto claro, así que necesita
+   su propio fondo oscuro en AMBOS temas (si heredara el fondo del documento quedaría
+   texto blanco sobre blanco en modo claro). */
+.intro-rutas{background:#0c1f36;padding:30px 0 34px;margin:0 0 6px;border-bottom:1px solid rgba(255,255,255,.10)}
+.intro-rutas-inner{max-width:1180px;margin:0 auto;padding:0 20px}
+.intro-rutas .ir-legacy{margin-top:0!important}
+body.dark .intro-rutas{background:#0a1526}
+@media(max-width:640px){ .intro-rutas{padding:22px 0 26px} .intro-rutas-inner{padding:0 14px} }
+.hero .hero-estado .he-sep{opacity:.45}
+/* v45.331 · §2 · Acciones del hero con jerarquía explícita: una primaria sólida y dos
+   secundarias de contorno. Foco visible (§9) y área táctil >=44px. */
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:22px auto 0;max-width:720px}
+.hcta{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;transition:background .18s,border-color .18s,transform .18s;line-height:1.25}
+.hcta .ico{width:17px;height:17px}
+.hcta-main{background:#15803d;color:#fff;border:1px solid #15803d}
+.hcta-main:hover{background:#126c34;transform:translateY(-1px)}
+.hcta-alt{background:rgba(255,255,255,.09);color:#fff;border:1px solid rgba(255,255,255,.30)}
+.hcta-alt:hover{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.55);transform:translateY(-1px)}
+.hcta:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@media(max-width:520px){ .hero-cta{flex-direction:column;align-items:stretch} .hcta{width:100%} }
+@media(max-width:640px){
+  .hero .hero-title{max-width:100%}
+  .hero .hero-estado{font-size:11.5px;padding:6px 12px}
+}
 /* v45.164 · hero-stats con altura uniforme + mejor composicion mobile */
 .hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;align-items:stretch}
 .hero-stat{background:rgba(255,255,255,.06);backdrop-filter:blur(8px);border-radius:16px;padding:20px 28px;min-width:140px;border:1px solid rgba(255,255,255,.18);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
 .hero-stat .num{font-size:36px;font-weight:800;line-height:1.05}
-.hero-stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.75;margin-top:4px;line-height:1.25;max-width:18ch}
+.hero-stat .lbl{font-size:12px;letter-spacing:.02em;opacity:.92;margin-top:5px;line-height:1.3;max-width:18ch;font-weight:600}
+/* v45.331 · §3B · línea de procedencia bajo cada cifra (fuente y año).
+   §5 pide evitar mayúsculas sostenidas en etiquetas: .lbl deja de ser uppercase. */
+.hero-stat .src{font-size:10.5px;line-height:1.35;opacity:.66;margin-top:5px;max-width:20ch;font-weight:500;letter-spacing:.01em}
 
 /* ── Section headers ── */
 .sec-header{margin-bottom:36px}
@@ -886,7 +924,7 @@ body.dark .arg-quote{background:rgb(26, 35, 68)}
 @keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 .hero-brand{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.7;margin-bottom:8px;font-weight:400}
 /* v45.145 · Logo institucional PLADECO en el hero · tamaño ad-hoc no excesivo */
-.hero-logo{display:block;width:auto;max-width:380px;height:auto;margin:0 auto 16px;filter:drop-shadow(0 6px 22px rgba(0,0,0,.42)) drop-shadow(0 2px 6px rgba(0,0,0,.28));image-rendering:-webkit-optimize-contrast;-webkit-user-select:none;user-select:none}
+.hero-logo{display:block;width:auto;max-width:200px;height:auto;margin:0 auto 16px;filter:drop-shadow(0 6px 22px rgba(0,0,0,.42)) drop-shadow(0 2px 6px rgba(0,0,0,.28));image-rendering:-webkit-optimize-contrast;-webkit-user-select:none;user-select:none}
 @media(max-width:768px){.hero-logo{max-width:280px;margin-bottom:14px}}
 @media(max-width:480px){.hero-logo{max-width:220px;margin-bottom:12px}}
 /* Screen-reader only (accesibilidad · SEO) */
@@ -7054,23 +7092,33 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <div class="hero-mesh" aria-hidden="true"></div>
   <div class="hero-content">
     <!-- v45.145 · Hero-brand (📚 Ilustre Municipalidad de Rengo) + h1 (Plan de Desarrollo Comunal Rengo 2025-2035) REEMPLAZADOS por el logo institucional PLADECO. Se conserva un <h1 class="sr-only"> para SEO y accesibilidad. -->
-    <h1 class="sr-only">Plan de Desarrollo Comunal Rengo 2025 — 2035</h1>
-    <img class="hero-logo" src="Logo-Pladeco-Blanco.png" alt="PLADECO Rengo 2025-2035 · Plan de Desarrollo Comunal Rengo" width="380" height="208" loading="eager" decoding="async">
+    <!-- v45.331 · §2 del encargo editorial: el h1 era sr-only (INVISIBLE) y la identidad
+         descansaba solo en el logo. Ahora hay TITULO TEXTUAL principal; el logo baja de
+         380x208 a 300x164 para equilibrar proporciones y reducir la altura del bloque. -->
+    <img class="hero-logo" src="Logo-Pladeco-Blanco.png" alt="" aria-hidden="true" width="200" height="109" loading="eager" decoding="async">
+    <h1 class="hero-title">Plan de Desarrollo Comunal de Rengo <span class="hero-title-yr">2025–2035</span></h1>
 
     <!-- v45.177 · Coherencia con MVV "El Rengo que sonamos" · articulo masculino consistente -->
-    <p class="sub">Una d&eacute;cada para construir, con toda la comuna, <strong>el Rengo que so&ntilde;amos</strong>.</p>
+    <p class="sub">Conoce las prioridades de Rengo, explora tu territorio y consulta c&oacute;mo se proyecta el desarrollo de la comuna: un instrumento de planificaci&oacute;n construido con la participaci&oacute;n de sus habitantes.</p>
+    <!-- v45.331 · §2 y §6: estado + fecha real. Se DISTINGUE el estado del PORTAL del estado
+         de aprobacion/ejecucion del PLADECO (son cosas distintas y se confundian), y la
+         fecha se DERIVA de window.versionInfo (editable por SECPLAC), no se escribe a mano. -->
+    <p class="hero-estado" id="heroEstado" hidden></p>
     <button class="hero-search" type="button" onclick="if(typeof openCmdPalette==='function')openCmdPalette()" aria-label="Buscar en el portal">
       <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg>
       <span class="hero-search-ph">Buscar secciones, datos, indicadores&hellip;</span>
       <kbd class="hero-search-kbd">Ctrl K</kbd>
     </button>
+    <!-- v45.331 · §3B · De 6 cifras a 4, cada una con FUENTE y AÑO.
+         Se retiran del hero "16/17 ODS" (accesible en su sección) y "32 Objetivos
+         Estratégicos": esa cifra está en disputa con los 27 códigos OE que contiene
+         realmente la matriz (_POL), y el encargo pide no propagar cifras sin validar.
+         "225 Políticas Públicas" pasa a "Acciones del plan", que es lo que _POL contiene. -->
     <div class="hero-stats">
-      <a class="hero-stat" href="#censo" aria-label="63.620 habitantes seg&#250;n el Censo 2024 &mdash; ir a la secci&#243;n Censo"><div class="num">63.620</div><div class="lbl">Habitantes (Censo 2024)</div></a>
-      <a class="hero-stat" href="#matriz" aria-label="6 ejes estrat&#233;gicos &mdash; ir a la Matriz Estrat&#233;gica"><div class="num">6</div><div class="lbl">Ejes Estrat&#233;gicos</div></a>
-      <a class="hero-stat" href="#matriz" aria-label="225 pol&#237;ticas p&#250;blicas &mdash; ir a la Matriz Estrat&#233;gica"><div class="num">225</div><div class="lbl">Pol&#237;ticas P&#250;blicas</div></a>
-      <a class="hero-stat" href="#territorio" aria-label="21 unidades vecinales &mdash; ir al diagn&#243;stico territorial"><div class="num">21</div><div class="lbl">Unidades Vecinales</div></a>
-      <a class="hero-stat" href="#ods-sec" aria-label="16 de 17 Objetivos de Desarrollo Sostenible &mdash; ir a la secci&#243;n ODS"><div class="num">16/17</div><div class="lbl">Objetivos de Desarrollo Sostenible (ONU)</div></a>
-      <a class="hero-stat" href="#matriz" aria-label="32 objetivos estrat&#233;gicos &mdash; ir a la Matriz Estrat&#233;gica"><div class="num">32</div><div class="lbl">Objetivos Estrat&#233;gicos</div></a>
+      <a class="hero-stat" href="#censo" aria-label="63.620 habitantes según el Censo 2024 — ir a la sección Censo"><div class="num">63.620</div><div class="lbl">Habitantes</div><div class="src">Censo 2024 · INE</div></a>
+      <a class="hero-stat" href="#matriz" aria-label="6 ejes estratégicos — ir a la Matriz Estratégica"><div class="num">6</div><div class="lbl">Ejes estratégicos</div><div class="src">PLADECO 2025-2035</div></a>
+      <a class="hero-stat" href="#matriz" aria-label="225 acciones del plan — ir a la Matriz Estratégica"><div class="num">225</div><div class="lbl">Acciones del plan</div><div class="src">PLADECO 2025-2035</div></a>
+      <a class="hero-stat" href="#territorio" aria-label="21 unidades vecinales — ir al diagnóstico territorial"><div class="num">21</div><div class="lbl">Unidades vecinales</div><div class="src">SECPLA · 2025</div></a>
     </div>
     <!-- Infografía integrada en hero -->
     <div class="infographic-strip" id="infographic" style="grid-template-columns:1fr auto 1fr;max-width:500px;margin:28px auto 0;padding:18px 28px;border-radius:12px;background:rgba(255,255,255,.08);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.1);box-shadow:none">
@@ -7080,18 +7128,36 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     </div>
 
     <!-- v45.126 · Estado del Proceso PLADECO ELIMINADO: duplicaba los hero-stats (225 acciones, 21 UVs ya están arriba) y el Quick Index sintético. Se conservan solo los 3 CTAs rescatados en un strip compacto. -->
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin:22px auto 0;max-width:680px;justify-content:center;padding:14px 18px;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12);border-radius:12px;position:relative;z-index:5">
-      <a href="#semaforo" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:rgba(45,154,77,.22);color:#86efac;border:1px solid rgba(45,154,77,.42);border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.02em;transition:all .2s" onmouseover="this.style.background='rgba(45,154,77,.36)';this.style.color='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(45,154,77,.22)';this.style.color='#86efac';this.style.transform=''">&#128678; Sem&aacute;foro de Metas</a>
-      <a href="#matriz" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:rgba(96, 135, 199,.22);color:#c7d5eb;border:1px solid rgba(96, 135, 199,.42);border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.02em;transition:all .2s" onmouseover="this.style.background='rgba(96, 135, 199,.36)';this.style.color='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(96, 135, 199,.22)';this.style.color='#c7d5eb';this.style.transform=''"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg> Matriz Estrat&eacute;gica</a>
-      <a href="#documentos" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:rgba(67,97,238,.22);color:#93c5fd;border:1px solid rgba(67,97,238,.42);border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;letter-spacing:.02em;transition:all .2s" onmouseover="this.style.background='rgba(67,97,238,.36)';this.style.color='#fff';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(67,97,238,.22)';this.style.color='#93c5fd';this.style.transform=''"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-save"></use></svg> Descargar Plan</a>
+    <!-- v45.331 · §2 · Jerarquía de acciones: UNA principal y DOS secundarias.
+         Antes eran tres enlaces del mismo peso visual. El "Semáforo de Metas" sale del hero
+         (sigue accesible por navegación): §2 pide no anunciar ejecución ni resultados
+         cuando el instrumento aún no los tiene, y el semáforo muestra avance de metas. -->
+    <div class="hero-cta">
+      <a class="hcta hcta-main" href="#matriz">Conoce las prioridades del plan
+        <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></a>
+      <a class="hcta hcta-alt" href="#territorio">Explora tu territorio</a>
+      <a class="hcta hcta-alt" href="#documentos">Documentos y fuentes</a>
     </div>
-    <a href="#dashboard" class="hero-scroll-hint" aria-label="Explorar contenido">
+    <!-- v45.331 · §2 · indicador "Explorar" OCULTO: con tres acciones explícitas y el
+         bloque de rutas inmediatamente debajo, dejó de aportar y sumaba 52px de altura. -->
+    <a href="#dashboard" class="hero-scroll-hint" hidden aria-label="Explorar contenido">
       <span>Explorar</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </a>
-    <div style="margin:36px auto 0;max-width:1100px;padding:22px 26px;background:rgba(255,255,255,.08);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:14px;color:#fff;position:relative;z-index:5">
+  </div>
+</div>
+
+<!-- ═══ v45.331 · §3A · "Presentación y accesos" ═══════════════════════════════════
+     Este bloque ("El portal en 60 segundos · una ruta para cada lector") vivía DENTRO
+     del hero y aportaba 441px de los 1.372px que medía: empujaba todo el contenido bajo
+     el pliegue. Se traslada fuera del hero como primer bloque de la secuencia editorial.
+     Conserva su diseño (texto claro), por lo que se le da una superficie navy propia:
+     sacarlo sin envolver lo dejaría con texto blanco sobre fondo claro (ilegible). -->
+<section class="intro-rutas" id="intro-rutas" aria-labelledby="introRutasH">
+  <div class="intro-rutas-inner">
+    <div class="ir-legacy" style="margin:0 auto;max-width:1100px;padding:22px 26px;background:rgba(255,255,255,.06);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:14px;color:#fff;position:relative;z-index:5">
       <div style="font-size:11px;font-weight:800;color:#fbbf24;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-book"></use></svg> C&oacute;mo leer este PLADECO</div>
-      <h3 style="font-size:18px;font-weight:800;margin:4px 0 14px;color:#fff;line-height:1.3">El portal en 60 segundos &middot; una ruta para cada lector</h3>
+      <h3 id="introRutasH" style="font-size:18px;font-weight:800;margin:4px 0 14px;color:#fff;line-height:1.3">El portal en 60 segundos &middot; una ruta para cada lector</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;font-size:13px;line-height:1.5">
 
         <div style="background:rgba(0,0,0,.22);border-left:3px solid #ef4444;border-radius:10px;padding:14px 16px">
@@ -7155,7 +7221,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div style="margin-top:14px;font-size:11.5px;color:rgba(255,255,255,.65);text-align:center">Usa la barra superior para navegar por cap&iacute;tulo &middot; Ctrl+K para buscar en todo el portal</div>
     </div>
   </div>
-</div>
+</section>
+
 
 <!-- v45.269 · Cambio 2-B · Countdown "Próximos hitos del PLADECO" de portada ELIMINADO: sus 3 hitos (Aprobación Jun 2026 · Primera Evaluación Dic 2028 · Meta Final 2035) se fundieron en el punto de verdad de implementación (sección Horizontes de Implementación, Cap III). -->
 
@@ -30290,7 +30357,15 @@ function buildPortalSearchIndex(){
   document.querySelectorAll('section[id]').forEach(function(sec){
     var id=sec.id;
     var h2=sec.querySelector('h2');
-    var title=h2?h2.textContent.replace(/\s+/g,' ').trim():id;
+    /* v45.331 · el titulo arrastraba el ancla de enlace del encabezado (se veia como
+       "...2025-2035" + el simbolo de cadena) en los resultados de busqueda. Se clona el h2,
+       se quitan los enlaces de ancla y se limpia el simbolo residual. */
+    var title=id;
+    if(h2){
+      var _h=h2.cloneNode(true);
+      _h.querySelectorAll('a[href^="#"],.anchor,.anchor-link,.heading-anchor,.sec-anchor,.copy-link').forEach(function(a){a.remove();});
+      title=(_h.textContent||'').replace(/\uD83D\uDD17/g,'').replace(/\s+/g,' ').trim()||id;
+    }
     // Extraer texto plano de la sección (sin tags)
     var clone=sec.cloneNode(true);
     // Quitar elementos no útiles para búsqueda
@@ -33901,14 +33976,25 @@ button, .btn, a.btn, .badge,
   letter-spacing:-.02em!important;
   line-height:1.1!important;
 }
+/* v45.331 · §5 · etiquetas descriptivas ("Unidades vecinales", "Acciones del plan") ya no
+   van en MAYÚSCULAS SOSTENIDAS: el encargo pide evitarlas en etiquetas largas porque
+   penalizan la legibilidad. Es la regla que gana de las 10 que compiten por este selector. */
 .hero-stat .lbl{
-  font-size:10.5px!important;
-  font-weight:700!important;
-  letter-spacing:.06em!important;
-  text-transform:uppercase!important;
-  color:rgba(255,255,255,.85)!important;
-  margin-top:4px!important;
+  font-size:12px!important;
+  font-weight:600!important;
+  letter-spacing:.01em!important;
+  text-transform:none!important;
+  color:rgba(255,255,255,.92)!important;
+  margin-top:5px!important;
   line-height:1.3!important;
+}
+.hero-stat .src{
+  font-size:10.5px!important;
+  font-weight:500!important;
+  color:rgba(255,255,255,.66)!important;
+  margin-top:5px!important;
+  line-height:1.35!important;
+  text-transform:none!important;
 }
 
 /* ─── Infographic strip del hero refinado ─── */
@@ -40596,8 +40682,23 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
 (function(){
   function sync(){
     try{
-      var n=(window.PV&&PV.units)?PV.units.length:0; if(!n) return;
-      [].forEach.call(document.querySelectorAll('.sme-count'),function(el){ el.textContent=n; });
+      var n=(window.PV&&PV.units)?PV.units.length:0;
+      if(n) [].forEach.call(document.querySelectorAll('.sme-count'),function(el){ el.textContent=n; });
+    }catch(e){}
+    /* v45.331 · §2 y §6 · Sello de estado del hero, DERIVADO de window.versionInfo.
+       Se rotula explicitamente como estado del PORTAL para no confundirlo con el estado
+       de aprobacion o ejecucion del PLADECO, que es otra cosa y no consta en los datos. */
+    try{
+      var h=document.getElementById('heroEstado'); if(!h) return;
+      var v=window.versionInfo||{};
+      if(!v.estado && !v.ultimaActualizacion) return;
+      var out='';
+      if(v.estado) out+='<b>Portal:<\/b> '+String(v.estado).replace(/[<>]/g,'');
+      if(v.ultimaActualizacion){
+        if(out) out+=' <span class="he-sep">·<\/span> ';
+        out+='Actualizado en '+String(v.ultimaActualizacion).replace(/[<>]/g,'');
+      }
+      h.innerHTML=out; h.hidden=false;
     }catch(e){}
   }
   if(document.readyState!=='loading') sync(); else window.addEventListener('DOMContentLoaded',sync,{once:true});
