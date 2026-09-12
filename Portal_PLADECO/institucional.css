@@ -403,3 +403,198 @@ table th{ color:#fff!important; }
 .arg-tag{ color:#991b1b; }
 .ict-hall-stat{ color:#8a4d0e; }                 /* antes #c97014 · 3,44:1 */
 .movilidad-vial .sv-tag, #movilidad-vial .sv-tag{ color:#1f5c58; }  /* antes #2a7e78 · 4,18:1 */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.346 · §2 · PALETA SEMÁNTICA CON FUNCIONES DECLARADAS
+   (rama revision-editorial · NO PUBLICADA)
+
+   ORIGEN DE LOS COLORES — verificado en los archivos del propio proyecto antes de
+   proponer nada, como pide el encargo ("revisa primero la identidad gráfica
+   disponible; respeta los colores establecidos en los logotipos"):
+
+   · escudo-rengo.svg (escudo comunal, versión en color) declara exactamente cuatro
+     colores: #17497C azul, #D6940F ocre, #F2CB7E ocre claro y #AD2910 terracota.
+     Son, por tanto, los ÚNICOS colores institucionales verificables del proyecto.
+   · Logo-Pladeco-Color.png y logo-pladeco.png usan un azul eléctrico (#1040c0 /
+     #0030a0) y un naranja (#e07020 / #ff5000) que NO coinciden con el escudo. Esa
+     discrepancia entre el logotipo del plan y el escudo comunal queda registrada
+     como pendiente de definición institucional: aquí manda el escudo.
+   · No existe manual de marca en el repositorio. Por eso los colores de interfaz
+     que el escudo no cubre (fondo, superficie, texto, verde de acción) se toman de
+     la propuesta del encargo, ajustada a la identidad real. Son una PROPUESTA DE
+     DISEÑO, no una identificación oficial de la marca municipal.
+
+   QUÉ CAMBIA REALMENTE: este bloque no repinta reglas una por una; reasigna los
+   tokens base que el portal ya usa (107 usos de --accent, etc.), de modo que la
+   paleta quede en un solo lugar. PARA REVERTIR: eliminar este bloque.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  /* ── 1 · Identidad verificada (escudo comunal) ── */
+  --id-azul:#17497C;          /* azul del escudo · marcas y enlaces institucionales */
+  --id-ocre:#D6940F;          /* ocre del escudo · SOLO relleno, 2,6:1 como texto */
+  --id-ocre-claro:#F2CB7E;    /* ocre claro del escudo · fondos teñidos */
+  --id-terracota:#AD2910;     /* terracota del escudo · acento patrimonial, 6,8:1 */
+  --id-ocre-txt:#7A5406;      /* derivado del ocre para texto pequeño · 6,7:1 */
+
+  /* ── 2 · Colores de interfaz (propuesta ajustada) ── */
+  --c-azul-profundo:#17324D;  /* superficies y titulares institucionales · 13,2:1 */
+  --c-verde:#286449;          /* acción principal y énfasis territorial · 7,0:1 */
+  --c-fondo:#F7F8F5;          /* fondo general (blanco cálido) */
+  --c-superficie:#FFFFFF;     /* superficie de lectura */
+  --c-gris-azulado:#E8EDF1;   /* agrupaciones y separadores suaves */
+  --c-texto:#27343B;          /* texto principal · 12,8:1 sobre blanco */
+  --c-texto-2:#52616B;        /* texto secundario · 6,4:1 sobre blanco */
+  --c-texto-3:#626F79;        /* notas y metadatos · 5,2:1 sobre blanco */
+
+  /* ── 3 · Asignación POR FUNCIÓN (lo que consume el portal) ── */
+  --bg:var(--c-fondo);
+  --bg2:var(--c-fondo);
+  --card:var(--c-superficie);
+  --card2:var(--c-fondo);
+  --border:var(--c-gris-azulado);
+  --text:var(--c-texto);
+  --text-2:#33404A;
+  --text2:var(--c-texto-2);
+  --text3:var(--c-texto-3);
+  --muted:var(--c-texto-2);
+  --navy:var(--c-azul-profundo);
+  --crimson:var(--id-terracota);
+  --accent:var(--c-verde);
+
+  /* ── 4 · Los seis ejes: identidad cromática ESTABLE y SEPARADA de los estados ──
+     Se conserva la paleta Okabe-Ito que el portal ya usaba: es segura para daltonismo
+     y está asociada a los ejes en gráficos, filetes y fichas. Se centraliza aquí para
+     que exista un único origen. Va SIEMPRE acompañada del nombre o el número del eje:
+     el color no identifica por sí solo. NO se usa como color de texto pequeño. */
+  --eje-1:#0072B2;  /* Social y Salud            */
+  --eje-2:#E69F00;  /* Económico                 */
+  --eje-3:#009E73;  /* Educación                 */
+  --eje-4:#56B4E9;  /* Urbano y Medio Ambiente   */
+  --eje-5:#D55E00;  /* Seguridad                 */
+  --eje-6:#CC79A7;  /* Gestión Municipal         */
+  /* Los estados de ejecución viven en otra familia (--success-txt / --warning-txt /
+     --danger-txt) y no comparten ningún valor con los ejes: un eje nunca se lee como
+     un estado, ni al revés. */
+}
+
+body.dark{
+  /* En oscuro cambian los valores, no las funciones: los mismos nombres resuelven a la
+     escala invertida. Se CONSERVAN a propósito las superficies oscuras que el portal ya
+     tenía —son una escala neutra coherente y hay elementos ajustados a ellas—; lo que se
+     hace aquí es enrutarlas por los mismos nombres semánticos, de modo que exista un
+     solo origen de paleta y no dos sistemas paralelos. Solo se aclaran los colores de
+     identidad, que sobre superficie oscura serían ilegibles en su valor original. */
+  --c-fondo:#0a0f1c;
+  --c-superficie:#1a2332;
+  --c-gris-azulado:#1e293b;
+  --c-texto:#f1f5f9;
+  --c-texto-2:#cbd5e1;
+  --c-texto-3:#94a3b8;
+  --bg:var(--c-fondo);
+  --card:var(--c-superficie);
+  --border:var(--c-gris-azulado);
+  --text:var(--c-texto);
+  --text2:var(--c-texto-2);
+  --text3:var(--c-texto-3);
+  --muted:var(--c-texto-2);
+  --text-2:#e2e8f0;
+  --id-azul:#7FA8D4;          /* azul del escudo aclarado · 6,9:1 sobre superficie */
+  --id-terracota:#E88A72;     /* terracota del escudo aclarada · 6,8:1 */
+  --id-ocre-txt:#E0B25C;      /* ocre para texto en oscuro · 7,9:1 */
+  --crimson:var(--id-terracota);
+}
+
+/* ── v45.347 · §2 · combinaciones que el corrector no puede tocar ──────────────
+   El corrector de legibilidad no interviene cuando el color de texto es
+   semitransparente ni cuando hay una fotografía en la pila de fondo. Estos tres
+   casos, detectados en el barrido, son del mismo tipo: etiquetas escritas para una
+   superficie oscura que en tema claro quedan blancas sobre fondo claro. */
+.tm-eje-label{ color:var(--text); }            /* blanco 0,9 sobre tinte 13% del eje */
+.ict-scale-cell .sc-ict{ color:var(--text2); }   /* blanco 0,85 sobre la tarjeta */
+/* El aviso de la galería usaba magenta (#db2777), un color sin función en el sistema
+   y con 4,2:1 en texto de 10,5px. Pasa al azul institucional, que además cumple. */
+.galeria-card .galeria-overlay .galeria-click-hint{ background:rgba(23,50,77,.92); color:#fff; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.348 · §3 y §4 · JERARQUÍA TIPOGRÁFICA Y RETÍCULA
+   (rama revision-editorial · NO PUBLICADA)
+
+   MEDIDO ANTES DE TOCAR NADA, a 1440 px: título de portada 48px (dentro del rango
+   pedido), título de sección 28px (se pedía 30-38), bajada de sección 16px (se pedía
+   21-25), cuerpo 16px (se pedía 17-18), medida de línea 63 caracteres (se pedían
+   65-75) y, sobre todo, el contenido ocupaba **todo el ancho de la ventana**: el
+   contenedor declaraba max-width 1440px y margin 0, de modo que en una pantalla más
+   ancha el contenido queda pegado a la izquierda y las líneas de texto se alargan sin
+   límite. Eso es lo que más afecta a la lectura y es lo primero que se corrige.
+
+   PESOS: el portal declaraba SIETE pesos (300, 400, 500, 600, 700, 800, 900) pero la
+   carpeta /fonts solo tiene CUATRO archivos de Poppins (Medium, SemiBold, Bold,
+   ExtraBold); 300 y 900 no existían como archivo y el navegador los sintetizaba, y 400
+   y 500 apuntaban al MISMO archivo. Se normalizó en el origen: 800→700, 900→800,
+   500→400 y 300→400. Quedan cuatro pesos reales con archivo propio, de los cuales tres
+   son los habituales (400 cuerpo, 600 subtítulos y etiquetas, 700 destacados) y 800
+   queda como peso de display para titulares.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  /* §4 · ancho de contenido, márgenes y escala de espaciado 4/8/12/16/24/32/48/64/96 */
+  --container:1280px;
+  --space-5xl:96px;
+  --gap-xs:4px; --gap-sm:8px; --gap-md:12px; --gap-lg:16px; --gap-xl:24px;
+  /* §4 · columnas de referencia (12 escritorio · 8 tableta · 4 móvil) */
+  --cols:12;
+
+  /* §3 · escala tipográfica fluida */
+  --fs-h1:clamp(30px, 1.6vw + 24px, 56px);   /* 30 en móvil · 47 a 1440 · 56 tope */
+  --fs-h2:clamp(25px, 1.0vw + 20px, 36px);   /* 25 en móvil · 34 a 1440 */
+  --fs-h3:clamp(18px, .35vw + 16px, 21px);
+  --fs-sub:clamp(18px, .50vw + 15px, 23px);
+  --fs-body:clamp(17px, .25vw + 15px, 18px);
+  --fs-nota:13.5px;
+}
+@media(max-width:1024px){ :root{ --cols:8; } }
+@media(max-width:640px){  :root{ --cols:4; } }
+
+/* ── §4 · el contenido deja de ocupar toda la ventana y se centra ── */
+/* Especificidad elevada a proposito: institucional.css NO es la ultima hoja del
+   documento -hay bloques <style> en linea posteriores-, de modo que a igualdad de
+   especificidad ganaria el marcado. Verificado en el CSSOM. */
+body .main, body main{
+  max-width:var(--container);
+  margin-inline:auto;
+  padding-inline:clamp(16px, 3.2vw, 48px);
+}
+
+/* ── §3 · jerarquía ── */
+body .hero-title{ font-size:var(--fs-h1); line-height:1.12; font-weight:800; }
+body .sec-header h2{ font-size:var(--fs-h2); line-height:1.18; font-weight:800; }
+/* Siete reglas distintas competian por el tamano de .sec-header p (dos de ellas con
+   !important y varias dentro de @media). Se declara aqui el valor unico con especificidad
+   y prioridad suficientes; el origen del VALOR sigue siendo el token. */
+body section[id] > .sec-header > p{ font-size:var(--fs-sub)!important; line-height:1.5!important; max-width:64ch; }
+#main-content section{ font-size:var(--fs-body); }
+body #main-content p:not([class]), body #main-content li:not([class]){ font-size:var(--fs-body); line-height:1.62; }
+#main-content p:not([class]){ max-width:72ch; }
+
+/* Fuente, fecha y nota metodológica: se diferencian del contenido por tamaño y color,
+   no por color de texto llamativo. */
+body .sec-fuente, body .map-meta, body .terr-escala, body .nota-seccion, body figcaption{
+  font-size:var(--fs-nota); line-height:1.6;
+}
+
+/* Cifras tabulares en indicadores y tablas comparativas (§3) */
+table, th, td,
+[class*="-num"], [class*="-val"], [class*="-cifra"], [class*="kpi"], [class*="-pct"],
+.num, .cifra, .stat, .hero-stat .num{ font-variant-numeric:tabular-nums; }
+
+/* ── v45.348 · el título de portada tenía SIETE declaraciones !important en cascada
+   (una base y seis por punto de corte). En 360 px el resultado era 20 px: el título
+   principal del portal quedaba más pequeño que varios rótulos interiores. Se sustituye
+   toda esa cascada por el token fluido, con la especificidad y la prioridad necesarias
+   para desactivarla. Las siete declaraciones originales quedan inertes; se dejan en su
+   sitio para no alterar bloques que aún se estén revisando. ── */
+body .hero .hero-title, body .hero h1{
+  font-size:var(--fs-h1)!important;
+  line-height:1.12!important;
+}
+/* Márgenes laterales: el contenedor bajaba a 14 px en móvil; el mínimo pedido es 16. */
+body #main-content.main, body .main, body main{ padding-inline:clamp(16px, 3.2vw, 48px)!important; }  /* el id gana a la clase: en <=900px habia #main-content{padding-left:14px!important} */
