@@ -6702,6 +6702,7 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 <symbol id="ico-flag" viewBox="0 0 24 24"><path d="M6 21V3.5"/><path d="M6 4.5h11l-2.5 4 2.5 4H6"/></symbol>
 <symbol id="ico-cycle" viewBox="0 0 24 24"><path d="M19.5 11A7.5 7.5 0 0 0 6.5 6.5L4.5 8.5"/><path d="M4.5 13A7.5 7.5 0 0 0 17.5 17.5l2-2"/><path d="M4.5 4.5v4h4M19.5 19.5v-4h-4"/></symbol>
 <symbol id="ico-puzzle" viewBox="0 0 24 24"><path d="M9 5a1.5 1.5 0 0 1 3 0h3v3a1.5 1.5 0 0 1 0 3v3h-3a1.5 1.5 0 0 1-3 0H6v-3a1.5 1.5 0 0 1 0-3V5z"/></symbol>
+<symbol id="ico-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></symbol>
 </defs></svg>
 <!-- v45.126 · Fondo base difuminado del portal · misma imagen del hero pero muy sutil -->
 <div class="portal-bg" aria-hidden="true"></div>
@@ -7688,7 +7689,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <!-- KPIs resumen -->
   <div class="cg-kpis">
     <div class="cg-kpi"><div class="cg-kpi-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg></div><div class="cg-kpi-num">8</div><div class="cg-kpi-lbl">Macroprocesos</div></div>
-    <div class="cg-kpi"><div class="cg-kpi-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-gear"></use></svg></div><div class="cg-kpi-num">31</div><div class="cg-kpi-lbl">Actividades</div></div>
+    <div class="cg-kpi"><div class="cg-kpi-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-gear"></use></svg></div><div class="cg-kpi-num">33</div><div class="cg-kpi-lbl">Actividades</div></div>
     <div class="cg-kpi"><div class="cg-kpi-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg></div><div class="cg-kpi-num">54</div><div class="cg-kpi-lbl">Semanas</div></div>
     <div class="cg-kpi"><div class="cg-kpi-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg></div><div class="cg-kpi-num">Ago 25 &mdash; Sep 26</div><div class="cg-kpi-lbl">Per&iacute;odo</div></div>
     <div class="cg-kpi"><div class="cg-kpi-ico">&#128104;&#8205;<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-laptop"></use></svg></div><div class="cg-kpi-num">H&iacute;brida</div><div class="cg-kpi-lbl">Modalidad</div></div>
@@ -26876,6 +26877,30 @@ function cgInit(){
   },{rootMargin:'200px'});
   obs.observe(sec);
 })();
+/* v45.349 · RESPALDO DE ARRANQUE. El observador de arriba es la unica via de inicio del
+   Gantt y depende de que la seccion llegue a intersecar el viewport. Al verificar, el
+   cronograma NO se dibujaba nunca: la seccion nace con display:none (motor de vistas PV),
+   el desplazamiento no ocurre en la ventana sino en un contenedor interno, y el observador
+   no llegaba a dispararse; el usuario veia el encabezado, los KPI y un area de grafico
+   VACIA. Como #cronograma-gantt es ademas uno de los tres accesos de la portada
+   ('Consultar avances'), el fallo dejaba sin contenido una de las entradas principales.
+   Aqui se anade la misma via de arranque que usan los demas bloques del portal: al cargar
+   y al cambiar de seccion, si el lienzo sigue vacio y la seccion esta desplegada, se inicia.
+   No sustituye al observador ni pisa el estado del usuario: solo actua si no hay contenido. */
+(function(){
+  function arrancar(){
+    try{
+      var sec=document.getElementById('cronograma-gantt'), c=document.getElementById('cgChart');
+      if(!sec||!c) return;
+      if(c.innerHTML.length) return;                 /* ya dibujado: no se toca */
+      if(!sec.getClientRects().length) return;       /* seccion oculta: no procede */
+      cgInit();
+    }catch(e){}
+  }
+  if(document.readyState!=='loading') setTimeout(arrancar,400); else window.addEventListener('DOMContentLoaded',function(){setTimeout(arrancar,400);},{once:true});
+  window.addEventListener('load', function(){ setTimeout(arrancar,300); setTimeout(arrancar,1600); });
+  window.addEventListener('hashchange', function(){ setTimeout(arrancar,250); });
+})();
 
 // ══════════════════════════════════════════════════════
 // BREADCRUMB, DOT NAV, BACK-TO-TOP %
@@ -41970,6 +41995,176 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
   try{
     new MutationObserver(pasar).observe(document.body, {attributes:true, attributeFilter:['class']});
   }catch(e){}
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.349 · §7 · LOS EMOJIS DECORATIVOS PASAN A LA FAMILIA DE ICONOS DEL PORTAL
+     (rama revision-editorial · NO PUBLICADA)
+
+     MEDIDO: el archivo contiene 758 pictogramas (154 distintos) y, de ellos, 588 se
+     renderizan en pantalla. No están repartidos al azar: se concentran en elementos con
+     papel de ICONO —un <span> cuyo contenido es solo el pictograma dentro de .doc-icon-big,
+     el ⬇ de cada botón de descarga, el ⏱ del tiempo de lectura— junto a rótulos cortos que
+     empiezan por un pictograma. El portal ya tiene una familia de iconos coherente: 51
+     símbolos SVG con el mismo trazo (fill none, stroke currentColor, grosor 1,7) y 859 usos.
+     Faltaba uno, el reloj, que se añade aquí para no dejar el caso más frecuente sin
+     equivalente.
+
+     CRITERIO (por qué una sustitución en tiempo de ejecución y no en el archivo): buena
+     parte de ese marcado lo construye JavaScript al vuelo, de modo que reemplazar en el
+     archivo dejaría fuera justo los casos generados. La sustitución actúa sobre el DOM ya
+     construido, es idempotente y SOLO toca dos situaciones comprobables:
+       · un elemento cuyo texto es únicamente el pictograma, y
+       · un rótulo corto (≤40 caracteres) que empieza por un pictograma.
+     Nunca toca párrafos, citas, testimonios, respuestas del asistente, código, campos de
+     formulario ni el interior de los mapas: ahí el pictograma puede ser contenido, no adorno.
+     Un pictograma sin equivalente en la familia SE DEJA COMO ESTÁ: no se sustituye por un
+     icono aproximado.
+
+     ACCESIBILIDAD: el pictograma suelto sí se anuncia en un lector de pantalla (por su
+     nombre Unicode en inglés). Para no perder esa información, el icono que lo reemplaza
+     lleva role="img" y un nombre en castellano cuando queda solo, y aria-hidden cuando
+     acompaña a un texto que ya lo nombra.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.ico-auto{width:1.05em;height:1.05em;vertical-align:-.14em;flex:none}
+.ico-auto+.ico-auto{margin-left:.15em}
+</style>
+<script>
+(function(){
+  'use strict';
+  /* pictograma → [símbolo de la familia, nombre en castellano] */
+  var MAPA={
+    '\u{1F4C4}':['ico-doc','Documento'], '\u{1F4C3}':['ico-doc','Documento'], '\u{1F4D1}':['ico-doc','Documento'],
+    '\u{1F4DD}':['ico-note','Nota'], '\u{1F4D3}':['ico-note','Cuadernillo'], '\u{1F4D2}':['ico-note','Cuaderno'],
+    '\u{1F4CB}':['ico-clipboard','Listado'],
+    '⬇':['ico-download','Descargar'], '⤵':['ico-download','Descargar'],
+    '\u{1F4CA}':['ico-chart','Gráfico'], '\u{1F4C9}':['ico-chart','Gráfico'],
+    '\u{1F4C8}':['ico-trend','Tendencia'],
+    '\u{1F5FA}':['ico-map','Mapa'],
+    '\u{1F4CD}':['ico-pin','Ubicación'], '\u{1F4CC}':['ico-pin','Ubicación'],
+    '\u{1F50D}':['ico-search','Buscar'], '\u{1F50E}':['ico-search','Buscar'],
+    '\u{1F441}':['ico-eye','Ver'],
+    '\u{1F4C2}':['ico-folder','Carpeta'], '\u{1F4C1}':['ico-folder','Carpeta'],
+    '\u{1F465}':['ico-people','Personas'], '\u{1F9D1}':['ico-people','Personas'],
+    '\u{1F464}':['ico-people','Persona'], '\u{1F91D}':['ico-people','Acuerdo'],
+    '\u{1F393}':['ico-education','Educación'],
+    '\u{1F3D7}':['ico-buildings','Obras'], '\u{1F3E2}':['ico-buildings','Edificio'],
+    '\u{1F333}':['ico-tree','Área verde'], '\u{1F332}':['ico-tree','Área verde'],
+    '\u{1F6A6}':['ico-traffic','Tránsito'],
+    '\u{1F4B0}':['ico-money','Recursos'], '\u{1F4B5}':['ico-money','Recursos'],
+    '\u{1F3AF}':['ico-target','Objetivo'],
+    '\u{1F4D6}':['ico-book','Lectura'], '\u{1F4DA}':['ico-books','Fuentes'],
+    '⚠':['ico-warning','Advertencia'],
+    '\u{1F3DB}':['ico-institution','Institución'],
+    '\u{1F5E3}':['ico-chat','Participación'], '\u{1F4AC}':['ico-chat','Comentario'],
+    '✅':['ico-check','Cumplido'], '✔':['ico-check','Cumplido'],
+    '\u{1F310}':['ico-globe','Web'],
+    '\u{1F4A1}':['ico-bulb','Idea'],
+    '♥':['ico-heart','Salud'], '❤':['ico-heart','Salud'],
+    '⏱':['ico-clock','Tiempo de lectura'], '⏰':['ico-clock','Tiempo'], '\u{1F550}':['ico-clock','Tiempo'],
+    '\u{1F517}':['ico-link','Enlace'],
+    '\u{1F3C6}':['ico-trophy','Logro'],
+    '⚙':['ico-gear','Configuración'],
+    '\u{1F4C5}':['ico-calendar','Fecha'], '\u{1F5D3}':['ico-calendar','Fecha'],
+    '\u{1F6E1}':['ico-shield','Seguridad'],
+    '⛰':['ico-mountain','Territorio'], '\u{1F3D4}':['ico-mountain','Territorio'],
+    '\u{1F4BC}':['ico-briefcase','Economía'],
+    '\u{1F512}':['ico-lock','Reservado'], '\u{1F4BB}':['ico-laptop','Digital'],
+    '\u{1F4DC}':['ico-scroll','Normativa'],
+    '⚡':['ico-bolt','En vivo'],
+    '\u{1F5BC}':['ico-image','Imagen'],
+    '\u{1F9EE}':['ico-calculator','Cálculo'],
+    '\u{1F6A9}':['ico-flag','Hito'],
+    '\u{1F504}':['ico-cycle','Ciclo'],
+    '\u{1F9E9}':['ico-puzzle','Componente'],
+    '\u{1F3E0}':['ico-home','Inicio'],
+    '\u{1F4E3}':['ico-megaphone','Difusión'], '\u{1F4E2}':['ico-megaphone','Difusión'],
+    '⚖':['ico-scale','Equidad'],
+    '\u{1F4BE}':['ico-save','Guardar'],
+    '\u{1F50C}':['ico-plug','Servicios'],
+    'ℹ':['ico-info','Información'],
+    '\u{1F319}':['ico-moon','Modo oscuro'],
+    /* segunda pasada: pictogramas que quedaron sin sustituir y SI tienen equivalente claro */
+    '📥':['ico-download','Descargar'],
+    '👨':['ico-people','Persona'], '👩':['ico-people','Persona'],
+    '👴':['ico-people','Persona mayor'], '👵':['ico-people','Persona mayor'],
+    '🌎':['ico-globe','Territorio'], '🌏':['ico-globe','Territorio'], '🌍':['ico-globe','Territorio'],
+    '🌿':['ico-tree','Área verde'],
+    '❓':['ico-info','Pregunta'], '❔':['ico-info','Pregunta'],
+    '🏫':['ico-education','Establecimiento educativo']
+  };
+  var PICT=/\p{Extended_Pictographic}/u;
+  var SOLO=/^[\s‍️\u{1F3FB}-\u{1F3FF}\p{Extended_Pictographic}]+$/u;
+  var EXCLUIR='p, blockquote, q, cite, code, pre, kbd, samp, textarea, input, .leaflet-container,'
+            + ' .chatbot, .chat, [class*="chat-"], [class*="-chat"], [class*="testimon"], [class*="quote"],'
+            + ' [class*="mensaje"], [class*="respuesta"], .lf-mode, [contenteditable]';
+
+  function svg(sym, nombre, oculto){
+    var s=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    s.setAttribute('class','ico ico-auto');
+    s.setAttribute('viewBox','0 0 24 24');
+    s.setAttribute('data-ico-auto','1');
+    if(oculto){ s.setAttribute('aria-hidden','true'); }
+    else { s.setAttribute('role','img'); s.setAttribute('aria-label',nombre); }
+    var u=document.createElementNS('http://www.w3.org/2000/svg','use');
+    u.setAttribute('href','#'+sym);
+    s.appendChild(u);
+    return s;
+  }
+
+  function sustituir(raiz){
+    if(!raiz) return 0;
+    var n=0;
+    var w=document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(nd){
+        var t=nd.nodeValue;
+        if(!t || !PICT.test(t)) return NodeFilter.FILTER_REJECT;
+        var el=nd.parentElement;
+        if(!el || el.closest(EXCLUIR)) return NodeFilter.FILTER_REJECT;
+        if(!el.getClientRects().length) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var lista=[], nd;
+    while((nd=w.nextNode())) lista.push(nd);
+    lista.forEach(function(nodo){
+      var t=nodo.nodeValue, el=nodo.parentElement;
+      if(!el) return;
+      var solo=SOLO.test(t);
+      var corto=t.trim().length<=40;
+      if(!solo && !corto) return;                       /* dentro de texto largo: es contenido */
+      var pict=t.match(/\p{Extended_Pictographic}[️‍\u{1F3FB}-\u{1F3FF}]*/gu)||[];
+      var primero=pict[0];
+      if(!solo){
+        /* solo se sustituye el pictograma inicial de un rótulo corto */
+        var m=t.match(/^([\s]*)(\p{Extended_Pictographic}[️‍\u{1F3FB}-\u{1F3FF}]*)/u);
+        if(!m) return;
+        primero=m[2];
+      }
+      var base=primero.replace(/[️‍\u{1F3FB}-\u{1F3FF}]/gu,'');
+      var def=MAPA[base];
+      if(!def) return;                                  /* sin equivalente: se deja como está */
+      var resto = solo ? '' : t.replace(/^([\s]*)(\p{Extended_Pictographic}[️‍\u{1F3FB}-\u{1F3FF}]*)/u,'');
+      var hayTexto = solo ? false : !!resto.trim();
+      var icono = svg(def[0], def[1], hayTexto);
+      var frag = document.createDocumentFragment();
+      frag.appendChild(icono);
+      if(!solo) frag.appendChild(document.createTextNode(resto));
+      nodo.parentNode.replaceChild(frag, nodo);
+      n++;
+    });
+    return n;
+  }
+
+  window.iconizarEmojis=function(){ return sustituir(document.body); };
+
+  var pend=null;
+  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ sustituir(document.body); }catch(e){} }, 90); }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1500); setTimeout(pasar,3400); });
+  window.addEventListener('hashchange', pasar);
 })();
 </script>
 
