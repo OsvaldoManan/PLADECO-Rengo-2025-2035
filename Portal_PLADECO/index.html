@@ -802,6 +802,10 @@ body.dark .dsf-kicker{color:#fca5a5}
 .mtx-dl-btn:focus-visible{outline:2px solid var(--success-txt,#15803d);outline-offset:2px}
 .mtx-dl-nota{font-size:11.5px;color:var(--text2);line-height:1.45;max-width:56ch}
 /* v45.341 · §7 · tabla equivalente de cada gráfico (accesible y sincronizada con los datos) */
+/* v45.342 · §7 · ficha de escala y procedencia de la tabla territorial */
+.terr-escala{font-size:12.5px;line-height:1.65;color:var(--text2);background:var(--card);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:var(--rad-md,7px);padding:12px 15px;margin:0 0 14px;max-width:none!important}
+.terr-escala b{color:var(--text)}
+body.dark .terr-escala{border-left-color:#7ea4d8}
 .gdt-wrap{margin:8px 0 4px}
 .gdt-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:11.5px;font-weight:700;cursor:pointer;transition:background .18s,color .18s,border-color .18s}
 .gdt-btn:hover{background:var(--bg);color:var(--text);border-color:var(--success-txt,#15803d)}
@@ -41176,6 +41180,55 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   if(document.readyState!=='loading') arranque(); else window.addEventListener('DOMContentLoaded',arranque,{once:true});
   window.addEventListener('load',arranque,{once:true});
   window.addEventListener('hashchange',function(){ setTimeout(montar,700); });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.342 · §7 · Ficha de escala y procedencia de la tabla territorial
+     El §7 exige que una ficha territorial indique su ESCALA GEOGRÁFICA y la FECHA de los
+     datos, y que no se atribuyan cifras comunales a una localidad sin respaldo.
+     Hallazgo al verificar: la tabla tiene 25 filas, pero NO son 25 unidades vecinales:
+     son 21 UV con código (UV-1…UV-21) MÁS 4 localidades rurales sin UV constituida
+     (Popeta, Pueblo Hundido, San Jorge, Santa Isabel). Es decir, la tabla mezcla dos
+     escalas —unidad vecinal y localidad— sin declararlo, y un lector asume que son 25 UV.
+     La nota se genera contando las filas reales, no con cifras escritas a mano.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function render(){
+    try{
+      var sec=document.getElementById('territorio'); if(!sec) return;
+      if(sec.querySelector('.terr-escala')) return;                 /* idempotente */
+      var filas=[].slice.call(sec.querySelectorAll('.uv-table tbody tr'));
+      if(!filas.length) return;
+      var conUV=0, sinUV=[];
+      filas.forEach(function(tr){
+        var c0=(tr.children[0]||{}).textContent||'', c1=(tr.children[1]||{}).textContent||'';
+        if(/UV-\d/.test(c0)) conUV++; else if(c1.trim()) sinUV.push(c1.trim());
+      });
+      if(!conUV && !sinUV.length) return;
+      function esc(t){var d=document.createElement('div');d.textContent=(t==null?'':t);return d.innerHTML;}
+      var n=document.createElement('div');
+      n.className='terr-escala'; n.setAttribute('role','note');
+      var h='<b>Escala de esta tabla.</b> Reúne <b>'+conUV+' unidades vecinales</b> con código asignado';
+      if(sinUV.length){
+        h+=' y <b>'+sinUV.length+' localidades rurales</b> que no tienen unidad vecinal constituida ('
+         + sinUV.map(esc).join(', ') + '), por lo que aparecen sin código UV.';
+      } else { h+='.'; }
+      h+=' La unidad de análisis es por tanto mixta: <b>unidad vecinal y localidad</b>, no equivalentes entre sí.'
+       + '<br><b>Procedencia.</b> Población y NNA: Censo 2024 (INE). Proyectos e inversión: Banco Integrado de Proyectos (BIP).'
+       + ' Un guion (—) indica <b>sin registro en la fuente</b>, que no equivale a cero.'
+       + ' Las cifras son propias de cada territorio: <b>no se reparten totales comunales</b> entre localidades.';
+      n.innerHTML=h;
+      var tabla=sec.querySelector('.uv-table');
+      var cont=tabla?(tabla.closest('.uv-table-wrap')||tabla.parentElement):null;
+      if(cont&&cont.parentNode) cont.parentNode.insertBefore(n,cont);
+      else sec.appendChild(n);
+    }catch(e){}
+  }
+  if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
+  window.addEventListener('load',render,{once:true});
+  window.addEventListener('hashchange',function(){ setTimeout(render,600); });
 })();
 </script>
 
