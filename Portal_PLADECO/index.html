@@ -713,6 +713,25 @@ body.dark .intro-rutas{background:#0a1526}
 /* v45.337 · §3C · "Los desafíos que orientan el plan".
    Composición editorial (NO tarjetas): cifra destacada a la izquierda y texto a la derecha,
    sobre filete. El §1 pide alternar formatos y no encerrar todo en tarjetas iguales. */
+/* v45.338 · §3 E-I · cierre de la secuencia del inicio. Enlaza, no duplica. */
+.rutas-inicio{padding:30px 0 40px}
+.rin-inner{max-width:1180px;margin:0 auto;padding:0 20px}
+.rin-head{margin-bottom:18px;max-width:70ch}
+.rin-kicker{display:block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:6px}
+.rin-title{font-size:clamp(18px,2vw,23px);font-weight:800;color:var(--text);line-height:1.2;margin:0 0 8px}
+.rin-lead{font-size:14px;line-height:1.6;color:var(--text2);margin:0;max-width:68ch}
+.rin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px 26px}
+.rin-item{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--border);align-items:start}
+.rin-letra{font-size:13px;font-weight:800;color:var(--text2);opacity:.6;line-height:1.5;font-variant-numeric:tabular-nums}
+.rin-txt{min-width:0}
+.rin-h{font-size:15px;font-weight:800;color:var(--text);line-height:1.3;margin:0 0 4px}
+.rin-d{font-size:13px;line-height:1.55;color:var(--text2);margin:0 0 7px;max-width:60ch}
+.rin-links{margin:0;font-size:12.5px;font-weight:700;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.rin-links a{color:var(--success-txt,#15803d);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+.rin-links a:hover{opacity:.8}
+.rin-links a:focus-visible{outline:2px solid var(--success-txt,#15803d);outline-offset:3px}
+.rin-sep{color:var(--text2);opacity:.5;font-weight:400}
+@media(max-width:640px){ .rin-inner{padding:0 14px} .rin-grid{grid-template-columns:1fr} }
 .desafios-plan{padding:34px 0 10px}
 .dsf-inner{max-width:1180px;margin:0 auto;padding:0 20px}
 .dsf-head{margin-bottom:20px;max-width:70ch}
@@ -40911,6 +40930,60 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       var sec=document.createElement('section');
       sec.id='desafios-plan'; sec.className='desafios-plan';
       sec.setAttribute('aria-labelledby','dsfTitle');
+      sec.innerHTML=h;
+      ancla.parentNode.insertBefore(sec, ancla.nextSibling);
+    }catch(e){}
+  }
+  if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
+  window.addEventListener('load',render,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.338 · §3 E-I · Cierre de la secuencia editorial del inicio
+     El §3 pide que el inicio recorra A-I. A (presentación), B (cifras en el hero),
+     C (desafíos) y D (prioridades) ya están. Para E-I el portal NO debe duplicar
+     contenido -el §5 pide justamente reducir repeticiones- porque cada uno ya existe
+     como sección propia: aquí se enlazan, declarando qué se encontrará en cada una.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  window.rutasInicio = (window.rutasInicio && !window.rutasInicio.nodeType) ? window.rutasInicio : [
+    {letra:'E', t:'Explora tu territorio', d:'Mapa comunal y ficha de las 21 unidades vecinales, con sus indicadores.',
+     links:[{h:'#mapa',x:'Mapa interactivo'},{h:'#territorio',x:'Lista de unidades vecinales'}]},
+    {letra:'F', t:'Del plan a la acción', d:'Las acciones comprometidas y su estado, con el criterio de selección declarado.',
+     links:[{h:'#compromisos',x:'Compromisos públicos'},{h:'#poa',x:'Plan Operativo Anual'}]},
+    {letra:'G', t:'Seguimiento e hitos', d:'Cronograma del proceso y avance de las metas a 2028 y 2035.',
+     links:[{h:'#cronograma-gantt',x:'Cronograma'},{h:'#semaforo',x:'Semáforo de metas'}]},
+    {letra:'H', t:'Participación y devolución', d:'Cómo se recogieron los aportes ciudadanos y dónde se consultan.',
+     links:[{h:'#participa',x:'Cómo participar'},{h:'#encuesta',x:'Resultados de la consulta'}]},
+    {letra:'I', t:'Documentos y fuentes', d:'Documento principal, anexos, metodología y datos abiertos descargables.',
+     links:[{h:'#documentos',x:'Documentos'},{h:'#metodologia',x:'Metodología y fuentes'},{h:'#datos-abiertos',x:'Datos abiertos'}]}
+  ];
+  function render(){
+    try{
+      if(document.getElementById('rutas-inicio')) return;
+      var R=window.rutasInicio; if(!R||!R.length) return;
+      var ancla=document.getElementById('ejes-prioridades')||document.getElementById('desafios-plan')||document.getElementById('intro-rutas');
+      if(!ancla) return;
+      function esc(t){var d=document.createElement('div');d.textContent=(t==null?'':t);return d.innerHTML;}
+      var h='<div class="rin-inner"><div class="rin-head">'
+        + '<span class="rin-kicker">Continuar la consulta</span>'
+        + '<h2 class="rin-title" id="rinTitle">Qué más puedes revisar</h2>'
+        + '<p class="rin-lead">Cada bloque abre la sección donde vive el detalle completo, con sus datos y fuentes.</p>'
+        + '</div><div class="rin-grid">';
+      R.forEach(function(r){
+        var ls=(r.links||[]).filter(function(l){return document.getElementById(l.h.slice(1));});
+        if(!ls.length) return;
+        h += '<div class="rin-item"><span class="rin-letra" aria-hidden="true">'+esc(r.letra)+'</span>'
+          +  '<div class="rin-txt"><h3 class="rin-h">'+esc(r.t)+'</h3><p class="rin-d">'+esc(r.d)+'</p>'
+          +  '<p class="rin-links">'+ls.map(function(l){return '<a href="'+esc(l.h)+'">'+esc(l.x)+'</a>';}).join('<span class="rin-sep">·</span>')+'</p>'
+          +  '</div></div>';
+      });
+      h += '</div></div>';
+      var sec=document.createElement('section');
+      sec.id='rutas-inicio'; sec.className='rutas-inicio';
+      sec.setAttribute('aria-labelledby','rinTitle');
       sec.innerHTML=h;
       ancla.parentNode.insertBefore(sec, ancla.nextSibling);
     }catch(e){}
