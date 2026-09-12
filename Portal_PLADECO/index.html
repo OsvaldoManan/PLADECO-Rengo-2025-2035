@@ -726,6 +726,22 @@ body.dark .intro-rutas{background:#0a1526}
 .ejp-meta{margin-top:auto;padding-top:9px;font-size:11.5px;font-weight:700;color:var(--text2)}
 .ejp-foot{font-size:12.5px;color:var(--text2);margin:16px 0 0}
 .ejp-foot a{color:var(--success-txt,#15803d);font-weight:700}
+/* v45.335 · §6 · Tabla de datos pendientes de validación (en #metodologia).
+   Tabla ancha -> scroll en su propio contenedor (§4: el cuerpo nunca scrollea en horizontal). */
+.dpv-wrap{margin:26px 0 6px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-left:3px solid #b45309;border-radius:var(--rad-md,7px)}
+.dpv-h{font-size:15px;font-weight:800;color:var(--text);margin:0 0 6px}
+.dpv-lead{font-size:12.5px;line-height:1.6;color:var(--text2);margin:0 0 14px;max-width:72ch}
+.dpv-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.dpv-tabla{width:100%;border-collapse:collapse;font-size:12.5px;min-width:640px}
+.dpv-tabla th,.dpv-tabla td{text-align:left;vertical-align:top;padding:9px 11px;border-bottom:1px solid var(--border)}
+.dpv-tabla thead th{font-size:11px;font-weight:800;letter-spacing:.04em;color:#fff}
+.dpv-tabla tbody th{font-weight:700;color:var(--text);white-space:nowrap}
+.dpv-tabla td{color:var(--text2);line-height:1.5}
+.dpv-val{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--text);margin-bottom:3px}
+.dpv-estado{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.03em;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#92400e;white-space:nowrap}
+.dpv-res{margin-top:5px;font-size:11.5px;color:var(--text2)}
+.dpv-foot{font-size:11.5px;color:var(--text2);margin:12px 0 0}
+.dpv-foot code{font-size:11px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border)}
 @media(max-width:980px){ .ejp-grid{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:620px){ .ejp-grid{grid-template-columns:1fr} .ejp-inner{padding:0 14px} .ejes-prioridades{padding:26px 0 4px} }
 .hero .hero-estado .he-sep{opacity:.45}
@@ -24713,7 +24729,13 @@ window.datosClave={
   poblacion:63620, poblacionFmt:'63.620', hombres:30925, mujeres:32695,
   /* Economía · SII 2023 */
   empresas:4439, empresasFmt:'4.439',
-  /* Planificación · PLADECO 2025-2035 */
+  /* Planificación · PLADECO 2025-2035
+     OJO (v45.335 · §6): 'objetivos' y 'acciones' NO provienen de la misma estructura.
+       · objetivos:32  → suma de los OE declarados en EJES (5+5+5+6+5+6). Coincide con EJES.
+       · acciones:225  → nº de filas de _POL (matriz operativa).
+     EJES, en cambio, suma 200 acciones, y _POL contiene solo 27 códigos OE únicos.
+     Es decir: 32 vs 27 y 200 vs 225 son universos distintos, no un error de tipeo.
+     Ver window.discrepanciasDatos (abajo) — requiere validación institucional. */
   ejes:6, objetivos:32, acciones:225,
   /* Inversión municipal SUBDERE (datos al 13-jun-2026) */
   proyectosSubdere:110, montoSubdereMM:'12.665,3', proyectosCerrados:84, proyectos2025plus:8,
@@ -24722,6 +24744,40 @@ window.datosClave={
   /* helper de formato es-CL */
   fmt:function(n){ try{ return (+n).toLocaleString('es-CL'); }catch(e){ return ''+n; } }
 };
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.335 · §6 · REGISTRO DE DISCREPANCIAS DE DATOS — EDITABLE por SECPLAC.
+   El encargo pide distinguir diferencias conceptuales de errores, registrar lo que
+   requiere validación institucional y NO elegir una cifra por intuición. Esto es un
+   registro, no una corrección: ninguna cifra se cambió en función de estas notas.
+   Para resolver una, el equipo municipal edita 'estado' y 'resolucion'.
+   ═══════════════════════════════════════════════════════════════════════════ */
+window.discrepanciasDatos = (window.discrepanciasDatos && !window.discrepanciasDatos.nodeType) ? window.discrepanciasDatos : [
+  {id:'objetivos-32-27', tema:'Objetivos estratégicos', estado:'por validar',
+   valores:['32 (suma de EJES: 5+5+5+6+5+6)','27 (códigos OE únicos en _POL)'],
+   nota:'Son dos universos distintos, no un error: EJES declara la estructura estratégica y _POL la matriz operativa. Procede rotularlos por separado o explicar qué objetivos no tienen acciones asociadas.',
+   resolucion:''},
+  {id:'acciones-200-225', tema:'Acciones del plan', estado:'por validar',
+   valores:['200 (suma de EJES[].nAcc)','225 (filas de _POL)'],
+   nota:'La matriz operativa tiene 25 acciones más que la suma declarada por eje. Conviene confirmar cuál es la cifra oficial del instrumento.',
+   resolucion:''},
+  {id:'oe-titulos', tema:'Títulos de objetivos', estado:'por validar',
+   valores:['27 códigos OE únicos','46 títulos distintos en _POL'],
+   nota:'El mismo código OE aparece con varias redacciones de título, lo que rompe cualquier agrupación por nombre. Requiere normalizar la redacción en la fuente.',
+   resolucion:''},
+  {id:'denominacion-acciones', tema:'Denominación', estado:'por validar',
+   valores:['"225 acciones"','"225 políticas públicas"'],
+   nota:'Ambas denominaciones conviven en el portal para el mismo conjunto. Definir una sola denominación oficial.',
+   resolucion:''},
+  {id:'fecha-actualizacion', tema:'Fecha de actualización', estado:'por actualizar',
+   valores:['versionInfo.ultimaActualizacion = "junio 2026"'],
+   nota:'El sello del hero deriva esta fecha. Debe actualizarse en window.versionInfo cuando cambie el contenido.',
+   resolucion:''},
+  {id:'estado-instrumento', tema:'Estado del PLADECO', estado:'por declarar',
+   valores:['El portal declara su propio estado ("En construcción · mejora continua")'],
+   nota:'No consta en los datos el estado de aprobación o ejecución del instrumento. El hero rotula explícitamente "Portal:" para no confundir ambos estados. Falta declarar el estado formal del PLADECO.',
+   resolucion:''}
+];
 /* ═══════════════════════════════════════════════════════════════════════════
    Bloque 5 · TRAZABILIDAD Y VERSIÓN DEL CONTENIDO — EDITABLE por SECPLAC.
    versionInfo: sello de "última actualización" + estado (coherente con "en construcción").
@@ -40716,6 +40772,44 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     });
   }
   window.renderSeccionesRelacionadas=render;
+  if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
+  window.addEventListener('load',render,{once:true});
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.335 · §6 y §10 · Tabla visible de DATOS PENDIENTES DE VALIDACIÓN
+     Renderiza window.discrepanciasDatos al final de #metodologia (la página de fuentes y
+     método). Hace auditable lo que el portal NO puede resolver por su cuenta.
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  function render(){
+    try{
+      var D=window.discrepanciasDatos; if(!D||!D.length) return;
+      var sec=document.getElementById('metodologia'); if(!sec) return;
+      if(sec.querySelector('.dpv-wrap')) return;                     /* idempotente */
+      function esc(t){var d=document.createElement('div');d.textContent=(t==null?'':t);return d.innerHTML;}
+      var h='<div class="dpv-wrap"><h3 class="dpv-h">Datos pendientes de validación institucional</h3>'
+        + '<p class="dpv-lead">Discrepancias detectadas entre fuentes internas del portal. Se registran sin resolverlas: '
+        + 'distinguir una diferencia conceptual de un error requiere validación del equipo municipal. '
+        + 'Ninguna cifra del portal se modificó en función de estas notas.</p>'
+        + '<div class="dpv-scroll"><table class="dpv-tabla"><thead><tr>'
+        + '<th scope="col">Tema</th><th scope="col">Valores en conflicto</th><th scope="col">Observación</th><th scope="col">Estado</th>'
+        + '</tr></thead><tbody>';
+      D.forEach(function(d){
+        h += '<tr><th scope="row">'+esc(d.tema)+'</th><td>'
+           + (d.valores||[]).map(function(v){return '<span class="dpv-val">'+esc(v)+'</span>';}).join('')
+           + '</td><td>'+esc(d.nota)+'</td><td><span class="dpv-estado">'+esc(d.estado)+'</span>'
+           + (d.resolucion?('<div class="dpv-res">'+esc(d.resolucion)+'</div>'):'')
+           + '</td></tr>';
+      });
+      h += '</tbody></table></div><p class="dpv-foot">Registro editable por SECPLAC en <code>window.discrepanciasDatos</code>.</p></div>';
+      var div=document.createElement('div'); div.innerHTML=h;
+      var fuente=sec.querySelector(':scope > .sec-fuente');
+      if(fuente) sec.insertBefore(div.firstChild,fuente); else sec.appendChild(div.firstChild);
+    }catch(e){}
+  }
   if(document.readyState!=='loading') render(); else window.addEventListener('DOMContentLoaded',render,{once:true});
   window.addEventListener('load',render,{once:true});
 })();
