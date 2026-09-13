@@ -7817,7 +7817,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
            esta es la ruta institucional que activa el plan, lo aprueba…»: presentaba en futuro plazos ya vencidos
            (entrega en junio y Paso 1 en julio-agosto de 2026) sin que el portal registre la entrega ni la aprobación.
            Ahora cada paso lleva data-hito y su plazo marcado con data-hito-plazo, y muestra su estado con el criterio común. -->
-      <p style="font-size:13.5px;color:var(--text2);margin:0;line-height:1.55">La planificaci&oacute;n sit&uacute;a la entrega del documento PLADECO 2025-2035 en junio de 2026. Esta es la ruta institucional prevista desde ah&iacute; para aprobar el plan, activarlo, financiarlo y someterlo a rendici&oacute;n p&uacute;blica. Cada paso indica su estado con el mismo criterio de la cronolog&iacute;a: <b>realizado</b> solo con constancia registrada, <b>sin confirmaci&oacute;n registrada</b> si su plazo ya termin&oacute; sin constancia y <b>programado</b> si su plazo no ha terminado.</p>
+      <p style="font-size:13.5px;color:var(--text2);margin:0;line-height:1.55">La planificaci&oacute;n sit&uacute;a la entrega del documento PLADECO 2025-2035 en junio de 2026. Esta es la ruta institucional prevista desde ah&iacute; para aprobar el plan, activarlo, financiarlo y someterlo a rendici&oacute;n p&uacute;blica. Cada paso indica su estado con el mismo criterio de la cronolog&iacute;a: <b>realizado</b> solo con constancia registrada, <b>sin confirmaci&oacute;n registrada</b> si su plazo ya termin&oacute; sin constancia y <b>programado</b> si su plazo no ha terminado. El paso permanente no tiene plazo con fecha y figura <b>sin constancia registrada</b>.</p><!-- v45.356 · [tiempo] · revisión · la bajada nombraba tres estados y el Paso 6 («Permanente») muestra un cuarto; medido en el navegador -->
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;font-size:13px;line-height:1.55">
       <div data-hito="aprobacion-concejo" style="background:var(--card);border:1px solid var(--border);border-top:3px solid #ef4444;border-radius:10px;padding:14px 16px">
@@ -19279,7 +19279,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <article class="glosario-term" data-cat="plan" data-keys="proximos pasos hoja ruta institucional aprobacion implementacion">
       <header><span class="glosario-acronym">PP</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
       <h3>Pr&oacute;ximos Pasos</h3>
-      <p>Hoja de ruta institucional prevista tras la entrega del documento, planificada para junio de 2026: 6 pasos (cinco con plazos de julio de 2026 a marzo de 2027 y uno permanente) que cubren aprobaci&oacute;n del Concejo, decreto alcaldicio, plan anual de implementaci&oacute;n, tablero trimestral, 1&ordf; encuesta de satisfacci&oacute;n y participaci&oacute;n continua. En #cronograma-gantt cada paso muestra su estado: realizado solo con constancia registrada, sin confirmaci&oacute;n si su plazo ya termin&oacute; y programado si no.</p><!-- v45.356 · [tiempo] · §1.5 · decía «post-entrega del documento (Jun 2026 → Mar 2027 y permanente): 6 hitos»: daba la entrega por hecha y el rango como futuro. Plazos leídos de las 6 tarjetas: Jul-Ago 2026, Sep 2026, Sep-Oct 2026, Oct 2026 →, Mar 2027 y Permanente -->
+      <p>Hoja de ruta institucional prevista tras la entrega del documento, planificada para junio de 2026: 6 pasos (cinco con plazos de julio de 2026 a marzo de 2027 y uno permanente) que cubren aprobaci&oacute;n del Concejo, decreto alcaldicio, plan anual de implementaci&oacute;n, tablero trimestral, 1&ordf; encuesta de satisfacci&oacute;n y participaci&oacute;n continua. En el <a href="#cronograma-gantt">Cronograma del Proceso</a> cada paso muestra su estado: realizado solo con constancia registrada, sin confirmaci&oacute;n registrada si su plazo ya termin&oacute;, programado si a&uacute;n no termina y sin constancia registrada si no tiene plazo con fecha.</p><!-- v45.356 · [tiempo] · revisión · decía «En #cronograma-gantt» (el identificador en texto visible) y omitía el estado del paso permanente --><!-- v45.356 · [tiempo] · §1.5 · decía «post-entrega del documento (Jun 2026 → Mar 2027 y permanente): 6 hitos»: daba la entrega por hecha y el rango como futuro. Plazos leídos de las 6 tarjetas: Jul-Ago 2026, Sep 2026, Sep-Oct 2026, Oct 2026 →, Mar 2027 y Permanente -->
 
     </article>
 
@@ -27305,7 +27305,10 @@ function cgNotaHoy(H){
                     : 'Hoy, '+f+', es anterior al primer mes del cronograma: no se dibuja línea de hoy.');
   n.innerHTML='<b>Estado de cada macroproceso.</b> La Carta Gantt es una planificación y no registra si cada proceso se cumplió. '
     +'Por eso ninguno se marca realizado sin constancia: si su período ya terminó se marca <b>sin confirmación registrada</b>, '
-    +'y si no ha terminado, <b>programado</b>. Es el criterio de la cronología de hitos. '+hoyTxt
+    +'y si no ha terminado, <b>programado</b>. Es el criterio de la cronología de hitos. '
+    /* v45.356 · [tiempo] · revisión · la regla semana → días solo estaba en un comentario del código, pero decide
+       la posición de la línea de hoy y el día en que termina cada período: se declara en pantalla */
+    +'La planificación divide cada mes en cuatro semanas, que aquí se leen como días 1 a 7, 8 a 14, 15 a 21 y 22 a fin de mes. '+hoyTxt
     +' <a href="#dpv-gantt-fechas-vs-hitos">Por qué el registro de hitos no sirve de constancia</a>.';
 }
 function cgToggleProcess(id){
@@ -27487,6 +27490,11 @@ function cgConectarFicha(){
   t.addEventListener('keydown',function(e){
     var k=e.key;
     if(k==='Escape'){ e.preventDefault(); cgCerrarTip(true); return; }
+    /* v45.356 · [tiempo] · revisión · TAB DESDE «CERRAR». La ficha está en <body>, al final del documento: con
+       Tab real desde «Cerrar» el foco salía de la Carta Gantt y caía en «Saltar al contenido», el primer control
+       de la página (medido). Ahora Tab devuelve el foco a la barra ANTES de la acción por defecto, que avanza
+       desde ahí al control siguiente del Gantt; Mayús+Tab cierra y deja el foco en la barra que abrió la ficha. */
+    if(k==='Tab'){ if(e.shiftKey) e.preventDefault(); cgCerrarTip(true); return; }
     /* Enter o Espacio sobre «Cerrar» se resuelven aquí y no con el clic nativo: así el foco vuelve a la barra
        una sola vez y el keyup de esa pulsación, que ya cae en la barra, no la reabre */
     if((k==='Enter'||k===' '||k==='Spacebar')&&e.target.closest&&e.target.closest('.cg-tt-cerrar')){ e.preventDefault(); cgCerrarTip(true); }
@@ -43847,9 +43855,10 @@ body.dark .cro-item.hecho .cro-estado{color:#7fd39b;border-color:rgba(79,191,134
 body.dark .cro-item.duda .cro-estado{color:#E0B25C;border-color:rgba(224,178,92,.4);background:rgba(224,178,92,.14)}
 /* v45.356 · [tiempo] · rama «programado» de clasificar(): azul del escudo, distinto de los otros dos */
 .cro-item.prog .cro-punto{border-color:#17497C;color:#17497C}
-body.dark .cro-item.prog .cro-punto{border-color:#7FA8D4;color:#7FA8D4}
+body.dark .cro-item.prog .cro-punto{border-color:#9BBDE3;color:#9BBDE3}
 .cro-item.prog .cro-estado{color:#17497C;border-color:rgba(23,73,124,.35);background:rgba(23,73,124,.07)}
-body.dark .cro-item.prog .cro-estado{color:#7FA8D4;border-color:rgba(127,168,212,.4);background:rgba(127,168,212,.14)}
+/* revisión: el mismo #9BBDE3 de la píldora «programado» del Gantt en oscuro, para que el estado se vea igual en ambos lugares */
+body.dark .cro-item.prog .cro-estado{color:#9BBDE3;border-color:rgba(127,168,212,.4);background:rgba(127,168,212,.14)}
 .cro-t{margin:3px 0 0;font-size:15px;font-weight:700;line-height:1.35;color:var(--text)}
 .cro-d{margin:4px 0 0;font-size:13.5px;line-height:1.6;color:var(--text2);max-width:70ch}
 .cro-ev{margin:7px 0 0;font-size:12.5px}
@@ -44023,10 +44032,18 @@ body.dark .cro-ev a{color:var(--id-azul,#7FA8D4);border-bottom-color:rgba(127,16
      curso, 4 y 5 programados, 6 sin constancia (no tiene fecha); ficha del documento final sin confirmación.
      A 375 px la lista del Gantt queda antes del lienzo, en orden 1, 5, 2, 3, 4, 6, 8, 7, sin desborde
      horizontal; sobre 768 px vuelve bajo el lienzo en orden 1 a 8 (al cambiar el ancho, sin recargar).
-     Contraste medido de las píldoras sobre la tarjeta: «sin confirmación» 6,78:1 (claro) y 8,04:1 (oscuro);
-     «programado» 9,21:1 y 6,35:1. Carrusel: sin movimiento reducido avanzó de 3/8 a 4/8 en 5,6 s y, con
-     «Pausar», no avanzó; con prefers-reduced-motion simulado (matchMedia sustituido por código) partió en
-     «Reproducir» y no avanzó.
+     Contraste de las píldoras (corregido en la revisión): la primera medición tomaba el color de la tarjeta sin
+     el fondo translúcido de la propia píldora y anotaba 6,78, 8,04, 9,21 y 6,35:1, cifras que no ocurren. Con ese
+     fondo compuesto: «sin confirmación» 6,21:1 en tarjetas y lista y 5,70:1 en la etiqueta de fila del Gantt
+     (claro), 6,08:1 y 5,14:1 (oscuro); «programado» 8,21:1 y 7,51:1 (claro), 6,32:1 y 5,34:1 (oscuro, con
+     #9BBDE3: con #7FA8D4 la etiqueta daba 4,19:1); «sin constancia» 6,40:1 (claro) y 10,63:1 (oscuro).
+     Carrusel: sin movimiento reducido avanzó de 3/8 a 4/8 en 5,6 s y, con «Pausar», no avanzó; con
+     prefers-reduced-motion simulado (matchMedia sustituido por código) partió en «Reproducir» y no avanzó.
+     Revisión independiente (13-09-2026), corregido y medido en el navegador: Tab real desde «Cerrar» sacaba el
+     foco de la Carta Gantt hasta «Saltar al contenido» (ahora pasa a la barra siguiente y Mayús+Tab vuelve a la
+     barra); el enlace de la nota no tenía color propio (1,68:1 con el sistema en claro y el portal en oscuro;
+     ahora 9,21:1 y 6,35:1); «font: … inherit» era inválido y «Cerrar» y «Pausar» salían en peso 400; la regla
+     semana → días pasa a la nota visible; la hoja de ruta y el glosario nombran el estado del paso sin fecha.
 ═══════════════════════════════════════════════════════════════════════════ -->
 <style>
 /* píldora de estado común (texto + icono: no depende del color) */
@@ -44039,7 +44056,9 @@ body.dark .est-pill.est-hecho{color:#7fd39b;border-color:rgba(79,191,134,.4);bac
 .est-pill.est-duda{color:#7A5406;border-color:rgba(122,84,6,.35);background:rgba(214,148,15,.1)}
 body.dark .est-pill.est-duda{color:#E0B25C;border-color:rgba(224,178,92,.4);background:rgba(224,178,92,.14)}
 .est-pill.est-prog{color:#17497C;border-color:rgba(23,73,124,.35);background:rgba(23,73,124,.07)}
-body.dark .est-pill.est-prog{color:#7FA8D4;border-color:rgba(127,168,212,.4);background:rgba(127,168,212,.14)}
+/* v45.356 · [tiempo] · revisión · en oscuro el texto iba en #7FA8D4: con el fondo propio de la píldora sobre el
+   degradado de la etiqueta de fila del Gantt (#243043) daba 4,19:1, bajo AA para 11 px. Pasa a #9BBDE3 */
+body.dark .est-pill.est-prog{color:#9BBDE3;border-color:rgba(127,168,212,.4);background:rgba(127,168,212,.14)}
 .hito-estado{margin:5px 0 4px}
 /* etiqueta del documento final: deja el ámbar de «próximamente» (queda solo como plazo) y el estado va
    bajo el texto de la ficha */
@@ -44052,7 +44071,10 @@ body.dark .est-pill.est-prog{color:#7FA8D4;border-color:rgba(127,168,212,.4);bac
    Lleva fondo propio: la sección no lo tiene y, sin él, el texto quedaba sobre la fotografía fija .portal-bg */
 #cronograma-gantt .cg-estado-nota{margin:0 0 12px;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--id-azul,#17497C);
   border-radius:8px;font-size:12.5px;line-height:1.6;color:var(--text);background:var(--card);max-width:none}
-#cronograma-gantt .cg-estado-nota a{font-weight:700}
+/* revisión: el enlace no tenía color propio y tomaba el del navegador (#0000EE con el sistema en claro): con el
+   portal en oscuro daba 1,68:1 sobre la nota (medido). Toma el azul institucional, como los enlaces de la cronología */
+#cronograma-gantt .cg-estado-nota a{font-weight:700;color:var(--id-azul,#17497C)}
+body.dark #cronograma-gantt .cg-estado-nota a{color:var(--id-azul,#7FA8D4)}
 #cronograma-gantt .cg-list-card-estado{margin:-4px 0 10px}
 #cronograma-gantt .cg-list-hito-estado{margin-top:4px}
 #cronograma-gantt .cg-list-tit{grid-column:1/-1;justify-self:start;margin:0;padding:6px 12px;font-size:13px;font-weight:700;color:var(--text);
@@ -44075,7 +44097,9 @@ body.dark #cronograma-gantt .cg-hoy{background:repeating-linear-gradient(to bott
 .cg-tooltip.fijo{pointer-events:auto}
 .cg-tooltip.fijo.visible{visibility:visible;transition:opacity .15s ease,transform .15s ease}
 .cg-tooltip .cg-tt-cerrar{display:inline-flex;align-items:center;min-height:36px;margin-top:10px;padding:6px 16px;border-radius:6px;
-  border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;font:700 12px/1 inherit;font-family:inherit;cursor:pointer}
+  border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-weight:700;line-height:1;font-family:inherit;cursor:pointer}
+/* revisión: decía «font:700 12px/1 inherit», abreviatura inválida (inherit no cabe dentro de font) que el navegador
+   descartaba entera; medido: «Cerrar» y «Pausar» salían en peso 400. Se declaran peso e interlineado por separado. */
 .cg-tooltip .cg-tt-cerrar:hover{background:rgba(255,255,255,.12)}
 @media(max-width:768px){
   #cronograma-gantt .cg-list{grid-template-columns:1fr;margin:6px 0 18px}
@@ -44084,7 +44108,7 @@ body.dark #cronograma-gantt .cg-hoy{background:repeating-linear-gradient(to bott
 /* Carrusel de testimonios · botón de pausa visible */
 .test-controls{flex-wrap:wrap}
 .test-pausa{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 14px;border-radius:18px;border:1px solid var(--border);
-  background:var(--card);color:var(--text);font:600 12px/1 inherit;font-family:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  background:var(--card);color:var(--text);font-weight:600;line-height:1;font-family:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .test-pausa:hover{border-color:var(--text2)}
 @media(prefers-reduced-motion:reduce){ .test-track{transition:none!important} }
 </style>
@@ -44139,7 +44163,8 @@ body.dark #cronograma-gantt .cg-hoy{background:repeating-linear-gradient(to bott
      valores:['Junio de 2026: registro de hitos («Aprobación final por Concejo Municipal») e hito de control «Aprobación del Plan»',
               'Semanas 2 y 3 de junio de 2026: actividad 7.3 de la Carta Gantt, «Presentación y Votación para la Actualización PLADECO 2025-2035»',
               'Julio y agosto de 2026: Paso 1 de la hoja de ruta institucional, «Aprobación del Concejo Municipal»'],
-     nota:'Tres lugares fijan la aprobación en fechas distintas. Con cualquiera de ellas el plazo ya terminó y el portal no registra acuerdo ni decreto, de modo que el estado no depende de elegir una: todos se muestran como «sin confirmación registrada». Ver también las filas del estado del PLADECO y de la aprobación por el Concejo.',
+     /* revisión: decía «Tres lugares fijan la aprobación en fechas distintas», pero junio de 2026 y sus semanas 2 y 3 son compatibles; el choque es con julio y agosto */
+     nota:'El registro de hitos, el hito de control y la Carta Gantt sitúan la aprobación en junio de 2026 (la Gantt, en sus semanas 2 y 3), y la hoja de ruta institucional, en julio y agosto de 2026. Con cualquiera de esas fechas el plazo ya terminó y el portal no registra acuerdo ni decreto, de modo que el estado no depende de elegir una: todos se muestran como «sin confirmación registrada». Ver también las filas del estado del PLADECO y de la aprobación por el Concejo.',
      resolucion:'Pendiente. Requiere que SECPLAC confirme la fecha de la sesión y, si hubo acuerdo, registre su número y fecha en window.constanciasHitos (clave aprobacion-concejo) y en versionInfo.estadoInstrumento.'}
   ].forEach(function(n){ if(!yaEsta(n.id)) D.push(n); });
 })();
