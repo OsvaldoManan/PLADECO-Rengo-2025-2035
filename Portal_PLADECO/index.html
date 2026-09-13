@@ -13445,7 +13445,7 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
 
   <div class="anest-block" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px">
     <h3 class="anest-block-title">Gr&aacute;fico 2 &middot; Comparaci&oacute;n entre 5 m&eacute;todos al 2035</h3>
-    <p class="anest-block-sub">Cada m&eacute;todo aporta supuestos distintos: el polinomial tiende a sobreestimar en largos plazos; el de componentes (basado en natalidad, mortalidad y migraci&oacute;n) es el m&aacute;s conservador. La mediana del conjunto es el indicador robusto a valores extremos.</p>
+    <p class="anest-block-sub">Cada m&eacute;todo aporta supuestos distintos: el polinomial tiende a sobreestimar en largos plazos; el de componentes (basado en natalidad, mortalidad y migraci&oacute;n) es el m&aacute;s conservador. La mediana del conjunto es el indicador robusto a valores extremos. Las cinco proyecciones van de 66.644 (componentes) a 72.523 habitantes (polinomial), con mediana en 69.631; el eje parte en cero para que el largo de cada barra sea proporcional a su cifra.</p><!-- v45.356 · [compromisos] · crítico 8 · con el eje en cero las diferencias se ven en su tamaño real (8,8 % entre extremos): se dicen las cifras, calculadas de los datos del gráfico -->
     <div class="viz-card viz-full"><canvas id="proyChartMetodos" height="160"></canvas></div>
   </div>
 
@@ -17269,29 +17269,68 @@ body.dark #poa .poa-est.e2{background:#052e16;color:#bbf7d0}
 </section>
 
 <!-- ═══ COMPROMISOS ═══ -->
+<!-- v45.356 · [compromisos] · crítico 1 · LA LISTA DEJA DE TRAER ESTADOS ESCRITOS A MANO.
+     Hasta v45.355 esta sección mostraba 13 compromisos con estado y porcentaje fijados en el código
+     (3 «Cumplidos», 7 «En curso», 3 «Pendientes», «23% Avance»), sin fuente y en contra del Plan
+     Operativo Anual, que registra sus 225 acciones como «no iniciada» con 0 % (POA_ESTADO vacío).
+     Entre los «cumplidos» figuraba una «encuesta ciudadana masiva a más de 1.500 personas»: lo
+     documentado son 119 respuestas. Ahora renderCompromisos contrasta cada compromiso con _POL y lee la
+     ejecución de window.accionesPOA en cuatro momentos (propuesta, programación, financiamiento y
+     ejecución, el mismo modelo de la ficha «Una acción del plan, de principio a fin»); donde no hay acción
+     en la Matriz declara «sin constancia registrada». Resumen y filtros se calculan: ya no hay contadores
+     ni anillo de avance fijos. El criterio de selección no existe en el portal y se declara su ausencia.
+     Estilos de este bloque en el <style> siguiente. -->
+<style>
+/* v45.356 · [compromisos] · estilos de la lista contrastada con la Matriz y el POA.
+   Neutros a propósito: el color ya no codifica un estado que no consta. Textos informativos a 14 px
+   o más (C§3); los rótulos de cada momento, a 13 px. Botones de filtro con 44 px de alto (área táctil).
+   Especificidad con #compromisos para ganar a .compromiso-item (display:flex, hover) y a
+   «section h3» (margin-top:24px), que están en bloques anteriores. */
+#compromisos .cmp-aviso{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--id-azul,#17497C);border-radius:var(--radius);padding:12px 16px;font-size:14.5px;line-height:1.6;color:var(--text);margin:0 0 16px}
+body.dark #compromisos .cmp-aviso{border-left-color:var(--id-azul,#7FA8D4)}
+#compromisos .cmp-aviso p{margin:0;max-width:none}
+#compromisos .cmp-aviso p + p{margin-top:6px}
+#compromisos .cmp-resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0 0 14px}
+#compromisos .cmp-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px}
+#compromisos .cmp-stat-val{font-size:22px;font-weight:800;color:var(--text);line-height:1.15}
+#compromisos .cmp-stat-lbl{font-size:14px;color:var(--text2);line-height:1.4;margin-top:2px}
+#compromisos .comp-filter-row .cmp-filtro-lbl{font-size:14px;color:var(--text2);margin-right:2px}
+#compromisos .comp-f-btn{font-size:14px!important;min-height:44px;display:inline-flex;align-items:center}  /* !important: la regla global «button, .btn, .portal-cta-btn» fija 12,5 px con !important */
+#compromisos .compromiso-item{display:block;padding:16px 18px}
+#compromisos .compromiso-item:hover{transform:none}
+#compromisos .compromiso-item[hidden]{display:none!important}
+#compromisos h3.cmp-titulo{margin:0 0 4px!important}
+#compromisos .cmp-rel{font-size:14px;color:var(--text2);line-height:1.55;margin:0;max-width:80ch}
+#compromisos .cmp-accion{border-top:1px solid var(--border);padding-top:10px;margin-top:10px}
+#compromisos .cmp-accion-t{font-size:14.5px;font-weight:700;color:var(--text);line-height:1.45;margin:0 0 8px;max-width:none}
+#compromisos .cmp-fases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
+#compromisos .cmp-f{border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin:0}
+#compromisos .cmp-f dt{font-size:13px;font-weight:700;color:var(--text2);margin:0 0 2px}
+#compromisos .cmp-f dd{font-size:14px;color:var(--text);line-height:1.5;margin:0}
+#compromisos .cmp-nota-form{font-size:14px;color:var(--text2);line-height:1.6;margin:14px 0 0;max-width:80ch}
+@media(max-width:1000px){#compromisos .cmp-fases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){#compromisos .cmp-fases{grid-template-columns:1fr}}
+</style>
 <section id="compromisos" class="reveal">
   <div class="sec-header">
     <div class="badge badge--success">Gobernanza</div>
     <h2><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> Compromisos P&#250;blicos</h2>
-    <p>Compromisos asumidos por la autoridad comunal en el marco del PLADECO 2025-2035</p>
+    <p>Compromisos que el portal destaca del PLADECO 2025-2035, contrastados con la Matriz Estrat&eacute;gica y con el Plan Operativo Anual.</p>
   </div>
-  <div class="compromisos-resumen" id="compResumen"></div>
-  <div class="comp-filter-row" id="compFilterRow">
-    <button class="comp-f-btn active" onclick="filterCompromisos('all')">Todos <span class="cf-count" id="cfAll">13</span></button>
-    <button class="comp-f-btn" onclick="filterCompromisos('cumplido')"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> Cumplidos <span class="cf-count" id="cfCumplido">3</span></button>
-    <button class="comp-f-btn" onclick="filterCompromisos('en-curso')">&#128260; En Curso <span class="cf-count" id="cfEnCurso">7</span></button>
-    <button class="comp-f-btn" onclick="filterCompromisos('pendiente')">&#9203; Pendientes <span class="cf-count" id="cfPendiente">3</span></button>
-    <div class="comp-progress-ring" id="compRing">
-      <svg viewBox="0 0 56 56"><circle class="cpr-track" cx="28" cy="28" r="24"/><circle class="cpr-fill" id="cprFill" cx="28" cy="28" r="24"/></svg>
-      <div class="cpr-text" id="cprText">0%</div>
-    </div>
+  <div class="cmp-aviso" id="compAviso" role="note">
+    <p><strong>C&oacute;mo leer esta lista.</strong> Cada compromiso se contrasta con la Matriz Estrat&eacute;gica en cuatro momentos: propuesta, programaci&oacute;n, financiamiento y ejecuci&oacute;n. La ejecuci&oacute;n se lee del <a href="#poa">Plan Operativo Anual</a>; cuando un compromiso no corresponde a ninguna acci&oacute;n de la Matriz, se declara sin constancia registrada.</p>
+    <p><strong>Criterio de selecci&oacute;n.</strong> El portal no documenta por qu&eacute; se destacan estos compromisos y no otros, ni registra un acto de la autoridad comunal que los adopte.</p>
   </div>
+  <div class="cmp-resumen" id="compResumen"></div>
+  <div class="comp-filter-row" id="compFilterRow" role="group" aria-label="Filtrar por ejecución registrada"></div>
   <div class="compromisos-list" id="compromisosList"></div>
+  <p class="cmp-nota-form" id="compNotaFormulacion"></p>
   <div class="callout" style="margin-top:24px">
     <div class="callout-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-book"></use></svg></div>
     <div class="callout-body">
       <div style="font-size:11px;font-weight:700;color:var(--success-txt,#15803d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Lectura del Diagn&oacute;stico</div>
-      Estos compromisos son verificables y deben rendir cuentas al Concejo Municipal cada trimestre. No son aspiraciones sino contratos: cada uno tiene plazo, responsable y un costo p&uacute;blico de incumplirlo. La ruta legal del Horizonte 1 (Protocolo Karin, C&oacute;digo de &Eacute;tica, COSOC, Tablero de 10 KPIs) es la prueba de seriedad del nuevo PLADECO &mdash; si esos hitos no est&aacute;n cumplidos en octubre de 2026, los compromisos posteriores pierden credibilidad. El reporte trimestral al Concejo no es un tr&aacute;mite: es el mecanismo institucional que evita que este plan se desconecte como el anterior (40% de cumplimiento hist&oacute;rico).
+      <!-- v45.356 · [compromisos] · decía «Estos compromisos son verificables […] cada uno tiene plazo, responsable y un costo público de incumplirlo»: el hospital no tiene acción en la Matriz, y ninguno tiene recursos asignados registrados. -->
+      Un compromiso solo es verificable si tiene acci&oacute;n, plazo, responsable, recursos y registro de avance. La lista de arriba muestra cu&aacute;les de esos elementos constan hoy para cada uno: los que est&aacute;n en la Matriz tienen plazo y responsable, el portal no registra recursos asignados para ninguno y el avance se registra en el Plan Operativo Anual. La ruta legal del Horizonte 1 (Protocolo Karin, C&oacute;digo de &Eacute;tica, COSOC, Tablero de 10 KPIs) es la prueba de seriedad del nuevo PLADECO &mdash; si esos hitos no est&aacute;n cumplidos en octubre de 2026, los compromisos posteriores pierden credibilidad. El reporte trimestral al Concejo no es un tr&aacute;mite: es el mecanismo institucional que evita que este plan se desconecte como el anterior (40% de cumplimiento hist&oacute;rico).
     </div>
   </div>
   <div style="margin:32px 0 16px">
@@ -17400,7 +17439,8 @@ body.dark #poa .poa-est.e2{background:#052e16;color:#bbf7d0}
     </div>
   </div>
 
-  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuente:</strong> Compromisos p&uacute;blicos del PLADECO Rengo 2025-2035 &bull; Acuerdos del Concejo Municipal &bull; Diagn&oacute;stico institucional (115 entrevistas) &bull; Auditor&iacute;a retrospectiva PLADECO 2015-2024 &bull; Marco de gesti&oacute;n de riesgos SUBDERE &bull; Municipalidad de Rengo</div>
+  <!-- v45.356 · [compromisos] · la fuente citaba «Compromisos públicos del PLADECO» (la propia lista) y «Acuerdos del Concejo Municipal», pero el portal no identifica ningún acuerdo que adopte estos compromisos (ver 'cronologia-aprobacion-concejo' en discrepanciasDatos). Se cita lo que la lista lee de verdad. -->
+  <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuente:</strong> Compromisos: Matriz Estrat&eacute;gica PLADECO Rengo 2025-2035 (acci&oacute;n, plazo, responsable y fuentes previstas) y Plan Operativo Anual (estado y avance, objeto <code>POA_ESTADO</code>) &bull; Riesgos: Diagn&oacute;stico institucional (115 entrevistas) &bull; Auditor&iacute;a retrospectiva PLADECO 2015-2024 &bull; Marco de gesti&oacute;n de riesgos SUBDERE &bull; Municipalidad de Rengo</div>
 </section>
 
 <!-- ═══ SNA GOBERNANZA POLICÉNTRICA ═══ -->
@@ -24569,75 +24609,238 @@ function testAutoPlay(){
 }
 
 // ── COMPROMISOS PÚBLICOS ──
+/* v45.356 · [compromisos] · crítico 1 · COMPROMISOS CONTRASTADOS CON LA MATRIZ Y EL POA.
+   Antes: 13 objetos con 'estado' escrito a mano ('cumplido' / 'en-curso' / 'pendiente'), emojis y un
+   «% Avance» calculado como cumplidos / total (23 %). Nada de eso tenía fuente y contradecía a
+   window.accionesPOA, que registra las 225 acciones como «no iniciada» con avance 0 (POA_ESTADO vacío).
+   Ahora:
+   · Cada compromiso declara su VÍNCULO con la Matriz (_POL), nunca un estado:
+       rel:'accion'     → acciones cuyo título o descripción nombra el mismo objeto del compromiso:
+                          COSOC 205; Ley Karin 180 y 182; Código de Ética 206 y 185; agua potable rural
+                          127; centros de día 37; Plan Regulador 87 (su descripción empieza «Actualizar
+                          el Plan Regulador Comunal»); tablero de indicadores 213.
+       rel:'componente' → la Matriz no tiene acción propia y el objeto aparece como componente de otra
+                          (la conectividad digital, en la descripción de la 120).
+       rel:'eje'        → el compromiso original se definía como «Implementación del Eje 5 del PLADECO».
+       rel:'ninguna'    → sin acción: «hospital» no aparece en ningún título de _POL (solo en la
+                          descripción de la 222, que trata de capacitación en gestión de riesgo).
+   · Propuesta, programación y fuentes PREVISTAS se leen de _POL; la ejecución, de accionesPOA (estado y
+     avance). El financiamiento ASIGNADO no tiene campo en ningún registro del portal: se declara que no
+     consta. Sin acción en la Matriz → «Sin constancia registrada».
+   · Tres títulos se ajustan a lo que la Matriz formula («Red de agua potable rural» era un estudio;
+     «COSOC con procesos vinculantes» no menciona procesos vinculantes en la acción 205; «Centros
+     diurnos adulto mayor»). Las cifras escritas a mano que no coincidían con la Matriz o no tenían
+     fuente («2 centros diurnos», «IPSB rural < 0,200 al 2030», «95 % de cobertura de internet al
+     2028») salen de la vista y quedan en discrepanciasDatos ('compromisos-seleccion-y-cifras').
+   · La encuesta ciudadana, el uso del Censo 2024 y el portal salen de la lista: son productos de la
+     formulación, no acciones de ejecución. Se nombran debajo con su dato verificable (119 respuestas,
+     n=119 en #voz; versionInfo.estado).
+   · _POL (var global) y accionesPOA se definen en bloques POSTERIORES a la llamada del render (TIER 1):
+     si aún no existen, el render espera a DOMContentLoaded. Los ítems nacen después de que el observador
+     de entrada recorrió .compromiso-item (que parte en opacity:0), así que se observan aquí.
+   · filterCompromisos ya no depende del objeto global 'event' y marca aria-pressed.
+   Verificado en el navegador (localhost, caché del SW borrada): 10 compromisos, 9 vinculados, 1 sin acción
+   en la Matriz, 0 de 42 acciones vinculadas con ejecución registrada; filtros «Todos 10 · No iniciada 9 ·
+   Sin constancia registrada 1» que ocultan y muestran ítems; los ítems se revelan al desplazar; a 390 px no
+   hay desborde y las fases van en una columna; dd 14 px, dt 13 px, botones 14 px y 44 px de alto; contraste
+   mínimo 4,58:1 en claro (enlace de la nota) y 7,65:1 en oscuro; la respuesta del asistente sale calculada
+   y la fila 'compromisos-seleccion-y-cifras' aparece en la tabla de #metodologia; sin errores de consola
+   en una pestaña nueva. */
+window.COMPROMISOS_PUBLICOS = (window.COMPROMISOS_PUBLICOS && window.COMPROMISOS_PUBLICOS.length) ? window.COMPROMISOS_PUBLICOS : [
+  {titulo:'Hospital de Alta Complejidad', rel:'ninguna',
+   nota:'No figura entre las acciones de la Matriz. El diagnóstico registra $20.000 millones comprometidos por el Estado para el hospital (FODA, fortaleza F18), pero el portal no identifica el acto que los compromete ni registra avance de la obra.',
+   fin:'El diagnóstico menciona $20.000 millones comprometidos; no consta el acto que los asigna.'},
+  {titulo:'Plan de Seguridad Ciudadana', rel:'eje', eje:5,
+   nota:'El compromiso se define como la implementación de este eje, por lo que se lee el estado de todas sus acciones.'},
+  {titulo:'Conectividad digital rural', rel:'componente', acciones:[120],
+   nota:'La Matriz no tiene una acción propia. La acción Nº 120 incluye la conectividad digital entre sus componentes, junto con caminos vecinales, agua potable y servicios básicos en las unidades vecinales rurales.'},
+  {titulo:'Agua potable rural', rel:'accion', acciones:[127],
+   nota:'La Matriz lo formula como un estudio y plan de mejoramiento de los Servicios Sanitarios Rurales.'},
+  {titulo:'Centros de día para adultos mayores', rel:'accion', acciones:[37]},
+  {titulo:'Actualización del Plan Regulador Comunal', rel:'accion', acciones:[87]},
+  {titulo:'Activación del COSOC', rel:'accion', acciones:[205],
+   nota:'La Matriz lo formula como la constitución y activación del COSOC y de los mecanismos de participación de la Ley 20.500; no menciona procesos vinculantes.'},
+  {titulo:'Protocolo Ley Karin', rel:'accion', acciones:[180,182]},
+  {titulo:'Código de Ética Municipal', rel:'accion', acciones:[206,185]},
+  {titulo:'Tablero de 10 KPIs del PLADECO', rel:'accion', acciones:[213],
+   nota:'La Matriz lo formula como un tablero de indicadores institucionales con metas anuales y reportes trimestrales; no fija el número de indicadores.'}
+];
 function renderCompromisos(){
-  const el=document.getElementById('compromisosList');
-  const resEl=document.getElementById('compResumen');
-  if(!el)return;
-  const compromisos=[
-    {titulo:'Hospital de Alta Complejidad',desc:'Gestión para la construcción del hospital con inversión de $20.000 millones comprometidos por el gobierno central.',estado:'en-curso',icon:'🏥'},
-    {titulo:'Plan de Seguridad Ciudadana',desc:'Implementación del Eje 5 del PLADECO con cámaras, luminarias y programas de prevención en zonas críticas.',estado:'en-curso',icon:'🛡️'},
-    {titulo:'Conectividad digital rural',desc:'Cerrar la brecha digital en las 15 localidades rurales más aisladas. Meta: 95% de cobertura internet al 2028.',estado:'en-curso',icon:'📡'},
-    {titulo:'Red de agua potable rural',desc:'Ampliación de sistemas APR para reducir el IPSB rural de 0,370 a menos de 0,200 al 2030.',estado:'pendiente',icon:'💧'},
-    {titulo:'Centros diurnos adulto mayor',desc:'Construcción de 2 centros diurnos (urbano + rural) para atender el envejecimiento poblacional (19,7% 60+ años).',estado:'pendiente',icon:'🏠'},
-    {titulo:'Plan regulador actualizado',desc:'Actualización del Plan Regulador Comunal incorporando las nuevas zonas de crecimiento urbano.',estado:'en-curso',icon:'📐'},
-    {titulo:'Portal PLADECO digital',desc:'Plataforma interactiva con datos abiertos, indicadores de seguimiento y acceso ciudadano.',estado:'cumplido',icon:'🌐'},
-    {titulo:'COSOC con procesos vinculantes',desc:'El Consejo de la Sociedad Civil opera actualmente como organismo de entrega de información sin procesos vinculantes formalizados. El desafío institucional pendiente es transitar hacia una instancia con incidencia resolutiva en la implementación del PLADECO, mediante fortalecimiento del reglamento interno y procedimientos de consulta vinculantes (Ley 20.500).',estado:'en-curso',icon:'🏛️'},
-    {titulo:'Encuesta ciudadana masiva',desc:'Consulta a más de 1.500 personas para incorporar la voz ciudadana en el diagnóstico.',estado:'cumplido',icon:'📋'},
-    {titulo:'Integración datos Censo 2024',desc:'Uso de datos oficiales del Censo para construir índices de vulnerabilidad territorial.',estado:'cumplido',icon:'📊'},
-    {titulo:'Protocolo Ley Karin',desc:'Cerrar las 6 brechas activas del protocolo de prevención del acoso laboral y sexual, vigentes desde agosto 2024 (multas de hasta 100 UTM).',estado:'en-curso',icon:'⚖️'},
-    {titulo:'Código de Ética Municipal',desc:'Elaboración y aprobación del Código de Ética del municipio como instrumento de probidad y buen gobierno.',estado:'pendiente',icon:'📜'},
-    {titulo:'Tablero de 10 KPIs del PLADECO',desc:'Puesta en marcha del tablero de gestión institucional con 10 indicadores y reporte trimestral al Concejo Municipal.',estado:'en-curso',icon:'📈'}
-  ];
-  const cumplidos=compromisos.filter(c=>c.estado==='cumplido').length;
-  const enCurso=compromisos.filter(c=>c.estado==='en-curso').length;
-  const pendientes=compromisos.filter(c=>c.estado==='pendiente').length;
-  if(resEl) resEl.innerHTML=`
-    <div class="comp-stat" style="background:#d1fae5;color:#065f46">✅ ${cumplidos} Cumplidos</div>
-    <div class="comp-stat" style="background:#fef3c7;color:#92400e">🔄 ${enCurso} En Curso</div>
-    <div class="comp-stat" style="background:#fee2e2;color:#991b1b">⏳ ${pendientes} Pendientes</div>
-    <div class="comp-stat" style="background:#dbeafe;color:#1F3864">📊 ${Math.round(cumplidos/compromisos.length*100)}% Avance</div>`;
-  const checks={cumplido:'✓',['en-curso']:'→',pendiente:'○'};
-  const estados={cumplido:'Cumplido',['en-curso']:'En curso',pendiente:'Pendiente'};
-  el.innerHTML=compromisos.map(c=>`
-    <div class="compromiso-item ${c.estado}">
-      <div class="comp-check">${checks[c.estado]}</div>
-      <div class="comp-content">
-        <div class="comp-titulo">${c.icon} ${c.titulo}</div>
-        <div class="comp-desc">${c.desc}</div>
-        <span class="comp-estado">${estados[c.estado]}</span>
-      </div>
-    </div>`).join('');
-  /* Animate progress ring */
-  const pct=Math.round(cumplidos/compromisos.length*100);
-  const fill=document.getElementById('cprFill');
-  const txt=document.getElementById('cprText');
-  if(fill){
-    const circumference=2*Math.PI*24;
-    setTimeout(()=>{fill.style.strokeDashoffset=circumference-(pct/100)*circumference;},300);
+  var el=document.getElementById('compromisosList');
+  if(!el) return;
+  var POL=window._POL, POA=window.accionesPOA;
+  if((!POL||!POA) && document.readyState==='loading'){
+    if(!renderCompromisos._espera){
+      renderCompromisos._espera=true;
+      document.addEventListener('DOMContentLoaded',function(){ try{ renderCompromisos(); }catch(e){} },{once:true});
+    }
+    return;
   }
-  if(txt) txt.textContent=pct+'%';
-  /* Update filter counts */
-  const cfAll=document.getElementById('cfAll');
-  const cfC=document.getElementById('cfCumplido');
-  const cfE=document.getElementById('cfEnCurso');
-  const cfP=document.getElementById('cfPendiente');
-  if(cfAll) cfAll.textContent=compromisos.length;
-  if(cfC) cfC.textContent=cumplidos;
-  if(cfE) cfE.textContent=enCurso;
-  if(cfP) cfP.textContent=pendientes;
+  POL=POL||[]; POA=POA||[];
+  var C=window.COMPROMISOS_PUBLICOS||[];
+  var ESTADOS=['no iniciada','en curso','cerrada'];
+  var PLURAL={'no iniciada':'no iniciadas','en curso':'en curso','cerrada':'cerradas'};
+  var PLAZO={C:'corto',M:'mediano',L:'largo'};
+  function esc(t){ var d=document.createElement('div'); d.textContent=(t==null?'':String(t)); return d.innerHTML; }
+  function cap(s){ s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1); }
+  function limpio(t){ return String(t||'').replace(/\s*"([^"]+)"/g,' «$1»').replace(/"/g,'').replace(/\s+/g,' ').trim(); }
+  function pol(id){ for(var i=0;i<POL.length;i++){ if(POL[i][0]===id) return POL[i]; } return null; }
+  function poa(id){ for(var i=0;i<POA.length;i++){ if(POA[i].id===id) return POA[i]; } return null; }
+  function tok(est){ return String(est).replace(/\s+/g,'-'); }
+  function ejeNombre(n){ try{ if(typeof EJES!=='undefined' && EJES && EJES[n-1]) return EJES[n-1].name||''; }catch(e){} return ''; }
+  function ejecutada(a){ return !!a && (a.estado!=='no iniciada' || (a.avance||0)>0); }
+  function fase(k,v){ return '<div class="cmp-f"><dt>'+k+'</dt><dd>'+v+'</dd></div>'; }
+
+  var idsTodas=[], vinculados=0, sinMatriz=[], cuenta={};
+  var html=C.map(function(c){
+    var ids=(c.rel==='eje') ? POL.filter(function(p){ return p[1]===c.eje; }).map(function(p){ return p[0]; })
+                            : (c.acciones||[]).filter(function(id){ return !!pol(id); });
+    ids.forEach(function(id){ if(idsTodas.indexOf(id)<0) idsTodas.push(id); });
+    var tokens=[];
+    var h='<article class="compromiso-item">'
+      + '<h3 class="cmp-titulo">'+esc(c.titulo)+'</h3>';
+    var rel='';
+    if(c.rel==='eje' && ids.length){
+      rel='Corresponde al Eje '+c.eje+' de la Matriz'+(ejeNombre(c.eje)?(', «'+esc(ejeNombre(c.eje))+'»'):'')+'. ';
+    }else if(c.rel==='accion' && ids.length){
+      rel='Corresponde a '+(ids.length===1?'la acción':'las acciones')+' '
+        + ids.map(function(id){ return 'Nº '+id; }).join(' y ')+' de la Matriz. ';
+    }
+    if(c.nota) rel+=esc(c.nota);
+    if(rel) h+='<p class="cmp-rel">'+rel+'</p>';
+
+    if(!ids.length){
+      sinMatriz.push(c.titulo);
+      tokens.push('sin-constancia');
+      h+='<div class="cmp-accion"><dl class="cmp-fases">'
+        + fase('Propuesta','No figura en la Matriz.')
+        + fase('Programación','Sin registro en el Plan Operativo Anual.')
+        + fase('Financiamiento', c.fin?esc(c.fin):'No consta.')
+        + fase('Ejecución','Sin constancia registrada.')
+        + '</dl></div>';
+    }else if(c.rel==='eje'){
+      vinculados++;
+      var ps=ids.map(pol);
+      var oes=[]; ps.forEach(function(p){ if(oes.indexOf(p[2])<0) oes.push(p[2]); });
+      var pl={C:0,M:0,L:0}; ps.forEach(function(p){ var k=String(p[12]||'').trim(); if(pl.hasOwnProperty(k)) pl[k]++; });
+      var conFin=ps.filter(function(p){ return String(p[14]||'').trim(); }).length;
+      var as=ids.map(poa).filter(Boolean);
+      var porEst={}; as.forEach(function(a){ porEst[a.estado]=(porEst[a.estado]||0)+1; });
+      var prom=as.length?Math.round(as.reduce(function(t,a){ return t+(a.avance||0); },0)/as.length):0;
+      ESTADOS.forEach(function(e){ if(porEst[e]) tokens.push(tok(e)); });
+      if(as.length<ids.length) tokens.push('sin-constancia');
+      var ejec=ESTADOS.filter(function(e){ return porEst[e]; }).map(function(e){ return porEst[e]+' '+PLURAL[e]; });
+      if(as.length<ids.length) ejec.push((ids.length-as.length)+' sin registro');
+      h+='<div class="cmp-accion"><p class="cmp-accion-t">Eje '+c.eje+' · '+ids.length+' acciones</p><dl class="cmp-fases">'
+        + fase('Propuesta', ids.length+' acciones en la Matriz'+(oes.length?(', de '+esc(oes[0])+' a '+esc(oes[oes.length-1])):'')+'.')
+        + fase('Programación','Plazo corto: '+pl.C+' · mediano: '+pl.M+' · largo: '+pl.L+'.')
+        + fase('Financiamiento', conFin+' de '+ids.length+' declaran fuentes previstas. Recursos asignados: no consta.')
+        + fase('Ejecución', as.length ? (ejec.join(' · ')+' · avance promedio '+prom+'&nbsp;% en el Plan Operativo Anual.') : 'Sin constancia registrada.')
+        + '</dl></div>';
+    }else{
+      vinculados++;
+      ids.forEach(function(id){
+        var p=pol(id), a=poa(id);
+        if(a) tokens.push(tok(a.estado)); else tokens.push('sin-constancia');
+        var plazo=PLAZO[String(p[12]||'').trim()];
+        var resp=String(p[13]||'').trim(), fin=String(p[14]||'').trim();
+        h+='<div class="cmp-accion"><p class="cmp-accion-t">Acción Nº '+id+' · '+esc(limpio(p[5]))+'</p><dl class="cmp-fases">'
+          + fase('Propuesta','En la Matriz, objetivo '+esc(p[2])+'.')
+          + fase('Programación', (plazo?('Plazo '+plazo):'Sin plazo')+(a&&a.anio?(' (ventana '+esc(a.anio)+')'):'')+(resp?(' · responsable: '+esc(resp)):'')+'.')
+          + fase('Financiamiento', (fin?('Fuentes previstas: '+esc(fin)+'. '):'Sin fuentes previstas. ')+'Recursos asignados: no consta.')
+          + fase('Ejecución', a ? (esc(cap(a.estado))+' · '+(a.avance||0)+'&nbsp;% de avance en el Plan Operativo Anual.') : 'Sin constancia registrada.')
+          + '</dl></div>';
+      });
+    }
+    var uniq=[]; tokens.forEach(function(t){ if(uniq.indexOf(t)<0) uniq.push(t); });
+    uniq.forEach(function(t){ cuenta[t]=(cuenta[t]||0)+1; });
+    return h.replace('<article class="compromiso-item">','<article class="compromiso-item" data-ejec="'+uniq.join(' ')+'">')+'</article>';
+  }).join('');
+  el.innerHTML=html;
+
+  var ejecutadas=idsTodas.filter(function(id){ return ejecutada(poa(id)); }).length;
+
+  /* resumen calculado */
+  var resEl=document.getElementById('compResumen');
+  function stat(v,l){ return '<div class="cmp-stat"><div class="cmp-stat-val">'+v+'</div><div class="cmp-stat-lbl">'+l+'</div></div>'; }
+  if(resEl) resEl.innerHTML=
+      stat(C.length,'compromisos destacados')
+    + stat(vinculados,'vinculados a acciones de la Matriz')
+    + stat(sinMatriz.length,'sin acción en la Matriz y sin constancia registrada')
+    + stat(ejecutadas+' de '+idsTodas.length,'acciones vinculadas con ejecución registrada en el Plan Operativo Anual');
+
+  /* estado del POA completo, dicho en el aviso (se recalcula si SECPLAC completa POA_ESTADO) */
+  var aviso=document.getElementById('compAviso');
+  if(aviso && POA.length){
+    var tot={}; POA.forEach(function(a){ tot[a.estado]=(tot[a.estado]||0)+1; });
+    var avG=Math.round(POA.reduce(function(t,a){ return t+(a.avance||0); },0)/POA.length);
+    var partes=ESTADOS.map(function(e){ return (tot[e]||0)+' '+PLURAL[e]; });
+    var pPoa=aviso.querySelector('.cmp-aviso-poa');
+    if(!pPoa){ pPoa=document.createElement('p'); pPoa.className='cmp-aviso-poa'; aviso.insertBefore(pPoa, aviso.children[1]||null); }
+    pPoa.innerHTML='<strong>Estado del Plan Operativo Anual.</strong> De sus '+POA.length+' acciones registra '
+      + partes[0]+', '+partes[1]+' y '+partes[2]+', con un avance promedio de '+avG+'&nbsp;%.';
+  }
+
+  /* filtros calculados: solo los estados que existen */
+  var fr=document.getElementById('compFilterRow');
+  if(fr){
+    var ORDEN=['no-iniciada','en-curso','cerrada','sin-constancia'];
+    var LBL={'no-iniciada':'No iniciada','en-curso':'En curso','cerrada':'Cerrada','sin-constancia':'Sin constancia registrada'};
+    var btn=function(k,l,n,on){ return '<button type="button" class="comp-f-btn'+(on?' active':'')+'" data-filtro="'+k+'" aria-pressed="'+(on?'true':'false')+'">'+l+' <span class="cf-count">'+n+'</span></button>'; };
+    fr.innerHTML='<span class="cmp-filtro-lbl">Ejecución registrada:</span>'
+      + btn('all','Todos',C.length,true)
+      + ORDEN.filter(function(k){ return cuenta[k]; }).map(function(k){ return btn(k,LBL[k],cuenta[k],false); }).join('');
+    Array.prototype.forEach.call(fr.querySelectorAll('.comp-f-btn'),function(b){
+      b.addEventListener('click',function(){ filterCompromisos(b.getAttribute('data-filtro')); });
+    });
+  }
+
+  /* productos de la formulación: fuera de la lista, con su dato verificable */
+  var nf=document.getElementById('compNotaFormulacion');
+  if(nf){
+    var estPortal=(window.versionInfo&&window.versionInfo.estado)||'';
+    nf.innerHTML='No se incluyen en esta lista los productos de la formulación del plan, porque no son acciones de ejecución: '
+      + 'la encuesta ciudadana en línea, con 119 respuestas (<a href="#voz">resultados</a>); el uso de los datos del '
+      + '<a href="#censo">Censo 2024</a>, y este portal'+(estPortal?(', cuyo estado declarado es «'+esc(estPortal)+'»'):'')+'.';
+  }
+
+  /* los ítems nacen después del observador de entrada: se observan aquí o se muestran directamente */
+  Array.prototype.forEach.call(el.querySelectorAll('.compromiso-item'),function(it){
+    var ok=false;
+    try{ if(typeof entranceObs!=='undefined' && entranceObs && entranceObs.observe){ entranceObs.observe(it); ok=true; } }catch(e){}
+    if(!ok) it.classList.add('revealed');
+  });
+
+  window.compromisosEstado={total:C.length, vinculados:vinculados, sinMatriz:sinMatriz.slice(),
+    acciones:idsTodas.length, ejecutadas:ejecutadas};
 }
 function filterCompromisos(estado){
-  const btns=document.querySelectorAll('.comp-f-btn');
-  btns.forEach(b=>b.classList.remove('active'));
-  event.target.closest('.comp-f-btn').classList.add('active');
-  const items=document.querySelectorAll('.compromiso-item');
-  items.forEach(item=>{
-    if(estado==='all'||item.classList.contains(estado)){
-      item.classList.remove('comp-hidden');
-    }else{
-      item.classList.add('comp-hidden');
-    }
+  var fr=document.getElementById('compFilterRow');
+  if(fr) Array.prototype.forEach.call(fr.querySelectorAll('.comp-f-btn'),function(b){
+    var on=(b.getAttribute('data-filtro')===estado);
+    b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false');
   });
+  Array.prototype.forEach.call(document.querySelectorAll('#compromisosList .compromiso-item'),function(it){
+    var t=(it.getAttribute('data-ejec')||'').split(' ');
+    var ver=(estado==='all' || t.indexOf(estado)>=0);
+    it.hidden=!ver; it.classList.toggle('comp-hidden',!ver);
+  });
+}
+/* v45.356 · [compromisos] · respuesta del asistente sobre compromisos, calculada con lo mismo que la sección
+   (antes daba «Cumplidos (4)», entre ellos un «Documento base aprobado por COSOC» sin constancia, cuando la
+   acción 205 parte de «Sin COSOC activo»). */
+function compromisosResumenQA(){
+  var s=window.compromisosEstado;
+  if(!s){ try{ renderCompromisos(); }catch(e){} s=window.compromisosEstado; }
+  var cab='**Compromisos Públicos PLADECO 2025-2035**\n\n';
+  var cierre='\n\nEl portal no documenta el criterio con que se seleccionaron estos compromisos.';
+  if(!s) return cab+'La sección contrasta cada compromiso con la Matriz Estratégica y con el Plan Operativo Anual. La ejecución se lee del Plan Operativo Anual; cuando un compromiso no corresponde a una acción de la Matriz, no hay constancia registrada.'+cierre;
+  return cab+'La sección destaca '+s.total+' compromisos y los contrasta con la Matriz Estratégica y con el Plan Operativo Anual, en cuatro momentos: propuesta, programación, financiamiento y ejecución.\n\n'
+    + '• Vinculados a acciones de la Matriz: '+s.vinculados+'\n'
+    + '• Sin acción en la Matriz y sin constancia registrada: '+s.sinMatriz.length+(s.sinMatriz.length?(' ('+s.sinMatriz.join(', ')+')'):'')+'\n'
+    + '• Acciones vinculadas con ejecución registrada en el Plan Operativo Anual: '+s.ejecutadas+' de '+s.acciones+'\n'
+    + '• Recursos asignados: el portal no los registra; solo hay fuentes previstas'
+    + cierre;
 }
 
 // ── ANTES / DESPUÉS (2017 vs 2024) ──
@@ -27269,11 +27472,23 @@ function renderProyMetodos(){
   if(_proyDone.m) return;
   var c=document.getElementById('proyChartMetodos');
   if(!c||!window.Chart) return;
+  /* v45.356 · [compromisos] · crítico 8 · EL EJE DE BARRAS PARTE EN CERO Y LAS BARRAS VAN EN UN SOLO COLOR.
+     Tenía min:60000 y max:75000: la barra del polinomial (72.523) se veía unas 2,1 veces más alta que la de
+     componentes (66.644) -12.523 contra 6.644 sobre el piso, 1,9 veces-, cuando la diferencia real es de 8,8 %. En un gráfico de barras la longitud es la
+     cifra, así que el eje empieza en cero. Los cinco colores no codificaban nada (no hay leyenda y cada barra
+     ya tiene su rótulo): pasan a uno solo, --chart-1, leído en cada actualización para que siga al tema.
+     Los datos no cambian. Rótulos con tildes («Geométrico», «Logístico», «Población 2035»).
+     Barras HORIZONTALES: en vertical, a 390 px el lienzo mide 251 × 160, los cinco rótulos salían girados
+     31° bajo un área de 85 px de alto y el título del eje se cortaba («Habitantes proyectad…»). Con los
+     nombres de los métodos a la izquierda se leen en horizontal en cualquier ancho.
+     Verificado en el navegador: eje de 0 a 80.000; las cinco barras en #1F3864 (claro) y #7ea4d8 tras
+     cambiar a oscuro; los cinco rótulos visibles y sin girar a 740 px y a 390 px, con el título del eje
+     completo; la ventana emergente de la barra del polinomial dice «72.523 hab.». */
   new Chart(c,{
     type:'bar',
-    data:{labels:['Geometrico','Polinomial','Logistico','INE corregido','Componentes'],
-      datasets:[{label:'Poblacion 2035',data:[71498,72523,69631,66962,66644],backgroundColor:['#3b82f6','#dc2626','#2d9a4d','#f59e0b','#6087c7'],borderRadius:6}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y.toLocaleString('es-CL')+' hab.';}}}},scales:{y:{beginAtZero:false,min:60000,max:75000,ticks:{callback:function(v){return v.toLocaleString('es-CL');}},title:{display:true,text:'Habitantes proyectados al 2035',font:{weight:'bold'}}}}}
+    data:{labels:['Geométrico','Polinomial','Logístico','INE corregido','Componentes'],
+      datasets:[{label:'Población 2035',data:[71498,72523,69631,66962,66644],backgroundColor:function(){var p=window.CHART_PALETTE&&window.CHART_PALETTE();return (p&&p[0])||'#1F3864';},borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x.toLocaleString('es-CL')+' hab.';}}}},scales:{x:{beginAtZero:true,min:0,ticks:{callback:function(v){return v.toLocaleString('es-CL');}},title:{display:true,text:'Habitantes proyectados al 2035',font:{weight:'bold'}}},y:{grid:{display:false}}}}
   });
   _proyDone.m=true;
 }
@@ -28768,7 +28983,7 @@ const CMD_SECTIONS=[
   {id:'inversion-subdere',name:'Inversión Municipal SUBDERE',svg:'money',cat:'Gestión',desc:'Proyectos de inversión de Rengo ante SUBDERE: estados, montos, años, línea de tiempo y relación con el PLADECO (PMB, PMU, FRIL)'},
   {id:'comisiones',name:'Comisiones de Trabajo',svg:'people',cat:'Participación',desc:'Mesas y comisiones del proceso'},
   {id:'equipo',name:'Equipo Técnico',svg:'briefcase',cat:'Institucional',desc:'Quién elaboró el plan'},
-  {id:'compromisos',name:'Compromisos Públicos',svg:'check',cat:'Gobernanza',desc:'Compromisos asumidos por el municipio'},
+  {id:'compromisos',name:'Compromisos Públicos',svg:'check',cat:'Gobernanza',desc:'Compromisos destacados y su estado en el Plan Operativo Anual'}, /* v45.356 · [compromisos] · decía «asumidos por el municipio»: no consta el acto que los adopte */
   {id:'antes-despues',name:'Antes y Después',svg:'cycle',cat:'Evolución',desc:'Transformaciones visibles en la comuna'},
   {id:'galeria',name:'Galería Fotográfica',svg:'image',cat:'Registro',desc:'Fotografías del proceso y la comuna'},
   {id:'documentos',name:'Documentos',svg:'folder',cat:'Documentación',desc:'Descarga informes y anexos'},
@@ -29100,7 +29315,10 @@ const CHATBOT_QA=[
    ans:'Equipo Técnico PLADECO 2025-2035:\n\n👤 **Alcalde**: Conducción política del proceso\n👤 **Director SECPLAC**: Coordinación estratégica general\n👤 **Encargado PLADECO**: Gestión operativa y sistematización\n👤 **SECPLAC**: Planificación territorial y datos\n👤 **DIDECO**: Articulación comunitaria y participación\n👤 **DOM**: Desarrollo urbano y obras\n👤 **Consultores Externos**: Metodología y análisis técnico\n👤 **COSOC**: Representación ciudadana\n\nEl equipo trabaja de forma interdepartamental desde enero 2025.'},
   {keys:['compromiso','cumplido','pendiente','avance','logro'],sec:'compromisos',cat:'pladeco',
    follow:['Línea de tiempo','Metas 2035','Semáforo','Equipo técnico'],
-   ans:'Compromisos Públicos PLADECO 2025-2035:\n\n✅ **Cumplidos (4):**\n• Diagnóstico territorial completado\n• Consulta ciudadana masiva realizada\n• Cartografía social de 21 UV\n• Documento base aprobado por COSOC\n\n🔄 **En curso (4):**\n• Formulación de políticas públicas\n• Validación técnica interdepartamental\n• Integración ODS a nivel de acción\n• Mesa de trabajo intersectorial activa\n\n⏳ **Por confirmar (2):**\n• Aprobación por el Concejo Municipal: '+_EST_INSTR_QA_MIN+'\n• Publicación del documento oficial: no está publicado en el portal'},
+   /* v45.356 · [compromisos] · decía «Cumplidos (4)» (con un «Documento base aprobado por COSOC» sin constancia,
+      cuando la acción 205 de la Matriz parte de «Sin COSOC activo») y «En curso (4)», sin fuente. Ahora la
+      respuesta se calcula al preguntar, con los mismos datos que dibuja #compromisos (compromisosResumenQA). */
+   get ans(){ try{ if(typeof compromisosResumenQA==='function') return compromisosResumenQA(); }catch(e){} return 'Compromisos Públicos PLADECO 2025-2035: la sección contrasta cada compromiso con la Matriz Estratégica y con el Plan Operativo Anual.'; }},
   {keys:['timeline','linea de tiempo','proceso','etapa','fase','cronologia','hito'],sec:'cronograma-gantt',cat:'pladeco',
    follow:['Compromisos','¿Qué es el PLADECO?','Equipo técnico','Comisiones'],
    ans:'Línea de Tiempo del proceso PLADECO:\n\n📌 **2025 (Ene-Mar)**: Constitución del equipo + diagnóstico territorial\n📌 **2025 (Abr-Jun)**: Encuestas masivas + talleres participativos\n📌 **2025 (Jul-Sep)**: Análisis FODA + etnografía territorial\n📌 **2025 (Oct-Dic)**: Formulación estratégica + validación COSOC\n📌 **2026 (Ene-Mar)**: Redacción final + metas e indicadores\n📌 **2026 (Abr-Jun)**: presentación al Concejo Municipal para aprobación (estado formal: '+_EST_INSTR_QA_MIN+')\n\nEl proceso ha incluido +2.000 participantes directos.'},
@@ -41164,7 +41382,10 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   window.rutasInicio = (window.rutasInicio && !window.rutasInicio.nodeType) ? window.rutasInicio : [
     {letra:'E', t:'Explora tu territorio', d:'Mapa comunal y ficha de las 21 unidades vecinales, con sus indicadores.',
      links:[{h:'#mapa',x:'Mapa interactivo'},{h:'#territorio',x:'Lista de unidades vecinales'}]},
-    {letra:'F', t:'Del plan a la acción', d:'Las acciones comprometidas y su estado, con el criterio de selección declarado.',
+    /* v45.356 · [compromisos] · crítico 1 · decía «con el criterio de selección declarado», pero ese criterio no
+       existe en el portal (buscado en el marcado, en COMPROMISOS_PUBLICOS y en discrepanciasDatos). Se retira la
+       promesa; #compromisos declara ahora la ausencia del criterio. */
+    {letra:'F', t:'Del plan a la acción', d:'Compromisos destacados, contrastados con la Matriz y con el estado que registra el Plan Operativo Anual.',
      links:[{h:'#compromisos',x:'Compromisos públicos'},{h:'#poa',x:'Plan Operativo Anual'}]},
     {letra:'G', t:'Seguimiento e hitos', d:'Cronograma del proceso y avance de las metas a 2028 y 2035.',
      links:[{h:'#cronograma-gantt',x:'Cronograma'},{h:'#semaforo',x:'Semáforo de metas'}]},
@@ -42767,6 +42988,42 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
      resolucion:'Pendiente. Requiere fotografías con lugar y fecha por territorio, un campo de localización en la matriz y la definición del registro oficial de unidades vecinales.'}
   ];
   nuevas.forEach(function(n){ if(!yaEsta(n.id)) D.push(n); });
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.356 · [compromisos] · crítico 1 · REGISTRO DE LO QUE LA LISTA DE COMPROMISOS NO PUEDE RESOLVER
+     (rama revision-editorial · NO PUBLICADA)
+
+     #compromisos ya no muestra estados escritos a mano (ver renderCompromisos). Lo que queda
+     pendiente depende del municipio y se registra aquí, con el formato de las entradas existentes,
+     para que aparezca en la tabla de #metodologia: el criterio de selección, que no existe; el vínculo
+     compromiso-acción, que se estableció desde el código; y las cifras que la lista traía y que no
+     coinciden con la Matriz o no tienen fuente. Cada valor citado se comprobó en el código:
+       · 225 acciones «no iniciada» con avance 0 = window.accionesPOA (POA_ESTADO vacío).
+       · Acción 37: meta 2028 «1 centro de día operativo», meta 2035 «3 centros de día» (_POL).
+       · IPSB rural 0,370 → 0,250 «en 4 años»: tarjeta puente a la Matriz de #analisis-estrategico-censo
+         y ANEST_RECOM (recomendación 1); acción 127: línea base «Por establecer» (_POL).
+       · «95 %» de la acción 120: meta 2035 de agua potable; ninguna fila de _POL fija cobertura de internet.
+       · «$20.000M comprometidos» del hospital: #foda (F18 y O9), ARGUMENTOS y respuesta de salud del
+         asistente; ningún título de _POL menciona un hospital.
+     Se ejecuta al analizarse la página, antes de que la tabla se dibuje (DOMContentLoaded).
+═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  var D = window.discrepanciasDatos;
+  if(!D || !D.push) return;
+  if(D.some(function(x){ return x && x.id==='compromisos-seleccion-y-cifras'; })) return;
+  D.push({id:'compromisos-seleccion-y-cifras', tema:'Compromisos públicos', estado:'por declarar',
+    valores:['Criterio de selección: el portal no documenta por qué se destacan estos compromisos y no otros, ni registra un acto de la autoridad comunal que los adopte; la tarjeta «Del plan a la acción» del inicio decía que el criterio estaba declarado',
+             'Estados escritos a mano hasta v45.355: 3 «Cumplidos», 7 «En curso», 3 «Pendientes» y «23% Avance», frente al Plan Operativo Anual, que a la fecha de esta revisión registra sus 225 acciones como no iniciadas y con 0 % de avance',
+             '«Encuesta ciudadana masiva a más de 1.500 personas», contada como compromiso cumplido, frente a las 119 respuestas de la encuesta ciudadana en línea',
+             '«2 centros diurnos (urbano + rural)» frente a la acción Nº 37 de la Matriz: 1 centro de día al 2028 y 3 al 2035',
+             '«Reducir el IPSB rural de 0,370 a menos de 0,200 al 2030» frente a «de 0,370 a 0,250 en 4 años» en otros bloques del portal; la acción Nº 127 deja su línea base «por establecer»',
+             '«95 % de cobertura de internet al 2028»: no figura en la Matriz; el 95 % de la acción Nº 120 es la meta 2035 de agua potable',
+             'Hospital de Alta Complejidad: «$20.000 millones comprometidos» en #foda, en los argumentos del plan y en el asistente, sin acto, fecha ni fuente; ninguna acción de la Matriz lo recoge'],
+    nota:'Desde v45.356 la lista no muestra estados: contrasta cada compromiso con la Matriz y lee la ejecución del Plan Operativo Anual; donde no hay acción declara que no hay constancia registrada. Las cifras escritas a mano que no coincidían con la Matriz o no tenían fuente salieron de la vista, y la encuesta, el Censo y el portal dejaron de contarse como compromisos porque son productos de la formulación. El vínculo entre compromiso y acción lo estableció la revisión por coincidencia del objeto nombrado en el título o la descripción de la acción (la seguridad ciudadana se lee como el Eje 5 completo porque así se definía el propio compromiso): no es un vínculo declarado por el municipio.',
+    resolucion:'Pendiente. Requiere que SECPLAC declare el criterio con que se seleccionan los compromisos públicos, confirme o corrija su vínculo con las acciones de la Matriz (window.COMPROMISOS_PUBLICOS) y entregue el acto y la fecha que respaldan los $20.000 millones del hospital.'});
 })();
 </script>
 
