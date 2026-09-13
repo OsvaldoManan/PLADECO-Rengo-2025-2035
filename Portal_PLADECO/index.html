@@ -17307,6 +17307,7 @@ body.dark #compromisos .cmp-aviso{border-left-color:var(--id-azul,#7FA8D4)}
 #compromisos .cmp-f{border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin:0}
 #compromisos .cmp-f dt{font-size:13px;font-weight:700;color:var(--text2);margin:0 0 2px}
 #compromisos .cmp-f dd{font-size:14px;color:var(--text);line-height:1.5;margin:0}
+#compromisos .comp-f-btn .cf-count{font-size:13px}  /* fix revisor: el contador de cada filtro heredaba 11 px (.comp-f-btn .cf-count, bloque anterior) */
 #compromisos .cmp-nota-form{font-size:14px;color:var(--text2);line-height:1.6;margin:14px 0 0;max-width:80ch}
 @media(max-width:1000px){#compromisos .cmp-fases{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){#compromisos .cmp-fases{grid-template-columns:1fr}}
@@ -17322,7 +17323,7 @@ body.dark #compromisos .cmp-aviso{border-left-color:var(--id-azul,#7FA8D4)}
     <p><strong>Criterio de selecci&oacute;n.</strong> El portal no documenta por qu&eacute; se destacan estos compromisos y no otros, ni registra un acto de la autoridad comunal que los adopte.</p>
   </div>
   <div class="cmp-resumen" id="compResumen"></div>
-  <div class="comp-filter-row" id="compFilterRow" role="group" aria-label="Filtrar por ejecución registrada"></div>
+  <div class="comp-filter-row" id="compFilterRow" role="group" aria-label="Filtrar por estado en el Plan Operativo Anual"></div>
   <div class="compromisos-list" id="compromisosList"></div>
   <p class="cmp-nota-form" id="compNotaFormulacion"></p>
   <div class="callout" style="margin-top:24px">
@@ -24622,8 +24623,10 @@ function testAutoPlay(){
        rel:'componente' → la Matriz no tiene acción propia y el objeto aparece como componente de otra
                           (la conectividad digital, en la descripción de la 120).
        rel:'eje'        → el compromiso original se definía como «Implementación del Eje 5 del PLADECO».
-       rel:'ninguna'    → sin acción: «hospital» no aparece en ningún título de _POL (solo en la
-                          descripción de la 222, que trata de capacitación en gestión de riesgo).
+       rel:'ninguna'    → sin acción: «hospital» no aparece en ningún título de _POL (solo de paso en otros
+                          campos: la meta 2035 de la 51, la descripción de la 222 y la fundamentación de la
+                          223; ninguna trata del proyecto hospitalario). [fix revisor: antes decía «solo en la
+                          descripción de la 222»]
    · Propuesta, programación y fuentes PREVISTAS se leen de _POL; la ejecución, de accionesPOA (estado y
      avance). El financiamiento ASIGNADO no tiene campo en ningún registro del portal: se declara que no
      consta. Sin acción en la Matriz → «Sin constancia registrada».
@@ -24643,12 +24646,15 @@ function testAutoPlay(){
    en la Matriz, 0 de 42 acciones vinculadas con ejecución registrada; filtros «Todos 10 · No iniciada 9 ·
    Sin constancia registrada 1» que ocultan y muestran ítems; los ítems se revelan al desplazar; a 390 px no
    hay desborde y las fases van en una columna; dd 14 px, dt 13 px, botones 14 px y 44 px de alto; contraste
-   mínimo 4,58:1 en claro (enlace de la nota) y 7,65:1 en oscuro; la respuesta del asistente sale calculada
+   mínimo 4,58:1 en claro (enlace de la nota) y 7,38:1 en oscuro (contador del filtro activo; el revisor lo
+   remidió: decía 7,65:1, que es el del enlace del aviso); la respuesta del asistente sale calculada
    y la fila 'compromisos-seleccion-y-cifras' aparece en la tabla de #metodologia; sin errores de consola
    en una pestaña nueva. */
 window.COMPROMISOS_PUBLICOS = (window.COMPROMISOS_PUBLICOS && window.COMPROMISOS_PUBLICOS.length) ? window.COMPROMISOS_PUBLICOS : [
   {titulo:'Hospital de Alta Complejidad', rel:'ninguna',
-   nota:'No figura entre las acciones de la Matriz. El diagnóstico registra $20.000 millones comprometidos por el Estado para el hospital (FODA, fortaleza F18), pero el portal no identifica el acto que los compromete ni registra avance de la obra.',
+   /* v45.356 · [compromisos] · fix revisor: decía «comprometidos por el Estado (FODA, fortaleza F18)», pero F18 solo
+      dice «Hospital Alta Complejidad: $20.000M comprometidos», sin indicar quién los compromete. */
+   nota:'No figura entre las acciones de la Matriz. El FODA del diagnóstico (fortaleza F18) registra «$20.000M comprometidos» para el hospital, sin indicar quién los compromete; el portal no identifica el acto que los respalda ni registra avance de la obra.',
    fin:'El diagnóstico menciona $20.000 millones comprometidos; no consta el acto que los asigna.'},
   {titulo:'Plan de Seguridad Ciudadana', rel:'eje', eje:5,
    nota:'El compromiso se define como la implementación de este eje, por lo que se lee el estado de todas sus acciones.'},
@@ -24777,8 +24783,16 @@ function renderCompromisos(){
     var partes=ESTADOS.map(function(e){ return (tot[e]||0)+' '+PLURAL[e]; });
     var pPoa=aviso.querySelector('.cmp-aviso-poa');
     if(!pPoa){ pPoa=document.createElement('p'); pPoa.className='cmp-aviso-poa'; aviso.insertBefore(pPoa, aviso.children[1]||null); }
-    pPoa.innerHTML='<strong>Estado del Plan Operativo Anual.</strong> De sus '+POA.length+' acciones registra '
-      + partes[0]+', '+partes[1]+' y '+partes[2]+', con un avance promedio de '+avG+'&nbsp;%.';
+    /* v45.356 · [compromisos] · fix revisor: decía «De sus 225 acciones registra 225 no iniciadas […] avance
+       promedio de 0 %» también cuando POA_ESTADO está vacío, pero #poa declara que el estado y el avance «aún
+       no se levantan» y que «no iniciada / 0 %» es el valor de partida. Sin registro de seguimiento se dice eso. */
+    var sinSeg=false;
+    try{ sinSeg=!window.POA_ESTADO || Object.keys(window.POA_ESTADO).length===0; }catch(e){}
+    pPoa.innerHTML = sinSeg
+      ? ('<strong>Estado del Plan Operativo Anual.</strong> El estado de ejecución y el avance de sus '+POA.length+' acciones aún no se levantan: '
+        + 'todas parten en «no iniciada» y 0&nbsp;% hasta que SECPLAC registre su seguimiento. Lo que la lista muestra como ejecución es ese valor de partida.')
+      : ('<strong>Estado del Plan Operativo Anual.</strong> De sus '+POA.length+' acciones registra '
+        + partes[0]+', '+partes[1]+' y '+partes[2]+', con un avance promedio de '+avG+'&nbsp;%.');
   }
 
   /* filtros calculados: solo los estados que existen */
@@ -24787,7 +24801,7 @@ function renderCompromisos(){
     var ORDEN=['no-iniciada','en-curso','cerrada','sin-constancia'];
     var LBL={'no-iniciada':'No iniciada','en-curso':'En curso','cerrada':'Cerrada','sin-constancia':'Sin constancia registrada'};
     var btn=function(k,l,n,on){ return '<button type="button" class="comp-f-btn'+(on?' active':'')+'" data-filtro="'+k+'" aria-pressed="'+(on?'true':'false')+'">'+l+' <span class="cf-count">'+n+'</span></button>'; };
-    fr.innerHTML='<span class="cmp-filtro-lbl">Ejecución registrada:</span>'
+    fr.innerHTML='<span class="cmp-filtro-lbl">Estado en el Plan Operativo Anual:</span>'
       + btn('all','Todos',C.length,true)
       + ORDEN.filter(function(k){ return cuenta[k]; }).map(function(k){ return btn(k,LBL[k],cuenta[k],false); }).join('');
     Array.prototype.forEach.call(fr.querySelectorAll('.comp-f-btn'),function(b){
@@ -24800,7 +24814,7 @@ function renderCompromisos(){
   if(nf){
     var estPortal=(window.versionInfo&&window.versionInfo.estado)||'';
     nf.innerHTML='No se incluyen en esta lista los productos de la formulación del plan, porque no son acciones de ejecución: '
-      + 'la encuesta ciudadana en línea, con 119 respuestas (<a href="#voz">resultados</a>); el uso de los datos del '
+      + 'la Encuesta Ciudadana PLADECO Rengo 2025, con 119 respuestas (<a href="#voz">resultados</a>); el uso de los datos del '
       + '<a href="#censo">Censo 2024</a>, y este portal'+(estPortal?(', cuyo estado declarado es «'+esc(estPortal)+'»'):'')+'.';
   }
 
@@ -27473,8 +27487,8 @@ function renderProyMetodos(){
   var c=document.getElementById('proyChartMetodos');
   if(!c||!window.Chart) return;
   /* v45.356 · [compromisos] · crítico 8 · EL EJE DE BARRAS PARTE EN CERO Y LAS BARRAS VAN EN UN SOLO COLOR.
-     Tenía min:60000 y max:75000: la barra del polinomial (72.523) se veía unas 2,1 veces más alta que la de
-     componentes (66.644) -12.523 contra 6.644 sobre el piso, 1,9 veces-, cuando la diferencia real es de 8,8 %. En un gráfico de barras la longitud es la
+     Tenía min:60000 y max:75000: la barra del polinomial (72.523) se veía unas 1,9 veces más alta que la de
+     componentes (66.644) -12.523 contra 6.644 sobre el piso- [fix revisor: decía «2,1 veces»], cuando la diferencia real es de 8,8 %. En un gráfico de barras la longitud es la
      cifra, así que el eje empieza en cero. Los cinco colores no codificaban nada (no hay leyenda y cada barra
      ya tiene su rótulo): pasan a uno solo, --chart-1, leído en cada actualización para que siga al tema.
      Los datos no cambian. Rótulos con tildes («Geométrico», «Logístico», «Población 2035»).
@@ -43016,8 +43030,8 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
   if(D.some(function(x){ return x && x.id==='compromisos-seleccion-y-cifras'; })) return;
   D.push({id:'compromisos-seleccion-y-cifras', tema:'Compromisos públicos', estado:'por declarar',
     valores:['Criterio de selección: el portal no documenta por qué se destacan estos compromisos y no otros, ni registra un acto de la autoridad comunal que los adopte; la tarjeta «Del plan a la acción» del inicio decía que el criterio estaba declarado',
-             'Estados escritos a mano hasta v45.355: 3 «Cumplidos», 7 «En curso», 3 «Pendientes» y «23% Avance», frente al Plan Operativo Anual, que a la fecha de esta revisión registra sus 225 acciones como no iniciadas y con 0 % de avance',
-             '«Encuesta ciudadana masiva a más de 1.500 personas», contada como compromiso cumplido, frente a las 119 respuestas de la encuesta ciudadana en línea',
+             'Estados escritos a mano hasta v45.355: 3 «Cumplidos», 7 «En curso», 3 «Pendientes» y «23% Avance», frente al Plan Operativo Anual, que a la fecha de esta revisión no levanta el estado de ninguna de sus 225 acciones (todas parten en «no iniciada» y 0 %)',
+             '«Encuesta ciudadana masiva a más de 1.500 personas», contada como compromiso cumplido, frente a las 119 respuestas de la Encuesta Ciudadana PLADECO Rengo 2025',
              '«2 centros diurnos (urbano + rural)» frente a la acción Nº 37 de la Matriz: 1 centro de día al 2028 y 3 al 2035',
              '«Reducir el IPSB rural de 0,370 a menos de 0,200 al 2030» frente a «de 0,370 a 0,250 en 4 años» en otros bloques del portal; la acción Nº 127 deja su línea base «por establecer»',
              '«95 % de cobertura de internet al 2028»: no figura en la Matriz; el 95 % de la acción Nº 120 es la meta 2035 de agua potable',
