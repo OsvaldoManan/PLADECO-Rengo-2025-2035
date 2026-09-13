@@ -1053,17 +1053,8 @@ body.dark .arg-quote{background:rgb(26, 35, 68)}
 .com-item .com-tag{font-size:11px;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--text2);font-weight:600;white-space:nowrap}
 @media(max-width:768px){.com-item{grid-template-columns:1fr;gap:4px;padding:10px 12px}.com-item .com-tags{justify-content:flex-start}}
 
-/* ── Docs ── */
-.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.doc-card{background:var(--card);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;transition:transform .2s}
-.doc-card:hover{transform:translateY(-2px)}
-.doc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.doc-icon.docx{background:#dbeafe;color:#2563eb}
-.doc-icon.xlsx{background:#d1fae5;color:#065f46}
-.doc-icon.pptx{background:#fee2e2;color:#991b1b}
-.doc-icon.html{background:#fef3c7;color:#92400e}
-.doc-info h4{font-size:13px;font-weight:600}
-.doc-info p{font-size:11px;color:var(--text2)}
+/* ── Docs ── v45.356 · [cifras] §1.1 · .docs-grid, .doc-card, .doc-icon y .doc-info se retiraron:
+   solo los usaban #docs-grid y renderDocs(), ambos eliminados. */
 
 /* ── Footer ── */
 .footer{padding:0;font-size:12px;color:rgba(255,255,255,.7);background:rgb(13, 33, 61);margin-top:0;position:relative;overflow:hidden}
@@ -3048,20 +3039,9 @@ body.dark .hist-marco-card:hover{box-shadow:0 6px 18px rgba(43,108,176,.25)}
 .lightbox-hint kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:5px;font-size:10.5px;font-family:inherit}
 @media(max-width:560px){.lightbox-hint{display:none}}
 
-/* ── Enhanced Doc Cards ── */
-.doc-card-enhanced{background:var(--card);border-radius:var(--radius);padding:0;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column}
-.doc-card-enhanced:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.doc-card-enhanced .doc-accent{height:4px;width:100%}
-.doc-card-enhanced .doc-body{padding:20px;flex:1;display:flex;flex-direction:column}
-.doc-card-enhanced .doc-icon-big{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px;flex-shrink:0}
-.doc-card-enhanced .doc-title{font-size:14px;font-weight:700;margin-bottom:4px}
-.doc-card-enhanced .doc-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:12px;flex:1}
-.doc-card-enhanced .doc-meta{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text2);margin-bottom:12px}
-.doc-card-enhanced .doc-meta .dm-tag{padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px}
-.doc-card-enhanced .doc-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:8px;background:var(--bg);color:var(--text);font-size:11px;font-weight:700;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
-.doc-card-enhanced .doc-btn:hover{background:var(--accent);color:#fff}
-body.dark .doc-card-enhanced .doc-btn{background:#1e293b}
-body.dark .doc-card-enhanced .doc-btn:hover{background:var(--accent)}
+/* ── Enhanced Doc Cards ── v45.356 · [cifras] §1.1 · reglas propias de .doc-card-enhanced retiradas
+   junto con renderDocsEnhanced(). Quedan menciones de la clase en selectores agrupados de otros
+   bloques: no seleccionan nada y se dejan para no reescribir esas listas. */
 
 /* ── Diagramas Metodológicos (v44.8) ── */
 .diag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:8px}
@@ -3797,10 +3777,7 @@ body.dark .dot-nav a::before{background:rgba(255,255,255,.12)}
 body.dark .dot-nav a .dn-tip{background:#334155}
 body.dark .action-item .a-tag{background:rgba(67,56,202,.15);color:#a5b4fc}
 body.dark .foda-strats .strat-card p{color:#94a3b8}
-body.dark .doc-icon.docx{background:rgba(37,99,235,.15);color:#93c5fd}
-body.dark .doc-icon.xlsx{background:rgba(5,150,105,.15);color:#6ee7b7}
-body.dark .doc-icon.pptx{background:rgba(220,38,38,.15);color:#fca5a5}
-body.dark .doc-icon.html{background:rgba(217,119,6,.15);color:#fcd34d}
+/* v45.356 · [cifras] §1.1 · reglas oscuras de .doc-icon retiradas (la clase ya no se genera) */
 body.dark .kpi-alert.red{background:rgba(220,38,38,.12);color:#fca5a5}
 body.dark .kpi-alert.green{background:rgba(5,150,105,.12);color:#6ee7b7}
 body.dark .kpi-alert.amber{background:rgba(217,119,6,.12);color:#fcd34d}
@@ -7436,7 +7413,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
         <div style="background:rgba(0,0,0,.22);border-left:3px solid #ef4444;border-radius:10px;padding:14px 16px">
           <div style="font-size:10.5px;font-weight:700;color:#fca5a5;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">&#128100; Alcalde &middot; Concejo</div>
           <div style="font-weight:700;color:rgba(255,255,255,.95);margin-bottom:6px">Decisi&oacute;n y rendici&oacute;n de cuentas</div>
-          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">S&iacute;ntesis Interpretativa &middot; <strong>Decisiones del Plan (6)</strong> &middot; Argumentario &middot; Compromisos &middot; Sem&aacute;foro (10 indicadores) &middot; Pr&oacute;ximos pasos</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,.78)">S&iacute;ntesis Interpretativa &middot; <strong>Decisiones del Plan (6)</strong> &middot; Fundamentos de las decisiones &middot; Compromisos &middot; Sem&aacute;foro de Metas &middot; Pr&oacute;ximos pasos</div><!-- v45.356 · [cifras] crítico 12 y §1.3 · decía «Argumentario» (criterio de v45.332: «Fundamentos de las decisiones») y «Semáforo (10 indicadores)», cuando el Semáforo tiene 16 metas -->
         </div>
 
         <div style="background:rgba(0,0,0,.22);border-left:3px solid #f59e0b;border-radius:10px;padding:14px 16px">
@@ -7471,7 +7448,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 
           <a href="#argumentario" class="qi-ruta-card" data-tone="naranja">
             <div class="qi-ruta-top"><span class="qi-ruta-time">15&prime;</span><span class="qi-ruta-tag">Decisor</span></div>
-            <div class="qi-ruta-desc">+ Argumentario + Ventana 2025-2026 + Sem&aacute;foro (10 indicadores) + Pr&oacute;ximos pasos</div>
+            <div class="qi-ruta-desc">+ Fundamentos de las decisiones + Ventana 2025-2026 + Sem&aacute;foro de Metas + Pr&oacute;ximos pasos</div><!-- v45.356 · [cifras] crítico 12 y §1.3 · decía «+ Argumentario» y «Semáforo (10 indicadores)» -->
           </a>
 
           <a href="#dashboard" class="qi-ruta-card" data-tone="verde">
@@ -8350,10 +8327,19 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
       <article class="hist-card hist-card--highlight">
         <header class="hist-card-head">
           <span class="hist-era-tag hist-era-tag--current">PLADECO 2025&ndash;2035</span>
-          <h4 class="hist-card-title">El proceso participativo m&aacute;s amplio de la historia comunal</h4>
+          <h4 class="hist-card-title">Un proceso participativo m&aacute;s diverso que el de 2019</h4>
         </header>
+        <!-- v45.356 · [cifras] §1.4 · decía «El proceso participativo más amplio de la historia comunal» y «el
+             diagnóstico más amplio de la historia comunal». Ningún dato del portal compara con todos los
+             procesos anteriores: la única comparación es #comparador-instrumentos, frente al PLADECO
+             2019-2031, y allí la ventaja documentada es de modalidades (2019: solo encuentros barriales y
+             comisiones internas; 2025: entrevistas, grupos focales, etnografía, encuestas en línea, entre otras)
+             y de tipos de actores (concejales, autoridades regionales y organizaciones funcionales figuran «sin
+             información» en 2019), no de personas (2019 declara 21 encuentros con más de 500 asistentes). La frase se limita a eso. Además,
+             «10 KPIs medibles al año 2035» atribuía al horizonte 2035 los 10 KPIs del Tablero, cuyas metas son
+             2027 y 2029; las metas a 2035 son las 16 del Semáforo de Metas (METAS_SEG, campo m35). -->
         <p class="hist-card-text">
-          El PLADECO 2025-2035 constituye <strong>el diagn&oacute;stico m&aacute;s amplio de la historia comunal</strong>: m&aacute;s de <strong>300 personas consultadas</strong>, <strong>77 juntas de vecinos</strong> en el levantamiento territorial y <strong>40 entrevistas en profundidad</strong> con actores institucionales. A esta cobertura base se suman <strong>472 vecinos y vecinas</strong> activos en talleres por unidad vecinal, <strong>95 organizaciones funcionales</strong>, <strong>115 funcionarios municipales</strong> entrevistados y la voz de <strong>4.036 ni&ntilde;os, ni&ntilde;as y adolescentes</strong> a trav&eacute;s de la Oficina Local de la Ni&ntilde;ez. No es un plan dise&ntilde;ado en gabinete: es la <strong>s&iacute;ntesis t&eacute;cnica de m&aacute;s de tres siglos de asociatividad comunal</strong> &mdash;desde la Aldea de R&iacute;o Clarillo de 1692 hasta hoy&mdash;, proyectada en 6 ejes estrat&eacute;gicos, 225 acciones priorizadas y 10 KPIs medibles al a&ntilde;o 2035.
+          El PLADECO 2025-2035 se apoya en un diagn&oacute;stico que, <a href="#comparador-instrumentos" style="color:inherit;text-decoration:underline;text-underline-offset:2px">frente al PLADECO 2019-2031</a>, suma m&aacute;s modalidades de consulta y m&aacute;s tipos de actores: m&aacute;s de <strong>300 personas consultadas</strong>, <strong>77 juntas de vecinos</strong> en el levantamiento territorial y <strong>40 entrevistas en profundidad</strong> con actores institucionales. A esta cobertura base se suman <strong>472 vecinos y vecinas</strong> activos en talleres por unidad vecinal, <strong>95 organizaciones funcionales</strong>, <strong>115 funcionarios municipales</strong> entrevistados y la voz de <strong>4.036 ni&ntilde;os, ni&ntilde;as y adolescentes</strong> a trav&eacute;s de la Oficina Local de la Ni&ntilde;ez. No es un plan dise&ntilde;ado en gabinete: es la <strong>s&iacute;ntesis t&eacute;cnica de m&aacute;s de tres siglos de asociatividad comunal</strong> &mdash;desde la Aldea de R&iacute;o Clarillo de 1692 hasta hoy&mdash;, proyectada en 6 ejes estrat&eacute;gicos, 225 acciones priorizadas y 16 metas medibles al a&ntilde;o 2035.
         </p>
         <div class="hist-card-stats">
           <div class="hist-stat"><strong>+300</strong><span>personas consultadas</span></div>
@@ -8502,7 +8488,10 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
       <div class="edu-card investigador">
         <div class="edu-icon">&#128300;</div>
         <div class="edu-title">Para investigadores</div>
-        <div class="edu-desc">Bases de datos en formato abierto (CSV, JSON, GeoJSON, XLSX) bajo licencia CC BY-SA 4.0. Ideal para estudios comparados de planificaci&oacute;n comunal en Chile.</div>
+        <div class="edu-desc">Bases de datos en formato abierto (XLSX, JSON y CSV) bajo licencia CC BY-SA 4.0. Ideal para estudios comparados de planificaci&oacute;n comunal en Chile.</div>
+        <!-- v45.356 · [cifras] §1.1 · decía «(CSV, JSON, GeoJSON, XLSX)». Comprobado: el catálogo datasets.json
+             distribuye XLSX, JSON y PDF, y la matriz se exporta a CSV desde #matriz; ningún control del portal
+             ofrece un GeoJSON para descargar (rengo-limite.geojson solo lo lee el mapa de seguridad vial). -->
         <div class="edu-actions">
           <a href="#institucional" class="edu-action">&#9415; Licencia CC</a>
           <a href="#institucional" class="edu-action"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-save"></use></svg> Open Data</a>
@@ -14993,7 +14982,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
           <div style="width:28px;height:28px;background:rgba(192,57,43,.12);color:#C0392B;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">01</div>
           <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.25">Desarrollo Social y Comunitario</div>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">58 acciones &middot; 26% del plan</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px" data-pol-eje="1">58 acciones &middot; 26% del plan</div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);text-decoration:none;font-weight:600"><span style="font-size:10px;font-weight:700;color:var(--success-txt,#15803d);letter-spacing:.06em;text-transform:uppercase">Principal</span> &rarr; <span style="color:var(--success-txt,#15803d);font-weight:700">D06</span> Beneficiario nombrado</a>
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);text-decoration:none"><span style="font-size:10px;font-weight:700;color:var(--c-navy,#1F3864);letter-spacing:.06em;text-transform:uppercase">Apoyo</span> &rarr; <span style="color:var(--c-navy,#1F3864);font-weight:700">D04</span> Articulaci&oacute;n institucional</a>
@@ -15006,7 +14995,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
           <div style="width:28px;height:28px;background:rgba(14,127,104,.12);color:#0E7F68;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">02</div>
           <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.25">Desarrollo Econ&oacute;mico y Productivo</div>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">18 acciones &middot; 8% del plan</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px" data-pol-eje="2">18 acciones &middot; 8% del plan</div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);text-decoration:none;font-weight:600"><span style="font-size:10px;font-weight:700;color:var(--warning-txt,#92400e);letter-spacing:.06em;text-transform:uppercase">Principal</span> &rarr; <span style="color:var(--warning-txt,#92400e);font-weight:700">D02</span> Formalizaci&oacute;n del empleo</a>
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);text-decoration:none"><span style="font-size:10px;font-weight:700;color:#3b82f6;letter-spacing:.06em;text-transform:uppercase">Apoyo</span> &rarr; <span style="color:#3b82f6;font-weight:700">D01</span> Captaci&oacute;n externa de fondos</a>
@@ -15019,7 +15008,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
           <div style="width:28px;height:28px;background:rgba(180,83,9,.12);color:#B45309;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">03</div>
           <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.25">Ordenamiento Territorial y Medio Ambiente</div>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">53 acciones &middot; 24% del plan</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px" data-pol-eje="3">14 acciones &middot; 6% del plan</div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);text-decoration:none;font-weight:600"><span style="font-size:10px;font-weight:700;color:var(--warning-txt,#92400e);letter-spacing:.06em;text-transform:uppercase">Principal</span> &rarr; <span style="color:var(--warning-txt,#92400e);font-weight:700">D03</span> Inversi&oacute;n por brecha</a>
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);text-decoration:none"><span style="font-size:10px;font-weight:700;color:var(--c-navy,#1F3864);letter-spacing:.06em;text-transform:uppercase">Apoyo</span> &rarr; <span style="color:var(--c-navy,#1F3864);font-weight:700">D04</span> Articulaci&oacute;n institucional</a>
@@ -15032,7 +15021,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
           <div style="width:28px;height:28px;background:rgba(26,107,58,.12);color:#1A6B3A;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">04</div>
           <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.25">Servicios P&uacute;blicos e Infraestructura</div>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">53 acciones (compartidas con Eje 03)</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px" data-pol-eje="4">53 acciones &middot; 24% del plan</div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);text-decoration:none;font-weight:600"><span style="font-size:10px;font-weight:700;color:var(--warning-txt,#92400e);letter-spacing:.06em;text-transform:uppercase">Principal</span> &rarr; <span style="color:var(--warning-txt,#92400e);font-weight:700">D03</span> Inversi&oacute;n por brecha</a>
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);text-decoration:none"><span style="font-size:10px;font-weight:700;color:#3b82f6;letter-spacing:.06em;text-transform:uppercase">Apoyo</span> &rarr; <span style="color:#3b82f6;font-weight:700">D01</span> Captaci&oacute;n FNDR/PMU/FRIL</a>
@@ -15045,7 +15034,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
           <div style="width:28px;height:28px;background:rgba(52, 89, 149,.12);color:#345995;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">05</div>
           <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.25">Cultura, Deporte e Identidad Local</div>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">32 acciones &middot; 14% del plan</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px" data-pol-eje="5">32 acciones &middot; 14% del plan</div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);text-decoration:none;font-weight:600"><span style="font-size:10px;font-weight:700;color:var(--success-txt,#15803d);letter-spacing:.06em;text-transform:uppercase">Principal</span> &rarr; <span style="color:var(--success-txt,#15803d);font-weight:700">D06</span> Beneficiario nombrado (NNA, j&oacute;venes)</a>
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);text-decoration:none"><span style="font-size:10px;font-weight:700;color:var(--c-navy,#1F3864);letter-spacing:.06em;text-transform:uppercase">Apoyo</span> &rarr; <span style="color:var(--c-navy,#1F3864);font-weight:700">D04</span> Articulaci&oacute;n con MINEDUC/INJUV</a>
@@ -15058,7 +15047,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
           <div style="width:28px;height:28px;background:rgba(146,64,14,.12);color:var(--warning-txt,#92400e);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">06</div>
           <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.25">Gesti&oacute;n Municipal y Gobernanza</div>
         </div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">50 acciones &middot; 22% del plan</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px" data-pol-eje="6">50 acciones &middot; 22% del plan</div>
         <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border)">
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text);text-decoration:none;font-weight:600"><span style="font-size:10px;font-weight:700;color:var(--c-navy,#1F3864);letter-spacing:.06em;text-transform:uppercase">Principal</span> &rarr; <span style="color:var(--c-navy,#1F3864);font-weight:700">D04</span> Articulaci&oacute;n institucional</a>
           <a href="#decisiones" style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);text-decoration:none"><span style="font-size:10px;font-weight:700;color:var(--danger-txt,#b91c1c);letter-spacing:.06em;text-transform:uppercase">Apoyo</span> &rarr; <span style="color:var(--danger-txt,#b91c1c);font-weight:700">D05</span> Rendici&oacute;n p&uacute;blica trimestral</a>
@@ -15068,9 +15057,38 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     </div>
 
     <div style="margin-top:14px;padding:12px 16px;background:rgba(45,154,77,.06);border-radius:10px;font-size:12.5px;line-height:1.55;color:var(--text2)">
-      <strong style="color:var(--text)">Cobertura cruzada:</strong> las 6 Decisiones se activan a trav&eacute;s de los 6 Ejes. <span style="color:var(--success-txt,#15803d);font-weight:700">D06 (Beneficiario nombrado)</span> es la m&aacute;s transversal (Ejes 1, 5). <span style="color:var(--c-navy,#1F3864);font-weight:700">D04 (Articulaci&oacute;n)</span> aparece en 4 de 6 ejes &mdash; es el verdadero hilo institucional del plan. <span style="color:#3b82f6;font-weight:700">D01 (Captaci&oacute;n externa)</span> est&aacute; subrepresentada porque es estructural: corre por todos los ejes a trav&eacute;s de la Oficina de Gesti&oacute;n de Proyectos PLADECO.
+      <strong style="color:var(--text)">Cobertura cruzada:</strong> las 6 Decisiones se activan a trav&eacute;s de los 6 Ejes. <span style="color:var(--success-txt,#15803d);font-weight:700">D06 (Beneficiario nombrado)</span> es la decisi&oacute;n principal de dos ejes (1 y 5), igual que D03 (3 y 4). <span style="color:var(--c-navy,#1F3864);font-weight:700">D04 (Articulaci&oacute;n)</span> aparece en 4 de 6 ejes &mdash; es el verdadero hilo institucional del plan. <span style="color:#3b82f6;font-weight:700">D01 (Captaci&oacute;n externa)</span> est&aacute; subrepresentada porque es estructural: corre por todos los ejes a trav&eacute;s de la Oficina de Gesti&oacute;n de Proyectos PLADECO.
     </div>
+    <p class="mda-nota" id="mdaNota" style="margin:10px 0 0;font-size:12.5px;line-height:1.55;color:var(--text2)">Acciones por eje contadas en la matriz operativa del plan: suman <span data-pol-total>225</span>, y cada acci&oacute;n pertenece a un solo eje. Este mapa nombra los ejes con una nomenclatura distinta de la matriz (all&iacute; el Eje 3 es Educaci&oacute;n y el Eje 5, Seguridad); la cifra de cada tarjeta corresponde al eje de igual n&uacute;mero en la matriz. La diferencia de nombres est&aacute; <a href="#dpv-taxonomia-ejes" style="color:var(--success-txt,#15803d);font-weight:700">registrada para validaci&oacute;n</a>.</p>
   </div>
+  <!-- v45.356 · [cifras] §1.2 · CONTEOS DEL MAPA DE ARTICULACIÓN DESDE _POL. Las seis tarjetas sumaban 264
+       (58+18+53+53+32+50): la del Eje 03 decía «53 acciones · 24%» y la del Eje 04 «53 acciones (compartidas
+       con Eje 03)». Contado en _POL con un script (columna 1 = eje): 58, 18, 14, 53, 32 y 50 = 225, con 225
+       ids distintos; v45.344 ya había comprobado que ninguna acción está en dos ejes, así que la nota de
+       acciones compartidas era falsa y se retira. Cada cifra lleva data-pol-eje y se recalcula al cargar
+       desde window._POL, como la retícula de ejes (#ejes-prioridades); el texto escrito en el marcado es
+       el mismo resultado y solo queda a la vista si _POL no está disponible. Porcentajes redondeados
+       (25,78 / 8,00 / 6,22 / 23,56 / 14,22 / 22,22; suman 100). Como los nombres del mapa siguen otra
+       nomenclatura ('taxonomia-ejes', por validar), se declara que la cifra va por número de eje y no se
+       elige nombre. «D06 es la más transversal (Ejes 1, 5)» contradecía la misma nota (D04 aparece en 4
+       ejes; D03 también es principal en 2): se deja el hecho contado en las tarjetas. -->
+  <script>
+  (function(){
+    function pintar(){
+      try{
+        var P=window._POL||[]; if(!P.length) return;
+        var c={}, t=0;
+        P.forEach(function(p){ var k=String(p[1]); c[k]=(c[k]||0)+1; t++; });
+        document.querySelectorAll('[data-pol-eje]').forEach(function(el){
+          var n=c[el.getAttribute('data-pol-eje')]||0;
+          el.textContent=n+' acciones · '+Math.round(n*100/t)+'% del plan';
+        });
+        document.querySelectorAll('[data-pol-total]').forEach(function(el){ el.textContent=String(t); });
+      }catch(e){}
+    }
+    if(document.readyState!=='loading') pintar(); else document.addEventListener('DOMContentLoaded',pintar,{once:true});
+  })();
+  </script>
   <!-- ───── /Mapa de articulación ───── -->
 
 
@@ -16289,7 +16307,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
       <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid #f59e0b;border-radius:12px;padding:16px 18px">
         <div style="font-size:10.5px;font-weight:700;color:var(--warning-txt,#92400e);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px">&#128483; Participativa</div>
         <h4 style="font-size:15px;font-weight:700;color:var(--text);margin:4px 0 8px">Legitimidad construida</h4>
-        <p style="margin:0;color:var(--text)">Diagn&oacute;stico m&aacute;s amplio de la historia comunal: +300 personas, 77 juntas de vecinos, 40 entrevistas en profundidad. Una legitimidad que tard&oacute; a&ntilde;os en construirse y puede debilitarse si no se act&uacute;a sobre sus resultados.</p>
+        <p style="margin:0;color:var(--text)">Diagn&oacute;stico con m&aacute;s modalidades de consulta y m&aacute;s tipos de actores que el del PLADECO 2019-2031: +300 personas, 77 juntas de vecinos, 40 entrevistas en profundidad.<!-- v45.356 · [cifras] §1.4 · decía «Diagnóstico más amplio de la historia comunal»; se limita a lo comparado en #comparador-instrumentos --> Una legitimidad que tard&oacute; a&ntilde;os en construirse y puede debilitarse si no se act&uacute;a sobre sus resultados.</p>
       </div>
 
       <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid #ef4444;border-radius:12px;padding:16px 18px">
@@ -16551,7 +16569,8 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
            registrada como 'acciones-200-225'. El enlace siguiente remite a esa fila del registro. -->
       <a href="#matriz" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></span> Matriz Estrat&eacute;gica</a>
       <a href="#dpv-acciones-200-225" class="sr-link" title="Registro de datos pendientes de validaci&oacute;n: 200 o 225 acciones"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-note"></use></svg></span> N&uacute;mero de acciones por validar (200 o 225)</a>
-      <a href="#semaforo" class="sr-link"><span class="sr-ico">&#128678;</span> Sem&aacute;foro de Metas &middot; 10 KPIs</a>
+      <!-- v45.356 · [cifras] §1.3 · decía «Semáforo de Metas · 10 KPIs»: el Semáforo tiene 16 metas; los 10 KPIs son del Tablero de Gestión Institucional -->
+      <a href="#semaforo" class="sr-link"><span class="sr-ico">&#128678;</span> Sem&aacute;foro de Metas</a>
       <a href="#financiamiento" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> Financiamiento</a>
       <a href="#compromisos" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg></span> Compromisos</a>
       <a href="#cronograma-gantt" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg></span> Cronograma + Pr&oacute;ximos pasos</a>
@@ -16723,7 +16742,8 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
         <li><a href="#resumen"><span>Resumen Ejecutivo</span><span class="toc-desc">S&iacute;ntesis Interpretativa &middot; 4 lecturas del documento</span></a></li>
         <li><a href="#diagnostico-institucional"><span>Diagn&oacute;stico Institucional</span><span class="toc-desc">115 funcionarios + 30 entrevistas a directores</span></a></li>
         <li><a href="#equipo"><span>Equipo y Gobernanza</span><span class="toc-desc">SECPLAC + 30 direcciones + redes interinstitucionales</span></a></li>
-        <li><a href="#semaforo"><span>Sem&aacute;foro de 10 KPIs</span><span class="toc-desc">Seguimiento p&uacute;blico trimestral de metas</span></a></li>
+        <li><a href="#semaforo"><span>Sem&aacute;foro de Metas</span><span class="toc-desc">16 metas con l&iacute;nea base y metas 2028 y 2035 &middot; Tablero de Gesti&oacute;n Institucional (10 KPIs)</span></a></li><!-- v45.356 · [cifras] §1.3 · decía «Semáforo de 10 KPIs»; el nombre sale del h2 de #semaforo y los 16 se cuentan en METAS -->
+
         <li><a href="#financiamiento"><span>Financiamiento</span><span class="toc-desc">Mix presupuestario + brecha de captaci&oacute;n FNDR</span></a></li>
         <li><a href="#compromisos"><span>Compromisos + Riesgos</span><span class="toc-desc">7 riesgos identificados con mitigaci&oacute;n</span></a></li>
         <li><a href="#cronograma-gantt"><span>Cronograma + Pr&oacute;ximos pasos</span><span class="toc-desc">54 semanas Ago 25 &rarr; Sep 26 + hoja de ruta post-entrega</span></a></li>
@@ -18407,10 +18427,13 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;padding:14px 16px">
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:6px">
         <div style="flex-shrink:0;width:26px;height:26px;background:rgba(45,154,77,.12);color:var(--success-txt,#15803d);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px">09</div>
-        <h4 style="font-size:13.5px;font-weight:700;color:var(--text);margin:0;line-height:1.35">&iquest;Los 10 KPIs del Sem&aacute;foro est&aacute;n bien definidos?</h4>
+        <h4 style="font-size:13.5px;font-weight:700;color:var(--text);margin:0;line-height:1.35">&iquest;Las 16 metas del Sem&aacute;foro y los 10 KPIs del Tablero de Gesti&oacute;n Institucional est&aacute;n bien definidos?</h4>
       </div>
-      <p style="font-size:12px;color:var(--text2);margin:0 0 6px;line-height:1.5">Cada KPI debe tener f&oacute;rmula, l&iacute;nea base y meta cuantitativa.</p>
-      <a href="#semaforo" style="font-size:11.5px;color:var(--success-txt,#15803d);font-weight:700;text-decoration:none">&rarr; Revisar 10 KPIs</a>
+      <p style="font-size:12px;color:var(--text2);margin:0 0 6px;line-height:1.5">Cada indicador debe tener f&oacute;rmula, l&iacute;nea base y meta cuantitativa.</p>
+      <a href="#semaforo" style="font-size:11.5px;color:var(--success-txt,#15803d);font-weight:700;text-decoration:none">&rarr; Revisar Sem&aacute;foro de Metas y Tablero</a>
+      <!-- v45.356 · [cifras] §1.3 · decía «¿Los 10 KPIs del Semáforo…?» y «Revisar 10 KPIs»: en #semaforo el
+           Semáforo de Metas tiene 16 metas (METAS_SEG) y los 10 KPIs (I-1 a I-10) son del Tablero de Gestión
+           Institucional, que está en la misma sección. -->
     </div>
 
     <!-- Punto 10 -->
@@ -18508,7 +18531,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <div class="sr-links">
       <a href="#decisiones" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg></span> 6 Decisiones del Plan</a>
       <a href="#matriz" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg></span> Matriz Estrat&eacute;gica</a>
-      <a href="#semaforo" class="sr-link"><span class="sr-ico">&#128678;</span> Sem&aacute;foro de 10 KPIs</a>
+      <a href="#semaforo" class="sr-link"><span class="sr-ico">&#128678;</span> Sem&aacute;foro de Metas</a><!-- v45.356 · [cifras] §1.3 · decía «Semáforo de 10 KPIs» -->
       <a href="#cronograma-gantt" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-calendar"></use></svg></span> Cronograma + Pr&oacute;ximos pasos</a>
       <a href="#financiamiento" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-money"></use></svg></span> Financiamiento</a>
       <a href="#faq-concejo" class="sr-link"><span class="sr-ico">&#10067;</span> FAQ del Concejo</a>
@@ -18551,7 +18574,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <!-- FAQ 04 -->
     <details style="background:var(--card);border:1px solid var(--border);border-left:3px solid #dc2626;border-radius:10px;padding:14px 16px;cursor:pointer">
       <summary style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;list-style:none;outline:none"><span style="display:inline-block;font-size:11px;font-weight:700;color:var(--danger-txt,#b91c1c);letter-spacing:.08em;text-transform:uppercase;margin-right:6px">P04</span>&iquest;C&oacute;mo se cambia una pol&iacute;tica si despu&eacute;s no funciona?</summary>
-      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">El PLADECO es revisable. El Concejo puede pedir modificaciones en cualquier momento mediante acuerdo formal. La rendici&oacute;n trimestral del Sem&aacute;foro de 10 KPIs (Decisi&oacute;n 05) facilita detectar pol&iacute;ticas que no rinden. El Plan Anual de Implementaci&oacute;n (POA) que se aprueba cada a&ntilde;o es donde se hacen los ajustes operativos. Ver <a href="#semaforo" style="color:var(--success-txt,#15803d);font-weight:700">#semaforo</a>.</p>
+      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">El PLADECO es revisable. El Concejo puede pedir modificaciones en cualquier momento mediante acuerdo formal. La rendici&oacute;n trimestral del Tablero de Gesti&oacute;n Institucional (10 KPIs, Decisi&oacute;n 05) facilita detectar pol&iacute;ticas que no rinden.<!-- v45.356 · [cifras] §1.3 · decía «Semáforo de 10 KPIs»; la Decisión 05 describe el tablero de 10 KPIs trimestral --> El Plan Anual de Implementaci&oacute;n (POA) que se aprueba cada a&ntilde;o es donde se hacen los ajustes operativos. Ver <a href="#semaforo" style="color:var(--success-txt,#15803d);font-weight:700">#semaforo</a>.</p>
     </details>
 
     <!-- FAQ 05 -->
@@ -18563,7 +18586,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <!-- FAQ 06 -->
     <details style="background:var(--card);border:1px solid var(--border);border-left:3px solid #dc2626;border-radius:10px;padding:14px 16px;cursor:pointer">
       <summary style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;list-style:none;outline:none"><span style="display:inline-block;font-size:11px;font-weight:700;color:var(--danger-txt,#b91c1c);letter-spacing:.08em;text-transform:uppercase;margin-right:6px">P06</span>&iquest;C&oacute;mo se garantiza que las 225 acciones se ejecuten?</summary>
-      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">La ejecuci&oacute;n se asegura mediante 4 mecanismos: (1) el POA anual asigna recursos espec&iacute;ficos, (2) la Matriz tiene indicador y plazo por acci&oacute;n, (3) el Sem&aacute;foro de 10 KPIs publica avance trimestral, (4) el Informe Anual y la 1&ordf; Encuesta de Satisfacci&oacute;n (mar 2027) miden percepci&oacute;n ciudadana. Si una acci&oacute;n no avanza, el Concejo puede solicitar cuenta espec&iacute;fica. Ver <a href="#matriz" style="color:var(--success-txt,#15803d);font-weight:700">#matriz</a>.</p>
+      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">La ejecuci&oacute;n se asegura mediante 4 mecanismos: (1) el POA anual asigna recursos espec&iacute;ficos, (2) la Matriz tiene indicador y plazo por acci&oacute;n, (3) el Tablero de Gesti&oacute;n Institucional (10 KPIs) publica avance trimestral,<!-- v45.356 · [cifras] §1.3 · decía «el Semáforo de 10 KPIs» --> (4) el Informe Anual y la 1&ordf; Encuesta de Satisfacci&oacute;n (mar 2027) miden percepci&oacute;n ciudadana. Si una acci&oacute;n no avanza, el Concejo puede solicitar cuenta espec&iacute;fica. Ver <a href="#matriz" style="color:var(--success-txt,#15803d);font-weight:700">#matriz</a>.</p>
     </details>
 
     <!-- FAQ 07 -->
@@ -18575,7 +18598,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <!-- FAQ 08 -->
     <details style="background:var(--card);border:1px solid var(--border);border-left:3px solid #dc2626;border-radius:10px;padding:14px 16px;cursor:pointer">
       <summary style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;list-style:none;outline:none"><span style="display:inline-block;font-size:11px;font-weight:700;color:var(--danger-txt,#b91c1c);letter-spacing:.08em;text-transform:uppercase;margin-right:6px">P08</span>&iquest;Las 119 encuestas y 21 NNA son suficientes para hablar de participaci&oacute;n?</summary>
-      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">La participaci&oacute;n PLADECO no se reduce a esas encuestas. El proceso involucr&oacute; m&aacute;s de <strong>300 personas</strong> en talleres territoriales, <strong>77 juntas de vecinos</strong> consultadas, <strong>120+ entrevistas cualitativas</strong> con 14 tipos de actores, m&aacute;s las encuestas (119 adultos + 21 NNA) y la encuesta NNA escolar (n=4.036). Es el diagn&oacute;stico participativo m&aacute;s amplio de la historia comunal. Ver <a href="#voz" style="color:var(--success-txt,#15803d);font-weight:700">#voz</a>.</p>
+      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">La participaci&oacute;n PLADECO no se reduce a esas encuestas. El proceso involucr&oacute; m&aacute;s de <strong>300 personas</strong> en talleres territoriales, <strong>77 juntas de vecinos</strong> consultadas, <strong>120+ entrevistas cualitativas</strong> con 14 tipos de actores, m&aacute;s las encuestas (119 adultos + 21 NNA) y la encuesta NNA escolar (n=4.036). Frente al PLADECO 2019-2031, el diagn&oacute;stico suma m&aacute;s modalidades de consulta y m&aacute;s tipos de actores (ver el <a href="#comparador-instrumentos" style="color:var(--success-txt,#15803d);font-weight:700">comparador de instrumentos</a>).<!-- v45.356 · [cifras] §1.4 · decía «Es el diagnóstico participativo más amplio de la historia comunal» --> Ver <a href="#voz" style="color:var(--success-txt,#15803d);font-weight:700">#voz</a>.</p>
     </details>
 
     <!-- FAQ 09 -->
@@ -18587,7 +18610,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <!-- FAQ 10 -->
     <details style="background:var(--card);border:1px solid var(--border);border-left:3px solid #dc2626;border-radius:10px;padding:14px 16px;cursor:pointer">
       <summary style="font-size:13.5px;font-weight:700;color:var(--text);line-height:1.4;list-style:none;outline:none"><span style="display:inline-block;font-size:11px;font-weight:700;color:var(--danger-txt,#b91c1c);letter-spacing:.08em;text-transform:uppercase;margin-right:6px">P10</span>&iquest;C&oacute;mo se diferencia este PLADECO del PLADECO 2015-2024?</summary>
-      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">3 diferencias claves: (1) <strong>articulaci&oacute;n con la ERD O&#39;Higgins 2024-2036</strong> que reci&eacute;n se aprob&oacute; en dic 2024 &mdash; el plan anterior no exist&iacute;a; (2) <strong>6 Decisiones expl&iacute;citas</strong> con criterios qu&eacute; elige/descarta &mdash; antes eran derivadas impl&iacute;citas; (3) <strong>Sem&aacute;foro p&uacute;blico de 10 KPIs trimestrales</strong> &mdash; antes la rendici&oacute;n era solo anual e interna. Cada diferencia responde a un riesgo identificado del plan anterior.</p>
+      <p style="font-size:12.5px;color:var(--text2);margin:10px 0 0;line-height:1.6">3 diferencias claves: (1) <strong>articulaci&oacute;n con la ERD O&#39;Higgins 2024-2036</strong> que reci&eacute;n se aprob&oacute; en dic 2024 &mdash; el plan anterior no exist&iacute;a; (2) <strong>6 Decisiones expl&iacute;citas</strong> con criterios qu&eacute; elige/descarta &mdash; antes eran derivadas impl&iacute;citas; (3) <strong>Tablero p&uacute;blico de 10 KPIs de gesti&oacute;n institucional, con reporte trimestral</strong> &mdash; antes la rendici&oacute;n era solo anual e interna.<!-- v45.356 · [cifras] §1.3 · decía «Semáforo público de 10 KPIs trimestrales» --> Cada diferencia responde a un riesgo identificado del plan anterior.</p>
     </details>
 
     <!-- FAQ 11 -->
@@ -18636,7 +18659,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
         <span style="font-size:10px;font-weight:700;color:var(--danger-txt,#b91c1c);letter-spacing:.1em;text-transform:uppercase;margin-right:6px">Si te dicen</span><strong style="color:var(--text);font-size:13.5px">&laquo;El PLADECO anterior no se cumpli&oacute;, &iquest;qu&eacute; nos asegura que &eacute;ste s&iacute;?&raquo;</strong>
       </div>
       <div style="padding:12px 16px;background:rgba(45,154,77,.05)">
-        <span style="font-size:10px;font-weight:700;color:var(--success-txt,#15803d);letter-spacing:.1em;text-transform:uppercase;margin-right:6px">Responde</span><span style="color:var(--text);font-size:13px;line-height:1.55">3 diferencias estructurales: (1) este plan tiene Sem&aacute;foro p&uacute;blico de 10 KPIs trimestrales que antes no exist&iacute;a, (2) las pol&iacute;ticas nombran beneficiario espec&iacute;fico (Decisi&oacute;n 06), (3) hay Plan Anual de Implementaci&oacute;n que aterriza cada compromiso. Si no se cumple, esta vez el Concejo y la ciudadan&iacute;a se enteran en tiempo real.</span>
+        <span style="font-size:10px;font-weight:700;color:var(--success-txt,#15803d);letter-spacing:.1em;text-transform:uppercase;margin-right:6px">Responde</span><span style="color:var(--text);font-size:13px;line-height:1.55">3 diferencias estructurales: (1) este plan tiene un Tablero p&uacute;blico de 10 KPIs de gesti&oacute;n, con reporte trimestral, que antes no exist&iacute;a,<!-- v45.356 · [cifras] §1.3 · decía «Semáforo público de 10 KPIs trimestrales» --> (2) las pol&iacute;ticas nombran beneficiario espec&iacute;fico (Decisi&oacute;n 06), (3) hay Plan Anual de Implementaci&oacute;n que aterriza cada compromiso. Si no se cumple, esta vez el Concejo y la ciudadan&iacute;a se enteran en tiempo real.</span>
       </div>
     </div>
 
@@ -18708,7 +18731,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
       <a href="#validacion-concejo" class="sr-link"><span class="sr-ico">&#128499;</span> Hoja de Validaci&oacute;n del Concejo</a>
       <a href="#decisiones" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg></span> 6 Decisiones del Plan</a>
       <a href="#compromisos" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg></span> Riesgos de Implementaci&oacute;n</a>
-      <a href="#argumentario" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-note"></use></svg></span> Argumentario + Ventana 2025-2026</a>
+      <a href="#argumentario" class="sr-link"><span class="sr-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-note"></use></svg></span> Fundamentos de las decisiones + Ventana 2025-2026</a><!-- v45.356 · [cifras] crítico 12 · decía «Argumentario + Ventana 2025-2026» -->
     </div>
   </div>
 </section>
@@ -18836,7 +18859,12 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
       <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
         <span>&iquest;C&oacute;mo descargo el documento oficial completo?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">Todos los entregables formales del proceso est&aacute;n disponibles en la secci&oacute;n <a href="#documentos" style="color:var(--success-txt,#15803d);font-weight:700">Documentos y Descargas</a>: PDF del PLADECO completo, matriz Excel de las 225 acciones, presentaciones ejecutivas, cartograf&iacute;as GeoJSON y actas firmadas del proceso participativo (472 firmas en 8 cuadernillos).</div>
+      <div class="faq-a">El documento final del PLADECO todav&iacute;a no est&aacute; publicado en el portal. En la secci&oacute;n <a href="#documentos" style="color:var(--success-txt,#15803d);font-weight:700">Documentos y Descargas</a> est&aacute;n los archivos que s&iacute; se publicaron: 24 presentaciones t&eacute;cnicas en PDF, las actas firmadas del proceso participativo (472 firmas en 8 cuadernillos, en PDF), los datos del Modelo de Bienestar Humano Territorial en XLSX con su nota metodol&oacute;gica, el cronograma del plan y el informe de espacios p&uacute;blicos. La matriz de las 225 acciones se descarga en CSV desde la <a href="#matriz" style="color:var(--success-txt,#15803d);font-weight:700">Matriz Estrat&eacute;gica</a>.</div>
+      <!-- v45.356 · [cifras] crítico 12 · la respuesta prometía «PDF del PLADECO completo, matriz Excel de las
+           225 acciones, presentaciones ejecutivas, cartografías GeoJSON». Comprobado: el documento final
+           tiene ficha pendiente sin archivo; ninguna ficha de #documentos ofrece XLSX de la matriz ni
+           GeoJSON; la matriz se descarga en CSV con el botón de #matriz (Blob generado desde _POL). -->
+
     </div>
   </div>
   <div class="sec-fuente"><span class="sf-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span> <strong>Fuente:</strong> Preguntas sistematizadas a partir de consultas frecuentes recibidas durante el proceso participativo PLADECO 2025-2035 &middot; Equipo SECPLAC.</div>
@@ -19190,7 +19218,8 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <article class="glosario-term" data-cat="plan" data-keys="ventana oportunidad 2025 2026 convergencia coyuntural">
       <header><span class="glosario-acronym">V25</span><span class="badge badge--success">Planificaci&oacute;n</span></header>
       <h3>Ventana 2025-2026</h3>
-      <p>Concepto del Argumentario que identifica la convergencia &uacute;nica de 4 factores (t&eacute;cnico, financiero, participativo y pol&iacute;tico) que no se repetir&aacute;n antes de 2035. Justifica la urgencia de aprobar e implementar el plan en este per&iacute;odo.</p>
+      <!-- v45.356 · [cifras] crítico 12 · decía «Concepto del Argumentario» -->
+      <p>Concepto de los Fundamentos de las decisiones que identifica la convergencia &uacute;nica de 4 factores (t&eacute;cnico, financiero, participativo y pol&iacute;tico) que no se repetir&aacute;n antes de 2035. Justifica la urgencia de aprobar e implementar el plan en este per&iacute;odo.</p>
     </article>
 
     <article class="glosario-term" data-cat="plan" data-keys="proximos pasos hoja ruta institucional aprobacion implementacion">
@@ -19598,7 +19627,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     <div style="margin-bottom:16px">
       <div style="font-size:11px;font-weight:700;color:var(--success-txt,#15803d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-clipboard"></use></svg> Metodolog&iacute;a del Proceso</div>
       <h3 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px">C&oacute;mo se construy&oacute; este PLADECO</h3>
-      <p style="font-size:13.5px;color:var(--text2);margin:0;line-height:1.55">Cuatro fases de trabajo articuladas con 12 fuentes estad&iacute;sticas oficiales y el proceso participativo m&aacute;s amplio de la historia comunal de Rengo.</p>
+      <p style="font-size:13.5px;color:var(--text2);margin:0;line-height:1.55">Cuatro fases de trabajo articuladas con 12 fuentes estad&iacute;sticas oficiales y un proceso participativo con m&aacute;s modalidades de consulta y m&aacute;s tipos de actores que el del PLADECO 2019-2031.</p><!-- v45.356 · [cifras] §1.4 · decía «el proceso participativo más amplio de la historia comunal de Rengo» -->
     </div>
 
     <!-- 4 fases -->
@@ -19621,7 +19650,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
       <div style="background:var(--card);border:1px solid var(--border);border-top:3px solid #6087c7;border-radius:10px;padding:14px 16px">
         <div style="font-size:11px;font-weight:700;color:var(--c-navy,#1F3864);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Fase 4</div>
         <div style="font-size:14px;font-weight:700;color:var(--text)">S&iacute;ntesis y argumentario</div>
-        <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5">Argumentario estrat&eacute;gico, hoja de ruta a 3 horizontes y matriz de decisiones.</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5">Fundamentos de las decisiones, hoja de ruta a 3 horizontes y matriz de decisiones.</div><!-- v45.356 · [cifras] crítico 12 · decía «Argumentario estratégico» -->
       </div>
     </div>
 
@@ -20396,7 +20425,12 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
   <div class="sec-header">
     <div class="badge badge--neutral">Entregables Oficiales</div>
     <h2><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-save"></use></svg> Documentos y Descargas</h2>
-    <p>Repositorio completo de productos del proceso PLADECO 2025-2035: documentos t&eacute;cnicos, presentaciones ejecutivas, bases de datos sistematizadas, cartograf&iacute;as y registros del proceso participativo. Todos los archivos est&aacute;n disponibles en formato abierto (PDF, XLSX, PPTX, GeoJSON) para garantizar la transparencia y permitir su reutilizaci&oacute;n por la comunidad acad&eacute;mica, organizaciones civiles y futuras administraciones municipales.</p>
+    <p>Repositorio de productos del proceso PLADECO 2025-2035: documentos t&eacute;cnicos, presentaciones ejecutivas, bases de datos sistematizadas, cartograf&iacute;as y registros del proceso participativo. Los informes, las actas y las presentaciones se publican en PDF y los datos del Modelo de Bienestar Humano Territorial (MBHT), en XLSX; los diagramas, gr&aacute;ficos y cartograf&iacute;as se descargan como imagen. Se publican para su consulta y reutilizaci&oacute;n por la comunidad acad&eacute;mica, las organizaciones civiles y las futuras administraciones municipales. El documento final del plan a&uacute;n no est&aacute; publicado en el portal.</p>
+    <!-- v45.356 · [cifras] §1.1 · decía «Todos los archivos están disponibles en formato abierto (PDF, XLSX,
+         PPTX, GeoJSON)». Comprobado con ls y con los href de las 39 fichas .tr-card: hay 35 PDF
+         (2 en docs/, 1 en MBHT/, 8 en actas/ y 24 en Presentaciones/) y 4 XLSX en MBHT/; ninguna
+         ficha ofrece PPTX ni GeoJSON. Tampoco eran «todos»: el documento final del plan
+         tiene ficha pero no archivo. -->
   </div>
 
   <!-- ───── Certificación de Auditoría · v45.99 ───── -->
@@ -20405,25 +20439,38 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
       <div style="display:flex;align-items:center;gap:10px">
         <div style="width:34px;height:34px;background:#2d9a4d;color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg></div>
         <div>
-          <div style="font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--success-txt,#15803d);margin-bottom:2px">Certificaci&oacute;n de Auditor&iacute;a</div>
-          <h3 style="font-size:16px;font-weight:700;color:var(--text);margin:0;line-height:1.3">15 / 15 archivos verificados</h3>
+          <div style="font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--success-txt,#15803d);margin-bottom:2px">Verificaci&oacute;n de descargas</div>
+          <h3 style="font-size:16px;font-weight:700;color:var(--text);margin:0;line-height:1.3">40 fichas: 39 con archivo publicado y 1 pendiente</h3>
         </div>
       </div>
       <div style="font-size:11px;color:var(--text2);text-align:right">
-        <div style="font-weight:700;color:var(--text)">&Uacute;ltima auditor&iacute;a</div>
-        <div>Mayo 2026 &middot; SECPLAC</div>
+        <div style="font-weight:700;color:var(--text)">Recuento</div>
+        <div>Septiembre 2026</div>
       </div>
     </div>
-    <p style="font-size:13px;color:var(--text);margin:0 0 12px;line-height:1.55">Auditor&iacute;a t&eacute;cnica de todos los documentos descargables del portal: existencia f&iacute;sica del archivo, tama&ntilde;o, integridad y enlace funcional. Resultado: <strong style="color:var(--success-txt,#15803d)">100% de las descargas operativas</strong>. Cada archivo abre correctamente y corresponde a lo declarado.</p>
+    <p style="font-size:13px;color:var(--text);margin:0 0 12px;line-height:1.55">Recuento de las fichas del Centro de Transparencia que anuncian una descarga. De las 40 fichas, <strong>39 enlazan un archivo que existe en el repositorio del portal</strong> y 1 corresponde al documento final del plan, que a&uacute;n no se publica. El peso escrito en cada ficha coincide con el del archivo con una diferencia m&aacute;xima de 3,4&nbsp;%. Se comprob&oacute; la existencia y el peso de cada archivo; su contenido no se revis&oacute; p&aacute;gina por p&aacute;gina.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;font-size:11.5px">
-      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> docs/</strong> &middot; 2 PDFs &middot; 55,4 MB</div>
-      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> MBHT/</strong> &middot; 4 XLSX + 1 PDF &middot; 1,75 MB</div>
-      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> actas/</strong> &middot; 8 PDFs &middot; 19,0 MB</div>
+      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> docs/</strong> &middot; 2 PDF &middot; 54,1 MB</div>
+      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> MBHT/</strong> &middot; 4 XLSX + 1 PDF &middot; 1,7 MB</div>
+      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> actas/</strong> &middot; 8 PDF &middot; 18,2 MB</div>
+      <div style="background:rgba(45,154,77,.06);padding:8px 12px;border-radius:6px"><strong style="color:var(--success-txt,#15803d)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-check"></use></svg> Presentaciones/</strong> &middot; 24 PDF &middot; 1.567 MB</div>
     </div>
     <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11.5px;color:var(--text2);line-height:1.55">
-      <strong style="color:var(--text)">Detalle:</strong> 15 archivos descargables (2 informes t&eacute;cnicos PDF, 4 datasets MBHT, 1 metodolog&iacute;a MBHT, 8 actas de procesos participativos) &middot; Todos accesibles desde el portal &middot; Sin enlaces rotos &middot; Tama&ntilde;os declarados coinciden con tama&ntilde;os reales (margen &lt;5%) &middot; Sin archivos hu&eacute;rfanos en el repositorio.
+      <strong style="color:var(--text)">Detalle:</strong> 39 archivos descargables: 2 documentos del plan en PDF, 4 conjuntos de datos y 1 nota metodol&oacute;gica del MBHT, 8 actas del proceso participativo y 24 presentaciones t&eacute;cnicas (las 4 que superan 100&nbsp;MB se sirven mediante Git LFS). Pendiente: el documento final del PLADECO, sin archivo en el portal. Los pesos se expresan en m&uacute;ltiplos de 1.024 bytes, igual que en cada ficha.
     </div>
   </div>
+  <!-- v45.356 · [cifras] §1.1 · CERTIFICACIÓN REHECHA. Decía «15 / 15 archivos verificados», «100% de las
+       descargas operativas», «Cada archivo abre correctamente», «Sin archivos huérfanos» y «Última
+       auditoría: Mayo 2026 · SECPLAC», y no contaba las 24 presentaciones. Recuento actual, hecho con un
+       script sobre el marcado y con ls sobre las carpetas: 40 fichas .tr-card (1 .tr-soon sin enlace y 39
+       con href), y los 39 href apuntan a archivos existentes: docs 2, MBHT 5, actas 8, Presentaciones 24.
+       Pesos reales sumados por carpeta, en MiB como las fichas: docs 54,13; MBHT 1,68; actas 18,16;
+       Presentaciones 1.567,48 (antes: docs 55,4, que no es ni MB decimales, 56,76, ni MiB, 54,13;
+       MBHT 1,75 y actas 19,0, en MB decimales, a diferencia de las fichas). La
+       mayor diferencia entre el peso de una ficha y su archivo es 3,4 % (Juntas de Vecinos · Rosario
+       Urbano: 1,1 frente a 1,14). Las 4 presentaciones sobre 100 MB figuran en .gitattributes con
+       filter=lfs. No se afirma integridad ni apertura de cada archivo porque no se comprobó; tampoco se
+       atribuye la verificación a SECPLAC. -->
   <!-- ───── /Certificación de Auditoría ───── -->
 
   <!-- ═══ BITÁCORA PÚBLICA DE VERSIONES · v45.122 (Propuesta 10) ═══ -->
@@ -20487,7 +20534,15 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
     </div>
   </div>
 
-  <div class="docs-grid" id="docs-grid"></div>
+  <!-- v45.356 · [cifras] §1.1 · SE RETIRA #docs-grid. renderDocsEnhanced() pintaba aquí 6 tarjetas
+       («Diagnóstico Comunal», «Plan de Acción 2025-2035», «Argumentario Estratégico», «Matriz de
+       Indicadores», «Informe Participación Ciudadana», «Atlas Cartográfico UV») con páginas y pesos
+       escritos a mano, y su botón «Descargar» solo ejecutaba event.preventDefault(): no enlazaba ningún
+       archivo. Comprobado con ls: ninguno de esos seis títulos existe en docs/, MBHT/, actas/ ni
+       Presentaciones/. Además presentaba el «Plan de Acción» como descargable, cuando la ficha pendiente
+       del Centro de Transparencia dice que el documento final no se publica. Se retiran el contenedor,
+       la función, su llamada, el arreglo DOCS (sin uso) y renderDocs() (solo leía DOCS y nadie la
+       llamaba). Las descargas reales siguen en las 4 rejillas .tr-group de más abajo. -->
 
   <!-- Diagramas Metodológicos PLADECO -->
   <div id="diagramas" class="sec-header" style="margin-top:40px">
@@ -20532,7 +20587,9 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 
   <!-- GRUPO 1: Documentos del Plan -->
   <div class="tr-group">
-    <div class="tr-group-title"><span class="tr-gt-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg></span> Documentos del Plan <span class="tr-gt-count">3 disponibles</span></div>
+    <div class="tr-group-title"><span class="tr-gt-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg></span> Documentos del Plan <span class="tr-gt-count">2 disponibles &middot; 1 pendiente</span></div>
+    <!-- v45.356 · [cifras] §1.1 · decía «3 disponibles»: el grupo tiene 3 fichas, pero la primera es .tr-soon sin enlace -->
+
     <div class="tr-grid">
       <div class="tr-card tr-soon">
         <div class="tr-ico soon">PDF</div>
@@ -21265,25 +21322,8 @@ const COMISIONES = [
   {fecha:"Posterior",title:"Puzzle de Planificación — SECPLAC Equipo",tags:["SECPLAC Equipo"]}
 ];
 
-const DOCS = [
-  {name:"Matriz PLADECO V6",desc:"Documento principal 6 ejes, 32 OE, 200 políticas",type:"docx"},
-  {name:"Convergencia Programa de Gobierno",desc:"200 políticas articuladas con compromisos",type:"xlsx"},
-  {name:"Relato Estratégico",desc:"Narrativa por eje estratégico",type:"docx"},
-  {name:"Presentación V3",desc:"Presentación ejecutiva PLADECO",type:"pptx"},
-  {name:"Tablas Completas",desc:"Base de datos tabular completa",type:"xlsx"},
-  {name:"Análisis Ejecutivo Sankey",desc:"Flujo estratégico de políticas",type:"docx"},
-  {name:"Análisis Ejecutivo SNA",desc:"Articulación institucional",type:"docx"},
-  {name:"FODA General v2",desc:"20F + 30D + 15O + 15A con estrategias cruzadas",type:"docx"},
-  {name:"Resumen Ejecutivo",desc:"Síntesis del proceso PLADECO",type:"docx"},
-  {name:"Análisis BIP/SNI",desc:"1.182 registros, inversión territorial",type:"docx"},
-  {name:"Diagnóstico NNA",desc:"Infancia y adolescencia comunal",type:"docx"},
-  {name:"DataStudio PLADECO",desc:"13 tablas CSV para dashboards",type:"xlsx"},
-  {name:"Gráfico Sankey Interactivo",desc:"Flujo estratégico D3.js",type:"html"},
-  {name:"Gráfico Red Objetivos",desc:"Grafo interactivo D3.js",type:"html"},
-  {name:"Gráfico Sankey Convergencia",desc:"Convergencia programa gobierno",type:"html"},
-  {name:"Ficha Resumen Visual",desc:"Ficha ejecutiva PLADECO",type:"html"},
-  {name:"Redes Sociales PLADECO",desc:"17 posts + 6 stories para difusión",type:"pptx"}
-];
+/* v45.356 · [cifras] §1.1 · el arreglo DOCS (17 entradas con nombre, descripción y tipo, sin ruta
+   a ningún archivo) se retiró: solo lo leía renderDocs(), que nadie llamaba. */
 
 // ── NNA DIAGNOSTIC DATA ──
 const NNA_DIAG = [
@@ -21935,17 +21975,7 @@ function filterCom(btn, filter){
   renderComisiones(filter);
 }
 
-// ── RENDER DOCS ──
-function renderDocs(){
-  const icons = {docx:'W',xlsx:'X',pptx:'P',html:'&lt;/&gt;'};
-  const container = document.getElementById('docs-grid');
-  container.innerHTML = DOCS.map(d => `
-    <div class="doc-card">
-      <div class="doc-icon ${d.type}">${icons[d.type]}</div>
-      <div class="doc-info"><h4>${d.name}</h4><p>${d.desc}</p></div>
-    </div>
-  `).join('');
-}
+/* v45.356 · [cifras] §1.1 · renderDocs() retirada (sin llamadas; leía el arreglo DOCS, también retirado). */
 
 // ── INTERACTIVE VIZ DATA ──
 const METAS=[
@@ -24751,37 +24781,9 @@ document.addEventListener('keydown', function(e){
   if(e.key === 'ArrowLeft'){ navDiagLightbox(-1); }
 });
 
-// ── ENHANCED DOCS ──
-function renderDocsEnhanced(){
-  const el=document.getElementById('docs-grid');
-  if(!el)return;
-  const docs=[
-    {titulo:'Diagnóstico Comunal',desc:'Levantamiento territorial completo: 21 unidades vecinales, encuestas, entrevistas y análisis estadístico.',tipo:'PDF',paginas:'245 págs',size:'12.8 MB',icon:'📄',color:'#ef4444',bg:'#fee2e2'},
-    {titulo:'Plan de Acción 2025-2035',desc:'Documento estratégico con 6 ejes, 32 objetivos y 225 políticas priorizadas para la década.',tipo:'PDF',paginas:'180 págs',size:'9.4 MB',icon:'📑',color:'#4361ee',bg:'#dbeafe'},
-    {titulo:'Argumentario Estratégico',desc:'Presentación ejecutiva con datos clave, brechas y propuestas por eje estratégico.',tipo:'PPTX',paginas:'85 slides',size:'18.2 MB',icon:'📊',color:'#f5921d',bg:'#fef3c7'},
-    {titulo:'Matriz de Indicadores',desc:'16 metas con línea base 2024, hitos intermedios 2028 y metas finales 2035.',tipo:'XLSX',paginas:'16 metas',size:'2.1 MB',icon:'📈',color:'#059669',bg:'#d1fae5'},
-    {titulo:'Informe Participación Ciudadana',desc:'Sistematización de talleres, encuestas y entrevistas con actores clave de la comuna.',tipo:'PDF',paginas:'120 págs',size:'7.6 MB',icon:'📋',color:'#6087c7',bg:'#eef2f9'},
-    {titulo:'Atlas Cartográfico UV',desc:'Mapas temáticos de las 21 unidades vecinales con capas de infraestructura, riesgos y equipamiento.',tipo:'PDF',paginas:'42 mapas',size:'34.5 MB',icon:'🗺️',color:'#0891b2',bg:'#cffafe'}
-  ];
-  el.innerHTML=docs.map(d=>`
-    <div class="doc-card-enhanced">
-      <div class="doc-accent" style="background:linear-gradient(90deg,${d.color},${d.color}88)"></div>
-      <div class="doc-body">
-        <div class="doc-icon-big" style="background:${d.bg};color:${d.color}">${d.icon}</div>
-        <div class="doc-title">${d.titulo}</div>
-        <div class="doc-desc">${d.desc}</div>
-        <div class="doc-meta">
-          <span class="dm-tag" style="background:${d.bg};color:${d.color}">${d.tipo}</span>
-          <span>${d.paginas}</span>
-          <span>·</span>
-          <span>${d.size}</span>
-        </div>
-        <button class="doc-btn" onclick="event.preventDefault()">
-          ⬇ Descargar ${d.tipo}
-        </button>
-      </div>
-    </div>`).join('');
-}
+/* v45.356 · [cifras] §1.1 · renderDocsEnhanced() se retiró: sus 6 tarjetas no enlazaban ningún
+   archivo (el botón solo hacía event.preventDefault()) y declaraban páginas y pesos sin archivo que
+   los respalde. Ver el comentario en el lugar que ocupaba #docs-grid, en #documentos. */
 
 // ── KPI COUNT-UP ANIMATION ──
 function animateKPIs(){
@@ -26999,7 +27001,9 @@ function cgInit(){
 function initBreadcrumb(){
   const bc=document.getElementById('sectionBreadcrumb');
   const bcText=document.getElementById('sbText');
-  const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Dashboard',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo','cronograma-gantt':'Cronograma Gantt PLADECO',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Argumentario',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
+  /* v45.356 · [cifras] crítico 12 · rótulos 'Dashboard' y 'Argumentario' pasan a los términos de v45.332 (hoy la
+     miga de pan y la navegación por puntos están ocultas, display:none, pero los nodos existen en el DOM) */
+  const sectionNames={hero:'Inicio',contexto:'Contexto PLADECO',dashboard:'Panel de indicadores',mapa:'Mapa Territorial',territorio:'Diagnóstico Territorial','comparador-uv':'Comparador UV','territorial-adv':'Brechas Urbano-Rural',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'Infancia y Adolescencia',voz:'Voz Ciudadana',suenos:'Visión 2035',foda:'FODA',ejes:'Ejes Estratégicos','ods-sec':'ODS',gestion:'Gestión PLADECO',sna:'Red SNA',etnografia:'Etnografía',comisiones:'Comisiones',timeline:'Línea de Tiempo',equipo:'Equipo Técnico',testimonios:'Testimonios',compromisos:'Compromisos','antes-despues':'Antes / Después',resumen:'Resumen Ejecutivo',semaforo:'Semáforo','cronograma-gantt':'Cronograma Gantt PLADECO',financiamiento:'Financiamiento',graficos:'Gráficos',argumentario:'Fundamentos de las decisiones',galeria:'Galería',documentos:'Documentos','portal-cta':'PLADECO Rengo'};
   _onScroll(function(){
     const scrollY=window.scrollY;
     if(scrollY<200){bc.classList.remove('visible');return;}
@@ -27013,7 +27017,7 @@ function initBreadcrumb(){
 function initDotNav(){
   const container=document.getElementById('dotNav');
   const secs=[];
-  const names={hero:'Inicio',dashboard:'Dashboard',mapa:'Mapa',territorio:'Diagnóstico',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'NNA',voz:'Voz Ciudadana',ejes:'Ejes',resumen:'Resumen',documentos:'Documentos',diagramas:'Diagramas'};
+  const names={hero:'Inicio',dashboard:'Panel de indicadores',mapa:'Mapa',territorio:'Diagnóstico',censo:'Censo 2024','analisis-estrategico-censo':'Análisis Estratégico Censal','ict-espacios-publicos':'ICT Espacios Públicos',desigualdad:'Desigualdad',nna:'NNA',voz:'Voz Ciudadana',ejes:'Ejes',resumen:'Resumen',documentos:'Documentos',diagramas:'Diagramas'};
   document.querySelectorAll('section[id], .hero[id]').forEach(s=>{
     const id=s.id;if(!id)return;
     secs.push(id);
@@ -27154,7 +27158,7 @@ if(typeof Chart !== 'undefined' && Chart.defaults){
 // ═══ RENDER PIPELINE (3-tier deferred loading) ═══
 
 // TIER 1: Immediate — structural HTML + navigation (above-fold)
-renderUV();renderComisiones();renderDocsEnhanced();try{renderDiagramas();}catch(_){}
+renderUV();renderComisiones();/* v45.356 · [cifras] renderDocsEnhanced() retirada (§1.1) */try{renderDiagramas();}catch(_){}
 renderGraficos();renderCartografias();renderHojaDeRuta();renderEquipo();
 try{renderTestimonios();}catch(_){}try{renderCompromisos();}catch(_){}try{renderAntesDespues();}catch(_){}try{renderGaleria();}catch(_){}
 renderTimeline();renderEthnoTabs();
@@ -28730,9 +28734,12 @@ setTimeout(()=>{
 /* svg = id del ícono SVG de línea del sistema (#ico-…) · desc = qué hay dentro (también se busca) */
 const CMD_SECTIONS=[
   {id:'mvv',name:'Misión, Visión y Valores',svg:'institution',cat:'Institucional',desc:'Misión, visión, valores y proyección 2035'},
-  {id:'dashboard',name:'Indicadores Clave',svg:'trend',cat:'Dashboard',desc:'KPIs y cifras clave del plan en un panel'},
+  /* v45.356 · [cifras] crítico 12 · la categoría 'Dashboard' (2 entradas) pasa a 'Panel de indicadores', el
+     término que v45.332 fijó para el texto visible y que usa la insignia de #dashboard; 'Argumentario' pasa a
+     'Fundamentos de las decisiones', la insignia de #argumentario. Los id y anclas no cambian. */
+  {id:'dashboard',name:'Indicadores Clave',svg:'trend',cat:'Panel de indicadores',desc:'KPIs y cifras clave del plan en un panel'},
   {id:'viz',name:'Visualizaciones Interactivas',svg:'chart',cat:'Interactivo',desc:'Gráficos y mapas para explorar los datos'},
-  {id:'datos-vivo',name:'Datos en Vivo',svg:'bolt',cat:'Dashboard',desc:'Indicadores que se actualizan en tiempo real'},
+  {id:'datos-vivo',name:'Datos en Vivo',svg:'bolt',cat:'Panel de indicadores',desc:'Indicadores que se actualizan en tiempo real'},
   {id:'mapa',name:'Explora tu territorio',svg:'map',cat:'Territorio',desc:'Mapa y ficha por localidad o unidad vecinal'},
   {id:'nna',name:'Diagnóstico NNA',svg:'heart',cat:'Social',desc:'Niñez y adolescencia: situación y derechos'},
   {id:'censo',name:'Censo 2024',svg:'clipboard',cat:'Datos',desc:'Población, viviendas y hogares (Censo 2024)'},
@@ -28753,7 +28760,7 @@ const CMD_SECTIONS=[
   {id:'territorio',name:'Unidades Vecinales',svg:'pin',cat:'Territorio',desc:'Las 21 UV (9 urbanas y 12 rurales)'},
   {id:'comparador-uv',name:'Comparador UV',svg:'calculator',cat:'Territorio',desc:'Compara indicadores entre unidades vecinales'},
   {id:'graficos',name:'Gráficos Analíticos',svg:'chart',cat:'Interactivo',desc:'Gráficos del diagnóstico comunal'},
-  {id:'argumentario',name:'Argumentario',svg:'scroll',cat:'Estrategia',desc:'Por qué importa cada decisión del plan'},
+  {id:'argumentario',name:'Fundamentos de las decisiones',svg:'scroll',cat:'Estrategia',desc:'Por qué importa cada decisión del plan'},
   {id:'resumen',name:'Resumen Ejecutivo',svg:'doc',cat:'Resumen',desc:'Síntesis ejecutiva del PLADECO'},
   {id:'semaforo',name:'Semáforo de Metas',svg:'traffic',cat:'Seguimiento',desc:'Estado de avance de las metas'},
   {id:'financiamiento',name:'Financiamiento',svg:'money',cat:'Gestión',desc:'Fuentes de recursos y presupuesto'},
@@ -29129,7 +29136,10 @@ const CHATBOT_QA=[
    ans:null},
   {keys:['semaforo','cumplimiento','indicador','transparencia','gestion'],sec:'semaforo',cat:'pladeco',
    follow:['Financiamiento','Metas 2035','Compromisos','Ejes estratégicos'],
-   ans:'Semáforo de Gestión Municipal 2024:\n\n🟢 **Transparencia**: Rengo alcanzó **97,89%** en el ranking CPLT — N°1 a nivel nacional\n🟢 **Portal Municipal**: Información actualizada y accesible\n🟡 **Trámites Digitales**: 22% digitalizado (meta 2035: 85%)\n🔴 **Dependencia FNDR**: 54,4% de inversión depende de fondos externos\n\nEl Eje 6 busca mejorar la gestión integral del municipio.'},
+   /* v45.356 · [cifras] §1.4 · decía «N°1 a nivel nacional». Lo documentado en #dashboard («+15,85 pp sobre media
+      nacional · 1° de O'Higgins») y en #comparador («1° de la Región de O'Higgins») es un primer lugar
+      regional; el portal no registra ningún ranking nacional. */
+   ans:'Semáforo de Gestión Municipal 2024:\n\n🟢 **Transparencia**: Rengo alcanzó **97,89%** en el ranking CPLT — 1° regional (O\'Higgins), 15,85 puntos porcentuales sobre la media nacional\n🟢 **Portal Municipal**: Información actualizada y accesible\n🟡 **Trámites Digitales**: 22% digitalizado (meta 2035: 85%)\n🔴 **Dependencia FNDR**: 54,4% de inversión depende de fondos externos\n\nEl Eje 6 busca mejorar la gestión integral del municipio.'},
   {keys:['nna','nino','nina','adolescente','infancia','menor'],sec:'nna',cat:'censo',
    follow:['Seguridad','Educación','Composición etaria','Metas 2035'],
    ans:'**Niñez y Adolescencia en Rengo (Diagnóstico 2025):**\n\n👧 **Universo:** 15.106 NNA (23% de la comuna)\n📋 **Encuesta:** 4.036 NNA en 27 establecimientos (49,6% del universo)\n\n🔴 **Datos críticos:**\n• **42% reporta ansiedad o depresión**\n• Solo 28% con acceso a apoyo psicológico (72% sin atención)\n• 76% vio o vivió violencia escolar\n• Bullying habitual: 31,5% | Ciberacoso: 18,2%\n• 24,4% ha sufrido violencia (psicológica 12,3%, física 9,8%, sexual 2,1%)\n• 31,5% ha consumido alguna sustancia\n\n📊 **Identidad y participación:**\n• 100% de NNA califica negativamente a Rengo (prom. 2,9/5)\n• Solo 24% se siente escuchado por adultos\n• 61,9% se siente inseguro en calle/barrio\n• 33,1% ha realizado trabajo remunerado\n• 58,7% de padres sin herramientas parentales adecuadas\n\n📌 OLN (Oficina Local de Niñez) operativa desde diciembre 2024.'},
@@ -29150,10 +29160,16 @@ const CHATBOT_QA=[
    ans:'La Etnografía Territorial cubrió las **21 unidades vecinales** de Rengo con trabajo de campo:\n\n🔍 **Método**: Observación participante + registros fotográficos\n📋 **Instrumentos**: Fichas de terreno, entrevistas semiestructuradas\n🗺️ **Cobertura**: 9 UV urbanas + 12 UV rurales\n👥 **Informantes clave**: Dirigentes, vecinos, funcionarios\n\nLa etnografía reveló dinámicas no capturadas por datos cuantitativos: inseguridad percibida, deterioro de espacios, y capital social comunitario.'},
   {keys:['documento','descargar','pdf','informe','archivo'],sec:'documentos',cat:'pladeco',
    follow:['¿Qué es el PLADECO?','Metodología','Marco legal'],
-   ans:'La sección **Documentos** del portal contiene todos los archivos descargables del proceso PLADECO:\n\n📄 Documento base PLADECO\n📊 Informe Censo 2024\n🗺️ Cartografía territorial\n📋 Fichas de unidades vecinales\n📈 Análisis estadísticos\n\nTodos los documentos están en formato PDF para descarga directa.'},
+   /* v45.356 · [cifras] §1.1 · la respuesta listaba «Documento base PLADECO», «Informe Censo 2024» y
+      «Fichas de unidades vecinales» como descargables y decía que todo estaba en PDF. Ninguna ficha de
+      #documentos ofrece esos tres archivos, y los datos del MBHT son XLSX. Ahora lista las 39 fichas
+      con archivo contadas en el marcado y declara el documento pendiente. */
+   ans:'La sección **Documentos y Descargas** reúne los archivos publicados del proceso PLADECO (39):\n\n• 24 presentaciones técnicas en PDF\n• 8 actas del proceso participativo en PDF\n• 5 archivos del Modelo de Bienestar Humano Territorial (MBHT): 4 en XLSX y la nota metodológica en PDF\n• 2 documentos del plan en PDF: el cronograma y el informe de estado de los espacios públicos\n\nEl documento final del PLADECO todavía no está publicado en el portal. Los diagramas, gráficos y cartografías de la misma sección se descargan como imagen.'},
   {keys:['grafico','visualizacion','chart','diagrama','red','sankey','sna','bubble','heatmap','scatter'],sec:'graficos',cat:'pladeco',
    follow:['Análisis Territorial Censal','Heatmap multidimensional','Calculadora por UV','Dashboard'],
-   ans:'**Visualizaciones del Portal PLADECO:**\n\n📊 **+85 visualizaciones interactivas** distribuidas en:\n\n🗺️ **Análisis Territorial Censo 2024** (#analisis-estrategico-censo): bar chart medias · doughnut quintiles · barras urbano-rural · **scatter ICHT vs IPSB** (Gráfico 4) · stacked bar composición · **heatmap multidimensional 15×6** (Gráfico 7) · **bubble ICP vs población** (Gráfico 8).\n\n🕸️ **Redes SNA** (Red Institucional + Sociedad Civil): nodos arrastrables, filtros por eje.\n\n📈 **Sankey** de convergencia y flujos PLADECO.\n\n🕸️ **Radares Chart.js**: brechas por dimensión, MBHT antes/después en la Calculadora UV.\n\n📋 **Dashboards** ejecutivos + panel KPI + semáforo de 10 metas.\n\n⚠️ **Matriz de Riesgo expandida** (12 riesgos en 3 familias).\n\n🔗 **Matriz de Coherencia 6×6** entre ejes con tooltips.\n\nTodos con lightbox y leyenda explicativa.'},
+   /* v45.356 · [cifras] §1.3 y crítico 12 · decía «Dashboards ejecutivos + panel KPI + semáforo de 10 metas»: el
+      Semáforo tiene 16 metas y los 10 KPIs son del Tablero de Gestión Institucional */
+   ans:'**Visualizaciones del Portal PLADECO:**\n\n📊 **+85 visualizaciones interactivas** distribuidas en:\n\n🗺️ **Análisis Territorial Censo 2024** (#analisis-estrategico-censo): bar chart medias · doughnut quintiles · barras urbano-rural · **scatter ICHT vs IPSB** (Gráfico 4) · stacked bar composición · **heatmap multidimensional 15×6** (Gráfico 7) · **bubble ICP vs población** (Gráfico 8).\n\n🕸️ **Redes SNA** (Red Institucional + Sociedad Civil): nodos arrastrables, filtros por eje.\n\n📈 **Sankey** de convergencia y flujos PLADECO.\n\n🕸️ **Radares Chart.js**: brechas por dimensión, MBHT antes/después en la Calculadora UV.\n\n📋 **Paneles de indicadores** + Semáforo de Metas (16 metas) + Tablero de Gestión Institucional (10 KPIs).\n\n⚠️ **Matriz de Riesgo expandida** (12 riesgos en 3 familias).\n\n🔗 **Matriz de Coherencia 6×6** entre ejes con tooltips.\n\nTodos con lightbox y leyenda explicativa.'},
   {keys:['unidad vecinal','uv','uv-','organizacion','junta de vecino'],sec:'territorio',cat:'territorial',
    follow:['Comparar localidades','Mapa territorial','Vulnerabilidad','Etnografía'],
    ans:null},
@@ -29165,7 +29181,8 @@ const CHATBOT_QA=[
    ans:null},
   {keys:['dashboard','kpi','resumen','cifras','datos clave','estadistica'],sec:'dashboard',cat:'censo',
    follow:['Población total','Censo 2024','Metas 2035','Gráficos'],
-   ans:'El **Dashboard Principal** presenta los KPI clave de Rengo en tiempo real:\n\n📊 Población, viviendas, hogares, densidad\n📈 Jefatura femenina, discapacidad\n🗺️ Cobertura territorial\n\nTodos los datos provienen del Censo 2024 (INE) y se actualizan dinámicamente.'},
+   /* v45.356 · [cifras] crítico 12 · «Dashboard Principal» pasa a «Panel de indicadores» (término de v45.332) */
+   ans:'El **Panel de indicadores** presenta los KPI clave de Rengo en tiempo real:\n\n📊 Población, viviendas, hogares, densidad\n📈 Jefatura femenina, discapacidad\n🗺️ Cobertura territorial\n\nTodos los datos provienen del Censo 2024 (INE) y se actualizan dinámicamente.'},
   {keys:['icvu','calidad de vida','indice calidad','ranking urbano','calidad urbana'],sec:'graficos',cat:'territorial',
    follow:['Gestión financiera','Empresas','Salud','Brecha urbano-rural'],
    ans:'**Índice de Calidad de Vida Urbana (ICVU) — Rengo:**\n\nRengo mejoró de **Nivel Bajo (2015) a Medio Alto (2025)**, una de solo 2 ciudades intermedias en Chile que lograron este avance (de 29 ciudades).\n\n📊 **Dimensiones ICVU 2024:**\n• 🟢 Condiciones laborales: **Alto**\n• 🟢 Ambiente de negocios: **Alto**\n• 🟡 Conectividad y movilidad: **Medio Alto**\n• 🟡 Condiciones socioculturales: **Medio Alto**\n• 🟠 Vivienda y entorno: **Medio Bajo**\n• 🔴 Salud y medioambiente: **Bajo**\n\nRengo y Angol son las únicas ciudades intermedias con nivel Alto en laborales Y negocios simultáneamente.'},
@@ -29290,7 +29307,9 @@ const CHATBOT_QA=[
 
   {keys:['faq','preguntas frecuentes','dudas comunes','que es pladeco','quien hace pladeco','como participar','siglas','glosario'],sec:'faq',cat:'pladeco',
    follow:['¿Qué es el PLADECO?','Matriz estratégica','Documentos','Presupuesto Participativo'],
-   ans:'**FAQ · Preguntas Frecuentes:**\n\nLa sección **#faq** responde con detalle 8 preguntas en acordeón accesible:\n\n1. ❓ **¿Qué es el PLADECO?** — Ley 18.695, 6 ejes, 27 OE, 225 acciones, 10 años\n2. 👥 **¿Quién elabora el PLADECO?** — SECPLAC + 11 direcciones + Concejo Municipal\n3. 💰 **¿Cómo se financian las 225 acciones?** — Mix 64% Municipal · 18% FNDR · 12% Sectorial · 6% Otras\n4. 🤝 **¿Cómo puedo participar?** — Juntas de Vecinos · COSOC · Presupuesto Participativo · Comisiones · encuestas\n5. 📖 **¿Qué significan IVSH, IDDC, ICP, ICT?** — Tooltips automáticos en todo el portal (63 términos)\n6. 📊 **¿Cómo se mide el avance?** — 16 indicadores semaforizados (verde/amarillo/rojo)\n7. 🔄 **¿Qué pasa si cambia la administración?** — Es instrumento de Estado Comunal, trasciende períodos\n8. 📥 **¿Cómo descargo el documento completo?** — Sección Documentos con PDF + Excel + GeoJSON + Actas\n\n💡 Si tu pregunta no está aquí, pregúntame directamente.'},
+   /* v45.356 · [cifras] crítico 12 · el punto 8 prometía «PDF + Excel + GeoJSON + Actas»: no hay GeoJSON
+      ni Excel de la matriz en #documentos, y el documento final no está publicado (igual que en #faq) */
+   ans:'**FAQ · Preguntas Frecuentes:**\n\nLa sección **#faq** responde con detalle 8 preguntas en acordeón accesible:\n\n1. ❓ **¿Qué es el PLADECO?** — Ley 18.695, 6 ejes, 27 OE, 225 acciones, 10 años\n2. 👥 **¿Quién elabora el PLADECO?** — SECPLAC + 11 direcciones + Concejo Municipal\n3. 💰 **¿Cómo se financian las 225 acciones?** — Mix 64% Municipal · 18% FNDR · 12% Sectorial · 6% Otras\n4. 🤝 **¿Cómo puedo participar?** — Juntas de Vecinos · COSOC · Presupuesto Participativo · Comisiones · encuestas\n5. 📖 **¿Qué significan IVSH, IDDC, ICP, ICT?** — Tooltips automáticos en todo el portal (63 términos)\n6. 📊 **¿Cómo se mide el avance?** — 16 indicadores semaforizados (verde/amarillo/rojo)\n7. 🔄 **¿Qué pasa si cambia la administración?** — Es instrumento de Estado Comunal, trasciende períodos\n8. 📥 **¿Cómo descargo el documento completo?** — El documento final aún no está publicado; en Documentos hay presentaciones, actas e informes en PDF y datos del MBHT en XLSX\n\n💡 Si tu pregunta no está aquí, pregúntame directamente.'},
 
   {keys:['glosario','tooltip','sigla','definicion','que significa','que es esto','terminos tecnicos','63 terminos'],sec:'faq',cat:'pladeco',
    follow:['FAQ','¿Qué es el PLADECO?','Análisis estratégico','Financiamiento'],
@@ -29387,7 +29406,8 @@ const CHATBOT_QA=[
 
   {keys:['perfiles lectura','tiempo lectura','5 minutos','15 minutos','45 minutos','cuanto tiempo','ruta lectura','lectura minima','decisor'],sec:null,cat:null,
    follow:['Estructura del portal','¿Qué es el PLADECO?','Buscador del portal'],
-   ans:'**4 Perfiles de Lectura:**\n\nEl portal ofrece 4 rutas según el tiempo disponible:\n\n⏱️ **5 min · Mínimo Viable** — Síntesis interpretativa + 6 Decisiones del Plan (títulos)\n⏱️ **15 min · Decisor** — Argumentario + Ventana 2025-2028 + Semáforo (10 KPIs) + Próximos pasos\n⏱️ **45 min · Lectura Plena** — Diagnóstico completo + Matriz + Financiamiento + Voz Ciudadana\n⏱️ **∞ · Lectura Completa** — 11 capítulos · 75 secciones · desde el Capítulo I\n\nElige tu perfil en la portada del portal.'},
+   /* v45.356 · [cifras] crítico 12 y §1.3 · decía «Argumentario + … + Semáforo (10 KPIs)» */
+   ans:'**4 Perfiles de Lectura:**\n\nEl portal ofrece 4 rutas según el tiempo disponible:\n\n⏱️ **5 min · Mínimo Viable** — Síntesis interpretativa + 6 Decisiones del Plan (títulos)\n⏱️ **15 min · Decisor** — Fundamentos de las decisiones + Ventana 2025-2028 + Semáforo de Metas + Próximos pasos\n⏱️ **45 min · Lectura Plena** — Diagnóstico completo + Matriz + Financiamiento + Voz Ciudadana\n⏱️ **∞ · Lectura Completa** — 11 capítulos · 75 secciones · desde el Capítulo I\n\nElige tu perfil en la portada del portal.'},
 
   {keys:['como participo','participar','consulta ciudadana','cosoc','junta vecinos','presupuesto participativo'],sec:'participacion',cat:'participacion',
    follow:['Sociedad civil','¿Qué es el PLADECO?','Compromisos','Encuesta ciudadana'],
@@ -30117,7 +30137,9 @@ function showToast(msg,type='info'){
 }
 const toastShown=new Set();
 function initToastTriggers(){
-  const triggers={semaforo:'🏆 Rengo #1 en Transparencia con 97,89%',ejes:'🎯 6 ejes con 225 políticas',financiamiento:'💰 $144 acciones municipales'};
+  /* v45.356 · [cifras] §1.4 · decía «Rengo #1 en Transparencia», sin ámbito. Lo documentado (#dashboard,
+     #comparador) es el primer lugar de la Región de O'Higgins. */
+  const triggers={semaforo:'🏆 Rengo, 1° regional en Transparencia con 97,89%',ejes:'🎯 6 ejes con 225 políticas',financiamiento:'💰 $144 acciones municipales'};
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting&&!toastShown.has(e.target.id)&&triggers[e.target.id]){
