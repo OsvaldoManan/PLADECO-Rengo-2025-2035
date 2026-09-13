@@ -29096,9 +29096,13 @@ const CHATBOT_QA=[
   {keys:['timeline','linea de tiempo','proceso','etapa','fase','cronologia','hito'],sec:'cronograma-gantt',cat:'pladeco',
    follow:['Compromisos','¿Qué es el PLADECO?','Equipo técnico','Comisiones'],
    ans:'Línea de Tiempo del proceso PLADECO:\n\n📌 **2025 (Ene-Mar)**: Constitución del equipo + diagnóstico territorial\n📌 **2025 (Abr-Jun)**: Encuestas masivas + talleres participativos\n📌 **2025 (Jul-Sep)**: Análisis FODA + etnografía territorial\n📌 **2025 (Oct-Dic)**: Formulación estratégica + validación COSOC\n📌 **2026 (Ene-Mar)**: Redacción final + metas e indicadores\n📌 **2026 (Abr-Jun)**: presentación al Concejo Municipal para aprobación (estado formal: '+_EST_INSTR_QA_MIN+')\n\nEl proceso ha incluido +2.000 participantes directos.'},
+  /* v45.356 · revisión independiente [registros] · §3.9: la respuesta decía que los testimonios «reflejan las
+     prioridades reales» y listaba perfiles que no están entre los 16 (personas con discapacidad, funcionarios
+     municipales, madres y cuidadoras). Ahora lista solo los perfiles y temas de renderTestimonios (leídos uno
+     por uno) y advierte, como el aviso de #suenos, que están pendientes de validación. */
   {keys:['testimonio','ciudadano','opinion','dijo','vecino','vecina'],sec:'testimonios',cat:'participacion',
    follow:['Encuesta ciudadana','Metodología','Galería','Etnografía'],
-   ans:'El PLADECO incluye **16 testimonios ciudadanos** de diversos perfiles:\n\n• Dirigentes vecinales urbanos y rurales\n• Adultos mayores y jóvenes\n• Migrantes y personas con discapacidad\n• Emprendedores y agricultores\n• Funcionarios municipales\n• Madres y cuidadoras\n\nLos testimonios reflejan las prioridades reales: seguridad, salud, conectividad rural, empleo juvenil, medio ambiente y participación ciudadana.'},
+   ans:'El PLADECO incluye **16 testimonios ciudadanos** con atribución genérica de perfil:\n\n• Dirigentes vecinales, comunitarios y de APR\n• Vecinos y vecinas de sectores urbanos y rurales\n• Un adulto mayor, un joven universitario y una apoderada\n• Un agricultor y una emprendedora local\n• Representantes de una agrupación de mujeres, de la comunidad migrante y de la gestión cultural\n• Un concejal o concejala\n\nLos testimonios mencionan seguridad e iluminación, salud, agua potable y alcantarillado rural, transporte, emprendimiento femenino, cultura y deporte, inclusión migrante y participación.\n\n⚠️ **Pendientes de validación:** el portal no registra la fuente verificable de cada testimonio ni el consentimiento de quienes los dieron (ver el registro de datos pendientes en Metodología).'},
   {keys:['antes','despues','comparacion','cambio','mejora','2017','anterior'],sec:'antes-despues',cat:'territorial',
    follow:['Metas 2035','Brecha urbano-rural','Servicios básicos','Censo 2024'],
    ans:'Comparación Antes / Después (2017 vs 2024):\n\n📈 **Mejoras significativas:**\n• Cobertura internet: 62% → 91,4%\n• Escolaridad promedio: 10,2 → 11,8 años\n• Hogares c/agua: 82% → 90,3%\n• Participación ciudadana: 800 → 2.000+ personas\n\n📊 **Desafíos persistentes:**\n• Brecha rural servicios básicos\n• Déficit habitacional\n• Seguridad ciudadana\n\nLa sección "Antes / Después" muestra 14 indicadores comparados.'},
@@ -41455,7 +41459,9 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
          «PLADECO:» y leído de versionInfo.estadoInstrumento; el estado del portal sigue rotulado aparte. */
       /* Cada dato va en su propio grupo (.he-item); los tres grupos no caben en una línea ni a 1366 px,
          así que se apilan a todo ancho y los separadores quedan ocultos (ver CSS del bloque v45.356 ·
-         REGISTROS). Medido: 392 × 90 px a 1366 px y tres líneas limpias a 375 px. */
+         REGISTROS). Medido: 392 × 90 px (tres líneas) a 1366 px; a 375 px, 255 × 122 px, porque los dos
+         primeros grupos ocupan dos líneas cada uno, sin separadores sueltos (corregido en la revisión
+         independiente: antes decía «tres líneas limpias a 375 px»). */
       var grupos=[];
       function limpio(t){ return String(t).replace(/[<>]/g,''); }
       if(v.estadoInstrumento) grupos.push('<b>PLADECO:<\/b> '+limpio(v.estadoInstrumento));
@@ -42587,6 +42593,14 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
        · los 10 puntos repetidos del mapa de sociedad civil lo declaran en su ventana.
      Verificado en el navegador: la tabla de #metodologia muestra 27 filas (15 previas + 12 nuevas) y
      el enlace de #decisiones abre #metodologia con la fila 'acciones-200-225' a la vista.
+
+     Revisión independiente (v45.356): 'participacion-totales' calificaba la encuesta de 119 como «no
+     probabilística», dato que el portal no declara en ninguna parte; ahora dice lo documentado (en línea,
+     N=119 adultos) y que el diseño muestral no consta. 'taxonomia-ejes' suma que la propia tabla de ejes
+     mezcla las dos nomenclaturas (columna de objetivos con «EJE 01 — Desarrollo Social y Comunitario» y
+     «OE 1.1 Salud comunitaria»). Se recontaron en los datos: 225 = 58+18+14+53+32+50, 200 = suma de nAcc,
+     472 y 89 en SC_ORGS, 10 ventanas con «Punto compartido» (clic en los 89 marcadores) y 98 páginas sin
+     capa de texto en las 8 actas.
 ═══════════════════════════════════════════════════════════════════════════ -->
 <style>
 /* franja «Rengo en contexto»: el período del plan pasa de cifra destacada a frase.
@@ -42597,7 +42611,8 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
 .cifras-franja{background:var(--bg-soft,#f1f5f9)}
 .cifras-franja .cf-periodo{margin:16px 0 0;max-width:74ch;font-size:13.5px;line-height:1.6;color:var(--text)}
 .cifras-franja .cf-periodo b{font-weight:700}
-/* el color del enlace lo pone la regla global de enlaces del portal (verde, 4,7:1 medido en claro) */
+/* el color del enlace lo pone la regla global de enlaces del portal (medido sobre --bg-soft: 4,58:1 en
+   claro y 8,6:1 en oscuro; la revisión independiente corrigió el 4,7:1 que se había anotado) */
 .cifras-franja .cf-periodo a{font-weight:700;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 /* aviso de validación pendiente junto a un contenido cuyo respaldo no consta */
 .dpv-aviso{margin:10px 0 0;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--ocre,#D6940F);
@@ -42650,6 +42665,7 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
     {id:'taxonomia-ejes', tema:'Nombres y colores de los ejes', estado:'por validar',
      valores:['Tabla de ejes de #matriz y registro EJES: «Cultura, Turismo, Deportes, Recreación y Bienestar Social (Salud)», «Desarrollo Económico Comunal», «Educación y Capacitación para el Desarrollo Humano», «Desarrollo Urbano, Vivienda, Infraestructura, Vialidad y Medio Ambiente», «Seguridad Pública y Gestión de Riesgos y Emergencias», «Innovación, Modernización y Optimización de la Gestión Municipal»',
               'Mapa de articulación de #matriz: «Desarrollo Social y Comunitario», «Desarrollo Económico y Productivo», «Ordenamiento Territorial y Medio Ambiente», «Servicios Públicos e Infraestructura», «Cultura, Deporte e Identidad Local», «Gestión Municipal y Gobernanza»',
+              'La propia tabla de ejes mezcla ambas: la columna del eje usa la nomenclatura de EJES y la de objetivos agrupa con la del Mapa de articulación («EJE 01 — Desarrollo Social y Comunitario», «EJE 05 — Cultura, Deporte e Identidad Local», etc.), con rótulos como «OE 1.1 Salud comunitaria»',
               'Sankey de #matriz: «Desarrollo Social y Salud», «Desarrollo Económico Local», «Educación, Cultura y Deporte», «Territorio y M.A.», «Seguridad Ciudadana», «Gestión Municipal»; su «OE 1.1 Salud Primaria» contradice la OE 1.1 de la matriz, «Desarrollar Plan de Turismo Rural, Patrimonial y Enoturístico»',
               'Color del Eje 2: verde #0E7F68 en la tabla, el Mapa de articulación y la red; naranja #f5921d en la lista de políticas; ámbar #E69F00 en el Sankey y en los gráficos que leen EJES'],
      nota:'La misma sección usa tres nomenclaturas para los seis ejes (la del Mapa de articulación es también la de las tablas y gráficos por eje de #inversion-subdere y #inversion-bip-sni). En el Mapa de articulación, además, el orden temático no corresponde al de la matriz: allí el Eje 3 es Ordenamiento Territorial y el Eje 5, Cultura; en la matriz son Educación y Seguridad. El color de un mismo eje cambia según la pestaña, y la lista de políticas no rotula a qué eje pertenece cada acción, solo lo sugiere con el color. Elegir la nomenclatura y la paleta oficiales no corresponde al portal.',
@@ -42702,7 +42718,7 @@ body.dark .pe-cita::before, body.dark .pe-cita::after{color:var(--id-azul,#7FA8D
     {id:'participacion-totales', tema:'Totales de participación del proceso', estado:'por validar',
      valores:['4.036 · niños, niñas y adolescentes · encuesta escolar en 27 establecimientos · abril de 2025 (ya registrada frente a n=21 en «Tamaño de la encuesta a niños, niñas y adolescentes»)',
               '472 · suma de los asistentes a las sesiones de las 89 organizaciones del mapa de #sociedad-civil (coincide exactamente) · el portal la llama también «firmas verificadas», «vecinos y vecinas» y «participantes» · septiembre de 2024 a abril de 2025',
-              '119 · encuesta ciudadana a personas adultas, no probabilística · 2025',
+              '119 · encuesta ciudadana en línea a personas adultas (N=119 respondientes) · 2025 · el portal no declara el diseño muestral',
               '115 · entrevistas etnográficas a 101 funcionarios y 14 directores · marzo a mayo de 2025 · el comparador cita además 116 funcionarios encuestados',
               '+300 personas consultadas y 77 juntas de vecinos · talleres territoriales · sin fecha ni registro de origen en el portal',
               '«Más de 500 voces» (#suenos) y «+2.000 participantes directos» (asistente) · sin instrumento ni fuente',
