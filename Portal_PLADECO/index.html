@@ -42606,6 +42606,12 @@ body.dark .ini-cita{border-left-color:var(--id-azul,#7FA8D4)}
    (medido: rgb(241,245,249) sobre blanco). Se fija la tinta del contenido. */
 .leaflet-popup-content .ini-pop,.leaflet-popup-content .ini-pop li{color:#333 !important}
 .ini-pop li{margin:1px 0;font-size:12px;line-height:1.45}
+/* v45.356 · revisión: los <li> sin clase de la clave y de la ventana emergente heredaban el cuerpo de
+   texto de institucional.css (body #main-content li:not([class]) → 17,56 px, interlínea 28 px), que
+   gana en especificidad a .ini-mapa-ley li y .ini-pop li: la clave y la lista de problemas salían al
+   doble del tamaño previsto. Se sube la especificidad para que rija el tamaño declarado arriba. */
+body #main-content .ini-mapa .ini-mapa-ley li{font-size:12.5px;line-height:1.4}
+body #main-content .leaflet-popup-content .ini-pop li{font-size:12px;line-height:1.45}
 @media(max-width:820px){
   .ini-body{grid-template-columns:1fr}
   .ini-p:nth-child(odd){border-right:0}
@@ -42825,7 +42831,7 @@ body.dark .ini-cita{border-left-color:var(--id-azul,#7FA8D4)}
       + '<p class="ini-mapa-nota">'
       +   (meta&&meta.fuente ? '<b>Fuente:</b> '+esc(meta.fuente)+(meta.corte?' · '+esc(meta.corte):'')+'. ' : '')
       +   esp.length+' registros georreferenciados'
-      +   (repetidos>0 ? '; '+repetidos+(repetidos===1?' comparte':' comparten')+' coordenada con otro registro, por lo que en el mapa se ven '+distintos+' puntos distintos' : '')
+      +   (repetidos>0 ? '; '+repetidos+(repetidos===1?' repite':' repiten')+' la coordenada de otro registro, por lo que en el mapa se ven '+distintos+' puntos distintos' : '')
       +   '. La lista completa, con filtros, está en la sección del catastro.'
       + '</p>'
       + '</div>';
