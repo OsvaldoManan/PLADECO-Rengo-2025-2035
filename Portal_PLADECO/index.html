@@ -163,6 +163,55 @@ window.__leafletMaps=window.__leafletMaps||[];
   patch();
 })();
 </script>
+<script>
+/* v45.356 · ICP · UNA SOLA FUENTE PARA EL COLOR, EL NIVEL Y LA LEYENDA
+   Regresion de v45.355: los circulos de #mapCensoVuln y #tpMap pasaron a la rampa terracota,
+   pero sus dos leyendas seguian escritas a mano en verde, amarillo, naranja y rojo, y el
+   interruptor de capa de #tpMap mostraba un rojo: el lector veia una clave que no correspondia
+   al mapa. Aqui viven los cortes (0,22 · 0,28 · 0,32), los nombres de nivel y la tinta legible
+   sobre cada tono; el color se lee de los tokens --seq-1..--seq-4 (:root) con el mismo hex de
+   respaldo. clases(fnColor) arma las filas de leyenda pasando un valor representativo de cada
+   clase por la MISMA funcion de color que pinta el mapa, de modo que la leyenda no puede
+   volver a divergir de los circulos.
+   Contraste calculado (formula WCAG) de la tinta, texto de 11 px en negrita: #2B1208 sobre
+   --seq-1 9,58:1 y sobre --seq-2 5,72:1; blanco sobre --seq-3 5,57:1 y sobre --seq-4 10,11:1.
+   Con blanco, --seq-1 y --seq-2 daban 1,84:1 y 3,08:1. */
+window.pladecoICP = window.pladecoICP || (function(){
+  var CORTES=[0.22,0.28,0.32];
+  var NIVELES=['Bajo','Medio','Alto','Crítico'];
+  var RESPALDO=['#E8B49A','#D07E5C','#AC4A2C','#7A2313'];
+  var TINTA=['#2B1208','#2B1208','#FFFFFF','#FFFFFF'];
+  function clase(v){ return v<CORTES[0]?0:(v<CORTES[1]?1:(v<CORTES[2]?2:3)); }
+  function token(i){
+    try{ var s=getComputedStyle(document.documentElement).getPropertyValue('--seq-'+(i+1)).trim(); if(s) return s; }catch(e){}
+    return RESPALDO[i];
+  }
+  function dec(n){ return String(n).replace('.',','); }
+  function rango(i){
+    if(i===0) return 'menos de '+dec(CORTES[0]);
+    if(i===CORTES.length) return dec(CORTES[CORTES.length-1])+' o más';
+    return dec(CORTES[i-1])+' a '+dec(CORTES[i]);
+  }
+  /* un valor dentro de cada clase: el punto medio entre cortes, o 0,01 fuera de los extremos */
+  function muestra(i){
+    if(i===0) return CORTES[0]-0.01;
+    if(i===CORTES.length) return CORTES[CORTES.length-1]+0.01;
+    return (CORTES[i-1]+CORTES[i])/2;
+  }
+  return {
+    cortes:CORTES.slice(),
+    clase:clase,
+    color:function(v){ return token(clase(v)); },
+    nivel:function(v){ return NIVELES[clase(v)]; },
+    tinta:function(v){ return TINTA[clase(v)]; },
+    num:function(v,d){ return (+v).toFixed(d==null?3:d).replace('.',','); },
+    clases:function(fnColor){
+      var f=(typeof fnColor==='function')?fnColor:this.color;
+      return NIVELES.map(function(n,i){ var v=muestra(i); return {nivel:n, rango:rango(i), color:f(v), tinta:TINTA[i]}; });
+    }
+  };
+})();
+</script>
 <!-- v45.187 · HOTFIX · Chart.js REVERTIDO a sincrono.
      v45.181 lo habia puesto en defer para no bloquear first paint, pero los chart inits
      inline en el body se ejecutan DURANTE el parsing (sync), antes de que defer'd Chart.js
@@ -473,6 +522,11 @@ input,textarea,select,button,optgroup{
   --chart-pos:#15803d; --chart-neg:#b91c1c; --chart-warn:#b45309; --chart-neutral:#64748b;
   --chart-grid:rgba(15,23,42,.08); --chart-axis:#475569; --chart-tooltip-bg:#0f2940;
   --sd-note:"v45.312 · paleta de graficos + measure (unico token faltante); escalas space/fs/lh/fw ya existen, se reutilizan";
+  /* v45.356 · rampa secuencial del ICP (terracota del escudo, de claro a oscuro = de menor a
+     mayor vulnerabilidad). Antes vivia solo como hex repetido en dos funciones icpColor y las
+     leyendas seguian en semaforo. Es un dato, no un color de interfaz: no cambia en oscuro.
+     La leen window.pladecoICP (mapas) y .tp-legend-row / .tp-icp-pill. */
+  --seq-1:#E8B49A; --seq-2:#D07E5C; --seq-3:#AC4A2C; --seq-4:#7A2313;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
 body{font-family:'Poppins','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .4s ease,color .3s ease;overflow-x:hidden;max-width:100vw}
@@ -2139,6 +2193,22 @@ body.dark .tp-prov{color:#fcd34d;background:rgba(245,158,11,.13);border-color:rg
 .tp-rank tbody tr.tp-top td{background:rgba(153,0,0,.045)}
 body.dark .tp-rank tbody tr.tp-top td{background:rgba(224,102,102,.08)}
 .tp-icp-pill{display:inline-block;min-width:48px;text-align:center;font-weight:700;color:#fff;border-radius:6px;padding:2px 7px;font-size:11px}
+/* v45.356 · la fila de leyenda del ranking y sus muestras no tenian ninguna regla: los <span> de
+   color quedaban en linea, sin ancho ni alto, y no se veian. La tinta de .tp-icp-pill la fija
+   ahora el JS por clase (oscura sobre --seq-1/--seq-2, blanca sobre --seq-3/--seq-4). */
+.tp-legend-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;margin:14px 0 0;padding:10px 14px;
+  border:1px solid var(--border);border-radius:10px;background:var(--card);font-size:12px;line-height:1.4;color:var(--text2)}
+.tp-legend-row .tp-lg-t{font-weight:700;color:var(--text);margin-right:4px}
+.tp-legend-row .tp-lg{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tp-legend-row .tp-lg b{color:var(--text);font-weight:700}
+.tp-legend-row .tp-lg-sw{display:inline-block;width:14px;height:14px;border-radius:50%;flex:none;
+  box-shadow:0 0 0 1px rgba(15,23,42,.18)}
+body.dark .tp-legend-row .tp-lg-sw{box-shadow:0 0 0 1px rgba(255,255,255,.28)}
+.tp-legend-row .tp-lg-nota{flex-basis:100%;font-size:11.5px;color:var(--text2)}
+.map-legend .legend-dot.icp-lg-dot{width:12px;height:12px;box-shadow:0 0 0 1px rgba(15,23,42,.18)}
+body.dark .map-legend .legend-dot.icp-lg-dot{box-shadow:0 0 0 1px rgba(255,255,255,.28)}
+.icp-sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;
+  box-shadow:0 0 0 1px rgba(15,23,42,.2)}
 .tp-ctx{color:var(--text2);font-size:11px}
 .tp-ctx b{color:var(--text);font-weight:700}
 .tp-note{font-size:11.5px;line-height:1.62;color:var(--text2);background:var(--card);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:0 10px 10px 0;padding:12px 15px;margin:10px 0 2px}
@@ -7527,7 +7597,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <div class="mvv-card">
         <div class="mvv-card-accent"></div>
         <div class="mvv-card-img">
-          <picture><source type="image/webp" srcset="mvv-principios.webp"><img src="mvv-principios.jpg" alt="Visita en terreno PLADECO Rengo · diálogo con vecinos en su unidad vecinal" width="1200" height="800" loading="lazy" decoding="async" onclick="openMvvViewer(2)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(2)}" style="cursor:pointer" class="mvv-institutional-photo"></picture>
+          <picture><source type="image/webp" srcset="mvv-principios.webp"><img src="mvv-principios.jpg" alt="Reunión de trabajo con la comunidad en la sala de reuniones de la Ilustre Municipalidad de Rengo" width="1200" height="800" loading="lazy" decoding="async" onclick="openMvvViewer(2)" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(2)}" style="cursor:pointer" class="mvv-institutional-photo"></picture>
         </div>
         <div class="mvv-card-body">
           <div class="mvv-card-tag"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-trophy"></use></svg> Principios</div>
@@ -7546,8 +7616,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <div class="mvv-objetivo">
       <div class="mvv-objetivo-accent"></div>
       <div class="mvv-objetivo-inner">
-        <div class="mvv-objetivo-img" onclick="openMvvViewer(3)" tabindex="0" role="button" aria-label="Ver Proyecci&#243;n Rengo 2035 en pantalla completa" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(3)}" style="cursor:pointer">
-          <picture><source type="image/webp" srcset="mvv-proyeccion.webp"><img src="mvv-proyeccion.jpg" alt="Comunidad PLADECO Rengo · imagen objetivo de cohesión y desarrollo territorial 2035" width="1200" height="800" loading="lazy" decoding="async" class="mvv-institutional-photo"></picture>
+        <div class="mvv-objetivo-img" onclick="openMvvViewer(3)" tabindex="0" role="button" aria-label="Ver en pantalla completa la fotograf&#237;a de apoyo de la Imagen Objetivo 2035" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMvvViewer(3)}" style="cursor:pointer">
+          <picture><source type="image/webp" srcset="mvv-proyeccion.webp"><img src="mvv-proyeccion.jpg" alt="Fotografía de apoyo: grupo de personas de la comunidad de Rengo en el interior de una edificación en obra" width="1200" height="800" loading="lazy" decoding="async" class="mvv-institutional-photo"></picture>
         </div>
         <div class="mvv-objetivo-body">
           <div class="mvv-objetivo-tag">&#128302; Imagen Objetivo Comunal</div>
@@ -23767,8 +23837,11 @@ function navLightbox(dir){
 const MVV_IMGS=[
   {src:'mvv-mision.jpg',titulo:'Misión — Equipo de planificación PLADECO Rengo'},
   {src:'mvv-vision.jpg',titulo:'Visión — Talleres ciudadanos · 472 vecinos · 95 organizaciones'},
-  {src:'mvv-principios.jpg',titulo:'Principios — Visita en terreno con la comunidad'},
-  {src:'mvv-proyeccion.jpg',titulo:'Proyección 2035 — Comunidad PLADECO Rengo'},
+  /* v45.356 · la foto de Principios muestra una reunión en la sala de reuniones municipal (se ve el
+     rótulo «Ilustre Municipalidad de Rengo»), no una visita en terreno; la de la Imagen Objetivo es
+     un registro del presente, no una visualización de 2035. Revisadas las dos imágenes. */
+  {src:'mvv-principios.jpg',titulo:'Principios — Reunión de trabajo con la comunidad en la sala de reuniones municipal'},
+  {src:'mvv-proyeccion.jpg',titulo:'Imagen Objetivo 2035 — Fotografía de apoyo: registro del presente, no una proyección'},
   {src:'fuente-info.png',titulo:'Fuentes de Información — PLADECO Rengo 2025-2035'}
 ];
 let mvvIdx=0;
@@ -24784,8 +24857,11 @@ function toggleDark(){
 function animateCounters(){
   /* v45.234 · ESTÁTICO (sin conteo regresivo). Antes los KPIs del hero se animaban desde 0,
      lo que en recargas podía dejarlos mostrando un valor menor/parcial. Ahora muestran SIEMPRE
-     su valor real y completo. (La otra animación —initCounters v45.38— también se desactivó
-     para .hero-stat .num.) Se fija el valor explícito como defensa ante cualquier carrera. */
+     su valor real y completo. Se fija el valor explícito como defensa ante cualquier carrera.
+     v45.356 · CORRECCIÓN DE ESTE COMENTARIO: decía que initCounters (v45.38) «también se
+     desactivó», pero solo se había quitado .hero-stat .num de su lista y la función siguió
+     animando desde 0 los indicadores de otras secciones (.kpi-value, .mbht-chip-val,
+     .censo-kpi-value, entre otros). Desde v45.356 initCounters no anima ninguna cifra. */
   var nums = document.querySelectorAll('.hero-stat .num');
   var targets = ['63.620','6','225','21','16/17','32'];
   nums.forEach(function(el,i){ if(targets[i]!=null) el.textContent = targets[i]; });
@@ -25149,7 +25225,11 @@ function renderCensoMapaVuln(){
      TONO -la terracota del escudo comunal- donde a mayor vulnerabilidad, mas oscuro: se
      lee como 'mas cantidad de lo mismo' y se distingue por luminosidad, no por color.
      Los cortes de clase y los nombres de nivel no cambian. */
+  /* v45.356 · el color sale de window.pladecoICP (tokens --seq-1..4); el hex de respaldo es el
+     mismo por si ese bloque no hubiera corrido. */
+  var ICP=window.pladecoICP||null;
   function icpColor(v){
+    if(ICP) return ICP.color(v);
     if(v<0.22) return '#E8B49A';
     if(v<0.28) return '#D07E5C';
     if(v<0.32) return '#AC4A2C';
@@ -25159,7 +25239,10 @@ function renderCensoMapaVuln(){
   CENSO_LOCALIDADES_GEO.forEach(function(d){
     var r=Math.max(Math.sqrt(d.pob)*3.5,180);
     bounds.push([d.lat,d.lng]);
-    L.circle([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:2,opacity:.9,fillOpacity:.65}).addTo(map).bindPopup('<div style="min-width:160px"><strong style="font-size:13px">'+d.loc+'</strong><hr style="margin:4px 0;border-color:rgba(0,0,0,.1)"><table style="font-size:11px;width:100%"><tr><td>Poblaci&oacute;n</td><td style="text-align:right;font-weight:700">'+d.pob.toLocaleString('es-CL')+'</td></tr><tr><td>ICP</td><td style="text-align:right;font-weight:700;color:'+icpColor(d.icp)+'">'+d.icp.toFixed(3)+'</td></tr><tr><td>&Aacute;rea</td><td style="text-align:right">'+d.area+'</td></tr></table></div>');
+    /* v45.356 · en la ventana emergente el valor del ICP iba escrito en el color de su clase: el
+       tono claro de «Bajo» sobre blanco no se leia (1,84:1). Ahora el valor va en el color del
+       texto, con una muestra del tono al lado y el nombre del nivel. */
+    L.circle([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:2,opacity:.9,fillOpacity:.65}).addTo(map).bindPopup('<div style="min-width:160px"><strong style="font-size:13px">'+d.loc+'</strong><hr style="margin:4px 0;border-color:rgba(0,0,0,.1)"><table style="font-size:11px;width:100%"><tr><td>Poblaci&oacute;n</td><td style="text-align:right;font-weight:700">'+d.pob.toLocaleString('es-CL')+'</td></tr><tr><td>ICP</td><td style="text-align:right;font-weight:700"><span class="icp-sw" style="background:'+icpColor(d.icp)+'"></span>'+(ICP?ICP.num(d.icp):d.icp.toFixed(3))+(ICP?' · '+ICP.nivel(d.icp):'')+'</td></tr><tr><td>&Aacute;rea</td><td style="text-align:right">'+d.area+'</td></tr></table></div>');
     if(d.pob>=500){
       L.marker([d.lat,d.lng],{icon:L.divIcon({className:'map-label',html:'<span style="font-size:11px;font-weight:700;color:#1F3864;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+d.loc+'</span>',iconSize:[0,0],iconAnchor:[0,-12]})}).addTo(map);
     }
@@ -25168,7 +25251,15 @@ function renderCensoMapaVuln(){
   var legend=L.control({position:'bottomright'});
   legend.onAdd=function(){
     var div=L.DomUtil.create('div','map-legend');
-    div.innerHTML='<strong style="font-size:12px">ICP Vulnerabilidad</strong><br><span style="display:inline-block;width:12px;height:12px;background:#22c55e;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &lt;0.22 Bajo<br><span style="display:inline-block;width:12px;height:12px;background:#eab308;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.22-0.28 Medio<br><span style="display:inline-block;width:12px;height:12px;background:#f97316;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> 0.28-0.32 Alto<br><span style="display:inline-block;width:12px;height:12px;background:#dc2626;border-radius:50%;vertical-align:middle;margin-right:4px;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span> &gt;0.32 Cr&iacute;tico<hr><span style="font-size:11px">Tama&ntilde;o = poblaci&oacute;n</span>';
+    /* v45.356 · leyenda GENERADA desde icpColor (antes: verde/amarillo/naranja/rojo escritos a
+       mano, que contradecian a los circulos terracota desde v45.355). */
+    var filas=ICP?ICP.clases(icpColor):[];
+    var hLeg='<strong style="font-size:12px">Vulnerabilidad (ICP)</strong>';
+    filas.forEach(function(c){
+      hLeg+='<div class="legend-item"><span class="legend-dot icp-lg-dot" style="background:'+c.color+'"></span><span><b>'+c.nivel+'</b> · '+c.rango+'</span></div>';
+    });
+    hLeg+='<hr><span style="font-size:11px">Más oscuro = más vulnerable · tamaño = población</span>';
+    div.innerHTML=hLeg;
     return div;
   };
   legend.addTo(map);
@@ -35066,111 +35157,26 @@ body.dark .pull-quote .pq-cite{color:#cbd5e1}
   }
 
   // ─────────────────────────────────────────────────────
-  // A2 · CONTADORES ANIMADOS
+  // A2 · CONTADORES ANIMADOS · v45.356: DESACTIVADOS (ver nota en initCounters)
   // ─────────────────────────────────────────────────────
-  function parseSpanishNumber(text){
-    // "0,627" → 0.627  |  "58.570" → 58570  |  "+38,7%" → 38.7
-    var cleaned = String(text).trim();
-    var negative = cleaned.startsWith('-');
-    var plus = cleaned.startsWith('+');
-    var percent = cleaned.endsWith('%');
-    cleaned = cleaned.replace(/[+\-%\s]/g, '');
-    // Decimal comma vs thousands period (es-CL)
-    if(cleaned.indexOf(',') >= 0){
-      cleaned = cleaned.replace(/\./g, '').replace(',', '.');
-    } else if(cleaned.match(/^\d{1,3}(\.\d{3})+$/)){
-      cleaned = cleaned.replace(/\./g, '');
-    }
-    var n = parseFloat(cleaned);
-    if(isNaN(n)) return null;
-    return {value:negative?-n:n, percent:percent, plus:plus, originalText:String(text).trim()};
-  }
-
-  function formatLikeOriginal(value, original){
-    // Reconstruye con misma estructura: decimales con ',' miles con '.', sufijo %, prefijo +
-    var hasDecimal = original.indexOf(',') >= 0;
-    var hasPercent = original.endsWith('%');
-    var hasPlus = original.trim().startsWith('+');
-    var decimals = 0;
-    if(hasDecimal){
-      var afterComma = original.split(',')[1] || '';
-      decimals = afterComma.replace(/[^0-9]/g,'').length;
-    }
-    var formatted;
-    if(decimals > 0){
-      formatted = value.toFixed(decimals).replace('.', ',');
-    } else {
-      formatted = Math.round(value).toLocaleString('es-CL');
-    }
-    if(hasPlus && value >= 0) formatted = '+' + formatted;
-    if(hasPercent) formatted = formatted + '%';
-    return formatted;
-  }
-
-  function animateCounter(el, target, originalText){
-    if(reducedMotion){
-      el.textContent = originalText;
-      return;
-    }
-    el.classList.add('counter-animating');
-    var duration = Math.min(1800, 700 + Math.log10(Math.max(1, Math.abs(target))) * 250);
-    var start = performance.now();
-    var startValue = 0;
-
-    function tick(now){
-      var elapsed = now - start;
-      var progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      var eased = 1 - Math.pow(1 - progress, 3);
-      var current = startValue + (target - startValue) * eased;
-      el.textContent = formatLikeOriginal(current, originalText);
-      if(progress < 1){
-        requestAnimationFrame(tick);
-      } else {
-        el.textContent = originalText;
-        el.classList.remove('counter-animating');
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-
   function initCounters(){
-    if(!('IntersectionObserver' in window)) return;
-    var selectors = [
-      '.kpi-value',
-      '.mbht-kpi-value',
-      '.mbht-chip-val',
-      '.censo-kpi-value',
-      /* '.hero-stat .num' · v45.234 DESACTIVADO: los KPIs del hero son estáticos (sin conteo
-         regresivo) para que nunca muestren un número menor al recargar. */
-      '.viz-num',
-      '.stat-num',
-      '[data-counter]'
-    ];
-    var nodes = document.querySelectorAll(selectors.join(','));
-    if(!nodes.length) return;
-
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(!e.isIntersecting) return;
-        var el = e.target;
-        if(el.dataset.counterDone) return;
-        var original = el.textContent.trim();
-        var parsed = parseSpanishNumber(original);
-        if(!parsed){ io.unobserve(el); return; }
-        el.dataset.counterDone = '1';
-        el.dataset.originalText = original;
-        animateCounter(el, parsed.value, original);
-        io.unobserve(el);
+    /* v45.356 · SIN CONTEO ANIMADO, TAMBIÉN AQUÍ. v45.350 dejó estático animateKPIs y dijo que
+       los indicadores quedaban completos desde el primer momento, pero esta función seguía
+       animando desde 0, al entrar en pantalla, todas las cifras con clase .kpi-value,
+       .mbht-kpi-value, .mbht-chip-val, .censo-kpi-value, .viz-num y .stat-num: entre ellas los
+       63.620 habitantes del censo (.mbht-chip-val), que pasaban por 25.448 y otros valores
+       parciales. Además, el formateador solo conservaba «+» y «%»: durante la animación
+       «1,96 m²/hab» se veía como «0,98», sin unidad (comprobado ejecutando las funciones
+       retiradas). Son información esencial: el lector debe ver la cifra real desde el primer momento, y
+       una interrupción no puede dejarle un valor parcial. La función se conserva, con su
+       llamada, para no alterar el orden de arranque, pero ya no anima ninguna cifra; se
+       eliminaron el analizador, el formateador y el bucle de animación que solo usaba ella.
+       Solo limpia la marca de estado por si quedara de una versión en caché. */
+    try{
+      document.querySelectorAll('.counter-animating').forEach(function(el){
+        el.classList.remove('counter-animating');
       });
-    }, {threshold:0.4});
-    nodes.forEach(function(el){
-      // Solo animar si el texto contiene un número parseable
-      var t = el.textContent.trim();
-      if(!t || !t.match(/[0-9]/)) return;
-      io.observe(el);
-    });
-    console.log('[v45.38] counters: '+nodes.length+' candidatos');
+    }catch(e){}
   }
 
   // ─────────────────────────────────────────────────────
@@ -40663,9 +40669,14 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function nf(n){ return (n==null?0:n).toLocaleString('es-CL'); }
   function hav(la1,lo1,la2,lo2){ var R=6371,dLa=(la2-la1)*Math.PI/180,dLo=(lo2-lo1)*Math.PI/180,a=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLo/2)*Math.sin(dLo/2); return 2*R*Math.asin(Math.min(1,Math.sqrt(a))); }
+  /* v45.356 · color, nivel y tinta desde window.pladecoICP (tokens --seq-1..4); respaldo con los mismos valores */
+  var ICP=window.pladecoICP||null;
   function icpColor(v){ /* v45.355 · rampa secuencial de un solo tono (terracota del escudo): a mayor vulnerabilidad, mas oscuro. Ver nota en el otro icpColor. */
+    if(ICP) return ICP.color(v);
     if(v<0.22)return '#E8B49A'; if(v<0.28)return '#D07E5C'; if(v<0.32)return '#AC4A2C'; return '#7A2313'; }
-  function icpLevel(v){ if(v<0.22)return 'Bajo'; if(v<0.28)return 'Medio'; if(v<0.32)return 'Alto'; return 'Crítico'; }
+  function icpLevel(v){ if(ICP) return ICP.nivel(v); if(v<0.22)return 'Bajo'; if(v<0.28)return 'Medio'; if(v<0.32)return 'Alto'; return 'Crítico'; }
+  function icpInk(v){ return ICP ? ICP.tinta(v) : (v<0.28?'#2B1208':'#FFFFFF'); }
+  function icpNum(v){ return ICP ? ICP.num(v) : (+v).toFixed(3).replace('.',','); }
   /* asigna un punto (lat,lng) a la localidad cuyo centroide es el más cercano, si está dentro del radio */
   function assign(lat,lng,locs){ var bi=-1,bd=1e9; for(var i=0;i<locs.length;i++){ var d=hav(lat,lng,locs[i].lat,locs[i].lng); if(d<bd){bd=d;bi=i;} } return bd<=CFG.joinRadiusKm?bi:-1; }
 
@@ -40711,7 +40722,7 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       bounds.push([d.lat,d.lng]);
       var r=Math.max(6,Math.min(28,Math.sqrt(d.pob)*0.13));
       L.circleMarker([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:1.5,fillOpacity:.62}).bindPopup(
-        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:var(--text);font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700">'+d.icp.toFixed(3)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
+        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:var(--text);font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700"><span class="icp-sw" style="background:'+icpColor(d.icp)+'"></span>'+icpNum(d.icp)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
       ).addTo(gICP);
     });
     st.layers.icp=gICP; if(st.on.icp) gICP.addTo(map);
@@ -40752,8 +40763,12 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     var h='<span class="tp-tb-label">Capas</span>';
     LAYERS.forEach(function(L0){
       var dis=(L0.k==='sin'&&!st.sinReady);
+      /* v45.356 · la muestra de la capa ICP era un rojo (#dc2626) que no aparece en el mapa: ahora
+         es la rampa real, de la clase mas baja a la mas alta, leida de icpColor. */
+      var swBg=L0.sw;
+      if(L0.k==='icp'){ var cl=ICP?ICP.clases(icpColor):null; if(cl) swBg='linear-gradient(135deg,'+cl[0].color+' 0%,'+cl[1].color+' 38%,'+cl[2].color+' 66%,'+cl[3].color+' 100%)'; }
       h+='<button type="button" class="tp-layer-btn" data-k="'+L0.k+'" aria-pressed="'+(st.on[L0.k]?'true':'false')+'"'+(dis?' disabled title="Cargando…"':'')+'>'+
-         '<span class="tp-sw" style="background:'+L0.sw+'"></span>'+esc(L0.label)+(L0.prov?'<span class="tp-prov">prov.</span>':'')+'</button>';
+         '<span class="tp-sw" style="background:'+swBg+'"></span>'+esc(L0.label)+(L0.prov?'<span class="tp-prov">prov.</span>':'')+'</button>';
     });
     tb.innerHTML=h;
     tb.querySelectorAll('.tp-layer-btn').forEach(function(b){
@@ -40782,7 +40797,12 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     var el=$('tpRanking'); if(!el) return;
     var locs=st.locs, ict=st.ictCtx, sin=st.sinCtx;
     var order=locs.map(function(d,i){return {d:d,i:i};}).sort(function(a,b){return b.d.icp-a.d.icp;});
-    var h='<div class="tp-legend-row"><span class="tp-lg"><span style="background:#22c55e"></span> Bajo</span><span class="tp-lg"><span style="background:#eab308"></span> Medio</span><span class="tp-lg"><span style="background:#f97316"></span> Alto</span><span class="tp-lg"><span style="background:#dc2626"></span> Crítico</span><span style="color:var(--text2);font-size:10.5px">· ICP: 1 = máxima vulnerabilidad</span></div>';
+    /* v45.356 · leyenda GENERADA desde icpColor (antes, semaforo escrito a mano y sin CSS) */
+    var h='<div class="tp-legend-row" role="group" aria-label="Clave de color del ICP"><span class="tp-lg-t">Nivel de vulnerabilidad (ICP)</span>';
+    (ICP?ICP.clases(icpColor):[]).forEach(function(c){
+      h+='<span class="tp-lg"><span class="tp-lg-sw" style="background:'+c.color+'" aria-hidden="true"></span><b>'+c.nivel+'</b> '+c.rango+'</span>';
+    });
+    h+='<span class="tp-lg-nota">Más oscuro = más vulnerable · ICP de 0 a 1, donde 1 es la máxima vulnerabilidad</span></div>';
     h+='<div class="tp-rank-wrap"><table class="tp-rank"><thead><tr>'+
        '<th class="tp-rk">#</th><th>Localidad</th><th>Área</th><th class="n">Población</th><th class="n">ICP</th><th>Nivel</th>'+
        '<th>Espacios ICT<span class="tp-prov">contexto</span></th><th>Siniestros<span class="tp-prov">contexto</span></th></tr></thead><tbody>';
@@ -40793,7 +40813,7 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       var sinTxt = st.sinReady ? (sc ? (sc.n>0 ? '<b>'+sc.n+'</b> cercano'+(sc.n===1?'':'s') : '—') : '—') : '<span style="opacity:.6">cargando…</span>';
       h+='<tr class="'+(top?'tp-top':'')+'"><td class="tp-rk">'+(rk+1)+'</td>'+
          '<td><b>'+esc(d.loc)+'</b></td><td>'+esc(d.area)+'</td><td class="n">'+nf(d.pob)+'</td>'+
-         '<td class="n"><span class="tp-icp-pill" style="background:'+icpColor(d.icp)+'">'+d.icp.toFixed(3)+'</span></td>'+
+         '<td class="n"><span class="tp-icp-pill" style="background:'+icpColor(d.icp)+';color:'+icpInk(d.icp)+'">'+icpNum(d.icp)+'</span></td>'+
          '<td>'+icpLevel(d.icp)+'</td>'+
          '<td class="tp-ctx">'+ictTxt+'</td><td class="tp-ctx">'+sinTxt+'</td></tr>';
     });
@@ -42555,10 +42575,43 @@ body.dark .ini-links a{color:var(--id-azul,#7FA8D4);border-bottom-color:rgba(127
   line-height:1.6;color:var(--text)}
 body.dark .ini-cita{border-left-color:var(--id-azul,#7FA8D4)}
 .ini-cita cite{display:block;margin-top:5px;font-size:11.5px;font-style:normal;color:var(--text2)}
+/* v45.356 · mapa del catastro dentro del caso. El lienzo abre su propio contexto de apilado
+   (isolation) para que los paneles de Leaflet (z-index 400-1000) no pasen por encima de la
+   barra fija al desplazarse: con el mapa bajo la barra, elementFromPoint devuelve la barra. */
+.ini-mapa{padding:18px 22px;border-top:1px solid var(--border)}
+.ini-mapa .ini-n svg{width:11px;height:11px}
+.ini-mapa-rotulo{margin:0 0 4px;font-size:14px;line-height:1.5;color:var(--text)}
+.ini-mapa-sub{margin:0 0 12px;font-size:13px;line-height:1.6;color:var(--text2);max-width:72ch}
+.ini-mapa-cuerpo{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:14px;align-items:start}
+.ini-mapa-lienzo{position:relative;isolation:isolate;z-index:0;height:340px;border:1px solid var(--border);
+  border-radius:var(--rad-sm,5px);overflow:hidden;background:var(--bg)}
+.ini-mapa-espera{margin:0;padding:18px;font-size:12.5px;color:var(--text2)}
+.ini-mapa-ley{border:1px solid var(--border);border-radius:var(--rad-sm,5px);padding:11px 13px}
+.ini-mapa-ley-t{margin:0 0 7px;font-size:12px;font-weight:700;color:var(--text)}
+.ini-mapa-ley ul{margin:0;padding:0;list-style:none}
+.ini-mapa-ley li{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:12.5px;color:var(--text)}
+.ini-mapa-ley-n{flex:1}
+.ini-mapa-ley-c{font-variant-numeric:tabular-nums;font-weight:700}
+.ini-mapa-ley-pie{margin:8px 0 0;font-size:11.5px;line-height:1.5;color:var(--text2)}
+.ini-mapa-sw{display:inline-block;width:12px;height:12px;border-radius:50%;flex:none;vertical-align:middle;
+  box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px rgba(15,23,42,.25)}
+.ini-mapa-nota{margin:10px 0 0;font-size:12px;line-height:1.6;color:var(--text2)}
+.ini-mapa-nota b{color:var(--text)}
+.ini-pop{font-size:12px;line-height:1.45}
+.ini-pop strong{font-size:13px}
+.ini-pop-m{margin:3px 0 6px;display:flex;align-items:center;gap:6px}
+.ini-pop-t{font-weight:700;margin:4px 0 2px}
+.ini-pop ul{margin:0;padding-left:16px}
+/* la ventana de Leaflet es blanca en ambos temas, pero en oscuro una regla global aclara los <li>
+   (medido: rgb(241,245,249) sobre blanco). Se fija la tinta del contenido. */
+.leaflet-popup-content .ini-pop,.leaflet-popup-content .ini-pop li{color:#333 !important}
+.ini-pop li{margin:1px 0;font-size:12px;line-height:1.45}
 @media(max-width:820px){
   .ini-body{grid-template-columns:1fr}
   .ini-p:nth-child(odd){border-right:0}
   .ini-resp .k{width:100px}
+  .ini-mapa-cuerpo{grid-template-columns:1fr}
+  .ini-mapa-lienzo{height:280px}
 }
 </style>
 <script>
@@ -42688,6 +42741,9 @@ body.dark .ini-cita{border-left-color:var(--id-azul,#7FA8D4)}
 
     h += '</div>';   /* fin ini-body */
 
+    /* ── v45.356 · el mapa del catastro (ver armarMapa) ── */
+    if(d.catastro.total) h += mapaHTML(d);
+
     /* ── campos que no se pueden llenar ── */
     h += '<div class="ini-falta"><b>Lo que esta ficha no puede mostrar.</b> '
       + '<b>Dónde se ejecuta:</b> la matriz de 225 acciones no registra localización, de modo que el mapa que '
@@ -42711,9 +42767,124 @@ body.dark .ini-cita{border-left-color:var(--id-azul,#7FA8D4)}
     cont.innerHTML=h;
     var ancla=sec.querySelector('.callout') || sec.querySelector('.sec-fuente');
     if(ancla) sec.insertBefore(cont.firstChild, ancla); else sec.appendChild(cont.firstChild);
+    try{ observarMapa(sec.querySelector('.ini-mapa-lienzo')); }catch(e){}
     return 1;
   }
   window.montarIniciativaCompleta=montar;
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     v45.356 · MAPA DEL CATASTRO JUNTO AL CASO
+     La cabecera de este bloque (v45.353) y su nota «Lo que esta ficha no puede mostrar»
+     decían que un mapa acompañaba el caso, pero .ini-wrap solo enlazaba a
+     #ict-espacios-publicos: no había mapa. Aquí se dibuja.
+     QUÉ MUESTRA: los registros de ICT_ESPACIOS (65 al escribir esto) en sus coordenadas, con
+     el color de su estado tomado de ICT_HEX, la misma paleta del mapa del catastro, y en la
+     ventana emergente el nombre, la tipología, el estado y los problemas anotados en terreno.
+     QUÉ NO MUESTRA, dicho en pantalla: la matriz no registra dónde se ejecuta la acción 101,
+     así que el rótulo del mapa es «Catastro municipal de espacios públicos, no la ubicación
+     de la acción».
+     Carga diferida: el mapa se crea cuando su contenedor se acerca a la vista
+     (IntersectionObserver, como #tpMap) y se recalcula su tamaño tras crearse; mientras #matriz
+     está oculta no se crea. Leaflet ya está en el portal: no se agrega ninguna dependencia.
+     Registros con coordenadas repetidas: se cuentan desde el dato y se declaran en la nota,
+     porque en el mapa dos registros con la misma coordenada se ven como un solo punto.
+     ═══════════════════════════════════════════════════════════════════════ */
+  function espacios(){ try{ return (window.ICT_ESPACIOS||[]).filter(function(e){ return typeof e.lat==='number' && typeof e.lng==='number'; }); }catch(e){ return []; } }
+  function colorEstado(estado){
+    try{ if(window.ICT_HEX && window.ICT_HEX[estado]) return window.ICT_HEX[estado]; }catch(e){}
+    return '#64748b';
+  }
+  function mapaHTML(d){
+    var esp=espacios();
+    var orden=(window.ICT_ESTADOS&&window.ICT_ESTADOS.length)?window.ICT_ESTADOS:Object.keys(d.catastro.detalle);
+    var claves={}, repetidos=0;
+    esp.forEach(function(e){ var k=e.lat.toFixed(5)+','+e.lng.toFixed(5); if(claves[k]) repetidos++; else claves[k]=1; });
+    var distintos=Object.keys(claves).length;
+    var meta=null; try{ meta=window.mapasMetadata&&window.mapasMetadata.ictMap; }catch(e){}
+
+    var h='<div class="ini-mapa">'
+      + '<div class="ini-mapa-head">'
+      +   '<p class="ini-p-t"><span class="ini-n" aria-hidden="true">'+ico('ico-pin')+'</span> Dónde está el problema que atiende</p>'
+      +   '<p class="ini-mapa-rotulo" id="iniMapaRot"><b>Catastro municipal de espacios públicos, no la ubicación de la acción.</b></p>'
+      +   '<p class="ini-mapa-sub">La matriz no registra dónde se ejecutará la acción Nº '+d.n+'. Lo que se ve son los '
+      +   esp.length+' espacios públicos que el catastro municipal recorrió, con el estado en que los encontró: '
+      +   'el universo que esta acción tendría que atender.</p>'
+      + '</div>'
+      + '<div class="ini-mapa-cuerpo">'
+      +   '<div class="ini-mapa-lienzo" role="region" aria-labelledby="iniMapaRot" '
+      +     'data-estado="pendiente"><p class="ini-mapa-espera">El mapa se dibuja al llegar a esta parte de la página.</p></div>'
+      +   '<div class="ini-mapa-ley" role="group" aria-label="Clave de color: estado de conservación de cada espacio">'
+      +     '<p class="ini-mapa-ley-t">Estado de conservación</p><ul>';
+    orden.forEach(function(est){
+      var n=d.catastro.detalle[est]||0;
+      h += '<li><span class="ini-mapa-sw" style="background:'+colorEstado(est)+'" aria-hidden="true"></span>'
+        +  '<span class="ini-mapa-ley-n">'+esc(est)+'</span><span class="ini-mapa-ley-c">'+n+'</span></li>';
+    });
+    h +=     '</ul><p class="ini-mapa-ley-pie">Cada punto es un espacio del catastro. Al seleccionarlo se ven su tipología y los problemas anotados en terreno.</p></div>'
+      + '</div>'
+      + '<p class="ini-mapa-nota">'
+      +   (meta&&meta.fuente ? '<b>Fuente:</b> '+esc(meta.fuente)+(meta.corte?' · '+esc(meta.corte):'')+'. ' : '')
+      +   esp.length+' registros georreferenciados'
+      +   (repetidos>0 ? '; '+repetidos+(repetidos===1?' comparte':' comparten')+' coordenada con otro registro, por lo que en el mapa se ven '+distintos+' puntos distintos' : '')
+      +   '. La lista completa, con filtros, está en la sección del catastro.'
+      + '</p>'
+      + '</div>';
+    return h;
+  }
+
+  /* espera a Leaflet (defer) y, hasta 2 s, al envoltorio de L.map que registra el mapa para la
+     escala, el norte y el mapa base según el tema; igual que renderCensoMapaVuln. Máx. 8 s. */
+  function waitLeaflet(cb,t){
+    t=t||0;
+    if(typeof L!=='undefined' && L.map && (L.__patched || t>40)) return cb();
+    if(t>160) return cb();
+    setTimeout(function(){ waitLeaflet(cb,t+1); },50);
+  }
+
+  function armarMapa(el){
+    if(!el || el.getAttribute('data-estado')!=='pendiente') return;
+    el.setAttribute('data-estado','cargando');
+    waitLeaflet(function(){
+      if(!el.isConnected || el.classList.contains('leaflet-container')) return;
+      try{
+        el.innerHTML='';
+        var map=L.map(el,{scrollWheelZoom:false,zoomControl:true}).setView([-34.40,-70.855],12);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+        var bounds=[];
+        espacios().forEach(function(e){
+          bounds.push([e.lat,e.lng]);
+          var col=colorEstado(e.estado);
+          var probs=(e.problemas||[]);
+          var pop='<div class="ini-pop"><strong>'+esc(e.nombre)+'</strong>'
+            + '<div class="ini-pop-m"><span class="ini-mapa-sw" style="background:'+col+'"></span>'+esc(e.estado)
+            + (e.tipologia?' · '+esc(e.tipologia):'')+'</div>'
+            + (probs.length
+                ? '<div class="ini-pop-t">Problemas anotados en terreno ('+probs.length+')</div><ul>'
+                  + probs.map(function(p){ return '<li>'+esc(p)+'</li>'; }).join('')+'</ul>'
+                : '<div class="ini-pop-t">El catastro no anota problemas para este espacio.</div>')
+            + '</div>';
+          L.circleMarker([e.lat,e.lng],{radius:6,fillColor:col,color:'#fff',weight:1.5,opacity:1,fillOpacity:.92})
+            .bindPopup(pop,{maxWidth:280,maxHeight:240}).addTo(map);
+        });
+        if(bounds.length) map.fitBounds(bounds,{padding:[24,24],maxZoom:14});
+        el.setAttribute('data-estado','listo');
+        setTimeout(function(){ try{ map.invalidateSize(); if(bounds.length) map.fitBounds(bounds,{padding:[24,24],maxZoom:14}); }catch(_){} },300);
+      }catch(err){
+        el.setAttribute('data-estado','error');
+        el.innerHTML='<p class="ini-mapa-espera">No se pudo dibujar el mapa. Los '+espacios().length+' espacios están en la sección del catastro.</p>';
+      }
+    });
+  }
+
+  function observarMapa(el){
+    if(!el || el.__iniObs) return;
+    el.__iniObs=true;
+    if(!('IntersectionObserver' in window)){ armarMapa(el); return; }
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ io.disconnect(); armarMapa(el); } });
+    },{rootMargin:'250px'});
+    io.observe(el);
+  }
 
   var pend=null;
   function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ montar(); }catch(e){} }, 140); }
@@ -42920,6 +43091,16 @@ body.dark .img-cred{border-left-color:var(--id-azul,#7FA8D4)}
 .img-cred b{color:var(--text)}
 .mvv-pie{margin:7px 0 0;font-size:12px;line-height:1.55;color:var(--text2)}
 .mvv-pie b{color:var(--text);font-weight:600}
+/* v45.356 · el pie va fuera del contenedor recortado: en la tarjeta, entre la foto y el cuerpo,
+   con la sangría del cuerpo; en la Imagen Objetivo, dentro de un <figure> que ocupa la celda. */
+.mvv-card > .mvv-pie{margin:0;padding:10px 24px 0}
+.mvv-fig{margin:0;min-width:0;display:flex;flex-direction:column}
+/* la caja de la foto tenía aspect-ratio 4/5 (400 px de alto a 1024 px) pero la imagen se dibuja a
+   320 × 240: con el pie debajo quedaban 160 px vacíos entre la foto y su pie. Medido: con
+   aspect-ratio:auto la caja mide lo que la imagen y el pie queda pegado a ella. */
+.mvv-fig > .mvv-objetivo-img{aspect-ratio:auto}
+.mvv-fig > .mvv-pie{margin:0;padding:9px 16px 14px}
+@media(max-width:640px){ .mvv-card > .mvv-pie{padding:10px 18px 0} }
 .proy-aviso{margin:0 0 16px;padding:13px 16px;border:1px solid var(--border);border-left:4px solid var(--ocre,#D6940F);
   border-radius:var(--rad-md,7px);background:transparent}
 .proy-aviso p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text);max-width:74ch}
@@ -42955,19 +43136,45 @@ body.dark .img-cred{border-left-color:var(--id-azul,#7FA8D4)}
   }
 
   /* ── 2 · fotografías institucionales: el texto alternativo ya describe la escena ── */
+  /* v45.356 · REGRESIÓN CORREGIDA: el pie se insertaba junto al <picture>, es decir DENTRO de
+     .mvv-card-img / .mvv-objetivo-img, que tienen aspect-ratio fijo y overflow:hidden: los tres
+     pies de las tarjetas quedaban recortados fuera de la vista y el de la Imagen Objetivo, bajo el
+     degradado ::before. Ahora el pie va DESPUÉS del contenedor recortado. En la Imagen Objetivo el
+     contenedor es una celda de rejilla (320px | 1fr): meter un tercer hijo desarmaba la rejilla,
+     así que la foto y su pie se agrupan en un <figure> que ocupa esa celda.
+     Además, la fotografía de la Imagen Objetivo es un registro del presente —un grupo de personas
+     en una edificación en obra—, no una visualización de 2035: su pie lo dice en vez de repetir el
+     texto alternativo. Comprobado en el navegador a 1024 px y a 390 px: ninguno de los cuatro
+     pies queda fuera de la caja de un ancestro con overflow recortado, y el de la Imagen
+     Objetivo queda a 0 px del borde inferior de la foto. Contraste del pie: 6,4:1 en claro y
+     10,63:1 en oscuro. */
+  var PIE_OBJETIVO='<b>Fotografía de apoyo</b>; la Imagen Objetivo 2035 es una proyección del plan, no un registro.';
   function institucionales(){
     var s=document.getElementById('mvv'); if(!s) return 0;
     var n=0;
     s.querySelectorAll('img.mvv-institutional-photo').forEach(function(im){
-      var cont=im.closest('picture') || im.parentElement;
-      if(!cont || !cont.parentElement) return;
-      if(cont.parentElement.querySelector('.mvv-pie')) return;          /* idempotente */
+      var recorte=im.closest('.mvv-card-img, .mvv-objetivo-img');
+      if(!recorte || !recorte.parentElement) return;
+      var esObjetivo=recorte.classList.contains('mvv-objetivo-img');
+      var sig=recorte.nextElementSibling;
+      if(sig && sig.classList.contains('mvv-pie')) return;               /* idempotente */
+      if(esObjetivo && recorte.parentElement.classList.contains('mvv-fig') &&
+         recorte.parentElement.querySelector('.mvv-pie')) return;
       var alt=(im.getAttribute('alt')||'').trim();
-      if(!alt) return;
-      var p=document.createElement('p');
+      if(!alt && !esObjetivo) return;
+      var p=document.createElement(esObjetivo?'figcaption':'p');
       p.className='mvv-pie';
-      p.innerHTML=esc(alt) + '. <b>Elaboración SECPLAC</b>, Municipalidad de Rengo · proceso PLADECO 2025-2035.';
-      cont.parentElement.insertBefore(p, cont.nextSibling);
+      if(esObjetivo){
+        p.innerHTML=PIE_OBJETIVO;
+        var fig=document.createElement('figure');
+        fig.className='mvv-fig';
+        recorte.parentElement.insertBefore(fig, recorte);
+        fig.appendChild(recorte);
+        fig.appendChild(p);
+      } else {
+        p.innerHTML=esc(alt) + '. <b>Elaboración SECPLAC</b>, Municipalidad de Rengo · proceso PLADECO 2025-2035.';
+        recorte.parentElement.insertBefore(p, recorte.nextSibling);
+      }
       n++;
     });
     return n;
