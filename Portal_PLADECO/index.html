@@ -396,11 +396,12 @@ window.pladecoICP = window.pladecoICP || (function(){
 /* v45.358 · Poppins autoalojada · Las @font-face estaban dentro del bloque :root de abajo; una @font-face anidada en una regla de estilo
    no es válida y el navegador la descarta, así que el portal se veía en la fuente del sistema. Aquí van en el nivel superior,
    un archivo por peso (ExtraBold estaba declarado en 700 y tapaba a Bold). Sin caras itálicas: apuntaban a archivos rectos
-   e impedían que el navegador inclinara em y cite. */
-@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Poppins-ExtraBold.ttf') format('truetype')}
+   e impedían que el navegador inclinara em y cite. Se sirven subconjuntos latinos en WOFF (unos 15 KB por peso
+   en lugar de 155 KB): los TTF traían también la escritura devanagari. Se regeneran con fonts/subconjunto_poppins.py. */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium-latin.woff') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold-latin.woff') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold-latin.woff') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Poppins-ExtraBold-latin.woff') format('woff')}
 :root{
   /* ═══ SISTEMA DE TOKENS CANONICO · consolidado v45.61 ═══
      Unifica lo que antes estaba repartido en 3 bloques :root con valores

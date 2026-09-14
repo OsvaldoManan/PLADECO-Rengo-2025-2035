@@ -17,7 +17,8 @@ Los colores son una propuesta de diseño, no la identidad oficial de la Municipa
 | `iconos-ejes.svg` | Sprite con los seis símbolos `ico-eje-1` a `ico-eje-6`. Los mismos símbolos están dentro del sprite de `index.html`. | SVG editable. |
 | `iconos/eje-N-*.svg` | Cada icono suelto, en monocromo y con acento. | SVG editable. |
 | `fotos/*.webp` · `fotos/*.jpg` | Recortes optimizados de dos fotografías del informe municipal de espacios públicos (ver procedencia). | Imagen. |
-| `fuentes/` | Guiones que regeneran la panorámica, la silueta y los iconos. | Node y Python. |
+| `fuentes/` | Guiones que regeneran la panorámica, la silueta y los iconos, con sus datos intermedios. | Node y Python. |
+| `lamina-sistema-grafico.html` · `lamina/` | Lámina del sistema: paleta, iconos, tipografía, leyendas y miniaturas de las composiciones del piloto. | HTML; las miniaturas son capturas WebP. |
 
 Los **textos y cifras editables** de la ficha de Rosario, de la fotografía anotada y del diagrama están en
 `index.html`, en el bloque «v45.357 · DATOS EDITABLES DEL SISTEMA GRÁFICO» (`window.FICHAS_TERRITORIALES`,
@@ -56,7 +57,9 @@ node panoramica.cjs                                            # panorámica (3 
 node iconos.cjs                                                # iconos de los ejes
 ```
 
-Los guiones escriben en `fuentes/salida/`, y desde ahí se copian a esta carpeta. Las rutas a la foto aérea y al contorno comunal son absolutas y corresponden al equipo donde se prepararon: ajústalas antes de ejecutarlos en otro equipo.
+Requiere Python con Pillow y Node. Los guiones leen la foto aérea (`Entrada-Rengo-Color-Pladeco.jpg`) y el contorno comunal (`rengo-limite.geojson`) desde la carpeta del portal, con rutas relativas. Escriben los JSON intermedios en `fuentes/` y los SVG en `fuentes/salida/`; desde ahí se copian a esta carpeta. Comprobado el 14-09-2026: ejecutados en orden, reproducen byte a byte los JSON, las tres panorámicas, las dos siluetas, el sprite y los 12 iconos publicados.
+
+La tipografía se sirve desde `../fonts/` como subconjuntos latinos de Poppins en WOFF, de unos 15 KB por peso. Se regeneran con `python ../fonts/subconjunto_poppins.py`, que requiere fontTools.
 
 ## Pendientes de material y validación
 
