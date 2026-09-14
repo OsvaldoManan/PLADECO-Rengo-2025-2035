@@ -683,3 +683,57 @@ body.dark{ color-scheme:dark; }
 /* .cuadernillo-select option tenía texto #0c1f36 sin fondo propio (index.html, bloque del cuadernillo): con el
    esquema oscuro la lista quedaba oscura sobre oscura. Fondo y texto explícitos, con los tokens de cada tema. */
 .cuadernillo-select option{ background:var(--card,#fff); color:var(--text,#0c1f36); }
+
+/* ══ v45.356 · [flotantes] · revisión · §2.21 · POSICIÓN DEL BOTÓN DEL ASISTENTE DESDE LA PRIMERA PINTURA ══
+   La única regla de posición del botón (y la de su cierre) estaba en el último <style> de index.html, unas 38.000
+   líneas después del botón, y la regla base de la cabecera ya no llevaba position:fixed. Mientras el analizador no
+   llegaba al final, #chatFab y #chatFabOcultar quedaban en el flujo, delante de #main-content: medido a 1440 px
+   desactivando ese <style>, #main-content bajaba de 66 a 136 px y volvía a subir al leerse la regla (salto de
+   diseño durante la carga). Pasa aquí, en <head>, sin cambiar la regla: sigue siendo una sola, con variables.
+   También vienen aquí el ocultamiento con html.asistente-oculto (la clase se pone antes de pintar, junto al botón,
+   y su regla tiene que estar cargada para entonces) y el aviso «Volver a mostrarlo» del chat, que sin su regla
+   quedaba a la vista dentro del chat si se abría mientras la página cargaba, aunque el botón no estuviera oculto.
+   Ninguna regla posterior de index.html fija position, right, bottom, width ni height de estos elementos
+   (verificado con búsqueda; solo hay min-width/min-height de 44 px para .chatbot-fab). Los ajustes del aviso de
+   instalación y de los avisos breves siguen al final de index.html: las reglas propias de .pwa-install van en
+   <body> y le ganarían a esta hoja. */
+:root{
+  --asist-tam:56px; --asist-abajo:24px; --asist-der:24px;
+  --asist-x:44px;                       /* área táctil del cierre */
+  --asist-libre:calc(var(--asist-abajo) + var(--asist-tam) + 4px + var(--asist-x) + 8px);
+}
+@media (max-width:768px){
+  :root{ --asist-tam:48px; --asist-abajo:72px; --asist-der:16px; }   /* 72 = 56 de la barra inferior + 16 */
+}
+html.asistente-oculto{ --asist-libre:var(--asist-abajo); }
+.chatbot-fab{ position:fixed; right:var(--asist-der); bottom:var(--asist-abajo); width:var(--asist-tam); height:var(--asist-tam); }
+.chatbot-fab-ocultar{
+  position:fixed; z-index:9997;
+  right:calc(var(--asist-der) + (var(--asist-tam) - var(--asist-x)) / 2);
+  bottom:calc(var(--asist-abajo) + var(--asist-tam) + 4px);
+  width:var(--asist-x); height:var(--asist-x); min-width:0; min-height:0; margin:0; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; border:0; color:var(--text); cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+.chatbot-fab-ocultar::before{
+  content:""; position:absolute; left:50%; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%;
+  background:var(--card); border:1px solid var(--border-strong,#cbd5e1); box-shadow:0 2px 8px rgba(0,0,0,.22);
+}
+.chatbot-fab-ocultar:hover::before{ background:var(--bg); }
+.chatbot-fab-ocultar svg{ position:relative; width:12px; height:12px; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; }
+body:has(#splashScreen:not(.hidden)) .chatbot-fab-ocultar{ animation:bootGate 6s step-end forwards; }
+html.asistente-oculto .chatbot-fab, html.asistente-oculto .chatbot-fab-ocultar{ display:none !important; }
+/* con el menú de la barra (#tnMpanel) o el cajón de secciones abiertos, el botón y su cierre flotaban sobre sus enlaces
+   (medido a 390 px con elementsFromPoint: tapaban parte de «Comparador con Comunas Vecinas» y «Censo Nacional de
+   Población…»); mientras están abiertos se ocultan: el menú de la barra ofrece «Asistente» y, con el cajón abierto,
+   la barra inferior (que también lo ofrece) sigue a la vista */
+body:has(#tnMpanel.open) :is(.chatbot-fab,.chatbot-fab-ocultar),
+body:has(#mobileDrawer.mdr-open) :is(.chatbot-fab,.chatbot-fab-ocultar){ visibility:hidden; }
+@media print{ .chatbot-fab-ocultar, .chatbot-restaurar{ display:none !important; } }
+/* aviso dentro del chat para deshacer el cierre (solo con el botón oculto) */
+.chatbot-restaurar{ display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 10px; flex-shrink:0;
+  padding:8px 14px; font-size:12px; line-height:1.45; color:var(--text); background:var(--bg); border-bottom:1px solid var(--border); }
+html.asistente-oculto .chatbot-restaurar{ display:flex; }
+.chatbot-restaurar button{ font:inherit; font-weight:700; color:var(--text); background:var(--card); border:1px solid var(--border-strong,#cbd5e1);
+  border-radius:8px; padding:6px 12px; min-height:36px; cursor:pointer; }
+.chatbot-restaurar button:hover{ background:var(--bg); }
