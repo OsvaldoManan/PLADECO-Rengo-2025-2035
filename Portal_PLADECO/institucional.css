@@ -231,11 +231,13 @@ html, :root, body{
 .cmd-cat-chip:hover{border-color:#15803d;color:#15803d}
 .cmd-cat-chip:focus-visible{outline:2px solid #15803d;outline-offset:2px}
 .cmd-cat-chip.active{background:#15803d;border-color:#15803d;color:#fff}
-.cmd-cat-chip .cmd-cat-n{font-size:10px;opacity:.6;font-variant-numeric:tabular-nums}
-.cmd-cat-chip.active .cmd-cat-n{opacity:.9}
+/* v45.356 · [flotantes] · §2.18 · contadores y rótulos de grupo sin opacidad: a 10 px, la opacidad .6/.9 de los
+   contadores y la .7 de .cmd-group-label los dejaban en 2,58:1, 4,39:1 (categoría activa) y 3,24:1 en claro
+   (barrido de superficies flotantes sobre la versión anterior). Sin ella: 0 fallos en #cmdPalette en los dos temas. */
+.cmd-cat-chip .cmd-cat-n{font-size:10px;font-variant-numeric:tabular-nums}
 body.dark .cmd-cat-chip:hover{border-color:#5cc98a;color:#5cc98a}
 body.dark .cmd-cat-chip:focus-visible{outline-color:#5cc98a}
-.cmd-group-label{font:800 10px/1 'Poppins',system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--text2);opacity:.7;padding:12px 14px 4px}
+.cmd-group-label{font:800 10px/1 'Poppins',system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--text2);padding:12px 14px 4px}
 .cmd-results.cmd-grouped .cmd-item .cmd-sec-cat{display:none}  /* el rótulo de grupo ya nombra la categoría */
 .cmd-empty{padding:26px 18px;text-align:center;color:var(--text2);font-size:13px;line-height:1.5}
 @media(max-width:560px){ .cmd-cats{max-height:96px;padding:9px 11px} }
@@ -668,3 +670,16 @@ body .idx-metodo{ min-width:0; }
 @media (max-width:600px){
   body .idx-metodo .idx-tbl{ display:block; overflow-x:auto; max-width:100%; }
 }
+
+/* ══ v45.356 · [flotantes] · §2.19 · FORMULARIOS CON EL TEMA DEL PORTAL ══
+   No había color-scheme en CSS: con la meta «light dark», la lista desplegable de los 16 <select>, el relleno
+   automático y la barra de desplazamiento seguían el tema del sistema operativo y no el elegido en el portal.
+   Va aquí (en <head>) y no al final de index.html para que rija desde la primera pintura. Ninguna otra regla
+   declara color-scheme. Verificado en el navegador: con body.dark, <html>, <body>, los 16 <select> y los
+   campos quedan en «dark»; sin la clase, en «light». */
+:root{ color-scheme:light; }
+body.dark{ color-scheme:dark; }
+:root:has(> body.dark){ color-scheme:dark; }
+/* .cuadernillo-select option tenía texto #0c1f36 sin fondo propio (index.html, bloque del cuadernillo): con el
+   esquema oscuro la lista quedaba oscura sobre oscura. Fondo y texto explícitos, con los tokens de cada tema. */
+.cuadernillo-select option{ background:var(--card,#fff); color:var(--text,#0c1f36); }

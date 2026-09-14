@@ -581,7 +581,9 @@ body.dark table.chart-data-table tbody th{background:#1e293b;color:#e2e8f0}
 .chatbot-input-row input:focus{border-color:var(--green)}
 .chatbot-input-row button{background:var(--green);color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s;flex-shrink:0}
 .chatbot-input-row button:hover{background:#22864a;transform:scale(1.08)}
-.chatbot-fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--green),#1a8c4e);color:#fff;border:2px solid rgba(255,255,255,.82);box-shadow:0 6px 20px rgba(15,45,82,.3),0 2px 6px rgba(0,0,0,.16);cursor:pointer;z-index:9997;font-size:12px;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.4,.64,1),box-shadow .22s;animation:fabPulse 4.5s ease-in-out infinite}
+/* v45.356 · [flotantes] · §2.21 · posición y tamaño del botón del asistente: una sola regla, al final del archivo
+   (bloque «v45.356 · [flotantes]»). Aquí quedan solo su aspecto y sus transiciones. */
+.chatbot-fab{border-radius:50%;background:linear-gradient(135deg,var(--green),#1a8c4e);color:#fff;border:2px solid rgba(255,255,255,.82);box-shadow:0 6px 20px rgba(15,45,82,.3),0 2px 6px rgba(0,0,0,.16);cursor:pointer;z-index:9997;font-size:12px;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .22s cubic-bezier(.34,1.4,.64,1),box-shadow .22s;animation:fabPulse 4.5s ease-in-out infinite}
 .chatbot-fab:hover{transform:scale(1.12) rotate(-4deg);box-shadow:0 10px 28px rgba(45,154,77,.45),0 3px 8px rgba(0,0,0,.2)}
 .chatbot-fab:active{transform:scale(1.04)}
 .chatbot-fab:focus-visible{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 7px rgba(45,154,77,.5),0 6px 20px rgba(15,45,82,.3)}
@@ -617,7 +619,7 @@ body.dark table.chart-data-table tbody th{background:#1e293b;color:#e2e8f0}
   .chatbot-input-row{padding:10px 12px calc(env(safe-area-inset-bottom,8px) + 10px)}
   .chatbot-input-row input{padding:10px 16px;font-size:14px;border-radius:24px}
   .chatbot-input-row button{width:40px;height:40px;font-size:17px}
-  .chatbot-fab{bottom:16px;right:16px;width:52px;height:52px}
+  /* v45.356 · [flotantes] · §2.21 · retirada .chatbot-fab{bottom:16px;right:16px;width:52px;height:52px} (una sola regla de posición, al final) */
   .chatbot-overlay.open{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 }
 
@@ -2039,19 +2041,15 @@ small.footnote,
 .sec-fuente a, .gr-bib-list a, .hist-biblio-foot a{ color:inherit; }
 
 /* v45.185 · WCAG AA · banner En Construccion con coral corregido (5.57:1) */
-.construccion-card,
-.banner-construccion,
-.construction-banner{
+/* v45.356 · [flotantes] · §2.20 · se retiran .banner-construccion y .construction-banner de estas reglas: el banner
+   se eliminó en v45.106 y ninguna de las dos clases existe en el marcado ni se crea desde JS (verificado con búsqueda). */
+.construccion-card{
   background:var(--banner-coral-bg);
   color:var(--banner-coral-text);
   border-left:4px solid var(--banner-coral-accent);
 }
-.construccion-card strong,
-.banner-construccion strong,
-.construction-banner strong{ color:var(--banner-coral-text); font-weight:700; }
-.construccion-card .icon,
-.banner-construccion .icon,
-.construction-banner svg{ color:var(--banner-coral-accent); }
+.construccion-card strong{ color:var(--banner-coral-text); font-weight:700; }
+.construccion-card .icon{ color:var(--banner-coral-accent); }
 
 /* v45.185 · KPI alerts del dashboard: aplicar pares accesibles */
 .kpi-alert.green,
@@ -2707,52 +2705,18 @@ body.dark .meta-card .mc-track{background:#334155}
 /* ── Banner Institucional + En Construcción ── */
 /* v45.143 · .live-strip-wrap ELIMINADO · el topbar institucional queda como banner único arriba */
 .live-strip-wrap{display:none!important}
-.construction-banner{position:fixed;top:54px;left:var(--sidebar-w);right:0;z-index:99;background:rgb(23, 55, 103);padding:0;box-shadow:0 4px 20px rgba(0,0,0,.3);border-bottom:2px solid rgba(45,154,77,.25);overflow:hidden;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,left .3s ease}
-.construction-banner.dismissed{transform:translateY(-100%);opacity:0;pointer-events:none}
-/* ── v45.64 · Banner "En construcción" · fila reequilibrada ──
-   3 zonas con laterales de igual peso (flex:1 1 0) -> la cinta queda
-   perfectamente centrada. Pastillas escudo/PLADECO unificadas. */
-.construction-banner .cb-row{display:flex;align-items:center;gap:14px;padding:8px 22px;position:relative}
-.construction-banner .cb-logo-left{display:flex;align-items:center;justify-content:flex-start;flex:1 1 0;min-width:0}
-.construction-banner .cb-logo-right{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:1 1 0;min-width:0}
-.cb-ribbon-wrap{display:flex;align-items:center;justify-content:center;flex:0 0 auto;pointer-events:none}
-.construction-banner .cb-escudo-pill,
-.construction-banner .cb-pladeco-pill{display:flex;align-items:center;gap:10px;flex-shrink:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:6px 14px}
-.construction-banner .cb-escudo-pill img{height:38px;width:auto;flex-shrink:0}
-.construction-banner .cb-pladeco-pill img{height:38px;width:auto;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
-.construction-banner .cb-escudo-pill span{color:rgba(255,255,255,.9);font-size:10px;font-weight:700;line-height:1.3;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-/* ── Cinta "En construcción" · foco central ── */
-.cb-ribbon{display:inline-flex;align-items:center;gap:8px;background:rgb(243, 149, 36);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 18px;border-radius:20px;box-shadow:0 2px 10px rgba(232,133,15,.35);white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.25);animation:cbPulse 3s ease-in-out infinite}
-.cb-ribbon::before{content:'\26A0\FE0F';font-size:13px}
-@keyframes cbPulse{0%,100%{box-shadow:0 2px 10px rgba(232,133,15,.35)}50%{box-shadow:0 2px 18px rgba(245,146,29,.6)}}
-.cb-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);width:28px;height:28px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;line-height:1;margin-left:8px}
-.cb-close:hover{background:rgba(255,255,255,.2);color:#fff;transform:scale(1.1)}
-/* Banner unificado (cb-row + live-strip integrado) */
+/* v45.356 · [flotantes] · §2.20 · se retiran las reglas del banner eliminado en v45.106: .construction-banner (y
+   .dismissed), .cb-row, .cb-logo-left/-right, .cb-ribbon-wrap, .cb-escudo-pill, .cb-pladeco-pill, .cb-contigo-pill,
+   .cb-pt-name, .cb-ribbon (y @keyframes cbPulse), .cb-close y el reordenamiento .unified-banner de v45.71. Ninguna de
+   esas clases existe en el marcado ni se crea desde JS (verificado con búsqueda). Se CONSERVA el relleno superior de
+   body: no depende del banner, reserva el alto de la barra superior fija antes de que setHeaderPad() lo mida y es lo
+   único que la separa del contenido si JavaScript no se ejecuta. */
 body{padding-top:150px}
 @media(max-width:900px){
-  .construction-banner{left:0}
-  .construction-banner .cb-row{padding:6px 12px;gap:8px}
-  .construction-banner .cb-escudo-pill span{display:none}
-  .construction-banner .cb-escudo-pill img,.construction-banner .cb-pladeco-pill img{height:28px}
-  .construction-banner .cb-contigo-pill img{height:28px}
-  .cb-ribbon-wrap{flex:0 1 auto}
-  .cb-ribbon{font-size:11px;padding:5px 12px;letter-spacing:.5px}
-  .cb-ribbon::before{font-size:11px}
-  .construction-banner .cb-pladeco-pill .cb-pt-name{font-size:12px}
   body{padding-top:130px}
 }
 @media(max-width:560px){
   body{padding-top:124px}
-}
-/* ── v45.71 · Escritorio · Pulso Comunal reubicado BAJO el aviso "En construcción" ──
-   A pedido: la cinta "En construcción · sujeto a cambios" sube a la primera fila
-   (mayor visibilidad para quien estudia el documento) y la franja de
-   fecha/clima/aire baja a la segunda. Solo escritorio (>900px); el orden DOM
-   no cambia, por lo que en móvil se conserva el layout original. */
-@media(min-width:901px){
-  .unified-banner{display:flex;flex-direction:column}
-  .unified-banner .cb-row{order:1}
-  .unified-banner #liveStrip{order:2;border-top:1px solid rgba(255,255,255,.08);border-bottom:none}
 }
 /* ── KPI Count-Up Animation ── */
 .kpi-value{transition:color .3s}
@@ -3281,7 +3245,6 @@ body.dark .section-reading{background:rgba(255,255,255,.04);border-color:rgba(25
 }
 @media print{
   body.printing-section .sidebar,
-  body.printing-section .construction-banner,
   body.printing-section .countdown-strip,
   body.printing-section .hero,
   body.printing-section .group-divider,
@@ -3427,7 +3390,7 @@ body.dark .visit-chart-desc{background:rgba(96, 135, 199,.06);border-left-color:
    Se mantiene en el DOM porque togglePresentation() actualiza su rotulo. */
 .presentation-btn{display:none!important;position:fixed;bottom:32px;left:32px;z-index:99;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);display:flex;align-items:center;gap:6px;transition:all .3s}
 .presentation-btn:hover{background:var(--accent);transform:translateY(-2px)}
-body.presentation-mode .sidebar,body.presentation-mode .menu-toggle,body.presentation-mode .back-to-top,body.presentation-mode .dark-toggle,body.presentation-mode .construction-banner,body.presentation-mode .scroll-progress,body.presentation-mode .presentation-btn,body.presentation-mode .sidebar-mascot,body.presentation-mode .section-breadcrumb,body.presentation-mode .dot-nav{display:none!important}
+body.presentation-mode .sidebar,body.presentation-mode .menu-toggle,body.presentation-mode .back-to-top,body.presentation-mode .dark-toggle,body.presentation-mode .scroll-progress,body.presentation-mode .presentation-btn,body.presentation-mode .sidebar-mascot,body.presentation-mode .section-breadcrumb,body.presentation-mode .dot-nav{display:none!important}
 body.presentation-mode{padding-top:0!important}
 body.presentation-mode .main{margin-left:0!important}
 body.presentation-mode section,body.presentation-mode .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
@@ -3440,7 +3403,7 @@ body.presentation-mode .pres-counter{display:block}
 
 /* ── F13: Print Stylesheet ── */
 @media print{
-  .sidebar,.menu-toggle,.back-to-top,.dark-toggle,.construction-banner,.share-btn,.toast-container,.presentation-btn,.sidebar-mascot,.countdown-strip,.pres-nav,.pres-counter,.section-breadcrumb,.dot-nav,.splash-screen,.chatbot-fab,.chatbot-panel,.chatbot-overlay,.scroll-progress{display:none!important}
+  .sidebar,.menu-toggle,.back-to-top,.dark-toggle,.share-btn,.toast-container,.presentation-btn,.sidebar-mascot,.countdown-strip,.pres-nav,.pres-counter,.section-breadcrumb,.dot-nav,.splash-screen,.chatbot-fab,.chatbot-panel,.chatbot-overlay,.scroll-progress{display:none!important}
   .main{margin-left:0!important}
   section{break-inside:avoid;padding:24px 20px}
   .hero{padding:40px 20px;background:#0c1f36!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -4014,7 +3977,7 @@ span[title],a[title]:not(.back-to-top):not(.dark-toggle):not(.search-fab):not(.c
   .arg-grid{grid-template-columns:1fr}
   .ineq-grid{grid-template-columns:1fr}
   .nna-grid{grid-template-columns:1fr 1fr}
-  .chatbot-fab{width:48px;height:48px;font-size:20px}
+  /* v45.356 · [flotantes] · §2.21 · retirada .chatbot-fab{width:48px;height:48px;font-size:20px}: el tamaño va con la posición, al final */
   .back-to-top{width:42px;height:42px;bottom:80px;right:16px}
   .back-to-top .btt-svg{width:42px;height:42px}
   .back-to-top .btt-arrow{font-size:14px}
@@ -4081,7 +4044,7 @@ section.scroll-flash{animation:sectionFlash 1.8s ease-out}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   body{font-size:11px;padding:0!important;margin:0!important}
-  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.construction-banner,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox,.group-divider,.infographic-strip,.sec-export-btn{display:none!important}
+  .sidebar,.menu-toggle,.chatbot-panel,.chatbot-fab,.chatbot-overlay,.back-to-top,.dark-toggle,.scroll-progress,.presentation-btn,.dot-nav,.splash-screen,.section-breadcrumb,.sidebar-mascot,.com-filters,.onboard-tip,.cmd-palette,.sidebar-overlay,.share-btn,.toast-container,.countdown-strip,.pres-nav,.pres-counter,.comp-filter-row,.test-controls,.lightbox,.group-divider,.infographic-strip,.sec-export-btn{display:none!important}
   .main{margin-left:0!important}
   section{page-break-inside:avoid;padding:20px 16px!important;max-width:100%!important}
   section.reveal,.hero-stat,.kpi,.equipo-card,.testimonio-card,.compromiso-item,.galeria-card,.timeline-item{opacity:1!important;transform:none!important}
@@ -5168,7 +5131,7 @@ body.bc-active{padding-top:130px !important}
   .bottom-nav-v40{display:flex}
   body{padding-bottom:64px !important}
   .a11y-fab{bottom:208px !important}
-  .chatbot-fab{bottom:80px !important}
+  /* v45.356 · [flotantes] · §2.21 · retirada .chatbot-fab{bottom:80px !important} (1 de las 4 reglas !important en conflicto) */
 }
 
 /* ── B3. Cheat sheet de atajos de teclado ── */
@@ -5393,7 +5356,7 @@ section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-we
 .back-to-top{position:fixed!important;bottom:92px;right:28px;z-index:99}
 .dark-toggle{position:fixed!important}
 .search-fab{position:fixed!important}
-.chatbot-fab{position:fixed!important}
+/* v45.356 · [flotantes] · §2.21 · retirada .chatbot-fab{position:fixed!important}: la posición va en una sola regla, al final */
 
 /* Sidebar como drawer deslizable en móvil/tablet (≤900px) — mismo breakpoint
    que el botón hamburguesa, para que siempre haya forma de abrirlo y cerrarlo */
@@ -6798,7 +6761,9 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 </div>
 <noscript>
 <!-- v45.249 · Degradación elegante sin JavaScript (§4.2): sin splash, contenido visible de inmediato y aviso honesto. -->
-<style>.splash-screen{display:none!important}#main-content,#topnav,.chatbot-fab{visibility:visible!important;animation:none!important}.chatbot-fab,.mobile-bottom-nav,.dot-nav,.scroll-progress{display:none!important}.nojs-aviso{background:#fef3c7;color:#713f12;border-bottom:2px solid #fcd34d;padding:12px 18px;font-size:14px;line-height:1.55;text-align:center}</style>
+<!-- v45.356 · [flotantes] · §2.21 · sin JavaScript tampoco se muestran el cierre del botón del asistente ni el punto para
+     abrirlo en la barra ([data-abre-asistente]): ambos dependen de JS y quedarían como botones sin función. -->
+<style>.splash-screen{display:none!important}#main-content,#topnav,.chatbot-fab{visibility:visible!important;animation:none!important}.chatbot-fab,.chatbot-fab-ocultar,[data-abre-asistente],.tn-utils-sep:has(+ [data-abre-asistente]),.mobile-bottom-nav,.dot-nav,.scroll-progress{display:none!important}.nojs-aviso{background:#fef3c7;color:#713f12;border-bottom:2px solid #fcd34d;padding:12px 18px;font-size:14px;line-height:1.55;text-align:center}</style>
 <div class="nojs-aviso" role="status"><strong>Est&aacute;s viendo el portal sin JavaScript.</strong> Todo el contenido textual del PLADECO est&aacute; disponible a continuaci&oacute;n, secci&oacute;n por secci&oacute;n. Los gr&aacute;ficos interactivos, el buscador y el asistente requieren JavaScript.</div>
 </noscript>
 
@@ -6914,7 +6879,8 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 /* v45.144 · emoji indicador por sección en el menú móvil */
 .tn-mlinks a .tn-mi{font-size:15px;width:20px;text-align:center;flex-shrink:0;line-height:1;display:inline-flex;align-items:center;justify-content:center}
 .tn-m-sub{padding-top:4px}
-.tn-m-sub-head{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);opacity:.78;padding:8px 4px 4px;margin-top:4px}
+/* v45.356 · [flotantes] · §2.18 · sin opacity:.78: a 10,5 px bajaba el contraste del encabezado de capítulo (ver el bloque «v45.356 · [flotantes]» al final) */
+.tn-m-sub-head{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);padding:8px 4px 4px;margin-top:4px}
 html{scroll-padding-top:150px}
 /* v45.56 · ancho de lectura cómodo + menús de 2 columnas para capítulos largos */
 /* v45.336 · §4 · esta regla imponia 720px LITERAL con !important y ganaba a --ancho-lectura,
@@ -6965,7 +6931,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <div class="tn-tab" data-cap="6"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">7</span>Proceso<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
   </nav>
   <div class="tn-utils">
-    <div class="tn-utils-group" role="group" aria-label="Buscador y tema">
+    <div class="tn-utils-group" role="group" aria-label="Herramientas del portal">
       <button class="tn-util" type="button" onclick="if(typeof openCmdPalette===&#39;function&#39;)openCmdPalette()" title="Buscar (Ctrl+K)" aria-label="Buscar en el portal"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-search"></use></svg></button>
       <span class="tn-utils-sep" aria-hidden="true"></span>
       <button class="tn-util" type="button" id="tnTheme" title="Cambiar tema" aria-label="Cambiar tema claro u oscuro"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-moon"></use></svg></button>
@@ -6978,6 +6944,10 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       <button class="tn-util tn-only-desktop" type="button" id="tnPresent" onclick="if(typeof togglePresentation==='function')togglePresentation()" title="Modo presentación" aria-label="Activar modo presentación">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>
       </button>
+      <!-- v45.356 · [flotantes] · §2.21 · punto fijo para abrir el asistente, esté o no oculto su botón flotante.
+           El mismo punto existe en el menú (#tnMpanel, «Apariencia y herramientas») y en la barra inferior móvil. -->
+      <span class="tn-utils-sep" aria-hidden="true"></span>
+      <button class="tn-util" type="button" id="tnAsistente" data-abre-asistente title="Asistente PLADECO" aria-label="Abrir el asistente PLADECO"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-chat"></use></svg></button>
     </div>
   </div>
   <button class="tn-burger" type="button" id="tnBurger" aria-label="Abrir menú de capítulos" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -7064,6 +7034,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       '<button type="button" id="tnmSearch" class="tn-mtool" aria-label="Buscar en el portal (Ctrl K)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg><span>Buscar</span></button>'+
       '<button type="button" id="tnmTheme" class="tn-mtool" aria-pressed="false" aria-label="Cambiar tema claro u oscuro"><span class="tnm-ico" id="tnmThemeIco">&#127769;</span><span id="tnmThemeTxt">Tema oscuro</span></button>'+
       '<button type="button" id="tnmLF" class="tn-mtool" aria-pressed="false" aria-label="Activar o desactivar el modo Lectura F&aacute;cil"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-book"></use></svg><span>Lectura F&aacute;cil</span></button>'+
+      /* v45.356 · [flotantes] · §2.21 · punto fijo para abrir el asistente (el clic lo atiende [data-abre-asistente]) */
+      '<button type="button" id="tnmAsistente" class="tn-mtool" data-abre-asistente aria-label="Abrir el asistente PLADECO"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chat"></use></svg><span>Asistente</span></button>'+
       /* v45.333 · §8 · "Presentar" también aquí: .tn-utils se oculta bajo 1300px, así que
          el botón del topnav no bastaba para cubrir todos los anchos de escritorio. */
       '<button type="button" id="tnmPresent" class="tn-mtool tn-only-desktop" aria-label="Activar modo presentaci&oacute;n"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg><span>Presentar</span></button>'+
@@ -7238,6 +7210,8 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     <button type="button" class="chatbot-close" onclick="event.preventDefault();event.stopPropagation();if(typeof window.toggleChatbot==='function')window.toggleChatbot();return false;" aria-label="Cerrar el chat" title="Cerrar chat (ESC)">&times;</button>
   </div>
   <div class="chatbot-disclaimer" role="note"><strong>Respuestas referenciales</strong> generadas automáticamente. La fuente oficial es el documento PLADECO; verifica los datos críticos.</div>
+  <!-- v45.356 · [flotantes] · §2.21 · solo visible con html.asistente-oculto: deshace el cierre del botón flotante -->
+  <div class="chatbot-restaurar" id="chatRestaurar"><span>El botón flotante del asistente está oculto.</span><button type="button" id="chatRestaurarFab">Volver a mostrarlo</button></div>
   <div class="chatbot-messages" id="chatMessages"></div>
   <div class="chatbot-suggestions" id="chatSugg"></div>
   <div class="chatbot-input-row">
@@ -7247,6 +7221,12 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 </div>
 <!-- v45.272 · ícono del lanzador en SVG (nítido, sin CLS); el PNG se conserva solo en el header del panel -->
 <button class="chatbot-fab" id="chatFab" type="button" aria-label="Abrir asistente PLADECO Rengo"><svg class="fab-robot" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="#fff" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/><circle cx="7.5" cy="9" r="1.5" fill="#1a8c4e"/><circle cx="12" cy="9" r="1.5" fill="#1a8c4e"/><circle cx="16.5" cy="9" r="1.5" fill="#1a8c4e"/></svg><span class="fab-tooltip" id="fabTooltip">&#191;Tienes dudas?</span></button>
+<!-- v45.356 · [flotantes] · §2.21 · cierre del botón flotante que se recuerda entre visitas (clave pladeco-asistente-oculto).
+     Va como botón hermano y no dentro de #chatFab, porque un <button> no puede contener otro. La clase
+     html.asistente-oculto se aplica aquí mismo, antes de pintar, para que el botón no aparezca y desaparezca al cargar.
+     El asistente se sigue abriendo desde la barra (ver [data-abre-asistente] y el bloque «v45.356 · [flotantes]» al final). -->
+<button class="chatbot-fab-ocultar" id="chatFabOcultar" type="button" aria-label="Ocultar el botón flotante del asistente" title="Ocultar el botón flotante del asistente"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<script>try{if(localStorage.getItem('pladeco-asistente-oculto')==='1'){document.documentElement.classList.add('asistente-oculto');}}catch(e){}</script>
 <script>
 /* v45.116 · IMPLEMENTACION AUTOSUFICIENTE de toggleChatbot al lado del FAB
    NO depende del script principal. Garantiza que el chatbot ABRA siempre.
@@ -15559,21 +15539,25 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
       <div class="me-sna-metric"><p>V&#237;nculos estructurales</p><p>27</p></div>
       <div class="me-sna-metric"><p>V&#237;nculos transversales</p><p>21</p></div>
     </div>
+    <!-- v45.356 · [flotantes] · §2.17 · los 7 filtros y la casilla nacen deshabilitados (disabled) y los habilita
+         initMeSNA al terminar, cuando ya existen meSnaFilter y meSnaToggleT: antes eran pulsables sin D3 y cada clic
+         lanzaba «ReferenceError: meSnaFilter is not defined» (medido con D3 bloqueado). aria-pressed dice cuál está activo. -->
     <div class="me-sna-controls">
       <span style="font-size:11px;color:var(--me-sub);margin-right:3px">Filtrar por eje:</span>
-      <button class="me-sna-filter active" id="mef0" onclick="meSnaFilter(0)">Todos</button>
-      <button class="me-sna-filter" id="mef1" onclick="meSnaFilter(1)" style="color:var(--me-e1);border-color:var(--me-e1)">Eje 1</button>
-      <button class="me-sna-filter" id="mef2" onclick="meSnaFilter(2)" style="color:var(--me-e2);border-color:var(--me-e2)">Eje 2</button>
-      <button class="me-sna-filter" id="mef3" onclick="meSnaFilter(3)" style="color:var(--me-e3);border-color:var(--me-e3)">Eje 3</button>
-      <button class="me-sna-filter" id="mef4" onclick="meSnaFilter(4)" style="color:var(--me-e4);border-color:var(--me-e4)">Eje 4</button>
-      <button class="me-sna-filter" id="mef5" onclick="meSnaFilter(5)" style="color:var(--me-e5);border-color:var(--me-e5)">Eje 5</button>
-      <button class="me-sna-filter" id="mef6" onclick="meSnaFilter(6)" style="color:var(--me-e6);border-color:var(--me-e6)">Eje 6</button>
+      <button type="button" class="me-sna-filter active" id="mef0" onclick="meSnaFilter(0)" aria-pressed="true" disabled>Todos</button>
+      <button type="button" class="me-sna-filter" id="mef1" onclick="meSnaFilter(1)" aria-pressed="false" disabled style="color:var(--me-e1);border-color:var(--me-e1)">Eje 1</button>
+      <button type="button" class="me-sna-filter" id="mef2" onclick="meSnaFilter(2)" aria-pressed="false" disabled style="color:var(--me-e2);border-color:var(--me-e2)">Eje 2</button>
+      <button type="button" class="me-sna-filter" id="mef3" onclick="meSnaFilter(3)" aria-pressed="false" disabled style="color:var(--me-e3);border-color:var(--me-e3)">Eje 3</button>
+      <button type="button" class="me-sna-filter" id="mef4" onclick="meSnaFilter(4)" aria-pressed="false" disabled style="color:var(--me-e4);border-color:var(--me-e4)">Eje 4</button>
+      <button type="button" class="me-sna-filter" id="mef5" onclick="meSnaFilter(5)" aria-pressed="false" disabled style="color:var(--me-e5);border-color:var(--me-e5)">Eje 5</button>
+      <button type="button" class="me-sna-filter" id="mef6" onclick="meSnaFilter(6)" aria-pressed="false" disabled style="color:var(--me-e6);border-color:var(--me-e6)">Eje 6</button>
       <label style="margin-left:auto;font-size:11px;color:var(--me-sub);display:flex;align-items:center;gap:5px;cursor:pointer">
-        <input type="checkbox" id="me-showT" checked onchange="meSnaToggleT(this.checked)">
+        <input type="checkbox" id="me-showT" checked disabled onchange="meSnaToggleT(this.checked)">
         Mostrar v&#237;nculos transversales
       </label>
     </div>
     <div class="me-sna-wrap">
+      <p class="me-d3-aviso" id="me-sna-aviso" role="status" hidden></p>
       <svg id="me-sna-svg" viewBox="0 0 680 620"></svg>
       <div id="me-sna-tip"></div>
     </div>
@@ -15596,13 +15580,14 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;padding:8px 10px;background:var(--bg-soft);border-radius:8px;border:1px solid var(--border)">
       <span style="font-size:11px;color:var(--text2);margin-right:3px">Resaltar eje:</span>
-      <button class="me-sna-filter active" id="sky0" onclick="meSankeyFilter(0)">Todos</button>
-      <button class="me-sna-filter" id="sky1" onclick="meSankeyFilter(1)" style="color:var(--me-e1);border-color:var(--me-e1)">Eje 1</button>
-      <button class="me-sna-filter" id="sky2" onclick="meSankeyFilter(2)" style="color:var(--me-e2);border-color:var(--me-e2)">Eje 2</button>
-      <button class="me-sna-filter" id="sky3" onclick="meSankeyFilter(3)" style="color:var(--me-e3);border-color:var(--me-e3)">Eje 3</button>
-      <button class="me-sna-filter" id="sky4" onclick="meSankeyFilter(4)" style="color:var(--me-e4);border-color:var(--me-e4)">Eje 4</button>
-      <button class="me-sna-filter" id="sky5" onclick="meSankeyFilter(5)" style="color:var(--me-e5);border-color:var(--me-e5)">Eje 5</button>
-      <button class="me-sna-filter" id="sky6" onclick="meSankeyFilter(6)" style="color:var(--me-e6);border-color:var(--me-e6)">Eje 6</button>
+      <!-- v45.356 · [flotantes] · §2.17 · deshabilitados hasta que initMeSankey defina meSankeyFilter (ver initMeSNA) -->
+      <button type="button" class="me-sna-filter active" id="sky0" onclick="meSankeyFilter(0)" aria-pressed="true" disabled>Todos</button>
+      <button type="button" class="me-sna-filter" id="sky1" onclick="meSankeyFilter(1)" aria-pressed="false" disabled style="color:var(--me-e1);border-color:var(--me-e1)">Eje 1</button>
+      <button type="button" class="me-sna-filter" id="sky2" onclick="meSankeyFilter(2)" aria-pressed="false" disabled style="color:var(--me-e2);border-color:var(--me-e2)">Eje 2</button>
+      <button type="button" class="me-sna-filter" id="sky3" onclick="meSankeyFilter(3)" aria-pressed="false" disabled style="color:var(--me-e3);border-color:var(--me-e3)">Eje 3</button>
+      <button type="button" class="me-sna-filter" id="sky4" onclick="meSankeyFilter(4)" aria-pressed="false" disabled style="color:var(--me-e4);border-color:var(--me-e4)">Eje 4</button>
+      <button type="button" class="me-sna-filter" id="sky5" onclick="meSankeyFilter(5)" aria-pressed="false" disabled style="color:var(--me-e5);border-color:var(--me-e5)">Eje 5</button>
+      <button type="button" class="me-sna-filter" id="sky6" onclick="meSankeyFilter(6)" aria-pressed="false" disabled style="color:var(--me-e6);border-color:var(--me-e6)">Eje 6</button>
     </div>
     <div class="me-sankey-intro" style="font-size:12px;line-height:1.65;color:var(--text);background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-left:4px solid #6366f1;padding:14px 16px;border-radius:10px;margin-bottom:12px">
       <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6366f1;margin-bottom:6px"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chart"></use></svg> C&oacute;mo leer este flujo estrat&eacute;gico</div>
@@ -15617,6 +15602,7 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
       </div>
     </div>
     <div class="me-sankey-wrap" style="position:relative;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+      <p class="me-d3-aviso" id="me-sankey-aviso" role="status" hidden></p>
       <svg id="me-sankey-svg" viewBox="0 0 980 620" style="width:100%;min-width:680px;display:block"></svg>
       <div id="me-sankey-tip" style="position:absolute;display:none;background:#0c1f36;color:#fff;padding:7px 11px;border-radius:7px;font-size:11px;pointer-events:none;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:240px;line-height:1.4"></div>
     </div>
@@ -21180,7 +21166,8 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 </script>
 
 <!-- F7: Toast Container -->
-<div class="toast-container" id="toastContainer"></div>
+<div class="toast-container" id="toastContainer" role="status" aria-live="polite"></div><!-- v45.356 · [flotantes] · §2.18 · región viva: los avisos eran solo visuales -->
+
 
 <!-- ═══ MAJOR v40.0 · Navegación + Acceso ═══ -->
 
@@ -28101,17 +28088,8 @@ setTimeout(()=>{
   document.querySelectorAll('.hero-stat').forEach(el=>el.classList.add('revealed'));
 },600);
 
-// ── BANNER DISMISS (manual via close btn) ──
-function dismissBanner(){
-  const banner=document.querySelector('.construction-banner');
-  if(banner){
-    banner.classList.add('dismissed');
-    document.body.style.paddingTop='0';
-    document.body.style.transition='padding-top .6s ease';
-    const sp=document.querySelector('.scroll-progress');
-    if(sp)sp.style.top='0';
-  }
-}
+/* v45.356 · [flotantes] · §2.20 · dismissBanner() retirada: cerraba .construction-banner, que no existe desde v45.106
+   (sin llamadas en el archivo, verificado con búsqueda). Su CSS se retiró en el mismo cambio. */
 
 /* ── Sociedad Civil iframe toggle ── */
 // Auto-carga del iframe Sociedad Civil cuando entra al viewport (lazy-load)
@@ -29326,7 +29304,13 @@ document.querySelectorAll('.kpi,.equipo-card,.testimonio-card,.compromiso-item,.
 // ── INTERACTIVE ONBOARDING TOOLTIP ──
 (function(){
   var OB_KEY='pladeco_onboard_v1';
-  if(localStorage.getItem(OB_KEY)) return;
+  /* v45.356 · [flotantes] · §2.20 · la × solo quitaba la clase .show: no guardaba nada y las sugerencias volvían en
+     cada visita; además no tenía aria-label. Ahora la ×, «No mostrar más» y el último «Entendido» escriben OB_KEY,
+     y toda lectura o escritura de localStorage va con try/catch: si el almacenamiento está bloqueado no se
+     muestran, porque no habría forma de recordar el cierre. */
+  function obVisto(){ try{ return !!localStorage.getItem(OB_KEY); }catch(e){ return true; } }
+  function obRecordar(){ try{ localStorage.setItem(OB_KEY,'1'); }catch(e){} }
+  if(obVisto()) return;
   var tips=[
     {target:'#viz',title:'💡 Gráficos Interactivos',msg:'Pasa el cursor sobre los gráficos para ver datos detallados. Haz click en segmentos para filtrar información.',arrow:'top'},
     {target:'#cronograma',title:'📅 Línea de Tiempo',msg:'Usa las pestañas para alternar entre la hoja de ruta estratégica y el proceso detallado de formulación.',arrow:'top'},
@@ -29334,11 +29318,12 @@ document.querySelectorAll('.kpi,.equipo-card,.testimonio-card,.compromiso-item,.
   ];
   var tipEl=document.createElement('div');
   tipEl.className='onboard-tip';
-  tipEl.innerHTML='<button class="ob-close" onclick="this.parentNode.classList.remove(\'show\')">&times;</button><div class="ob-title"></div><div class="ob-msg"></div><div class="ob-actions"><button class="ob-btn ob-btn-primary" id="obGot">Entendido</button><button class="ob-btn ob-btn-secondary" id="obSkip">No mostrar más</button></div>';
+  tipEl.innerHTML='<button type="button" class="ob-close" aria-label="Cerrar las sugerencias de uso y no volver a mostrarlas" title="Cerrar y no volver a mostrar">&times;</button><div class="ob-title"></div><div class="ob-msg"></div><div class="ob-actions"><button type="button" class="ob-btn ob-btn-primary" id="obGot">Entendido</button><button type="button" class="ob-btn ob-btn-secondary" id="obSkip">No mostrar más</button></div>';
   document.body.appendChild(tipEl);
+  tipEl.querySelector('.ob-close').onclick=function(){obRecordar();tipEl.classList.remove('show');tipEl.remove();};
   var shown=0;
   function showTip(idx){
-    if(idx>=tips.length){localStorage.setItem(OB_KEY,'1');tipEl.remove();return;}
+    if(idx>=tips.length){obRecordar();tipEl.remove();return;}
     var t=tips[idx];
     var el=document.querySelector(t.target);
     if(!el){showTip(idx+1);return;}
@@ -29352,7 +29337,7 @@ document.querySelectorAll('.kpi,.equipo-card,.testimonio-card,.compromiso-item,.
     tipEl.classList.add('show');
   }
   document.getElementById('obGot').onclick=function(){tipEl.classList.remove('show');setTimeout(function(){showTip(shown+1);shown++;},400);};
-  document.getElementById('obSkip').onclick=function(){localStorage.setItem(OB_KEY,'1');tipEl.classList.remove('show');tipEl.remove();};
+  document.getElementById('obSkip').onclick=function(){obRecordar();tipEl.classList.remove('show');tipEl.remove();};
   var obObs=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting&&shown===0){
@@ -29366,13 +29351,21 @@ document.querySelectorAll('.kpi,.equipo-card,.testimonio-card,.compromiso-item,.
 })();
 
 // ── CHATBOT FAB DELAYED ENTRANCE ──
+/* v45.356 · [flotantes] · §2.20 · el globo «¿Tienes dudas?» salía en cada visita. Se muestra una sola vez (clave
+   pladeco-globo-asistente, con try/catch) y nunca si el botón del asistente está oculto (html.asistente-oculto). */
 setTimeout(()=>{
   const fab=document.getElementById('chatFab');
   if(fab)fab.classList.remove('hidden');
+  let globoVisto=false;
+  try{ globoVisto=localStorage.getItem('pladeco-globo-asistente')==='1'; }catch(e){ globoVisto=true; }
+  if(globoVisto) return;
   // Show tooltip hint after 2s
   setTimeout(()=>{
     const tip=document.getElementById('fabTooltip');
-    if(tip){tip.classList.add('show');setTimeout(()=>tip.classList.remove('show'),4000);}
+    if(!tip || document.documentElement.classList.contains('asistente-oculto')) return;
+    tip.classList.add('show');
+    try{ localStorage.setItem('pladeco-globo-asistente','1'); }catch(e){}
+    setTimeout(()=>tip.classList.remove('show'),4000);
   },2000);
 },3000);
 
@@ -30692,7 +30685,9 @@ function showToast(msg,type='info'){
   const icons={info:'&#128161;',success:'&#10004;',warning:'&#9888;'};
   const t=document.createElement('div');
   t.className='toast '+type;
-  t.innerHTML='<div class="toast-body"><span class="toast-icon">'+(icons[type]||icons.info)+'</span><span class="toast-msg">'+msg+'</span><button class="toast-close" onclick="this.closest(\'.toast\').classList.add(\'toast-exit\');setTimeout(()=>this.closest(\'.toast\')?.remove(),300)">&times;</button></div><div class="toast-progress"><div class="toast-progress-bar"></div></div>';
+  /* v45.356 · [flotantes] · §2.18 · el contenedor pasa a ser una región role="status" (aria-live polite) para que el
+     aviso no sea solo visual; el ícono decorativo va con aria-hidden y la ×, que no tenía nombre, con aria-label */
+  t.innerHTML='<div class="toast-body"><span class="toast-icon" aria-hidden="true">'+(icons[type]||icons.info)+'</span><span class="toast-msg">'+msg+'</span><button type="button" class="toast-close" aria-label="Cerrar aviso" onclick="this.closest(\'.toast\').classList.add(\'toast-exit\');setTimeout(()=>this.closest(\'.toast\')?.remove(),300)">&times;</button></div><div class="toast-progress"><div class="toast-progress-bar"></div></div>';
   c.appendChild(t);
   setTimeout(()=>{if(t.parentNode){t.classList.add('toast-exit');setTimeout(()=>t.remove(),300);}},3200);
 }
@@ -30700,18 +30695,27 @@ const toastShown=new Set();
 function initToastTriggers(){
   /* v45.356 · [cifras] §1.4 · decía «Rengo #1 en Transparencia», sin ámbito. Lo documentado (#dashboard,
      #comparador) es el primer lugar de la Región de O'Higgins. */
-  const triggers={semaforo:'🏆 Rengo, 1° regional en Transparencia con 97,89%',ejes:'🎯 6 ejes con 225 políticas',financiamiento:'💰 $144 acciones municipales'};
+  /* v45.356 · [flotantes] · §2.20 · el aviso de #financiamiento decía «$144 acciones municipales»: el signo $ no
+     corresponde (144 es un número de acciones, no un monto). Se usa la frase de la propia sección (#financiamiento,
+     «Hallazgo clave»: 144 de las 225 acciones son de responsabilidad municipal directa). */
+  const triggers={semaforo:'🏆 Rengo, 1° regional en Transparencia con 97,89%',ejes:'🎯 6 ejes con 225 políticas',financiamiento:'💰 144 de las 225 acciones son de responsabilidad municipal directa'};
+  /* v45.356 · [flotantes] · §2.20 · los tres avisos volvían en cada visita (toastShown vivía solo en memoria).
+     Ahora los ya mostrados se guardan en localStorage (pladeco-avisos-vistos, con try/catch) y no se vuelven a
+     observar; si el almacenamiento está bloqueado se comportan como antes, una vez por visita. */
+  const CLAVE_AVISOS='pladeco-avisos-vistos';
+  try{ (JSON.parse(localStorage.getItem(CLAVE_AVISOS)||'[]')||[]).forEach(id=>toastShown.add(id)); }catch(e){}
+  const recordarAviso=id=>{ toastShown.add(id); try{ localStorage.setItem(CLAVE_AVISOS,JSON.stringify(Array.from(toastShown))); }catch(e){} };
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
       if(e.isIntersecting&&!toastShown.has(e.target.id)&&triggers[e.target.id]){
         // Solo durante el PRIMER MINUTO de la visita: después no se muestran para no tapar
         // los plugins de abajo (botón Asistente + barra inferior). El toast vive en bottom-right.
-        if(performance.now()<60000){ toastShown.add(e.target.id); showToast(triggers[e.target.id],'info'); }
+        if(performance.now()<60000){ recordarAviso(e.target.id); obs.unobserve(e.target); showToast(triggers[e.target.id],'info'); }
         else { obs.unobserve(e.target); }
       }
     });
   },{threshold:0.3});
-  Object.keys(triggers).forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+  Object.keys(triggers).forEach(id=>{ if(toastShown.has(id)) return; const el=document.getElementById(id); if(el)obs.observe(el); });
 }
 
 // ══════════════════════════════════════════════════════
@@ -31962,7 +31966,9 @@ function maybeOfferTour(){
       if(typeof showToast==='function'){
         showToast('🧭 ¿Primera vez? Ofrecemos un tour guiado en sección Aprende → Tour','info');
       }
-      localStorage.setItem('pladeco-tour-offered','1');
+      /* v45.356 · [flotantes] · §2.20 · este aviso ya se recordaba, pero la escritura corre dentro del setTimeout,
+         fuera del try/catch de arriba: si setItem fallaba (por ejemplo, con la cuota llena) el error quedaba sin capturar */
+      try{ localStorage.setItem('pladeco-tour-offered','1'); }catch(e){}
     },8000);
   }catch(e){}
 }
@@ -33576,18 +33582,68 @@ window._meSnaRendered=false;
 window._meSnaActiveAxis=0;
 window._meSnaShowT=true;
 
+/* v45.356 · [flotantes] · §2.17 · RED Y SANKEY SIN D3.
+   Qué había: los 14 filtros eran pulsables antes de que existieran meSnaFilter y meSankeyFilter; si D3 no cargaba
+   (medido bloqueando la URL de D3) quedaban inertes, cada clic lanzaba «ReferenceError: meSnaFilter is not
+   defined», el lienzo quedaba vacío sin aviso y initMeSNA/initMeSankey reintentaban cada 200 ms sin fin. Además,
+   cada cambio de pestaña agregaba otra etiqueta <script> de D3 mientras la primera seguía cargando, y el onload
+   solo dibujaba la Red (el Sankey dependía del sondeo).
+   Qué hace ahora: una sola carga a la vez (_meD3Cargando); onerror marca el fallo y escribe el aviso en el lienzo
+   de cada gráfico pedido; el sondeo (cada 200 ms) tiene tope de 15 s medidos con Date.now() y no por número de
+   vueltas, porque con la página ocupada los temporizadores se atrasan; hay un solo ciclo por gráfico; los
+   filtros nacen con disabled y se habilitan al final de cada init. Volver a abrir la pestaña reintenta la carga.
+   Al llegar al tope con la carga aún en curso, el aviso dice que D3 está tardando (no que falló); si D3 llega
+   después, el onload dibuja los dos gráficos, retira el aviso y habilita los filtros.
+   Verificado en Edge sin interfaz: con D3 bloqueado, filtros y casilla deshabilitados, aviso de error en los dos
+   lienzos, sin errores de página y el sondeo detenido; con D3 retrasado 20 s, «Cargando…», luego el aviso de
+   demora a los 15 s y, al llegar D3, los dos gráficos dibujados, avisos ocultos y filtros con aria-pressed. */
+var ME_D3_TOPE_MS=15000;
+function meD3Aviso(graf,estado){
+  var el=document.getElementById(graf==='sna'?'me-sna-aviso':'me-sankey-aviso'); if(!el) return;
+  if(!estado){ el.hidden=true; el.textContent=''; el.classList.remove('me-d3-error'); return; }
+  el.classList.toggle('me-d3-error',estado==='error');
+  el.textContent=(estado==='error')
+    ?'No se pudo cargar la biblioteca que dibuja este gráfico (D3), así que los filtros no están disponibles. Revisa tu conexión y vuelve a abrir esta pestaña para reintentar.'
+    :(estado==='lento')
+    ?'La biblioteca que dibuja este gráfico (D3) está tardando más de 15 segundos en cargar. El gráfico y sus filtros aparecerán cuando termine; si no aparecen, revisa tu conexión y vuelve a abrir esta pestaña.'
+    :'Cargando el gráfico…';
+  el.hidden=false;
+}
+/* al llegar al tope sin D3: «lento» si la carga sigue en curso (su onload dibujará igual), «error» si falló o no hay carga */
+function meD3EstadoTope(){ return (!window._meD3Fallo && window._meD3Cargando) ? 'lento' : 'error'; }
+function meD3Habilitar(prefijo){ for(var j=0;j<=6;j++){ var b=document.getElementById(prefijo+j); if(b) b.disabled=false; } }
 function loadD3AndInit(){
   if(window.d3)return;
+  if(window._meD3Cargando)return;
+  window._meD3Cargando=true; window._meD3Fallo=false;
   var s=document.createElement('script');
   s.src='https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js';
-  s.onload=function(){if(window._meSnaRequested && !window._meSnaRendered)initMeSNA();};
+  s.onload=function(){
+    window._meD3Cargando=false;
+    if(window._meSnaRequested && !window._meSnaRendered)initMeSNA();
+    if(window._meSankeyRequested && !window._meSankeyRendered)initMeSankey();
+  };
+  s.onerror=function(){
+    window._meD3Cargando=false; window._meD3Fallo=true;
+    if(s.parentNode)s.parentNode.removeChild(s);
+    if(window._meSnaRequested && !window._meSnaRendered)meD3Aviso('sna','error');
+    if(window._meSankeyRequested && !window._meSankeyRendered)meD3Aviso('sankey','error');
+  };
   document.head.appendChild(s);
 }
 
-function initMeSNA(){
-if(!window.d3){setTimeout(initMeSNA,200);return;}
+function initMeSNA(intento){
+if(!window.d3){
+  if(!intento){ if(window._meSnaEsperando)return; window._meSnaEsperando=Date.now(); }
+  if(window._meD3Fallo||(Date.now()-window._meSnaEsperando)>=ME_D3_TOPE_MS){ window._meSnaEsperando=0; meD3Aviso('sna',meD3EstadoTope()); return; }
+  meD3Aviso('sna','cargando');
+  setTimeout(function(){initMeSNA((intento||0)+1);},200);
+  return;
+}
+window._meSnaEsperando=0;
 if(window._meSnaRendered)return; /* idempotencia: no re-renderizar */
 window._meSnaRendered=true;
+meD3Aviso('sna',null);
 /* limpieza defensiva del SVG por si quedaron residuos */
 var _svgEl=document.getElementById('me-sna-svg');
 if(_svgEl){while(_svgEl.firstChild)_svgEl.removeChild(_svgEl.firstChild);}
@@ -33721,8 +33777,10 @@ var selId=null;
 function onHov(e,d){if(selId)return;posTip(d);var col=C[d.axis].ej;var tl=links.filter(function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b=typeof l.target==='object'?l.target.id:l.target;return(a2===d.id||b===d.id)&&l.type==='transversal';});if(d.type==='eje'){tip.innerHTML='<strong style="color:'+col+';font-size:12px">'+d.label+'</strong><br><span style="font-size:10.5px;color:#64748B">'+d.full+'</span><hr style="border:none;border-top:1px solid #E2E8F0;margin:5px 0"><span style="font-size:10.5px"><b>'+d.actions+'</b> acciones · <b>'+d.pct+'</b></span>';}else{var labs=tl.map(function(l){return l.label;}).join('<br>');tip.innerHTML='<strong style="color:'+col+';font-size:12px">OE '+d.id.replace('OE','')+'</strong><br><span style="font-size:10.5px;color:#64748B">'+d.full+'</span>'+(tl.length?'<hr style="border:none;border-top:1px solid #E2E8F0;margin:5px 0"><span style="font-size:10px;color:#64748B">Transversales:</span><br><span style="font-size:10px">'+labs+'</span>':'');}tip.style.visibility='visible';hl(d.id);}
 function onOut(){if(selId)return;tip.style.visibility='hidden';rst();}
 function onClk(e,d){if(selId===d.id){selId=null;tip.style.visibility='hidden';rst();return;}selId=d.id;posTip(d);hl(d.id);}
-window.meSnaFilter=function(ax){window._meSnaActiveAxis=ax;selId=null;for(var j=0;j<=6;j++){var b=document.getElementById('mef'+j);if(b){b.classList.toggle('active',ax===j);b.style.opacity=ax===j?'1':'0.5';b.style.fontWeight=ax===j?'600':'500';}}if(ax===0){rst();return;}var vis=new Set();nodes.filter(function(n){return n.axis===ax;}).forEach(function(n){vis.add(n.id);});links.forEach(function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b2=typeof l.target==='object'?l.target.id:l.target;if(vis.has(a2)||vis.has(b2)){vis.add(a2);vis.add(b2);}});nSel.attr('opacity',function(n){return vis.has(n.id)?1:0.08;});lSel.attr('opacity',function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b2=typeof l.target==='object'?l.target.id:l.target;var sn=nodes.find(function(n){return n.id===a2;}),tn=nodes.find(function(n){return n.id===b2;});if(!sn||!tn)return 0.04;if(sn.axis===ax||tn.axis===ax)return l.type==='transversal'&&window._meSnaShowT?0.75:l.type==='structural'?0.85:0;return 0.04;});};
+window.meSnaFilter=function(ax){window._meSnaActiveAxis=ax;selId=null;for(var j=0;j<=6;j++){var b=document.getElementById('mef'+j);if(b){b.classList.toggle('active',ax===j);b.setAttribute('aria-pressed',ax===j?'true':'false');b.style.opacity=ax===j?'1':'0.5';b.style.fontWeight=ax===j?'600':'500';}}if(ax===0){rst();return;}var vis=new Set();nodes.filter(function(n){return n.axis===ax;}).forEach(function(n){vis.add(n.id);});links.forEach(function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b2=typeof l.target==='object'?l.target.id:l.target;if(vis.has(a2)||vis.has(b2)){vis.add(a2);vis.add(b2);}});nSel.attr('opacity',function(n){return vis.has(n.id)?1:0.08;});lSel.attr('opacity',function(l){var a2=typeof l.source==='object'?l.source.id:l.source,b2=typeof l.target==='object'?l.target.id:l.target;var sn=nodes.find(function(n){return n.id===a2;}),tn=nodes.find(function(n){return n.id===b2;});if(!sn||!tn)return 0.04;if(sn.axis===ax||tn.axis===ax)return l.type==='transversal'&&window._meSnaShowT?0.75:l.type==='structural'?0.85:0;return 0.04;});};
 window.meSnaToggleT=function(show){window._meSnaShowT=show;lSel.filter(function(d){return d.type==='transversal';}).attr('opacity',show?(window._meSnaActiveAxis===0?0.5:0.75):0).attr('pointer-events',show?'auto':'none');};
+/* v45.356 · [flotantes] · §2.17 · meSnaFilter y meSnaToggleT ya existen: se habilitan los filtros y la casilla */
+meD3Habilitar('mef'); var _meChkT=document.getElementById('me-showT'); if(_meChkT)_meChkT.disabled=false;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -33732,10 +33790,19 @@ window._meSankeyRequested=false;
 window._meSankeyRendered=false;
 window._meSankeyActiveAxis=0;
 
-function initMeSankey(){
-if(!window.d3){setTimeout(initMeSankey,200);return;}
+function initMeSankey(intento){
+/* v45.356 · [flotantes] · §2.17 · sondeo con tope y aviso en el lienzo (ver loadD3AndInit) */
+if(!window.d3){
+  if(!intento){ if(window._meSankeyEsperando)return; window._meSankeyEsperando=Date.now(); }
+  if(window._meD3Fallo||(Date.now()-window._meSankeyEsperando)>=ME_D3_TOPE_MS){ window._meSankeyEsperando=0; meD3Aviso('sankey',meD3EstadoTope()); return; }
+  meD3Aviso('sankey','cargando');
+  setTimeout(function(){initMeSankey((intento||0)+1);},200);
+  return;
+}
+window._meSankeyEsperando=0;
 if(window._meSankeyRendered)return;
 window._meSankeyRendered=true;
+meD3Aviso('sankey',null);
 var _sk=document.getElementById('me-sankey-svg');
 if(!_sk)return;
 while(_sk.firstChild)_sk.removeChild(_sk.firstChild);
@@ -33961,7 +34028,7 @@ window.meSankeyFilter=function(ax){
   window._meSankeyActiveAxis=ax;
   for(var j=0;j<=6;j++){
     var b=document.getElementById('sky'+j);
-    if(b){b.classList.toggle('active',ax===j);b.style.opacity=ax===j?'1':'0.5';b.style.fontWeight=ax===j?'600':'500';}
+    if(b){b.classList.toggle('active',ax===j);b.setAttribute('aria-pressed',ax===j?'true':'false');b.style.opacity=ax===j?'1':'0.5';b.style.fontWeight=ax===j?'600':'500';}
   }
   if(ax===0){
     linkSel.attr('fill-opacity',0.35);
@@ -33977,6 +34044,8 @@ window.meSankeyFilter=function(ax){
     return n.axis===ax||n.col===2?1:0.15;
   });
 };
+/* v45.356 · [flotantes] · §2.17 · meSankeyFilter ya existe: se habilitan los 7 filtros */
+meD3Habilitar('sky');
 
 }
 // (v45.74) initSidebarGroupIndicator eliminado con el sidebar legacy
@@ -34307,22 +34376,9 @@ button:focus-visible,
   border-radius:6px;
 }
 
-/* ═══════════════════════════════════════════════════════
-   v45.42 · CHATBOT FAB · posición que no choque con back-to-top
-   ═══════════════════════════════════════════════════════ */
-@media (max-width:900px){
-  .chatbot-fab{
-    bottom:74px!important;  /* arriba del back-to-top */
-    right:18px!important;
-  }
-}
-@media (max-width:479px){
-  .chatbot-fab{
-    bottom:66px!important;
-    right:14px!important;
-    width:46px!important;height:46px!important;
-  }
-}
+/* v45.356 · [flotantes] · §2.21 · retirado el bloque «v45.42 · CHATBOT FAB · posición que no choque con
+   back-to-top»: fijaba bottom/right con !important a ≤900 px (74/18) y a ≤479 px (66/14, además de 46×46),
+   2 de las 4 reglas !important en conflicto. La posición va en una sola regla, al final del archivo. */
 </style>
 
 <!-- ═══ v45.41 · SISTEMA RESPONSIVE ORDENADO · PC + Móvil ═══ -->
@@ -38415,7 +38471,8 @@ body.dark .pv-nav-ctx,body.dark .pv-nav .pv-d{color:#5cc98a}
   /* Espacio inferior para que el contenido no quede tapado */
   body{padding-bottom:62px}
   /* FAB del chatbot sube encima del bottom nav */
-  .chatbot-fab{bottom:72px!important;right:16px!important}
+  /* v45.356 · [flotantes] · §2.21 · retirada .chatbot-fab{bottom:72px!important;right:16px!important} (4.ª regla
+     !important en conflicto): los 72 px sobre la barra inferior viven ahora en --asist-abajo, al final del archivo */
 
   /* ── Drawer de secciones ── */
   .mobile-drawer-overlay{
@@ -39067,6 +39124,10 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
   </button>
   <button class="mbn-btn" onclick="if(typeof toggleDark==='function')toggleDark()" aria-label="Tema">
     <span class="mbn-ico">&#127769;</span><span class="mbn-lbl">Tema</span>
+  </button>
+  <!-- v45.356 · [flotantes] · §2.21 · punto fijo para abrir el asistente en móvil (el clic lo atiende [data-abre-asistente]) -->
+  <button class="mbn-btn" type="button" id="mbnAsistente" data-abre-asistente aria-label="Abrir el asistente PLADECO">
+    <span class="mbn-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chat"></use></svg></span><span class="mbn-lbl">Asistente</span>
   </button>
 </nav>
 <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()"></div>
@@ -45022,6 +45083,245 @@ html:has(> body.pv-on:not(.sg-en-portada)){ background:var(--c-fondo,#F7F8F5) !i
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', enganchar); else enganchar();
   window.addEventListener('load', enganchar);
+})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.356 · [flotantes] · SUPERFICIES FLOTANTES: CONTRASTE, TEMA DE LOS FORMULARIOS, AVISOS QUE SE RECUERDAN,
+     ASISTENTE QUE SE PUEDE CERRAR Y RED/SANKEY SIN D3 (pendientes 2.17 a 2.21 y crítico 2 de la auditoría)
+     (rama revision-editorial · NO PUBLICADA)
+
+     §2.18 · CONTRASTE. El barrido de contraste recorría las secciones y nunca midió lo que se monta fuera de
+     <section>. Se sumaron las superficies flotantes: avisos breves, ficha de la Carta Gantt, sugerencias de uso,
+     paleta .cmdp (con y sin resultados), tour guiado, aviso de instalación, panel del asistente (al abrir y tras
+     dos respuestas), globo del asistente, paleta Ctrl+K (#cmdPalette, con y sin categoría), atajos (#kbdCheat),
+     menú de la barra (#tnMpanel, con los grupos abiertos) y barra inferior móvil. Método: Edge sin interfaz a
+     1440, 1100 y 390 px, en claro y en oscuro, sin transiciones; cada texto con nodo propio contra su fondo
+     compuesto hasta <html> (capas con alfa; en un degradado, la parada más desfavorable), contando la opacidad
+     del texto y la de sus ancestros, y el texto de ayuda de los campos (::placeholder). Umbral 4,5:1.
+     ANTES de este cambio (versión anterior del archivo):
+       · avisos (showToast): texto 2,83:1 (informativo) y × 1,41–2,19:1 en claro; en oscuro, texto 3,43:1
+         (éxito) y 3,33:1 (advertencia) y × 2,46–3,87:1. Había dos diseños superpuestos: el fondo de color por
+         tipo (F7, .toast.info…) le ganaba por especificidad al de tarjeta (2d), que ponía el texto en var(--text).
+       · ficha de la Carta Gantt: sin fallos (el título ya lo había corregido el grupo [tiempo]).
+       · .onboard-tip en oscuro: título y texto 2,17:1 (fondo var(--accent), que en oscuro es #48c76e), × 1,72:1
+         y botones 2,06 y 1,94:1; en claro, la × a 4,36:1.
+       · .cmdp: textos atenuados (--text-muted) 2,56:1 en claro y 3,32:1 en oscuro; atajos y pie 2,34 y 3,73:1.
+       · .tour-btn.primary: 3,60:1 (#fff sobre #2d9a4d) en los dos temas.
+       Fuera de la lista: «Instalar» del aviso de instalación en oscuro, 2,17:1. Asistente: título de la cabecera
+       1,10:1 en claro y 3,56:1 en oscuro, «● En línea» 2,90:1 y × 2,87–2,96:1 en oscuro; en claro, nombre del
+       remitente 3,29:1, sugerencias 3,36:1 y «Ir a…» 3,02:1; en oscuro, mensaje del usuario 3,89:1 y sugerencias
+       contextuales 3,98:1; texto de ayuda del campo 4,32 y 4,15:1. #cmdPalette en claro: contadores (opacidad .6)
+       2,58:1, rótulos de grupo (opacidad .7) 3,24:1 y el contador de la categoría activa (opacidad .9) 4,39:1,
+       también en oscuro. #tnMpanel en claro: «Apariencia y herramientas» 1,04:1 y rótulos de sus botones 1,06:1
+       (escritos en blanco para un panel oscuro), encabezados de capítulo (opacidad .78) 3,39–3,43:1.
+       Sin fallos: ficha de la Carta Gantt, globo del asistente, atajos y barra inferior móvil.
+     DESPUÉS: 0 fallos en todas, en los tres anchos y los dos temas (avisos 6 textos, ficha 5, sugerencias 5,
+     .cmdp 48 y 11 sin resultados, tour 5, instalación 4, asistente 40, globo 1, #cmdPalette 135, atajos 54,
+     menú 102–103, barra inferior 6). Las superficies oscuras en los dos temas toman un color fijo en vez de
+     var(--accent)/var(--blue), que en oscuro se aclaran; el verde #286449 es --c-verde (institucional.css).
+
+     §2.19 · color-scheme por tema: en institucional.css (ver allí).
+
+     §2.20 · avisos recordados (localStorage con try/catch): sugerencias de uso (pladeco_onboard_v1, que ahora
+     escribe también la ×), avisos de #semaforo y #financiamiento (pladeco-avisos-vistos) y globo del asistente
+     (pladeco-globo-asistente). Medido en dos visitas seguidas con el mismo perfil: antes, los dos avisos y las
+     sugerencias volvían en la segunda visita y la × no guardaba nada ni tenía nombre; ahora, en la segunda visita
+     no aparece ninguno. Para la prueba hubo que acortar #semaforo, #financiamiento y #viz: sus observadores piden
+     que se vea el 30% de la sección y esas secciones miden varias pantallas de alto, así que sin acortarlas no
+     dispararon (el aviso de «ejes» observa un id que no existe). Se retiraron el CSS y dismissBanner() del banner
+     eliminado en v45.106.
+
+     §2.21 y crítico 2 · UNA SOLA REGLA DE POSICIÓN para el botón del asistente, con variables. Se retiraron 8
+     reglas repartidas: la base, dos sin !important (≤900 px: 16/16 y 52 px; ≤600 px: 48 px) y cinco con
+     !important (position:fixed; ≤768 px: bottom 80; ≤900 px: 74/18; ≤479 px: 66/14 y 46 px; ≤768 px: 72/16).
+     Encima del botón va su cierre (área de 44 px, sin superponerse) y, encima de ambos, el aviso de instalación y
+     los avisos breves. ANTES, con elementFromPoint en el centro de la × del aviso de instalación: a 1440 px caía
+     en #chatFab; a 390 px quedaba 5 px sobre el borde del botón, con la parte baja de la × (44 px) superpuesta a
+     él. DESPUÉS, a 1440 y 390 px, el centro de la × y el de «Instalar» caen en sus propios controles, también con
+     el botón del asistente oculto (el aviso baja a su lugar). Cierre y reapertura verificados con teclado real
+     (Tab y Enter) a 1440, 1100 y 390 px: el foco pasa al punto de reapertura visible y un aviso dice dónde está.
+     §2.17 · ver el comentario «RED Y SANKEY SIN D3» junto a loadD3AndInit.
+═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+/* §2.19 · color-scheme por tema y fondo de .cuadernillo-select option: en institucional.css (bloque
+   «v45.356 · [flotantes] · §2.19»), que se carga en <head> y rige desde la primera pintura. */
+
+/* §2.21 · posición y tamaño del botón del asistente: única regla (antes, 8 reglas repartidas; ver la cabecera) */
+:root{
+  --asist-tam:56px; --asist-abajo:24px; --asist-der:24px;
+  --asist-x:44px;                       /* área táctil del cierre */
+  --asist-libre:calc(var(--asist-abajo) + var(--asist-tam) + 4px + var(--asist-x) + 8px);
+}
+@media (max-width:768px){
+  :root{ --asist-tam:48px; --asist-abajo:72px; --asist-der:16px; }   /* 72 = 56 de la barra inferior + 16 */
+}
+html.asistente-oculto{ --asist-libre:var(--asist-abajo); }
+.chatbot-fab{ position:fixed; right:var(--asist-der); bottom:var(--asist-abajo); width:var(--asist-tam); height:var(--asist-tam); }
+.chatbot-fab-ocultar{
+  position:fixed; z-index:9997;
+  right:calc(var(--asist-der) + (var(--asist-tam) - var(--asist-x)) / 2);
+  bottom:calc(var(--asist-abajo) + var(--asist-tam) + 4px);
+  width:var(--asist-x); height:var(--asist-x); min-width:0; min-height:0; margin:0; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; border:0; color:var(--text); cursor:pointer; -webkit-tap-highlight-color:transparent;
+}
+.chatbot-fab-ocultar::before{
+  content:""; position:absolute; left:50%; top:50%; width:26px; height:26px; margin:-13px 0 0 -13px; border-radius:50%;
+  background:var(--card); border:1px solid var(--border-strong,#cbd5e1); box-shadow:0 2px 8px rgba(0,0,0,.22);
+}
+.chatbot-fab-ocultar:hover::before{ background:var(--bg); }
+.chatbot-fab-ocultar svg{ position:relative; width:12px; height:12px; fill:none; stroke:currentColor; stroke-width:2.4; stroke-linecap:round; }
+body:has(#splashScreen:not(.hidden)) .chatbot-fab-ocultar{ animation:bootGate 6s step-end forwards; }
+html.asistente-oculto .chatbot-fab, html.asistente-oculto .chatbot-fab-ocultar{ display:none !important; }
+/* con el menú de la barra (#tnMpanel) o el cajón de secciones abiertos, el botón y su cierre flotaban sobre sus enlaces
+   (medido a 390 px con elementsFromPoint: tapaban parte de «Comparador con Comunas Vecinas» y «Censo Nacional de
+   Población…»); mientras están abiertos se ocultan: el menú de la barra ofrece «Asistente» y, con el cajón abierto,
+   la barra inferior (que también lo ofrece) sigue a la vista */
+body:has(#tnMpanel.open) :is(.chatbot-fab,.chatbot-fab-ocultar),
+body:has(#mobileDrawer.mdr-open) :is(.chatbot-fab,.chatbot-fab-ocultar){ visibility:hidden; }
+@media print{ .chatbot-fab-ocultar, .chatbot-restaurar{ display:none !important; } }
+/* aviso dentro del chat para deshacer el cierre (solo con el botón oculto) */
+.chatbot-restaurar{ display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 10px; flex-shrink:0;
+  padding:8px 14px; font-size:12px; line-height:1.45; color:var(--text); background:var(--bg); border-bottom:1px solid var(--border); }
+html.asistente-oculto .chatbot-restaurar{ display:flex; }
+.chatbot-restaurar button{ font:inherit; font-weight:700; color:var(--text); background:var(--card); border:1px solid var(--border-strong,#cbd5e1);
+  border-radius:8px; padding:6px 12px; min-height:36px; cursor:pointer; }
+.chatbot-restaurar button:hover{ background:var(--bg); }
+
+/* crítico 2 · el aviso de instalación y los avisos breves quedan por encima del asistente y de su cierre; con el aviso
+   de instalación a la vista, los avisos breves suben su alto real (--pwa-alto, que mide el script de abajo; a 390 px
+   el aviso medía 127 px, así que un desplazamiento fijo de 112 px montaba el aviso breve 15 px sobre él) */
+.pwa-install{ bottom:var(--asist-libre); }
+.toast-container{ right:var(--asist-der); bottom:var(--asist-libre); }
+body:has(#pwaInstall.pwa-show) .toast-container{ bottom:calc(var(--asist-libre) + var(--pwa-alto,112px) + 12px); }
+
+/* §2.18 · avisos breves: el diseño de tarjeta (2d) en los cinco tipos; el color del tipo queda en el filete y la barra */
+.toast.info, .toast.success, .toast.warning, .toast.warn, .toast.error{ background:var(--card); }
+.toast.warning{ border-left-color:#f59e0b; }
+.toast .toast-progress{ background:var(--border); }
+.toast.info .toast-progress-bar{ background:#3b82f6; }
+.toast.success .toast-progress-bar{ background:#22c55e; }
+.toast.warning .toast-progress-bar, .toast.warn .toast-progress-bar{ background:#f59e0b; }
+.toast.error .toast-progress-bar{ background:#ef4444; }
+/* §2.18 · sugerencias de uso: superficie verde fija en los dos temas */
+.onboard-tip{ background:#286449; }
+.onboard-tip::after{ border-top-color:#286449; }
+.onboard-tip .ob-close{ color:#fff; }
+.onboard-tip .ob-btn-primary{ background:#fff; color:#286449; }
+.onboard-tip .ob-btn-secondary{ background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.55); }
+/* §2.18 · paleta de búsqueda .cmdp: textos atenuados en --text3 en vez de --text-muted (0 fallos en los dos temas) */
+.cmdp-input::placeholder, .cmdp-group-label, .cmdp-item-kbd, .cmdp-footer, .cmdp-empty{ color:var(--text3); }
+/* §2.18 · tour guiado */
+.tour-btn.primary{ background:#286449; border-color:#286449; color:#fff; }
+.tour-btn.primary:hover{ background:#1d4d37; border-color:#1d4d37; }
+/* fuera de la lista · aviso de instalación */
+.pwa-install-go{ background:#286449; }
+/* fuera de la lista · asistente. La cabecera es oscura en los dos temas: toma un degradado fijo (var(--blue) se aclara
+   en oscuro) y su título, que heredaba var(--text), va en blanco. En claro, el nombre del remitente, las sugerencias y
+   el botón «Ir a…» pasan del verde #2d9a4d al #286449 (en oscuro siguen en var(--green), que cumple); al pasar el
+   cursor, fondo #286449 (o #1f3864 en las contextuales) con texto blanco, porque blanco sobre var(--green) no llega a
+   4,5:1 en ningún tema. En oscuro, las sugerencias contextuales van en --id-azul y el mensaje del usuario usa el
+   degradado fijo. El texto de ayuda del campo va en --text3 y el botón de envío en #286449. */
+.chatbot-header{ background:linear-gradient(135deg,#1f3864,#1a5c3a); }
+.chatbot-header-info h4{ color:#fff; }
+.chatbot-msg.bot strong, .chatbot-suggestions button, .chat-nav-btn{ color:#286449; }
+body.dark .chatbot-msg.bot strong, body.dark .chatbot-suggestions button, body.dark .chat-nav-btn{ color:var(--green); }
+body.dark .chatbot-suggestions.contextual button{ color:var(--id-azul,#7FA8D4); }
+.chatbot-suggestions button:hover, body.dark .chatbot-suggestions button:hover,
+.chat-nav-btn:hover, body.dark .chat-nav-btn:hover{ background:#286449; border-color:#286449; color:#fff; }
+.chatbot-suggestions.contextual button:hover, body.dark .chatbot-suggestions.contextual button:hover{ background:#1f3864; border-color:#1f3864; color:#fff; }
+body.dark .chatbot-msg.user{ background:linear-gradient(135deg,#1f3864,#1a5c3a); }
+.chatbot-input-row input::placeholder{ color:var(--text3); }
+.chatbot-input-row button{ background:#286449; }
+.chatbot-input-row button:hover{ background:#1d4d37; }
+/* fuera de la lista · herramientas del menú (#tnMpanel): estaban escritas para un panel oscuro */
+.tn-mtools{ border-top-color:var(--border); }
+.tn-mtools-h{ color:var(--text2); }
+.tn-mtool{ background:var(--card); border-color:var(--border-strong,#cbd5e1); color:var(--text); }
+.tn-mtool:hover{ background:var(--bg); }
+.tn-mtool[aria-pressed="true"]{ background:rgba(40,100,73,.12); border-color:#286449; }
+body.dark .tn-mtool[aria-pressed="true"]{ background:rgba(45,154,77,.32); border-color:rgba(45,154,77,.65); }
+/* fuera de la lista · la opacidad de .tn-m-sub-head (arriba, en la barra) y de .cmd-cat-n y .cmd-group-label
+   (institucional.css) se retiró en su propia regla */
+
+/* §2.21 · la barra inferior móvil quedaba tapada por dos capas CERRADAS: el panel del asistente (≤900 px se desplaza
+   el 100% de su alto, y a ≤768 px ese alto es 100dvh − 56 px) y el cajón de secciones (bottom:56px, desplazado el
+   100% de su alto) terminaban justo sobre la franja de 56 px de la barra, con z-index 9999 y 9992 frente a 9990.
+   Medido a 390 px con elementsFromPoint: el centro de los cinco botones de la barra caía en .md-header del cajón
+   cerrado y, encima, se veía la cabecera del panel cerrado; «Asistente» no se podía tocar. Cerrados pasan a
+   visibility:hidden (el panel ya transiciona «all», así que al cerrar sigue visible mientras se desliza; el cajón
+   recibe el mismo retardo). De paso, sus controles dejan de recibir el foco con Tab mientras están cerrados. */
+.chatbot-panel:not(.open){ visibility:hidden; }
+@media (max-width:768px){
+  .mobile-drawer{ transition:transform .35s cubic-bezier(.4,0,.2,1), visibility 0s linear .35s; }
+  .mobile-drawer:not(.mdr-open){ visibility:hidden; }
+  .mobile-drawer.mdr-open{ visibility:visible; transition:transform .35s cubic-bezier(.4,0,.2,1), visibility 0s; }
+}
+
+/* §2.17 · filtros de la Red y del Sankey antes de que termine su init, y aviso en el lienzo */
+.me-sna-filter:disabled{ cursor:not-allowed; opacity:.55; box-shadow:none; }
+.me-sna-controls label:has(> input:disabled){ cursor:not-allowed; opacity:.55; }
+.me-d3-aviso{ margin:12px; padding:10px 14px; border:1px solid var(--border); border-left:4px solid var(--id-azul,#17497C);
+  border-radius:8px; background:var(--card); color:var(--text); font-size:13px; line-height:1.5; }
+.me-d3-aviso.me-d3-error{ border-left-color:#b42318; }
+body.dark .me-d3-aviso{ border-left-color:var(--id-azul,#7FA8D4); }
+body.dark .me-d3-aviso.me-d3-error{ border-left-color:#ff9b8a; }
+</style>
+<script>
+/* v45.356 · [flotantes] · §2.21 · cerrar el botón flotante del asistente, recordarlo y abrir el asistente desde la barra.
+   · #chatFabOcultar: agrega html.asistente-oculto y guarda pladeco-asistente-oculto (try/catch). El foco pasa al punto
+     de reapertura que se ve en ese ancho (barra superior, barra inferior o menú) y un aviso dice dónde está.
+   · [data-abre-asistente] (barra superior, menú y barra inferior móvil): abre el asistente, esté o no oculto el botón.
+   · #chatRestaurarFab (dentro del chat, solo con el botón oculto): lo vuelve a mostrar.
+   · Entre pestañas se sincroniza con el evento storage. */
+(function(){
+  'use strict';
+  var CLAVE='pladeco-asistente-oculto', raiz=document.documentElement;
+  function guardar(oculto){ try{ if(oculto){ localStorage.setItem(CLAVE,'1'); } else { localStorage.removeItem(CLAVE); } }catch(e){} }
+  function visible(el){ return !!(el && el.getClientRects().length && getComputedStyle(el).visibility!=='hidden'); }
+  function cerrarMenu(){
+    var mp=document.getElementById('tnMpanel'), bg=document.getElementById('tnBurger');
+    if(mp){ mp.classList.remove('open'); }
+    if(bg){ bg.classList.remove('open'); bg.setAttribute('aria-expanded','false'); }
+  }
+  function abrirAsistente(){
+    var panel=document.getElementById('chatPanel');
+    if(panel && !panel.classList.contains('open') && typeof window.toggleChatbot==='function'){ window.toggleChatbot(); }
+  }
+  function ocultar(){
+    raiz.classList.add('asistente-oculto'); guardar(true);
+    var globo=document.getElementById('fabTooltip'); if(globo){ globo.classList.remove('show'); }
+    var puntos=[
+      [document.getElementById('tnAsistente'), 'desde el botón del asistente en la barra superior'],
+      [document.getElementById('mbnAsistente'), 'desde «Asistente» en la barra inferior'],
+      [document.getElementById('tnBurger'), 'desde el menú de la barra superior, en «Asistente»']
+    ], destino=null, donde='';
+    for(var i=0;i<puntos.length;i++){ if(visible(puntos[i][0])){ destino=puntos[i][0]; donde=puntos[i][1]; break; } }
+    if(destino){ try{ destino.focus(); }catch(e){} }
+    if(typeof window.showToast==='function'){
+      window.showToast('Botón del asistente oculto.'+(donde?' Puedes abrir el asistente '+donde+'.':''),'info');
+    }
+  }
+  function mostrar(){
+    raiz.classList.remove('asistente-oculto'); guardar(false);
+    var inp=document.getElementById('chatInput'); if(inp && visible(inp)){ try{ inp.focus(); }catch(e){} }
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t || !t.closest){ return; }
+    if(t.closest('#chatFabOcultar')){ e.preventDefault(); ocultar(); return; }
+    if(t.closest('#chatRestaurarFab')){ e.preventDefault(); mostrar(); return; }
+    if(t.closest('[data-abre-asistente]')){ e.preventDefault(); cerrarMenu(); abrirAsistente(); }
+  });
+  window.addEventListener('storage',function(e){ if(e.key===CLAVE){ raiz.classList.toggle('asistente-oculto', e.newValue==='1'); } });
+  /* crítico 2 · alto real del aviso de instalación en --pwa-alto, para que los avisos breves queden encima y no montados
+     sobre él: su alto cambia con el ancho y con la fuente cargada. Sin ResizeObserver rige el valor por omisión (112 px). */
+  try{
+    var pwa=document.getElementById('pwaInstall');
+    if(pwa && 'ResizeObserver' in window){
+      new ResizeObserver(function(){ var h=pwa.offsetHeight; if(h>0){ raiz.style.setProperty('--pwa-alto', h+'px'); } }).observe(pwa);
+    }
+  }catch(e){}
 })();
 </script>
 
