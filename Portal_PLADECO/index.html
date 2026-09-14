@@ -18959,8 +18959,11 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
            BLOQUE 3 enlazaba dentro de IVSH, IBDT, ICP y DIDECO un abbr.sigla-tip (4 tooltips anidados, medidos en el
            navegador). Ahora son abbr.sigla-tip: los muestra el mismo tooltip del resto del portal, con la definición
            de la sección #glosario, y el enlazador no entra en ellos porque omite los ABBR. El texto decía «cualquier
-           sigla técnica subrayada»; el enlazador subraya la primera aparición de cada sigla por sección, y así se dice. -->
-      <div class="faq-a">El portal usa <strong>tooltips autom&aacute;ticos</strong>: la primera vez que una sigla t&eacute;cnica aparece en cada secci&oacute;n queda subrayada con puntos verdes; pasa el mouse, t&oacute;cala o llega a ella con la tecla Tab para ver su definici&oacute;n. Los 70 t&eacute;rminos del <a href="#glosario" onclick="event.preventDefault();if(window.PV&&PV.go)PV.go('glosario')">Glosario PLADECO</a> est&aacute;n documentados, desde &iacute;ndices de vulnerabilidad (<abbr class="sigla-tip" tabindex="0" data-sigla="IVSH">IVSH</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="IBDT">IBDT</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="ICP">ICP</abbr>) hasta instrumentos de inversi&oacute;n (<abbr class="sigla-tip" tabindex="0" data-sigla="FNDR">FNDR</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="FRIL">FRIL</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="PMU">PMU</abbr>) y siglas institucionales (<abbr class="sigla-tip" tabindex="0" data-sigla="SECPLAC">SECPLAC</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="DIDECO">DIDECO</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="COSOC">COSOC</abbr>).</div>
+           sigla técnica subrayada»; el enlazador subraya la primera aparición de cada sigla por sección, y así se dice.
+           v45.356 · glosario · revisión · el enlace al Glosario no tenía estilo propio y tomaba el color por defecto del
+           navegador (medido en oscuro: rgb(158,158,255)), distinto del de los otros enlaces de las respuestas de #faq.
+           Lleva ahora el mismo estilo en línea que ellos (color var(--success-txt) y negrita). -->
+      <div class="faq-a">El portal usa <strong>tooltips autom&aacute;ticos</strong>: la primera vez que una sigla t&eacute;cnica aparece en cada secci&oacute;n queda subrayada con puntos verdes; pasa el mouse, t&oacute;cala o llega a ella con la tecla Tab para ver su definici&oacute;n. Los 70 t&eacute;rminos del <a href="#glosario" style="color:var(--success-txt,#15803d);font-weight:700" onclick="event.preventDefault();if(window.PV&&PV.go)PV.go('glosario')">Glosario PLADECO</a> est&aacute;n documentados, desde &iacute;ndices de vulnerabilidad (<abbr class="sigla-tip" tabindex="0" data-sigla="IVSH">IVSH</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="IBDT">IBDT</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="ICP">ICP</abbr>) hasta instrumentos de inversi&oacute;n (<abbr class="sigla-tip" tabindex="0" data-sigla="FNDR">FNDR</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="FRIL">FRIL</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="PMU">PMU</abbr>) y siglas institucionales (<abbr class="sigla-tip" tabindex="0" data-sigla="SECPLAC">SECPLAC</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="DIDECO">DIDECO</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="COSOC">COSOC</abbr>).</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
@@ -39912,7 +39915,8 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
      · COSOC en #glosario pasa a «Consejo Comunal de Organizaciones de la Sociedad Civil», el nombre que usa el resto
        del portal. Las respuestas del asistente sobre el glosario dejan de decir «63 términos».
 
-     VERIFICADO en el navegador después del cambio (caché borrada, 9 s después de cargar):
+     VERIFICADO en el navegador después del cambio del grupo (caché borrada, 9 s después de cargar; la REVISIÓN de
+     abajo cambia algunas de estas cifras):
      · 0 span.glossy y 0 tooltips anidados; 759 abbr.sigla-tip (750 del enlazador y 9 del ejemplo de #faq).
      · window.glosario tiene 104 siglas: 69 de #glosario y 35 de glosarioExtra.
      · De los 666 pares sección-sigla que tenían tooltip antes, 634 lo conservan. Los 32 restantes están dentro de
@@ -39926,6 +39930,21 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
        #cuenta-publica), COSOC, NNA, PcD y UV, cada uno con su texto.
      · Con la tecla Tab el foco llega a los abbr del ejemplo de #faq con :focus-visible y el tooltip se muestra
        bajo la sigla.
+
+     REVISIÓN v45.356 · glosario (revisor independiente).
+     · Controles anidados: el enlazador omite también los summary y los elementos con rol interactivo (ver skip()).
+       Había 7 abbr con tabindex dentro de ellos (#contexto y #faq-concejo), 3 de los cuales no existían antes de este
+       cambio; ahora 0.
+     · PADIS mostraba una expansión que no aparece en ningún documento del repositorio: su tooltip declara la
+       ausencia. El tooltip de CEAD atribuía el centro a la «Fiscalía Nacional», lo que choca con la referencia del
+       documento de fuentes del PLADECO (Subsecretaría de Prevención del Delito): ahora muestra las dos atribuciones. Ambas quedan en
+       discrepanciasDatos ('padis-nombre' y 'cead-institucion').
+     · El enlace al Glosario del ejemplo de #faq toma el estilo de los demás enlaces de esas respuestas.
+     · Medido en el navegador después de la revisión (caché borrada, 9 s después de cargar): 759 abbr.sigla-tip
+       (750 del enlazador y 9 del ejemplo de #faq), 735 pares sección-sigla, 0 abbr dentro de summary o de un rol
+       interactivo y 0 anidados. Frente al commit del grupo salen INE e ICVU de #contexto y UV de #faq-concejo, y
+       entran PADIS, INDAP y CEAD en las filas nuevas de #metodologia; PLADECO, SUBDERE, NNA y COSOC pasan a su
+       siguiente aparición en la misma sección.
 ═══════════════════════════════════════════════════════════════════════════ -->
 <style id="sigla-css">
 .sigla-tip{text-decoration:underline dotted;text-decoration-color:var(--accent,#2d9a4d);text-underline-offset:2px;cursor:help;font:inherit;color:inherit}
@@ -39955,6 +39974,29 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
       nota:'El portal usa la sigla en seis secciones (Comparador con Comunas Vecinas, Semáforo de Metas, Matriz Estratégica Integrada, Horizontes de Implementación, Compromisos Públicos y Acerca del Portal) y no la expande en ninguna. Los documentos del repositorio le dan tres nombres distintos y la atribuyen a tres instituciones (SUBDERE, CGR y SERNAMEG); ninguno de esos nombres calza con las cinco letras de la sigla. Por eso el tooltip de IIGAM dice «nombre completo sin confirmar» en vez de elegir uno.',
       resolucion:'Pendiente. Requiere que SECPLAC confirme el nombre oficial del índice, la institución que lo publica y el año de la medición que cita el portal.'});
   })();
+  /* v45.356 · glosario · revisión · PADIS y CEAD al mismo registro (antes de DOMContentLoaded, idempotente por id).
+     Sus textos venían tal cual de GLOSSARY y el informe del grupo los dejó por validar sin registrarlos. Búsqueda en el
+     repositorio (archivos de texto y scripts, Word, PowerPoint, Excel y PDF): «PADIS» solo aparece en index.html, así
+     que su expansión no tiene respaldo. Sobre el CEAD, Fuentes/FUENTE DE INFO.docx (PLAN DE DESARROLLO COMUNAL 2025-2035,
+     versión 01/2026) cita en «Referencias y fuentes documentales» a la Subsecretaría de Prevención del Delito y en su
+     tabla de indicadores pone «CEAD/Portal SPD», mientras #datos-vivo dice dos veces «CEAD Fiscalía Nacional». Las
+     secciones citadas se comprobaron en el navegador y la respuesta del asistente, en el código. No se cambió ninguna
+     cifra ni ninguna nota de fuente. */
+  (function(){
+    var D=window.discrepanciasDatos; if(!D || !D.push) return;
+    function hay(id){ for(var i=0;i<D.length;i++){ if(D[i] && D[i].id===id) return true; } return false; }
+    if(!hay('padis-nombre')) D.push({id:'padis-nombre', tema:'Nombre del programa PADIS', estado:'por validar',
+      valores:['Glosario de tooltips retirado en v45.356: «Programa de Desarrollo de Acción Local INDAP · Apoyo a pequeña agricultura familiar»',
+               'Texto del portal: «INDAP PADIS», sin expandir la sigla, dos veces en Análisis Estratégico Multidimensional, una en Estrategia Regional de Desarrollo O\'Higgins 2024-2036 y una en una respuesta del asistente'],
+      nota:'Ningún documento del repositorio (archivos de texto y scripts, Word, PowerPoint, Excel y PDF con texto) menciona PADIS: la expansión solo figuraba en el glosario de tooltips y no tiene respaldo. Por eso el tooltip de PADIS dice «nombre completo sin confirmar» en vez de repetirla.',
+      resolucion:'Pendiente. Requiere que SECPLAC confirme el nombre oficial del programa de INDAP que cita el portal.'});
+    if(!hay('cead-institucion')) D.push({id:'cead-institucion', tema:'Institución del CEAD (estadísticas delictuales)', estado:'por validar',
+      valores:['Indicadores Clave Interactivos: «CEAD Fiscalía Nacional · Sistematización SECPLA Rengo · Casos anuales» y «CEAD Fiscalía Nacional, Estadísticas Delictuales 2005-2024»',
+               'Glosario de tooltips retirado en v45.356: «Centro de Estudios y Análisis del Delito · Fiscalía Nacional»',
+               'Documento de fuentes del PLADECO 2025-2035 («FUENTE DE INFO», versión 01/2026), en «Referencias y fuentes documentales»: «Subsecretaria de Prevención del Delito. (2022). Base de Datos CEAD: Estadisticas Policiales»; en su tabla de indicadores, «CEAD/Portal SPD»'],
+      nota:'El portal atribuye el CEAD a la Fiscalía Nacional y el documento de fuentes del PLADECO lo cita como base de datos de la Subsecretaría de Prevención del Delito. No se modificó ninguna cifra ni nota de fuente; el tooltip de CEAD muestra las dos atribuciones.',
+      resolucion:'Pendiente. Requiere que SECPLAC confirme qué institución publica las series delictuales 2005-2024 que usa el portal y corrija la nota de fuente que no corresponda.'});
+  })();
   function run(){
     var main=document.getElementById('main-content')||document.body;
     /* 1) objeto glosario DESDE la sección #glosario (fuente única, real) */
@@ -39975,7 +40017,8 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
        (nomenclatura pública estándar). Se fusionan sin pisar las 70 del glosario. */
     /* v45.356 · glosario · la base pasa de 3 a 36 siglas.
        · 29 vienen del glosario de tooltips retirado (GLOSSARY), con el mismo texto: lo que iba antes del «·» queda
-         en «nombre» y lo que seguía, en «def». Al trasladarlas no se corrigió ninguna definición.
+         en «nombre» y lo que seguía, en «def». Al trasladarlas no se corrigió ninguna definición. (Revisión v45.356:
+         PADIS y CEAD ya no llevan el texto de GLOSSARY; ver el comentario junto a cada una.)
        · KPI, CAGR y TMDA (pendiente 1.6) llevan su definición estándar. La fórmula de CAGR, con n = 8 años
          (2015 a 2023), reproduce los cinco CAGR de la tabla de TMDA de #movilidad-vial (+5,0 %, +7,2 %, +5,6 %,
          +7,2 % y +5,4 %; comprobado con los valores de la tabla).
@@ -39992,7 +40035,7 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
       CAGR:{nombre:'Tasa de crecimiento anual compuesta', def:'Sigla en inglés de Compound Annual Growth Rate: ritmo anual constante que lleva del valor inicial al valor final. Se calcula como (valor final ÷ valor inicial)^(1/n) − 1, donde n es el número de años.', cat:'ind'},
       TMDA:{nombre:'Tránsito Medio Diario Anual', def:'Promedio de vehículos que pasan en un día por un punto de una vía, calculado sobre un año completo: el volumen anual dividido por los días del año. Se expresa en vehículos por día.', cat:'terr'},
       IIGAM:{nombre:'nombre completo sin confirmar', def:'El portal usa la sigla sin expandirla y los documentos del proceso le dan tres nombres distintos. SECPLAC debe confirmar el nombre oficial y la institución que publica el índice (ver «Datos pendientes de validación institucional», en el Apéndice metodológico).', cat:'ind'},
-      /* trasladadas desde GLOSSARY (v45.356), con el mismo texto */
+      /* trasladadas desde GLOSSARY (v45.356), con el mismo texto, salvo CEAD y PADIS (revisión) */
       CPLT:{nombre:'Consejo para la Transparencia', def:'Fiscaliza la Ley 20.285 de Transparencia.', cat:'inst'},
       DAO:{nombre:'Dirección de Aseo y Ornato', def:'Limpieza, áreas verdes y manejo de residuos.', cat:'inst'},
       SLEP:{nombre:'Servicio Local de Educación Pública', def:'Reemplazo gradual de los DAEM.', cat:'inst'},
@@ -40002,7 +40045,10 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
       SENDA:{nombre:'Servicio Nacional para la Prevención y Rehabilitación del Consumo de Drogas y Alcohol', def:'', cat:'inst'},
       SERCOTEC:{nombre:'Servicio de Cooperación Técnica', def:'Apoyo a la micro y pequeña empresa.', cat:'inst'},
       INE:{nombre:'Instituto Nacional de Estadísticas de Chile', def:'', cat:'inst'},
-      CEAD:{nombre:'Centro de Estudios y Análisis del Delito', def:'Fiscalía Nacional.', cat:'inst'},
+      /* v45.356 · glosario · revisión · la definición de CEAD era «Fiscalía Nacional.», que choca con la referencia del
+         documento de fuentes del PLADECO («FUENTE DE INFO»: Subsecretaría de Prevención del Delito). No se elige: se muestran las dos y se remite al registro
+         ('cead-institucion'). */
+      CEAD:{nombre:'Centro de Estudios y Análisis del Delito', def:'El documento de fuentes del PLADECO lo cita como base de datos de estadísticas policiales de la Subsecretaría de Prevención del Delito; dos notas de fuente de este portal lo atribuyen a la Fiscalía Nacional. SECPLAC debe confirmarlo (ver «Datos pendientes de validación institucional», en el Apéndice metodológico).', cat:'inst'},
       FONASA:{nombre:'Fondo Nacional de Salud', def:'Sistema público de salud chileno.', cat:'inst'},
       OMIL:{nombre:'Oficina Municipal de Información Laboral', def:'', cat:'inst'},
       SAR:{nombre:'Servicio de Atención Primaria de Urgencia de Alta Resolutividad', def:'', cat:'inst'},
@@ -40021,7 +40067,9 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
       FCM:{nombre:'Fondo Común Municipal', def:'Redistribución de recursos entre municipios.', cat:'fondo'},
       DS49:{nombre:'Decreto Supremo 49 MINVU', def:'Subsidio de vivienda para sectores vulnerables.', cat:'fondo'},
       DS27:{nombre:'Decreto Supremo 27 MINVU', def:'Subsidio de mejoramiento de viviendas existentes.', cat:'fondo'},
-      PADIS:{nombre:'Programa de Desarrollo de Acción Local INDAP', def:'Apoyo a pequeña agricultura familiar.', cat:'fondo'}
+      /* v45.356 · glosario · revisión · PADIS decía «Programa de Desarrollo de Acción Local INDAP», expansión que no
+         aparece en ningún documento del repositorio. Se declara la ausencia, como en IIGAM ('padis-nombre'). */
+      PADIS:{nombre:'nombre completo sin confirmar', def:'El portal la cita junto a INDAP («INDAP PADIS») sin expandirla, y ningún documento del proceso la describe. SECPLAC debe confirmar el nombre oficial del programa (ver «Datos pendientes de validación institucional», en el Apéndice metodológico).', cat:'fondo'}
     };
     if(window.glosarioExtra && !window.glosarioExtra.nodeType){
       Object.keys(window.glosarioExtra).forEach(function(k){ glosarioExtra[k]=window.glosarioExtra[k]; });
@@ -40064,6 +40112,14 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
         /* v45.356 · glosario · .test-avatar: las iniciales de los testimonios de #suenos («AM» de «Adulto mayor») son
            decoración; con AM entre las siglas cortas, el enlazador metía ahí un abbr con foco de teclado. */
         if(el.classList && el.classList.contains('test-avatar')) return true;
+        /* v45.356 · glosario · revisión · CONTROLES ANIDADOS. El abbr lleva tabindex=0; dentro de un summary o de un
+           elemento con rol interactivo queda un control dentro de otro, con dos paradas de Tab en la misma tarjeta o
+           pregunta. Medido en el navegador sobre el commit del grupo: 7 abbr así (PLADECO, INE, ICVU y SUBDERE en la
+           tarjeta div.fuente-info-card role="button" de #contexto; NNA, UV y COSOC en un summary de #faq-concejo), 3 de
+           ellos abbr que no existían antes de este cambio (INE, NNA y UV). Se omiten como BUTTON y A: la sigla toma
+           el tooltip en su siguiente aparición dentro de la sección, si la hay. */
+        if(el.tagName==='SUMMARY') return true;
+        if(el.getAttribute && /^(button|link|tab|menuitem|option|checkbox|radio|switch)$/.test(el.getAttribute('role')||'')) return true;
       }
       return false;
     }
