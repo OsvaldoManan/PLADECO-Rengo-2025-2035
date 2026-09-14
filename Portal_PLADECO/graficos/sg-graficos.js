@@ -30,6 +30,33 @@
   function abrir(W, H, desc) {
     return '<svg xmlns="' + NS + '" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" class="sg-graf" role="img" aria-label="' + esc(desc) + '">';
   }
+  /* Mide el ancho real de un rótulo con la fuente y la clase con que se dibujará. Así los márgenes y
+     las posiciones dependen del texto y no de una fuente supuesta. Si no se puede medir, estima. */
+  function medidor(cont) {
+    var svg = document.createElementNS(NS, 'svg'), cache = {};
+    svg.setAttribute('class', 'sg-graf'); svg.setAttribute('aria-hidden', 'true');
+    svg.style.cssText = 'position:absolute;visibility:hidden;width:0;height:0;overflow:hidden';
+    cont.appendChild(svg);
+    return function (texto, clase) {
+      var k = clase + '|' + texto;
+      if (k in cache) return cache[k];
+      var t = document.createElementNS(NS, 'text'), w = 0;
+      t.setAttribute('class', clase); t.textContent = texto; svg.appendChild(t);
+      try { w = t.getComputedTextLength(); } catch (e) {}
+      svg.removeChild(t);
+      return (cache[k] = w || String(texto).length * 7.6);
+    };
+  }
+  /* Punto más alto (menor y) de una polilínea [[x,y],…] dentro del tramo horizontal [xa, xb]. */
+  function cimaEntre(pts, xa, xb) {
+    var cima = Infinity;
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p = pts[i], q = pts[i + 1], a = Math.max(xa, Math.min(p[0], q[0])), b = Math.min(xb, Math.max(p[0], q[0]));
+      if (a > b) continue;
+      [a, b].forEach(function (x) { var t = q[0] === p[0] ? 0 : (x - p[0]) / (q[0] - p[0]); cima = Math.min(cima, p[1] + t * (q[1] - p[1])); });
+    }
+    return cima;
+  }
 
   /* ── LÍNEA · evolución en el tiempo ───────────────────────────────────────
      cfg.serie: [{x, y, tipo:'observado'}]    cfg.proyeccion: {x:[], medio:[], bajo:[], alto:[], rotulo}
@@ -39,6 +66,7 @@
     var movil = W < 520;
     var H = cfg.alto || (movil ? 250 : 270);
     var m = { t: 34, r: movil ? 16 : 24, b: 34, l: movil ? 46 : 58 };
+    var ancho = medidor(cont);
     var obs = cfg.serie.filter(function (p) { return p.y != null; });
     var pr = cfg.proyeccion || null;
     var xs = obs.map(function (p) { return p.x; }).concat(pr ? pr.x : []);
@@ -48,6 +76,10 @@
     var paso = pasoBonito((yMax - yMin) || yMax, 3);
     var lo = cfg.cero ? 0 : Math.floor(yMin / paso) * paso, hi = Math.ceil(yMax / paso) * paso;
     if (hi === lo) hi = lo + paso;
+    // margen izquierdo según el rótulo de eje más ancho
+    var anchoEje = 0;
+    for (var ge = lo; ge <= hi + 1e-9; ge += paso) anchoEje = Math.max(anchoEje, ancho(fmt(ge, 0), 'sg-eje-t'));
+    m.l = Math.max(m.l, Math.ceil(anchoEje) + 12);
     var X = function (v) { return m.l + (v - x0) / ((x1 - x0) || 1) * (W - m.l - m.r); };
     var Y = function (v) { return m.t + (1 - (v - lo) / (hi - lo)) * (H - m.t - m.b); };
     var s = abrir(W, H, cfg.descripcion);
@@ -57,16 +89,22 @@
       s += '<text class="sg-eje-t" x="' + (m.l - 8) + '" y="' + (+yy + 4) + '" text-anchor="end">' + fmt(g, 0) + '</text>';
     }
     if (!cfg.cero) s += '<text class="sg-eje-nota" x="0" y="' + (m.t - 18) + '">eje sin cero</text>';
+    // trazos que los rótulos de valor no deben tapar
+    var trazos = [obs.map(function (p) { return [X(p.x), Y(p.y)]; })];
     if (pr) {
+      trazos.push(pr.x.map(function (x, i) { return [X(x), Y(pr.medio[i])]; }));
+      trazos.push(pr.x.map(function (x, i) { return [X(x), Y(pr.alto[i])]; }));
       var banda = pr.x.map(function (x, i) { return X(x).toFixed(1) + ',' + Y(pr.alto[i]).toFixed(1); })
         .concat(pr.x.slice().reverse().map(function (x, i) { var j = pr.x.length - 1 - i; return X(x).toFixed(1) + ',' + Y(pr.bajo[j]).toFixed(1); }));
       s += '<polygon class="sg-banda" points="' + banda.join(' ') + '"/>';
       s += '<path class="sg-l-est" d="' + pr.x.map(function (x, i) { return (i ? 'L' : 'M') + X(x).toFixed(1) + ',' + Y(pr.medio[i]).toFixed(1); }).join(' ') + '"/>';
       var k = pr.x.length - 1, xe = X(pr.x[k]);
+      // los tres rótulos del extremo, separados al menos una línea entre sí
+      var yMed = Y(pr.medio[k]) - 10, yAlto = Math.min(Y(pr.alto[k]) - 8, yMed - 15), yBajo = Math.max(Y(pr.bajo[k]) + 16, Y(pr.medio[k]) + 18);
       s += '<circle class="sg-p-est" cx="' + xe + '" cy="' + Y(pr.medio[k]) + '" r="4"/>';
-      s += '<text class="sg-v sg-v-sec" x="' + (xe - 8) + '" y="' + (Y(pr.medio[k]) - 10) + '" text-anchor="end">' + fmt(pr.medio[k]) + '</text>';
-      s += '<text class="sg-v-rango" x="' + (xe - 8) + '" y="' + (Y(pr.alto[k]) - 8) + '" text-anchor="end">' + fmt(pr.alto[k]) + '</text>';
-      s += '<text class="sg-v-rango" x="' + (xe - 8) + '" y="' + (Y(pr.bajo[k]) + 16) + '" text-anchor="end">' + fmt(pr.bajo[k]) + '</text>';
+      s += '<text class="sg-v sg-v-sec" x="' + (xe - 8) + '" y="' + yMed.toFixed(1) + '" text-anchor="end">' + fmt(pr.medio[k]) + '</text>';
+      s += '<text class="sg-v-rango" x="' + (xe - 8) + '" y="' + yAlto.toFixed(1) + '" text-anchor="end">' + fmt(pr.alto[k]) + '</text>';
+      s += '<text class="sg-v-rango" x="' + (xe - 8) + '" y="' + yBajo.toFixed(1) + '" text-anchor="end">' + fmt(pr.bajo[k]) + '</text>';
     }
     if (cfg.marca) {
       var xm = X(cfg.marca.x).toFixed(1);
@@ -75,9 +113,13 @@
     }
     if (obs.length > 1) s += '<path class="sg-l-obs" d="' + obs.map(function (p, i) { return (i ? 'L' : 'M') + X(p.x).toFixed(1) + ',' + Y(p.y).toFixed(1); }).join(' ') + '"/>';
     obs.forEach(function (p, i) {
-      var cx = X(p.x).toFixed(1), cy = Y(p.y);
-      s += '<circle class="sg-p-obs" cx="' + cx + '" cy="' + cy + '" r="4"/>';
-      s += '<text class="sg-v" x="' + cx + '" y="' + (cy - 11) + '" text-anchor="' + (i === 0 ? 'start' : 'middle') + '">' + fmt(p.y) + '</text>';
+      var cx = X(p.x), cy = Y(p.y), texto = fmt(p.y), w = ancho(texto, 'sg-v');
+      var xa = i === 0 ? cx : cx - w / 2, xb = xa + w;
+      // el rótulo sube lo necesario para quedar sobre la línea y la banda en todo su ancho
+      var cima = Math.min.apply(null, trazos.map(function (t) { return cimaEntre(t, xa - 2, xb + 2); }));
+      var base = Math.max(15, Math.min(cy - 11, cima - 6));
+      s += '<circle class="sg-p-obs" cx="' + cx.toFixed(1) + '" cy="' + cy + '" r="4"/>';
+      s += '<text class="sg-v" x="' + cx.toFixed(1) + '" y="' + base.toFixed(1) + '" text-anchor="' + (i === 0 ? 'start' : 'middle') + '">' + texto + '</text>';
     });
     var ticks = (cfg.xTicks || obs.map(function (p) { return p.x; }).concat(pr ? [pr.x[pr.x.length - 1]] : []));
     ticks.forEach(function (t, i) {
@@ -94,17 +136,24 @@
     var movil = W < 520;
     var datos = cfg.datos.slice();
     if (cfg.ordenar) datos.sort(function (a, b) { return b.v - a.v; });
-    var fila = movil ? 46 : 44, eti = movil ? 0 : Math.min(150, Math.round(W * .24));
+    var med = medidor(cont);
+    var d = cfg.decimales || 0, dEje = cfg.decimalesEje != null ? cfg.decimalesEje : d;
+    var anchoRot = Math.max.apply(null, datos.map(function (x) { return med(x.rotulo, 'sg-b-rot' + (x.destacado ? ' sg-b-rot-dest' : '')); }));
+    var anchoVal = Math.max.apply(null, datos.map(function (x) { return med(fmt(x.v, d), 'sg-v' + (x.destacado ? ' sg-v-dest' : '')); }));
+    var fila = movil ? 46 : 44;
+    var eti = movil ? 0 : Math.min(Math.round(W * .4), Math.max(Math.min(150, Math.round(W * .24)), Math.ceil(anchoRot) + 2));
     var arriba = movil ? 20 : 0;                      // en móvil el rótulo va sobre la barra
     var H = datos.length * (fila + arriba) + 26;
     var vmax = cfg.maximo || Math.max.apply(null, datos.map(function (x) { return x.v; })) || 1;
-    var x0 = eti + (movil ? 0 : 12), ancho = W - x0 - (movil ? 60 : 72);
-    var d = cfg.decimales || 0;
+    var x0 = eti + (movil ? 0 : 12), ancho = W - x0 - Math.max(movil ? 60 : 72, Math.ceil(anchoVal) + 16);
     var s = abrir(W, H, cfg.descripcion);
     [0, vmax / 2, vmax].forEach(function (g) {
-      var xg = (x0 + g / vmax * ancho).toFixed(1);
-      s += '<line class="sg-guia" x1="' + xg + '" x2="' + xg + '" y1="4" y2="' + (H - 22) + '"/>';
-      s += '<text class="sg-eje-t" x="' + xg + '" y="' + (H - 6) + '" text-anchor="middle">' + fmt(g, cfg.decimalesEje != null ? cfg.decimalesEje : d) + '</text>';
+      var xg = x0 + g / vmax * ancho, texto = fmt(g, dEje), wt = med(texto, 'sg-eje-t');
+      // el primer y el último rótulo del eje no se salen del dibujo
+      var ancla = xg - wt / 2 < 0 ? 'start' : xg + wt / 2 > W ? 'end' : 'middle';
+      var xt = ancla === 'start' ? Math.max(0, xg - 2) : ancla === 'end' ? Math.min(W, xg + 2) : xg;
+      s += '<line class="sg-guia" x1="' + xg.toFixed(1) + '" x2="' + xg.toFixed(1) + '" y1="4" y2="' + (H - 22) + '"/>';
+      s += '<text class="sg-eje-t" x="' + xt.toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + ancla + '">' + texto + '</text>';
     });
     datos.forEach(function (x, i) {
       var y = 6 + i * (fila + arriba) + arriba, w = Math.max(1, x.v / vmax * ancho);
@@ -123,10 +172,29 @@
   function columnas(cont, cfg) {
     var W = Math.max(280, Math.round(cont.clientWidth || 560));
     var movil = W < 520;
-    var H = cfg.alto || (movil ? 250 : 260);
+    var med = medidor(cont);
     var m = { t: 30, r: 8, b: movil ? 50 : 44, l: movil ? 34 : 42 };
-    var n = cfg.datos.length, vmax = cfg.maximo || 100;
+    var n = cfg.datos.length, vmax = cfg.maximo || 100, suf = cfg.sufijo || '';
+    m.l = Math.max(m.l, Math.ceil(Math.max(med(fmt(0) + suf, 'sg-eje-t'), med(fmt(vmax / 2) + suf, 'sg-eje-t'), med(fmt(vmax) + suf, 'sg-eje-t'))) + 10);
     var hueco = (W - m.l - m.r) / n, ancho = Math.min(movil ? 44 : 76, hueco * .56);
+    // rótulos bajo cada columna partidos por palabras para que no invadan la columna vecina
+    var libre = hueco - 4;
+    var rotulos = cfg.datos.map(function (x) {
+      var out = [];
+      String(x.rotulo).split('\n').forEach(function (linea, j) {
+        var clase = j ? 'sg-x-t sg-x-t2' : 'sg-x-t', actual = '';
+        linea.split(' ').forEach(function (p) {
+          var prueba = actual ? actual + ' ' + p : p;
+          if (actual && med(prueba, clase) > libre) { out.push([actual, clase]); actual = p; } else actual = prueba;
+        });
+        if (actual) out.push([actual, clase]);
+      });
+      return out;
+    });
+    var lineasMax = Math.max.apply(null, rotulos.map(function (r) { return r.length; }));
+    var bBase = m.b;
+    m.b = Math.max(bBase, 18 + (lineasMax - 1) * 15 + 14);
+    var H = (cfg.alto || (movil ? 250 : 260)) + (m.b - bBase);
     var Y = function (v) { return m.t + (1 - v / vmax) * (H - m.t - m.b); };
     var s = abrir(W, H, cfg.descripcion);
     [0, vmax / 2, vmax].forEach(function (g) {
@@ -144,9 +212,8 @@
         s += '<rect class="' + clase + '" x="' + xb.toFixed(1) + '" y="' + Y(x.v).toFixed(1) + '" width="' + ancho.toFixed(1) + '" height="' + (Y(0) - Y(x.v)).toFixed(1) + '" rx="2"/>';
         s += '<text class="sg-v' + (x.tipo === 'meta' ? ' sg-v-meta' : '') + '" x="' + cx.toFixed(1) + '" y="' + (Y(x.v) - 8).toFixed(1) + '" text-anchor="middle">' + fmt(x.v) + (cfg.sufijo || '') + '</text>';
       }
-      var lineas = String(x.rotulo).split('\n');
-      lineas.forEach(function (l, k) {
-        s += '<text class="sg-x-t' + (k ? ' sg-x-t2' : '') + '" x="' + cx.toFixed(1) + '" y="' + (H - m.b + 18 + k * 15) + '" text-anchor="middle">' + esc(l) + '</text>';
+      rotulos[i].forEach(function (l, k) {
+        s += '<text class="' + l[1] + '" x="' + cx.toFixed(1) + '" y="' + (H - m.b + 18 + k * 15) + '" text-anchor="middle">' + esc(l[0]) + '</text>';
       });
     });
     s += '<line class="sg-base" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(0) + '" y2="' + Y(0) + '"/>';
@@ -216,12 +283,17 @@
     fn(cont, cfg);
   }
   var pend = null;
-  function redibujar() {
+  function redibujar(forzar) {
     registro.forEach(function (r) {
       var w = Math.round(r.cont.clientWidth || 0);
-      if (w && Math.abs(w - r.w) > 8) { r.w = w; try { r.fn(r.cont, r.cfg); } catch (e) {} }
+      if (w && (forzar === true || Math.abs(w - r.w) > 8)) { r.w = w; try { r.fn(r.cont, r.cfg); } catch (e) {} }
     });
   }
   window.addEventListener('resize', function () { clearTimeout(pend); pend = setTimeout(redibujar, 160); });
+  // si Poppins termina de cargar después del primer dibujo, se vuelve a medir y a dibujar
+  if (document.fonts) {
+    if (document.fonts.ready) document.fonts.ready.then(function () { redibujar(true); });
+    if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', function () { clearTimeout(pend); pend = setTimeout(function () { redibujar(true); }, 60); });
+  }
   window.sgGraficos = { dibujar: dibujar, redibujar: redibujar, formato: fmt, localizador: localizador };
 })();
