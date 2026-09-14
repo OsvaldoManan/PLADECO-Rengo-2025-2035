@@ -12,6 +12,10 @@
   var BASE = 'graficos/';
   function esc(t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
   function limpio(t) { return String(t || '').replace(/\s+/g, ' ').trim(); }
+  /* Quita emojis de nombres heredados (p. ej. el título de una sección) para que el enlace de la apertura sea solo texto. */
+  var PICTO = null;
+  try { PICTO = new RegExp('[\\p{Extended_Pictographic}\\uFE0F\\u200D]', 'gu'); } catch (e) {}
+  function sinPictogramas(t) { return limpio(PICTO ? String(t || '').replace(PICTO, '') : t); }
 
   /* SVG en línea (para que tome los colores del tema). Se quitan <title>/<desc> y sus id para no
      duplicar identificadores al insertar dos variantes; el nombre accesible va en aria-label. */
@@ -83,7 +87,7 @@
     if (cap && cap.units && cap.units.length) {
       var u0 = cap.units[0];
       meta = cap.units.length + (cap.units.length === 1 ? ' sección' : ' secciones') +
-        ' · <a href="#' + esc(u0.id) + '">Empezar por «' + esc(u0.name) + '»</a>';
+        ' · <a href="#' + esc(u0.id) + '">Empezar por «' + esc(sinPictogramas(u0.name)) + '»</a>';
     }
 
     var pieza = PIEZAS[div.id];

@@ -618,3 +618,53 @@ body .tn-home-btn::after, body .sec-print-btn::after{
   width:44px; height:44px;
   border-radius:inherit;
 }
+
+/* ═════════════════════════════════════════════════════════════════
+   v45.358 · DESBORDES EN PANTALLAS ANGOSTAS Y BOTÓN DE FAVORITO
+   Barrido de las 75 vistas a 360, 390, 768, 1024 y 1440 px: elementos que salen del
+   viewport sin estar dentro de un contenedor con desplazamiento propio. Como html y body
+   recortan con overflow-x:hidden, lo que sale no se ve ni se puede alcanzar. Con Poppins
+   ya cargada (antes el portal se veía en la fuente del sistema) los textos son más anchos
+   y algunos casos empeoraban.
+   ═════════════════════════════════════════════════════════════════ */
+
+/* Favorito de sección. La regla de área táctil de arriba (v45.351) lo dejaba en
+   position:relative, y sus desplazamientos right:34px y top:-2px lo corrían 34 px a la
+   izquierda: fuera de la columna en escritorio y cortado por el borde en 67 de las 75 vistas a 360 px y en 34 a 768 px.
+   En escritorio vuelve a la esquina superior derecha de la cabecera; en móvil queda en su
+   lugar dentro del flujo. El pseudo-elemento de 44 × 44 px sigue funcionando en ambos casos. */
+body .sec-header .fav-toggle{ position:absolute; top:-2px; right:0; }
+@media (max-width:768px){
+  body .sec-header .fav-toggle{ position:relative; top:auto; right:auto; }
+}
+
+/* Notas de sección (Lectura e Implicancia). La rejilla no declaraba columnas y tomaba el
+   ancho del enlace al eje, que no se parte (white-space:nowrap). */
+body .nota-seccion{ grid-template-columns:minmax(0,1fr); }
+@media (max-width:600px){
+  body .nota-seccion .nota-eje{ white-space:normal; }
+}
+
+/* Bibliografía de #historia: la columna única puede estrecharse y las referencias parten
+   las cadenas largas. */
+@media (max-width:900px){
+  body .hist-biblio-grid{ grid-template-columns:minmax(0,1fr); }
+}
+body .hist-biblio-list li{ overflow-wrap:anywhere; }
+
+/* Criterios SMART de #gestion: cinco columnas no caben en un teléfono; pasan a tres. */
+@media (max-width:480px){
+  body .gr-smart-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+
+/* Fichas metodológicas de los índices (#etnografia). La tabla interior fijaba el ancho
+   mínimo de la rejilla de dos fichas y la sacaba de la pantalla (hasta 297 px a 768 px).
+   Las fichas van una bajo otra hasta 1100 px y, en teléfonos, la tabla se desplaza
+   dentro de su ficha. */
+body .idx-metodo{ min-width:0; }
+@media (max-width:1100px){
+  body .idx-metodo-wrap{ grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:600px){
+  body .idx-metodo .idx-tbl{ display:block; overflow-x:auto; max-width:100%; }
+}

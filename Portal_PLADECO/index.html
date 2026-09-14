@@ -393,6 +393,14 @@ window.pladecoICP = window.pladecoICP || (function(){
 </script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* v45.358 · Poppins autoalojada · Las @font-face estaban dentro del bloque :root de abajo; una @font-face anidada en una regla de estilo
+   no es válida y el navegador la descarta, así que el portal se veía en la fuente del sistema. Aquí van en el nivel superior,
+   un archivo por peso (ExtraBold estaba declarado en 700 y tapaba a Bold). Sin caras itálicas: apuntaban a archivos rectos
+   e impedían que el navegador inclinara em y cite. */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Poppins-ExtraBold.ttf') format('truetype')}
 :root{
   /* ═══ SISTEMA DE TOKENS CANONICO · consolidado v45.61 ═══
      Unifica lo que antes estaba repartido en 3 bloques :root con valores
@@ -401,16 +409,7 @@ window.pladecoICP = window.pladecoICP || (function(){
 
   /* v45.137 · Tipografia institucional Poppins (de la carpeta /fonts) */
 /* v45.158 · TIPOGRAFIA INSTITUCIONAL · Poppins (cuerpo) + Neulis Cursive (acentos italic) */
-/* Poppins · 5 pesos disponibles · weight 400 mapeado a Medium para tener "regular" cuando CSS lo pida */
-@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-ExtraBold.ttf') format('truetype')}
-/* Italic synthesis vendrá del navegador (Poppins no incluye italic, lo deriva) */
-@font-face{font-family:'Poppins';font-style:italic;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:italic;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold.ttf') format('truetype')}
-@font-face{font-family:'Poppins';font-style:italic;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold.ttf') format('truetype')}
+/* Poppins: sus @font-face se movieron al nivel superior, justo antes de este :root (v45.358). */
 /* Neulis Cursive · italic + roman (regular) para acentos institucionales */
 @font-face{font-family:'Neulis Cursive';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Regular.otf') format('opentype')}
 @font-face{font-family:'Neulis Cursive';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/fonnts.com-Neulis_Cursive_Medium.otf') format('opentype')}
