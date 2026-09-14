@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sistema gráfico territorial · PLADECO Rengo</title>
+<style>
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Medium.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-SemiBold.ttf') format('truetype');font-weight:600;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+@font-face{font-family:'Poppins';src:url('../fonts/Poppins-ExtraBold.ttf') format('truetype');font-weight:800;font-display:swap}
+:root{
+  --c-azul-profundo:#17324D; --c-verde:#286449; --c-fondo:#F7F8F5; --c-superficie:#FFFFFF; --c-gris-azulado:#E8EDF1;
+  --c-texto:#27343B; --c-texto-2:#52616B; --c-texto-3:#626F79;
+  --id-azul:#17497C; --id-ocre:#D6940F; --id-ocre-claro:#F2CB7E; --id-terracota:#AD2910;
+  --eje-1:#0072B2; --eje-2:#E69F00; --eje-3:#009E73; --eje-4:#56B4E9; --eje-5:#D55E00; --eje-6:#CC79A7;
+  --fs-h1:clamp(30px, 1.6vw + 24px, 56px); --fs-h2:clamp(25px, 1vw + 20px, 36px); --fs-sub:clamp(18px, .5vw + 15px, 23px);
+  --fs-body:clamp(17px, .25vw + 15px, 18px); --fs-nota:13.5px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --c-fondo:#0a0f1c; --c-superficie:#1a2332; --c-gris-azulado:#1e293b; --c-texto:#f1f5f9; --c-texto-2:#cbd5e1; --c-texto-3:#94a3b8; --c-azul-profundo:#9DB7F0; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --c-fondo:#0a0f1c; --c-superficie:#1a2332; --c-gris-azulado:#1e293b; --c-texto:#f1f5f9; --c-texto-2:#cbd5e1; --c-texto-3:#94a3b8; --c-azul-profundo:#9DB7F0; color-scheme:dark; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--c-fondo);color:var(--c-texto);font:400 var(--fs-body)/1.55 'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+.contenedor{max-width:1200px;margin:0 auto;padding:clamp(24px,4vw,56px) clamp(16px,3.2vw,40px) 80px}
+header.portada{border-bottom:1px solid var(--c-gris-azulado);padding-bottom:28px;margin-bottom:8px}
+.kicker{font-size:14px;font-weight:600;color:var(--c-texto-2);margin:0 0 10px}
+h1{font-size:var(--fs-h1);line-height:1.04;font-weight:800;letter-spacing:-.02em;margin:0;max-width:18ch}
+.bajada{font-size:var(--fs-sub);color:var(--c-texto-2);margin:12px 0 0;max-width:58ch;line-height:1.35}
+.aviso{font-size:var(--fs-nota);color:var(--c-texto-2);margin:16px 0 0;max-width:80ch}
+section{padding:40px 0 8px;border-top:3px solid var(--c-texto);margin-top:44px}
+section > h2{font-size:var(--fs-h2);line-height:1.15;font-weight:700;margin:0 0 6px}
+section > p.intro{margin:0 0 22px;max-width:70ch}
+.rejilla{display:grid;gap:22px}
+.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:860px){ .tres,.dos{grid-template-columns:minmax(0,1fr)} }
+.recurso h3{font-size:18px;margin:0 0 6px}
+.recurso p{margin:0;font-size:15.5px;line-height:1.5}
+.nota{font-size:var(--fs-nota);color:var(--c-texto-2);line-height:1.45}
+/* paleta */
+.muestras{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px 20px}
+.muestra{border-top:1px solid var(--c-gris-azulado);padding-top:10px}
+.muestra i{display:block;height:54px;border-radius:3px;border:1px solid rgba(0,0,0,.08)}
+.muestra b{display:block;font-size:14.5px;margin-top:8px}
+.muestra code{font-size:13px;color:var(--c-texto-2)}
+.muestra span{display:block;font-size:13px;color:var(--c-texto-2);line-height:1.4}
+.grupo-t{font-size:15px;font-weight:700;margin:26px 0 10px}
+/* iconos */
+.iconos{width:100%;border-collapse:collapse}
+.iconos th,.iconos td{padding:12px 10px;border-top:1px solid var(--c-gris-azulado);text-align:left;vertical-align:middle;font-size:14.5px}
+.iconos th[scope=col]{font-size:13px;color:var(--c-texto-2);font-weight:600}
+.ie{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;display:block}
+.idea{font-size:13.5px;color:var(--c-texto-2)}
+.tabla-scroll{overflow-x:auto}
+/* tipografía */
+.tipo-fila{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--c-gris-azulado);align-items:baseline}
+.tipo-fila .meta{font-size:13px;color:var(--c-texto-2)}
+@media (max-width:640px){ .tipo-fila{grid-template-columns:minmax(0,1fr)} }
+/* leyendas */
+.ley{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:14.5px}
+.ley span::before{content:"";display:inline-block;vertical-align:middle;margin-right:8px}
+.l-obs::before{width:22px;height:0;border-top:2.5px solid var(--c-texto)}
+.l-est::before{width:22px;height:0;border-top:2px dashed var(--c-texto-2)}
+.l-banda::before{width:22px;height:12px;background:rgba(82,97,107,.18);border-radius:2px}
+.l-meta::before{width:16px;height:12px;border:2px solid var(--c-verde);background:rgba(40,100,73,.10);border-radius:2px}
+.l-pend::before{width:16px;height:12px;outline:1.5px dashed var(--c-texto-3);outline-offset:-1.5px;border-radius:2px}
+.rampa{display:flex;margin:6px 0 4px;max-width:420px}
+.rampa i{flex:1;height:18px}
+.rampa-rot{display:flex;justify-content:space-between;max-width:420px;font-size:13px;color:var(--c-texto-2)}
+.vinculo span::before{width:26px;height:0;border-top:2px solid var(--c-texto-2)}
+.vinculo span.p::before{border-top-style:dashed}
+/* composiciones */
+.comp figure{margin:0}
+.comp img{display:block;width:100%;height:auto;border:1px solid var(--c-gris-azulado);border-radius:3px;background:var(--c-superficie)}
+.comp figcaption{font-size:14px;line-height:1.45;margin-top:8px}
+.comp figcaption b{display:block;font-size:15px}
+.panoramica img{border:0;background:none}
+footer{margin-top:56px;border-top:1px solid var(--c-gris-azulado);padding-top:16px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs id="sprite"></defs></svg>
+<div class="contenedor">
+
+<header class="portada">
+  <p class="kicker">Portal PLADECO Rengo 2025-2035 · v45.357 · versión revisable, no publicada</p>
+  <h1>Sistema gráfico territorial</h1>
+  <p class="bajada">Paleta, iconos, tipografía, leyendas y composiciones del paquete piloto, con la procedencia de cada recurso.</p>
+  <p class="aviso">Los colores son una propuesta de diseño, no la identidad oficial de la Municipalidad de Rengo. Los contrastes de esta lámina se calculan en el navegador al abrirla, con la fórmula WCAG.</p>
+</header>
+
+<section id="direccion">
+  <h2>Dirección gráfica</h2>
+  <p class="intro">Tres recursos que se complementan. Cada pieza cumple al menos una función: identificar Rengo, localizar información, explicar un dato, documentar el proceso o relacionar decisiones.</p>
+  <div class="rejilla tres">
+    <div class="recurso"><h3>Fotografía documental</h3><p>Lugares y actividades reales, con lugar, fecha y procedencia en el pie. Nunca como fondo de un texto largo. Si la foto no tiene esos datos, se dice en el pie.</p></div>
+    <div class="recurso"><h3>Cartografía limpia</h3><p>Contorno comunal referencial, posición del territorio, norte y escala. Sin capas de más y sin límites aproximados presentados como oficiales.</p></div>
+    <div class="recurso"><h3>Gráfica vectorial</h3><p>Iconos de eje, panorámica territorial y diagramas: identifican temas y relaciones. Los gráficos con valores se dibujan desde datos, no desde imágenes.</p></div>
+  </div>
+</section>
+
+<section id="paleta">
+  <h2>Paleta con funciones</h2>
+  <p class="intro">Base neutra para leer, identidad tomada del escudo comunal, un acento por eje y un acento por parte del plan. Los colores de estado son una escala aparte y nunca coinciden con los de eje.</p>
+  <p class="grupo-t">Base de lectura</p>
+  <div class="muestras" data-grupo="base"></div>
+  <p class="grupo-t">Identidad (colores del archivo SVG del escudo)</p>
+  <div class="muestras" data-grupo="identidad"></div>
+  <p class="grupo-t">Acento por eje: relleno de acento en iconos y filetes. No se usa como color de texto.</p>
+  <div class="muestras" data-grupo="ejes"></div>
+  <p class="grupo-t">Acento por parte del plan: número de capítulo y filete de la apertura</p>
+  <div class="muestras" data-grupo="partes"></div>
+  <p class="grupo-t">Panorámica: claro de fondo a oscuro en primer plano</p>
+  <div class="muestras" data-grupo="panoramica"></div>
+</section>
+
+<section id="iconos">
+  <h2>Seis iconos para los ejes</h2>
+  <p class="intro">Amplían la familia de línea del portal con su misma retícula de 24, trazo de 1,7 y remates redondeados. Una idea por símbolo, siempre junto al nombre del eje. En la variante con acento, el contorno conserva el color del texto y el color del eje rellena solo una forma.</p>
+  <div class="tabla-scroll">
+  <table class="iconos">
+    <thead><tr><th scope="col">Eje</th><th scope="col">24 px</th><th scope="col">32 px</th><th scope="col">48 px</th><th scope="col">48 px con acento</th><th scope="col">Idea del símbolo</th></tr></thead>
+    <tbody id="filas-iconos"></tbody>
+  </table>
+  </div>
+</section>
+
+<section id="tipografia">
+  <h2>Tipografía</h2>
+  <p class="intro">Una sola familia, Poppins (licencia SIL Open Font), en cuatro pesos. Los tamaños son los tokens del portal.</p>
+  <div class="tipo-fila"><span class="meta">Título de apertura<br>token --fs-h1 · 800</span><span style="font-size:var(--fs-h1);font-weight:800;line-height:1.05;letter-spacing:-.02em">Conoce tu Comuna</span></div>
+  <div class="tipo-fila"><span class="meta">Título de sección<br>token --fs-h2 · 700</span><span style="font-size:var(--fs-h2);font-weight:700;line-height:1.15">Lo que muestran las respuestas</span></div>
+  <div class="tipo-fila"><span class="meta">Bajada<br>token --fs-sub · 400</span><span style="font-size:var(--fs-sub);color:var(--c-texto-2)">Diagnóstico territorial</span></div>
+  <div class="tipo-fila"><span class="meta">Cifra principal<br>64 px · 800 · cifras tabulares</span><span style="font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums">63.620</span></div>
+  <div class="tipo-fila"><span class="meta">Cuerpo<br>token --fs-body · 400</span><span style="max-width:62ch">La población censada pasó de 50.830 habitantes en 2002 a 58.825 en 2017 y 63.620 en 2024.</span></div>
+  <div class="tipo-fila"><span class="meta">Pie y fuente<br>token --fs-nota · 400</span><span style="font-size:var(--fs-nota);color:var(--c-texto-2)">Fuente: INE, Censos de Población y Vivienda 2002, 2017 y 2024.</span></div>
+</section>
+
+<section id="leyendas">
+  <h2>Leyendas y convenciones de datos</h2>
+  <p class="intro">Iguales en todas las láminas y diagramas, para que se puedan comparar. Siempre con texto: el color o el trazo nunca son la única vía para leer un dato.</p>
+  <div class="rejilla dos">
+    <div><p class="grupo-t">Naturaleza del dato</p>
+      <p class="ley"><span class="l-obs">Observado</span><span class="l-est">Proyectado o estimado</span><span class="l-banda">Rango de escenarios</span><span class="l-meta">Meta</span><span class="l-pend">Sin medición</span></p>
+      <p class="nota">Las barras parten siempre en cero. Si una línea no parte en cero, el gráfico lo dice.</p></div>
+    <div><p class="grupo-t">Cantidades en mapas: escala secuencial de un tono</p>
+      <div class="rampa"><i style="background:#E8B49A"></i><i style="background:#D07E5C"></i><i style="background:#AC4A2C"></i><i style="background:#7A2313"></i></div>
+      <div class="rampa-rot"><span>menor</span><span>índice de vulnerabilidad (ICP)</span><span>mayor</span></div>
+      <p class="nota">Más oscuro significa más cantidad. Se distingue por luminosidad y no depende de percibir el color.</p></div>
+    <div><p class="grupo-t">Relaciones en diagramas</p>
+      <p class="ley vinculo"><span>Vínculo explícito en los datos</span><span class="p">Pendiente de validación</span></p>
+      <p class="nota">Problema en terracota, evidencia en gris y respuesta del plan en verde. La etapa además va escrita.</p></div>
+    <div><p class="grupo-t">Pies de piezas</p>
+      <p class="nota" style="font-size:14.5px"><b>Qué es</b> (ilustración, fotografía, recorte o esquema) · <b>lugar y fecha</b> · <b>procedencia y autoría</b>, o «no consta» · <b>fuente de los datos</b> · <b>advertencias</b> (exageración vertical, límite referencial, diferencias registradas).</p></div>
+  </div>
+</section>
+
+<section id="composiciones">
+  <h2>Composiciones del paquete piloto</h2>
+  <p class="intro">Capturas de la versión revisable a 1440 px. Cada composición usa la retícula de 12 columnas, un filete superior en lugar de una caja y una sola pieza protagonista.</p>
+  <figure class="panoramica" style="margin:0 0 26px">
+    <picture><source srcset="panoramica-rengo.svg"><img src="panoramica-rengo.svg" width="1600" height="352" alt="Panorámica vectorial de Rengo: cordillera con cumbres nevadas y cerros cercanos detrás del valle y de la ciudad de casas bajas."></picture>
+    <figcaption class="nota"><b>Ilustración territorial.</b> Relieve trazado sobre la fotografía aérea de Rengo del archivo del proceso PLADECO (fecha de captura y autoría: no constan). Asentamiento y vegetación simplificados, con exageración vertical de 1,6 veces. No es un mapa ni una fotografía.</figcaption>
+  </figure>
+  <div class="rejilla dos comp" id="miniaturas"></div>
+</section>
+
+<footer class="nota">
+  Archivos editables en esta misma carpeta: panorámica (tres variantes), silueta, iconos sueltos y sprite, guiones para regenerarlos en <code>fuentes/</code> y el detalle de procedencia y pendientes en <code>LEEME.md</code>.
+</footer>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var raiz=getComputedStyle(document.documentElement);
+  function hex2rgb(h){ h=h.trim().replace('#',''); if(h.length===3) h=h.split('').map(function(c){return c+c}).join(''); var n=parseInt(h,16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+  function lum(c){ return c.map(function(v){v/=255; return v<=0.03928? v/12.92 : Math.pow((v+0.055)/1.055,2.4)}).reduce(function(s,v,i){return s+v*[0.2126,0.7152,0.0722][i]},0); }
+  function cr(a,b){ var x=lum(hex2rgb(a)), y=lum(hex2rgb(b)); var hi=Math.max(x,y), lo=Math.min(x,y); return ((hi+0.05)/(lo+0.05)).toFixed(1).replace('.',','); }
+  var BLANCO='#FFFFFF';
+  var GRUPOS={
+    base:[['Tinta principal','#27343B','Texto principal'],['Tinta secundaria','#52616B','Bajadas, pies y metadatos'],['Tinta de notas','#626F79','Notas y ejes de gráficos'],['Azul profundo','#17324D','Enlaces y titulares institucionales'],['Verde de acción','#286449','Acción principal y metas'],['Fondo','#F7F8F5','Fondo general'],['Superficie','#FFFFFF','Superficie de lectura'],['Gris azulado','#E8EDF1','Filetes y separadores']],
+    identidad:[['Azul del escudo','#17497C','Marca institucional'],['Terracota del escudo','#AD2910','Acento patrimonial y problema en diagramas'],['Ocre del escudo','#D6940F','Solo relleno'],['Ocre claro','#F2CB7E','Fondos teñidos']],
+    ejes:[['Eje 1 · Social y Salud','#0072B2',''],['Eje 2 · Económico','#E69F00',''],['Eje 3 · Educación','#009E73',''],['Eje 4 · Urbano y Medio Ambiente','#56B4E9',''],['Eje 5 · Seguridad','#D55E00',''],['Eje 6 · Gestión Municipal','#CC79A7','']],
+    partes:[['Parte 01 · Introducción','#1e3a8a',''],['Parte 02 · Diagnóstico','#9a3412',''],['Parte 03 · Planificación','#14532d',''],['Parte 04 · Cierre','#1c304f','']],
+    panoramica:[['Cordillera lejana','#D6DFE6',''],['Cordón medio','#B2C1CD',''],['Cerros cercanos','#8A9DAD',''],['Valle','#E3EADF',''],['Arboledas','#A9C0AE',''],['Tejas','#C98B77',''],['Primer plano','#5E8B70','']]
+  };
+  Object.keys(GRUPOS).forEach(function(g){
+    var cont=document.querySelector('.muestras[data-grupo="'+g+'"]'); if(!cont) return;
+    cont.innerHTML=GRUPOS[g].map(function(m){
+      var info=m[2] ? '<span>'+m[2]+'</span>' : '';
+      var contraste = (g==='panoramica') ? '' : '<span>'+cr(m[1],BLANCO)+':1 sobre blanco · '+cr(m[1],'#0a0f1c')+':1 sobre fondo oscuro</span>';
+      return '<div class="muestra"><i style="background:'+m[1]+'"></i><b>'+m[0]+'</b><code>'+m[1]+'</code>'+info+contraste+'</div>';
+    }).join('');
+  });
+
+  var IDEAS={1:['Social y Salud','comunidad: una persona adulta y una niña o niño'],2:['Económico','economía local: un comercio con toldo'],3:['Educación','aprender para crecer: un libro abierto del que brota una planta'],4:['Urbano y Medio Ambiente','habitar el territorio: una vivienda y un árbol sobre el suelo'],5:['Seguridad','alerta y respuesta: una baliza de emergencia'],6:['Gestión Municipal','el municipio: edificio consistorial con torre y bandera']};
+  fetch('iconos-ejes.svg').then(function(r){return r.text()}).then(function(t){
+    var tmp=document.createElement('div'); tmp.innerHTML=t;
+    var defs=document.getElementById('sprite');
+    [].slice.call(tmp.querySelectorAll('symbol')).forEach(function(s){ defs.appendChild(s); });
+    var colores=['#0072B2','#E69F00','#009E73','#56B4E9','#D55E00','#CC79A7'];
+    document.getElementById('filas-iconos').innerHTML=[1,2,3,4,5,6].map(function(n){
+      function ic(t,acento){ return '<svg class="ie" width="'+t+'" height="'+t+'" viewBox="0 0 24 24" aria-hidden="true"'+(acento?' style="--ico-acento:'+colores[n-1]+'"':'')+'><use href="#ico-eje-'+n+'"></use></svg>'; }
+      return '<tr><th scope="row">Eje '+n+' · '+IDEAS[n][0]+'</th><td>'+ic(24)+'</td><td>'+ic(32)+'</td><td>'+ic(48)+'</td><td>'+ic(48,true)+'</td><td class="idea">'+IDEAS[n][1]+'</td></tr>';
+    }).join('');
+  }).catch(function(){});
+
+  var PIEZAS=[
+    ['apertura','Apertura de capítulo','Número como orientación, título protagonista, introducción del texto existente y la panorámica. Capítulo II.'],
+    ['ejes','Iconos en las tarjetas de ejes','Contorno en tinta y relleno de acento; número y nombre al lado.'],
+    ['lamina-poblacion','Lámina de indicador · evolución','Censos observados, proyección discontinua con banda de escenarios y marca del último censo.'],
+    ['lamina-meta','Lámina de indicador · meta','Línea base observada, medición posterior pendiente y metas con contorno.'],
+    ['ficha-rosario','Ficha territorial de Rosario','Cifra principal, fotografía fechada, localizador referencial, desafíos citados y acciones que lo nombran.'],
+    ['foto-anotada','Fotografía anotada','Marcas numeradas; cada una remite a una frase del informe municipal.'],
+    ['diagrama','Diagnóstico y respuesta','Brecha, evidencia, objetivo y acciones; lo no documentado queda en discontinuo.'],
+    ['hallazgos','Hallazgos de la participación','Cifras contadas en las respuestas de la encuesta, en lugar de citas construidas.']
+  ];
+  document.getElementById('miniaturas').innerHTML=PIEZAS.map(function(p){
+    return '<figure><img src="lamina/piloto_'+p[0]+'_1440.webp" alt="Captura: '+p[1]+'" loading="lazy"><figcaption><b>'+p[1]+'</b>'+p[2]+'</figcaption></figure>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
