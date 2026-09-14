@@ -5975,28 +5975,10 @@ body.dark .tour-btn.secondary:hover{background:#334155;color:#e2e8f0}
 .pp-stage-title{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
 .pp-stage-desc{font-size:10.5px;color:var(--text2);line-height:1.5;font-weight:400}
 
-/* ══ Glosario de términos técnicos (tooltips) ══ */
-.glossy{display:inline-block;border-bottom:1px dotted var(--green);cursor:help;color:inherit;text-decoration:none;position:relative;font-weight:inherit}
-.glossy:hover,.glossy:focus{border-bottom-style:solid;border-bottom-color:var(--orange)}
-.glossy[data-tip]:hover::after,
-.glossy[data-tip]:focus::after{
-  content:attr(data-tip);
-  position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
-  background:#071d36;color:#fff;padding:9px 13px;border-radius:8px;font-size:11.5px;font-weight:400;
-  white-space:normal;width:max-content;max-width:280px;line-height:1.5;letter-spacing:.01em;
-  box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:1000;
-  border:1px solid rgba(255,255,255,.1);
-  animation:glossyIn .15s ease;
-}
-.glossy[data-tip]:hover::before,
-.glossy[data-tip]:focus::before{
-  content:'';position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);
-  width:0;height:0;border:6px solid transparent;border-top-color:#071d36;z-index:1000;
-}
-@keyframes glossyIn{from{opacity:0;transform:translateX(-50%) translateY(4px)}to{opacity:1;transform:translateX(-50%)}}
-body.dark .glossy[data-tip]:hover::after{background:#1e293b;border-color:rgba(255,255,255,.15)}
-body.dark .glossy[data-tip]:hover::before{border-top-color:#1e293b}
-@media(max-width:768px){.glossy[data-tip]:hover::after{max-width:200px;font-size:10.5px}}
+/* ══ Glosario de términos técnicos (tooltips) ══
+   v45.356 · glosario · se retiran las reglas de .glossy (burbuja CSS de applyGlossary). Las definiciones de
+   siglas las muestra solo el bloque «BLOQUE 3 · GLOSARIO + TOOLTIPS DE SIGLAS» (abbr.sigla-tip, estilos en
+   <style id="sigla-css">). Ver la cabecera v45.356 · glosario de ese bloque. */
 
 /* ══ Buscador full-text del portal ══ */
 .search-fab{position:fixed;bottom:32px;right:148px;width:44px;height:44px;border-radius:50%;background:rgb(38, 138, 68);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 4px 16px rgba(45,154,77,.4);z-index:99;display:flex;align-items:center;justify-content:center;transition:all .3s}
@@ -14229,7 +14211,10 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
           <div style="width:38px;height:38px;border-radius:10px;background:rgba(37,99,235,.12);display:flex;align-items:center;justify-content:center;font-size:20px">&#128652;</div>
           <div style="flex:1;font-size:13.5px;font-weight:700;color:var(--text);line-height:1.25">Terminal de Buses + Paraderos Inteligentes</div>
         </div>
-        <div style="font-size:11.5px;color:var(--text2);line-height:1.55;margin-bottom:12px">Proyecto compartido entre Transporte P&#250;blico, JJVV, C&#225;mara de Comercio y UCAM. Terminal formal, paraderos iluminados UV, subvenci&#243;n adulto mayor para ampliar recorridos rurales y pago QR/tarjeta.</div>
+        <!-- v45.356 · glosario · «paraderos iluminados UV» no dice si UV es la unidad vecinal o un tipo de luz, y el repositorio
+             no lo aclara (la frase solo se repite en Sitio_Sociedad_Civil). Desde que UV tiene tooltip, el enlazador le habría
+             puesto «Unidad Vecinal»; la sigla queda en span.no-sigla para no afirmar un significado que no consta. -->
+        <div style="font-size:11.5px;color:var(--text2);line-height:1.55;margin-bottom:12px">Proyecto compartido entre Transporte P&#250;blico, JJVV, C&#225;mara de Comercio y UCAM. Terminal formal, paraderos iluminados <span class="no-sigla">UV</span>, subvenci&#243;n adulto mayor para ampliar recorridos rurales y pago QR/tarjeta.</div>
         <div style="display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:1px solid var(--border)">
           <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;background:rgba(37,99,235,.08);font-size:11px;font-weight:700;color:#2563eb;border:1px solid var(--border)"><span style="width:6px;height:6px;border-radius:50%;background:#2563eb"></span>Transporte</span>
           <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;background:rgba(26,61,143,.08);font-size:11px;font-weight:700;color:#1F3864;border:1px solid var(--border)"><span style="width:6px;height:6px;border-radius:50%;background:#1F3864"></span>JJVV Urbanas</span>
@@ -18970,7 +18955,12 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
       <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
         <span>&iquest;Qu&eacute; significan IVSH, IDDC, ICP, ICT y dem&aacute;s &iacute;ndices?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a">El portal usa <strong>tooltips autom&aacute;ticos</strong>: pasa el mouse (o toca) sobre cualquier sigla t&eacute;cnica subrayada con puntos verdes para ver la definici&oacute;n. Los 70 t&eacute;rminos est&aacute;n documentados, desde &iacute;ndices de vulnerabilidad (<span class="glossy" data-tip="Índice de Vulnerabilidad Socioeconómica Habitacional · Hacinamiento, materialidad, saneamiento, déficit." tabindex="0">IVSH</span>, <span class="glossy" data-tip="Índice de Brecha Digital Territorial · Internet, equipamiento computacional, móvil." tabindex="0">IBDT</span>, <span class="glossy" data-tip="Índice Compuesto Ponderado · Promedio de los 6 índices de vulnerabilidad." tabindex="0">ICP</span>) hasta instrumentos de inversi&oacute;n (<span class="glossy" data-tip="Fondo Nacional de Desarrollo Regional · Recursos administrados por el GORE." tabindex="0">FNDR</span>, <span class="glossy" data-tip="Fondo Regional de Iniciativa Local · Línea FNDR para inversión municipal." tabindex="0">FRIL</span>, <span class="glossy" data-tip="Programa de Mejoramiento Urbano · Línea SUBDERE para obras menores." tabindex="0">PMU</span>) y siglas institucionales (<span class="glossy" data-tip="Secretaría Comunal de Planificación." tabindex="0">SECPLAC</span>, <span class="glossy" data-tip="Dirección de Desarrollo Comunitario." tabindex="0">DIDECO</span>, <span class="glossy" data-tip="Consejo Comunal de Organizaciones de la Sociedad Civil." tabindex="0">COSOC</span>).</div>
+      <!-- v45.356 · glosario · los 9 ejemplos eran span.glossy escritos a mano, con su propia burbuja CSS; el
+           BLOQUE 3 enlazaba dentro de IVSH, IBDT, ICP y DIDECO un abbr.sigla-tip (4 tooltips anidados, medidos en el
+           navegador). Ahora son abbr.sigla-tip: los muestra el mismo tooltip del resto del portal, con la definición
+           de la sección #glosario, y el enlazador no entra en ellos porque omite los ABBR. El texto decía «cualquier
+           sigla técnica subrayada»; el enlazador subraya la primera aparición de cada sigla por sección, y así se dice. -->
+      <div class="faq-a">El portal usa <strong>tooltips autom&aacute;ticos</strong>: la primera vez que una sigla t&eacute;cnica aparece en cada secci&oacute;n queda subrayada con puntos verdes; pasa el mouse, t&oacute;cala o llega a ella con la tecla Tab para ver su definici&oacute;n. Los 70 t&eacute;rminos del <a href="#glosario" onclick="event.preventDefault();if(window.PV&&PV.go)PV.go('glosario')">Glosario PLADECO</a> est&aacute;n documentados, desde &iacute;ndices de vulnerabilidad (<abbr class="sigla-tip" tabindex="0" data-sigla="IVSH">IVSH</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="IBDT">IBDT</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="ICP">ICP</abbr>) hasta instrumentos de inversi&oacute;n (<abbr class="sigla-tip" tabindex="0" data-sigla="FNDR">FNDR</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="FRIL">FRIL</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="PMU">PMU</abbr>) y siglas institucionales (<abbr class="sigla-tip" tabindex="0" data-sigla="SECPLAC">SECPLAC</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="DIDECO">DIDECO</abbr>, <abbr class="sigla-tip" tabindex="0" data-sigla="COSOC">COSOC</abbr>).</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" type="button" aria-expanded="false" onclick="this.parentElement.classList.toggle('open');this.setAttribute('aria-expanded',this.parentElement.classList.contains('open'))">
@@ -19101,9 +19091,13 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
       <p>Administra los establecimientos educacionales municipalizados de la comuna.</p>
     </article>
 
-    <article class="glosario-term" data-cat="inst" data-keys="cosoc consejo sociedad civil">
+    <article class="glosario-term" data-cat="inst" data-keys="cosoc consejo organizaciones sociedad civil">
       <header><span class="glosario-acronym">COSOC</span><span class="badge badge--warn">Instituciones</span></header>
-      <h3>Consejo Comunal de Sociedad Civil</h3>
+      <!-- v45.356 · glosario · decía «Consejo Comunal de Sociedad Civil». Al retirar el glosario de tooltips (GLOSSARY),
+           este título pasa a ser el único nombre que muestra el tooltip de COSOC. Se usa el nombre completo con el que el
+           portal lo presenta en #faq-concejo y en la acción de OE 6.6 de la Matriz, que también traían GLOSSARY y el
+           ejemplo de #faq. La definición (Ley 20.500) no cambia. -->
+      <h3>Consejo Comunal de Organizaciones de la Sociedad Civil</h3>
       <p>&Oacute;rgano consultivo de car&aacute;cter representativo de la sociedad civil organizada (Ley 20.500 de Participaci&oacute;n Ciudadana).</p>
     </article>
 
@@ -29968,11 +29962,16 @@ const CHATBOT_QA=[
    follow:['¿Qué es el PLADECO?','Matriz estratégica','Documentos','Presupuesto Participativo'],
    /* v45.356 · [cifras] crítico 12 · el punto 8 prometía «PDF + Excel + GeoJSON + Actas»: no hay GeoJSON
       ni Excel de la matriz en #documentos, y el documento final no está publicado (igual que en #faq) */
-   ans:'**FAQ · Preguntas Frecuentes:**\n\nLa sección **#faq** responde con detalle 8 preguntas en acordeón accesible:\n\n1. ❓ **¿Qué es el PLADECO?** — Ley 18.695, 6 ejes, 27 OE, 225 acciones, 10 años\n2. 👥 **¿Quién elabora el PLADECO?** — SECPLAC + 11 direcciones + Concejo Municipal\n3. 💰 **¿Cómo se financian las 225 acciones?** — Mix 64% Municipal · 18% FNDR · 12% Sectorial · 6% Otras\n4. 🤝 **¿Cómo puedo participar?** — Juntas de Vecinos · COSOC · Presupuesto Participativo · Comisiones · encuestas\n5. 📖 **¿Qué significan IVSH, IDDC, ICP, ICT?** — Tooltips automáticos en todo el portal (63 términos)\n6. 📊 **¿Cómo se mide el avance?** — 16 indicadores semaforizados (verde/amarillo/rojo)\n7. 🔄 **¿Qué pasa si cambia la administración?** — Es instrumento de Estado Comunal, trasciende períodos\n8. 📥 **¿Cómo descargo el documento completo?** — El documento final aún no está publicado; en Documentos hay presentaciones, actas e informes en PDF y datos del MBHT en XLSX\n\n💡 Si tu pregunta no está aquí, pregúntame directamente.'},
+   ans:'**FAQ · Preguntas Frecuentes:**\n\nLa sección **#faq** responde con detalle 8 preguntas en acordeón accesible:\n\n1. ❓ **¿Qué es el PLADECO?** — Ley 18.695, 6 ejes, 27 OE, 225 acciones, 10 años\n2. 👥 **¿Quién elabora el PLADECO?** — SECPLAC + 11 direcciones + Concejo Municipal\n3. 💰 **¿Cómo se financian las 225 acciones?** — Mix 64% Municipal · 18% FNDR · 12% Sectorial · 6% Otras\n4. 🤝 **¿Cómo puedo participar?** — Juntas de Vecinos · COSOC · Presupuesto Participativo · Comisiones · encuestas\n5. 📖 **¿Qué significan IVSH, IDDC, ICP, ICT?** — Tooltip en la primera aparición de cada sigla por sección y Glosario PLADECO de 70 términos\n6. 📊 **¿Cómo se mide el avance?** — 16 indicadores semaforizados (verde/amarillo/rojo)\n7. 🔄 **¿Qué pasa si cambia la administración?** — Es instrumento de Estado Comunal, trasciende períodos\n8. 📥 **¿Cómo descargo el documento completo?** — El documento final aún no está publicado; en Documentos hay presentaciones, actas e informes en PDF y datos del MBHT en XLSX\n\n💡 Si tu pregunta no está aquí, pregúntame directamente.'},
 
   {keys:['glosario','tooltip','sigla','definicion','que significa','que es esto','terminos tecnicos','63 terminos'],sec:'faq',cat:'pladeco',
    follow:['FAQ','¿Qué es el PLADECO?','Análisis estratégico','Financiamiento'],
-   ans:'**Glosario Automático · 63 términos técnicos:**\n\n🔍 **¿Cómo funciona?** Pasa el mouse (o toca) sobre cualquier sigla subrayada con puntos verdes en el portal y verás la definición instantánea.\n\n📚 **Categorías:**\n\n📋 **Instrumentos:** PLADECO, BIP, FNDR, FRIL, PMU, PMB, ERD\n\n🏛️ **Direcciones Municipales:** SECPLAC, DIDECO, DOM, DAO, DAEM, SLEP\n\n⚙️ **Servicios Públicos:** MIDESO, MINVU, INDAP, SENCE, SENAMA, SENDA, SUBDERE, SUBTEL, GORE, SERCOTEC\n\n🏥 **Salud:** CESFAM, APR, APS, SAR, SAPU, FONASA\n\n👥 **Demografía:** NNA, AM, PcD, VIF\n\n📊 **Índices censales:** IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, **ICP**, ICT, ICVU\n\n🔬 **Metodologías:** SIVUST, ISMT, CIUO, CPV, INE\n\n🌐 **Sociedad civil:** COSOC, UV, JJVV, SNA, FODA\n\nTodos los tooltips se activan también con foco de teclado (Tab) para accesibilidad.'},
+   /* v45.356 · glosario · decía «63 términos técnicos» (GLOSSARY tenía 66 claves) y «cualquier sigla subrayada».
+      Con un solo mecanismo, se subraya la primera aparición de cada sigla por sección y las definiciones salen de los
+      70 términos de #glosario más glosarioExtra. SLEP no es una dirección municipal (su definición: «Reemplazo gradual
+      de los DAEM»), APR es agua potable rural y no salud, y SNA y FODA son métodos: se reubican. Se agregan KPI, CAGR,
+      TMDA e IIGAM, que ahora tienen tooltip. */
+   ans:'**Glosario automático de siglas:**\n\n🔍 **¿Cómo funciona?** En cada sección, la primera vez que aparece una sigla técnica queda subrayada con puntos verdes. Pasa el mouse, tócala o llega a ella con la tecla Tab para ver su nombre y su definición.\n\n📖 **De dónde salen las definiciones:** de los 70 términos de la sección Glosario PLADECO y de siglas de uso público que no están en esa sección (por ejemplo CPLT, SLEP, NNA, INE, KPI, CAGR y TMDA). El nombre completo de IIGAM está pendiente de confirmación por SECPLAC.\n\n📚 **Categorías:**\n\n📋 **Instrumentos:** PLADECO, BIP, FNDR, FRIL, PMU, PMB, ERD\n\n🏛️ **Direcciones Municipales:** SECPLAC, DIDECO, DOM, DAO, DAEM\n\n⚙️ **Servicios Públicos:** MIDESO, MINVU, INDAP, SENCE, SENAMA, SENDA, SUBDERE, SUBTEL, GORE, SERCOTEC, SLEP\n\n🏥 **Salud:** CESFAM, APS, SAR, SAPU, FONASA\n\n👥 **Demografía:** NNA, AM, PcD, VIF\n\n📊 **Índices censales:** IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, **ICP**, ICT, ICVU\n\n📈 **Indicadores y tasas:** KPI, CAGR, TMDA, IIGAM\n\n🔬 **Metodologías:** SIVUST, ISMT, CIUO, CPV, INE, SNA, FODA\n\n🌐 **Territorio y sociedad civil:** COSOC, UV, JJVV, APR\n\nTodos los tooltips se activan también con foco de teclado (Tab) para accesibilidad.'},
 
   {keys:['tema oscuro','modo claro','dark mode','apariencia','cambiar tema','noche dia','color portal'],sec:null,cat:null,
    follow:['Buscador del portal','Mi PLADECO favoritos','FAQ','7 grupos temáticos'],
@@ -30634,112 +30633,12 @@ function initShareButtons(){
 
 // ══════════════════════════════════════════════════════
 // GLOSARIO DE TÉRMINOS TÉCNICOS (tooltips automáticos)
+// v45.356 · glosario · RETIRADO. GLOSSARY y applyGlossary (span.glossy) convivían con el bloque
+// «BLOQUE 3 · GLOSARIO + TOOLTIPS DE SIGLAS» (abbr.sigla-tip) sin excluirse: en el navegador había 253
+// tooltips anidados. Las 29 siglas que solo estaban aquí pasaron con su mismo texto a glosarioExtra de ese
+// bloque; las otras 37 ya estaban en la sección #glosario, que es la fuente del bloque. Detalle y verificación
+// en la cabecera v45.356 · glosario del BLOQUE 3.
 // ══════════════════════════════════════════════════════
-var GLOSSARY={
-  'PLADECO':'Plan de Desarrollo Comunal · Instrumento rector de la planificación municipal (Ley 18.695).',
-  'SECPLAC':'Secretaría Comunal de Planificación · Unidad técnica municipal a cargo del PLADECO.',
-  'DIDECO':'Dirección de Desarrollo Comunitario · Articula programas sociales y vínculo vecinal.',
-  'DOM':'Dirección de Obras Municipales · Permisos, fiscalización urbanística y obras.',
-  'DAO':'Dirección de Aseo y Ornato · Limpieza, áreas verdes y manejo de residuos.',
-  'DAEM':'Departamento de Administración de Educación Municipal.',
-  'SLEP':'Servicio Local de Educación Pública · Reemplazo gradual de los DAEM.',
-  'COSOC':'Consejo Comunal de Organizaciones de la Sociedad Civil (Ley 20.500).',
-  'CESFAM':'Centro de Salud Familiar · Atención primaria municipal.',
-  'APR':'Agua Potable Rural · Sistemas comunitarios de provisión de agua en zonas rurales.',
-  'BIP':'Banco Integrado de Proyectos · Sistema MIDESO de evaluación social de inversión pública.',
-  'FNDR':'Fondo Nacional de Desarrollo Regional · Recursos administrados por el GORE.',
-  'FRIL':'Fondo Regional de Iniciativa Local · Línea FNDR para inversión municipal (tope ~$80M).',
-  'PMU':'Programa de Mejoramiento Urbano · Línea SUBDERE para obras menores ($80M).',
-  'PMB':'Programa de Mejoramiento de Barrios · Agua potable, saneamiento, electricidad SUBDERE.',
-  'SUBDERE':'Subsecretaría de Desarrollo Regional y Administrativo.',
-  'SUBTEL':'Subsecretaría de Telecomunicaciones · Administra el Fondo de Desarrollo de las Telecomunicaciones (FDT).',
-  'GORE':'Gobierno Regional · Administración regional con gobernador electo.',
-  'MIDESO':'Ministerio de Desarrollo Social y Familia · Coordina el Sistema Chile Cuida y el RSH.',
-  'RSH':'Registro Social de Hogares · Instrumento de focalización social.',
-  'MINVU':'Ministerio de Vivienda y Urbanismo · DS49 (vivienda social) y DS27 (mejoramiento).',
-  'DS49':'Decreto Supremo 49 MINVU · Subsidio de vivienda para sectores vulnerables.',
-  'DS27':'Decreto Supremo 27 MINVU · Subsidio de mejoramiento de viviendas existentes.',
-  'INDAP':'Instituto de Desarrollo Agropecuario · PADIS y otros programas agrícolas.',
-  'PADIS':'Programa de Desarrollo de Acción Local INDAP · Apoyo a pequeña agricultura familiar.',
-  'SENCE':'Servicio Nacional de Capacitación y Empleo.',
-  'SENAMA':'Servicio Nacional del Adulto Mayor.',
-  'SENDA':'Servicio Nacional para la Prevención y Rehabilitación del Consumo de Drogas y Alcohol.',
-  'SERCOTEC':'Servicio de Cooperación Técnica · Apoyo a la micro y pequeña empresa.',
-  'CPLT':'Consejo para la Transparencia · Fiscaliza la Ley 20.285 de Transparencia.',
-  'ERD':'Estrategia Regional de Desarrollo · Instrumento del GORE.',
-  'ODS':'Objetivos de Desarrollo Sostenible (Agenda 2030 ONU).',
-  'OE':'Objetivo Estratégico · Componente operacional de un eje PLADECO.',
-  'UV':'Unidad Vecinal · División territorial básica para participación ciudadana.',
-  'JJVV':'Juntas de Vecinos · Organizaciones comunitarias territoriales (Ley 19.418).',
-  'NNA':'Niños, Niñas y Adolescentes.',
-  'AM':'Adulto/a Mayor.',
-  'PcD':'Persona con Discapacidad.',
-  'VIF':'Violencia Intrafamiliar.',
-  'IVSH':'Índice de Vulnerabilidad Socioeconómica Habitacional · Hacinamiento, materialidad, saneamiento, déficit.',
-  'IDDC':'Índice de Dependencia Demográfica y de Cuidados · Envejecimiento, primera infancia, dependencia.',
-  'IBDT':'Índice de Brecha Digital Territorial · Internet, equipamiento computacional, móvil.',
-  'IVFT':'Índice de Vulnerabilidad Funcional · Discapacidad, carga funcional, interacción con envejecimiento.',
-  'ICHT':'Índice de Capital Humano Territorial · Escolaridad, alfabetismo, participación y calificación laboral.',
-  'IPSB':'Índice de Precariedad de Servicios Básicos · Agua, energía contaminante, residuos.',
-  'ICP':'Índice Compuesto Ponderado · Promedio de los 6 índices de vulnerabilidad.',
-  'ICT':'Índice de Calidad Territorial · Métrica 0-100 del estado de espacios públicos.',
-  'ICVU':'Índice de Calidad de Vida Urbana · PUC + Cámara Chilena de la Construcción.',
-  'SIVUST':'Sistema de Indicadores de Vulnerabilidad Socioterritorial (MDSF 2025).',
-  'ISMT':'Índice Socio Material Territorial · Observatorio de Ciudades UC.',
-  'CIUO':'Clasificador Internacional Uniforme de Ocupaciones · Usado para medir calificación laboral.',
-  'CPV':'Censo de Población y Vivienda · INE Chile.',
-  'INE':'Instituto Nacional de Estadísticas de Chile.',
-  'CEAD':'Centro de Estudios y Análisis del Delito · Fiscalía Nacional.',
-  'FONASA':'Fondo Nacional de Salud · Sistema público de salud chileno.',
-  'PACCC':'Plan de Acción Comunal de Cambio Climático.',
-  'OGUC':'Ordenanza General de Urbanismo y Construcciones.',
-  'PRC':'Plan Regulador Comunal.',
-  'OMIL':'Oficina Municipal de Información Laboral.',
-  'IPP':'Ingresos Propios Permanentes · Autonomía fiscal municipal.',
-  'FCM':'Fondo Común Municipal · Redistribución de recursos entre municipios.',
-  'SNA':'Social Network Analysis · Análisis de red de relaciones.',
-  'FODA':'Fortalezas, Oportunidades, Debilidades y Amenazas · Herramienta de diagnóstico estratégico.',
-  'SAR':'Servicio de Atención Primaria de Urgencia de Alta Resolutividad.',
-  'SAPU':'Servicio de Atención Primaria de Urgencia.',
-  'APS':'Atención Primaria de Salud.'
-};
-
-function applyGlossary(){
-  // Evitar re-aplicar
-  if(window._glossaryApplied)return;
-  window._glossaryApplied=true;
-  // Construir regex de términos (palabras completas, case-sensitive para siglas)
-  var terms=Object.keys(GLOSSARY).sort(function(a,b){return b.length-a.length;});
-  var pattern=new RegExp('\\b('+terms.map(function(t){return t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&');}).join('|')+')\\b','g');
-  // Tags donde NO aplicar (para no romper)
-  var SKIP=new Set(['SCRIPT','STYLE','CODE','PRE','KBD','TEXTAREA','INPUT','BUTTON','A','OPTION','SELECT','TITLE']);
-  // Solo aplicar en secciones de contenido (no en sidebar, no en banners)
-  var roots=document.querySelectorAll('main section p, main section li, main section td, main section .ficha-puente-card-text, main section .anest-block-sub, main section .anest-index-desc, main section .anest-index-key, main section .anest-recom-texto, main section .sec-fuente');
-  roots.forEach(function(root){
-    if(!root||root.closest('a,button,.glossy,.search-result,kbd'))return;
-    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null);
-    var nodes=[],n;
-    while((n=walker.nextNode())){
-      if(SKIP.has(n.parentNode.nodeName))continue;
-      if(n.parentNode.closest&&n.parentNode.closest('.glossy,a,button'))continue;
-      if(!n.nodeValue||n.nodeValue.length<3)continue;
-      if(pattern.test(n.nodeValue))nodes.push(n);
-      pattern.lastIndex=0;
-    }
-    nodes.forEach(function(n){
-      var matched=false;
-      var html=n.nodeValue.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(pattern,function(m){
-        matched=true;
-        var tip=GLOSSARY[m].replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-        return '<span class="glossy" data-tip="'+tip+'" tabindex="0">'+m+'</span>';
-      });
-      if(matched){
-        var span=document.createElement('span');span.innerHTML=html;
-        n.parentNode.replaceChild(span,n);
-      }
-    });
-  });
-}
 
 // ══════════════════════════════════════════════════════
 // IMPRIMIR SECCIÓN INDIVIDUAL
@@ -32110,9 +32009,8 @@ startWidgetAutoRefresh();
 renderQuiz();
 maybeOfferTour();
 privacyAnalytics();
-// Glosario en idle (no bloquea TTI)
-if('requestIdleCallback' in window){requestIdleCallback(applyGlossary,{timeout:3000});}
-else{setTimeout(applyGlossary,1500);}
+// v45.356 · glosario · se retira la llamada a applyGlossary (requestIdleCallback / setTimeout): las siglas
+// las enlaza solo el BLOQUE 3 (abbr.sigla-tip) al terminar la carga.
 initToastTriggers();
 renderMiniSurvey();
 registerVisit();
@@ -39985,6 +39883,50 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
      SIN alterar el texto sustantivo: solo se envuelve la 1ª aparición de cada sigla por sección.
      Compatible con Lectura Fácil (omite .lf-panel) y con las secciones dinámicas (las omite).
      Render seguro · sin temporizadores · sin dependencias. -->
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.356 · glosario · UN SOLO MECANISMO PARA DEFINIR SIGLAS (pendientes 1.6 y 2.26 de la auditoría)
+
+     PROBLEMA. Convivían dos mecanismos que no se conocían: GLOSSARY + applyGlossary (span.glossy con burbuja CSS,
+     todas las apariciones en p, li y td) y este bloque (abbr.sigla-tip, primera aparición por sección). Medido en
+     el navegador antes del cambio, 5 s después de cargar y con la caché del Service Worker borrada: 1.984
+     span.glossy, 463 abbr.sigla-tip y 253 tooltips anidados (249 glossy dentro de un abbr y 4 abbr dentro de un
+     glossy: IVSH, IBDT, ICP y DIDECO del ejemplo escrito a mano en #faq). 33 de las 35 siglas que estaban en
+     ambos quedaban anidadas en algún lugar. Además, KPI, CAGR, TMDA e IIGAM no tenían definición en ninguna parte
+     y CPLT no tenía tooltip en .kpi-label ni en .viz-sub (applyGlossary no entraba en esos div).
+
+     QUÉ SE HIZO.
+     · Se retiran GLOSSARY, applyGlossary, su llamada y el CSS de .glossy. Queda solo este bloque.
+     · glosarioExtra recibe con su mismo texto las 29 siglas que solo estaban en GLOSSARY (la auditoría nombraba
+       12; eran también CESFAM, SUBTEL, PADIS, SENAMA, SENDA, SERCOTEC, JJVV, VIF, SIVUST, ISMT, SAR, SAPU, APS,
+       AM, PcD, DS49 y DS27). Un window.glosarioExtra de SECPLAC ahora se suma a la base en vez de reemplazarla.
+     · KPI, CAGR y TMDA reciben su definición estándar. IIGAM no se expande: el tooltip dice «nombre completo sin
+       confirmar» y la sigla queda en discrepanciasDatos ('iigam-nombre') con los tres nombres que le dan los
+       documentos del repositorio.
+     · La expresión acepta el plural (\b(KPI)s?\b). UV, OE, AM, PcD, DS49 y DS27 se aceptan una a una aunque no
+       pasen el filtro de 3 a 8 mayúsculas (SIGLAS_CORTAS, con su justificación junto al código).
+     · Segunda pasada del enlazador, una sola vez, cuando el navegador queda inactivo después de cargar: alcanza el
+       contenido que pinta el lote diferido _censoRenders, igual que lo alcanzaba applyGlossary.
+     · Los 9 span.glossy del ejemplo de #faq pasan a abbr.sigla-tip; «paraderos iluminados UV» (#sociedad-civil)
+       queda en span.no-sigla y las iniciales .test-avatar de #suenos se omiten (ver comentarios en cada lugar).
+     · El pie «Glosario PLADECO» del tooltip solo aparece en siglas que están en esa sección.
+     · COSOC en #glosario pasa a «Consejo Comunal de Organizaciones de la Sociedad Civil», el nombre que usa el resto
+       del portal. Las respuestas del asistente sobre el glosario dejan de decir «63 términos».
+
+     VERIFICADO en el navegador después del cambio (caché borrada, 9 s después de cargar):
+     · 0 span.glossy y 0 tooltips anidados; 759 abbr.sigla-tip (750 del enlazador y 9 del ejemplo de #faq).
+     · window.glosario tiene 104 siglas: 69 de #glosario y 35 de glosarioExtra.
+     · De los 666 pares sección-sigla que tenían tooltip antes, 634 lo conservan. Los 32 restantes están dentro de
+       #glosario (15; es la sección de las definiciones y el enlazador la omite desde su origen) y dentro de
+       #poaBody y #poaFilters (17; la tabla y los filtros del POA se vuelven a pintar con innerHTML en cada
+       filtro, y el enlazador omite esos id desde su origen). Hay 101 pares nuevos.
+     · Las 35 siglas compartidas conservan su definición (la de #glosario) y tienen al menos un tooltip. Las 29
+       trasladadas tienen definición; 28 tienen tooltip y SERCOTEC no, porque solo aparece dentro de la tabla del POA.
+     · Tooltips leídos al pasar el mouse: KPI (14 abbr, incluidos 13 «KPIs»), CAGR (2), TMDA (1, en #movilidad-vial),
+       IIGAM (7: seis secciones y la fila del registro), CPLT (11, incluidos .kpi-label de #dashboard y .viz-sub de
+       #cuenta-publica), COSOC, NNA, PcD y UV, cada uno con su texto.
+     · Con la tecla Tab el foco llega a los abbr del ejemplo de #faq con :focus-visible y el tooltip se muestra
+       bajo la sigla.
+═══════════════════════════════════════════════════════════════════════════ -->
 <style id="sigla-css">
 .sigla-tip{text-decoration:underline dotted;text-decoration-color:var(--accent,#2d9a4d);text-underline-offset:2px;cursor:help;font:inherit;color:inherit}
 .sigla-tip:hover,.sigla-tip:focus-visible{text-decoration-style:solid;background:rgba(45,154,77,.10);border-radius:3px}
@@ -39996,6 +39938,23 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
 </style>
 <script>
 (function(){
+  /* v45.356 · glosario · IIGAM al registro de datos pendientes. Se agrega mientras se lee este script (antes de
+     DOMContentLoaded) porque la tabla de #metodologia se arma en ese momento. Idempotente por id. Las citas se
+     buscaron en el repositorio: Entregables Finales/Relato_Estrategico_PLADECO_Rengo_2025-2035.docx (y
+     Scripts/crear_relato.js, que lo genera), Scripts/crear_ppt_v3.js:838, Entregables Finales/
+     Analisis_Institucional_Profundizado_PLADECO.docx y Scripts/graficos_resultados_generales.R:163, 200 y 379. Las
+     seis secciones son las que tienen «IIGAM» en su texto, medido en el navegador. */
+  (function(){
+    var D=window.discrepanciasDatos; if(!D || !D.push) return;
+    for(var i=0;i<D.length;i++){ if(D[i] && D[i].id==='iigam-nombre') return; }
+    D.push({id:'iigam-nombre', tema:'Nombre del IIGAM', estado:'por validar',
+      valores:['Relato Estratégico del PLADECO: «Índice de Gestión Municipal (IIGAM)», «medido por el IIGAM anual de SUBDERE»',
+               'Guion de la presentación (Scripts/crear_ppt_v3.js): «Índice de Gobierno Abierto Municipal — IIGAM»',
+               'Análisis Institucional Profundizado: Índice Institucionalización Gestión Municipal, con fuente «IIGAM / CGR anual»',
+               'Gráficos de resultados (Scripts/graficos_resultados_generales.R): «IIGAM (gestión de género)», «Meta SERNAMEG: 75%» y «SERNAMEG IIGAM»'],
+      nota:'El portal usa la sigla en seis secciones (Comparador con Comunas Vecinas, Semáforo de Metas, Matriz Estratégica Integrada, Horizontes de Implementación, Compromisos Públicos y Acerca del Portal) y no la expande en ninguna. Los documentos del repositorio le dan tres nombres distintos y la atribuyen a tres instituciones (SUBDERE, CGR y SERNAMEG); ninguno de esos nombres calza con las cinco letras de la sigla. Por eso el tooltip de IIGAM dice «nombre completo sin confirmar» en vez de elegir uno.',
+      resolucion:'Pendiente. Requiere que SECPLAC confirme el nombre oficial del índice, la institución que lo publica y el año de la medición que cita el portal.'});
+  })();
   function run(){
     var main=document.getElementById('main-content')||document.body;
     /* 1) objeto glosario DESDE la sección #glosario (fuente única, real) */
@@ -40006,26 +39965,91 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
         var ac=(acEl.textContent||'').trim(); if(!ac)continue;
         g[ac]={nombre:((arts[i].querySelector('h3')||{}).textContent||'').trim(),
                def:((arts[i].querySelector('p')||{}).textContent||'').trim(),
-               cat:arts[i].getAttribute('data-cat')||''};
+               cat:arts[i].getAttribute('data-cat')||'',
+               enGlosario:true}; /* v45.356 · glosario · marca las siglas que sí están en la sección #glosario */
       }
       return g;
     }
     var glosario=buildGlosario();
     /* ═══ EDITABLE POR SECPLAC ═══ glosarioExtra: siglas que NO están en #glosario
        (nomenclatura pública estándar). Se fusionan sin pisar las 70 del glosario. */
-    var glosarioExtra=(window.glosarioExtra && !window.glosarioExtra.nodeType) ? window.glosarioExtra : {
+    /* v45.356 · glosario · la base pasa de 3 a 36 siglas.
+       · 29 vienen del glosario de tooltips retirado (GLOSSARY), con el mismo texto: lo que iba antes del «·» queda
+         en «nombre» y lo que seguía, en «def». Al trasladarlas no se corrigió ninguna definición.
+       · KPI, CAGR y TMDA (pendiente 1.6) llevan su definición estándar. La fórmula de CAGR, con n = 8 años
+         (2015 a 2023), reproduce los cinco CAGR de la tabla de TMDA de #movilidad-vial (+5,0 %, +7,2 %, +5,6 %,
+         +7,2 % y +5,4 %; comprobado con los valores de la tabla).
+       · IIGAM no tiene nombre confirmado: el portal no lo expande y los documentos del repositorio le dan tres
+         nombres distintos (ver 'iigam-nombre' en discrepanciasDatos). Su tooltip lo declara en vez de elegir uno.
+       Antes, un window.glosarioExtra definido por SECPLAC REEMPLAZABA esta base entera; ahora se suma a ella
+       (y puede reemplazar una sigla puntual), para que ninguna de estas definiciones se pierda. */
+    var glosarioExtra={
       SNI:{nombre:'Sistema Nacional de Inversiones', def:'Sistema que norma el proceso de inversión pública en Chile (MIDESO + DIPRES).', cat:'plan'},
       BIP:{nombre:'Banco Integrado de Proyectos', def:'Plataforma donde se registran y siguen los proyectos de inversión pública del SNI.', cat:'plan'},
-      RATE:{nombre:'Resultado del Análisis Técnico-Económico', def:'Calificación que el SNI asigna a un proyecto (RS recomendado, FI, OT, etc.).', cat:'plan'}
+      RATE:{nombre:'Resultado del Análisis Técnico-Económico', def:'Calificación que el SNI asigna a un proyecto (RS recomendado, FI, OT, etc.).', cat:'plan'},
+      /* siglas que no tenían definición en ninguna parte (pendiente 1.6) */
+      KPI:{nombre:'Indicador clave de desempeño', def:'Sigla en inglés de Key Performance Indicator: medida cuantificable con la que se sigue el avance hacia un objetivo y se compara con la meta fijada para un período.', cat:'plan'},
+      CAGR:{nombre:'Tasa de crecimiento anual compuesta', def:'Sigla en inglés de Compound Annual Growth Rate: ritmo anual constante que lleva del valor inicial al valor final. Se calcula como (valor final ÷ valor inicial)^(1/n) − 1, donde n es el número de años.', cat:'ind'},
+      TMDA:{nombre:'Tránsito Medio Diario Anual', def:'Promedio de vehículos que pasan en un día por un punto de una vía, calculado sobre un año completo: el volumen anual dividido por los días del año. Se expresa en vehículos por día.', cat:'terr'},
+      IIGAM:{nombre:'nombre completo sin confirmar', def:'El portal usa la sigla sin expandirla y los documentos del proceso le dan tres nombres distintos. SECPLAC debe confirmar el nombre oficial y la institución que publica el índice (ver «Datos pendientes de validación institucional», en el Apéndice metodológico).', cat:'ind'},
+      /* trasladadas desde GLOSSARY (v45.356), con el mismo texto */
+      CPLT:{nombre:'Consejo para la Transparencia', def:'Fiscaliza la Ley 20.285 de Transparencia.', cat:'inst'},
+      DAO:{nombre:'Dirección de Aseo y Ornato', def:'Limpieza, áreas verdes y manejo de residuos.', cat:'inst'},
+      SLEP:{nombre:'Servicio Local de Educación Pública', def:'Reemplazo gradual de los DAEM.', cat:'inst'},
+      CESFAM:{nombre:'Centro de Salud Familiar', def:'Atención primaria municipal.', cat:'inst'},
+      SUBTEL:{nombre:'Subsecretaría de Telecomunicaciones', def:'Administra el Fondo de Desarrollo de las Telecomunicaciones (FDT).', cat:'inst'},
+      SENAMA:{nombre:'Servicio Nacional del Adulto Mayor', def:'', cat:'inst'},
+      SENDA:{nombre:'Servicio Nacional para la Prevención y Rehabilitación del Consumo de Drogas y Alcohol', def:'', cat:'inst'},
+      SERCOTEC:{nombre:'Servicio de Cooperación Técnica', def:'Apoyo a la micro y pequeña empresa.', cat:'inst'},
+      INE:{nombre:'Instituto Nacional de Estadísticas de Chile', def:'', cat:'inst'},
+      CEAD:{nombre:'Centro de Estudios y Análisis del Delito', def:'Fiscalía Nacional.', cat:'inst'},
+      FONASA:{nombre:'Fondo Nacional de Salud', def:'Sistema público de salud chileno.', cat:'inst'},
+      OMIL:{nombre:'Oficina Municipal de Información Laboral', def:'', cat:'inst'},
+      SAR:{nombre:'Servicio de Atención Primaria de Urgencia de Alta Resolutividad', def:'', cat:'inst'},
+      SAPU:{nombre:'Servicio de Atención Primaria de Urgencia', def:'', cat:'inst'},
+      APS:{nombre:'Atención Primaria de Salud', def:'', cat:'inst'},
+      JJVV:{nombre:'Juntas de Vecinos', def:'Organizaciones comunitarias territoriales (Ley 19.418).', cat:'terr'},
+      NNA:{nombre:'Niños, Niñas y Adolescentes', def:'', cat:'terr'},
+      AM:{nombre:'Adulto/a Mayor', def:'', cat:'terr'},
+      PcD:{nombre:'Persona con Discapacidad', def:'', cat:'terr'},
+      VIF:{nombre:'Violencia Intrafamiliar', def:'', cat:'terr'},
+      SIVUST:{nombre:'Sistema de Indicadores de Vulnerabilidad Socioterritorial (MDSF 2025)', def:'', cat:'ind'},
+      ISMT:{nombre:'Índice Socio Material Territorial', def:'Observatorio de Ciudades UC.', cat:'ind'},
+      IPP:{nombre:'Ingresos Propios Permanentes', def:'Autonomía fiscal municipal.', cat:'ind'},
+      PACCC:{nombre:'Plan de Acción Comunal de Cambio Climático', def:'', cat:'plan'},
+      OGUC:{nombre:'Ordenanza General de Urbanismo y Construcciones', def:'', cat:'plan'},
+      FCM:{nombre:'Fondo Común Municipal', def:'Redistribución de recursos entre municipios.', cat:'fondo'},
+      DS49:{nombre:'Decreto Supremo 49 MINVU', def:'Subsidio de vivienda para sectores vulnerables.', cat:'fondo'},
+      DS27:{nombre:'Decreto Supremo 27 MINVU', def:'Subsidio de mejoramiento de viviendas existentes.', cat:'fondo'},
+      PADIS:{nombre:'Programa de Desarrollo de Acción Local INDAP', def:'Apoyo a pequeña agricultura familiar.', cat:'fondo'}
     };
+    if(window.glosarioExtra && !window.glosarioExtra.nodeType){
+      Object.keys(window.glosarioExtra).forEach(function(k){ glosarioExtra[k]=window.glosarioExtra[k]; });
+    }
     Object.keys(glosarioExtra).forEach(function(k){ if(!glosario[k]) glosario[k]=glosarioExtra[k]; });
     window.glosario=glosario; /* own-property: prevalece sobre el acceso-por-nombre de <section id="glosario"> */
 
     /* 2) siglas a enlazar: claves tipo acrónimo (MAYÚSCULAS, 3–8) */
-    var keys=Object.keys(glosario).filter(function(k){return /^[A-ZÁÉÍÓÚÑ]{3,8}$/.test(k);});
+    /* v45.356 · glosario · SIGLAS_CORTAS. UV y OE (de #glosario) y AM, PcD, DS49 y DS27 (traídas de GLOSSARY) no
+       pasan el filtro de 3 a 8 mayúsculas: sin applyGlossary habrían quedado sin tooltip. Se aceptan una a una, sin
+       bajar el filtro. Se revisó cada abbr que generan, con su contexto, en el navegador: UV es unidad vecinal (no hay
+       «radiación UV» ni «índice UV»; la única frase dudosa, «paraderos iluminados UV» en #sociedad-civil, queda en
+       span.no-sigla), OE es objetivo estratégico y AM es adulto mayor («19,7% AM», «170 AM en dependencia grave»,
+       «Club AM Villa Jardín»; las iniciales de los testimonios se omiten con .test-avatar). Las demás claves cortas
+       de #glosario (DP, CP, SI, MG, PP, RI, MZ, EQ) siguen fuera: SI es una palabra y DP tiene dos significados en el
+       propio glosario. */
+    var SIGLAS_CORTAS={UV:1,OE:1,AM:1,PcD:1,DS49:1,DS27:1};
+    function esCorta(k){ return Object.prototype.hasOwnProperty.call(SIGLAS_CORTAS,k); }
+    var keys=Object.keys(glosario).filter(function(k){return /^[A-ZÁÉÍÓÚÑ]{3,8}$/.test(k) || esCorta(k);});
     if(!keys.length) return;
     keys.sort(function(a,b){return b.length-a.length;});
-    var RE=new RegExp('\\b('+keys.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}).join('|')+')\\b','g');
+    function escRe(k){return k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+    /* v45.356 · glosario · plural (pendiente 1.6): «10 KPIs» no calzaba con \b(KPI)\b, porque la s es parte de la
+       palabra. Ahora es \b(SIGLA)s?\b: el abbr conserva el texto como está escrito («KPIs») y data-sigla guarda la sigla. */
+    var RE=new RegExp('\\b('+keys.map(escRe).join('|')+')s?\\b','g');
+    /* prefiltro barato por nodo de texto: tres mayúsculas seguidas o alguna sigla corta */
+    var cortas=keys.filter(esCorta);
+    var PRE=cortas.length ? new RegExp('[A-Z]{3}|\\b(?:'+cortas.map(escRe).join('|')+')') : /[A-Z]{3}/;
 
     /* 3) auto-enlazador: 1ª aparición de cada sigla POR SECCIÓN */
     var SKIP={A:1,ABBR:1,BUTTON:1,CODE:1,SCRIPT:1,STYLE:1,SVG:1,SELECT:1,TEXTAREA:1,INPUT:1,H1:1};
@@ -40037,6 +40061,9 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
         if(el.id && SKIP_ID[el.id]) return true;
         if(el.isContentEditable) return true;
         if(el.classList && (el.classList.contains('lf-panel')||el.classList.contains('chatbot-panel')||el.classList.contains('no-sigla')||el.classList.contains('sigla-tip'))) return true;
+        /* v45.356 · glosario · .test-avatar: las iniciales de los testimonios de #suenos («AM» de «Adulto mayor») son
+           decoración; con AM entre las siglas cortas, el enlazador metía ahí un abbr con foco de teclado. */
+        if(el.classList && el.classList.contains('test-avatar')) return true;
       }
       return false;
     }
@@ -40050,22 +40077,32 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
         seen[sig]=1; changed=true;
         if(m.index>last) frag.appendChild(document.createTextNode(txt.slice(last,m.index)));
         var ab=document.createElement('abbr');
-        ab.className='sigla-tip'; ab.tabIndex=0; ab.setAttribute('data-sigla',sig); ab.textContent=sig;
+        /* v45.356 · glosario · m[0] es el texto escrito (con la s del plural si la hay); m[1], la sigla */
+        ab.className='sigla-tip'; ab.tabIndex=0; ab.setAttribute('data-sigla',sig); ab.textContent=m[0];
         frag.appendChild(ab);
-        last=m.index+sig.length;
+        last=m.index+m[0].length;
       }
       if(!changed) return;
       if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
       tn.parentNode.replaceChild(frag,tn);
     }
-    var secs=main.querySelectorAll('section'), wrapped=0;
-    for(var s=0;s<secs.length;s++){
-      if(secs[s].id==='glosario') continue;
-      var seen={}, tw=document.createTreeWalker(secs[s], NodeFilter.SHOW_TEXT, null), batch=[], n;
-      while((n=tw.nextNode())){ if(n.nodeValue && /[A-Z]{3}/.test(n.nodeValue) && !skip(n)) batch.push(n); }
-      for(var b=0;b<batch.length;b++){ var before=Object.keys(seen).length; wrapNode(batch[b], seen); wrapped+=Object.keys(seen).length-before; }
+    /* v45.356 · glosario · el recorrido pasa a una función para poder repetirlo una vez (ver «segunda pasada» al
+       final de run). Con presembrar, cada sección parte con las siglas que ya tienen abbr, así que la segunda
+       pasada solo enlaza siglas de contenido que se pintó después de la primera: sigue habiendo un solo
+       tooltip automático por sigla y sección. */
+    var wrapped=0;
+    function enlazar(presembrar){
+      var secs=main.querySelectorAll('section');
+      for(var s=0;s<secs.length;s++){
+        if(secs[s].id==='glosario') continue;
+        var seen={}, tw=document.createTreeWalker(secs[s], NodeFilter.SHOW_TEXT, null), batch=[], n;
+        if(presembrar){ var ya=secs[s].querySelectorAll('abbr.sigla-tip[data-sigla]'); for(var y=0;y<ya.length;y++) seen[ya[y].getAttribute('data-sigla')]=1; }
+        while((n=tw.nextNode())){ if(n.nodeValue && PRE.test(n.nodeValue) && !skip(n)) batch.push(n); } /* v45.356 · glosario · PRE en vez de /[A-Z]{3}/, para no saltarse las siglas cortas */
+        for(var b=0;b<batch.length;b++){ var before=Object.keys(seen).length; wrapNode(batch[b], seen); wrapped+=Object.keys(seen).length-before; }
+      }
+      window.__siglasWrapped=wrapped;
     }
-    window.__siglasWrapped=wrapped;
+    enlazar(false);
 
     /* 4) tooltip accesible compartido (patrón WAI-ARIA) */
     var tip=document.createElement('div'); tip.id='siglaTip'; tip.className='sigla-tooltip'; tip.setAttribute('role','tooltip'); tip.hidden=true;
@@ -40074,7 +40111,9 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     var curAb=null;
     function show(ab){
       var sg=ab.getAttribute('data-sigla'), g=glosario[sg]; if(!g) return;
-      tip.innerHTML='<strong>'+esc(sg)+'</strong> &middot; '+esc(g.nombre)+(g.def?'<span class="st-def">'+esc(g.def)+'</span>':'')+'<span class="st-more">Glosario PLADECO</span>';
+      /* v45.356 · glosario · el pie «Glosario PLADECO» solo va en las siglas que están en esa sección: las de
+         glosarioExtra (KPI, CPLT, NNA…) no aparecen allí y el pie mandaba a buscarlas donde no están. */
+      tip.innerHTML='<strong>'+esc(sg)+'</strong> &middot; '+esc(g.nombre)+(g.def?'<span class="st-def">'+esc(g.def)+'</span>':'')+(g.enGlosario?'<span class="st-more">Glosario PLADECO</span>':'');
       tip.hidden=false; curAb=ab; ab.setAttribute('aria-describedby','siglaTip');
       var r=ab.getBoundingClientRect(), tw2=tip.offsetWidth, th=tip.offsetHeight;
       var left=Math.max(8, Math.min(window.innerWidth-tw2-8, r.left));
@@ -40088,6 +40127,17 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     document.addEventListener('focusout',function(e){var a=e.target.closest?e.target.closest('.sigla-tip'):null;if(a)hide();});
     document.addEventListener('keydown',function(e){if(e.key==='Escape')hide();});
     window.addEventListener('scroll',function(){if(curAb)hide();},{passive:true});
+
+    /* v45.356 · glosario · SEGUNDA PASADA (una sola vez, no se repite). Parte del contenido se pinta después del
+       evento load; por ejemplo, el lote diferido _censoRenders (requestIdleCallback, registrado durante la carga)
+       pinta #analisis-estrategico-censo, #coherencia y #voz-institucional. applyGlossary corría también en espera
+       de inactividad y lo alcanzaba; la primera pasada, no. Sin applyGlossary, 35 pares sección-sigla que tenían
+       tooltip quedaban sin él, en esas tres secciones y en #dashboard, #diagnostico-institucional,
+       #cuenta-publica y #matriz (medido en el navegador). Con esta pasada, en espera de inactividad como
+       applyGlossary, los 35 vuelven a tener tooltip (medido 9 s después de cargar): el contenido de
+       _censoRenders ya estaba pintado cuando corrió. */
+    var segunda=function(){ try{ enlazar(true); }catch(e){} };
+    if('requestIdleCallback' in window){ requestIdleCallback(segunda,{timeout:4000}); } else { setTimeout(segunda,2000); }
   }
   if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
 })();
