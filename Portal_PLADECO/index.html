@@ -6357,16 +6357,26 @@ img.mvv-institutional-photo{display:block}
 }
 
 /* ═══ MATRIZ ESTRATÉGICA INTEGRADA ═══ */
+/* v45.356 · [matriz] · §2.5 · TOKENS DE LA MATRIZ QUE SÍ CAMBIAN CON EL TEMA.
+   Los pasteles --me-e1l…--me-e6l se retiran: solo teñían las 48 celdas de la tabla. Estos tokens se
+   declaran en .me-section, así que las variantes oscuras que v45.44 puso en body.dark nunca llegaban a la
+   tabla (la redeclaración de la sección las tapaba): por eso en oscuro el texto claro quedaba sobre pastel.
+   Las variantes oscuras van ahora en body.dark .me-section, que sí gana.
+   · --me-eN: color de identidad del eje, sin cambios (lo siguen usando las pestañas Red y Sankey).
+   · --me-eN-ink: el mismo eje como tinta sobre la superficie del tema; en la tabla solo lo usan .me-etag,
+     el filete de .me-ec y la leyenda. En claro es el mismo tono; en oscuro, uno más claro del mismo matiz.
+   · --me-sub pasa a var(--text2): #64748B rendía 3,3:1 sobre la tarjeta oscura.
+   · --me-bd en oscuro toma el #2d3748 que las reglas oscuras de este bloque ya daban a celdas y fichas. */
 .me-section{
   --me-navy:#0F1C2E;--me-navy2:#162236;--me-navy3:#1E2F47;
   --me-accent:#2A80C7;--me-accent2:#1E66A8;
-  --me-e1:#C0392B;--me-e1l:#FDF0EE;
-  --me-e2:#0E7F68;--me-e2l:#E6F4F1;
-  --me-e3:#B45309;--me-e3l:#FEF3E2;
-  --me-e4:#1A6B3A;--me-e4l:#E8F5EE;
-  --me-e5:#345995;--me-e5l:#eef2f9;
-  --me-e6:#92400E;--me-e6l:#FEF6E4;
-  --me-bd:#E2E8F0;--me-sub:#64748B;
+  --me-e1:#C0392B;--me-e2:#0E7F68;--me-e3:#B45309;--me-e4:#1A6B3A;--me-e5:#345995;--me-e6:#92400E;
+  --me-e1-ink:#C0392B;--me-e2-ink:#0E7F68;--me-e3-ink:#B45309;--me-e4-ink:#1A6B3A;--me-e5-ink:#345995;--me-e6-ink:#92400E;
+  --me-bd:#E2E8F0;--me-sub:var(--text2);
+}
+body.dark .me-section{
+  --me-e1-ink:#E08076;--me-e2-ink:#19B192;--me-e3-ink:#E28136;--me-e4-ink:#2BB160;--me-e5-ink:#7C9DD1;--me-e6-ink:#E47F41;
+  --me-bd:#2d3748;
 }
 .me-tab-bar{display:flex;gap:0;background:var(--me-navy2);border-radius:8px 8px 0 0;overflow:hidden;border:1px solid var(--me-bd);border-bottom:none}
 .me-wip-banner{background:rgb(247, 137, 17);color:#fff;text-align:center;font-size:12px;font-weight:700;letter-spacing:.5px;padding:8px 16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(245,158,11,.25);animation:me-wip-pulse 3s ease-in-out infinite}
@@ -6400,25 +6410,33 @@ body.dark .me-wip-banner{background:rgb(187, 74, 11)}
 .me-ac-sub{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--me-sub);margin-top:1px}
 .me-pc{text-align:center;vertical-align:middle;width:70px}
 .me-pc-val{font-size:26px;font-weight:700}
-.me-bar{width:50px;height:6px;background:#E2E8F0;border-radius:3px;margin:4px auto 0}
-.me-bar-f{height:100%;border-radius:3px}
+/* v45.356 · [matriz] · §2.5 · barra de porcentaje en neutro (antes, relleno en el color del eje y riel claro fijo) */
+.me-bar{width:50px;height:6px;background:var(--border-strong,#cbd5e1);border-radius:3px;margin:4px auto 0}
+.me-bar-f{height:100%;border-radius:3px;background:var(--text2)}
 .me-ods-col{width:88px;text-align:center;vertical-align:middle}
 .me-ods-tags{display:flex;flex-wrap:wrap;gap:3px;justify-content:center}
 .me-ods-dot{width:22px;height:22px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white}
 .me-grp-lbl{font-size:11px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--me-sub);margin:6px 0 3px}
 .me-grp-lbl:first-child{margin-top:0}
 .me-tag-row{display:flex;flex-wrap:wrap;gap:3px}
-.me-oe-tag{border-radius:3px;padding:2px 6px;font-size:10.5px;font-weight:600;color:white;white-space:nowrap}
-.me-note-box{margin-top:6px;font-size:10.5px;line-height:1.4;padding:5px 7px;border-radius:3px;border-left:3px solid}
+/* v45.356 · [matriz] · §2.5 · etiquetas de OE y notas en neutro: antes iban con relleno del color del eje (o de
+   #3c5f98) y texto blanco, y las notas con pastel fijo que no cambiaba en oscuro. El código de cada OE ya dice
+   a qué eje pertenece. */
+.me-oe-tag{border-radius:3px;padding:1px 6px;font-size:10.5px;font-weight:600;white-space:nowrap;color:var(--text);background:transparent;border:1px solid var(--border-strong,#cbd5e1)}
+.me-note-box{margin-top:7px;font-size:10.5px;line-height:1.4;padding:5px 7px;border-radius:3px;border-left:3px solid var(--border-strong,#cbd5e1);background:rgba(15,23,42,.04);color:var(--text2)}
 .me-oe-item{display:flex;gap:5px;margin-bottom:5px;align-items:flex-start;line-height:1.4}
 .me-oe-item:last-child{margin-bottom:0}
-.me-oe-code{font-weight:700;font-size:10px;padding:1px 5px;border-radius:3px;white-space:nowrap;color:white;flex-shrink:0;margin-top:1px}
+.me-oe-code{font-weight:700;font-size:10px;padding:0 5px;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:1px;color:var(--text);background:transparent;border:1px solid var(--border-strong,#cbd5e1)}
 .me-oe-text{font-size:11px;line-height:1.35;color:var(--text)}
 .me-obj-list{list-style:none;padding:0}
 .me-obj-list li{display:flex;gap:5px;margin-bottom:4px;font-size:11.5px;line-height:1.4}
 .me-obj-list li::before{content:'▸';font-size:10px;margin-top:2px;flex-shrink:0}
 .me-obj-list li:last-child{margin-bottom:0}
 .me-tr-tot td{background:var(--me-navy);color:white;border-right:1px solid rgba(255,255,255,.1);border-bottom:none;vertical-align:middle;padding:13px 9px}
+/* v45.356 · [matriz] · §2.5 · la fila de totales es navy en los dos temas, pero la regla global
+   «table td{color:var(--text)!important}» le ponía texto oscuro en claro (lo reparaba el corrector en
+   tiempo de ejecución). Se fija el blanco con la especificidad suficiente. */
+.me-section .me-tr-tot td{color:#fff!important}
 .me-tr-tot td:last-child{border-right:none}
 .me-tot-lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;line-height:1.4}
 .me-tot-sub{font-size:10px;opacity:.65;margin-top:3px;line-height:1.4}
@@ -6469,22 +6487,43 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
 
 /* ── Políticas Públicas Tab ── */
 .pol-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-.pol-filter{background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;color:#64748b;font-family:inherit}
+.pol-filter{background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text2);font-family:inherit}
 .pol-filter:hover{background:#e2e8f0}
-.pol-filter.active{background:var(--me-navy);color:#fff;border-color:var(--me-navy)}
-.pol-filter[data-eje="1"].active{background:var(--eje1);border-color:var(--eje1)}
-.pol-filter[data-eje="2"].active{background:var(--eje2);border-color:var(--eje2)}
-.pol-filter[data-eje="3"].active{background:var(--eje3);border-color:var(--eje3)}
-.pol-filter[data-eje="4"].active{background:var(--eje4);border-color:var(--eje4)}
-.pol-filter[data-eje="5"].active{background:var(--eje5);border-color:var(--eje5)}
-.pol-filter[data-eje="6"].active{background:var(--eje6);border-color:var(--eje6)}
+/* v45.356 · [matriz] · §2.14 · ESTADO PULSADO VISIBLE EN LOS DOS TEMAS.
+   Antes el eje elegido se marcaba con el fondo de su color y texto blanco: en oscuro no se veía (la regla
+   body.dark .pol-filter anulaba el fondo de .active) y en claro el blanco quedaba bajo 4,5:1 sobre el
+   naranjo, el verde y el azul de los ejes 2, 3 y 6. Ahora el pulsado es neutro y fuerte en los dos temas
+   ([aria-pressed="true"], que mantiene filterPol), y el color de cada eje queda como punto junto al
+   rótulo, que es el mismo color de las píldoras de la lista (_EJE_COLORS = --eje1…--eje6). El texto de
+   los botones sin pulsar pasa de #64748b (4,3:1 sobre su fondo) a var(--text2). */
+.pol-ejes{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pol-filter[data-eje="1"]{--pol-dot:var(--eje1)}
+.pol-filter[data-eje="2"]{--pol-dot:var(--eje2)}
+.pol-filter[data-eje="3"]{--pol-dot:var(--eje3)}
+.pol-filter[data-eje="4"]{--pol-dot:var(--eje4)}
+.pol-filter[data-eje="5"]{--pol-dot:var(--eje5)}
+.pol-filter[data-eje="6"]{--pol-dot:var(--eje6)}
+.pol-filter:not([data-eje="0"])::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0;background:var(--pol-dot,transparent);box-shadow:0 0 0 1px rgba(255,255,255,.85)}
+.pol-filter[aria-pressed="true"]{background:#1F3864;color:#fff;border-color:#1F3864}
+body.dark .pol-filter[aria-pressed="true"]{background:#cbd5e1;color:#0b1624;border-color:#cbd5e1}
+.pol-limpiar{background:transparent;border:1.5px solid var(--border-strong,#cbd5e1);border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit}
+.pol-limpiar:hover{background:var(--bg-soft,#f1f5f9)}
+#matriz .pol-limpiar[hidden]{display:none!important}
+.pol-poa-link{margin:0 0 14px;font-size:12.5px;line-height:1.5;color:var(--text2)}
+.pol-poa-link a{font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.mtx-dl-btn:disabled{opacity:.55;cursor:not-allowed}
 .pol-search-wrap{position:relative;flex:1;min-width:180px}
 .pol-search{width:100%;padding:7px 12px 7px 32px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:12px;font-family:inherit;background:#f8fafc;transition:border-color .2s}
 .pol-search:focus{outline:none;border-color:var(--me-accent2);background:#fff}
 .pol-search-wrap::before{content:'🔍';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none}
 .pol-stats{font-size:11px;color:var(--me-sub);font-weight:600;white-space:nowrap}
 .pol-oe-group{margin-bottom:8px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
-.pol-oe-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f8fafc;cursor:pointer;user-select:none;transition:background .2s;border:none;width:100%;text-align:left;font-family:inherit}
+/* v45.356 · [matriz] · §2.4 · .pol-oe-header y .pol-card-head pasan de <div onclick> a <button>: se anulan los
+   estilos propios del botón (borde, fondo, alineación, color) para que se vean igual que antes. El foco va por
+   dentro (outline-offset negativo): .pol-oe-group recorta con overflow:hidden y el anillo global de 3 px hacia
+   afuera quedaba cortado. Gana a «button:focus-visible{…!important}» por especificidad. */
+.pol-oe-header{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#f8fafc;cursor:pointer;user-select:none;transition:background .2s;border:none;width:100%;text-align:left;font-family:inherit;color:var(--text);margin:0;border-radius:0;-webkit-appearance:none;appearance:none}
+#matriz .pol-oe-header:focus-visible,#matriz .pol-card-head:focus-visible{outline:2px solid var(--success-txt,#15803d)!important;outline-offset:-2px!important;box-shadow:none!important}
 .pol-oe-header:hover{background:#eef2f7}
 .pol-oe-header .pol-oe-arrow{font-size:10px;color:#94a3b8;transition:transform .25s;flex-shrink:0}
 .pol-oe-group.open .pol-oe-header .pol-oe-arrow{transform:rotate(90deg)}
@@ -6495,7 +6534,7 @@ body.dark .me-fn{background:rgba(255,255,255,.03);border-color:#2d3748}
 .pol-oe-group.open .pol-oe-body{display:block}
 .pol-card{background:#fff;border:1px solid #e8ecf1;border-radius:6px;margin-bottom:6px;transition:box-shadow .2s}
 .pol-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.pol-card-head{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none}
+.pol-card-head{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none;width:100%;margin:0;border:0;border-radius:5px;background:transparent;color:var(--text);font-family:inherit;text-align:left;-webkit-appearance:none;appearance:none}
 .pol-card-head .pol-num{font-size:10px;font-weight:700;color:#fff;background:var(--me-navy);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .pol-card-head .pol-title{font-size:12px;font-weight:600;color:var(--text);flex:1;line-height:1.3}
 .pol-card-head .pol-badges{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
@@ -14972,7 +15011,10 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
 </script>
 
 <!-- ═══ MATRIZ ESTRATÉGICA INTEGRADA ═══ -->
-<section id="matriz" class="me-section reveal">
+<!-- v45.356 · [matriz] · §2.14 · data-pv-memoria: el motor de vistas guarda la posición de lectura de esta
+     sección al salir de ella y la repone cuando se vuelve con Atrás/Adelante del navegador (antes show()
+     llevaba siempre al inicio de la sección). Ver el bloque [matriz] del motor de vistas. -->
+<section id="matriz" class="me-section reveal" data-pv-memoria>
   <div class="sec-header">
     <div class="badge badge--info">Plan Estrat&#233;gico Completo</div>
     <h2>Matriz Estrat&#233;gica Integrada del PLADECO</h2>
@@ -15107,19 +15149,21 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
 
   <!-- Tabs -->
   <div class="me-tab-bar">
-    <button class="me-tab-btn active" onclick="switchMeTab('tabla',this)">
+    <!-- v45.356 · [matriz] · §2.14 · data-me-tab identifica cada pestaña para que la dirección #matriz/ejeN
+         pueda abrir la de Políticas sin depender del texto del onclick; type="button" explícito -->
+    <button type="button" class="me-tab-btn active" data-me-tab="tabla" onclick="switchMeTab('tabla',this)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 10h18M3 14h18M10 4v16M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"/></svg>
       Matriz Estrat&#233;gica
     </button>
-    <button class="me-tab-btn" onclick="switchMeTab('pol',this)">
+    <button type="button" class="me-tab-btn" data-me-tab="pol" onclick="switchMeTab('pol',this)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
       225 Pol&#237;ticas P&#250;blicas
     </button>
-    <button class="me-tab-btn" onclick="switchMeTab('red',this)">
+    <button type="button" class="me-tab-btn" data-me-tab="red" onclick="switchMeTab('red',this)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="12" r="2"/><line x1="7" y1="12" x2="10" y2="12"/><line x1="13" y1="11" x2="17" y2="6"/><line x1="13" y1="13" x2="17" y2="18"/></svg>
       Red de Conexiones (SNA)
     </button>
-    <button class="me-tab-btn" onclick="switchMeTab('sankey',this)">
+    <button type="button" class="me-tab-btn" data-me-tab="sankey" onclick="switchMeTab('sankey',this)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 6h4l4 6h4l4 6"/><path d="M4 12h4l4 6"/><path d="M4 18h4"/></svg>
       Flujo Estrat&#233;gico (Sankey)
     </button>
@@ -15134,71 +15178,79 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
       <div class="me-chip"><b>225</b> Acciones</div>
       <div class="me-chip">Articulado ERD O&#39;Higgins 2024&#8211;2036</div>
     </div>
+    <!-- v45.356 · [matriz] · §2.5 · TABLA SIN TINTE Y LEGIBLE EN LOS DOS TEMAS (ver el bloque CSS [matriz] §2.5).
+         Antes, 48 de las 56 celdas llevaban en línea el pastel de su eje (--me-eNl), el número, las cifras,
+         los objetivos, las etiquetas de OE y las notas iban en el color del eje, y en oscuro el texto claro
+         quedaba sobre ese pastel, que no cambiaba porque .me-section redeclara los tokens y anulaba los de
+         body.dark. Ahora el color del eje queda solo en el filete de .me-ec y en .me-etag (con variante
+         legible en oscuro, --me-eN-ink); celdas en superficie, cifras, objetivos, etiquetas de OE y notas en
+         neutro. La cabecera tenía rowspan="2" en una sola fila (huérfanos): se quitan y los ocho th llevan
+         scope="col". No cambia ningún dato, nombre ni cifra de la tabla. -->
     <div class="me-table-wrap">
     <table>
       <thead>
         <tr>
-          <th rowspan="2" style="width:36px">N&#176;</th>
-          <th rowspan="2" style="width:165px">Eje Estrat&#233;gico<br>PLADECO 2025&#8211;2035</th>
-          <th style="width:228px">OE Imagen Municipal<br><span style="font-weight:400;font-size:11px;letter-spacing:0">(32 OE institucionales)</span></th>
-          <th style="width:205px">OE Internos PLADECO<br><span style="font-weight:400;font-size:11px;letter-spacing:0">(Matriz 2025-2035)</span></th>
-          <th style="width:225px">Objetivos Espec&#237;ficos Clave</th>
-          <th style="width:60px;text-align:center">N&#176;<br>Acciones</th>
-          <th style="width:70px;text-align:center">%<br>Total</th>
-          <th style="width:88px;text-align:center">ODS<br>Principales</th>
+          <th scope="col" style="width:36px">N&#176;</th>
+          <th scope="col" style="width:165px">Eje Estrat&#233;gico<br>PLADECO 2025&#8211;2035</th>
+          <th scope="col" style="width:228px">OE Imagen Municipal<br><span style="font-weight:400;font-size:11px;letter-spacing:0">(32 OE institucionales)</span></th>
+          <th scope="col" style="width:205px">OE Internos PLADECO<br><span style="font-weight:400;font-size:11px;letter-spacing:0">(Matriz 2025-2035)</span></th>
+          <th scope="col" style="width:225px">Objetivos Espec&#237;ficos Clave</th>
+          <th scope="col" style="width:60px;text-align:center">N&#176;<br>Acciones</th>
+          <th scope="col" style="width:70px;text-align:center">%<br>Total</th>
+          <th scope="col" style="width:88px;text-align:center">ODS<br>Principales</th>
         </tr>
       </thead>
       <tbody>
         <!-- EJE 1 -->
         <tr>
-          <td class="me-nc" style="color:var(--me-e1);background:var(--me-e1l)">1</td>
-          <td class="me-ec" style="background:var(--me-e1l);border-left:5px solid var(--me-e1)">
-            <div class="me-etag" style="color:var(--me-e1)">Eje 1</div>
+          <td class="me-nc">1</td>
+          <td class="me-ec" style="border-left:5px solid var(--me-e1-ink)">
+            <div class="me-etag" style="color:var(--me-e1-ink)">Eje 1</div>
             <div class="me-ename">Cultura, Turismo, Deportes, Recreaci&#243;n y Bienestar Social (Salud)</div>
           </td>
-          <td class="me-oei-col" style="background:var(--me-e1l)">
+          <td class="me-oei-col">
             <div class="me-grp-lbl">EJE 01 &#8212; Desarrollo Social y Comunitario</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.1 Salud comunitaria</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.2 Salud mental</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.3 Envejecimiento activo</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.4 Infancia y adolescencia</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.5 Equidad de g&#233;nero</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.6 Inclusi&#243;n discapacidad</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.7 Diversidad y migraci&#243;n</span>
-              <span class="me-oe-tag" style="background:var(--me-e1)">OE 1.8 Protecci&#243;n social</span>
+              <span class="me-oe-tag">OE 1.1 Salud comunitaria</span>
+              <span class="me-oe-tag">OE 1.2 Salud mental</span>
+              <span class="me-oe-tag">OE 1.3 Envejecimiento activo</span>
+              <span class="me-oe-tag">OE 1.4 Infancia y adolescencia</span>
+              <span class="me-oe-tag">OE 1.5 Equidad de g&#233;nero</span>
+              <span class="me-oe-tag">OE 1.6 Inclusi&#243;n discapacidad</span>
+              <span class="me-oe-tag">OE 1.7 Diversidad y migraci&#243;n</span>
+              <span class="me-oe-tag">OE 1.8 Protecci&#243;n social</span>
             </div>
             <div class="me-grp-lbl">EJE 05 &#8212; Cultura, Deporte e Identidad Local</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:#3c5f98">OE 5.1 Cultura y patrimonio</span>
-              <span class="me-oe-tag" style="background:#3c5f98">OE 5.2 Deporte comunal</span>
-              <span class="me-oe-tag" style="background:#3c5f98">OE 5.3 Identidad local</span>
-              <span class="me-oe-tag" style="background:#3c5f98">OE 5.4 Participaci&#243;n juvenil</span>
+              <span class="me-oe-tag">OE 5.1 Cultura y patrimonio</span>
+              <span class="me-oe-tag">OE 5.2 Deporte comunal</span>
+              <span class="me-oe-tag">OE 5.3 Identidad local</span>
+              <span class="me-oe-tag">OE 5.4 Participaci&#243;n juvenil</span>
             </div>
             <div class="me-grp-lbl">EJE 02 parcial &#8212; Turismo</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e2)">OE 2.3 Turismo rural y entur&#237;stico</span>
+              <span class="me-oe-tag">OE 2.3 Turismo rural y entur&#237;stico</span>
             </div>
           </td>
-          <td class="me-oep-col" style="background:var(--me-e1l)">
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e1)">OE 1.1</span><span class="me-oe-text">Desarrollar Plan de Turismo Rural, Patrimonial y Enotur&#237;stico</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e1)">OE 1.2</span><span class="me-oe-text">Fortalecer la Identidad Cultural y el Patrimonio Local</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e1)">OE 1.3</span><span class="me-oe-text">Ampliar infraestructura deportiva y fomentar la Recreaci&#243;n</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e1)">OE 1.4</span><span class="me-oe-text">Ampliar Oferta Deportiva e inclusi&#243;n social de adultos mayores, PcD y migrantes</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e1)">OE 1.5</span><span class="me-oe-text">Reducir consumo de alcohol y drogas mediante prevenci&#243;n comunitaria</span></div>
+          <td class="me-oep-col">
+            <div class="me-oe-item"><span class="me-oe-code">OE 1.1</span><span class="me-oe-text">Desarrollar Plan de Turismo Rural, Patrimonial y Enotur&#237;stico</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 1.2</span><span class="me-oe-text">Fortalecer la Identidad Cultural y el Patrimonio Local</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 1.3</span><span class="me-oe-text">Ampliar infraestructura deportiva y fomentar la Recreaci&#243;n</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 1.4</span><span class="me-oe-text">Ampliar Oferta Deportiva e inclusi&#243;n social de adultos mayores, PcD y migrantes</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 1.5</span><span class="me-oe-text">Reducir consumo de alcohol y drogas mediante prevenci&#243;n comunitaria</span></div>
           </td>
-          <td class="me-obj-col" style="background:var(--me-e1l)">
+          <td class="me-obj-col">
             <ul class="me-obj-list">
-              <li style="color:var(--me-e1)">Fortalecer infraestructura cultural y patrimonio local</li>
-              <li style="color:var(--me-e1)">Posicionar a Rengo como destino tur&#237;stico rural (Valle Apalta + Metrotren)</li>
-              <li style="color:var(--me-e1)">Ampliar acceso deportivo y recreativo para todos</li>
-              <li style="color:var(--me-e1)">Fortalecer protecci&#243;n social y bienestar comunitario</li>
-              <li style="color:var(--me-e1)">Reducir factores de riesgo en salud p&#250;blica</li>
+              <li>Fortalecer infraestructura cultural y patrimonio local</li>
+              <li>Posicionar a Rengo como destino tur&#237;stico rural (Valle Apalta + Metrotren)</li>
+              <li>Ampliar acceso deportivo y recreativo para todos</li>
+              <li>Fortalecer protecci&#243;n social y bienestar comunitario</li>
+              <li>Reducir factores de riesgo en salud p&#250;blica</li>
             </ul>
           </td>
-          <td class="me-ac" style="background:var(--me-e1l)"><div class="me-ac-num" style="color:var(--me-e1)">58</div><div class="me-ac-sub">acciones</div></td>
-          <td class="me-pc" style="background:var(--me-e1l)"><div class="me-pc-val" style="color:var(--me-e1)">26%</div><div class="me-bar"><div class="me-bar-f" style="width:26%;background:var(--me-e1)"></div></div></td>
-          <td class="me-ods-col" style="background:var(--me-e1l)">
+          <td class="me-ac"><div class="me-ac-num">58</div><div class="me-ac-sub">acciones</div></td>
+          <td class="me-pc"><div class="me-pc-val">26%</div><div class="me-bar"><div class="me-bar-f" style="width:26%"></div></div></td>
+          <td class="me-ods-col">
             <div class="me-ods-tags">
               <div class="me-ods-dot" style="background:#E5243B">3</div>
               <div class="me-ods-dot" style="background:#C5192D">1</div>
@@ -15211,36 +15263,36 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
         </tr>
         <!-- EJE 2 -->
         <tr>
-          <td class="me-nc" style="color:var(--me-e2);background:var(--me-e2l)">2</td>
-          <td class="me-ec" style="background:var(--me-e2l);border-left:5px solid var(--me-e2)">
-            <div class="me-etag" style="color:var(--me-e2)">Eje 2</div>
+          <td class="me-nc">2</td>
+          <td class="me-ec" style="border-left:5px solid var(--me-e2-ink)">
+            <div class="me-etag" style="color:var(--me-e2-ink)">Eje 2</div>
             <div class="me-ename">Desarrollo Econ&#243;mico Comunal</div>
           </td>
-          <td class="me-oei-col" style="background:var(--me-e2l)">
+          <td class="me-oei-col">
             <div class="me-grp-lbl">EJE 02 &#8212; Desarrollo Econ&#243;mico y Productivo</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e2)">OE 2.1 Ecosistema productivo</span>
-              <span class="me-oe-tag" style="background:var(--me-e2)">OE 2.2 Empleabilidad</span>
-              <span class="me-oe-tag" style="background:var(--me-e2)">OE 2.4 Comercio local</span>
-              <span class="me-oe-tag" style="background:var(--me-e2)">OE 2.5 Inversi&#243;n regional</span>
+              <span class="me-oe-tag">OE 2.1 Ecosistema productivo</span>
+              <span class="me-oe-tag">OE 2.2 Empleabilidad</span>
+              <span class="me-oe-tag">OE 2.4 Comercio local</span>
+              <span class="me-oe-tag">OE 2.5 Inversi&#243;n regional</span>
             </div>
           </td>
-          <td class="me-oep-col" style="background:var(--me-e2l)">
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e2)">OE 2.1</span><span class="me-oe-text">Fortalecer el Ecosistema Productivo y de Emprendimiento Local</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e2)">OE 2.2</span><span class="me-oe-text">Mejorar la Empleabilidad y la Capacitaci&#243;n Laboral</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e2)">OE 2.3</span><span class="me-oe-text">Crear Polos de Emprendimiento y Econom&#237;a Solidaria</span></div>
+          <td class="me-oep-col">
+            <div class="me-oe-item"><span class="me-oe-code">OE 2.1</span><span class="me-oe-text">Fortalecer el Ecosistema Productivo y de Emprendimiento Local</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 2.2</span><span class="me-oe-text">Mejorar la Empleabilidad y la Capacitaci&#243;n Laboral</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 2.3</span><span class="me-oe-text">Crear Polos de Emprendimiento y Econom&#237;a Solidaria</span></div>
           </td>
-          <td class="me-obj-col" style="background:var(--me-e2l)">
+          <td class="me-obj-col">
             <ul class="me-obj-list">
-              <li style="color:var(--me-e2)">Fortalecer emprendimiento y PYMES locales</li>
-              <li style="color:var(--me-e2)">Diversificar base productiva agr&#237;cola</li>
-              <li style="color:var(--me-e2)">Promover desarrollo del comercio local</li>
-              <li style="color:var(--me-e2)">Mejorar empleabilidad y formaci&#243;n laboral</li>
+              <li>Fortalecer emprendimiento y PYMES locales</li>
+              <li>Diversificar base productiva agr&#237;cola</li>
+              <li>Promover desarrollo del comercio local</li>
+              <li>Mejorar empleabilidad y formaci&#243;n laboral</li>
             </ul>
           </td>
-          <td class="me-ac" style="background:var(--me-e2l)"><div class="me-ac-num" style="color:var(--me-e2)">18</div><div class="me-ac-sub">acciones</div></td>
-          <td class="me-pc" style="background:var(--me-e2l)"><div class="me-pc-val" style="color:var(--me-e2)">8%</div><div class="me-bar"><div class="me-bar-f" style="width:8%;background:var(--me-e2)"></div></div></td>
-          <td class="me-ods-col" style="background:var(--me-e2l)">
+          <td class="me-ac"><div class="me-ac-num">18</div><div class="me-ac-sub">acciones</div></td>
+          <td class="me-pc"><div class="me-pc-val">8%</div><div class="me-bar"><div class="me-bar-f" style="width:8%"></div></div></td>
+          <td class="me-ods-col">
             <div class="me-ods-tags">
               <div class="me-ods-dot" style="background:#FF3A21">8</div>
               <div class="me-ods-dot" style="background:#FD6925">9</div>
@@ -15252,37 +15304,37 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
         </tr>
         <!-- EJE 3 -->
         <tr>
-          <td class="me-nc" style="color:var(--me-e3);background:var(--me-e3l)">3</td>
-          <td class="me-ec" style="background:var(--me-e3l);border-left:5px solid var(--me-e3)">
-            <div class="me-etag" style="color:var(--me-e3)">Eje 3</div>
+          <td class="me-nc">3</td>
+          <td class="me-ec" style="border-left:5px solid var(--me-e3-ink)">
+            <div class="me-etag" style="color:var(--me-e3-ink)">Eje 3</div>
             <div class="me-ename">Educaci&#243;n y Capacitaci&#243;n para el Desarrollo Humano</div>
           </td>
-          <td class="me-oei-col" style="background:var(--me-e3l)">
+          <td class="me-oei-col">
             <div class="me-grp-lbl">EJE 04 parcial &#8212; Servicios P&#250;blicos</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.4 Equipamiento educacional</span>
+              <span class="me-oe-tag">OE 4.4 Equipamiento educacional</span>
             </div>
-            <div class="me-note-box" style="background:#FFF7ED;border-color:var(--me-e3);color:var(--warning-txt,#92400e);margin-top:7px">
+            <div class="me-note-box">
               <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg> Eje transversal. Acciones v&#237;a DAEM y convenios MINEDUC.
             </div>
           </td>
-          <td class="me-oep-col" style="background:var(--me-e3l)">
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e3)">OE 3.1</span><span class="me-oe-text">Mejorar la Calidad y Convivencia Educativa</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e3)">OE 3.2</span><span class="me-oe-text">Modernizar la Infraestructura y Equipamiento Educativo</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e3)">OE 3.3</span><span class="me-oe-text">Fortalecer el Acceso a la Educaci&#243;n Superior y Continua</span></div>
+          <td class="me-oep-col">
+            <div class="me-oe-item"><span class="me-oe-code">OE 3.1</span><span class="me-oe-text">Mejorar la Calidad y Convivencia Educativa</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 3.2</span><span class="me-oe-text">Modernizar la Infraestructura y Equipamiento Educativo</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 3.3</span><span class="me-oe-text">Fortalecer el Acceso a la Educaci&#243;n Superior y Continua</span></div>
           </td>
-          <td class="me-obj-col" style="background:var(--me-e3l)">
+          <td class="me-obj-col">
             <ul class="me-obj-list">
-              <li style="color:var(--me-e3)">Mejorar calidad y resultados educativos</li>
-              <li style="color:var(--me-e3)">Fortalecer educaci&#243;n t&#233;cnico-profesional</li>
-              <li style="color:var(--me-e3)">Modernizar infraestructura educativa</li>
-              <li style="color:var(--me-e3)">Ampliar capacitaci&#243;n para adultos</li>
-              <li style="color:var(--me-e3)">Reducir brechas de escolaridad rural</li>
+              <li>Mejorar calidad y resultados educativos</li>
+              <li>Fortalecer educaci&#243;n t&#233;cnico-profesional</li>
+              <li>Modernizar infraestructura educativa</li>
+              <li>Ampliar capacitaci&#243;n para adultos</li>
+              <li>Reducir brechas de escolaridad rural</li>
             </ul>
           </td>
-          <td class="me-ac" style="background:var(--me-e3l)"><div class="me-ac-num" style="color:var(--me-e3)">14</div><div class="me-ac-sub">acciones</div></td>
-          <td class="me-pc" style="background:var(--me-e3l)"><div class="me-pc-val" style="color:var(--me-e3)">6%</div><div class="me-bar"><div class="me-bar-f" style="width:6%;background:var(--me-e3)"></div></div></td>
-          <td class="me-ods-col" style="background:var(--me-e3l)">
+          <td class="me-ac"><div class="me-ac-num">14</div><div class="me-ac-sub">acciones</div></td>
+          <td class="me-pc"><div class="me-pc-val">6%</div><div class="me-bar"><div class="me-bar-f" style="width:6%"></div></div></td>
+          <td class="me-ods-col">
             <div class="me-ods-tags">
               <div class="me-ods-dot" style="background:#FD9D24">4</div>
               <div class="me-ods-dot" style="background:#E5243B">3</div>
@@ -15294,49 +15346,49 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
         </tr>
         <!-- EJE 4 -->
         <tr>
-          <td class="me-nc" style="color:var(--me-e4);background:var(--me-e4l)">4</td>
-          <td class="me-ec" style="background:var(--me-e4l);border-left:5px solid var(--me-e4)">
-            <div class="me-etag" style="color:var(--me-e4)">Eje 4</div>
+          <td class="me-nc">4</td>
+          <td class="me-ec" style="border-left:5px solid var(--me-e4-ink)">
+            <div class="me-etag" style="color:var(--me-e4-ink)">Eje 4</div>
             <div class="me-ename">Desarrollo Urbano, Vivienda, Infraestructura, Vialidad y Medio Ambiente</div>
           </td>
-          <td class="me-oei-col" style="background:var(--me-e4l)">
+          <td class="me-oei-col">
             <div class="me-grp-lbl">EJE 03 &#8212; Ordenamiento Territorial y MA</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e3)">OE 3.1 Plan Regulador sostenible</span>
-              <span class="me-oe-tag" style="background:var(--me-e3)">OE 3.2 Gesti&#243;n integral del agua</span>
-              <span class="me-oe-tag" style="background:var(--me-e3)">OE 3.3 Cambio clim&#225;tico</span>
-              <span class="me-oe-tag" style="background:var(--me-e3)">OE 3.4 &#193;reas verdes y espacio p&#250;blico</span>
+              <span class="me-oe-tag">OE 3.1 Plan Regulador sostenible</span>
+              <span class="me-oe-tag">OE 3.2 Gesti&#243;n integral del agua</span>
+              <span class="me-oe-tag">OE 3.3 Cambio clim&#225;tico</span>
+              <span class="me-oe-tag">OE 3.4 &#193;reas verdes y espacio p&#250;blico</span>
             </div>
             <div class="me-grp-lbl">EJE 04 &#8212; Servicios P&#250;blicos e Infraestructura</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.1 Vialidad urbana</span>
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.2 Conectividad rural</span>
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.3 Saneamiento y APR</span>
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.5 Equipamiento deportivo</span>
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.6 Equipamiento sanitario</span>
-              <span class="me-oe-tag" style="background:var(--me-e4)">OE 4.7 Servicios b&#225;sicos</span>
+              <span class="me-oe-tag">OE 4.1 Vialidad urbana</span>
+              <span class="me-oe-tag">OE 4.2 Conectividad rural</span>
+              <span class="me-oe-tag">OE 4.3 Saneamiento y APR</span>
+              <span class="me-oe-tag">OE 4.5 Equipamiento deportivo</span>
+              <span class="me-oe-tag">OE 4.6 Equipamiento sanitario</span>
+              <span class="me-oe-tag">OE 4.7 Servicios b&#225;sicos</span>
             </div>
           </td>
-          <td class="me-oep-col" style="background:var(--me-e4l)">
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e4)">OE 4.1</span><span class="me-oe-text">Actualizar PRC con enfoque sostenible y modernizar vialidad</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e4)">OE 4.2</span><span class="me-oe-text">Impulsar regeneraci&#243;n barrial y espacios p&#250;blicos</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e4)">OE 4.3</span><span class="me-oe-text">Desarrollar ciclov&#237;as, movilidad sustentable y desarrollo rural</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e4)">OE 4.5</span><span class="me-oe-text">Plan de Riesgo H&#237;drico R&#237;o Claro</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e4)">OE 4.6</span><span class="me-oe-text">Fortalecer gesti&#243;n ambiental y adaptaci&#243;n al cambio clim&#225;tico</span></div>
+          <td class="me-oep-col">
+            <div class="me-oe-item"><span class="me-oe-code">OE 4.1</span><span class="me-oe-text">Actualizar PRC con enfoque sostenible y modernizar vialidad</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 4.2</span><span class="me-oe-text">Impulsar regeneraci&#243;n barrial y espacios p&#250;blicos</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 4.3</span><span class="me-oe-text">Desarrollar ciclov&#237;as, movilidad sustentable y desarrollo rural</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 4.5</span><span class="me-oe-text">Plan de Riesgo H&#237;drico R&#237;o Claro</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 4.6</span><span class="me-oe-text">Fortalecer gesti&#243;n ambiental y adaptaci&#243;n al cambio clim&#225;tico</span></div>
           </td>
-          <td class="me-obj-col" style="background:var(--me-e4l)">
+          <td class="me-obj-col">
             <ul class="me-obj-list">
-              <li style="color:var(--me-e4)">Reducir d&#233;ficit habitacional (1.401 unidades)</li>
-              <li style="color:var(--me-e4)">Mejorar conectividad vial y movilidad sostenible</li>
-              <li style="color:var(--me-e4)">Aumentar &#225;reas verdes (1,96 m&#178;/hab vs OMS 9-10)</li>
-              <li style="color:var(--me-e4)">Gesti&#243;n ambiental y adaptaci&#243;n CC</li>
-              <li style="color:var(--me-e4)">PRC actualizado (16 a&#241;os sin actualizar)</li>
-              <li style="color:var(--me-e4)">Gobernanza h&#237;drica R&#237;o Claro</li>
+              <li>Reducir d&#233;ficit habitacional (1.401 unidades)</li>
+              <li>Mejorar conectividad vial y movilidad sostenible</li>
+              <li>Aumentar &#225;reas verdes (1,96 m&#178;/hab vs OMS 9-10)</li>
+              <li>Gesti&#243;n ambiental y adaptaci&#243;n CC</li>
+              <li>PRC actualizado (16 a&#241;os sin actualizar)</li>
+              <li>Gobernanza h&#237;drica R&#237;o Claro</li>
             </ul>
           </td>
-          <td class="me-ac" style="background:var(--me-e4l)"><div class="me-ac-num" style="color:var(--me-e4)">53</div><div class="me-ac-sub">acciones</div></td>
-          <td class="me-pc" style="background:var(--me-e4l)"><div class="me-pc-val" style="color:var(--me-e4)">24%</div><div class="me-bar"><div class="me-bar-f" style="width:24%;background:var(--me-e4)"></div></div></td>
-          <td class="me-ods-col" style="background:var(--me-e4l)">
+          <td class="me-ac"><div class="me-ac-num">53</div><div class="me-ac-sub">acciones</div></td>
+          <td class="me-pc"><div class="me-pc-val">24%</div><div class="me-bar"><div class="me-bar-f" style="width:24%"></div></div></td>
+          <td class="me-ods-col">
             <div class="me-ods-tags">
               <div class="me-ods-dot" style="background:#56C02B">11</div>
               <div class="me-ods-dot" style="background:#3F7E44">13</div>
@@ -15349,43 +15401,43 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
         </tr>
         <!-- EJE 5 -->
         <tr>
-          <td class="me-nc" style="color:var(--me-e5);background:var(--me-e5l)">5</td>
-          <td class="me-ec" style="background:var(--me-e5l);border-left:5px solid var(--me-e5)">
-            <div class="me-etag" style="color:var(--me-e5)">Eje 5</div>
+          <td class="me-nc">5</td>
+          <td class="me-ec" style="border-left:5px solid var(--me-e5-ink)">
+            <div class="me-etag" style="color:var(--me-e5-ink)">Eje 5</div>
             <div class="me-ename">Seguridad P&#250;blica y Gesti&#243;n de Riesgos y Emergencias</div>
           </td>
-          <td class="me-oei-col" style="background:var(--me-e5l)">
+          <td class="me-oei-col">
             <div class="me-grp-lbl">OE articulaci&#243;n transversal (imagen municipal)</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e1);opacity:.85">OE 1.4 Infancia y adolescencia</span>
-              <span class="me-oe-tag" style="background:var(--me-e1);opacity:.85">OE 1.5 Equidad de g&#233;nero</span>
-              <span class="me-oe-tag" style="background:var(--me-e1);opacity:.85">OE 1.8 Protecci&#243;n social</span>
-              <span class="me-oe-tag" style="background:var(--me-e3);opacity:.85">OE 3.2 Gesti&#243;n del agua</span>
-              <span class="me-oe-tag" style="background:var(--me-e3);opacity:.85">OE 3.3 Cambio clim&#225;tico</span>
+              <span class="me-oe-tag">OE 1.4 Infancia y adolescencia</span>
+              <span class="me-oe-tag">OE 1.5 Equidad de g&#233;nero</span>
+              <span class="me-oe-tag">OE 1.8 Protecci&#243;n social</span>
+              <span class="me-oe-tag">OE 3.2 Gesti&#243;n del agua</span>
+              <span class="me-oe-tag">OE 3.3 Cambio clim&#225;tico</span>
             </div>
-            <div class="me-note-box" style="background:#eef2f9;border-color:var(--me-e5);color:var(--me-e5);margin-top:7px">
+            <div class="me-note-box">
               Articula Plan Comunal Seguridad 2025, PACCC (Ley 21.455) y Ley 21.364.
             </div>
           </td>
-          <td class="me-oep-col" style="background:var(--me-e5l)">
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e5)">OE 5.1</span><span class="me-oe-text">Aumentar percepci&#243;n de seguridad de NNA en espacios p&#250;blicos</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e5)">OE 5.2</span><span class="me-oe-text">Reducir la violencia intrafamiliar con enfoque integral</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e5)">OE 5.3</span><span class="me-oe-text">Reducir robos, microtr&#225;fico y delitos de mayor connotaci&#243;n</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e5)">OE 5.4</span><span class="me-oe-text">Mejorar convivencia escolar y reducir bullying</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e5)">OE 5.5</span><span class="me-oe-text">Plan comunal de gesti&#243;n del riesgo de desastres (Ley 21.364)</span></div>
+          <td class="me-oep-col">
+            <div class="me-oe-item"><span class="me-oe-code">OE 5.1</span><span class="me-oe-text">Aumentar percepci&#243;n de seguridad de NNA en espacios p&#250;blicos</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 5.2</span><span class="me-oe-text">Reducir la violencia intrafamiliar con enfoque integral</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 5.3</span><span class="me-oe-text">Reducir robos, microtr&#225;fico y delitos de mayor connotaci&#243;n</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 5.4</span><span class="me-oe-text">Mejorar convivencia escolar y reducir bullying</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 5.5</span><span class="me-oe-text">Plan comunal de gesti&#243;n del riesgo de desastres (Ley 21.364)</span></div>
           </td>
-          <td class="me-obj-col" style="background:var(--me-e5l)">
+          <td class="me-obj-col">
             <ul class="me-obj-list">
-              <li style="color:var(--me-e5)">Fortalecer prevenci&#243;n del delito (5.620 casos/a&#241;o)</li>
-              <li style="color:var(--me-e5)">Recuperar espacios p&#250;blicos seguros &#8212; CPTED</li>
-              <li style="color:var(--me-e5)">Proteger NNA y mujeres (VIF 426 casos, 78% mujeres)</li>
-              <li style="color:var(--me-e5)">Fortalecer gesti&#243;n comunal de riesgos</li>
-              <li style="color:var(--me-e5)">Articular PACCC con planes SENAPRED</li>
+              <li>Fortalecer prevenci&#243;n del delito (5.620 casos/a&#241;o)</li>
+              <li>Recuperar espacios p&#250;blicos seguros &#8212; CPTED</li>
+              <li>Proteger NNA y mujeres (VIF 426 casos, 78% mujeres)</li>
+              <li>Fortalecer gesti&#243;n comunal de riesgos</li>
+              <li>Articular PACCC con planes SENAPRED</li>
             </ul>
           </td>
-          <td class="me-ac" style="background:var(--me-e5l)"><div class="me-ac-num" style="color:var(--me-e5)">32</div><div class="me-ac-sub">acciones</div></td>
-          <td class="me-pc" style="background:var(--me-e5l)"><div class="me-pc-val" style="color:var(--me-e5)">14%</div><div class="me-bar"><div class="me-bar-f" style="width:14%;background:var(--me-e5)"></div></div></td>
-          <td class="me-ods-col" style="background:var(--me-e5l)">
+          <td class="me-ac"><div class="me-ac-num">32</div><div class="me-ac-sub">acciones</div></td>
+          <td class="me-pc"><div class="me-pc-val">14%</div><div class="me-bar"><div class="me-bar-f" style="width:14%"></div></div></td>
+          <td class="me-ods-col">
             <div class="me-ods-tags">
               <div class="me-ods-dot" style="background:#FD6925">16</div>
               <div class="me-ods-dot" style="background:#56C02B">11</div>
@@ -15397,47 +15449,47 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
         </tr>
         <!-- EJE 6 -->
         <tr>
-          <td class="me-nc" style="color:var(--me-e6);background:var(--me-e6l)">6</td>
-          <td class="me-ec" style="background:var(--me-e6l);border-left:5px solid var(--me-e6)">
-            <div class="me-etag" style="color:var(--me-e6)">Eje 6</div>
+          <td class="me-nc">6</td>
+          <td class="me-ec" style="border-left:5px solid var(--me-e6-ink)">
+            <div class="me-etag" style="color:var(--me-e6-ink)">Eje 6</div>
             <div class="me-ename">Innovaci&#243;n, Modernizaci&#243;n y Optimizaci&#243;n de la Gesti&#243;n Municipal</div>
           </td>
-          <td class="me-oei-col" style="background:var(--me-e6l)">
+          <td class="me-oei-col">
             <div class="me-grp-lbl">EJE 06 &#8212; Gesti&#243;n Municipal y Gobernanza</div>
             <div class="me-tag-row">
-              <span class="me-oe-tag" style="background:var(--me-e6)">OE 6.1 Modernizaci&#243;n digital</span>
-              <span class="me-oe-tag" style="background:var(--me-e6)">OE 6.2 Transparencia</span>
-              <span class="me-oe-tag" style="background:var(--me-e6)">OE 6.3 Fortalecimiento organizacional</span>
-              <span class="me-oe-tag" style="background:var(--me-e6)">OE 6.4 Participaci&#243;n y gobernanza</span>
+              <span class="me-oe-tag">OE 6.1 Modernizaci&#243;n digital</span>
+              <span class="me-oe-tag">OE 6.2 Transparencia</span>
+              <span class="me-oe-tag">OE 6.3 Fortalecimiento organizacional</span>
+              <span class="me-oe-tag">OE 6.4 Participaci&#243;n y gobernanza</span>
             </div>
-            <div class="me-note-box" style="background:#FEF6E4;border-color:var(--me-e6);color:var(--me-e6);margin-top:7px">
+            <div class="me-note-box">
               <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-chart"></use></svg> El seguimiento de la gesti&#243;n se realiza con el <strong>Tablero de 10 KPIs del PLADECO</strong>, con reporte trimestral al Concejo Municipal.
             </div>
-            <div class="me-note-box" style="background:#FEF6E4;border-color:var(--me-e6);color:var(--me-e6);margin-top:7px">
+            <div class="me-note-box">
               <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-briefcase"></use></svg> Contempla crear una <strong>Unidad T&#233;cnica de Formulaci&#243;n de Proyectos</strong> para cerrar la brecha de captaci&#243;n de fondos externos (6,28% vs 13,89% regional).
             </div>
           </td>
-          <td class="me-oep-col" style="background:var(--me-e6l)">
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e6)">OE 6.1</span><span class="me-oe-text">Sistema de monitoreo y evaluaci&#243;n de planes (M&amp;E PLADECO)</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e6)">OE 6.2</span><span class="me-oe-text">Actualizar Pol&#237;tica RRHH y fortalecer capacidades</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e6)">OE 6.3</span><span class="me-oe-text">Implementar ERP, transformaci&#243;n digital y participaci&#243;n</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e6)">OE 6.4</span><span class="me-oe-text">Crear Unidad de Medio Ambiente Municipal</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e6)">OE 6.5</span><span class="me-oe-text">Crear Direcci&#243;n de Desarrollo Econ&#243;mico Local</span></div>
-            <div class="me-oe-item"><span class="me-oe-code" style="background:var(--me-e6)">OE 6.6</span><span class="me-oe-text">Fortalecer cuenta p&#250;blica y COSOC (Ley 20.500)</span></div>
+          <td class="me-oep-col">
+            <div class="me-oe-item"><span class="me-oe-code">OE 6.1</span><span class="me-oe-text">Sistema de monitoreo y evaluaci&#243;n de planes (M&amp;E PLADECO)</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 6.2</span><span class="me-oe-text">Actualizar Pol&#237;tica RRHH y fortalecer capacidades</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 6.3</span><span class="me-oe-text">Implementar ERP, transformaci&#243;n digital y participaci&#243;n</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 6.4</span><span class="me-oe-text">Crear Unidad de Medio Ambiente Municipal</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 6.5</span><span class="me-oe-text">Crear Direcci&#243;n de Desarrollo Econ&#243;mico Local</span></div>
+            <div class="me-oe-item"><span class="me-oe-code">OE 6.6</span><span class="me-oe-text">Fortalecer cuenta p&#250;blica y COSOC (Ley 20.500)</span></div>
           </td>
-          <td class="me-obj-col" style="background:var(--me-e6l)">
+          <td class="me-obj-col">
             <ul class="me-obj-list">
-              <li style="color:var(--me-e6)">Digitalizar servicios municipales &#8212; Ley 21.180</li>
-              <li style="color:var(--me-e6)">Fortalecer transparencia (IIGAM 57% <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-arrow"></use></svg> 80%)</li>
-              <li style="color:var(--me-e6)">Mejorar capacidades del personal (34,5% <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-arrow"></use></svg> 55%)</li>
-              <li style="color:var(--me-e6)">Gesti&#243;n basada en evidencia e indicadores KPI</li>
-              <li style="color:var(--me-e6)">Crear Unidad MA y Dir. Desarrollo Econ&#243;mico</li>
-              <li style="color:var(--me-e6)">Activar COSOC y mecanismos Ley 20.500</li>
+              <li>Digitalizar servicios municipales &#8212; Ley 21.180</li>
+              <li>Fortalecer transparencia (IIGAM 57% <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-arrow"></use></svg> 80%)</li>
+              <li>Mejorar capacidades del personal (34,5% <svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-arrow"></use></svg> 55%)</li>
+              <li>Gesti&#243;n basada en evidencia e indicadores KPI</li>
+              <li>Crear Unidad MA y Dir. Desarrollo Econ&#243;mico</li>
+              <li>Activar COSOC y mecanismos Ley 20.500</li>
             </ul>
           </td>
-          <td class="me-ac" style="background:var(--me-e6l)"><div class="me-ac-num" style="color:var(--me-e6)">50</div><div class="me-ac-sub">acciones</div></td>
-          <td class="me-pc" style="background:var(--me-e6l)"><div class="me-pc-val" style="color:var(--me-e6)">22%</div><div class="me-bar"><div class="me-bar-f" style="width:22%;background:var(--me-e6)"></div></div></td>
-          <td class="me-ods-col" style="background:var(--me-e6l)">
+          <td class="me-ac"><div class="me-ac-num">50</div><div class="me-ac-sub">acciones</div></td>
+          <td class="me-pc"><div class="me-pc-val">22%</div><div class="me-bar"><div class="me-bar-f" style="width:22%"></div></div></td>
+          <td class="me-ods-col">
             <div class="me-ods-tags">
               <div class="me-ods-dot" style="background:#FD6925">16</div>
               <div class="me-ods-dot" style="background:#19486A">17</div>
@@ -15465,29 +15517,41 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
     </table>
     </div>
     <div class="me-legend-row">
-      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e1)"></div>Eje 1 Desarrollo Social</div>
-      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e2)"></div>Eje 2 Desarrollo Econ&#243;mico</div>
-      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e3)"></div>Eje 3 Educaci&#243;n</div>
-      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e4)"></div>Eje 4 Territorio y MA</div>
-      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e5)"></div>Eje 5 Seguridad</div>
-      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e6)"></div>Eje 6 Gesti&#243;n Municipal</div>
+      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e1-ink)"></div>Eje 1 Desarrollo Social</div>
+      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e2-ink)"></div>Eje 2 Desarrollo Econ&#243;mico</div>
+      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e3-ink)"></div>Eje 3 Educaci&#243;n</div>
+      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e4-ink)"></div>Eje 4 Territorio y MA</div>
+      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e5-ink)"></div>Eje 5 Seguridad</div>
+      <div class="me-leg-item"><div class="me-leg-sq" style="background:var(--me-e6-ink)"></div>Eje 6 Gesti&#243;n Municipal</div>
     </div>
     <div class="me-fn-note"><b>Nota metodol&#243;gica:</b> La tabla integra dos taxonom&#237;as: los <b>32 OE Imagen</b> corresponden a la arquitectura institucional municipal (EJE 01&#8211;06 imagen p&#250;blica) y los <b>27 OE Internos PLADECO</b> son los objetivos de la Matriz 2025&#8211;2035 (OE 1.1&#8211;OE 6.6). Totales: 58+18+14+53+32+50=225 acciones. Fuente: Matriz PLADECO RENGO 2025-2035 &#183; SECPLAC Rengo.</div>
   </div>
 
   <!-- TAB 2: POLÍTICAS PÚBLICAS -->
   <div id="me-tab-pol" class="me-tab-panel">
+    <!-- v45.356 · [matriz] · §2.14 · FILTROS CON ESTADO Y CON SALIDA.
+         Los botones de eje eran <button> sin type ni aria-pressed: el eje elegido solo se veía por el
+         color, y en oscuro ni eso (body.dark .pol-filter anulaba el fondo de .active). Ahora van en un
+         grupo rotulado, con aria-pressed que filterPol mantiene al día; «Limpiar filtros» aparece solo
+         cuando hay eje o texto activos (no queda un botón sin función) y devuelve el foco al buscador;
+         el contador anuncia el resultado (role="status"). La pestaña no filtra por plazo, responsable
+         ni financiamiento: esos filtros ya existen en el POA, que reúne las mismas acciones (se comprobó
+         que accionesPOA y _POL tienen los mismos 225 números), y se enlazan en vez de duplicarlos. -->
     <div class="pol-toolbar">
-      <button class="pol-filter active" data-eje="0" onclick="filterPol(0,this)">Todos</button>
-      <button class="pol-filter" data-eje="1" onclick="filterPol(1,this)">Eje 1</button>
-      <button class="pol-filter" data-eje="2" onclick="filterPol(2,this)">Eje 2</button>
-      <button class="pol-filter" data-eje="3" onclick="filterPol(3,this)">Eje 3</button>
-      <button class="pol-filter" data-eje="4" onclick="filterPol(4,this)">Eje 4</button>
-      <button class="pol-filter" data-eje="5" onclick="filterPol(5,this)">Eje 5</button>
-      <button class="pol-filter" data-eje="6" onclick="filterPol(6,this)">Eje 6</button>
+      <div class="pol-ejes" role="group" aria-label="Filtrar por eje">
+        <button type="button" class="pol-filter active" data-eje="0" aria-pressed="true" onclick="filterPol(0,this)">Todos</button>
+        <button type="button" class="pol-filter" data-eje="1" aria-pressed="false" onclick="filterPol(1,this)">Eje 1</button>
+        <button type="button" class="pol-filter" data-eje="2" aria-pressed="false" onclick="filterPol(2,this)">Eje 2</button>
+        <button type="button" class="pol-filter" data-eje="3" aria-pressed="false" onclick="filterPol(3,this)">Eje 3</button>
+        <button type="button" class="pol-filter" data-eje="4" aria-pressed="false" onclick="filterPol(4,this)">Eje 4</button>
+        <button type="button" class="pol-filter" data-eje="5" aria-pressed="false" onclick="filterPol(5,this)">Eje 5</button>
+        <button type="button" class="pol-filter" data-eje="6" aria-pressed="false" onclick="filterPol(6,this)">Eje 6</button>
+      </div>
       <div class="pol-search-wrap"><input type="text" class="pol-search" id="polSearch" placeholder="Buscar pol&#237;tica, &#225;rea o indicador..." oninput="searchPol(this.value)" aria-label="Buscar pol&#237;ticas p&#250;blicas"></div>
-      <span class="pol-stats" id="polStats">225 pol&#237;ticas</span>
+      <button type="button" class="pol-limpiar" id="polLimpiar" onclick="limpiarPol()" hidden>Limpiar filtros</button>
+      <span class="pol-stats" id="polStats" role="status">225 pol&#237;ticas</span>
     </div>
+    <p class="pol-poa-link">Para filtrar por plazo, responsable o financiamiento, usa los <a href="#poaFilters">filtros del Plan Operativo Anual (POA)</a>, que re&uacute;ne las mismas acciones de esta lista.</p>
     <div id="polContent"></div>
   </div>
 
@@ -33415,10 +33479,14 @@ function switchMeTab(id,btn){
   document.querySelectorAll('.me-tab-panel').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.me-tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('me-tab-'+id).classList.add('active');
-  btn.classList.add('active');
+  /* v45.356 · [matriz] · §2.14 · el botón se busca por data-me-tab cuando la llamada viene de la dirección
+     (#matriz/ejeN) y no de un clic; y la dirección sigue a la pestaña (ver _polUrl) */
+  btn=btn||document.querySelector('#matriz .me-tab-btn[data-me-tab="'+id+'"]');
+  if(btn) btn.classList.add('active');
   if(id==='pol'&&!window._polInit){window._polInit=true;renderPol();}
   if(id==='red'){window._meSnaRequested=true;loadD3AndInit();if(!window._meSnaRendered)initMeSNA();}
   if(id==='sankey'){window._meSankeyRequested=true;loadD3AndInit();if(!window._meSankeyRendered)initMeSankey();}
+  _polUrl();
 }
 
 // ==============================================================
@@ -33431,31 +33499,98 @@ var _polQ='';
 var _EJE_COLORS=['#0c1f36','#c0392b','#f5921d','#2d9a4d','#1F3864','#8B1A1A','#2980b9'];
 var _EJE_SHORT=['','Cultura y Bienestar','Desarrollo Económico','Educación','Territorio y Vivienda','Seguridad Pública','Innovación y Gestión'];
 var _PLAZO_LBL={C:'Corto',M:'Mediano',L:'Largo'};
+/* v45.356 · [matriz] · §2.3 · UNA SOLA FUENTE PARA LA LISTA, EL CONTADOR Y LA DESCARGA.
+   Antes renderPol filtraba por su cuenta y el botón «Descargar datos (CSV)» (bloque v45.339) llamaba a
+   descargarMatrizCSV(window.__polEjeActivo), una variable que ningún código asigna: el archivo traía siempre
+   las 225 filas y su nota decía «225» fija, con la lista filtrada por eje o por texto. _polFiltradas() aplica
+   el eje (_polEje) y el texto (_polQ, sin tildes, en los mismos seis campos que ya buscaba la lista) y la
+   usan renderPol, #polStats y descargarMatrizCSV; _polFiltroDesc() describe el filtro con palabras para la
+   nota, el aviso y el nombre del archivo. El texto se relee del buscador por si el navegador lo restauró al
+   recargar (la lista mostraba todo con el buscador lleno). */
+function _polSyncQ(){
+  var si=document.getElementById('polSearch');
+  if(si){ var v=si.value.toLowerCase().trim(); if(v!==_polQ) _polQ=v; }
+}
+function _polFiltradas(){
+  _polSyncQ();
+  var P=window._POL||[], eje=_polEje, q=_polQ?_stripA(_polQ):'';
+  return P.filter(function(p){
+    if(eje>0&&p[1]!==eje) return false;
+    if(!q) return true;
+    return _stripA(p[5]).indexOf(q)>=0||_stripA(p[4]).indexOf(q)>=0||_stripA(p[3]).indexOf(q)>=0
+      ||_stripA(p[6]).indexOf(q)>=0||_stripA(p[8]).indexOf(q)>=0||_stripA(p[15]).indexOf(q)>=0;
+  });
+}
+function _polFiltroDesc(){
+  _polSyncQ();
+  var partes=[], si=document.getElementById('polSearch');
+  if(_polEje>0) partes.push('Eje '+_polEje);
+  if(_polQ) partes.push('búsqueda «'+((si&&si.value.trim())||_polQ)+'»');
+  return partes.join(' · ');
+}
+/* v45.356 · [matriz] · §2.14 · filterPol mantiene aria-pressed en los siete botones (el estado se lee de
+   data-eje, así también sirve cuando lo llama la dirección y no un clic) y escribe el eje en la dirección */
 function filterPol(eje,btn){
-  _polEje=eje;
-  document.querySelectorAll('.pol-filter').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
+  _polEje=(+eje>=1&&+eje<=6)?+eje:0;
+  document.querySelectorAll('#me-tab-pol .pol-filter').forEach(function(b){
+    var on=(+b.getAttribute('data-eje')===_polEje);
+    b.classList.toggle('active',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+  });
   renderPol();
+  _polUrl();
 }
 function searchPol(q){
   _polQ=q.toLowerCase().trim();
   renderPol();
 }
+function limpiarPol(){
+  var si=document.getElementById('polSearch');
+  if(si) si.value='';
+  _polQ='';
+  filterPol(0);
+  if(si) si.focus();   /* el botón se oculta al limpiar: el foco pasa al buscador y no se pierde */
+}
+/* v45.356 · [matriz] · §2.14 · EL EJE EN LA DIRECCIÓN: #matriz/ejeN (N de 1 a 6) abre la Matriz en la
+   pestaña Políticas con ese eje. El motor de vistas lee la parte que sigue a la barra y se la entrega a
+   window.__pvSub.matriz.aplicar() antes de mostrar la sección, y al escribir la dirección le pregunta
+   estado(). Con «Todos», o con otra pestaña abierta, la dirección vuelve a ser #matriz. _polUrl() usa
+   history.replaceState (no suma entradas al historial) y solo actúa con el motor de vistas encendido y la
+   Matriz abierta: así, cuando la dirección la aplica una navegación desde otra sección, no reescribe la
+   entrada de la sección anterior. El texto buscado no va en la dirección. */
+function _polUrl(){
+  try{
+    if(!document.body.classList.contains('pv-on')) return;
+    var h=location.hash||'';
+    if(h!=='#matriz'&&h.indexOf('#matriz/')!==0) return;
+    var s=window.__pvSub.matriz.estado(), url='#matriz'+(s?'/'+s:'');
+    if(h!==url) history.replaceState(null,'',url);
+  }catch(e){}
+}
+window.__pvSub=window.__pvSub||{};
+window.__pvSub.matriz={
+  estado:function(){
+    var pan=document.getElementById('me-tab-pol');
+    return (pan&&pan.classList.contains('active')&&_polEje>0)?('eje'+_polEje):'';
+  },
+  aplicar:function(sub){
+    var m=/^eje([1-6])$/.exec(String(sub||''));
+    if(!m) return false;
+    var pan=document.getElementById('me-tab-pol');
+    if(pan&&!pan.classList.contains('active')) switchMeTab('pol');
+    filterPol(+m[1]);
+    return true;
+  }
+};
 function _stripA(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();}
-function toggleOeGroup(el){el.closest('.pol-oe-group').classList.toggle('open');}
-function togglePolCard(el){el.closest('.pol-card').classList.toggle('open');}
+/* v45.356 · [matriz] · §2.4 · el acordeón refleja su estado en aria-expanded del botón que lo abre */
+function toggleOeGroup(el){var on=el.closest('.pol-oe-group').classList.toggle('open');el.setAttribute('aria-expanded',on?'true':'false');}
+function togglePolCard(el){var on=el.closest('.pol-card').classList.toggle('open');el.setAttribute('aria-expanded',on?'true':'false');}
 function _escH(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function renderPol(){
-  var filtered=_POL;
-  if(_polEje>0) filtered=filtered.filter(function(p){return p[1]===_polEje;});
-  if(_polQ){
-    var q=_stripA(_polQ);
-    filtered=filtered.filter(function(p){
-      return _stripA(p[5]).indexOf(q)>=0||_stripA(p[4]).indexOf(q)>=0||_stripA(p[3]).indexOf(q)>=0
-        ||_stripA(p[6]).indexOf(q)>=0||_stripA(p[8]).indexOf(q)>=0||_stripA(p[15]).indexOf(q)>=0;
-    });
-  }
-  document.getElementById('polStats').textContent=filtered.length+' política'+(filtered.length!==1?'s':'');
+  var filtered=_polFiltradas();   /* v45.356 · [matriz] · §2.3 · mismo filtro que la descarga */
+  var tot=(window._POL||[]).length, n=filtered.length;
+  document.getElementById('polStats').textContent=(n===tot)?(n+' política'+(n!==1?'s':'')):(n+' de '+tot+' políticas');
   var groups={};var order=[];
   filtered.forEach(function(p){
     var key=p[1]+'-'+p[2];
@@ -33463,30 +33598,39 @@ function renderPol(){
     groups[key].pols.push(p);
   });
   var h='';
-  order.forEach(function(key){
+  /* v45.356 · [matriz] · §2.4 · EL ACORDEÓN SE ABRE CON TECLADO. Las cabeceras eran <div onclick> sin
+     tabindex, rol ni estado: con Tab no se llegaba a ninguna de las 225 fichas. Ahora son <button type="button">
+     con aria-expanded y aria-controls apuntando al id del cuerpo (pol-oe-b-<orden del grupo> y
+     pol-det-<n.º de acción, único en _POL>), de modo que Enter y Espacio abren y cierran. Las flechas son
+     decorativas (aria-hidden) y la píldora del código también, porque el nombre del objetivo ya empieza por
+     ese código (comprobado en las 225 filas): sin eso el lector de pantalla lo leía dos veces. Estilos de
+     botón y foco visible en el bloque CSS [matriz] §2.4. */
+  order.forEach(function(key,gi){
     var g=groups[key];
     var ec=_EJE_COLORS[g.eje]||'#0c1f36';
+    var bid='pol-oe-b-'+gi;
     h+='<div class="pol-oe-group">';
-    h+='<div class="pol-oe-header" onclick="toggleOeGroup(this)">';
-    h+='<span class="pol-oe-arrow">&#9654;</span>';
-    h+='<span class="pol-oe-code" style="background:'+ec+'">'+_escH(g.oc)+'</span>';
+    h+='<button type="button" class="pol-oe-header" aria-expanded="false" aria-controls="'+bid+'" onclick="toggleOeGroup(this)">';
+    h+='<span class="pol-oe-arrow" aria-hidden="true">&#9654;</span>';
+    h+='<span class="pol-oe-code" aria-hidden="true" style="background:'+ec+'">'+_escH(g.oc)+'</span>';
     h+='<span class="pol-oe-name">'+_escH(g.on)+'</span>';
     h+='<span class="pol-oe-badge">'+g.pols.length+' pol.</span>';
-    h+='</div><div class="pol-oe-body">';
+    h+='</button><div class="pol-oe-body" id="'+bid+'">';
     g.pols.forEach(function(p){
       var plCls=p[12]==='C'?'pol-badge-c':p[12]==='M'?'pol-badge-m':'pol-badge-l';
       var plLbl=_PLAZO_LBL[p[12]]||p[12];
+      var did='pol-det-'+p[0];
       h+='<div class="pol-card">';
-      h+='<div class="pol-card-head" onclick="togglePolCard(this)">';
+      h+='<button type="button" class="pol-card-head" aria-expanded="false" aria-controls="'+did+'" onclick="togglePolCard(this)">';
       h+='<span class="pol-num" style="background:'+ec+'">'+p[0]+'</span>';
       h+='<span class="pol-title">'+_escH(p[5])+'</span>';
       h+='<span class="pol-badges">';
       if(p[12]) h+='<span class="pol-badge '+plCls+'">'+plLbl+'</span>';
       if(p[4]) h+='<span class="pol-badge pol-badge-area" title="'+_escH(p[4])+'">'+_escH(p[4])+'</span>';
       h+='</span>';
-      h+='<span class="pol-card-chevron">&#9654;</span>';
-      h+='</div>';
-      h+='<div class="pol-card-detail">';
+      h+='<span class="pol-card-chevron" aria-hidden="true">&#9654;</span>';
+      h+='</button>';
+      h+='<div class="pol-card-detail" id="'+did+'">';
       if(p[6]) h+='<div class="pol-detail-grid"><div class="pol-detail-item pol-detail-full"><div class="pol-detail-label">Descripción</div><div class="pol-detail-value">'+_escH(p[6])+'</div></div></div>';
       if(p[7]) h+='<div class="pol-detail-grid"><div class="pol-detail-item pol-detail-full"><div class="pol-detail-label">Justificación</div><div class="pol-detail-value">'+_escH(p[7])+'</div></div></div>';
       if(p[8]) h+='<div class="pol-detail-grid"><div class="pol-detail-item pol-detail-full"><div class="pol-detail-label">Indicadores</div><div class="pol-detail-value">'+_escH(p[8])+'</div></div></div>';
@@ -33506,6 +33650,9 @@ function renderPol(){
   });
   if(!h) h='<div style="text-align:center;padding:40px;color:var(--me-sub)">No se encontraron políticas con ese criterio.</div>';
   document.getElementById('polContent').innerHTML=h;
+  /* v45.356 · [matriz] · §2.14 y §2.3 · «Limpiar filtros» solo con algo que limpiar; nota y botón CSV al día */
+  var lim=document.getElementById('polLimpiar'); if(lim) lim.hidden=!(_polEje>0||_polQ);
+  if(typeof window.__mtxDlSync==='function') window.__mtxDlSync();
 }
 
 /* v45.3 · FIX duplicación SNA Matriz: separar "flag de petición" (_meSnaRequested)
@@ -34061,18 +34208,11 @@ if('serviceWorker' in navigator){
 
 <!-- ═══ v45.44 · FASE 2 · 8 fixes importantes de auditoría ═══ -->
 <style>
-/* FIX · #matriz dark mode · tokens pastel --me-eNl con variante oscura */
-body.dark{
-  --me-e1l:#2c1d1b; --me-e2l:#13302a; --me-e3l:#2e2416;
-  --me-e4l:#15301f; --me-e5l:#1a2331; --me-e6l:#2e2414;
-  --me-bd:#334155; --me-sub:#94a3b8;
-}
-body.dark .me-nc, body.dark .me-oei-col, body.dark .me-oep-col,
-body.dark .me-obj-col, body.dark .me-ac, body.dark .me-pc,
-body.dark .me-ods-col, body.dark .me-ec{
-  color:#e2e8f0;
-}
-body.dark .me-ac-sub{color:#94a3b8}
+/* v45.356 · [matriz] · §2.5 · RETIRADO el «FIX · #matriz dark mode» de v45.44: declaraba en body.dark los
+   tokens --me-e1l…--me-e6l, --me-bd y --me-sub, pero .me-section los redeclara y ganaba dentro de la tabla,
+   así que las celdas seguían en pastel; y fijaba #e2e8f0 en el texto de las celdas, lo que dejaba texto
+   claro sobre ese pastel (1,00:1 medido en .me-ename y .me-nc). Las celdas ya no llevan pastel y las
+   variantes oscuras que hacen falta están en body.dark .me-section (bloque MATRIZ ESTRATÉGICA INTEGRADA). */
 
 /* FIX · #glosario dark mode · tarjetas e input que forzaban #fff */
 body.dark #glosario .glosario-term{
@@ -38868,7 +39008,23 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* v45.253 · Historial real (§4.1): pushState al navegar (Atrás/Adelante recorren las vistas);
        navSilent evita apilar al arrancar y al responder a popstate. */
     var navSilent=true;
+    /* v45.356 · [matriz] · §2.14 · SUBESTADO EN LA DIRECCIÓN Y POSICIÓN AL VOLVER.
+       (1) Una dirección #seccion/subestado (hoy solo #matriz/ejeN) abre la sección y entrega lo que sigue a
+       la barra a window.__pvSub[seccion].aplicar() ANTES de mostrarla; al escribir la dirección, show()
+       añade window.__pvSub[seccion].estado(). Una sección sin registro ignora el subestado, y un id que
+       exista tal cual (con barra) se sigue resolviendo primero, así que ningún enlace anterior cambia de
+       destino. (2) show() llevaba siempre al inicio de la vista (scrollTo(0,0)). Las secciones marcadas con
+       data-pv-memoria (hoy #matriz) guardan la posición al dejarlas y, si se vuelve con Atrás/Adelante
+       (popstate), se repone esa posición en vez de ir al título; un enlace normal sigue llevando al título.
+       El salto de reposición es instantáneo: el desplazamiento suave del documento no es necesario para
+       volver a donde se estaba. */
+    var memo={}, vistaActual=null, volviendo=false;
+    function partir(h){h=String(h||'');var i=h.indexOf('/');return i>0?{id:h.slice(0,i),sub:h.slice(i+1)}:{id:h,sub:''};}
+    function subDe(id){try{var r=window.__pvSub&&window.__pvSub[id];var s=(r&&typeof r.estado==='function')?r.estado():'';return s?('/'+s):'';}catch(e){return '';}}
+    function conMemoria(key){if(key===null||key==='portada'||!units[key]){return false;}var el=document.getElementById(units[key].id);return !!(el&&el.hasAttribute('data-pv-memoria'));}
     function show(key){
+      if(vistaActual!==key&&conMemoria(vistaActual)){memo[units[vistaActual].id]=window.pageYOffset;}
+      vistaActual=key;
       hideAll(portada,key!=='portada');
       for(var u=0;u<units.length;u++){hideAll(units[u].els,key!==u);}
       var inV=(key!=='portada');
@@ -38886,7 +39042,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       syncTopnavActive(inV?units[key].id:null);
       window.scrollTo(0,0);
       try{
-        var url=inV?('#'+units[key].id):'#inicio';
+        var url=inV?('#'+units[key].id+subDe(units[key].id)):'#inicio';
         if(navSilent||location.hash===url){history.replaceState(null,'',url);}
         else{history.pushState(null,'',url);}
         navSilent=false;
@@ -38912,13 +39068,19 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
         }
       }catch(e){console.warn('[PV] invalidateSize falló:',e);}
     }
-    function go(id){
+    function go(id,sub){
       var tgt=null;try{tgt=document.getElementById(id);}catch(e){}
+      if(!tgt&&String(id).indexOf('/')>0){var pp=partir(id);try{tgt=document.getElementById(pp.id);}catch(e){}if(tgt){id=pp.id;sub=pp.sub;}}
       if(!tgt){return false;}
       var v=viewOf(tgt);
       if(v===null){return false;}
+      if(sub){try{var r=window.__pvSub&&window.__pvSub[id];if(r&&typeof r.aplicar==='function'){r.aplicar(sub);}}catch(e){}}
+      var yMem=(volviendo&&v!=='portada'&&units[v].id===id&&typeof memo[id]==='number')?memo[id]:null;
       show(v);
-      if(v!=='portada'){setTimeout(function(){var y=tgt.getBoundingClientRect().top+window.pageYOffset-headerH();window.scrollTo(0,Math.max(0,y));},90);}
+      if(v!=='portada'){setTimeout(function(){
+        if(yMem!==null){try{window.scrollTo({top:yMem,left:0,behavior:'instant'});}catch(x){window.scrollTo(0,yMem);}return;}
+        var y=tgt.getBoundingClientRect().top+window.pageYOffset-headerH();window.scrollTo(0,Math.max(0,y));
+      },90);}
       return true;
     }
     document.addEventListener('click',function(e){
@@ -38929,6 +39091,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       var id=href.slice(1);
       if(id==='inicio'){e.preventDefault();e.stopPropagation();closeMenus();show('portada');return;}
       var tgt=null;try{tgt=document.getElementById(id);}catch(x){}
+      if(!tgt&&id.indexOf('/')>0){try{tgt=document.getElementById(partir(id).id);}catch(x){}}   /* v45.356 · [matriz] · #seccion/subestado */
       if(!tgt||viewOf(tgt)===null){return;}
       e.preventDefault();e.stopPropagation();closeMenus();go(id);
     },true);
@@ -38940,16 +39103,41 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* v45.253 · Atrás/Adelante del navegador recorren las vistas (popstate → mostrar sin re-apilar) */
     window.addEventListener('popstate',function(){
       navSilent=true;
+      volviendo=true;   /* v45.356 · [matriz] · §2.14 · Atrás/Adelante reponen la posición guardada */
       var h=(location.hash||'').replace('#','');
-      if(!h||h==='inicio'||!go(h)){show('portada');}
+      try{if(!h||h==='inicio'||!go(h)){show('portada');}}finally{volviendo=false;}
     });
+  }
+  /* v45.356 · [matriz] · §2.14 · SIN MOTOR DE VISTAS (?vista=completa, o si run() falla) un enlace
+     #seccion/subestado no apunta a ningún id y quedaría inerte (las seis tarjetas de ejes enlazan a
+     #matriz/ejeN). Aquí se resuelve igual: se aplica el subestado registrado y se lleva a la sección. */
+  function subSinVistas(){
+    function ir(h){
+      var i=h.indexOf('/');if(i<1){return false;}
+      var id=h.slice(0,i),t=document.getElementById(id),r=window.__pvSub&&window.__pvSub[id];
+      if(!t||!r||typeof r.aplicar!=='function'){return false;}
+      try{r.aplicar(h.slice(i+1));}catch(e){}
+      try{t.scrollIntoView({block:'start'});}catch(e){}
+      return true;
+    }
+    document.addEventListener('click',function(e){
+      if(document.body.classList.contains('pv-on')){return;}
+      var a=e.target&&e.target.closest?e.target.closest('a[href^="#"]'):null;if(!a){return;}
+      var h=(a.getAttribute('href')||'').slice(1);
+      if(h.indexOf('/')<1||document.getElementById(h)){return;}
+      if(ir(h)){e.preventDefault();try{history.pushState(null,'','#'+h);}catch(x){}}
+    },true);
+    var h0=(location.hash||'').slice(1);
+    if(h0.indexOf('/')>0&&!document.getElementById(h0)){
+      if(document.readyState==='complete'){ir(h0);}else{window.addEventListener('load',function(){ir(h0);},{once:true});}
+    }
   }
   function boot(){
     /* v45.253 · Vista "documento completo" (§4.1): ?vista=completa omite el motor de vistas →
        todas las secciones fluyen linealmente (lectura continua / imprimir / exportar a PDF).
        Los gráficos se construyen igual (el fallback del lazy construye lo visible tras load). */
-    try{if(/[?&]vista=completa\b/.test(location.search)){document.body.classList.add('vista-completa');return;}}catch(e){}
-    try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}}
+    try{if(/[?&]vista=completa\b/.test(location.search)){document.body.classList.add('vista-completa');subSinVistas();return;}}catch(e){}
+    try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}try{subSinVistas();}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}}
   boot();
 })();
 </script>
@@ -41797,7 +41985,14 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
      ninguna. Se exporta _POL (las 225 acciones) a CSV con los MISMOS rótulos que el
      portal ya usa en el detalle de cada política (Línea Base 2024 / Meta 2028 / Meta 2035,
      Responsable, Financiamiento, ODS), para que la descarga y la pantalla coincidan.
-     Respeta el filtro por eje activo, de modo que se descarga lo que se está viendo.
+     v45.356 · [matriz] · §2.3 · CORRECCIÓN: la línea que seguía aquí («Respeta el filtro por eje
+     activo») no era cierta. El botón pasaba window.__polEjeActivo, que nadie asigna, así que siempre
+     bajaban las 225 filas y la nota decía «225» fija. Ahora descargarMatrizCSV() toma las filas de
+     _polFiltradas() (eje y texto, lo mismo que muestra la lista y cuenta #polStats); el nombre del
+     archivo lleva el eje y el texto (PLADECO_Rengo_matriz_eje3_busqueda-agua.csv) y la nota, generada
+     por window.__mtxDlSync() en cada renderPol, dice qué filtro está activo, cuántas filas lleva y con
+     qué nombre se guarda. Si el filtro deja la lista vacía, el botón queda deshabilitado y la nota lo
+     explica (no se ofrece un archivo sin filas).
 ═══════════════════════════════════════════════════════════════════════════ -->
 <script>
 (function(){
@@ -41807,13 +42002,28 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     var hay = t.indexOf(Q)>=0 || t.indexOf(';')>=0 || t.indexOf(NL)>=0 || t.indexOf(CR)>=0;
     return hay ? Q + t.split(Q).join(Q+Q) + Q : t;
   }
-  window.descargarMatrizCSV=function(ejeFiltro){
+  /* v45.356 · [matriz] · §2.3 · filas, descripción y nombre del archivo salen del filtro de la lista */
+  function filtradas(){ return (typeof _polFiltradas==='function') ? _polFiltradas() : (window._POL||[]); }
+  function descripcion(){ return (typeof _polFiltroDesc==='function') ? _polFiltroDesc() : ''; }
+  function slug(s){
+    return String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()
+      .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40).replace(/-+$/,'');
+  }
+  function nombreArchivo(){
+    var n='PLADECO_Rengo_matriz';
+    if(typeof _polEje!=='undefined' && _polEje>0) n+='_eje'+_polEje;
+    var q=(typeof _polQ!=='undefined') ? slug(_polQ) : '';
+    if(q) n+='_busqueda-'+q;
+    return n+'.csv';
+  }
+  window.descargarMatrizCSV=function(){
     try{
       var P=window._POL||[]; if(!P.length) return;
       var cols=['N°','Eje','Código OE','Objetivo estratégico','Área','Nombre','Descripción',
                 'Justificación','Indicadores','Línea Base 2024','Meta 2028','Meta 2035',
                 'Plazo','Responsable','Financiamiento','ODS'];
-      var filas=P.filter(function(p){ return !ejeFiltro || String(p[1])===String(ejeFiltro); });
+      var filas=filtradas(), desc=descripcion();
+      if(!filas.length) return;                  /* sin filas no hay archivo: el botón ya está deshabilitado */
       var out=[cols.map(csvCampo).join(';')];
       filas.forEach(function(p){
         var f=[]; for(var i=0;i<16;i++) f.push(csvCampo(p[i]));
@@ -41822,10 +42032,23 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       /* BOM para que Excel en español abra bien los acentos */
       var blob=new Blob(['﻿'+out.join(String.fromCharCode(13,10))],{type:'text/csv;charset=utf-8;'});
       var url=URL.createObjectURL(blob), a=document.createElement('a');
-      a.href=url; a.download='PLADECO_Rengo_matriz'+(ejeFiltro?('_eje'+ejeFiltro):'')+'.csv';
+      a.href=url; a.download=nombreArchivo();
       document.body.appendChild(a); a.click();
       setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },400);
-      if(typeof showToast==='function') showToast('Descargando '+filas.length+' acciones en CSV','info');
+      if(typeof showToast==='function') showToast('Descargando '+filas.length+' fila'+(filas.length!==1?'s':'')+' en CSV'+(desc?(' ('+desc+')'):''),'info');
+    }catch(e){}
+  };
+  /* nota y estado del botón según el filtro; la llama renderPol cada vez que cambia la lista */
+  window.__mtxDlSync=function(){
+    try{
+      var w=document.querySelector('#me-tab-pol .mtx-dl'); if(!w) return;
+      var btn=w.querySelector('.mtx-dl-btn'), nota=w.querySelector('.mtx-dl-nota');
+      var tot=(window._POL||[]).length, n=filtradas().length, desc=descripcion();
+      if(btn) btn.disabled=(n===0);
+      if(!nota) return;
+      if(!desc) nota.textContent='Lleva la lista completa: '+tot+' filas con línea base, metas 2028 y 2035, responsable y financiamiento. Se guarda como '+nombreArchivo()+'.';
+      else if(!n) nota.textContent='Con el filtro activo ('+desc+') la lista queda vacía: no hay filas que descargar.';
+      else nota.textContent='Lleva solo lo que muestra la lista con el filtro activo ('+desc+'): '+n+' de '+tot+' filas, con línea base, metas 2028 y 2035, responsable y financiamiento. Se guarda como '+nombreArchivo()+'.';
     }catch(e){}
   };
   function montar(){
@@ -41836,11 +42059,12 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       if(!barra) return;
       var wrap=document.createElement('div');
       wrap.className='mtx-dl';
-      wrap.innerHTML='<button type="button" class="mtx-dl-btn" onclick="descargarMatrizCSV(window.__polEjeActivo||null)">'
+      wrap.innerHTML='<button type="button" class="mtx-dl-btn" aria-describedby="mtxDlNota" onclick="descargarMatrizCSV()">'
         + '<svg class="ico" aria-hidden="true" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M12 3v12M7 12l5 5 5-5M5 21h14"/></svg>'
         + 'Descargar datos (CSV)</button>'
-        + '<span class="mtx-dl-nota">225 acciones con línea base, metas 2028 y 2035, responsable y financiamiento.</span>';
+        + '<span class="mtx-dl-nota" id="mtxDlNota"></span>';
       barra.parentNode.insertBefore(wrap, barra.nextSibling);
+      window.__mtxDlSync();
     }catch(e){}
   }
   if(document.readyState!=='loading') montar(); else window.addEventListener('DOMContentLoaded',montar,{once:true});
@@ -42024,7 +42248,10 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
         var nOE=(e.oes||[]).length||e.nOE||0;
         var nAcc=ACC[String(e.id)]||0;
         var ico=ICO[e.id]||'ico-target';
-        h += '<a class="ejp-card" href="#matriz" style="--ejc:'+esc(e.color||'#1F3864')+'">'
+        /* v45.356 · [matriz] · §2.14 · la tarjeta llevaba a #matriz sin el eje: ahora abre la pestaña Políticas
+           filtrada por ese eje (#matriz/ejeN, que resuelve el motor de vistas). EJES[].id es el mismo número de
+           eje que _POL[1] (así cuenta nAcc esta misma retícula). */
+        h += '<a class="ejp-card" href="#matriz/eje'+esc(e.id)+'" style="--ejc:'+esc(e.color||'#1F3864')+'">'
            +   '<span class="ejp-top"><svg class="ico ejp-ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#'+ico+'"></use></svg>'
            +     '<span class="ejp-num">Eje '+esc(e.id)+'</span></span>'
            +   '<span class="ejp-name">'+esc(e.short||e.name)+'</span>'
