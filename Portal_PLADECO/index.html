@@ -21809,7 +21809,7 @@ function renderMap(){
   if(allBounds.length>0) mapInstance.fitBounds(allBounds,{padding:[25,25],maxZoom:13});
   /* Labels for main locations */
   UV_DATA.filter(u=>u.pob>=2500).forEach(u=>{
-    L.marker([parseFloat(u.lat),parseFloat(u.lng)],{icon:L.divIcon({className:'map-label',html:'<span style="font-size:11px;font-weight:700;color:#1F3864;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+u.name+'</span>',iconSize:[0,0],iconAnchor:[0,-14]})}).addTo(mapInstance);
+    L.marker([parseFloat(u.lat),parseFloat(u.lng)],{interactive:false,keyboard:false,icon:L.divIcon({className:'map-label',html:'<span data-pob="'+(+u.pob||0)+'" style="font-size:11px;font-weight:700;color:#1F3864;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+u.name+'</span>',iconSize:[0,0],iconAnchor:[0,-14]})}).addTo(mapInstance);
   });
   const legend = L.control({position:'bottomright'});
   legend.onAdd = function(){
@@ -25627,7 +25627,7 @@ function renderCensoMapaVuln(){
        texto, con una muestra del tono al lado y el nombre del nivel. */
     L.circle([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:2,opacity:.9,fillOpacity:.65}).addTo(map).bindPopup('<div style="min-width:160px"><strong style="font-size:13px">'+d.loc+'</strong><hr style="margin:4px 0;border-color:rgba(0,0,0,.1)"><table style="font-size:11px;width:100%"><tr><td>Poblaci&oacute;n</td><td style="text-align:right;font-weight:700">'+d.pob.toLocaleString('es-CL')+'</td></tr><tr><td>ICP</td><td style="text-align:right;font-weight:700"><span class="icp-sw" style="background:'+icpColor(d.icp)+'"></span>'+(ICP?ICP.num(d.icp):d.icp.toFixed(3))+(ICP?' · '+ICP.nivel(d.icp):'')+'</td></tr><tr><td>&Aacute;rea</td><td style="text-align:right">'+d.area+'</td></tr></table></div>');
     if(d.pob>=500){
-      L.marker([d.lat,d.lng],{icon:L.divIcon({className:'map-label',html:'<span style="font-size:11px;font-weight:700;color:#1F3864;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+d.loc+'</span>',iconSize:[0,0],iconAnchor:[0,-12]})}).addTo(map);
+      L.marker([d.lat,d.lng],{interactive:false,keyboard:false,icon:L.divIcon({className:'map-label',html:'<span data-pob="'+(+d.pob||0)+'" style="font-size:11px;font-weight:700;color:#1F3864;text-shadow:1px 1px 2px #fff,-1px -1px 2px #fff,1px -1px 2px #fff,-1px 1px 2px #fff;white-space:nowrap;pointer-events:none">'+d.loc+'</span>',iconSize:[0,0],iconAnchor:[0,-12]})}).addTo(map);
     }
   });
   if(bounds.length>0) map.fitBounds(bounds,{padding:[30,30],maxZoom:13});
@@ -26697,8 +26697,12 @@ function ictInitMap(){
   ictZoneCircles["Rosario_circle"]=L.circle([ICT_REFS.rosario.lat,ICT_REFS.rosario.lng],{radius:4000,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
   ictZoneCircles["Popeta_circle"]=L.circle([ICT_REFS.popeta.lat,ICT_REFS.popeta.lng],{radius:3500,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
   // Labels
-  [{lat:ICT_REFS.rengo.lat,lng:ICT_REFS.rengo.lng,txt:"Centro Urbano"},{lat:-34.3490,lng:-70.8380,txt:"Rosario"},{lat:-34.4420,lng:-70.7810,txt:"Popeta"}].forEach(function(l){
-    L.marker([l.lat,l.lng],{icon:L.divIcon({className:'',html:'<div style="background:#fff;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#071d36;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.15)">'+l.txt+'</div>',iconAnchor:[30,10]})}).addTo(ictMapInst);
+  /* v45.360 · los rótulos de zona iban en el centro del círculo, encima de los puntos del catastro, y los
+     tapaban. Ahora van en el borde norte de su círculo, sin capturar clics. */
+  [{c:ictZoneCircles["Centro Urbano"],txt:"Centro Urbano"},{c:ictZoneCircles["Rosario_circle"],txt:"Rosario"},{c:ictZoneCircles["Popeta_circle"],txt:"Popeta"}].forEach(function(l){
+    if(!l.c) return;
+    var pos; try{ pos=L.latLng(l.c.getBounds().getNorth(), l.c.getLatLng().lng); }catch(e){ pos=l.c.getLatLng(); }
+    L.marker(pos,{interactive:false,keyboard:false,icon:L.divIcon({className:'ict-zona-rotulo',html:'<div style="background:#fff;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;color:#071d36;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.15);transform:translate(-50%,-50%);display:inline-block;pointer-events:none">'+l.txt+'</div>',iconSize:[0,0],iconAnchor:[0,0]})}).addTo(ictMapInst);
   });
   // Markers (encima de polígonos)
   ICT_ESPACIOS.forEach(function(e){
@@ -26710,10 +26714,11 @@ function ictInitMap(){
   });
   ictBuildMapToggles();
   // v44.6 · Botón flotante para abrir perfil zonal de macrosectores
+  // v45.360 · color de texto propio: en tema oscuro heredaba texto claro sobre su fondo blanco y el rótulo no se veía
   var zonalBtn=L.control({position:'topright'});
   zonalBtn.onAdd=function(){
     var div=L.DomUtil.create('div','ict-zonal-btn-wrap');
-    div.innerHTML='<button onclick="ictSelectMacrosector(\'centro\')" title="Ver perfil zonal" style="background:#fff;border:1px solid #ccc;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.15)">&#128205; Perfil Zonal</button>';
+    div.innerHTML='<button onclick="ictSelectMacrosector(\'centro\')" title="Ver perfil zonal" style="background:#fff;color:#17324D;border:1px solid #ccc;padding:6px 10px;border-radius:4px;cursor:pointer;font-size:12px;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.15)">&#128205; Perfil Zonal</button>';
     L.DomEvent.disableClickPropagation(div);
     return div;
   };
@@ -45357,6 +45362,28 @@ body.dark .mapa-sin-teselas{ color:#f1f5f9; background:rgba(26,35,50,.94); borde
 /* La leyenda del catastro (.ict-map-ctrls) iba en la esquina superior izquierda, bajo el control de zoom
    de Leaflet: tapaba «ESTADO» y parte de los botones + y −. Se corre a la derecha del zoom. */
 body .ict-map-ctrls{ left:56px; }
+/* v45.360 · rótulos de localidades legibles en tema oscuro: texto claro con halo oscuro (antes, azul
+   oscuro con halo blanco sobre el fondo invertido) */
+body.dark .leaflet-container .map-label span{
+  color:#E8EDF1 !important;
+  text-shadow:0 0 3px #0a0f1c, 0 0 3px #0a0f1c, 1px 1px 2px #0a0f1c, -1px -1px 2px #0a0f1c !important;
+}
+body.dark .ict-zona-rotulo div{ background:#1a2332 !important; color:#E8EDF1 !important; }
+/* v45.360 · leyendas plegables en teléfonos */
+.mapa-leyenda-boton{
+  font-family:inherit; font-weight:600; font-size:12.5px; line-height:1; padding:8px 12px; min-height:36px; border-radius:8px; cursor:pointer;
+  color:#17324D; background:#fff; border:1px solid #CBD5E1; box-shadow:0 1px 4px rgba(0,0,0,.15);
+}
+body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#475569; }
+.mapa-leyenda-boton:focus-visible{ outline:3px solid #2563eb; outline-offset:2px; }
+.mapa-leyenda-control-ict{ position:absolute; top:10px; left:56px; z-index:1000; }
+@media (max-width:640px){
+  .mapa-leyenda-plegada{ display:none !important; }
+  .mapa-leyenda-control-ict ~ .ict-map-ctrls{ top:54px; }
+}
+@media (min-width:641px){
+  .mapa-leyenda-control, .mapa-leyenda-control-ict{ display:none !important; }
+}
 </style>
 <script>
 (function(){
@@ -45388,8 +45415,73 @@ body .ict-map-ctrls{ left:56px; }
   function recalcular(el){
     var m = instancia(el); if(!m) return;
     try{ m.invalidateSize(); }catch(e){}
-    setTimeout(function(){ try{ m.invalidateSize(); }catch(e){} }, 320);
+    setTimeout(function(){ try{ m.invalidateSize(); ordenarRotulos(m); }catch(e){} }, 320);
     vigilarTeselas(m);
+    pulir(m);
+  }
+
+  /* ── v45.360 · PULIDO COMÚN ────────────────────────────────────────────────
+     (1) Rótulos sin choques: en «Explora tu territorio» y en el mapa de vulnerabilidad los nombres de
+         localidades vecinas se montaban entre sí y sobre la leyenda. Se muestran por orden de población
+         y se oculta el que chocaría con uno ya puesto o con un control; al acercar reaparecen.
+     (2) En teléfonos, la leyenda dentro del mapa tapaba el centro de Rengo: se pliega y un botón
+         «Ver leyenda» la abre y la cierra (aria-expanded). En pantallas anchas no cambia nada. */
+  var MOVIL = window.matchMedia ? window.matchMedia('(max-width: 640px)') : { matches: false };
+  function chocan(a, b){ return a.left < b.right + 3 && b.left < a.right + 3 && a.top < b.bottom + 2 && b.top < a.bottom + 2; }
+  function ordenarRotulos(mapa){
+    var cont; try{ cont = mapa.getContainer(); }catch(e){ return; }
+    if(!visible(cont)) return;
+    var rot = [].slice.call(cont.querySelectorAll('.leaflet-marker-icon.map-label'));
+    if(!rot.length) return;
+    function pob(el){ var s = el.querySelector('[data-pob]'); return s ? (+s.getAttribute('data-pob') || 0) : 0; }
+    rot.sort(function(a, b){ return pob(b) - pob(a); });
+    var marco = cont.getBoundingClientRect();
+    var ocupados = [].slice.call(cont.querySelectorAll('.leaflet-control')).map(function(c){ return c.getBoundingClientRect(); })
+      .filter(function(r){ return r.width > 0 && r.height > 0; });
+    rot.forEach(function(el){
+      el.style.visibility = '';
+      var r = (el.firstElementChild || el).getBoundingClientRect();
+      if(!r.width) return;
+      var sale = r.left < marco.left || r.right > marco.right || r.top < marco.top || r.bottom > marco.bottom;
+      if(sale || ocupados.some(function(o){ return chocan(r, o); })){ el.style.visibility = 'hidden'; }
+      else { ocupados.push(r); }
+    });
+  }
+  function plegable(ley, contenedorBoton, claseBoton){
+    if(!ley || ley.__plegable) return;
+    ley.__plegable = true;
+    if(!ley.id) ley.id = 'mapa-leyenda-' + Math.random().toString(36).slice(2, 8);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'mapa-leyenda-boton';
+    b.setAttribute('aria-controls', ley.id);
+    function poner(abierta){
+      ley.classList.toggle('mapa-leyenda-plegada', !abierta);
+      b.setAttribute('aria-expanded', abierta ? 'true' : 'false');
+      b.textContent = abierta ? 'Ocultar leyenda' : 'Ver leyenda';
+    }
+    b.addEventListener('click', function(ev){ ev.stopPropagation(); poner(ley.classList.contains('mapa-leyenda-plegada')); });
+    var envoltura = document.createElement('div');
+    envoltura.className = claseBoton;
+    envoltura.appendChild(b);
+    try{ if(window.L && L.DomEvent){ L.DomEvent.disableClickPropagation(envoltura); } }catch(e){}
+    contenedorBoton(envoltura);
+    poner(!(MOVIL && MOVIL.matches));
+  }
+  function pulir(mapa){
+    var cont; try{ cont = mapa.getContainer(); }catch(e){ return; }
+    if(!mapa.__pulido){
+      mapa.__pulido = true;
+      mapa.on('zoomend moveend resize', function(){ setTimeout(function(){ ordenarRotulos(mapa); }, 60); });
+    }
+    [].forEach.call(cont.querySelectorAll('.leaflet-control.map-legend'), function(ley){
+      plegable(ley, function(env){ env.classList.add('leaflet-control'); ley.parentNode.insertBefore(env, ley.nextSibling); }, 'mapa-leyenda-control');
+    });
+    if(cont.id === 'ictMap'){
+      var ict = document.getElementById('ictMapCtrls');
+      if(ict && ict.parentNode) plegable(ict, function(env){ ict.parentNode.insertBefore(env, ict); }, 'mapa-leyenda-control-ict');
+    }
+    ordenarRotulos(mapa);
   }
 
   var listo = false;
@@ -45491,6 +45583,83 @@ body .ict-map-ctrls{ left:56px; }
   window.addEventListener('hashchange', pasar);
   window.addEventListener('resize', pasar);
   window.addEventListener('load', function(){ pasar(); setTimeout(pasar, 1500); });
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.360 · TEXTO JUSTIFICADO EN TODO EL PORTAL (pedido del encargado del PLADECO)
+     Antes solo se justificaban algunas tarjetas y solo en escritorio (v45.173). Ahora se justifica
+     todo el texto corrido: párrafos, elementos de lista, definiciones, citas y pies largos.
+     CÓMO DECIDE. No se aplica a ciegas: un párrafo dentro de un bloque centrado (títulos de sección,
+     portada, mensajes) debe seguir centrado. Por eso se marca con la clase .txt-justificado solo el
+     texto cuya alineación calculada es «izquierda», que no está en un control (botones, etiquetas,
+     celdas de tabla, mapas, gráficos) y cuya columna mide al menos 240 px: en columnas más angostas
+     la justificación abre huecos grandes entre palabras. Cada elemento se evalúa una vez, cuando ya
+     es visible; el contenido que se agrega o se muestra después se evalúa al aparecer.
+     LEGIBILIDAD. Se activa la partición silábica (hyphens:auto con lang="es"), que reduce los huecos,
+     y la última línea queda alineada a la izquierda.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.txt-justificado{
+  text-align:justify !important;
+  text-justify:inter-word;
+  -webkit-hyphens:auto; hyphens:auto;
+  hyphenate-limit-chars:7 3 3;
+  text-align-last:start;
+}
+</style>
+<script>
+(function(){
+  'use strict';
+  var TEXTO = 'p, li, dd, blockquote, figcaption';
+  var EXCLUIR = 'button, label, select, th, td, caption, nav, [role="navigation"], [role="tablist"], [role="menu"], ' +
+                '.leaflet-container, .sg-graf, svg, canvas, code, pre, .no-justify, [contenteditable="true"]';
+  var MIN_ANCHO = 240;
+
+  function evaluar(el){
+    if(el.__just !== undefined) return;
+    if(el.offsetParent === null) return;              /* oculto: se evalúa cuando se vea */
+    if(el.closest(EXCLUIR)){ el.__just = false; return; }
+    var cs = getComputedStyle(el);
+    var alin = cs.textAlign;
+    if(alin !== 'start' && alin !== 'left' && alin !== 'justify'){ el.__just = false; return; }
+    if(cs.whiteSpace === 'nowrap' || cs.whiteSpace === 'pre'){ el.__just = false; return; }
+    if(el.clientWidth < MIN_ANCHO){ el.__just = false; return; }
+    el.classList.add('txt-justificado');
+    el.__just = true;
+  }
+
+  function recorrer(){
+    var raices = [document.getElementById('main-content'), document.querySelector('footer')].filter(Boolean);
+    var lista = [];
+    raices.forEach(function(r){ lista = lista.concat([].slice.call(r.querySelectorAll(TEXTO))); });
+    var i = 0;
+    (function tramo(){
+      var fin = Math.min(i + 400, lista.length);
+      for(; i < fin; i++){ try{ evaluar(lista[i]); }catch(e){} }
+      if(i < lista.length) setTimeout(tramo, 0);
+    })();
+  }
+
+  var pendiente = null;
+  function pasar(){ clearTimeout(pendiente); pendiente = setTimeout(recorrer, 250); }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasar); else pasar();
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar, 2000); });
+  var main = document.getElementById('main-content');
+  if(main && 'MutationObserver' in window){
+    /* vistas que se abren (clases) y contenido que se dibuja después (nodos) */
+    /* se ignoran los cambios dentro de mapas y gráficos (Leaflet agrega y quita teselas sin parar) */
+    new MutationObserver(function(cambios){
+      for(var k = 0; k < cambios.length; k++){
+        var t = cambios[k].target;
+        if(t && t.nodeType === 1 && t.closest && t.closest('.leaflet-container, svg, canvas')) continue;
+        pasar(); return;
+      }
+    }).observe(main, { attributes: true, attributeFilter: ['class', 'hidden'], childList: true, subtree: true });
+  }
+  window.addEventListener('hashchange', pasar);
 })();
 </script>
 
