@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    SISTEMA GRÁFICO · motor de gráficos de las láminas de indicadores (SVG, sin dependencias)
-   (rama revision-editorial · versión revisable, NO PUBLICADA)
+   (v45.357)
 
    Dibuja desde DATOS, nunca desde imágenes: cada lámina entrega sus valores y el motor genera el SVG.
    Criterios comunes a todas las láminas, para que sean comparables entre sí:

@@ -1,6 +1,6 @@
 # Sistema gráfico territorial · Portal PLADECO Rengo 2025-2035
 
-Paquete gráfico piloto (v45.357). Rama `revision-editorial`: **versión revisable, no publicada**.
+Paquete gráfico piloto (v45.357), publicado con la versión v45.359 del portal.
 Los colores son una propuesta de diseño, no la identidad oficial de la Municipalidad de Rengo.
 
 ## Qué hay en esta carpeta

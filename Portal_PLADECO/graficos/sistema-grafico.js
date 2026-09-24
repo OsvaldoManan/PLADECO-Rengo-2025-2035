@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    SISTEMA GRÁFICO TERRITORIAL · PLADECO Rengo 2025-2035 · montaje de piezas
-   (rama revision-editorial · versión revisable, NO PUBLICADA)
+   (v45.357)
 
    Monta, sobre el marcado existente y sin alterar datos ni navegación, las piezas del paquete
    gráfico piloto. Cada pieza es idempotente (no se duplica si el montaje se repite) y degrada con
