@@ -103,11 +103,13 @@
 </script>
 
 <!-- Preconnect & DNS prefetch para recursos externos -->
-<link rel="preconnect" href="https://unpkg.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<!-- v45.359 · Leaflet y Chart.js pasaron a vendor/ (autoalojados): ya no se anuncia unpkg. Quedan los
+     dominios que todavía se usan: las teselas de los mapas (CARTO y OSM), D3 en la red y el Sankey
+     (cdnjs) y JSZip para una descarga puntual (jsDelivr). -->
+<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
 <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="dns-prefetch" href="https://unpkg.com">
+<link rel="dns-prefetch" href="https://tile.openstreetmap.org">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <!-- v45.225 · Tipografía ÚNICA Poppins · 100% autoalojada en /fonts (@font-face más abajo en este <head>). Sin Google Fonts: cero requests a terceros, más privacidad, funciona offline. -->
@@ -119,11 +121,15 @@
 <link rel="preload" as="image" href="escudo-rengo-blanco.svg">
 <link rel="preload" as="image" href="splash-logo-2026.jpg" fetchpriority="high">
 
-<!-- v45.181 · Leaflet CSS NO-BLOQUEANTE (print-onload trick) - los mapas son lazy-init -->
-<link rel="preload" as="style" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all';this.onload=null"/>
-<noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/></noscript>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<!-- v45.181 · Leaflet CSS NO-BLOQUEANTE (print-onload trick) - los mapas son lazy-init
+     v45.359 · AUTOALOJADO en vendor/leaflet (1.9.4, licencia BSD-2, con sus imágenes). Antes venía de
+     unpkg.com: cuando el CDN tardaba o estaba bloqueado, cada módulo agotaba su espera (de 6 a 12 s) y
+     la sección quedaba con un recuadro vacío y sin aviso. En local carga en milisegundos, el Service
+     Worker lo guarda y el portal ya no pide nada a terceros para dibujar sus mapas. -->
+<link rel="preload" as="style" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css" media="print" onload="this.media='all';this.onload=null"/>
+<noscript><link rel="stylesheet" href="vendor/leaflet/leaflet.css"/></noscript>
+<script src="vendor/leaflet/leaflet.js" defer></script>
 <script>
 /* v45.119 · Wrap de L.map() para registrar instancias. Polling activo desde
    ya — captura a Leaflet apenas se carga, ANTES de que el script principal
@@ -218,7 +224,10 @@ window.pladecoICP = window.pladecoICP || (function(){
      termine. Resultado: window.Chart undefined cuando los inits intentan crear graficos
      => TODOS los graficos del portal invisibles. Sync garantiza que Chart.js este listo
      antes de cualquier "new Chart(...)" inline. -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<!-- v45.359 · Chart.js AUTOALOJADO en vendor/chartjs (4.4.4, licencia MIT). Se carga sin defer, como
+     antes, pero desde el propio sitio: si el CDN estaba bloqueado, esta etiqueta bloqueaba el pintado
+     hasta agotar el tiempo de espera y después ningún gráfico se dibujaba. -->
+<script src="vendor/chartjs/chart.umd.min.js"></script>
 <script>
 /* ─── v45.50 · Blindaje de Chart.js · v45.187 · vuelve a IIFE sincrono porque Chart.js ya es sync ─── */
 (function(){
@@ -2147,6 +2156,14 @@ body.dark .map-meta .mm-warn{background:rgba(245,158,11,.13);border-color:rgba(2
 body.dark .map-meta .mm-warn svg{fill:#fbbf24}
 body.dark .map-meta .mm-warn b{color:#fcd34d}
 /* ── Chrome cartográfico compartido · B2-4 (barra de escala + flecha norte; basemap theme-aware vía JS) ── */
+/* v45.359 · FONDO CARTOGRÁFICO. El portal usaba el fondo de CARTO, que pasó a exigir llave de API y
+   devolvía las teselas con «API KEY REQUIRED» impreso. Ahora usa OpenStreetMap, que no exige llave y
+   solo pide atribución, pero es más colorido que el gris claro anterior: se le baja el color para que
+   los datos manden. En tema oscuro se invierte, porque OpenStreetMap no publica variante oscura.
+   El filtro va en el panel de teselas; los marcadores, trazos y controles quedan fuera. */
+.leaflet-container .leaflet-tile-pane{ filter:saturate(.38) brightness(1.03) contrast(.95); }
+.leaflet-container.pl-mapa-oscuro .leaflet-tile-pane{ filter:invert(1) hue-rotate(180deg) saturate(.35) brightness(.92) contrast(1.05); }
+@media (prefers-reduced-transparency: reduce){ .leaflet-container .leaflet-tile-pane{ filter:none; } }
 .leaflet-control-scale{margin-left:8px!important;margin-bottom:8px!important}
 .leaflet-control-scale-line{background:rgba(255,255,255,.85);color:#1f2937;border:2px solid #64748b;border-top:none;font-size:10px;font-weight:600;line-height:1.2;padding:1px 6px;box-shadow:0 1px 3px rgba(0,0,0,.18)}
 body.dark .leaflet-control-scale-line{background:rgba(17,24,39,.85);color:#e5e7eb;border-color:#94a3b8}
@@ -11527,15 +11544,16 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   /* ── Mapa (Leaflet + leaflet.heat) ── */
   function loadHeat(cb){
     if(window.L&&L.heatLayer)return cb();
-    var s=document.createElement('script');s.src='https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js';s.onload=cb;s.onerror=cb;document.head.appendChild(s);
+    var s=document.createElement('script');s.src='vendor/leaflet/leaflet-heat.js';s.onload=cb;s.onerror=cb;document.head.appendChild(s);  /* v45.359 · autoalojado */
   }
   function buildMap(){
     map=L.map('svMap',{scrollWheelZoom:false,zoomControl:true}).setView([-34.4045,-70.860],15);
     map.on('focus',function(){map.scrollWheelZoom.enable();});map.on('blur',function(){map.scrollWheelZoom.disable();});
-    var voyager=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap, &copy; CARTO',maxZoom:19}).addTo(map);
-    var osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap',maxZoom:19});
+    /* v45.359 · el fondo de CARTO pasó a exigir llave de API y devolvía las teselas con la marca
+       «API KEY REQUIRED» encima. Se usa OpenStreetMap, que no exige llave, con su atribución. */
+    var osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
     var esri=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'&copy; Esri',maxZoom:19});
-    L.control.layers({'Mapa base (CARTO)':voyager,'OpenStreetMap':osm,'Satélite (Esri)':esri},null,{position:'topright'}).addTo(map);
+    L.control.layers({'Mapa (OpenStreetMap)':osm,'Satélite (Esri)':esri},null,{position:'topright'}).addTo(map);
     /* límite comunal punteado */
     fetch('rengo-limite.geojson').then(function(r){return r.json();}).then(function(gj){
       boundaryLayer=L.geoJSON(gj,{style:{color:'#1F3864',weight:2,dashArray:'6 5',fill:false,opacity:.8}}).addTo(map);
@@ -11622,6 +11640,8 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
   /* Disparadores robustos: el motor de vistas oculta la sección (display:none) hasta
      navegar, por lo que IntersectionObserver no basta. Init es idempotente. */
   function show(){init();if(map)setTimeout(function(){map.invalidateSize();},260);}
+  /* v45.359 · se declara el arranque para el bloque «ARRANQUE DE LOS MAPAS» */
+  try{ (window.__mapasPortal=window.__mapasPortal||{})['svMap']=show; }catch(e){}
   if('IntersectionObserver'in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){init();}});},{rootMargin:'200px'});
     io.observe(SEC);
@@ -13044,10 +13064,7 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
     try{
       _mbhtMap = L.map(el, {scrollWheelZoom:false, dragging:true, zoomControl:true})
         .setView([-34.425, -70.85], 11);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution:'&copy; OpenStreetMap &copy; CARTO',
-        maxZoom:19
-      }).addTo(_mbhtMap);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(_mbhtMap);
       _drawDistritoMarkers('bht');
       console.log('[MBHT] Mapa inicializado');
     }catch(e){ console.warn('[MBHT] map error', e); }
@@ -13122,6 +13139,8 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
     }, {threshold:0.05, rootMargin:'200px'});
     io.observe(sec);
   }
+  /* v45.359 · se declara el arranque para el bloque «ARRANQUE DE LOS MAPAS» */
+  try{ (window.__mapasPortal=window.__mapasPortal||{})['mbhtMap']=function(){ _renderRadar(); _renderQuintiles(); _renderMBHTMap(); }; }catch(e){}
 
   if(document.readyState === 'loading'){
     document.addEventListener('DOMContentLoaded', _init);
@@ -21784,9 +21803,7 @@ function renderMap(){
   if(!L.__patched && renderMap._t<=40){ setTimeout(renderMap,50); return; }
   try{
   mapInstance = L.map('mapContainer').setView([-34.385, -70.855], 12);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
-  }).addTo(mapInstance);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(mapInstance);
   /* Fit to all localidades */
   const allBounds=UV_DATA.filter(u=>u.lat&&u.lng).map(u=>[parseFloat(u.lat),parseFloat(u.lng)]);
   if(allBounds.length>0) mapInstance.fitBounds(allBounds,{padding:[25,25],maxZoom:13});
@@ -25582,7 +25599,7 @@ function renderCensoMapaVuln(){
   if(!L.__patched && renderCensoMapaVuln._t<=40){ setTimeout(renderCensoMapaVuln,50); return; }
   try{
   var map=L.map('mapCensoVuln',{scrollWheelZoom:false}).setView([-34.39,-70.855],12);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
   /* v45.355 · §9 · ESCALA SECUENCIAL, NO SEMAFORO. El indice de vulnerabilidad es una
      CANTIDAD sin punto medio significativo, y se pintaba con cuatro tonos distintos
      -verde, amarillo, naranja, rojo-: eso es una escala divergente de tipo semaforo, que
@@ -26671,7 +26688,7 @@ function ictInitMap(){
   if(ictMapInst||typeof L==='undefined') return;
   var el=document.getElementById('ictMap');if(!el) return;
   ictMapInst=L.map('ictMap',{zoomControl:true}).setView([-34.3980,-70.8450],12);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; <a href="https://openstreetmap.org">OSM</a> &copy; CARTO',maxZoom:19}).addTo(ictMapInst);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(ictMapInst);
   // v44.6 · Polígonos macrosectores (al fondo para no tapar marcadores)
   ictBuildMacroPolygons();
   // Circles (referencias de zona haversiana)
@@ -28126,7 +28143,7 @@ function initSocCivMap(){
   if(typeof L==='undefined'){setTimeout(initSocCivMap,500);return;}
   mapEl._init=true;
   var map=L.map('mapSC',{zoomControl:true,scrollWheelZoom:false}).setView([-34.40,-70.855],12);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
   map.on('click',function(){map.scrollWheelZoom.enable();});
   map.on('mouseout',function(){map.scrollWheelZoom.disable();});
   var allMarkers=[];
@@ -32836,16 +32853,14 @@ var _repMap=null,_repLayer=null,_repInited=false,_repClickLatLng=null,_repFotoDa
 function initReporteCiudadano(){
   if(_repInited)return;_repInited=true;
   if(typeof L==='undefined'){
-    var l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(l);
-    var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.onload=_initReporteCiudadano;document.head.appendChild(s);
+    var l=document.createElement('link');l.rel='stylesheet';l.href='vendor/leaflet/leaflet.css';document.head.appendChild(l);  /* v45.359 · autoalojado */
+    var s=document.createElement('script');s.src='vendor/leaflet/leaflet.js';s.onload=_initReporteCiudadano;document.head.appendChild(s);  /* v45.359 · autoalojado */
   } else _initReporteCiudadano();
 }
 function _initReporteCiudadano(){
   var el=document.getElementById('mapaReportes');if(!el)return;
   _repMap=L.map(el,{center:[-34.4067,-70.8597],zoom:13,scrollWheelZoom:false});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19
-  }).addTo(_repMap);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(_repMap);
   _repMap.on('click',function(e){
     _repMap.scrollWheelZoom.enable();setTimeout(function(){if(_repMap)_repMap.scrollWheelZoom.disable();},5000);
     _repClickLatLng={lat:e.latlng.lat,lng:e.latlng.lng};
@@ -32948,11 +32963,11 @@ function initHeatmap(){
   if(typeof L==='undefined'){setTimeout(initHeatmap,500);return;}
   var el=document.getElementById('mapaHeatmap');if(!el)return;
   _heatMap=L.map(el,{center:[-34.4150,-70.8350],zoom:12,scrollWheelZoom:false});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(_heatMap);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(_heatMap);
   // Cargar Leaflet.heat plugin
   if(typeof L.heatLayer==='undefined'){
     var s=document.createElement('script');
-    s.src='https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js';
+    s.src='vendor/leaflet/leaflet-heat.js';  /* v45.359 · autoalojado */
     s.onload=function(){renderHeatmap();};
     document.head.appendChild(s);
   } else renderHeatmap();
@@ -41617,17 +41632,19 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
 (function(){
   function basemapOf(map){
     var found=null;
-    try{ map.eachLayer(function(l){
-      if(l instanceof L.TileLayer && /cartocdn\.com\/(?:light|dark)_all/.test(l._url||'')) found=l;
-    }); }catch(e){}
+    try{ map.eachLayer(function(l){ if(l instanceof L.TileLayer && !found) found=l; }); }catch(e){}
     return found;
   }
+  /* v45.359 · antes se intercambiaba la URL de CARTO (light_all <-> dark_all). Ese fondo pasó a exigir
+     llave de API y estampaba «API KEY REQUIRED» sobre las teselas, así que el portal usa OpenStreetMap,
+     que no tiene variante oscura. El tema se resuelve con una clase en el contenedor y un filtro en el
+     CSS del chrome cartográfico: en claro baja el color para que manden los datos, y en oscuro invierte. */
   function applyTheme(map){
     if(!map) return;
-    var bm=map.__plBasemap; if(!bm||!bm._url) return;
+    var cont=null; try{ cont=map.getContainer(); }catch(e){}
+    if(!cont) return;
     var dark=document.body.classList.contains('dark');
-    var want=dark?'dark_all':'light_all';
-    if(bm._url.indexOf(want)<0){ try{ bm.setUrl(bm._url.replace(/(?:light|dark)_all/, want)); }catch(e){} }
+    cont.classList.toggle('pl-mapa-oscuro', dark);
   }
   function makeNorth(){
     var NorthCtl=L.Control.extend({
@@ -41744,7 +41761,7 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     st.built=true;
     var locs=st.locs;
     var map=L.map('tpMap',{scrollWheelZoom:false,zoomControl:true}).setView([-34.40,-70.855],12);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
     st.map=map;
     /* capa ICP (vulnerabilidad) */
     var gICP=L.layerGroup();
@@ -41854,6 +41871,9 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
   }
 
   /* ── orquestación ── */
+  /* v45.359 · se declara el arranque para el bloque «ARRANQUE DE LOS MAPAS» */
+  try{ (window.__mapasPortal=window.__mapasPortal||{})['tpMap']=function(){ init(); }; }catch(e){}
+
   function init(){
     if(st._init) { return; }
     var locs=getLocs(); if(!locs.length) return;
@@ -44154,7 +44174,7 @@ body #main-content .leaflet-popup-content .ini-pop li{font-size:12px;line-height
       try{
         el.innerHTML='';
         var map=L.map(el,{scrollWheelZoom:false,zoomControl:true}).setView([-34.40,-70.855],12);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);
         var bounds=[];
         espacios().forEach(function(e){
           bounds.push([e.lat,e.lng]);
@@ -44180,6 +44200,9 @@ body #main-content .leaflet-popup-content .ini-pop li{font-size:12px;line-height
       }
     });
   }
+
+  /* v45.359 · se declara el arranque para el bloque «ARRANQUE DE LOS MAPAS» */
+  try{ (window.__mapasPortal=window.__mapasPortal||{})['.ini-mapa-lienzo']=function(){ armarMapa(document.querySelector('.ini-mapa-lienzo')); }; }catch(e){}
 
   function observarMapa(el){
     if(!el || el.__iniObs) return;
@@ -45298,6 +45321,176 @@ body.dark .me-d3-aviso.me-d3-error{ border-left-color:#ff9b8a; }
       new ResizeObserver(function(){ var h=pwa.offsetHeight; if(h>0){ raiz.style.setProperty('--pwa-alto', h+'px'); } }).observe(pwa);
     }
   }catch(e){}
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.359 · ARRANQUE DE LOS MAPAS · red de seguridad para los nueve mapas Leaflet
+     QUÉ PASABA. El mapa de «Explora tu territorio» (#mapContainer) quedaba vacío. Su función
+     renderMap solo se llamaba desde el lote de gráficos diferidos, que arranca cuando dos secciones
+     entran en pantalla —el motor de vistas las mantiene ocultas— o, si no, a los 5 s. Si en ese
+     momento Leaflet todavía no había llegado desde el CDN, reintentaba 6 s y se rendía para siempre:
+     abrir después la sección ya no lo revivía. Medido el 24-09-2026 en el sitio publicado y en esta
+     rama, con el navegador de prueba en estado visible: de los siete mapas del portal, seis se
+     dibujaban y ese quedaba en blanco, sin ningún aviso.
+     QUÉ HACE ESTE BLOQUE. Cada módulo declara su función de arranque en window.__mapasPortal. Aquí
+     se revisa, al abrir una vista y al cambiar el tamaño, si el contenedor está visible: si aún no
+     hay mapa, se llama a su arranque; si ya lo hay, se recalcula su tamaño (invalidateSize), que es
+     lo que corrige los mapas creados mientras su sección estaba oculta y quedaban en 0 × 0.
+     Si Leaflet no llega (CDN bloqueado, sin conexión), a los 15 s cada contenedor vacío lo dice en
+     pantalla en vez de quedarse en blanco.
+     No reemplaza los IntersectionObserver de cada módulo: es aditivo e idempotente, y ningún módulo
+     se inicia dos veces porque todos llevan su propio cerrojo.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+.mapa-sin-libreria{
+  display:flex; align-items:center; justify-content:center; height:100%; min-height:120px;
+  margin:0; padding:18px; text-align:center; font-size:14px; line-height:1.5;
+  color:var(--text2); background:var(--card,#f1f5f9); border:1px dashed var(--border,#cbd5e1); border-radius:10px;
+}
+.mapa-sin-teselas{
+  max-width:270px; padding:7px 10px; font-size:11.5px; line-height:1.45;
+  color:#27343B; background:rgba(255,255,255,.94); border:1px solid #CBD5E1; border-radius:8px;
+}
+body.dark .mapa-sin-teselas{ color:#f1f5f9; background:rgba(26,35,50,.94); border-color:#334155; }
+/* La leyenda del catastro (.ict-map-ctrls) iba en la esquina superior izquierda, bajo el control de zoom
+   de Leaflet: tapaba «ESTADO» y parte de los botones + y −. Se corre a la derecha del zoom. */
+body .ict-map-ctrls{ left:56px; }
+</style>
+<script>
+(function(){
+  'use strict';
+  var REG = (window.__mapasPortal = window.__mapasPortal || {});
+  /* Los módulos con función global se declaran aquí mismo; los demás se declaran en su propio bloque. */
+  function declarar(clave, nombre){
+    if(REG[clave]) return;
+    REG[clave] = function(){ var f = window[nombre]; if(typeof f === 'function') f(); };
+  }
+  declarar('mapContainer', 'renderMap');
+  declarar('mapCensoVuln', 'renderCensoMapaVuln');
+  declarar('ictMap', 'ictInit');
+  declarar('mapSC', 'initSocCivMap');
+
+  function elemento(clave){
+    return clave.charAt(0) === '.' || clave.charAt(0) === '#'
+      ? document.querySelector(clave)
+      : document.getElementById(clave);
+  }
+  function visible(el){
+    return !!(el && el.offsetParent !== null && el.clientWidth > 0 && el.clientHeight > 0);
+  }
+  function instancia(el){
+    var m = null;
+    try{ (window.__leafletMaps || []).forEach(function(x){ if(x.getContainer && x.getContainer() === el) m = x; }); }catch(e){}
+    return m;
+  }
+  function recalcular(el){
+    var m = instancia(el); if(!m) return;
+    try{ m.invalidateSize(); }catch(e){}
+    setTimeout(function(){ try{ m.invalidateSize(); }catch(e){} }, 320);
+    vigilarTeselas(m);
+  }
+
+  var listo = false;
+  function revisar(){
+    var sinLeaflet = false;
+    Object.keys(REG).forEach(function(clave){
+      var el = elemento(clave);
+      if(!visible(el)) return;
+      if(el.classList.contains('leaflet-container')){ recalcular(el); return; }
+      if(typeof L === 'undefined' || !L.map){ sinLeaflet = true; return; }
+      try{ REG[clave](); }catch(e){}
+      setTimeout(function(){ recalcular(el); }, 400);
+    });
+    return sinLeaflet;
+  }
+
+  /* Aviso honesto si la librería de mapas no llega a cargar. */
+  function avisarSinLibreria(){
+    if(typeof L !== 'undefined' && L.map) return;
+    Object.keys(REG).forEach(function(clave){
+      var el = elemento(clave);
+      if(!visible(el) || el.classList.contains('leaflet-container') || el.querySelector('.mapa-sin-libreria')) return;
+      var p = document.createElement('p');
+      p.className = 'mapa-sin-libreria';
+      p.textContent = 'No se pudo cargar la librería de mapas, así que este mapa no se puede dibujar. Vuelve a cargar la página; si el problema sigue, avísalo a la Municipalidad.';
+      el.appendChild(p);
+    });
+  }
+
+  /* ── Sin fondo cartográfico ────────────────────────────────────────────────
+     Las teselas vienen de un servidor externo (CARTO). Si la red las bloquea o no hay conexión, el
+     mapa se queda gris con sus puntos flotando y sin decir por qué. Cuando fallan al menos cuatro
+     teselas y no cargó ninguna, se dibuja el contorno comunal (rengo-limite.geojson, del propio
+     sitio, límite referencial de OpenStreetMap) y se declara en el mapa qué se está viendo. */
+  var contorno = null;
+  function contornoComunal(){
+    if(!contorno) contorno = fetch('rengo-limite.geojson').then(function(r){ if(!r.ok) throw new Error('contorno'); return r.json(); });
+    return contorno;
+  }
+  function vigilarTeselas(mapa){
+    if(!mapa || mapa.__vigilaTeselas) return;
+    mapa.__vigilaTeselas = true;
+    var fallos = 0, cargadas = 0, avisado = false;
+    function revisarTeselas(){
+      if(avisado || cargadas > 0 || fallos < 4) return;
+      avisado = true;
+      contornoComunal().then(function(gj){
+        try{
+          L.geoJSON(gj, { style: { color: '#52616B', weight: 1.5, fillColor: '#E8EDF1', fillOpacity: .5, dashArray: '4 3' } }).addTo(mapa);
+          var aviso = L.control({ position: 'bottomleft' });
+          aviso.onAdd = function(){
+            var d = L.DomUtil.create('div', 'mapa-sin-teselas');
+            d.innerHTML = 'Sin fondo cartográfico: no hay conexión con el servidor de mapas. Se muestra el contorno comunal (OpenStreetMap, referencial).';
+            return d;
+          };
+          aviso.addTo(mapa);
+        }catch(e){}
+      }).catch(function(){});
+    }
+    try{
+      mapa.eachLayer(function(capa){
+        if(!capa || typeof capa.on !== 'function' || !(capa instanceof L.TileLayer)) return;
+        capa.on('tileerror', function(){ fallos++; setTimeout(revisarTeselas, 1200); });
+        capa.on('tileload', function(){ cargadas++; });
+      });
+    }catch(e){}
+  }
+
+  var pendiente = null;
+  function pasar(){ clearTimeout(pendiente); pendiente = setTimeout(function(){ revisar(); }, 150); }
+
+  /* Espera a Leaflet sin límite corto: en cuanto está, revisa. */
+  (function esperar(intentos){
+    if(typeof L !== 'undefined' && L.map){ listo = true; revisar(); return; }
+    if(intentos > 60){ avisarSinLibreria(); return; }   /* ~15 s */
+    setTimeout(function(){ esperar(intentos + 1); }, 250);
+  })(0);
+
+  /* Al abrir una vista: el motor de vistas cambia clases en #main-content. */
+  function enganchar(){
+    if(!window.PV) return false;
+    ['go', 'show'].forEach(function(nombre){
+      var original = window.PV[nombre];
+      if(typeof original !== 'function' || original.__conMapas) return;
+      var envoltura = function(){ var r = original.apply(this, arguments); pasar(); setTimeout(pasar, 700); return r; };
+      envoltura.__conMapas = true;
+      window.PV[nombre] = envoltura;
+    });
+    return true;
+  }
+  if(!enganchar()){
+    var t = setInterval(function(){ if(enganchar()) clearInterval(t); }, 300);
+    setTimeout(function(){ clearInterval(t); }, 20000);
+  }
+  var main = document.getElementById('main-content');
+  if(main && 'MutationObserver' in window){
+    new MutationObserver(pasar).observe(main, { attributes: true, attributeFilter: ['class'], subtree: true });
+  }
+  window.addEventListener('hashchange', pasar);
+  window.addEventListener('resize', pasar);
+  window.addEventListener('load', function(){ pasar(); setTimeout(pasar, 1500); });
 })();
 </script>
 

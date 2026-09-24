@@ -74,10 +74,16 @@ const STATIC_ASSETS=[
   './fonts/Poppins-SemiBold-latin.woff',
   './fonts/Poppins-Bold-latin.woff',
   './fonts/Poppins-ExtraBold-latin.woff',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
-  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
-  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-  'https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js'
+  /* v45.359 · Chart.js y Leaflet pasaron a vendor/: se precargan desde el propio sitio, no desde un CDN */
+  './vendor/chartjs/chart.umd.min.js',
+  './vendor/leaflet/leaflet.css',
+  './vendor/leaflet/leaflet.js',
+  './vendor/leaflet/leaflet-heat.js',
+  './vendor/leaflet/images/marker-icon.png',
+  './vendor/leaflet/images/marker-icon-2x.png',
+  './vendor/leaflet/images/marker-shadow.png',
+  './vendor/leaflet/images/layers.png',
+  './vendor/leaflet/images/layers-2x.png'
 ];
 
 /* ── Install: pre-cache static assets ── */
