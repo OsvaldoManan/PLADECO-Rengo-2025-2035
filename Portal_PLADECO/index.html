@@ -45746,12 +45746,29 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
      · animaciones cuya duración ES su función: la vida del aviso (toastTimer, 3 s), el arranque y la
        pantalla de carga (splashAutoHide, bootGate, splashLoad), las señales de atención tras una acción
        (sectionFlash, kpiPulse, surveyHighlight) y el confeti del voto (confettiFall).
-   Con prefers-reduced-motion todas quedan en 0,001 s y una sola vuelta (regla universal de v45.195). */
+   Con prefers-reduced-motion todas quedan en 0,001 ms y una sola vuelta (regla universal de v45.195). */
 @media (prefers-reduced-motion: no-preference){
   html:not(.nofx) .pl-aparece{ opacity:0; transform:translateY(12px); transition:opacity .2s ease-out, transform .2s ease-out; }
   html:not(.nofx) .pl-aparece.pl-aparece-ya{ opacity:1; transform:none; }
 }
 @media print{ .pl-aparece{ opacity:1 !important; transform:none !important; } }
+
+/* ── v45.356 · [sistema-visual] · revisión · CADA SECCIÓN VUELVE A SER SU PROPIO CONTEXTO DE APILAMIENTO ──
+   Qué: section.reveal (todas las <section>: initSectionReveal les pone la clase) lleva isolation:isolate.
+   Por qué: la regla «.reveal» retirada en A1 daba a cada sección will-change:opacity,transform, que además
+   de preparar la animación la hacía contexto de apilamiento. Sin él, los z-index internos de Leaflet
+   (paneles 400-700, controles 800-1000) compiten directamente con la barra superior fija (.topnav, 120) y
+   los mapas se dibujaban ENCIMA de la barra al desplazarse. Medido en el navegador sin interfaz, con el
+   borde del mapa a 20 px del techo: en v45.360 la barra quedaba encima en los 8 mapas; con el cambio de
+   este grupo, no en #tpMap, #ictMap, #mbhtMap ni #svMap (controles de zoom y de capas, trazados y, en
+   #ictMap, el mapa entero). El barrido de las 75 vistas lo repitió en #seguridad-vial (1440 px) y en
+   #ict-espacios-publicos, #seguridad-vial, #mbht-bienestar y #territorios-prioritarios (390 px).
+   isolation devuelve solo el contexto de apilamiento: no crea bloque contenedor para position:fixed
+   (#wcTooltip, fijo dentro de #suenos, queda donde lo dejaba este cambio) ni anima o compone capas.
+   Verificado después: la barra queda encima en los 8 mapas a 1440 y a 390 px; barrido de las 75 vistas
+   sin ningún elemento sobre la barra (1.020 pasos a 1440 px y 1.830 a 390 px, como en v45.360); los 8
+   mapas se inician con todas sus teselas en los dos anchos. */
+section.reveal{ isolation:isolate; }
 
 /* ── §2.31 · Sombra y elevación solo en lo clicable, los modales y los paneles ─────────────────────────
    Medido en las 75 vistas sobre la versión anterior (v45.360, 1440 px, claro): 859 elementos NO clicables
