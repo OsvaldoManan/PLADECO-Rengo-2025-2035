@@ -27932,12 +27932,15 @@ function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',f
         chartObs.disconnect();
         /* Render charts in micro-batches to avoid blocking */
         var idx=0;
+        /* v45.361 · el lote se encadena con setTimeout y no con requestAnimationFrame: si el observador lo
+           disparaba mientras la pestaña no pintaba cuadros (segundo plano), los cuadros no llegaban y
+           ninguno de estos gráficos se dibujaba (nube de #suenos, medidores, pirámide, mapa de calor ODS). */
         function renderBatch(){
           var end=Math.min(idx+8,t2.length);
           for(;idx<end;idx++) _safeRun(t2[idx]);
-          if(idx<t2.length) requestAnimationFrame(renderBatch);
+          if(idx<t2.length) setTimeout(renderBatch,16);
         }
-        requestAnimationFrame(renderBatch);
+        setTimeout(renderBatch,0);
       }
     });
   },{rootMargin:'400px 0px'});
@@ -45882,5 +45885,18 @@ body.dark section#intro-rutas.intro-rutas{ background:#0a1526; }
 .tp-layer-btn[aria-pressed="false"] .tp-sw{ opacity:.45; }
 </style>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.361 · «EXPLORA EL PLAN» SOBRE LA FOTO
+     En la portada la foto aérea queda fija detrás del contenido. Las partes 02 y 04 de «Explora el
+     Plan» toman el fondo alterno de las secciones, pero la 01 y la 03 eran transparentes: en tema
+     claro, «Introducción» y «Planificación» con su descripción quedaban en texto oscuro sobre la
+     foto y casi no se leían. El bloque completo lleva ahora el fondo de la página; las bandas
+     alternas siguen igual. En tema oscuro se usa el fondo oscuro del portal.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+body .pv-portada{ background-color:#F7F8F5; border-radius:16px; padding-top:22px; padding-bottom:10px; }
+body.dark .pv-portada{ background-color:#0b1624; }
+</style>
 </body>
 </html>
