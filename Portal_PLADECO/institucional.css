@@ -8,7 +8,7 @@
 
 /* ── 1 · Radios mesurados (de "todo muy redondeado" a sobrio) ── */
 :root{
-  --radius:6px;
+  --radius:7px;   /* v45.356 · [sistema-visual] · §2.31 · antes 6 px, fuera de la escala 3/5/7/10/14 */
   --r-xs:3px; --r-sm:5px; --r-md:7px; --r-lg:10px;
   /* sombras más contenidas: elevar con criterio, no "card soup" */
   --sh-sm:0 1px 2px rgba(15,34,64,.05);
@@ -41,6 +41,22 @@
   /* --rad-full se mantiene en 9999px (píldoras, avatares, badges redondos) */
   --sh-card:var(--shadow);
   --sh-card-hover:var(--sh-lg);
+
+  /* v45.356 · [sistema-visual] · §2.31 · UNA SOLA ESCALA DE RADIOS: 3 / 5 / 7 / 10 / 14 px (y píldora).
+     Quedaban tres tokens fuera de ella: --r-xl (24 px) y --r-2xl (32 px) de la capa v36.0, y la familia
+     --card-radius (12 / 10 / 14 px) de v45.131; además --radius valía 6 px. Se alinean aquí con --rad-*,
+     de modo que cada nombre resuelva a un paso de la escala. --r-2xl no tiene usos (verificado con
+     búsqueda); se fija igual para que no reaparezca un valor fuera de escala si alguien lo usa. Los
+     border-radius escritos en px en index.html se llevaron a la misma escala en este cambio (1-3→3,
+     4-6→5, 7-8→7, 9-12→10, 13-39→14; 0 y 40 px o más, que son píldoras, sin cambio). La píldora también
+     es parte de la escala: 13 componentes que se dibujaban como píldora (radio de al menos la mitad del
+     alto, medido en ejecución en v45.360) y que la correspondencia dejaba en 14 px pasan al token --rad-full
+     (.et-chip, .cg-f-btn, .hz-codename, .gob-chip, .com-f-btn, .mvv-badge, .test-pausa, .pill, .est-pill,
+     .tag-cloud .tag, .ict-sp-zona-badge, el «Próximamente» de #presupuesto-participativo y el buscador de
+     localidades de #territorio). Medido en las 75 vistas a 1440 px: de 19 radios distintos a 7 (3, 5, 7, 10
+     y 14 px, píldora y 50 % de los círculos). */
+  --r-xl:var(--rad-xl); --r-2xl:var(--rad-xl);
+  --card-radius:var(--rad-md); --card-radius-sm:var(--rad-sm); --card-radius-lg:var(--rad-lg);
 }
 body.dark{
   /* la sombra de tarjeta sigue a --shadow, que ya tiene su variante oscura más abajo */
@@ -125,7 +141,7 @@ a.hero-stat::after{ content:''; position:absolute; top:9px; right:9px; width:7px
   border-top:2px solid currentColor; border-right:2px solid currentColor; transform:rotate(45deg);
   opacity:0; transition:opacity .2s; pointer-events:none; }
 a.hero-stat:hover::after, a.hero-stat:focus-visible::after{ opacity:.5; }
-a.hero-stat:focus-visible, a.ig-item:focus-visible{ outline:2px solid #fff; outline-offset:3px; border-radius:8px; }
+a.hero-stat:focus-visible, a.ig-item:focus-visible{ outline:2px solid #fff; outline-offset:3px; border-radius:7px; }
 a.ig-item{ transition:transform .2s; }
 a.ig-item:hover{ transform:translateY(-2px); }
 a.ig-item:hover .ig-value{ text-decoration:underline; text-underline-offset:3px; }
@@ -140,7 +156,8 @@ a.ig-item:hover .ig-value{ text-decoration:underline; text-underline-offset:3px;
 }
 .foot-upd-btn:hover{ background:rgba(255,255,255,.20); }
 .foot-upd-btn:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
-.foot-upd-btn:disabled{ opacity:.5; cursor:default; }
+/* v45.356 · [sistema-visual] · §2.32 · retirado .foot-upd-btn:disabled: la espera y el bloqueo posterior usan los
+   estados comunes «ocupado» (aria-busy) y «no disponible» (aria-disabled) del bloque de botones de index.html */
 
 /* ── 9 · Pulido móvil ──────────────────────────────────────────────────────── */
 /* Barra inferior duplicada (legacy v40) -> totalmente superada por #mobileBottomNav */
@@ -195,7 +212,7 @@ a.ig-item:hover .ig-value{ text-decoration:underline; text-underline-offset:3px;
    existente (que ya usa !important). Tonos WCAG AA. */
 html body:not(.dark) .sec-header h2{ color:#1F3864 !important; }   /* azul · 10.9:1 */
 html body:not(.dark) .sec-header p{ color:#15803d !important; }    /* verde · 4.9:1 AA */
-html body:not(.dark) .sec-header .badge{ color:#b45309 !important; } /* naranjo/ámbar · 4.6:1 AA */
+html body:not(.dark) .sec-header .badge{ color:var(--id-ocre-txt,#7A5406) !important; } /* v45.356 · [sistema-visual] · antes #b45309: 5,0:1 sobre blanco, pero las insignias llevan fondo pastel propio (lila, rosa, crema, celeste) y ahí bajaba a 3,82-4,47:1 en 24 secciones (medido en las 75 vistas sin el corrector de legibilidad, que las rescataba en ejecución; peores: #faq-concejo 3,82 y #validacion-concejo 3,92). El ocre del escudo para texto pequeño (--id-ocre-txt, #7A5406) da de 5,15:1 (#faq-concejo) a 6,04:1 sobre esos mismos fondos (calculado con la fórmula WCAG) */
 html body.dark .sec-header h2{ color:#7ea4d8 !important; }          /* azul aclarado · 7.3:1 */
 html body.dark .sec-header p{ color:#5cc98a !important; }          /* verde aclarado */
 html body.dark .sec-header .badge{ color:#fdb94d !important; }     /* naranjo aclarado */
@@ -209,7 +226,7 @@ html body:not(.dark) .sec-header .badge--success{ color:var(--c-success-strong) 
 html body:not(.dark) .sec-header .badge--warn{    color:var(--c-warn-strong) !important; }    /* ámbar oscuro #92400e · AA */
 html body:not(.dark) .sec-header .badge--danger{  color:var(--c-danger-strong) !important; }  /* rojo · AA */
 html body:not(.dark) .sec-header .badge--neutral{ color:var(--c-neutral-strong) !important; } /* gris oscuro · AA */
-html body:not(.dark) .sec-header .badge--primary{ color:#15803d !important; }                 /* verde institucional · AA */
+html body:not(.dark) .sec-header .badge--primary{ color:var(--c-verde,#286449) !important; } /* v45.356 · [sistema-visual] · antes #15803d: 4,13:1 sobre el tinte verde de la insignia (#dfede1, #analisis-estrategico-censo y #participa, medido sin el corrector); el verde de la paleta da 5,76:1 y conserva el significado (verde = insignia principal) */
 /* el subtítulo conserva sus énfasis (strong/enlaces mantienen sus reglas más específicas) */
 
 /* ── 13 · Tipografía ÚNICA Poppins · refuerzo de la familia única del portal ──
@@ -227,7 +244,7 @@ html, :root, body{
    Chips RECTANGULARES (no pill), verde institucional AA (#15803d) en estado activo. */
 .cmd-cats{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);max-height:118px;overflow-y:auto}
 .cmd-cats:empty{display:none}
-.cmd-cat-chip{font:600 11.5px/1.1 'Poppins',system-ui,-apple-system,sans-serif;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:background .14s,color .14s,border-color .14s}
+.cmd-cat-chip{font:600 11.5px/1.1 'Poppins',system-ui,-apple-system,sans-serif;color:var(--text2);background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:6px 10px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:background .14s,color .14s,border-color .14s}
 .cmd-cat-chip:hover{border-color:#15803d;color:#15803d}
 .cmd-cat-chip:focus-visible{outline:2px solid #15803d;outline-offset:2px}
 .cmd-cat-chip.active{background:#15803d;border-color:#15803d;color:#fff}
@@ -307,12 +324,8 @@ body.dark #comparador-instrumentos th .ci-obs-btn{ color:#fff; }
    · antes 1,81:1 en modo claro (el token --text2 se volvía oscuro). */
 .hist-tag{ color:rgba(255,255,255,.88); }
 
-/* (a) Botón primario de diagramas: blanco sobre el verde medio --accent
-   · antes 3,60:1 en claro y 2,17:1 en oscuro. */
-.diag-btn.primary{ background:#15803d; color:#fff; }
-.diag-btn.primary:hover{ background:#126c34; }
-body.dark .diag-btn.primary{ background:#48c76e; color:#0b1624; }
-body.dark .diag-btn.primary:hover{ background:#5cd97f; }
+/* (a) Botón primario de diagramas · v45.356 · [sistema-visual] · §2.32 · RETIRADO: el color lo pone ahora el
+   nivel común .btn--solido (bloque de botones de v45.35 en index.html), con el mismo criterio AA. */
 
 /* ── v45.324 (2ª tanda) · causa dominante: el verde de acento como COLOR DE TEXTO ──
    #2d9a4d rinde ~3,0:1 sobre blanco: sirve como relleno, no como texto pequeño. El portal
@@ -352,13 +365,8 @@ body.dark #metas-trayectoria .mtr-chip.active{ background:#48c76e; color:#0b1624
 .ficha-strip-num{ color:#0c1f36; text-shadow:none; }
 .ficha-strip-txt{ color:rgba(12,31,54,.86); }
 
-/* botón "Descargar" de los paquetes gráficos: blanco sobre el verde medio de acento
-   · antes 3,60:1 en claro y 2,17:1 en oscuro (mismo caso que .diag-btn.primary) */
-.graf-pack .gp-btn.primary{ background:#15803d; color:#fff; }
-.graf-pack .gp-btn.primary:hover{ background:#126c34; }
-body.dark .graf-pack .gp-btn.primary{ background:#48c76e; color:#0b1624; }
-.graf-pack .gp-btn:hover{ background:#15803d; color:#fff; }
-body.dark .graf-pack .gp-btn:hover{ background:#48c76e; color:#0b1624; }
+/* botón "Descargar" de los paquetes gráficos · v45.356 · [sistema-visual] · §2.32 · RETIRADO: «Descargar» es
+   .btn--solido y «Ver galería/mapas» .btn--contorno (niveles comunes de index.html). */
 
 /* ── v45.325 · GUARDA CONTRA LA INVERSIÓN AL REVÉS ────────────────────────────
    Regresión detectada y corregida en la propia auditoría: al pasar los colores de
@@ -390,13 +398,19 @@ body.dark .graf-pack .gp-btn:hover{ background:#48c76e; color:#0b1624; }
 .hist-card p, .hist-card li, .hist-card h4, .hist-card .hist-card-title,
 .hist-card .hist-card-text, .hist-card strong, .hist-card b, .hist-card em{ color:inherit; }
 
-/* Pie de la tabla de unidades vecinales: celdas con fondo navy fijo y texto oscuro (1,54:1) */
-.uv-table tfoot td, .uv-table tfoot th{ color:#fff; }
+/* Pie de la tabla de unidades vecinales: celdas con fondo navy fijo y texto oscuro (1,54:1)
+   v45.356 · [sistema-visual] · §2.34 · sin !important esta regla nunca se aplicaba: la regla global
+   «table td{color:var(--tabla-texto)!important}» de index.html la anulaba y la fila «TOTAL COMUNA» quedaba
+   en texto oscuro sobre #1f3864 (1,10:1 medido sin el corrector de legibilidad, que era lo único que la
+   salvaba). Con !important y mayor especificidad (0,1,2 frente a 0,0,2) gana: blanco sobre #1f3864 y, en
+   oscuro, sobre #0f172a. */
+.uv-table tfoot td, .uv-table tfoot th{ color:#fff !important; }
 
 /* TODA cabecera de tabla: la regla global 'table th{background:navy!important}' pinta
    de navy tambien los th fuera de <thead> (cabeceras de fila), que se quedaban con
-   texto oscuro (1,26:1). Se completa lo ya hecho para 'section table thead th'. */
-table th{ color:#fff!important; }
+   texto oscuro (1,26:1). Se completa lo ya hecho para 'section table thead th'.
+   v45.356 · [sistema-visual] · §2.34 · el color sale del mismo token que la regla global (--tabla-cab-texto). */
+table th{ color:var(--tabla-cab-texto,#fff)!important; }
 
 /* Destacados dentro del recuadro naranja de la ERD: color navy fijo sobre fondo
    traslúcido que en oscuro queda oscuro (1,02:1) -> heredan el color del párrafo. */
@@ -539,11 +553,13 @@ body.dark{
    queda como peso de display para titulares.
    ═══════════════════════════════════════════════════════════════════════════ */
 :root{
-  /* §4 · ancho de contenido, márgenes y escala de espaciado 4/8/12/16/24/32/48/64/96 */
+  /* §4 · ancho de contenido, márgenes y escala de espaciado 4/8/12/16/24/32/48/64
+     v45.356 · [sistema-visual] · crítico 5 · --space-5xl (96 px) se retira de aquí y del bloque v45.35:
+     ninguna regla lo usaba (verificado con búsqueda de «var(--space-5xl»), así que no aportaba nada. */
   --container:1280px;
-  --space-5xl:96px;
   --gap-xs:4px; --gap-sm:8px; --gap-md:12px; --gap-lg:16px; --gap-xl:24px;
-  /* §4 · columnas de referencia (12 escritorio · 8 tableta · 4 móvil) */
+  /* §4 · columnas de referencia (12 escritorio · 8 tableta · 4 móvil). v45.356 · [sistema-visual] ·
+     crítico 5 · ya no es un token muerto: la retícula de los capítulos de la portada la usa (ver abajo). */
   --cols:12;
 
   /* §3 · escala tipográfica fluida */
@@ -556,6 +572,17 @@ body.dark{
 }
 @media(max-width:1024px){ :root{ --cols:8; } }
 @media(max-width:640px){  :root{ --cols:4; } }
+
+/* ── §4 · v45.356 · [sistema-visual] · crítico 5 · RETÍCULA DE 12 / 8 / 4 COLUMNAS EN USO ──
+   «Explora el Plan» (los capítulos de la portada) se repartía con auto-fill de 248 px, sin relación con
+   --cols: según el ancho de cada parte salían 3 o 4 tarjetas por fila (de 253 a 325 px a 1440 px). Ahora
+   cada parte es una retícula de var(--cols) columnas y cada capítulo ocupa 4: tres por fila sobre 12
+   columnas (escritorio, 325 px a 1440 px), dos sobre 8 (tableta, desde 1024 px) y uno sobre 4 (teléfono,
+   desde 640 px). Medido a 1440, 1366, 1280, 1100, 1024, 900, 768, 640, 390 y 360 px con Poppins cargada
+   (ninguna tarjeta queda por debajo de 268 px, el ancho de la columna única a 360 px). body delante del
+   selector: la regla de origen está en un <style> posterior de index.html. */
+body .pv-portada-grid{ grid-template-columns:repeat(var(--cols), minmax(0,1fr)); }
+body .pv-portada-grid > .pv-card{ grid-column:span 4; }
 
 /* ── §4 · el contenido deja de ocupar toda la ventana y se centra ── */
 /* Especificidad elevada a proposito: institucional.css NO es la ultima hoja del
@@ -735,5 +762,5 @@ body:has(#mobileDrawer.mdr-open) :is(.chatbot-fab,.chatbot-fab-ocultar){ visibil
   padding:8px 14px; font-size:12px; line-height:1.45; color:var(--text); background:var(--bg); border-bottom:1px solid var(--border); }
 html.asistente-oculto .chatbot-restaurar{ display:flex; }
 .chatbot-restaurar button{ font:inherit; font-weight:700; color:var(--text); background:var(--card); border:1px solid var(--border-strong,#cbd5e1);
-  border-radius:8px; padding:6px 12px; min-height:36px; cursor:pointer; }
+  border-radius:7px; padding:6px 12px; min-height:36px; cursor:pointer; }
 .chatbot-restaurar button:hover{ background:var(--bg); }
