@@ -5057,13 +5057,10 @@ body.bc-active{padding-top:130px !important}
 .cmdp-empty{padding:30px 20px;text-align:center;color:var(--text-muted);font-size:13px}
 
 /* ── B2. Bottom Navigation Bar mobile ── */
-.bottom-nav-v40{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);z-index:95;display:none;padding:6px 4px 8px;box-shadow:0 -4px 20px rgba(0,0,0,.08)}
-.bottom-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;text-decoration:none;color:var(--text2);font-size:11px;font-weight:700;transition:color .15s;border-radius:7px;letter-spacing:.02em;text-align:center}
-.bottom-nav-item:hover,.bottom-nav-item.active{color:var(--success-txt,#15803d)}
-.bottom-nav-item.active{background:rgba(45,154,77,.08)}
-.bottom-nav-icon{font-size:20px;line-height:1;margin-bottom:3px}
+/* v45.362 · [interaccion] · retiradas las reglas de .bottom-nav-v40 / .bottom-nav-item / .bottom-nav-icon: la barra v40 se
+   retiró del marcado (estaba oculta y #mobileBottomNav cumple su función). Se conserva el espacio inferior del cuerpo,
+   que sirve a la barra #mobileBottomNav (56 px). */
 @media(max-width:768px){
-  .bottom-nav-v40{display:flex}
   body{padding-bottom:64px !important}
   .a11y-fab{bottom:208px !important}
   /* v45.356 · [flotantes] · §2.21 · retirada .chatbot-fab{bottom:80px !important} (1 de las 4 reglas !important en conflicto) */
@@ -6848,7 +6845,9 @@ html.nofx, html.nofx *, html.nofx ::before, html.nofx ::after { animation: none 
 <div class="nojs-aviso" role="status"><strong>Est&aacute;s viendo el portal sin JavaScript.</strong> Todo el contenido textual del PLADECO est&aacute; disponible a continuaci&oacute;n, secci&oacute;n por secci&oacute;n. Los gr&aacute;ficos interactivos, el buscador y el asistente requieren JavaScript.</div>
 </noscript>
 
-<a href="#dashboard" class="skip-link" tabindex="0">Saltar al contenido</a>
+<!-- v45.362 · [interaccion] · único enlace de salto: llevaba a la vista #dashboard; con el motor de vistas, su clic lo atiende
+     el motor y lleva el foco al encabezado de la vista abierta; sin JavaScript, #main-content es el contenido. -->
+<a href="#main-content" class="skip-link" tabindex="0">Saltar al contenido</a>
 
 <!-- v45.249 · Eliminado el muro <noscript> "JavaScript Requerido" a pantalla completa (P2: degradación
      elegante — el contenido textual se lee SIN JavaScript). Lo reemplaza el aviso .nojs-aviso junto al splash. -->
@@ -19259,7 +19258,9 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 
 
 <!-- Lightbox -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Visor de imagen ampliada">
+<!-- v45.362 · [interaccion] · data-pv-global en #lightbox, #diagLightbox y #mvvViewer: capas de todo el portal, fuera del
+     agrupamiento por vistas (antes quedaban dentro de la vista #faq y no se veían al abrirlas desde otra; ver el motor de vistas) -->
+<div class="lightbox" id="lightbox" data-pv-global onclick="closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Visor de imagen ampliada">
   <button class="lightbox-close" onclick="closeLightbox()" aria-label="Cerrar visor (ESC)" title="Cerrar (ESC)">&#10005;</button>
   <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)" aria-label="Imagen anterior" title="Anterior (&larr;)">&#10094;</button>
   <img id="lightboxImg" src="" alt="Foto galer&iacute;a">
@@ -19271,7 +19272,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 </div>
 
 <!-- Lightbox Diagramas -->
-<div class="lightbox" id="diagLightbox" onclick="closeDiagLightbox(event)">
+<div class="lightbox" id="diagLightbox" data-pv-global onclick="closeDiagLightbox(event)">
   <button class="lightbox-close" onclick="closeDiagLightbox()" aria-label="Cerrar">&#10005;</button>
   <a id="diagDlBtn" class="lightbox-dl" download href="#" onclick="event.stopPropagation()"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-download"></use></svg> Descargar JPG</a>
   <button class="lightbox-nav lightbox-prev" onclick="navDiagLightbox(-1)" aria-label="Anterior">&#10094;</button>
@@ -19281,7 +19282,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 </div>
 
 <!-- ═══ MVV IMAGE VIEWER · v45.166 popup accesible + keyboard nav ═══ -->
-<div class="mvv-viewer" id="mvvViewer" onclick="if(event.target===this)closeMvvViewer()" role="dialog" aria-modal="true" aria-labelledby="mvvViewerCap" aria-hidden="true">
+<div class="mvv-viewer" id="mvvViewer" data-pv-global onclick="if(event.target===this)closeMvvViewer()" role="dialog" aria-modal="true" aria-labelledby="mvvViewerCap" aria-hidden="true">
   <button class="lightbox-close" onclick="closeMvvViewer()" aria-label="Cerrar visor (ESC)" title="Cerrar (ESC)" type="button">&#10005;</button>
   <button class="mvv-nav mvv-nav-prev" onclick="navMvvViewer(-1)" aria-label="Imagen anterior" title="Anterior (&larr;)" type="button">&#10094;</button>
   <div class="mvv-viewer-img-wrap" id="mvvViewerImgWrap">
@@ -21343,33 +21344,22 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
   </div>
 </section>
 
-<button class="back-to-top" id="btnTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver al inicio de la p&#225;gina">
+<!-- v45.362 · [interaccion] · data-pv-global en #btnTop y #searchFab: se ven desde todas las vistas (antes, solo en #portal-cta).
+     Posición en el bloque «CAPAS Y CONTROLES GLOBALES» (junto al motor de vistas). -->
+<button class="back-to-top" id="btnTop" data-pv-global type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Volver arriba" aria-label="Volver al inicio de la p&#225;gina">
   <svg class="btt-svg" viewBox="0 0 48 48"><circle class="btt-track" cx="24" cy="24" r="21"/><circle class="btt-ring" id="bttRing" cx="24" cy="24" r="21"/></svg>
   <span class="btt-arrow">&#9650;</span>
   <span class="btt-pct" id="bttPct">0%</span>
 </button>
 <!-- v45.161 · Boton flotante de modo oscuro ELIMINADO por solicitud usuario (problemas de accesibilidad: name vacio, keyboard-focusable:false). El toggle de tema sigue disponible en el topbar (.tn-utils-group) y con tecla "D". -->
 
-<button class="search-fab" id="searchFab" onclick="openPortalSearch()" title="Buscar en el portal (Ctrl+K)" aria-label="Abrir buscador del portal"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></button>
-<div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closePortalSearch()">
-  <div class="search-modal" role="dialog" aria-label="Buscador del portal">
-    <div class="search-modal-head">
-      <span class="si-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></span>
-      <input type="text" id="portalSearchInput" class="search-modal-input" placeholder="Buscar en todas las secciones del portal&hellip;" autocomplete="off" aria-label="T&eacute;rmino de b&uacute;squeda">
-      <button class="search-modal-close" type="button" onclick="closePortalSearch()" aria-label="Cerrar">ESC</button>
-    </div>
-    <div class="search-modal-results" id="portalSearchResults">
-      <div class="search-modal-empty">
-        <div class="sme-emoji"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></div>
-        <div class="sme-text">Escribe un t&eacute;rmino para buscar entre las <span class="sme-count">75</span> secciones del portal.<br>Ej: &laquo;censo&raquo;, &laquo;vivienda&raquo;, &laquo;participaci&oacute;n&raquo;, &laquo;rural&raquo;&hellip;</div>
-      </div>
-    </div>
-    <div class="search-modal-footer">
-      <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navegar &middot; <kbd>Enter</kbd> Ir &middot; <kbd>Esc</kbd> Cerrar</span>
-      <span><strong id="portalSearchCount">0</strong> resultados</span>
-    </div>
-  </div>
-</div>
+<button class="search-fab" id="searchFab" data-pv-global type="button" onclick="openPortalSearch()" title="Buscar en el portal (Ctrl+K)" aria-label="Abrir buscador del portal"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></button>
+<!-- v45.362 · [interaccion] · retirada la capa del buscador de texto completo (#searchOverlay, #portalSearchInput,
+     #portalSearchResults, #portalSearchCount). Ctrl+K la abría a la vez que la paleta #cmdPalette y que la paleta v40
+     (.cmdp): tres capas superpuestas y el foco en la de abajo. Su función —buscar en el texto de las 75 secciones con
+     extracto resaltado (searchPortal)— pasa a la paleta #cmdPalette, que es el único buscador: openPortalSearch()
+     (este botón flotante y «Buscar en el portal» del cierre) abre la paleta. -->
+
 
 <!-- ═══ CONTADOR DE VISITAS ═══ -->
 <section id="visitas" class="visit-section reveal">
@@ -21599,54 +21589,53 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
   </div>
 </aside>
 
-<!-- B1 · Command Palette (Cmd+K mejorado) -->
-<div class="cmdp-overlay" id="cmdpOverlay" role="dialog" aria-label="Paleta de comandos" aria-modal="true" onclick="if(event.target===this)closeCmdp()">
-  <div class="cmdp">
-    <div class="cmdp-header">
-      <span style="font-size:18px;color:var(--text-muted)"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></span>
-      <input type="text" class="cmdp-input" id="cmdpInput" placeholder="Buscar o ejecutar acci&oacute;n..." aria-label="Buscar o ejecutar comando" autocomplete="off">
-      <span class="cmdp-kbd">ESC</span>
-    </div>
-    <div class="cmdp-body" id="cmdpBody"></div>
-    <div class="cmdp-footer">
-      <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navegar</span>
-      <span><kbd>&crarr;</kbd> Ejecutar</span>
-      <span><kbd>esc</kbd> Cerrar</span>
-      <span><kbd>?</kbd> Atajos</span>
-    </div>
-  </div>
-</div>
+<!-- v45.362 · [interaccion] · retirada la paleta v40 (.cmdp, #cmdpOverlay, #cmdpInput, #cmdpBody): Ctrl+K y «/» la abrían
+     junto con #cmdPalette y el foco quedaba en su campo, debajo de la paleta visible. Sus acciones útiles (Accesibilidad,
+     Cambiar tema, Tour guiado) y su búsqueda en el texto de las secciones pasan a #cmdPalette, el único buscador; openCmdp()
+     abre esa paleta. Sus accesos a los 11 capítulos los lista la paleta al escribir (desde PV.chapters, con el motor de
+     vistas) y también los ofrecen la portada, la barra y el cajón móvil. -->
 
-<!-- B2 · Bottom Navigation Bar mobile -->
-<nav class="bottom-nav-v40" id="bottomNavV40" role="navigation" aria-label="Navegaci&oacute;n inferior m&oacute;vil">
-  <a href="#dashboard" class="bottom-nav-item" data-target="dashboard"><span class="bottom-nav-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-home"></use></svg></span><span>Inicio</span></a>
-  <button type="button" class="bottom-nav-item" onclick="openCmdp()" aria-label="Buscar"><span class="bottom-nav-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></span><span>Buscar</span></button>
-  </nav>
+<!-- v45.362 · [interaccion] · retirada la barra inferior v40 (#bottomNavV40: «Inicio» → #dashboard y «Buscar» → paleta
+     v40). Estaba oculta desde institucional.css (display:none!important; medido a 390 px: display none, 0 controles
+     enfocables) y la barra #mobileBottomNav ofrece las mismas dos funciones. -->
 
 <!-- B3 · Cheat sheet de atajos de teclado -->
-<div class="kbd-cheat" id="kbdCheat" role="dialog" aria-label="Atajos de teclado" aria-modal="true" onclick="if(event.target===this)closeKbdCheat()">
+<div class="kbd-cheat" id="kbdCheat" role="dialog" aria-labelledby="kbdCheatTit" aria-modal="true" onclick="if(event.target===this)closeKbdCheat()">
   <div class="kbd-cheat-card">
     <div class="kbd-cheat-head">
-      <h3>&#9000; Atajos de teclado</h3>
-      <button class="kbd-cheat-close" onclick="closeKbdCheat()" aria-label="Cerrar">&times;</button>
+      <h3 id="kbdCheatTit">&#9000; Atajos de teclado</h3>
+      <button class="kbd-cheat-close" type="button" onclick="closeKbdCheat()" aria-label="Cerrar">&times;</button>
+    </div>
+    <!-- v45.362 · [interaccion] · WCAG 2.1.4 (atajos de una sola tecla): los atajos de una tecla (letras, números y signos)
+         se disparaban sin modificador y sin forma de apagarlos, y un lector de pantalla o el control por voz podían
+         activarlos sin querer. Quedan apagados por omisión y este interruptor los enciende (se recuerda en este
+         navegador: clave pladeco-atajos). Ctrl+K y Esc funcionan siempre. -->
+    <div class="kbd-cheat-switch">
+      <button type="button" class="kcs-btn" id="atajosSwitch" role="switch" aria-checked="false" aria-describedby="atajosNota" onclick="alternarAtajos()">
+        <span class="kcs-track" aria-hidden="true"><span class="kcs-thumb"></span></span>
+        <span class="kcs-lbl">Atajos de una sola tecla</span>
+        <span class="kcs-estado" id="atajosEstado" aria-hidden="true">Desactivados</span>
+      </button>
+      <p class="kcs-nota" id="atajosNota">Vienen desactivados para no interferir con lectores de pantalla ni con el control por voz. <kbd>Ctrl</kbd> <kbd>K</kbd> (buscar) y <kbd>Esc</kbd> (cerrar) funcionan siempre.</p>
     </div>
     <div class="kbd-cheat-grid">
       <div class="kbd-cheat-section">
         <h4>Navegaci&oacute;n r&aacute;pida</h4>
         <div class="kbd-cheat-row"><span>Inicio</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>h</kbd></span></div>
         <div class="kbd-cheat-row"><span>Votar (encuesta)</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>v</kbd></span></div>
-        <div class="kbd-cheat-row"><span>Mapa proyectos</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>m</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Matriz estrat&eacute;gica</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>m</kbd></span></div>
         <div class="kbd-cheat-row"><span>Cuadernillo UV</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>c</kbd></span></div>
         <div class="kbd-cheat-row"><span>ERD O'Higgins</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>e</kbd></span></div>
-        <div class="kbd-cheat-row"><span>Voz Vecinos</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>p</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Voz de la ciudadan&iacute;a</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>p</kbd></span></div>
       </div>
       <div class="kbd-cheat-section">
         <h4>Acciones generales</h4>
-        <div class="kbd-cheat-row"><span>Buscar / Command Palette</span><span class="kbd-cheat-keys"><kbd>/</kbd></span></div>
-        <div class="kbd-cheat-row"><span>Buscar (alt.)</span><span class="kbd-cheat-keys"><kbd>Ctrl</kbd><kbd>k</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Buscar</span><span class="kbd-cheat-keys"><kbd>/</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Buscar (siempre activo)</span><span class="kbd-cheat-keys"><kbd>Ctrl</kbd><kbd>k</kbd></span></div>
         <div class="kbd-cheat-row"><span>Mostrar atajos</span><span class="kbd-cheat-keys"><kbd>?</kbd></span></div>
-        <div class="kbd-cheat-row"><span>Cerrar overlays</span><span class="kbd-cheat-keys"><kbd>Esc</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Cerrar ventanas (siempre activo)</span><span class="kbd-cheat-keys"><kbd>Esc</kbd></span></div>
         <div class="kbd-cheat-row"><span>Modo oscuro</span><span class="kbd-cheat-keys"><kbd>d</kbd></span></div>
+        <div class="kbd-cheat-row"><span>Volver arriba</span><span class="kbd-cheat-keys"><kbd>t</kbd></span></div>
         <div class="kbd-cheat-row"><span>Subir al inicio</span><span class="kbd-cheat-keys"><kbd>g</kbd><kbd>g</kbd></span></div>
         <div class="kbd-cheat-row"><span>Bajar al final</span><span class="kbd-cheat-keys"><kbd>G</kbd></span></div>
       </div>
@@ -21681,15 +21670,17 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 <div class="pres-counter" id="presCounter"></div>
 
 <!-- ═══ COMMAND PALETTE (Ctrl+K) ═══ -->
-<div class="cmd-palette" id="cmdPalette" onclick="if(event.target===this)closeCmdPalette()">
+<!-- v45.362 · [interaccion] · único buscador del portal (ver «UN SOLO BUSCADOR» en el guion): se nombra como diálogo, el campo
+     tiene rótulo propio (solo tenía marcador de posición) y la línea de conteo es región viva para anunciar los resultados -->
+<div class="cmd-palette" id="cmdPalette" role="dialog" aria-modal="true" aria-label="Buscador del portal" onclick="if(event.target===this)closeCmdPalette()">
   <div class="cmd-box">
     <div class="cmd-input-wrap">
       <span class="cmd-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></span>
-      <input type="text" id="cmdInput" placeholder="Escribe para buscar, o elige una categoría&hellip;" oninput="searchCmd(this.value)" autocomplete="off">
+      <input type="text" id="cmdInput" placeholder="Escribe para buscar, o elige una categoría&hellip;" aria-label="Buscar secciones, capítulos, acciones o texto del portal" oninput="searchCmd(this.value)" autocomplete="off">
       <span class="cmd-esc">ESC</span>
     </div>
     <div class="cmd-cats" id="cmdCats"></div>
-    <div class="cmd-context" id="cmdContext"></div>
+    <div class="cmd-context" id="cmdContext" role="status" aria-live="polite"></div>
     <div class="cmd-results" id="cmdResults"></div>
     <div class="cmd-foot">
       <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> moverse</span>
@@ -24393,17 +24384,13 @@ document.addEventListener('keydown',function(e){
     var mv=document.getElementById('mvvViewer');
     if(mv&&mv.classList.contains('open')){closeMvvViewer();return;}
   }
-  /* Flechas para lightbox galeria */
-  var lb=document.getElementById('lightbox');
-  if(lb&&lb.classList.contains('open')){
-    if(e.key==='ArrowRight'){e.preventDefault();navLightbox(1);}
-    if(e.key==='ArrowLeft'){e.preventDefault();navLightbox(-1);}
-  }
-  /* v45.166 · Flechas para MVV viewer */
+  /* v45.362 · [interaccion] · flechas retiradas de este oyente: el «UNIFIED LIGHTBOX KEYBOARD HANDLER» (más abajo) ya mueve
+     el visor de fotos (con el conjunto correcto: galería, gráficos o cartografías) y el de Misión y Visión, así que cada
+     flecha avanzaba dos imágenes. Medido con tecla real en Edge sin interfaz, ahora que los visores se ven desde cualquier
+     vista: → en la galería pasaba de 1/16 a 3/16 y en el visor de Misión y Visión saltaba de Misión a Principios. Aquí
+     quedan Esc y, para el visor de Misión y Visión, Inicio y Fin (que el otro oyente no atiende). */
   var mv=document.getElementById('mvvViewer');
   if(mv&&mv.classList.contains('open')){
-    if(e.key==='ArrowRight'){e.preventDefault();navMvvViewer(1);}
-    if(e.key==='ArrowLeft'){e.preventDefault();navMvvViewer(-1);}
     if(e.key==='Home'){e.preventDefault();goMvvViewer(0);}
     if(e.key==='End'){e.preventDefault();goMvvViewer(MVV_IMGS.length-1);}
   }
@@ -28147,16 +28134,9 @@ document.addEventListener('keydown',e=>{
     if(lb)lb.classList.remove('open');
     if(chatOpen)toggleChatbot();
   }
-  // D key = toggle dark mode (v45.30 con null-check)
-  if(e.key==='d'&&!e.ctrlKey&&!e.metaKey&&!e.altKey){
-    var bd = document.getElementById('btnDark');
-    if(bd) bd.click();
-    else if(typeof toggleDark === 'function') toggleDark();
-  }
-  // T key = back to top
-  if(e.key==='t'&&!e.ctrlKey&&!e.metaKey){
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
+  /* v45.362 · [interaccion] · retiradas de aquí las teclas «d» (tema) y «t» (volver arriba): «d» tenía un segundo oyente y
+     los dos se anulaban dejando guardado el tema contrario. Ambas viven ahora en el único oyente de atajos de una tecla
+     (v40InitKeyboardShortcuts), apagado por omisión (WCAG 2.1.4). */
   // Arrow keys + Escape for lightbox/MVV handled by unified handler above
 });
 
@@ -29807,6 +29787,71 @@ const CMD_SECTIONS=[
   {id:'encuesta',name:'Encuesta Ciudadana',svg:'note',cat:'Participación',desc:'Participa respondiendo la encuesta'}
 ];
 let cmdIdx=-1, cmdQuery='', cmdCat=null;
+/* ── v45.362 · [interaccion] · UN SOLO BUSCADOR ──
+   QUÉ PASABA: Ctrl+K tenía tres oyentes y abría a la vez esta paleta (z-index 10000), la capa de búsqueda en el texto
+   (#searchOverlay) y la paleta v40 (.cmdp, z-index 9000); el foco terminaba en el campo de la .cmdp, debajo de la paleta
+   visible (medido en Edge sin interfaz a 1440 px con Ctrl+K real: tres capas abiertas y el foco en #cmdpInput). La .cmdp
+   y la tecla «/» llevaban a las secciones con scrollIntoView y pushState, que no abren la vista.
+   QUÉ HACE: esta paleta es el único buscador (Ctrl+K, la lupa de la barra, la del héroe, «Buscar» de la barra inferior,
+   el botón flotante y «Buscar en el portal» del cierre). Además de las secciones por nombre y categoría (CMD_SECTIONS),
+   recoge lo útil de las capas retiradas: las acciones de la .cmdp (Accesibilidad, Cambiar tema, Tour guiado) más
+   «Atajos de teclado»; los capítulos (PV.chapters) cuando se escribe; y la búsqueda en el texto de las 75 secciones
+   (searchPortal, con su extracto resaltado), que antes solo ofrecía #searchOverlay. Todo navega con PV.go (goToSection).
+   El primer carácter escrito pone en marcha el dibujo en tandas de lo que falta (__pvDibujarTodo, como hacía
+   openPortalSearch al abrir la capa retirada), para que el índice del texto encuentre también las tablas dibujadas por JS.
+   Al cerrar sin elegir (Esc, fondo), el foco vuelve al control que abrió la paleta; al elegir, lo recibe el encabezado
+   de la vista abierta (motor de vistas). */
+var CMD_ACCIONES=[
+  {id:'a11y',name:'Accesibilidad',svg:'gear',desc:'Tamaño del texto, alto contraste y lectura en voz alta',run:function(){ if(typeof toggleA11y==='function') toggleA11y(); }},
+  {id:'tema',name:'Cambiar tema (claro u oscuro)',svg:'moon',desc:'Alterna el modo de visualización',run:function(){ if(typeof window.alternarTema==='function') window.alternarTema(); }},
+  {id:'tour',name:'Tour guiado',svg:'flag',desc:'Recorrido por las herramientas del portal',run:function(){ if(typeof startTour==='function') startTour(); }},
+  {id:'atajos',name:'Atajos de teclado',svg:'info',desc:'Lista de atajos y el interruptor de los de una sola tecla',run:function(){ if(typeof openKbdCheat==='function') openKbdCheat(); }}
+];
+var cmdOpener=null, _cmdTexto=null, _cmdTextoQ=null, _cmdDibujo=false, _cmdTimer=null;
+function _cmdNorm(s){ return (typeof _sinTildes==='function')?_sinTildes(s||''):stripAccents(String(s||'').toLowerCase()); }
+function cmdAccionesFiltradas(){
+  if(cmdCat) return [];
+  const ql=_cmdNorm((cmdQuery||'').trim());
+  return CMD_ACCIONES.filter(function(a){ return !ql || _cmdNorm(a.name).indexOf(ql)>=0 || _cmdNorm(a.desc).indexOf(ql)>=0; });
+}
+function cmdCapitulosFiltrados(){
+  const ql=_cmdNorm((cmdQuery||'').trim());
+  if(!ql||cmdCat||!(window.PV&&PV.chapters)) return [];
+  return PV.chapters.filter(function(c){ return _cmdNorm('capitulo '+(c.roman||'')+' '+c.name+' '+(c.desc||'')).indexOf(ql)>=0; });
+}
+/* texto completo: searchPortal devuelve las 20 secciones con más coincidencias (y deja el total en searchPortal.total).
+   Las que tienen el término en su título (h2) van con las secciones (porTitulo: así la paleta encuentra las 75 secciones
+   por su nombre visible, no solo las 37 de CMD_SECTIONS); el resto, en «En el texto». Se omiten las repetidas. */
+function cmdTextoFiltrado(q,lista){
+  if(cmdCat||q.length<2||typeof searchPortal!=='function') return {porTitulo:[],items:[],total:0,mostradas:0};
+  if(_cmdTextoQ!==q){ try{ _cmdTexto=searchPortal(q); }catch(e){ _cmdTexto=[]; } _cmdTextoQ=q; }
+  const ya={}; lista.forEach(function(s){ ya[s.id]=1; });
+  const r=(_cmdTexto||[]).filter(function(x){ return !ya[x.id]; }), total=(typeof searchPortal.total==='number')?searchPortal.total:(_cmdTexto||[]).length;
+  return {porTitulo:r.filter(function(x){ return x.titulo; }), items:r.filter(function(x){ return !x.titulo; }), total:total, mostradas:(_cmdTexto||[]).length};
+}
+function cmdSnip(s){ return cmdEsc(s).replace(/&lt;mark&gt;/g,'<mark>').replace(/&lt;\/mark&gt;/g,'</mark>'); }
+function cmdAccionHtml(a){
+  return '<div class="cmd-item cmd-accion" role="option" onclick="cmdAccion(\''+a.id+'\')">'+
+    '<span class="cmd-sec-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-'+a.svg+'"></use></svg></span>'+
+    '<span class="cmd-sec-text"><span class="cmd-sec-name">'+cmdEsc(a.name)+'</span><span class="cmd-sec-desc">'+cmdEsc(a.desc)+'</span></span>'+
+    '<span class="cmd-sec-cat">Acción</span></div>';
+}
+function cmdCapituloHtml(c){
+  return '<div class="cmd-item" role="option" onclick="goToSection(\''+c.id+'\');closeCmdPalette()">'+
+    '<span class="cmd-sec-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-books"></use></svg></span>'+
+    '<span class="cmd-sec-text"><span class="cmd-sec-name">Capítulo '+cmdEsc(c.roman||'')+' · '+cmdEsc(c.name)+'</span>'+(c.desc?'<span class="cmd-sec-desc">'+cmdEsc(c.desc)+'</span>':'')+'</span>'+
+    '<span class="cmd-sec-cat">'+c.units.length+' secciones</span></div>';
+}
+function cmdTextoHtml(r){
+  return '<div class="cmd-item cmd-texto" role="option" onclick="goToSection(\''+r.id+'\');closeCmdPalette()">'+
+    '<span class="cmd-sec-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg></span>'+
+    '<span class="cmd-sec-text"><span class="cmd-sec-name">'+cmdEsc(r.title)+'</span>'+(r.snippet?'<span class="cmd-snip">'+cmdSnip(r.snippet)+'</span>':'')+'</span></div>';
+}
+function cmdAccion(id){
+  const a=CMD_ACCIONES.filter(function(x){ return x.id===id; })[0];
+  closeCmdPalette();
+  if(a){ try{ a.run(); }catch(e){} }
+}
 /* categorías distintas con conteo · orden: más nutridas primero, luego alfabético */
 function cmdCategories(){
   const m={};
@@ -29848,30 +29893,42 @@ function renderCmd(){
   }
   const res=document.getElementById('cmdResults');
   const list=cmdFiltered();
+  /* v45.362 · [interaccion] · acciones, capítulos y texto completo en la misma lista (ver «UN SOLO BUSCADOR») */
+  const q=(cmdQuery||'').trim();
+  const acciones=cmdAccionesFiltradas(), caps=cmdCapitulosFiltrados(), texto=cmdTextoFiltrado(q,list);
+  const nNombre=list.length+texto.porTitulo.length+acciones.length+caps.length;
   /* línea de contexto: conteo + filtro activo */
   const ctxEl=document.getElementById('cmdContext');
   if(ctxEl){
-    const q=(cmdQuery||'').trim();
-    if(q){ ctxEl.innerHTML='<strong>'+list.length+'</strong> '+(list.length===1?'resultado':'resultados')+' para &laquo;'+cmdEsc(q)+'&raquo;'+(cmdCat?(' en '+cmdCat):''); }
+    if(q){
+      let t='<strong>'+nNombre+'</strong> '+(nNombre===1?'resultado':'resultados')+' por nombre';
+      if(q.length>=2&&!cmdCat){ t+=' &middot; el término aparece en el texto de <strong>'+texto.total+'</strong> '+(texto.total===1?'sección':'secciones')+(texto.total>texto.mostradas?' (se listan las '+texto.mostradas+' con más coincidencias)':''); }
+      ctxEl.innerHTML=t+' para &laquo;'+cmdEsc(q)+'&raquo;'+(cmdCat?(' en '+cmdCat):'');
+    }
     else if(cmdCat){ ctxEl.innerHTML='Categoría <strong>'+cmdCat+'</strong> &middot; '+list.length+' '+(list.length===1?'sección':'secciones'); }
     else { ctxEl.innerHTML='<strong>'+CMD_SECTIONS.length+'</strong> secciones en <strong>'+cats.length+'</strong> categorías'; }
   }
-  if(!list.length){
+  if(!list.length&&!acciones.length&&!caps.length&&!texto.items.length&&!texto.porTitulo.length){
     res.classList.remove('cmd-grouped');
     res.innerHTML='<div class="cmd-empty">Sin coincidencias.<br>Prueba con otra palabra o elige otra categoría.</div>';
     cmdIdx=-1; return;
   }
-  const grouped=!(cmdQuery||'').trim();        /* sin texto → vista por categorías · con texto → lista plana */
+  const grouped=!q;        /* sin texto → vista por categorías · con texto → lista por tipo */
   res.classList.toggle('cmd-grouped',grouped);
   let html='';
+  function grupo(rotulo,cuerpo){ return cuerpo?'<div class="cmd-group"><div class="cmd-group-label">'+rotulo+'</div>'+cuerpo+'</div>':''; }
   if(grouped){
+    html+=grupo('Acciones',acciones.map(cmdAccionHtml).join(''));
     cats.forEach(function(c){
       const items=list.filter(function(s){return s.cat===c.cat;});
       if(!items.length) return;
       html+='<div class="cmd-group"><div class="cmd-group-label">'+c.cat+'</div>'+items.map(cmdItemHtml).join('')+'</div>';
     });
   }else{
-    html=list.map(cmdItemHtml).join('');
+    html+=grupo('Secciones',list.map(cmdItemHtml).join('')+texto.porTitulo.map(cmdTextoHtml).join(''));
+    html+=grupo('Capítulos',caps.map(cmdCapituloHtml).join(''));
+    html+=grupo('Acciones',acciones.map(cmdAccionHtml).join(''));
+    html+=grupo('En el texto de las secciones',texto.items.map(cmdTextoHtml).join(''));
   }
   res.innerHTML=html;
   const items=res.querySelectorAll('.cmd-item');
@@ -29880,18 +29937,42 @@ function renderCmd(){
 }
 function openCmdPalette(){
   const pal=document.getElementById('cmdPalette');
+  if(!pal) return;
+  /* v45.362 · [interaccion] · se recuerda quién abrió la paleta para devolverle el foco al cerrar sin elegir */
+  if(!pal.classList.contains('open')){ const a=document.activeElement; cmdOpener=(a&&a!==document.body&&!pal.contains(a))?a:null; }
   pal.classList.add('open');
-  cmdQuery=''; cmdCat=null; cmdIdx=-1;
+  cmdQuery=''; cmdCat=null; cmdIdx=-1; clearTimeout(_cmdTimer);
   const inp=document.getElementById('cmdInput');
   if(inp){inp.value='';}
   renderCmd();
   if(inp){inp.focus();}
 }
 function closeCmdPalette(){
-  document.getElementById('cmdPalette').classList.remove('open');
-  cmdIdx=-1;
+  const pal=document.getElementById('cmdPalette');
+  if(!pal) return;
+  const estaba=pal.classList.contains('open');
+  pal.classList.remove('open');
+  cmdIdx=-1; clearTimeout(_cmdTimer);
+  /* v45.362 · [interaccion] · foco de vuelta al control que la abrió, salvo que ya se haya movido fuera (al elegir una
+     sección, el motor de vistas lo lleva al encabezado de la vista abierta). Si no hay a quién devolverlo (Ctrl+K sin
+     foco en ningún control), va al encabezado de la vista abierta: el campo de la paleta cerrada no puede conservarlo. */
+  if(estaba){
+    const a=document.activeElement;
+    if(!a||a===document.body||pal.contains(a)){
+      let ok=false;
+      if(cmdOpener&&document.contains(cmdOpener)&&cmdOpener.getClientRects().length){ try{ cmdOpener.focus({preventScroll:true}); ok=document.activeElement===cmdOpener; }catch(e){} }
+      if(!ok&&window.PV&&typeof PV.enfocarEncabezado==='function'){ try{ PV.enfocarEncabezado(); }catch(e){} }
+    }
+  }
+  cmdOpener=null;
 }
-function searchCmd(q){ cmdQuery=q||''; renderCmd(); }
+function searchCmd(q){
+  cmdQuery=q||'';
+  /* v45.362 · [interaccion] · el primer carácter adelanta en tandas el dibujo de lo que falta (índice del texto completo) */
+  if(cmdQuery.trim()&&!_cmdDibujo){ _cmdDibujo=true; try{ if(window.__pvDibujarTodo) window.__pvDibujarTodo(false); }catch(e){} }
+  clearTimeout(_cmdTimer);
+  if(cmdQuery.trim().length>=2){ _cmdTimer=setTimeout(renderCmd,120); } else { renderCmd(); }
+}
 function setCmdCat(c){
   cmdCat=(cmdCat===c)?null:c;   /* clic en la misma categoría = quitar filtro */
   renderCmd();
@@ -29915,9 +29996,10 @@ function goToSection(id){
   setTimeout(()=>el.classList.remove('scroll-flash'),2000);
 }
 /* Keyboard handler for Ctrl+K and command palette navigation */
+/* v45.362 · [interaccion] · único oyente de Ctrl+K / Cmd+K del portal (se retiraron el de openPortalSearch y el de la .cmdp) */
 document.addEventListener('keydown',function(e){
   /* Ctrl+K or Cmd+K → open command palette */
-  if((e.ctrlKey||e.metaKey)&&e.key==='k'){
+  if((e.ctrlKey||e.metaKey)&&!e.altKey&&!e.shiftKey&&(e.key==='k'||e.key==='K')){   /* «K» también con Bloq Mayús; Ctrl+Mayús+K queda libre */
     e.preventDefault();
     const pal=document.getElementById('cmdPalette');
     if(pal.classList.contains('open')) closeCmdPalette();
@@ -30937,6 +31019,11 @@ document.addEventListener('pv:vista',function(){ setTimeout(reorderSemaforoMobil
 
 /* ── A5 · Botón scroll-to-top ── */
 (function(){
+  /* v45.362 · [interaccion] · este segundo botón «Volver arriba» (abajo a la izquierda) se añadió cuando #btnTop quedaba
+     atrapado en la vista #portal-cta. #btnTop ya se ve en todas las vistas y ocupa este mismo lugar (bloque «CAPAS Y
+     CONTROLES GLOBALES»): con él presente no se crea el duplicado (medido a 1440 y 390 px en #censo desplazada 1.800 px,
+     quitando .pv-hidden a #btnTop en la versión anterior: se veían los dos a la vez). Queda como respaldo si #btnTop faltara. */
+  if(document.getElementById('btnTop')) return;
   var btn=document.createElement('button');
   btn.className='scroll-top-btn';
   btn.setAttribute('aria-label','Volver arriba');
@@ -31822,14 +31909,16 @@ function searchPortal(query){
       var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
       snippet=snippet.replace(re,'<mark>$1</mark>');
     }
-    results.push({id:s.id,title:s.title,cat:s.cat,score:score,snippet:snippet,matches:matches});
+    results.push({id:s.id,title:s.title,cat:s.cat,score:score,snippet:snippet,matches:matches,titulo:titleHit});   /* v45.362 · [interaccion] · titulo: el término está en el h2 */
   });
   results.sort(function(a,b){return b.score-a.score;});
+  searchPortal.total=results.length;   /* v45.362 · [interaccion] · total antes del recorte a 20, para rotular «se listan las 20» */
   return results.slice(0,20);
 }
 
 function renderPortalSearchResults(results,query){
   var el=document.getElementById('portalSearchResults');
+  if(!el) return;   /* v45.362 · [interaccion] · la capa #searchOverlay se retiró (los resultados los muestra #cmdPalette) */
   var cntEl=document.getElementById('portalSearchCount');
   if(cntEl) cntEl.textContent=results.length;
   if(!query||query.length<2){
@@ -31848,19 +31937,15 @@ function renderPortalSearchResults(results,query){
   }).join('');
 }
 
+/* v45.362 · [interaccion] · la capa #searchOverlay se retiró: su búsqueda en el texto vive en la paleta #cmdPalette, que es
+   el único buscador. Estas dos funciones se conservan (las usan el botón flotante #searchFab y «Buscar en el portal»
+   del cierre) y abren o cierran la paleta. El dibujo en tandas que se adelantaba aquí corre ahora con el primer carácter
+   escrito en la paleta (searchCmd). */
 function openPortalSearch(){
-  /* v45.362 · [carga] · al abrir el buscador se adelanta, en tandas, el dibujo de lo que falta (ver __pvDibujarTodo) */
-  try{ if(window.__pvDibujarTodo) window.__pvDibujarTodo(false); }catch(e){}
-  var ov=document.getElementById('searchOverlay');
-  var inp=document.getElementById('portalSearchInput');
-  ov.classList.add('open');
-  document.body.style.overflow='hidden';
-  setTimeout(function(){inp.focus();inp.select();},80);
+  if(typeof openCmdPalette==='function') openCmdPalette();
 }
 function closePortalSearch(){
-  var ov=document.getElementById('searchOverlay');
-  ov.classList.remove('open');
-  document.body.style.overflow='';
+  if(typeof closeCmdPalette==='function') closeCmdPalette();
 }
 
 (function initPortalSearch(){
@@ -31906,21 +31991,8 @@ function closePortalSearch(){
   });
 })();
 
-// Atajo Ctrl+K / Cmd+K abre buscador
-document.addEventListener('keydown',function(e){
-  if((e.ctrlKey||e.metaKey)&&e.key==='k'){
-    // Solo si no estamos ya en un input (excepto el sidebar)
-    var t=e.target.tagName;
-    if(t==='INPUT'||t==='TEXTAREA'){
-      if(e.target.id==='sidebarSearch'){
-        // Sidebar search ya abre command palette, no interferir
-        return;
-      }
-    }
-    e.preventDefault();
-    openPortalSearch();
-  }
-});
+/* v45.362 · [interaccion] · retirado el segundo oyente de Ctrl+K / Cmd+K (abría #searchOverlay a la vez que la paleta):
+   el único oyente está junto a la paleta #cmdPalette */
 
 // ══════════════════════════════════════════════════════
 // MI PLADECO · FAVORITOS
@@ -32183,7 +32255,7 @@ function restartQuiz(){quizState={i:0,score:0,ans:[]};renderQuiz();}
 var TOUR_STEPS=[
   {sel:'#planStatus',title:'¿Cómo va el plan?',text:'Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones.'},
   {sel:'.search-fab',title:'Buscador full-text',text:'Encuentra cualquier palabra en las 75 secciones. Atajo de teclado: Ctrl+K (Cmd+K en Mac).'},
-  {sel:'.dark-toggle',title:'Tema claro / oscuro',text:'Cambia entre modos visuales. También disponible en el sidebar y con la tecla "D". Se guarda tu preferencia.'},
+  {sel:'.dark-toggle',title:'Tema claro / oscuro',text:'Cambia entre modos visuales. También disponible en el sidebar y con la tecla "D" (si activas los atajos de una tecla en Ctrl+K → Atajos de teclado). Se guarda tu preferencia.'},   /* v45.362 · [interaccion] · la tecla «D» ahora depende del interruptor de atajos (WCAG 2.1.4) */
   {sel:'#censo .share-btn',title:'Compartir cada sección',text:'Copia el link directo a la sección actual. Útil para enviar a concejales, funcionarios o vecinos.'},
   {sel:'#censo .fav-toggle',title:'Mi PLADECO · Favoritos',text:'Marca tus secciones favoritas con la estrella. Aparecen en el sidebar para acceso rápido.'},
   {sel:'.chatbot-fab',title:'Asistente Contigo Rengo',text:'85 temas respondidos automáticamente: PLADECO, Censo, índices, FODA, sociedad civil, glosario y mucho más.'},
@@ -32721,122 +32793,86 @@ function v40InsertChapterNavButtons(){
 /* ══════════════════════════════════════════════════════
    B1. Command Palette (Cmd+K mejorado)
    ══════════════════════════════════════════════════════ */
-var CMDP_ACTIONS=[
-  // Acciones rápidas (top)
-  {cat:'acciones',icon:'🗳️',title:'Votar en la encuesta',desc:'Vota tu tema prioritario',kbd:'g v',href:'#encuesta'},
-  {cat:'acciones',icon:'📝',title:'Descargar cuadernillo de mi UV',desc:'PDF personalizado por Unidad Vecinal',kbd:'g c',href:'#cuadernillo'},
-  {cat:'acciones',icon:'📅',title:'Ver calendario de cabildos',desc:'Pr&oacute;ximas reuniones territoriales',href:'#participa'},
-  {cat:'acciones',icon:'🎓',title:'Hacer el Quiz interactivo',desc:'10 preguntas sobre Rengo',href:'#educacion'},
-  {cat:'acciones',icon:'⚙️',title:'Accesibilidad',desc:'Tama&ntilde;o texto, contraste, lectura en voz',action:'toggleA11y'},
-  {cat:'acciones',icon:'🌙',title:'Cambiar tema (claro/oscuro)',desc:'Alternar modo de visualizaci&oacute;n',action:'toggleDark'},
-  {cat:'acciones',icon:'🎬',title:'Iniciar Tour guiado',desc:'Recorrido por las secciones clave',action:'startTour'},
-  // Navegación a capítulos
-  {cat:'capitulos',icon:'📝',title:'Capítulo I · Bienvenida',kbd:'1',href:'#capitulo-1'},
-  {cat:'capitulos',icon:'📍',title:'Capítulo II · Conoce tu Comuna',kbd:'2',href:'#capitulo-2'},
-  {cat:'capitulos',icon:'📊',title:'Capítulo III · Análisis Territorial',kbd:'3',href:'#capitulo-3'},
-  {cat:'capitulos',icon:'🗣️',title:'Capítulo IV · Voz de la Comunidad',kbd:'4',href:'#capitulo-4'},
-  {cat:'capitulos',icon:'🎯',title:'Capítulo V · Hacia Dónde Vamos',kbd:'5',href:'#capitulo-5'},
-  {cat:'capitulos',icon:'🏛️',title:'Capítulo VI · Quiénes lo Construyen',kbd:'6',href:'#capitulo-6'},
-  {cat:'capitulos',icon:'📈',title:'Capítulo VII · Cómo lo Mediremos',kbd:'7',href:'#capitulo-7'},
-  {cat:'capitulos',icon:'📚',title:'Capítulo VIII · Recursos & Aprendizaje',kbd:'8',href:'#capitulo-8'},
-  {cat:'capitulos',icon:'🎥',title:'Capítulo IX · Memoria del Proceso',kbd:'9',href:'#capitulo-9'},
-  {cat:'capitulos',icon:'⚡',title:'Capítulo X · ¡Tu Turno!',href:'#capitulo-10'},
-  /* Capítulo XI eliminado en v45.4 (ERD movida a Capítulo V) */
-  {cat:'capitulos',icon:'🏆',title:'Capítulo XI · Cierre y Transparencia',href:'#capitulo-11'}
-];
-var _cmdpSelected=0,_cmdpResults=[];
-function openCmdp(){
-  var ov=document.getElementById('cmdpOverlay');
-  ov.classList.add('open');
-  document.getElementById('cmdpInput').value='';
-  document.getElementById('cmdpInput').focus();
-  cmdpUpdateResults('');
-}
+/* v45.362 · [interaccion] · PALETA v40 RETIRADA (#cmdpOverlay). Ctrl+K y «/» la abrían junto con #cmdPalette; su lista
+   (CMDP_ACTIONS) llevaba a las secciones con scrollIntoView y pushState, que con el motor de vistas no abren nada. Lo útil
+   pasó a #cmdPalette (ver «UN SOLO BUSCADOR»): Accesibilidad, Cambiar tema y Tour guiado como acciones; los capítulos,
+   al escribir; y la búsqueda en el texto, completa (antes 6 resultados). Los otros cuatro accesos de su lista eran
+   secciones (#encuesta, #cuadernillo, #participa, #educacion), que la paleta encuentra por nombre o por su texto.
+   openCmdp() y closeCmdp() quedan como alias de la paleta única (los usan Esc y código anterior). */
+function openCmdp(){ if(typeof openCmdPalette==='function') openCmdPalette(); }
 function closeCmdp(){
-  document.getElementById('cmdpOverlay').classList.remove('open');
-}
-function cmdpUpdateResults(q){
-  q=(typeof _sinTildes==='function'?_sinTildes(q):String(q).toLowerCase()).trim();
-  var body=document.getElementById('cmdpBody');
-  // Acciones que matchean
-  var actions=CMDP_ACTIONS.filter(function(a){
-    if(!q)return true;
-    var _t=(typeof _sinTildes==='function'?_sinTildes(a.title):a.title.toLowerCase());
-    var _d=a.desc?(typeof _sinTildes==='function'?_sinTildes(a.desc):a.desc.toLowerCase()):'';
-    return _t.indexOf(q)>=0||(_d&&_d.indexOf(q)>=0);
-  });
-  // Búsqueda en secciones (usando _portalSearchIndex existente)
-  var sections=[];
-  if(typeof buildPortalSearchIndex==='function'&&q.length>=2){
-    try{
-      var idx=buildPortalSearchIndex();
-      sections=idx.filter(function(s){return (s.titleNorm||s.title.toLowerCase()).indexOf(q)>=0||(s.textNorm||s.textLower).indexOf(q)>=0;}).slice(0,6).map(function(s){
-        return {cat:'secciones',icon:'📄',title:s.title,desc:'Sección · '+(s.cat||'Portal'),href:'#'+s.id};
-      });
-    }catch(e){}
-  }
-  _cmdpResults=actions.concat(sections);
-  _cmdpSelected=0;
-  // Agrupar
-  var groups={acciones:[],capitulos:[],secciones:[]};
-  _cmdpResults.forEach(function(r){if(groups[r.cat])groups[r.cat].push(r);});
-  var html='';
-  var i=0;
-  if(groups.acciones.length){
-    html+='<div class="cmdp-group"><div class="cmdp-group-label">⚡ Acciones</div>';
-    groups.acciones.forEach(function(a){html+=cmdpItemHTML(a,i++);});
-    html+='</div>';
-  }
-  if(groups.capitulos.length){
-    html+='<div class="cmdp-group"><div class="cmdp-group-label">📑 Capítulos</div>';
-    groups.capitulos.forEach(function(a){html+=cmdpItemHTML(a,i++);});
-    html+='</div>';
-  }
-  if(groups.secciones.length){
-    html+='<div class="cmdp-group"><div class="cmdp-group-label">🔍 Resultados de búsqueda</div>';
-    groups.secciones.forEach(function(a){html+=cmdpItemHTML(a,i++);});
-    html+='</div>';
-  }
-  if(!_cmdpResults.length){html='<div class="cmdp-empty">No se encontraron resultados</div>';}
-  body.innerHTML=html;
-  cmdpUpdateSelection();
-}
-function cmdpItemHTML(a,idx){
-  return '<div class="cmdp-item" data-idx="'+idx+'" onclick="cmdpRun('+idx+')">'+
-    '<div class="cmdp-item-icon">'+a.icon+'</div>'+
-    '<div class="cmdp-item-content">'+
-      '<div class="cmdp-item-title">'+a.title+'</div>'+
-      (a.desc?'<div class="cmdp-item-desc">'+a.desc+'</div>':'')+
-    '</div>'+
-    (a.kbd?'<span class="cmdp-item-kbd">'+a.kbd+'</span>':'')+
-  '</div>';
-}
-function cmdpUpdateSelection(){
-  document.querySelectorAll('.cmdp-item').forEach(function(el){
-    el.classList.toggle('selected',+el.dataset.idx===_cmdpSelected);
-  });
-  var sel=document.querySelector('.cmdp-item.selected');
-  if(sel)sel.scrollIntoView({block:'nearest'});
-}
-function cmdpRun(idx){
-  var a=_cmdpResults[idx];if(!a)return;
-  closeCmdp();
-  if(a.href){
-    var id=a.href.replace('#','');
-    var el=document.getElementById(id);
-    if(el){el.scrollIntoView({behavior:'smooth',block:'start'});history.pushState(null,'',a.href);}
-  } else if(a.action){
-    if(typeof window[a.action]==='function')window[a.action]();
-  }
+  var p=document.getElementById('cmdPalette');
+  if(p&&p.classList.contains('open')&&typeof closeCmdPalette==='function') closeCmdPalette();
 }
 
 /* ══════════════════════════════════════════════════════
    B3. Atajos de teclado globales
    ══════════════════════════════════════════════════════ */
+/* v45.362 · [interaccion] · ATAJOS DE UNA SOLA TECLA (WCAG 2.1.4).
+   QUÉ PASABA: d, t, c, /, ?, +, -, [, ], G, 1-9 y g+letra actuaban sin modificador y sin forma de apagarlos (un lector
+   de pantalla en modo de exploración o el control por voz podían dispararlos). «d» tenía dos oyentes y ninguno
+   encontraba #btnDark: uno llamaba a toggleDark() (que cambia el tema y lo guarda) y el otro volvía a alternar la clase
+   sin guardar, así que la pantalla no cambiaba y quedaba guardado el tema contrario (medido: tras «d», body.dark false y
+   pladeco-dark «1»; al recargar se abría en oscuro). 1-9, [ ] y g+letra usaban scrollIntoView sobre vistas ocultas
+   (medido: «3» desde #censo dejaba la misma vista, desplazada 10.667 px) y «g c» cambiaba el contraste en vez de ir al
+   cuadernillo (la «c» se atendía antes que la secuencia).
+   QUÉ HACE: un solo oyente para todos los atajos de una tecla, apagados por omisión; el interruptor del cuadro «Atajos
+   de teclado» (Ctrl+K → «Atajos de teclado») los enciende y se recuerda en este navegador (pladeco-atajos). Ctrl+K y Esc
+   funcionan siempre. «d» cambia el tema por la misma vía que el botón de la barra (alternarTema: una vez, guardado y con
+   su ícono al día); «t» (antes en otro oyente) vuelve arriba; 1-9, [ ] y g+letra navegan con el motor de vistas
+   (PV.go / PV.show); las secuencias g+letra se atienden primero; «g p» lleva a #voz, como decía el cuadro, que ya no
+   promete un «mapa de proyectos» en «g m» (va a la Matriz estratégica). */
 var _kbdSeq='';
 var _kbdSeqTimer=null;
-function openKbdCheat(){document.getElementById('kbdCheat').classList.add('open');}
-function closeKbdCheat(){document.getElementById('kbdCheat').classList.remove('open');}
+var ATAJOS_KEY='pladeco-atajos', _atajosMem=false, _kbdOpener=null;
+function atajosActivos(){ try{ var v=localStorage.getItem(ATAJOS_KEY); return v===null?_atajosMem:v==='1'; }catch(e){ return _atajosMem; } }
+function _syncAtajos(){
+  var on=atajosActivos(), b=document.getElementById('atajosSwitch'), s=document.getElementById('atajosEstado');
+  if(b) b.setAttribute('aria-checked',on?'true':'false');
+  if(s) s.textContent=on?'Activados':'Desactivados';
+}
+function alternarAtajos(){ var on=!atajosActivos(); _atajosMem=on; try{ localStorage.setItem(ATAJOS_KEY,on?'1':'0'); }catch(e){} _syncAtajos(); }
+window.alternarAtajos=alternarAtajos; window.atajosActivos=atajosActivos;
+/* una sola vía para alternar el tema: el botón de la barra (#tnTheme → setTheme → toggleDark, que guarda pladeco-dark y
+   actualiza los gráficos) cuando la barra ya está armada; si no, setTheme o toggleDark directamente */
+window.alternarTema=function(){
+  var th=document.getElementById('tnTheme');
+  if(th&&document.getElementById('tnmTheme')){ th.click(); return; }
+  if(typeof setTheme==='function'){ setTheme(document.body.classList.contains('dark')?'light':'dark'); return; }
+  if(typeof toggleDark==='function') toggleDark();
+};
+function openKbdCheat(){
+  var k=document.getElementById('kbdCheat'); if(!k) return;
+  var a=document.activeElement; if(!k.classList.contains('open')) _kbdOpener=(a&&a!==document.body&&!k.contains(a)&&!(a.closest&&a.closest('#cmdPalette')))?a:null;
+  _syncAtajos();
+  k.classList.add('open');
+  setTimeout(function(){ var s=document.getElementById('atajosSwitch'); if(s){ try{ s.focus({preventScroll:true}); }catch(e){} } },40);
+}
+function closeKbdCheat(){
+  var k=document.getElementById('kbdCheat'); if(!k||!k.classList.contains('open')) return;
+  var dentro=k.contains(document.activeElement);
+  k.classList.remove('open');
+  var ok=false;
+  if(_kbdOpener&&document.contains(_kbdOpener)&&_kbdOpener.getClientRects().length){ try{ _kbdOpener.focus({preventScroll:true}); ok=document.activeElement===_kbdOpener; }catch(e){} }
+  if(!ok&&dentro&&window.PV&&typeof PV.enfocarEncabezado==='function'){ try{ PV.enfocarEncabezado(); }catch(e){} }   /* sin a quién volver: encabezado de la vista */
+  _kbdOpener=null;
+}
+/* navegación de los atajos: con el motor de vistas, PV.go / PV.show; sin él, desplazamiento como antes */
+function _irAtajo(id){
+  var pv=window.PV&&typeof window.PV.go==='function'&&document.body.classList.contains('pv-on');
+  if(id==='portada'){ if(pv&&typeof PV.show==='function'){ PV.show('portada'); } else { window.scrollTo({top:0,behavior:'smooth'}); } return true; }
+  var el=document.getElementById(id); if(!el) return false;
+  if(pv){ return PV.go(id)!==false; }
+  el.scrollIntoView({behavior:'smooth'}); return true;
+}
+function _capituloRelativo(dir){
+  if(!(window.PV&&PV.chapters&&document.body.classList.contains('pv-on'))){ v40JumpChapter(dir); return; }
+  var act=PV.actual(), chs=PV.chapters, idx=-1;
+  for(var i=0;i<chs.length&&idx<0;i++){ for(var j=0;j<chs[i].units.length;j++){ if(chs[i].units[j].id===act){ idx=i; break; } } }
+  var n=idx<0?(dir>0?0:-1):idx+dir;
+  if(n<0||n>=chs.length) return;
+  _irAtajo(chs[n].id);
+}
 function v40InitKeyboardShortcuts(){
   document.addEventListener('keydown',function(e){
     // Ignorar si está en input/textarea (guard v45.272: e.target puede no tener tagName, p.ej. document)
@@ -32849,57 +32885,40 @@ function v40InitKeyboardShortcuts(){
       if(typeof closeMacPanel==='function')closeMacPanel();
       return;
     }
-    if(isInput&&e.key!=='Escape')return;
-    // Cmd/Ctrl + K → Command palette
-    if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openCmdp();return;}
+    if(isInput)return;
+    /* Ctrl+K lo atiende el oyente de la paleta #cmdPalette (v45.362 · [interaccion] · se retiró de aquí) */
     if(e.ctrlKey||e.metaKey||e.altKey)return;
-    // Atajos simples
+    if(!atajosActivos())return;   /* v45.362 · [interaccion] · WCAG 2.1.4: de una tecla, solo si se encendieron */
     var k=e.key;
-    if(k==='/'){e.preventDefault();openCmdp();return;}
-    if(k==='?'){e.preventDefault();openKbdCheat();return;}
-    if(k==='c'){if(typeof a11yToggleContrast==='function')a11yToggleContrast();return;}
-    if(k==='+'||k==='='){if(typeof a11ySetSize==='function')a11ySetSize(document.body.classList.contains('a11y-xlarge')?'xlarge':document.body.classList.contains('a11y-large')?'xlarge':'large');return;}
-    if(k==='-'){if(typeof a11ySetSize==='function')a11ySetSize(document.body.classList.contains('a11y-xlarge')?'large':'normal');return;}
-    if(k==='d'){
-      var btn=document.getElementById('btnDark');
-      if(btn)btn.click();
-      else document.body.classList.toggle('dark');
-      return;
-    }
-    if(k==='['){v40JumpChapter(-1);return;}
-    if(k===']'){v40JumpChapter(1);return;}
-    if(k==='G'){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});return;}
-    // Saltar a capítulo 1-9
-    if(/^[1-9]$/.test(k)){
-      var capId='capitulo-'+k;
-      var el=document.getElementById(capId);
-      if(el){el.scrollIntoView({behavior:'smooth'});return;}
-    }
-    // Secuencias G+letra
+    // Secuencias g+letra (primero: «g c» no debe cambiar el contraste)
     if(_kbdSeq==='g'){
       _kbdSeq='';if(_kbdSeqTimer)clearTimeout(_kbdSeqTimer);
       var target=null;
-      if(k==='h')target='dashboard';
+      if(k==='h')target='portada';
       else if(k==='v')target='encuesta';
       else if(k==='r')target='reporta';
       else if(k==='m')target='matriz';
       else if(k==='c')target='cuadernillo';
       else if(k==='e')target='erd';
+      else if(k==='p')target='voz';
       else if(k==='g'){window.scrollTo({top:0,behavior:'smooth'});return;}
-      if(target){
-        var el=document.getElementById(target);
-        if(el){el.scrollIntoView({behavior:'smooth'});return;}
-      }
+      if(target){e.preventDefault();_irAtajo(target);return;}
     }
+    // Atajos simples
+    if(k==='/'){e.preventDefault();openCmdPalette();return;}
+    if(k==='?'){e.preventDefault();openKbdCheat();return;}
+    if(k==='c'){if(typeof a11yToggleContrast==='function')a11yToggleContrast();return;}
+    if(k==='+'||k==='='){if(typeof a11ySetSize==='function')a11ySetSize(document.body.classList.contains('a11y-xlarge')?'xlarge':document.body.classList.contains('a11y-large')?'xlarge':'large');return;}
+    if(k==='-'){if(typeof a11ySetSize==='function')a11ySetSize(document.body.classList.contains('a11y-xlarge')?'large':'normal');return;}
+    if(k==='d'){window.alternarTema();return;}
+    if(k==='t'){window.scrollTo({top:0,behavior:'smooth'});return;}
+    if(k==='['){_capituloRelativo(-1);return;}
+    if(k===']'){_capituloRelativo(1);return;}
+    if(k==='G'){window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});return;}
+    // Saltar a capítulo 1-9
+    if(/^[1-9]$/.test(k)){_irAtajo('capitulo-'+k);return;}
     if(k==='g'){_kbdSeq='g';if(_kbdSeqTimer)clearTimeout(_kbdSeqTimer);_kbdSeqTimer=setTimeout(function(){_kbdSeq='';},1000);return;}
   });
-  // Command palette: navegación con flechas
-  document.getElementById('cmdpInput').addEventListener('keydown',function(e){
-    if(e.key==='ArrowDown'){e.preventDefault();_cmdpSelected=Math.min(_cmdpResults.length-1,_cmdpSelected+1);cmdpUpdateSelection();}
-    else if(e.key==='ArrowUp'){e.preventDefault();_cmdpSelected=Math.max(0,_cmdpSelected-1);cmdpUpdateSelection();}
-    else if(e.key==='Enter'){e.preventDefault();cmdpRun(_cmdpSelected);}
-  });
-  document.getElementById('cmdpInput').addEventListener('input',function(e){cmdpUpdateResults(e.target.value);});
 }
 function v40JumpChapter(dir){
   var info=v40DetectCurrentChapter();
@@ -38566,7 +38585,9 @@ section h3:hover .sec-anchor-copy,
 .skip-to-content:focus{top:8px;outline:2px solid var(--accent);outline-offset:2px}
 </style>
 
-<a href="#main-content" class="skip-to-content">Saltar al contenido principal</a>
+<!-- v45.362 · [interaccion] · retirado el segundo enlace de salto («Saltar al contenido principal», .skip-to-content): estaba
+     al final del documento, después de todo el contenido, así que no saltaba nada; queda uno solo, el primero (.skip-link). -->
+
 
 <div id="readingProgress" aria-hidden="true"></div>
 
@@ -39281,13 +39302,36 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     if(window.PV&&typeof window.PV.raices==='function'&&document.body.classList.contains('pv-on')){out=window.PV.raices();}
     else{out=[main||document.body];}
     if(conFuera&&main){for(var i=0;i<document.body.children.length;i++){var ch=document.body.children[i];if(ch!==main){out.push(ch);}}}
+    /* v45.362 · [interaccion] · las capas globales ([data-pv-global]) viven dentro de #main-content pero no en ninguna vista:
+       entran con «lo de fuera», como la barra y los avisos */
+    if(conFuera&&main&&document.body.classList.contains('pv-on')){var gl=main.querySelectorAll(':scope > [data-pv-global]');for(var g=0;g<gl.length;g++){out.push(gl[g]);}}
     return out;
   };
+  /* ── v45.362 · [interaccion] · CAPAS GLOBALES, FOCO Y TÍTULO AL CAMBIAR DE VISTA, ENLACE DE SALTO ──
+     (1) CAPAS ATRAPADAS. run() reparte los hijos de #main-content entre la portada y las vistas: todo lo que no es
+     divisor ni <section> se suma a la vista anterior. Así #lightbox, #diagLightbox y #mvvViewer (entre el divisor del
+     capítulo VIII y #faq) quedaban dentro de la vista #faq, y #btnTop y #searchFab dentro de #portal-cta; en cualquier
+     otra vista llevaban .pv-hidden (display:none!important). Medido en Edge sin interfaz a 1440 px (v45.362 antes de
+     este grupo): al ampliar una foto de #mvv, de #galeria o un diagrama de #documentos la capa quedaba «abierta» pero con
+     display:none y 0×0 px (no se veía nada); en #censo, #btnTop y #searchFab también en display:none. Ahora esas capas
+     llevan data-pv-global: run() las deja fuera de la portada y de las vistas, nunca reciben .pv-hidden y se ven desde
+     cualquier vista. Siguen en su sitio del documento (mismas reglas CSS, mismos ids).
+     (2) FOCO Y TÍTULO. show() no movía el foco ni cambiaba document.title: tras elegir una sección el foco quedaba en
+     <body> (o en el enlace pulsado, ya oculto) y el título era siempre el del portal. Ahora, en cada cambio de vista
+     que no sea la primera (la de la carga, como hace el navegador con una página nueva), el foco pasa al encabezado de
+     la vista —el h1 de la portada o el h2 de la sección, con tabindex=-1 y sin desplazar— o, si el enlace apuntaba a
+     un elemento interior de la sección, a ese elemento; y el título pasa a «Sección · PLADECO Rengo 2025-2035 | …».
+     (3) ENLACE DE SALTO. Había dos: «Saltar al contenido» (el primero del documento) llevaba a la vista #dashboard y
+     no al contenido de la vista abierta, y «Saltar al contenido principal» estaba al final del documento. Queda uno,
+     el primero: lleva el foco al encabezado de la vista abierta y lo trae a la vista bajo la barra fija.
+     (4) CIERRE DEL CAJÓN MÓVIL. closeMenus() cierra también el cajón de secciones de la barra inferior: el oyente de
+     este motor (en captura) detenía el clic antes del onclick del enlace del cajón, que quedaba abierto. */
   function run(){
     var main=document.getElementById('main-content');
     if(!main){return;}
     var kids=Array.prototype.slice.call(main.children);
-    var portada=[],chapters=[],units=[],curCh=null,pend=[],curUnit=null,i;
+    var portada=[],chapters=[],units=[],globales=[],curCh=null,pend=[],curUnit=null,i;
+    var tituloBase=document.title,primeraVista=true;
     function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
     function secName(s){
       var dn=s.getAttribute('data-nav-title');
@@ -39299,6 +39343,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     }
     for(i=0;i<kids.length;i++){
       var el=kids[i];
+      if(el.hasAttribute&&el.hasAttribute('data-pv-global')){globales.push(el);continue;}   /* v45.362 · [interaccion] · (1) */
       var isDiv=el.classList&&el.classList.contains('group-divider')&&/^capitulo-\d+$/.test(el.id||'');
       if(isDiv){
         var lbl=el.querySelector('.group-divider-label'),name='Capítulo',desc='',roman='';
@@ -39401,6 +39446,34 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       var o=document.querySelectorAll('#tnTabs .tn-tab.open');for(var m=0;m<o.length;m++){o[m].classList.remove('open');}
       var mp=document.getElementById('tnMpanel');if(mp){mp.classList.remove('open');}
       var bg=document.getElementById('tnBurger');if(bg){bg.classList.remove('open');bg.setAttribute('aria-expanded','false');}
+      try{if(typeof window.cerrarCajonMovil==='function'){window.cerrarCajonMovil(false);}}catch(e){}   /* v45.362 · [interaccion] · (4) */
+    }
+    /* v45.362 · [interaccion] · (2) encabezado de una vista y foco programático sin desplazamiento */
+    function encabezado(key){
+      if(key===null||key==='portada'){
+        var hero=document.getElementById('hero'),h1=hero&&hero.querySelector('h1');
+        if(h1){return h1;}
+        for(var p=0;p<portada.length;p++){var hp=portada[p].querySelector&&portada[p].querySelector('h1,h2');if(hp){return hp;}}
+        return null;
+      }
+      var u=units[key];if(!u){return null;}
+      var sec=document.getElementById(u.id);
+      return sec?(sec.querySelector('.sec-header h2')||sec.querySelector('h2')||sec.querySelector('h1,h3')||sec):null;
+    }
+    function enfocar(el){
+      if(!el||!el.focus){return false;}
+      try{
+        if(!el.hasAttribute('tabindex')&&!/^(A|BUTTON|INPUT|SELECT|TEXTAREA|SUMMARY)$/.test(el.tagName)){el.setAttribute('tabindex','-1');el.setAttribute('data-pv-foco','');}
+        el.focus({preventScroll:true});
+        return document.activeElement===el;
+      }catch(e){return false;}
+    }
+    /* v45.362 · [interaccion] · (3) enlace de salto: foco al encabezado de la vista abierta, visible bajo la barra fija */
+    function saltarAlContenido(){
+      var h=encabezado(vistaActual===null?'portada':vistaActual);
+      if(!h){return;}
+      enfocar(h);
+      try{var y=h.getBoundingClientRect().top+window.pageYOffset-headerH();window.scrollTo(0,Math.max(0,y));}catch(e){}
     }
     /* v45.278 · BLOQUE 2 · Orientación: resalta en el topnav la macro-pestaña que contiene la
        vista visible y marca aria-current en su enlace exacto. El syncActive() histórico depende
@@ -39438,9 +39511,10 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     function partir(h){h=String(h||'');var i=h.indexOf('/');return i>0?{id:h.slice(0,i),sub:h.slice(i+1)}:{id:h,sub:''};}
     function subDe(id){try{var r=window.__pvSub&&window.__pvSub[id];var s=(r&&typeof r.estado==='function')?r.estado():'';return s?('/'+s):'';}catch(e){return '';}}
     function conMemoria(key){if(key===null||key==='portada'||!units[key]){return false;}var el=document.getElementById(units[key].id);return !!(el&&el.hasAttribute('data-pv-memoria'));}
-    function show(key){
+    function show(key,focoDestino){
       if(vistaActual!==key&&conMemoria(vistaActual)){memo[units[vistaActual].id]=window.pageYOffset;}
       vistaActual=key;
+      var moverFoco=!primeraVista;primeraVista=false;   /* v45.362 · [interaccion] · (2) la vista de la carga no mueve el foco */
       hideAll(portada,key!=='portada');
       for(var u=0;u<units.length;u++){hideAll(units[u].els,key!==u);}
       abrirCompuerta();   /* v45.362 · [carga] · la compuerta del <head> se levanta con las clases de vista ya puestas */
@@ -39487,6 +39561,9 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       }catch(e){console.warn('[PV] invalidateSize falló:',e);}
       /* v45.362 · [carga] · aviso de vista abierta para los bloques que trabajan por vista */
       try{document.dispatchEvent(new CustomEvent('pv:vista',{detail:{id:inV?units[key].id:'portada',key:key,els:inV?units[key].els.concat([navBar]):portada.slice()}}));}catch(e){}
+      /* v45.362 · [interaccion] · (2) título de la pestaña y foco, con la vista ya dibujada */
+      try{document.title=inV?(units[key].name+' · '+tituloBase):tituloBase;}catch(e){}
+      if(moverFoco){if(!(focoDestino&&enfocar(focoDestino))){enfocar(encabezado(key));}}
     }
     function go(id,sub){
       var tgt=null;try{tgt=document.getElementById(id);}catch(e){}
@@ -39496,7 +39573,9 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       if(v===null){return false;}
       if(sub){try{var r=window.__pvSub&&window.__pvSub[id];if(r&&typeof r.aplicar==='function'){r.aplicar(sub);}}catch(e){}}
       var yMem=(volviendo&&v!=='portada'&&units[v].id===id&&typeof memo[id]==='number')?memo[id]:null;
-      show(v);
+      /* v45.362 · [interaccion] · (2) un destino interior de la sección (no la sección ni el divisor del capítulo) recibe el foco */
+      var interior=(v!=='portada'&&tgt.id!==units[v].id&&!(tgt.classList&&tgt.classList.contains('group-divider')))?tgt:null;
+      show(v,interior);
       if(v!=='portada'){setTimeout(function(){
         if(yMem!==null){try{window.scrollTo({top:yMem,left:0,behavior:'instant'});}catch(x){window.scrollTo(0,yMem);}return;}
         var y=tgt.getBoundingClientRect().top+window.pageYOffset-headerH();window.scrollTo(0,Math.max(0,y));
@@ -39509,6 +39588,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       var href=a.getAttribute('href')||'';
       if(href.length<2){return;}
       var id=href.slice(1);
+      if(a.classList&&a.classList.contains('skip-link')){e.preventDefault();e.stopPropagation();saltarAlContenido();return;}   /* v45.362 · [interaccion] · (3) */
       if(id==='inicio'){e.preventDefault();e.stopPropagation();closeMenus();show('portada');return;}
       var tgt=null;try{tgt=document.getElementById(id);}catch(x){}
       if(!tgt&&id.indexOf('/')>0){try{tgt=document.getElementById(partir(id).id);}catch(x){}}   /* v45.356 · [matriz] · #seccion/subestado */
@@ -39521,7 +39601,9 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
        «pv:vista» registrados antes de este bloque puedan consultarlo desde el arranque */
     function actual(){return (vistaActual===null||vistaActual==='portada')?'portada':((units[vistaActual]||{}).id||'portada');}
     function raices(){return (vistaActual===null||vistaActual==='portada')?portada.slice():units[vistaActual].els.concat([navBar]);}
-    window.PV={show:show,go:go,units:units,chapters:chapters,actual:actual,raices:raices};
+    window.PV={show:show,go:go,units:units,chapters:chapters,actual:actual,raices:raices,
+      globales:globales,encabezado:function(){return encabezado(vistaActual===null?'portada':vistaActual);},
+      enfocarEncabezado:function(){return enfocar(encabezado(vistaActual===null?'portada':vistaActual));}};   /* v45.362 · [interaccion] */
     var hsh=(location.hash||'').replace('#','');
     if(!hsh||hsh==='inicio'||!go(hsh)){show('portada');}
     /* v45.253 · Atrás/Adelante del navegador recorren las vistas (popstate → mostrar sin re-apilar) */
@@ -39568,18 +39650,70 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
 })();
 </script>
 
+<!-- ═══ v45.362 · [interaccion] · CAPAS Y CONTROLES GLOBALES, BUSCADOR ÚNICO, ATAJOS Y NAVEGACIÓN MÓVIL ═══
+     Reglas de lo que este grupo cambió en el motor de vistas, la paleta #cmdPalette, el cuadro de atajos y la barra inferior.
+     Van aquí, después de las reglas anteriores de estos elementos, con especificidad mayor donde compiten con !important. -->
+<style>
+/* «Volver arriba» (#btnTop): ahora se ve en todas las vistas y es el único (el duplicado .scroll-top-btn ya no se crea).
+   Ocupa el lugar que tenía el duplicado, abajo a la izquierda: a la derecha chocaba con el botón del asistente (medido a
+   1440 px quitando .pv-hidden en la versión anterior: #btnTop en 1378-1426 × 838-886 sobre #chatFab en 1360-1416 × 820-876)
+   y en teléfonos quedaba bajo la barra inferior (z-index 99 frente a 9990). z-index 9989: sobre el contenido y los mapas,
+   bajo la barra inferior, el cajón, el asistente abierto y los visores. Oculto (no enfocable) mientras no corresponde. */
+html body #btnTop.back-to-top{left:calc(24px + env(safe-area-inset-left,0px))!important;right:auto!important;bottom:calc(24px + env(safe-area-inset-bottom,0px))!important;width:48px!important;height:48px!important;z-index:9989!important}
+html body #btnTop.back-to-top .btt-svg{width:48px!important;height:48px!important}
+html body #btnTop.back-to-top:not(.show){visibility:hidden;pointer-events:none}
+/* lupa flotante (#searchFab): abre el buscador único (conserva su z-index 99, bajo los cuadros de diálogo). En teléfonos
+   la barra inferior ya ofrece «Buscar» y la lupa quedaba tapada por ella (medido a 390 px: 258-302 × 776-820 bajo la
+   barra, 788-844) */
+@media (max-width:768px){
+  html body #btnTop.back-to-top{left:calc(16px + env(safe-area-inset-left,0px))!important;bottom:calc(72px + env(safe-area-inset-bottom,0px))!important;width:44px!important;height:44px!important}
+  html body #btnTop.back-to-top .btt-svg{width:44px!important;height:44px!important}
+  html body #searchFab.search-fab{display:none!important}
+}
+/* buscador único: extractos del texto completo (dos líneas) con el término resaltado */
+.cmd-item.cmd-texto{align-items:flex-start}
+.cmd-item .cmd-snip{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.45;color:var(--text2);white-space:normal}
+.cmd-item mark{background:rgba(245,146,29,.25);color:var(--text);font-weight:700;padding:0 2px;border-radius:3px}
+/* el cuadro «Atajos de teclado» (z-index 9100) quedaba bajo el aviso de instalación (9988), el botón «Volver arriba»
+   (9989) y el del asistente (9997); como las demás ventanas modales del portal (visores, buscador), va sobre ellos */
+html body .kbd-cheat{z-index:10000}
+/* el contador del visor (#lightboxCounter, fijo a 60 px del borde inferior) se montaba sobre el pie de foto (a 64 px):
+   no se notaba porque el visor no se abría fuera de #faq. Pasa arriba, al centro, libre de «Cerrar» y de «Descargar» */
+html body .lightbox .lightbox-counter{top:26px;bottom:auto}
+/* interruptor de los atajos de una tecla (cuadro «Atajos de teclado»): pista con borde del color del texto secundario
+   (contraste de componente ≥ 3:1 en ambos temas) y verde institucional encendido */
+.kbd-cheat-switch{margin:-6px 0 18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.kcs-btn{display:flex;align-items:center;gap:12px;width:100%;min-height:44px;padding:4px 0;background:none;border:0;color:var(--text);font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-align:left}
+.kcs-track{position:relative;flex:0 0 auto;width:42px;height:24px;border-radius:12px;border:2px solid var(--text2);background:transparent;transition:background .15s,border-color .15s}
+.kcs-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--text2);transition:transform .15s,background .15s}
+.kcs-btn[aria-checked="true"] .kcs-track{background:#15803d;border-color:#15803d}
+.kcs-btn[aria-checked="true"] .kcs-thumb{transform:translateX(18px);background:#fff}
+body.dark .kcs-btn[aria-checked="true"] .kcs-track{background:#5cc98a;border-color:#5cc98a}
+body.dark .kcs-btn[aria-checked="true"] .kcs-thumb{background:#0b1624}
+.kcs-lbl{flex:1}
+.kcs-estado{font-size:12.5px;font-weight:700;color:var(--text2)}
+.kcs-nota{margin:4px 0 0;font-size:13px;line-height:1.55;color:var(--text2)}
+.kcs-nota kbd{background:var(--bg-soft);border:1px solid var(--border);color:var(--text);padding:1px 6px;border-radius:5px;font-size:11px;font-weight:700;font-family:monospace}
+/* cajón de secciones: una lista por capítulo */
+.mobile-drawer .md-list{list-style:none;margin:0;padding:0}
+.mobile-drawer .md-link[aria-current="page"]{font-weight:700;background:rgba(45,154,77,.1);box-shadow:inset 3px 0 0 #15803d}
+body.dark .mobile-drawer .md-link[aria-current="page"]{background:rgba(92,201,138,.12);box-shadow:inset 3px 0 0 #5cc98a}
+</style>
+
 <!-- ═══ v45.191 · Bottom Navigation Móvil + Drawer ═══ -->
+<!-- v45.362 · [interaccion] · «Inicio» lleva a la portada (antes solo subía dentro de la vista abierta); «Secciones» declara
+     aria-expanded y aria-controls; «Tema» usa la misma vía que el botón de la barra (guarda la elección y su ícono) -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Navegaci&oacute;n m&oacute;vil">
-  <button class="mbn-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Inicio">
+  <button class="mbn-btn" type="button" onclick="irAPortada()" aria-label="Inicio">
     <span class="mbn-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-home"></use></svg></span><span class="mbn-lbl">Inicio</span>
   </button>
-  <button class="mbn-btn" onclick="openMobileSearch()" aria-label="Buscar">
+  <button class="mbn-btn" type="button" onclick="openMobileSearch()" aria-label="Buscar">
     <span class="mbn-ico"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg></span><span class="mbn-lbl">Buscar</span>
   </button>
-  <button class="mbn-btn" onclick="toggleMobileDrawer()" aria-label="Secciones">
+  <button class="mbn-btn" type="button" id="mbnSecciones" onclick="toggleMobileDrawer()" aria-label="Secciones" aria-expanded="false" aria-controls="mobileDrawer">
     <span class="mbn-ico">&#9776;</span><span class="mbn-lbl">Secciones</span>
   </button>
-  <button class="mbn-btn" onclick="if(typeof toggleDark==='function')toggleDark()" aria-label="Tema">
+  <button class="mbn-btn" type="button" onclick="if(window.alternarTema){alternarTema();}else if(typeof toggleDark==='function'){toggleDark();}" aria-label="Tema">
     <span class="mbn-ico">&#127769;</span><span class="mbn-lbl">Tema</span>
   </button>
   <!-- v45.356 · [flotantes] · §2.21 · punto fijo para abrir el asistente en móvil (el clic lo atiende [data-abre-asistente]) -->
@@ -39591,54 +39725,102 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
 <aside class="mobile-drawer" id="mobileDrawer" aria-label="Men&uacute; de secciones">
   <div class="md-header">
     <strong>Secciones del PLADECO</strong>
-    <button onclick="toggleMobileDrawer()" aria-label="Cerrar">&times;</button>
+    <button type="button" onclick="toggleMobileDrawer()" aria-label="Cerrar">&times;</button>
   </div>
   <div class="md-body" id="mobileDrawerBody"></div>
 </aside>
 <script>
 /* v45.191 · Bottom Nav + Drawer JS */
+/* v45.362 · [interaccion] · NAVEGACIÓN MÓVIL (hasta 768 px).
+   QUÉ PASABA (medido en Edge sin interfaz a 390 px, versión anterior a este grupo): «Inicio» solo subía dentro de la vista
+   abierta (seguía en #censo); el cajón «Secciones» tenía 36 ids escritos a mano en 4 grupos, 7 de ellos inexistentes, y
+   mostraba 29 de las 75 secciones; su botón no declaraba aria-expanded; Esc no lo cerraba; y al elegir una sección la vista
+   cambiaba pero el cajón y su velo quedaban abiertos (el oyente del motor de vistas, en captura, detenía el clic antes del
+   onclick del enlace). «Buscar» simulaba un Ctrl+K sintético (que abría las tres capas de búsqueda) y además la paleta.
+   QUÉ HACE: el cajón se arma con PV.chapters (los 11 capítulos y sus 75 secciones, con los nombres que usa el motor) o,
+   sin motor de vistas (?vista=completa), leyendo capítulos y secciones del documento; marca la sección abierta con
+   aria-current; el botón declara aria-expanded y aria-controls; al abrirse, el foco pasa a la sección abierta (o a la
+   primera); Esc y «×» lo cierran y devuelven el foco al botón; al elegir una sección se cierra (closeMenus() del motor
+   llama a cerrarCajonMovil) y el foco pasa al encabezado de la vista. «Inicio» abre la portada (PV.show) y «Buscar» abre
+   el buscador único, sin eventos sintéticos. */
 (function(){
-  function toggleMobileDrawer(){
-    var d=document.getElementById('mobileDrawer'),o=document.getElementById('mobileDrawerOverlay');
-    if(!d||!o)return;
-    var open=d.classList.contains('mdr-open');
-    d.classList.toggle('mdr-open');o.classList.toggle('mdo-open');
-    if(!open&&!d._pop){populateDrawer();d._pop=true;}
+  var ICO_DOC='<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg>';
+  var devolverA=null;
+  function $(id){return document.getElementById(id);}
+  function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function pvActivo(){return !!(window.PV&&window.PV.chapters&&window.PV.chapters.length&&document.body.classList.contains('pv-on'));}
+  function capitulos(){
+    if(pvActivo()){
+      return PV.chapters.map(function(c){return {t:'Capítulo '+(c.roman||'')+' · '+c.name,us:c.units.map(function(u){return {id:u.id,name:u.name};})};});
+    }
+    var out=[],act=null,main=$('main-content');if(!main){return out;}
+    [].forEach.call(main.children,function(n){
+      if(n.classList&&n.classList.contains('group-divider')&&/^capitulo-\d+$/.test(n.id||'')){
+        var l=n.querySelector('.group-divider-label'),t=n.id;
+        if(l){var c=l.cloneNode(true),s=c.querySelector('.cap-sub');if(s&&s.parentNode){s.parentNode.removeChild(s);}t=(l.getAttribute('data-cap')?'Capítulo '+l.getAttribute('data-cap')+' · ':'')+c.textContent.replace(/\s+/g,' ').trim();}
+        act={t:t,us:[]};out.push(act);
+      }else if(act&&n.tagName==='SECTION'&&n.id){
+        var h=n.querySelector('.sec-header h2')||n.querySelector('h2');
+        act.us.push({id:n.id,name:(n.getAttribute('data-nav-title')||(h?h.textContent:n.id)).replace(/\s+/g,' ').trim().slice(0,64)});
+      }
+    });
+    return out;
   }
-  window.toggleMobileDrawer=toggleMobileDrawer;
-
-  function populateDrawer(){
-    var body=document.getElementById('mobileDrawerBody');if(!body)return;
-    var SE=window.SEC_EMOJI||{};
-    /* Estructura de capítulos del portal */
-    var caps=[
-      {t:'Introducción',ids:['bienvenida','mvv','historia','comparador-instrumentos','proceso','equipo']},
-      {t:'Diagnóstico',ids:['censo','indices','unidades-vecinales','mapa','territorios-prioritarios','ict-espacios-publicos','seguridad-vial','seguridad-publica','movilidad-vial','nna','foda','etnografia','cuenta-publica','comisiones','viz']},
-      {t:'Planificación',ids:['prospectiva','matriz','planificacion','sna','sna-gobernanza','semaforo','compromisos','financiamiento','inversion-subdere']},
-      {t:'Cierre',ids:['datos-abiertos','documentos','transparencia','metodologia','glosario','fuentes']}
-    ];
-    var h='';
-    caps.forEach(function(cap){
-      h+='<div class="md-chapter">'+cap.t+'</div>';
-      cap.ids.forEach(function(id){
-        var sec=document.getElementById(id);
-        if(!sec)return;
-        var heading=sec.querySelector('h2,h3,.sec-title');
-        var txt=heading?heading.textContent.trim().substring(0,45):(id.replace(/-/g,' '));
-        var ico=SE[id]||'<svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg>';
-        h+='<a class="md-link" href="#'+id+'" onclick="toggleMobileDrawer()">';
-        h+='<span class="md-link-ico">'+ico+'</span><span>'+txt+'</span></a>';
-      });
+  function poblar(){
+    var body=$('mobileDrawerBody');if(!body){return;}
+    var SE=window.SEC_EMOJI||{},caps=capitulos(),h='';
+    caps.forEach(function(c,i){
+      h+='<div class="md-chapter" id="mdCap'+i+'">'+esc(c.t)+'</div><ul class="md-list" aria-labelledby="mdCap'+i+'">';
+      c.us.forEach(function(u){h+='<li><a class="md-link" href="#'+esc(u.id)+'"><span class="md-link-ico">'+(SE[u.id]||ICO_DOC)+'</span><span>'+esc(u.name)+'</span></a></li>';});
+      h+='</ul>';
     });
     body.innerHTML=h||'<p style="padding:20px;color:var(--text2)">Cargando...</p>';
   }
+  function marcarActual(){
+    var act=(window.PV&&typeof PV.actual==='function')?PV.actual():null;
+    [].forEach.call(document.querySelectorAll('#mobileDrawerBody a.md-link'),function(a){
+      if(act&&act!=='portada'&&a.getAttribute('href')==='#'+act){a.setAttribute('aria-current','page');}else{a.removeAttribute('aria-current');}
+    });
+  }
+  function abierto(){var d=$('mobileDrawer');return !!(d&&d.classList.contains('mdr-open'));}
+  function abrir(){
+    var d=$('mobileDrawer'),o=$('mobileDrawerOverlay'),b=$('mbnSecciones');if(!d||!o){return;}
+    /* se arma al primer uso, y otra vez si la primera fue antes de que arrancara el motor de vistas */
+    if(!d._pop||(d._pop==='doc'&&pvActivo())){poblar();d._pop=pvActivo()?'pv':'doc';}
+    marcarActual();
+    var a=document.activeElement;devolverA=(a&&a!==document.body&&!d.contains(a))?a:b;
+    d.classList.add('mdr-open');o.classList.add('mdo-open');
+    if(b){b.setAttribute('aria-expanded','true');}
+    var dest=d.querySelector('a.md-link[aria-current]')||d.querySelector('a.md-link')||d.querySelector('.md-header button');
+    var body=$('mobileDrawerBody');
+    if(dest&&body&&dest.classList.contains('md-link')){try{body.scrollTop=Math.max(0,dest.offsetTop-body.offsetTop-body.clientHeight/3);}catch(e){}}
+    setTimeout(function(){if(dest&&abierto()){try{dest.focus({preventScroll:true});}catch(e){}}},30);
+  }
+  /* devolverFoco=false cuando el cierre viene de elegir una sección (el foco lo recibe el encabezado de la vista) */
+  function cerrar(devolverFoco){
+    var d=$('mobileDrawer'),o=$('mobileDrawerOverlay'),b=$('mbnSecciones');if(!d||!o){return;}
+    var estaba=d.classList.contains('mdr-open');
+    d.classList.remove('mdr-open');o.classList.remove('mdo-open');
+    if(b){b.setAttribute('aria-expanded','false');}
+    if(estaba&&devolverFoco!==false){var t=devolverA||b;if(t&&document.contains(t)){try{t.focus({preventScroll:true});}catch(e){}}}
+    devolverA=null;
+  }
+  function toggleMobileDrawer(){if(abierto()){cerrar(true);}else{abrir();}}
+  window.toggleMobileDrawer=toggleMobileDrawer;
+  window.cerrarCajonMovil=cerrar;
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&abierto()){e.preventDefault();cerrar(true);}});
+  /* sin motor de vistas, el enlace navega solo (ancla) y el cajón se cierra aquí; con el motor, lo cierra closeMenus() */
+  var cuerpo=$('mobileDrawerBody');
+  if(cuerpo){cuerpo.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a.md-link'):null;if(a){cerrar(false);}});}
 
+  window.irAPortada=function(){
+    cerrar(false);
+    if(window.PV&&typeof PV.show==='function'&&document.body.classList.contains('pv-on')){PV.show('portada');return;}
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
   function openMobileSearch(){
-    /* Dispara el buscador Ctrl+K existente */
-    var evt=new KeyboardEvent('keydown',{key:'k',ctrlKey:true,bubbles:true,cancelable:true});
-    document.dispatchEvent(evt);
-    /* Fallback: si el portal usa otro mecanismo */
-    if(typeof window.openCmdPalette==='function')window.openCmdPalette();
+    cerrar(false);
+    if(typeof window.openCmdPalette==='function'){window.openCmdPalette();}
   }
   window.openMobileSearch=openMobileSearch;
 })();
