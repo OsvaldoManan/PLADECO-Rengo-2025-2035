@@ -7510,6 +7510,79 @@ window.__sincronizarEstadoHero=function(){
   try{ if(document.documentElement.classList.contains('pv-directo')) return; var s=document.getElementById('splashScreen'); if(!s) return; s.classList.add('hidden'); setTimeout(function(){ try{ s.remove(); }catch(e){} },400); }catch(e){}
 })();</script>
 
+<!-- ═══ v45.362 · [lectura] · TAMAÑOS Y MEDIDA DE LECTURA ═══
+     Prosa con clase → --fs-body (17-18 px); descripciones y <p> con tamaño en línea → piso de 14 px; fuentes, créditos
+     y referencias → --fs-nota (13,5 px); listas, definiciones, citas y bajadas de divisores → --ancho-lectura; títulos
+     de #mbht-bienestar y .viz-card h4 a la escala. El texto no cambia. Va aquí, después del héroe y antes de la
+     primera sección: rige antes de que se dibuje cualquier texto que toca, pero no demora la primera pintura (dentro
+     de institucional.css, que bloquea el render, la retrasaba en el escenario móvil de laboratorio). Qué, por qué,
+     cómo y lo verificado: comentario del mismo nombre al final del documento. -->
+<style id="lectura-tamanos-css">
+/* piso de 14 px: <p> de tarjetas, avisos y bajadas */
+html body #main-content#main-content .glosario-term > p, html body #main-content#main-content .arg-card > p, html body #main-content#main-content .finding-card > p, html body #main-content#main-content p.sv-analisis-sub, html body #main-content#main-content .mbht-dim-card > p, html body #main-content#main-content p.mbht-dim-desc,
+html body #main-content#main-content p.is-linea-desc, html body #main-content#main-content .foda-quote > p, html body #main-content#main-content .strat-card > p, html body #main-content#main-content .hist-marco-card > p, html body #main-content#main-content p.hist-marco-foot, html body #main-content#main-content p.mvv-card-text,
+html body #main-content#main-content p.ficha-puente-desc, html body #main-content#main-content p.gr-exp-text, html body #main-content#main-content p.gr-biblio-text, html body #main-content#main-content .gr-territory-card > p, html body #main-content#main-content p.gr-result-sub, html body #main-content#main-content p.cro-d, html body #main-content#main-content p.cro-ev,
+html body #main-content#main-content p.cro-lead, html body #main-content#main-content p.cro-leyenda, html body #main-content#main-content p.cro-nota, html body #main-content#main-content p.cf-periodo, html body #main-content#main-content p.proc-tl-sub, html body #main-content#main-content p.gf-lee, html body #main-content#main-content p.mbht-chart-sub, html body #main-content#main-content .proy-aviso > p,
+html body #main-content#main-content p.ci-sintesis-intro, html body #main-content#main-content p.cp-legal-sub, html body #main-content#main-content p.cp-repo-note, html body #main-content#main-content p.et-vacio, html body #main-content#main-content p.dpv-aviso, html body #main-content#main-content p.mda-nota, html body #main-content#main-content p.ini-sub, html body #main-content#main-content p.ini-mapa-sub,
+html body #main-content#main-content p.ini-id, html body #main-content#main-content p.sem-aviso, html body #main-content#main-content p.is-analisis-intro, html body #main-content#main-content p.is-lineas-intro, html body #main-content#main-content p.survey-subtitle, html body #main-content#main-content p.fuente-info-subtitle,
+html body #main-content#main-content .contexto-header > p, html body #main-content#main-content .x-tab-panel > p, html body #main-content#main-content .sv-chart-card > p, html body #main-content#main-content .newsletter-text > p, html body #main-content#main-content .cuadernillo-card > p,
+html body #main-content#main-content .tr-group > p, html body #main-content#main-content .encuesta-cta-content > p, html body #main-content#main-content p.visit-chart-desc, html body #main-content#main-content .ini-p > p, html body #main-content#main-content .proj-geo-soon > p, html body #main-content#main-content .me-section > p,
+html body #main-content#main-content p.macro-divider-desc,
+/* <p> con el tamaño en línea bajo 14 px */
+html body #main-content#main-content p[style*="font-size:9px"], html body #main-content#main-content p[style*="font-size:9.5px"], html body #main-content#main-content p[style*="font-size:10px"], html body #main-content#main-content p[style*="font-size:10.5px"],
+html body #main-content#main-content p[style*="font-size:11px"], html body #main-content#main-content p[style*="font-size:11.5px"], html body #main-content#main-content p[style*="font-size:12px"], html body #main-content#main-content p[style*="font-size:12.5px"],
+html body #main-content#main-content p[style*="font-size:13px"], html body #main-content#main-content p[style*="font-size:13.5px"],
+/* descripciones en <div> o <span> */
+html body #main-content#main-content .pv-card-desc, html body #main-content#main-content .pv-parte-desc, html body #main-content#main-content .nota-seccion .nota-blk, html body #main-content#main-content .viz-sub, html body #main-content#main-content .callout-body, html body #main-content#main-content .sv-acc-inner, html body #main-content#main-content .fq-items > span,
+html body #main-content#main-content .ficha-puente-card-text, html body #main-content#main-content .fin-hall-d, html body #main-content#main-content .sv-acard-txt, html body #main-content#main-content .mm-row, html body #main-content#main-content .test-texto, html body #main-content#main-content .voz-cita, html body #main-content#main-content .apm-row, html body #main-content#main-content .gp-desc, html body #main-content#main-content .idx-row,
+html body #main-content#main-content .erd-del-text, html body #main-content#main-content .hz-text, html body #main-content#main-content .fin-recom-d, html body #main-content#main-content .sv-chart-sub, html body #main-content#main-content .mcual-grid > div, html body #main-content#main-content .ict-method-sub, html body #main-content#main-content .ict-hall-desc,
+html body #main-content#main-content .mbht-rec-marco, html body #main-content#main-content .mbht-rec-evidencia, html body #main-content#main-content .arg-data, html body #main-content#main-content .ict-agrup-desc, html body #main-content#main-content .ict-glos-desc, html body #main-content#main-content .voz-nudo-desc, html body #main-content#main-content .voz-nna-quote,
+html body #main-content#main-content .gr-instr-desc, html body #main-content#main-content .cl-reason, html body #main-content#main-content .fuente-info-src-text, html body #main-content#main-content .cp-desc, html body #main-content#main-content .fc-sub, html body #main-content#main-content .cp-duty, html body #main-content#main-content .anest-stat-lbl, html body #main-content#main-content .coh-tipo-desc,
+html body #main-content#main-content .team-bio, html body #main-content#main-content .cg-note-desc, html body #main-content#main-content .fin-cx-nota, html body #main-content#main-content .fin-note, html body #main-content#main-content .hz-transform, html body #main-content#main-content .coh-seq-tens, html body #main-content#main-content .gr-author-cred,
+html body #main-content#main-content .contexto-metodo-item, html body #main-content#main-content .fin-alerta, html body #main-content#main-content .hz-note, html body #main-content#main-content .gr-legal-art, html body #main-content#main-content .comp-insight, html body #main-content#main-content .fin-thesis, html body #main-content#main-content .cp-prov, html body #main-content#main-content .mcual-lim,
+html body #main-content#main-content .ict-insight, html body #main-content#main-content .ict-ins-text, html body #main-content#main-content .mm-warn, html body #main-content#main-content .tp-note, html body #main-content#main-content .prosp-msg, html body #main-content#main-content .prosp-disclaimer, html body #main-content#main-content .ini-falta, html body #main-content#main-content .ods-note, html body #main-content#main-content .gs-sub,
+html body #main-content#main-content .mtr-prov-banner, html body #main-content#main-content .poa-prov-banner, html body #main-content#main-content .da-lic-txt, html body #main-content#main-content .tr-note, html body #main-content#main-content .cta-sub, html body #main-content#main-content .cg-estado-nota,
+html body #main-content#main-content .anest-block > div[style*="font-size:12"],
+/* elementos de lista sin clase dentro de listas descriptivas */
+html body #main-content#main-content .mbht-rec-list > li, html body #main-content#main-content .cg-list-card-acts > li, html body #main-content#main-content .fq-items > li, html body #main-content#main-content .coh-tipo-list > li, html body #main-content#main-content .foda-card li, html body #main-content#main-content .coh-seq-list > li,
+html body #main-content#main-content .ci-duel-card li, html body #main-content#main-content .fin-rec > li, html body #main-content#main-content .gob-tab-panel li, html body #main-content#main-content .is-analisis > li, html body #main-content#main-content .anest-block > li, html body #main-content#main-content .gr-legal-list > li,
+html body #main-content#main-content .is-lectura > li, html body #main-content#main-content .ini-resp > li, html body #main-content#main-content .gf-meta > li{ font-size:var(--text-small)!important; }
+/* rutas por tiempo de la portada: en teléfonos, a 14 px sus palabras no caben y se cortan sin guion */
+@media (min-width:641px){
+  html body #main-content#main-content .qi-ruta-desc{ font-size:var(--text-small)!important; }
+}
+/* fuentes, créditos y referencias → 13,5 px */
+html body #main-content#main-content p.gf-fte, html body #main-content#main-content p.graf-int-src, html body #main-content#main-content p.mvv-pie, html body #main-content#main-content p.cf-pie, html body #main-content#main-content p.hist-biblio-foot, html body #main-content#main-content p.dpv-foot, html body #main-content#main-content p.ini-mapa-nota, html body #main-content#main-content p.ini-mapa-ley-pie,
+html body #main-content#main-content .heatmap-legend-box > p, html body #main-content#main-content .hist-biblio-list > li, html body #main-content#main-content .apm-refs > li, html body #main-content#main-content .fin-ref-list > li, html body #main-content#main-content .mv-refs > li, html body #main-content#main-content .gr-bib-list > li,
+html body #main-content#main-content .idx-foot, html body #main-content#main-content .dato-meta, html body #main-content#main-content .fin-cx-fuente, html body #main-content#main-content .fin-fuente-min, html body #main-content#main-content .sec-fuente > span, html body #main-content#main-content .cp-legal-foot, html body #main-content#main-content .me-fn-note, html body #main-content#main-content .img-cred,
+html body #main-content#main-content .traza-foot, html body #main-content#main-content .fuente-info-src-desc, html body #main-content#main-content .gr-source{ font-size:var(--fs-nota)!important; }
+/* prosa con clase → cuerpo; también los <p> sin clase de #mbht-bienestar (una regla con id e !important los fijaba en 13 px) */
+html body #main-content#main-content p.anest-block-sub, html body #main-content#main-content p.anest-lead, html body #main-content#main-content .mbht-rec-block > p, html body #main-content#main-content p.drop-cap, html body #main-content#main-content .mbht-intro > p, html body #main-content#main-content p.gr-block-text, html body #main-content#main-content p.gr-intro,
+html body #main-content#main-content p.fin-lead, html body #main-content#main-content p.fin-cx-intro, html body #main-content#main-content p.ict-h-sub, html body #main-content#main-content p.mvv-objetivo-text, html body #main-content#main-content p.dpv-lead, html body #main-content#main-content .erd-hero > p, html body #main-content#main-content p.hist-card-text,
+html body #main-content#main-content .hist-closing p, html body #main-content#main-content .sv-corridor p,
+html body #main-content#main-content #mbht-bienestar > p:is(:not([class]),[class=""],[class="txt-justificado"]),
+html body #main-content#main-content #mbht-bienestar > div > p:is(:not([class]),[class=""],[class="txt-justificado"]){ font-size:var(--fs-body)!important; line-height:1.6!important; }
+/* separación de 1 em entre párrafos narrativos consecutivos (no en el interior de tarjetas) */
+html body #main-content#main-content p.anest-block-sub:has(+ p), html body #main-content#main-content .mbht-rec-block > p:has(+ p), html body #main-content#main-content p.drop-cap:has(+ p), html body #main-content#main-content .mbht-intro > p:has(+ p), html body #main-content#main-content p.gr-block-text:has(+ p), html body #main-content#main-content p.fin-lead:has(+ p), html body #main-content#main-content p.fin-cx-intro:has(+ p),
+html body #main-content#main-content .hist-closing p:has(+ p), html body #main-content#main-content .sv-corridor p:has(+ p),
+html body #main-content#main-content #mbht-bienestar > p:is(:not([class]),[class=""],[class="txt-justificado"]):has(+ p),
+html body #main-content#main-content #mbht-bienestar > div > p:is(:not([class]),[class=""],[class="txt-justificado"]):has(+ p),
+html body #main-content#main-content section[id] > p:is(:not([class]),[class=""],[class="txt-justificado"]):has(+ p),
+html body #main-content#main-content section[id] > div:not([class]) > p:is(:not([class]),[class=""],[class="txt-justificado"]):has(+ p){ margin-block-end:1em!important; }
+/* jerarquía donde reglas con id e !important (#mbht-bienestar) o la regla móvil de .viz-card h4 dejaban títulos de 14-15 px */
+html body #main-content#main-content #mbht-bienestar h3:not(.mbht-rec-title):not(.mbht-block-title){ font-size:var(--fs-h3)!important; }
+html body #main-content#main-content #mbht-bienestar h4, html body #main-content#main-content section .viz-card h4{ font-size:var(--fs-body)!important; }
+/* #mbht-bienestar: retícula en línea de dos columnas fijas que a 360 px ya no cabía con el texto nuevo */
+@media (max-width:640px){
+  html body #main-content#main-content #mbht-bienestar > div[style*="grid-template-columns:repeat(2,1fr)"]{ grid-template-columns:minmax(0,1fr)!important; }
+}
+/* medida: listas sin clase, definiciones, citas y bajadas de los divisores de parte */
+html body #main-content#main-content section li:not([class]):not([class*="sg-"] *, .lf-panel *),
+html body #main-content#main-content section dd:not([class*="sg-"] *, .lf-panel *),
+html body #main-content#main-content section blockquote:not([class*="sg-"] *, .lf-panel *),
+html body #main-content#main-content p.macro-divider-desc{ max-width:var(--ancho-lectura,58ch); }
+</style>
+
 <!-- ═══ v45.343 · §2 y §5 · Cifras complementarias FUERA de la portada ═══════════════
      El encargo pide trasladarlas y presentarlas como una franja editorial sencilla, no
      como tarjetas apiladas dentro del hero. Conservan su enlace y su procedencia.    -->
@@ -38957,8 +39030,8 @@ body.dark .pv-nav-ctx,body.dark .pv-nav .pv-d{color:#5cc98a}
      un carácter medio 0,508 em) 58ch son unos 73 caracteres por línea. Medido con t_lectura.cjs a 1440 px en la
      portada y las 75 vistas: de 546 <p> de dos o más líneas, 381 quedan entre 60 y 80 caracteres y ninguno pasa de
      80 (los más cortos están en tarjetas estrechas); los 134 párrafos largos en columnas de 32 em o más, todos
-     entre 60 y 80. El bloque v45.362 · [lectura] de institucional.css extiende esta medida a listas, definiciones
-     y citas. */
+     entre 60 y 80. El bloque <style id="lectura-tamanos-css"> (v45.362 · [lectura], después del héroe) extiende
+     esta medida a listas, definiciones y citas. */
   --ancho-lectura:58ch;
 }
 
@@ -45977,6 +46050,49 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
 </script>
 
 
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.362 · [lectura] · TAMAÑOS Y MEDIDA DE LECTURA (documentación del bloque <style id="lectura-tamanos-css">,
+     que va justo después del héroe, antes de la primera sección)
+     QUÉ. Tres pisos para el texto corrido de #main-content (el texto no cambia, solo su tamaño):
+       1) PROSA CON CLASE → var(--fs-body) (17 px en teléfono, 18 px desde unos 1200 px), interlineado 1,6: párrafos
+          narrativos que llevaban su tamaño en una clase (12,5-14,5 px), y los <p> sin clase de #mbht-bienestar, que
+          una regla con id e !important fijaba en 13 px;
+       2) DESCRIPCIONES → piso de 14 px (--text-small): texto de tarjetas, bajadas de gráficos, avisos, notas de lectura
+          y los <p> con el tamaño escrito en línea (style="font-size:9-13,5px");
+       3) FUENTES, CRÉDITOS Y REFERENCIAS → 13,5 px (--fs-nota, la escala de .sec-fuente y figcaption), el rango de
+          13-14 px que el pedido C§3 admite para notas que no llevan información esencial.
+     Además: 1 em entre párrafos narrativos consecutivos; listas sin clase, definiciones, citas y bajadas de los
+     divisores de parte limitadas a --ancho-lectura (58ch, unos 73 caracteres de Poppins), como ya lo estaban los <p>;
+     h3 y h4 de #mbht-bienestar y .viz-card h4 en teléfonos llevados a --fs-h3 / --fs-body (reglas con id e
+     !important o una regla móvil los dejaban en 14-15 px).
+     POR QUÉ. Medido antes (t_lectura.cjs, portada y 75 vistas, Edge sin interfaz con CUADROS=1): a 1440 px, 416 de 683
+     párrafos visibles estaban bajo 14 px (311 de ellos con más de 100 caracteres, en 55 vistas) y 744 de 928 bloques
+     de texto de 60 caracteres o más; la regla de 17-18 px de institucional.css solo alcanzaba a los p y li SIN clase y
+     sin tamaño en línea. Los elementos de lista llegaban a 212 caracteres por línea (#inversion-subdere) y a 155
+     (#proyeccion-poblacion, #gestion); las bajadas de los divisores de parte, a 103-108.
+     CÓMO. Cada selector lleva el prefijo «html body #main-content#main-content» (el id repetido suma dos ids de
+     especificidad) para ganar con !important a las reglas de origen. Donde un elemento cae en dos grupos, la
+     especificidad es la misma o mayor en el que va después (piso, notas, prosa). El prefijo va escrito en cada
+     selector, no como «prefijo :where(lista)»: con :where() al final el navegador no puede clasificar la regla por
+     clase o etiqueta y la prueba contra los ~31.000 elementos (medido con CPU 4x, recálculo completo de estilos y
+     diseño, mediana de 7: 352-356 ms sin el bloque, 375-384 ms con la versión :where; escrito así, 339-349 ms frente
+     a 344-347 ms en la misma sesión: sin diferencia medible). DÓNDE. Primero estuvo al final de institucional.css,
+     pero esa hoja bloquea la primera pintura: en el escenario móvil de laboratorio (412 px, 4G lento, CPU 4x, gzip,
+     caché fría, rondas intercaladas) la primera pintura llegaba unos 120-150 ms más tarde con el bloque y sus
+     comentarios, y unos 50 ms más tarde con el bloque solo, que sin él. Por eso va en el cuerpo, justo después del
+     héroe: el héroe se pinta sin esperarlo y toda sección llega después de él, así que ningún texto que toca se
+     dibuja antes con el tamaño viejo (sin saltos de diseño).
+     Excepciones medidas: las rutas por tiempo de la portada (.qi-ruta-desc) conservan su tamaño hasta 640 px (a 14 px
+     cortaban «Interpretativa» o «Financiamiento» sin guion: 4 palabras cortadas frente a 1); la retícula en línea de
+     dos columnas de #mbht-bienestar pasa a una columna hasta 640 px (a 360 px una tarjeta salía 28 px de la pantalla).
+     Quedan fuera las piezas del sistema gráfico (sg-*), los rótulos de gráficos y leyendas y los controles.
+     VERIFICADO (mismas condiciones): a 1440 px, párrafos bajo 14 px 416 → 48 (28 son piezas del sistema gráfico, sin
+     tocar; 17 son notas en 13,5 px; 3 son rótulos breves de #matriz) y de más de 100 caracteres 311 → 18, en 13 vistas
+     en vez de 55; a 360 px, 433 → 55. Bloques de texto bajo 14 px 744 → 231 (quedan sobre todo <div> con el tamaño
+     escrito en línea y rótulos de gráficos: pendiente). Elementos de lista con más de 80 caracteres por línea 9 → 0
+     (máximo 212 → 78); <p> con más de 80, 4 → 0. t_desborde a 360 y 1440 px: 0 vistas con elementos fuera de la
+     pantalla. Desplegables de #seguridad-vial, #seguridad-publica y #movilidad-vial abiertos: ninguno recorta su texto.
+     ═══════════════════════════════════════════════════════════════════════════ -->
 <!-- ═══════════════════════════════════════════════════════════════════════════
      v45.362 · [lectura] · JUSTIFICACIÓN SELECTIVA (reemplaza «v45.360 · TEXTO JUSTIFICADO EN TODO EL PORTAL»)
      QUÉ. Solo se justifican los PÁRRAFOS NARRATIVOS EXTENSOS: un <p> dentro de #main-content, visible, con al
