@@ -2235,12 +2235,19 @@ body.dark .map-legend .lg-circ{border-color:#7ea4d8;background:rgba(126,164,216,
 .incl-legend .dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
 
 /* v45.178 · Recomendacion estrategica PLADECO · "Como se abordara la ejecucion?" (sujeto a cambios) */
+/* v45.362 · [lectura] · justificado selectivo · Las doce reglas .gr-* de este bloque justificaban por su cuenta
+   (text-align:justify + hyphens:auto + text-justify) a todo ancho, incluidas la lista legal, la bibliografía
+   APA, la fuente y las citas: en un teléfono eso abre huecos entre palabras y parte palabras en columnas de
+   30 caracteres. Se retiraron esas tres propiedades de las doce reglas; el único justificado del portal es
+   ahora el bloque «JUSTIFICACIÓN SELECTIVA» del final del documento, que decide párrafo por párrafo (solo
+   <p> narrativos largos, en columnas anchas y desde 64 em de ventana). Verificado en el navegador: ningún
+   elemento con text-align:justify sin la clase .txt-justificado en las 75 vistas (t_lectura.cjs). */
 .gr-section{margin:2.25rem 0 1.25rem;padding:1.75rem 1.5rem 1.5rem;background:rgba(15,23,42,.04);border:1px solid rgba(245,146,29,.32);border-radius:14px;position:relative}
 body.dark .gr-section{background:rgba(255,255,255,.02);border-color:rgba(245,146,29,.4)}
 .gr-status{display:inline-flex;align-items:center;gap:.5rem;padding:6px 14px;background:rgb(233, 134, 21);color:#fff;border-radius:999px;font-size:.6875rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;box-shadow:0 4px 14px rgba(245,146,29,.32)}
 .gr-status-icon{font-size:.85rem;line-height:1}
 .gr-title{font-size:1.375rem;font-weight:700;color:var(--text);margin:0 0 .5rem;letter-spacing:-.015em;line-height:1.25}
-.gr-intro{font-size:.9375rem;line-height:1.65;color:var(--text2);margin:0 0 1.5rem;max-width:78ch;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.gr-intro{font-size:.9375rem;line-height:1.65;color:var(--text2);margin:0 0 1.5rem;max-width:78ch}
 .gr-intro strong{color:var(--text);font-weight:700}
 .gr-intro em{font-style:italic;color:var(--warning-txt,#92400e);font-weight:600}
 
@@ -2250,7 +2257,7 @@ body.dark .gr-section{background:rgba(255,255,255,.02);border-color:rgba(245,146
 .gr-block-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgb(233, 134, 21);color:#fff;font-weight:700;font-size:.9375rem;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(245,146,29,.32)}
 .gr-block-title{font-size:.95rem;font-weight:700;margin:0;color:var(--text);letter-spacing:.01em;text-transform:uppercase;letter-spacing:.06em;color:var(--text2)}
 /* v45.180 · Block-quote justificado con line-height editorial */
-.gr-block-quote{margin:0 0 1.125rem;padding:1rem 1.25rem;background:#0c1f36;color:#e8eef6;border-radius:7px;font-style:italic;font-size:.875rem;line-height:1.7;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word;border-left:3px solid #f5921d}
+.gr-block-quote{margin:0 0 1.125rem;padding:1rem 1.25rem;background:#0c1f36;color:#e8eef6;border-radius:7px;font-style:italic;font-size:.875rem;line-height:1.7;border-left:3px solid #f5921d}
 .gr-block-quote strong{color:#fbbf24;font-weight:700;font-style:normal}
 body.dark .gr-block-quote{background:rgba(0,0,0,.4);color:#e8eef6}
 
@@ -2259,7 +2266,7 @@ body.dark .gr-block-quote{background:rgba(0,0,0,.4);color:#e8eef6}
 .gr-instr{display:grid;grid-template-columns:240px auto 1fr;align-items:center;gap:.875rem;padding:.625rem .75rem;background:transparent}
 .gr-instr-name{padding:.625rem .875rem;background:rgb(30, 61, 157);color:#fff;border-radius:7px;font-weight:700;font-size:.8125rem;line-height:1.3;text-align:center;box-shadow:0 2px 8px rgba(30,58,138,.28)}
 .gr-instr-arrow{color:var(--warning-txt,#92400e);font-size:1rem;text-align:center;font-weight:700}
-.gr-instr-desc{padding:.75rem 1rem;background:rgba(245,146,29,.1);border:1px solid rgba(245,146,29,.24);border-radius:7px;color:var(--text2);font-size:.84375rem;line-height:1.65;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word;word-spacing:.01em}
+.gr-instr-desc{padding:.75rem 1rem;background:rgba(245,146,29,.1);border:1px solid rgba(245,146,29,.24);border-radius:7px;color:var(--text2);font-size:.84375rem;line-height:1.65;word-spacing:.01em}
 .gr-instr-desc strong{color:var(--warning-txt,#92400e);font-weight:700}
 .gr-instr-desc em{color:var(--text);font-style:italic;font-weight:600}
 
@@ -2299,13 +2306,13 @@ body.dark .gr-block-quote{background:rgba(0,0,0,.4);color:#e8eef6}
 .gr-chain-plus{font-size:1.125rem;color:var(--success-txt,#15803d);font-weight:700;line-height:1}
 
 /* Footer fuente */
-.gr-source{margin-top:1.25rem;padding:.875rem 1.125rem;background:rgba(245,146,29,.06);border:1px dashed rgba(245,146,29,.32);border-radius:7px;font-size:.8125rem;line-height:1.7;color:var(--text2);text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.gr-source{margin-top:1.25rem;padding:.875rem 1.125rem;background:rgba(245,146,29,.06);border:1px dashed rgba(245,146,29,.32);border-radius:7px;font-size:.8125rem;line-height:1.7;color:var(--text2)}
 .gr-source .sf-icon{margin-right:.25rem;color:var(--warning-txt,#92400e)}
 .gr-source strong{color:var(--text);font-weight:700}
 .gr-source em{font-style:italic;color:var(--warning-txt,#92400e)}
 
 /* v45.180 · Bloques adicionales + composicion editorial refinada */
-.gr-block-text{font-size:.875rem;line-height:1.75;color:var(--text2,rgba(255,255,255,.88));margin:0 0 1rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word;word-spacing:.01em}
+.gr-block-text{font-size:.875rem;line-height:1.75;color:var(--text2,rgba(255,255,255,.88));margin:0 0 1rem;word-spacing:.01em}
 .gr-block-text:last-child{margin-bottom:0}
 .gr-block-text strong{color:var(--text);font-weight:700}
 .gr-block-text em{font-style:italic;color:var(--warning-txt,#92400e)}
@@ -2324,7 +2331,7 @@ body.dark .gr-authors-head{color:#7eb7f0}
 .gr-author-name{font-size:.9375rem;font-weight:700;color:var(--text);margin-bottom:.25rem;letter-spacing:-.005em}
 .gr-author-role{font-size:.75rem;font-weight:700;color:#1e3a8a;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.04em}
 body.dark .gr-author-role{color:#7eb7f0}
-.gr-author-cred{font-size:.78125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.78));margin-bottom:.5rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.gr-author-cred{font-size:.78125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.78));margin-bottom:.5rem}
 .gr-author-mail{font-size:.75rem;color:var(--warning-txt,#92400e);font-weight:600;font-family:'Consolas',monospace}
 
 /* Bibliografia (4 cards) */
@@ -2332,14 +2339,14 @@ body.dark .gr-author-role{color:#7eb7f0}
 .gr-biblio-card{padding:1rem 1.125rem;background:var(--card,rgba(255,255,255,.03));border:1px solid var(--border,rgba(255,255,255,.08));border-top:3px solid #b8860b;border-radius:10px}
 .gr-biblio-author{font-size:.84375rem;font-weight:700;color:#b8860b;margin-bottom:.5rem;letter-spacing:-.005em}
 body.dark .gr-biblio-author{color:#e0b54d}
-.gr-biblio-text{font-size:.8125rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85));text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.gr-biblio-text{font-size:.8125rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85))}
 .gr-biblio-text strong{color:var(--text);font-weight:700}
 .gr-biblio-text em{font-style:italic;color:var(--warning-txt,#92400e)}
 body.dark .gr-biblio-text em{color:var(--warning-txt,#92400e)}
 
 /* Marco legal */
 .gr-legal-list{margin:.5rem 0 1rem;padding:0 0 0 1.25rem;font-size:.84375rem;line-height:1.7;color:var(--text2,rgba(255,255,255,.85))}
-.gr-legal-list li{margin-bottom:.5rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word;padding-right:.5rem}
+.gr-legal-list li{margin-bottom:.5rem;padding-right:.5rem}
 .gr-legal-cite{display:grid;gap:.625rem;margin:1rem 0;padding:.875rem 1rem;background:rgba(30,58,138,.05);border-left:3px solid #1e3a8a;border-radius:7px}
 .gr-legal-art{font-size:.8125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.88));font-style:italic}
 .gr-legal-art strong{color:#1e3a8a;font-style:normal;font-weight:700;margin-right:.25rem}
@@ -2351,14 +2358,14 @@ body.dark .gr-legal-art strong{color:#7eb7f0}
 .gr-exp-tag{display:inline-block;font-size:.6875rem;font-weight:700;color:#14532d;background:rgba(20,83,45,.1);padding:3px 10px;border-radius:999px;margin-bottom:.5rem;letter-spacing:.08em;text-transform:uppercase}
 body.dark .gr-exp-tag{color:#a3e8ba;background:rgba(20,83,45,.3)}
 .gr-exp-city{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.5rem;letter-spacing:-.005em}
-.gr-exp-text{font-size:.8125rem;line-height:1.65;color:var(--text2,rgba(255,255,255,.85));margin:0 0 .75rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.gr-exp-text{font-size:.8125rem;line-height:1.65;color:var(--text2,rgba(255,255,255,.85));margin:0 0 .75rem}
 .gr-exp-text strong{color:var(--text);font-weight:700}
-.gr-exp-quote{margin:0;padding:.75rem 1rem;background:rgba(20,83,45,.06);border-left:3px solid #14532d;border-radius:5px;font-size:.78125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.85));font-style:italic;text-align:justify}
+.gr-exp-quote{margin:0;padding:.75rem 1rem;background:rgba(20,83,45,.06);border-left:3px solid #14532d;border-radius:5px;font-size:.78125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.85));font-style:italic}
 
 /* Contexto territorial Rengo */
 .gr-territory-card{margin-top:1rem;padding:1rem 1.125rem;background:rgba(220,122,12,.08);border:1px solid rgba(245,146,29,.28);border-radius:10px}
 .gr-territory-head{font-size:.8125rem;font-weight:700;color:var(--warning-txt,#92400e);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.06em}
-.gr-territory-card p{font-size:.84375rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85));text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.gr-territory-card p{font-size:.84375rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85))}
 .gr-territory-card p strong{color:var(--text);font-weight:700}
 .gr-territory-card p em{font-style:italic;color:var(--warning-txt,#92400e)}
 
@@ -2373,7 +2380,7 @@ body.dark .gr-exp-tag{color:#a3e8ba;background:rgba(20,83,45,.3)}
 
 /* Bibliografia APA */
 .gr-bib-list{margin:0;padding:0 0 0 1.5rem;font-size:.8125rem;line-height:1.75;color:var(--text2,rgba(255,255,255,.85))}
-.gr-bib-list li{margin-bottom:.75rem;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word;padding-right:.25rem}
+.gr-bib-list li{margin-bottom:.75rem;padding-right:.25rem}
 .gr-bib-list li:last-child{margin-bottom:0}
 .gr-bib-list em{font-style:italic;color:var(--text)}
 .gr-bib-link{color:var(--success-txt,#15803d);text-decoration:none;border-bottom:1px dotted rgba(45,154,77,.5);word-break:break-all;font-size:.75rem;font-family:'Consolas',monospace}
@@ -2752,10 +2759,16 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 /* v45.170 · HISTORIA DE RENGO · enriquecida con WikicharliE + Wikipedia + Memoria Chilena: Batalla de Lagunillas 1557, Aldea de Rio Clarillo, Real Cedula 31 dic 1695, Corregimiento Colchagua 1593, primer cura parroco 1786, Villa Deseada 1825 Ramon Freire, plano urbano 1832, tranvia 1872/1918, cementerio 1911, Basilica Menor 1997 */
 /* v45.169 · HISTORIA DE RENGO · datos historicos corregidos con fuentes autoritativas (Soto Pizarro 2010 + Municipalidad de Rengo 2024) + Marco Conceptual nuevo (Santos, Elden, Corner, Lefebvre) */
 /* v45.168 · HISTORIA DE RENGO · texto justificado + imagen optimizada + composicion editorial */
+/* v45.362 · [lectura] · justificado selectivo · Siete reglas .hist-* justificaban a todo ancho (bajada de la
+   cabecera, cita inicial, texto de las tarjetas de la línea de tiempo, cierre, marco conceptual y pies del marco
+   y de la bibliografía): en teléfonos, columnas de 30-40 caracteres con huecos y palabras partidas. Se retiraron
+   text-align:justify, hyphens y text-justify de las siete. Los párrafos narrativos largos de #historia que lo
+   merecen (desde 64 em de ventana, columna de 32 em o más, 280 caracteres y 3 líneas) los justifica el bloque
+   «JUSTIFICACIÓN SELECTIVA» del final del documento; la cabecera, los pies y la bibliografía quedan a la izquierda. */
 .hist-section{padding:36px 24px 48px;max-width:1200px;margin:0 auto;color:var(--text)}
 .hist-section .sec-header h2{font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:1.25;letter-spacing:-.015em;font-weight:700}
 .hist-section .sec-header h2 em{font-style:italic;color:#b88a0b;font-weight:700}
-.hist-section .sec-header p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;line-height:1.7;max-width:780px;margin-inline:auto}
+.hist-section .sec-header p{line-height:1.7;max-width:780px;margin-inline:auto}
 
 /* v45.168 · Hero · imagen collage institucional con resolucion optimizada */
 /* v45.171 · hist-hero: imagen completa visible (sin cropping) · max-width contiene el tamano, aspect-ratio nativa preservada */
@@ -2770,7 +2783,7 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 .hist-lead{margin:2rem auto;max-width:780px}
 .hist-lead-quote{position:relative;padding:1.25rem 1.5rem 1.25rem 3rem;background:rgba(184,134,11,.08);border-left:4px solid #b88a0b;border-radius:0 10px 10px 0;font-size:1rem;line-height:1.7;color:var(--text)}
 .hist-lead-mark{position:absolute;top:-.5rem;left:.75rem;font-size:3.5rem;line-height:1;color:#b88a0b;opacity:.45;font-family:Georgia,serif}
-.hist-lead-quote p{margin:0;max-width:none;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.hist-lead-quote p{margin:0;max-width:none}
 .hist-lead-quote strong{color:#b88a0b;font-weight:700}
 
 /* Header de la timeline */
@@ -2801,7 +2814,7 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 .hist-era-tag{display:inline-flex;align-items:center;gap:.375rem;font-size:.6875rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.25rem .625rem;border-radius:99px;background:color-mix(in srgb,var(--era-color) 12%,transparent);color:var(--era-color);border:1px solid color-mix(in srgb,var(--era-color) 32%,transparent);margin-bottom:.5rem}
 .hist-era-tag--current{background:color-mix(in srgb,var(--era-color) 18%,transparent)}
 .hist-card-title{font-size:1.0625rem;font-weight:700;color:var(--text);margin:0;letter-spacing:-.01em;line-height:1.3}
-.hist-card-text{font-size:.875rem;line-height:1.7;color:var(--text2,rgba(255,255,255,.88));margin:0;max-width:none;text-align:justify;hyphens:auto;-webkit-hyphens:auto;word-spacing:.02em;text-justify:inter-word}
+.hist-card-text{font-size:.875rem;line-height:1.7;color:var(--text2,rgba(255,255,255,.88));margin:0;max-width:none;word-spacing:.02em}
 .hist-card-text strong{color:var(--text);font-weight:600}
 .hist-card-text em{color:var(--era-color);font-style:italic;font-weight:600}
 
@@ -2819,7 +2832,7 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 .hist-closing{display:flex;gap:1rem;align-items:flex-start;margin:2rem 0 1rem;padding:1.25rem 1.5rem;background:rgba(45,154,77,.08);border:1px solid rgba(45,154,77,.28);border-left:4px solid #2d9a4d;border-radius:10px}
 .hist-closing-icon{font-size:1.75rem;line-height:1;flex-shrink:0}
 .hist-closing-title{font-size:1rem;font-weight:700;margin:0 0 .5rem;color:var(--success-txt,#15803d)}
-.hist-closing p{font-size:.875rem;line-height:1.7;margin:0;color:var(--text2,rgba(255,255,255,.88));max-width:none;text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.hist-closing p{font-size:.875rem;line-height:1.7;margin:0;color:var(--text2,rgba(255,255,255,.88));max-width:none}
 .hist-closing p strong{color:var(--text);font-weight:600}
 
 /* v45.169 · Marco conceptual: tarjetas de autores que fundamentan la lectura del territorio */
@@ -2831,9 +2844,9 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 .hist-marco-card{padding:1rem 1.125rem;background:var(--card,rgba(255,255,255,.04));border:1px solid var(--border,rgba(255,255,255,.08));border-left:3px solid #2b6cb0;border-radius:10px;transition:transform .2s ease,box-shadow .2s ease}
 .hist-marco-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(43,108,176,.12)}
 .hist-marco-author{font-size:.8125rem;font-weight:700;color:#2b6cb0;margin-bottom:.5rem;letter-spacing:.01em;text-transform:uppercase}
-.hist-marco-card p{font-size:.84375rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85));text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.hist-marco-card p{font-size:.84375rem;line-height:1.65;margin:0;color:var(--text2,rgba(255,255,255,.85))}
 .hist-marco-card p strong{color:var(--text);font-weight:600}
-.hist-marco-foot{font-size:.8125rem;line-height:1.7;margin:0;padding:.875rem 1rem;background:rgba(43,108,176,.06);border-radius:7px;color:var(--text2,rgba(255,255,255,.82));text-align:justify;hyphens:auto;-webkit-hyphens:auto;text-justify:inter-word}
+.hist-marco-foot{font-size:.8125rem;line-height:1.7;margin:0;padding:.875rem 1rem;background:rgba(43,108,176,.06);border-radius:7px;color:var(--text2,rgba(255,255,255,.82))}
 .hist-marco-foot strong{color:var(--text);font-weight:600}
 
 /* v45.177 · Bibliografia academica estructurada · 3 categorias en grid + estilo APA */
@@ -2850,7 +2863,7 @@ body.dark .tl-pladeco-item.tl-future .tl-p-dot{background:#1e293b;border-color:#
 .hist-biblio-list em{font-style:italic;color:var(--text)}
 .hist-biblio-link{color:var(--success-txt,#15803d);text-decoration:none;border-bottom:1px dotted rgba(45,154,77,.5);transition:color .2s ease,border-color .2s ease}
 .hist-biblio-link:hover{color:#1a7a3a;border-bottom-color:#1a7a3a}
-.hist-biblio-foot{margin:1rem 0 0;padding:.875rem 1rem;background:rgba(184,134,11,.06);border-radius:7px;font-size:.78125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.82));text-align:justify;hyphens:auto;-webkit-hyphens:auto;font-style:italic}
+.hist-biblio-foot{margin:1rem 0 0;padding:.875rem 1rem;background:rgba(184,134,11,.06);border-radius:7px;font-size:.78125rem;line-height:1.6;color:var(--text2,rgba(255,255,255,.82));font-style:italic}
 .hist-biblio-foot em{font-style:normal;font-weight:600;color:var(--text)}
 body.dark .hist-biblio{background:rgba(184,134,11,.1);border-color:rgba(184,134,11,.3)}
 body.dark .hist-biblio-cat{color:#e0b54d}
@@ -4329,33 +4342,19 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 @media(max-width:768px){
   .sec-header{margin-bottom:14px !important;padding-bottom:10px !important}
   .sec-header h2{font-size:1.2rem !important;line-height:1.2 !important;margin-bottom:5px !important}
-  /* v45.173 · Mobile: revertir a left-align porque justify en lineas cortas genera huecos */
+  /* v45.173 · Mobile: revertir a left-align porque justify en lineas cortas genera huecos
+     v45.362 · [lectura] · la bajada de cabecera ya no se justifica en ningún ancho; esta regla queda solo como
+     alineación a la izquierda de la bajada en teléfonos (su tamaño lo fija institucional.css con --fs-sub) */
   .sec-header p{font-size:.85rem !important;line-height:1.5 !important;text-align:left !important;hyphens:manual !important}
   .sec-header .badge{font-size:11px !important;padding:2px 8px !important;margin-bottom:6px !important}
 }
 
-/* v45.173 · DESKTOP · Justificacion editorial en cards principales del portal */
-/* Aplica solo en desktop (>=769px) porque en mobile el justify con lineas cortas genera huecos visuales */
-@media(min-width:769px){
-  .eje-card p,
-  .foda-card p,
-  .foda-card li,
-  .mvv-card p,
-  .construccion-text p,
-  .lectura-card p,
-  .lectura-desc,
-  .dec-card p,
-  .resumen-card p,
-  .insight-card p,
-  .sec-fuente,
-  .x-tab-panel > p,
-  .reveal > p:not(.no-justify){
-    text-align:justify;
-    text-justify:inter-word;
-    hyphens:auto;
-    -webkit-hyphens:auto;
-  }
-}
+/* v45.362 · [lectura] · justificado selectivo · RETIRADO el bloque v45.173 «DESKTOP · Justificacion editorial en
+   cards principales del portal»: desde 769 px justificaba el texto de trece familias de tarjetas (.eje-card p,
+   .foda-card p y li, .mvv-card p, .dec-card p, .resumen-card p, .sec-fuente, .x-tab-panel > p, .reveal > p…), es
+   decir, columnas de 250-450 px, listas y fuentes: justo lo que el criterio selectivo excluye (tarjetas breves,
+   listas, pies). El justificado lo decide ahora, párrafo por párrafo, el bloque «JUSTIFICACIÓN SELECTIVA» del
+   final del documento. */
 
 /* 8. Hero KPIs mobile: 2 columnas compactas */
 @media(max-width:560px){
@@ -4726,11 +4725,8 @@ section p strong{color:var(--text);font-weight:700}
   line-height:1.55;
   max-width:82ch;
   color:var(--text2);
-  /* v45.173 · Justificacion editorial · evita lineas cortas y huecos en parrafos largos */
-  text-align:justify;
-  text-justify:inter-word;
-  hyphens:auto;
-  -webkit-hyphens:auto;
+  /* v45.362 · [lectura] · retirado el justificado de v45.173 (text-align:justify, text-justify y hyphens): la
+     bajada de cabecera es un encabezado, y el criterio selectivo la deja siempre a la izquierda */
 }
 .sec-header .badge{
   font-size:11px !important;
@@ -4759,7 +4755,10 @@ section:nth-of-type(even){
   padding-right:clamp(16px,4vw,40px) !important;
 }
 /* Reducir margin interno entre elementos comunes */
-section p{margin-bottom:.65em}
+/* v45.362 · [lectura] · separación de párrafos · .65em (unos 12 px frente a 29 px de interlínea a 18 px) no
+   separaba un párrafo del siguiente; pasa a 1 em. Solo alcanza a los <p> sin margen propio: las reglas de clase
+   ganan por especificidad y el último párrafo sigue sin margen. */
+section p{margin-block-end:1em}
 section p:last-child{margin-bottom:0}
 section ul,section ol{margin:.4em 0 .8em;padding-left:1.4em}
 section ul li,section ol li{margin-bottom:.2em;line-height:1.5}
@@ -6756,8 +6755,10 @@ html.nofx, html.nofx *, html.nofx ::before, html.nofx ::after { animation: none 
 .hero .hero-estado .he-item { display: block; }
 .hero .hero-estado { flex-direction: column; gap: 2px; border-radius: var(--rad-lg,10px); }
 .hero .hero-estado .he-sep { display: none; }
-/* — bloque de estilos n.º 69 del documento — */
-.txt-justificado { text-justify: inter-word; hyphens: auto; hyphenate-limit-chars: 7 3 3; text-align-last: start; text-align: justify !important; }
+/* — bloque de estilos n.º 69 del documento —
+   v45.362 · [lectura] · retirada de esta copia la regla .txt-justificado (text-align:justify !important a todo
+   ancho): su original se reemplazó por el bloque «JUSTIFICACIÓN SELECTIVA» (dentro de @media (min-width:64em) y sin
+   !important). La clase solo la pone el script después de cargar, así que la primera pantalla no la necesita. */
 </style>
 </head>
 <body>
@@ -11657,7 +11658,9 @@ body.dark #svMap{background:#0f1a2a}
 .sv-corridor{background:rgba(192,57,43,.07);border:1px solid var(--border);border-left:4px solid var(--sv-rojo);border-radius:14px;padding:20px 24px;margin:22px 0}
 .sv-corridor h3{font-size:17px;color:var(--sv-rojo);margin-bottom:10px;display:flex;align-items:center;gap:8px}
 body.dark .sv-corridor h3{color:#f08a7d}
-.sv-corridor p{font-size:14.5px;color:var(--text);line-height:1.7;margin-bottom:8px;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+/* v45.362 · [lectura] · justificado selectivo · retirados text-align:justify y hyphens de .sv-corridor p y de
+   .sv-acard-txt (tarjetas de 290 px): los párrafos largos del recuadro los decide el bloque «JUSTIFICACIÓN SELECTIVA» */
+.sv-corridor p{font-size:14.5px;color:var(--text);line-height:1.7;margin-bottom:8px}
 .sv-corridor p:last-child{margin-bottom:0}
 /* Cards de análisis de los datos */
 .sv-analisis-head{font-size:16px;color:var(--sv-azul);margin:28px 0 2px;display:flex;align-items:center;gap:8px}
@@ -11670,7 +11673,7 @@ body.dark .sv-analisis-head{color:#8fb6d6}
 .sv-acard-ico{font-size:21px;line-height:1;flex-shrink:0}
 .sv-acard-titulo{font-size:14px;font-weight:700;color:var(--text);line-height:1.25}
 .sv-acard-dato{font-size:23px;font-weight:700;color:var(--ac,#2E6F95);font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-left:auto;flex-shrink:0}
-.sv-acard-txt{font-size:13px;color:var(--text2);line-height:1.6;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.sv-acard-txt{font-size:13px;color:var(--text2);line-height:1.6}
 .sv-cartera{display:flex;flex-direction:column;gap:10px;margin:18px 0}
 .sv-acc{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
 .sv-acc-head{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:14px 18px;background:none;border:none;cursor:pointer;font-family:inherit;color:var(--text);min-height:44px}
@@ -35631,12 +35634,12 @@ h2.display{
 .kicker.kicker-magenta::before{background:#be185d}
 
 /* Multi-column text editorial */
+/* v45.362 · [lectura] · retirados hyphens:auto y text-align:justify (la clase .multi-col no se usa en el marcado;
+   si se usa, el justificado lo decide el bloque «JUSTIFICACIÓN SELECTIVA») */
 .multi-col{
   column-count:2;
   column-gap:40px;
   column-rule:1px solid rgba(0,0,0,.08);
-  hyphens:auto;
-  text-align:justify;
 }
 @media (max-width:780px){
   .multi-col{column-count:1;column-rule:none}
@@ -37479,8 +37482,13 @@ section[id] > .sec-header .badge{
 }
 
 /* ═══ JERARQUÍA TIPOGRÁFICA CONSISTENTE EN BODY ═══ */
+/* v45.362 · [lectura] · jerarquía · h3 y h4 nunca más chicos que el párrafo. Estas dos reglas fijaban h3 en
+   --ts-md (16 px) y h4 en --ts-base (14 px) con !important, mientras el cuerpo de las secciones va en --fs-body
+   (17 px en teléfono, 18 px desde unos 1200 px; institucional.css): la jerarquía quedaba invertida en 349 de 356
+   h3 y en los 161 h4 visibles (medido a 1440 px en las 75 vistas y la portada). Ahora h3 toma --fs-h3 (18-21 px)
+   y h4 --fs-body en 700, los dos tokens de la escala de institucional.css. Especificidad y prioridad sin cambios. */
 section h3:not(.mbht-rec-title):not(.mbht-block-title){
-  font-size:var(--ts-md)!important;
+  font-size:var(--fs-h3)!important;
   font-weight:700!important;
   letter-spacing:var(--ls-snug)!important;
   line-height:var(--lh-snug)!important;
@@ -37489,7 +37497,7 @@ section h3:not(.mbht-rec-title):not(.mbht-block-title){
   margin-bottom:10px;
 }
 section h4{
-  font-size:var(--ts-base)!important;
+  font-size:var(--fs-body)!important;
   font-weight:700!important;
   letter-spacing:var(--ls-normal)!important;
   color:var(--text);
@@ -38943,7 +38951,14 @@ body.dark .pv-nav-ctx,body.dark .pv-nav .pv-d{color:#5cc98a}
      (medido con Range, contando los glifos de la primera linea): la unidad 'ch' toma el ancho
      del "0", mas ancho que las minusculas, asi que 70ch NO equivale a 70 caracteres de texto.
      Se ajusta a 54ch para caer dentro de los 60-75 caracteres que pide el encargo.
-     El cuerpo (16px) y el interlineado (1,6) ya cumplian y no se tocaron. */
+     El cuerpo (16px) y el interlineado (1,6) ya cumplian y no se tocaron.
+     v45.362 · [lectura] · corrección de este comentario: el valor vigente es 58ch, no 54ch, y el cuerpo de las
+     secciones ya no es 16 px sino --fs-body (17-18 px, institucional.css). Con Poppins (el «0» mide 0,641 em y
+     un carácter medio 0,508 em) 58ch son unos 73 caracteres por línea. Medido con t_lectura.cjs a 1440 px en la
+     portada y las 75 vistas: de 546 <p> de dos o más líneas, 381 quedan entre 60 y 80 caracteres y ninguno pasa de
+     80 (los más cortos están en tarjetas estrechas); los 134 párrafos largos en columnas de 32 em o más, todos
+     entre 60 y 80. El bloque v45.362 · [lectura] de institucional.css extiende esta medida a listas, definiciones
+     y citas. */
   --ancho-lectura:58ch;
 }
 
@@ -41744,16 +41759,18 @@ body.dark #metodologia .apm-tag.calc{color:var(--success-txt,#5cc98a)}
      informe de simulación). Objetos EDITABLES window.finRiesgoFCM / window.finBenchmarkSINIM.
      Reutiliza clases fin-* de la sección. Render seguro · sin temporizadores. -->
 <style id="fin-fcm-css">
-#situacion-financiera .fin-lead{font-size:13px;color:var(--text2);line-height:1.7;text-align:justify;hyphens:auto;margin:0 0 16px}
+/* v45.362 · [lectura] · justificado selectivo · retirados text-align:justify y hyphens de .fin-lead, .fin-note,
+   .fin-alerta y .fin-rec li (lista numerada a 12 px): el justificado de párrafos largos lo decide el bloque
+   «JUSTIFICACIÓN SELECTIVA» del final del documento; las listas y las notas quedan a la izquierda */
+#situacion-financiera .fin-lead{font-size:13px;color:var(--text2);line-height:1.7;margin:0 0 16px}
 #situacion-financiera .fin-lead b{color:var(--text)}
 #situacion-financiera .fin-block-h{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue,#1F3864);margin:24px 0 11px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
-#situacion-financiera .fin-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:10px;padding:12px 15px;font-size:12px;line-height:1.65;color:var(--text2);margin-bottom:16px;text-align:justify;hyphens:auto}
+#situacion-financiera .fin-note{background:var(--bg);border:1px solid var(--border);border-left:3px solid #1F3864;border-radius:10px;padding:12px 15px;font-size:12px;line-height:1.65;color:var(--text2);margin-bottom:16px}
 #situacion-financiera .fin-note b{color:var(--text)}
 #situacion-financiera .fin-note.coh{border-left-color:#6087c7;background:rgba(96,135,199,.06)}
-#situacion-financiera .fin-alerta{text-align:justify;hyphens:auto}
 #situacion-financiera .fin-rec{list-style:none;counter-reset:fr;margin:0 0 16px;padding:0;display:grid;gap:9px}
-#situacion-financiera .fin-rec li{counter-increment:fr;position:relative;padding-left:32px;font-size:12px;line-height:1.55;color:var(--text2);text-align:justify;hyphens:auto}
+#situacion-financiera .fin-rec li{counter-increment:fr;position:relative;padding-left:32px;font-size:12px;line-height:1.55;color:var(--text2)}
 #situacion-financiera .fin-rec li::before{content:counter(fr);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:#1F3864;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
 #situacion-financiera .fin-rec li b{color:var(--text)}
 #situacion-financiera .fin-fuente-min{font-size:10.5px;color:var(--text3);line-height:1.5;margin:2px 0 22px;font-style:italic}
@@ -45961,78 +45978,181 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
 
 
 <!-- ═══════════════════════════════════════════════════════════════════════════
-     v45.360 · TEXTO JUSTIFICADO EN TODO EL PORTAL (pedido del encargado del PLADECO)
-     Antes solo se justificaban algunas tarjetas y solo en escritorio (v45.173). Ahora se justifica
-     todo el texto corrido: párrafos, elementos de lista, definiciones, citas y pies largos.
-     CÓMO DECIDE. No se aplica a ciegas: un párrafo dentro de un bloque centrado (títulos de sección,
-     portada, mensajes) debe seguir centrado. Por eso se marca con la clase .txt-justificado solo el
-     texto cuya alineación calculada es «izquierda», que no está en un control (botones, etiquetas,
-     celdas de tabla, mapas, gráficos) y cuya columna mide al menos 240 px: en columnas más angostas
-     la justificación abre huecos grandes entre palabras. Cada elemento se evalúa una vez, cuando ya
-     es visible; el contenido que se agrega o se muestra después se evalúa al aparecer.
-     LEGIBILIDAD. Se activa la partición silábica (hyphens:auto con lang="es"), que reduce los huecos,
-     y la última línea queda alineada a la izquierda.
+     v45.362 · [lectura] · JUSTIFICACIÓN SELECTIVA (reemplaza «v45.360 · TEXTO JUSTIFICADO EN TODO EL PORTAL»)
+     QUÉ. Solo se justifican los PÁRRAFOS NARRATIVOS EXTENSOS: un <p> dentro de #main-content, visible, con al
+     menos 280 caracteres y 3 líneas, en una columna de 32 em o más (unos 60 caracteres de Poppins) y solo con
+     ventanas de 64 em (1024 px) o más. En teléfonos, tabletas y columnas estrechas todo queda a la izquierda.
+     Nunca se justifican títulos, botones, etiquetas, listas (li, dd, dt), tarjetas breves, tablas, pies y
+     fuentes, bibliografías, cabeceras de sección, la portada del héroe, las piezas del sistema gráfico (sg-*)
+     ni Lectura Fácil; tampoco un párrafo con una dirección web (no se puede partir) ni uno cuya alineación
+     calculada no sea la de inicio (un «left» o un «center» puestos a propósito se respetan).
+     POR QUÉ. El bloque v45.360 justificaba p, li, dd, blockquote y figcaption desde 240 px (28-35 caracteres por
+     línea en un teléfono), se evaluaba una sola vez y no volvía a mirar al cambiar el ancho, aceptaba «left»
+     puestos a propósito y, con !important, ganaba a Lectura Fácil (.lf-panel *{text-align:left!important}) y a la
+     bibliografía de #historia. Medido en v45.362 antes de este cambio (75 vistas y la portada, t_lectura.cjs):
+     1.130 elementos justificados a 1440 px y 1.105 a 360 px, 688 de ellos en listas, tarjetas o el héroe.
+     CÓMO. El CSS va dentro de @media (min-width:64em) y sin !important; la partición silábica usa el idioma del
+     documento (lang="es") con hyphenate-limit-chars 6 3 3 (palabras de 6 letras o más, 3 a cada lado del guion).
+     El script evalúa solo la vista abierta (evento «pv:vista» del motor, raíces de window.__pvRaices) y vuelve a
+     evaluarla al cambiar la consulta de 64 em, al redimensionar (300 ms), tras abrir pestañas o desplegables
+     (clic y «toggle», 350 ms), al cambiar Lectura Fácil y cuando cargan las fuentes. No guarda memoria por
+     elemento (la clase se pone y se quita según el estado de cada momento): no hay observador de todo el
+     documento ni reintentos programados. Primero lee todos los párrafos y después escribe las clases (una sola
+     pasada de diseño). La regla vieja se retiró también de la copia de la primera pantalla del <head>.
+     RÍOS. Después de justificar, en la misma tarea y antes de pintar, se mide en cada párrafo el hueco más ancho
+     entre dos palabras de una misma línea (sin la última); si supera 3 espacios normales de esa letra, el párrafo
+     vuelve a la izquierda. Hace falta porque la partición silábica depende del navegador y de que tenga el
+     diccionario de español: en el Edge sin interfaz de las mediciones fue irregular (una prueba en una columna de
+     90 px no partió «constitucionalmente», pero la captura a 1440 px de #mbht-bienestar muestra «espe-cíficos»), y
+     sin partición algunas líneas llegaban a 5,9 espacios (el cierre de #historia, que por eso queda a la izquierda).
+     Al quitar la clase se quita también el atributo class si quedó vacío: las reglas de «p sin clase»
+     (p:not([class])) dejaban de aplicarse con class="" (medido: tres párrafos de #mbht-bienestar pasaban de 18 a 13 px).
+     VERIFICADO (t_lectura.cjs, portada y 75 vistas, Edge sin interfaz con CUADROS=1): párrafos con la clase a 360,
+     768, 1023, 1024 y 1440 px = 0, 0, 0, 62 y 33; ninguno dentro de listas, tablas, Lectura Fácil ni cabeceras;
+     ningún elemento con text-align:justify sin la clase; hueco máximo 2,89 espacios a 1440 px y 2,98 a 1024 px
+     (antes, con v45.360: 12,6 a 1440 px y 53,4 a 360 px). Capturas de #mbht-bienestar, #diagnostico-institucional y
+     #historia a 1024 y 1440 px revisadas: sin ríos a la vista.
      ═══════════════════════════════════════════════════════════════════════════ -->
-<style>
-.txt-justificado{
-  text-align:justify !important;
-  text-justify:inter-word;
-  -webkit-hyphens:auto; hyphens:auto;
-  hyphenate-limit-chars:7 3 3;
-  text-align-last:start;
+<style id="justificado-selectivo-css">
+@media (min-width:64em){
+  #main-content p.txt-justificado{
+    text-align:justify;
+    text-justify:inter-word;
+    -webkit-hyphens:auto; hyphens:auto;
+    hyphenate-limit-chars:6 3 3;
+    text-align-last:start;
+  }
+  /* Lectura Fácil nunca se justifica, aunque la clase quede puesta un instante antes de reevaluar */
+  body[data-lf="true"] #main-content p.txt-justificado{ text-align:start; -webkit-hyphens:manual; hyphens:manual; }
 }
 </style>
 <script>
 (function(){
   'use strict';
-  var TEXTO = 'p, li, dd, blockquote, figcaption';
-  var EXCLUIR = 'button, label, select, th, td, caption, nav, [role="navigation"], [role="tablist"], [role="menu"], ' +
-                '.leaflet-container, .sg-graf, svg, canvas, code, pre, .no-justify, [contenteditable="true"]';
-  var MIN_ANCHO = 240;
+  var CLASE = 'txt-justificado';
+  var MQ = window.matchMedia ? window.matchMedia('(min-width:64em)') : null;
+  var MIN_EM = 32, MIN_CAR = 280, MIN_LIN = 3;
+  var EXCLUIR = 'button, label, select, table, caption, nav, header, footer, li, dd, dt, figcaption, ' +
+                '[role="navigation"], [role="tablist"], [role="menu"], [role="dialog"], ' +
+                '.hero, .sec-header, .lf-panel, .badge, .kicker, .sec-fuente, .map-meta, .nota-seccion, ' +
+                '[class*="biblio"], [class*="refs"], [class*="fuente"], [class*="source"], [class*="pie"], ' +
+                '[class*="-foot"], [class*="cred"], [class^="sg-"], [class*=" sg-"], .leaflet-container, ' +
+                'svg, canvas, code, pre, .no-justify, [contenteditable="true"]';
+  var URL_RE = /(https?:\/\/|www\.)\S/i;
 
-  function evaluar(el){
-    if(el.__just !== undefined) return;
-    if(el.offsetParent === null) return;              /* oculto: se evalúa cuando se vea */
-    if(el.closest(EXCLUIR)){ el.__just = false; return; }
-    var cs = getComputedStyle(el);
-    var alin = cs.textAlign;
-    if(alin !== 'start' && alin !== 'left' && alin !== 'justify'){ el.__just = false; return; }
-    if(cs.whiteSpace === 'nowrap' || cs.whiteSpace === 'pre'){ el.__just = false; return; }
-    if(el.clientWidth < MIN_ANCHO){ el.__just = false; return; }
-    el.classList.add('txt-justificado');
-    el.__just = true;
+  function activo(){
+    return !!(MQ && MQ.matches) && document.body && document.body.getAttribute('data-lf') !== 'true';
   }
-
-  function recorrer(){
-    var raices = [document.getElementById('main-content'), document.querySelector('footer')].filter(Boolean);
-    var lista = [];
-    raices.forEach(function(r){ lista = lista.concat([].slice.call(r.querySelectorAll(TEXTO))); });
-    var i = 0;
-    (function tramo(){
-      var fin = Math.min(i + 400, lista.length);
-      for(; i < fin; i++){ try{ evaluar(lista[i]); }catch(e){} }
-      if(i < lista.length) setTimeout(tramo, 0);
-    })();
+  function raices(els){
+    var main = document.getElementById('main-content');
+    if(!main){ return []; }
+    var r = (els && els.length) ? els : (typeof window.__pvRaices === 'function' ? window.__pvRaices() : [main]);
+    return [].filter.call(r || [], function(n){ return n && n.nodeType === 1 && (n === main || main.contains(n)); });
   }
-
-  var pendiente = null;
-  function pasar(){ clearTimeout(pendiente); pendiente = setTimeout(recorrer, 250); }
-
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasar); else pasar();
-  window.addEventListener('load', function(){ pasar(); setTimeout(pasar, 2000); });
-  var main = document.getElementById('main-content');
-  if(main && 'MutationObserver' in window){
-    /* vistas que se abren (clases) y contenido que se dibuja después (nodos) */
-    /* se ignoran los cambios dentro de mapas y gráficos (Leaflet agrega y quita teselas sin parar) */
-    new MutationObserver(function(cambios){
-      for(var k = 0; k < cambios.length; k++){
-        var t = cambios[k].target;
-        if(t && t.nodeType === 1 && t.closest && t.closest('.leaflet-container, svg, canvas')) continue;
-        pasar(); return;
+  function apto(p){
+    if(!p.getClientRects().length){ return false; }                 /* oculto: no se decide */
+    if(p.closest(EXCLUIR)){ return false; }
+    var cs = getComputedStyle(p);
+    if(cs.textAlign !== 'start' && cs.textAlign !== 'justify'){ return false; }
+    if(cs.display !== 'block' || cs.whiteSpace !== 'normal'){ return false; }
+    var t = (p.textContent || '').replace(/\s+/g, ' ').trim();
+    if(t.length < MIN_CAR || URL_RE.test(t)){ return false; }
+    var fs = parseFloat(cs.fontSize) || 16;
+    var ancho = p.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+    if(ancho / fs < MIN_EM){ return false; }
+    var lh = parseFloat(cs.lineHeight) || fs * 1.2;
+    var alto = p.clientHeight - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+    /* el que ya está justificado conserva la clase con 2 líneas: la partición silábica puede ahorrarle una y no
+       debe alternar entre justificado y no justificado en cada evaluación */
+    return alto / lh >= (p.classList.contains(CLASE) ? MIN_LIN - 1 : MIN_LIN - 0.2);
+  }
+  /* Control de «ríos»: el hueco más ancho entre dos palabras de una misma línea (sin contar la última), medido
+     como múltiplo del espacio normal de esa letra. Si pasa de LIMITE_HUECO, el párrafo vuelve a la izquierda.
+     Se mide después de aplicar la clase y antes de pintar (la misma tarea), así que nunca se ve el estado
+     intermedio. Sirve con o sin partición silábica: donde el navegador no la tiene, se descartan más párrafos. */
+  var LIMITE_HUECO = 3, lienzo = null;
+  function huecoMax(p){
+    var cs = getComputedStyle(p);
+    if(!lienzo){ lienzo = document.createElement('canvas').getContext('2d'); }
+    lienzo.font = cs.fontStyle + ' ' + cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    var esp = lienzo.measureText(' ').width || (parseFloat(cs.fontSize) || 16) * 0.26;
+    var tw = document.createTreeWalker(p, NodeFilter.SHOW_TEXT), n, rng = document.createRange(), trozos = [];
+    while((n = tw.nextNode())){
+      var re = /\S+/g, m, s = n.nodeValue;
+      while((m = re.exec(s))){
+        rng.setStart(n, m.index); rng.setEnd(n, m.index + m[0].length);
+        var rs = rng.getClientRects();
+        for(var k = 0; k < rs.length; k++){ if(rs[k].width > 0){ trozos.push([Math.round(rs[k].top), rs[k].left, rs[k].right]); } }
       }
-    }).observe(main, { attributes: true, attributeFilter: ['class', 'hidden'], childList: true, subtree: true });
+    }
+    var lineas = {}, tops = [];
+    trozos.forEach(function(z){
+      var t = null;
+      for(var j = 0; j < tops.length; j++){ if(Math.abs(tops[j] - z[0]) < 3){ t = tops[j]; break; } }
+      if(t === null){ t = z[0]; tops.push(t); lineas[t] = []; }
+      lineas[t].push(z);
+    });
+    tops.sort(function(a, b){ return a - b; });
+    var max = 0;
+    for(var i = 0; i < tops.length - 1; i++){
+      var L = lineas[tops[i]].sort(function(a, b){ return a[1] - b[1]; });
+      for(var j2 = 1; j2 < L.length; j2++){ var g = (L[j2][1] - L[j2 - 1][2]) / esp; if(g > max){ max = g; } }
+    }
+    return max;
   }
-  window.addEventListener('hashchange', pasar);
+  /* quita la clase y, si el párrafo no tenía otra, también el atributo class vacío: varias reglas de estilo
+     eligen «p sin clase» (p:not([class])) y un class="" las desactivaba (medido en #mbht-bienestar: 18 → 13 px) */
+  function sacar(p){
+    p.classList.remove(CLASE);
+    if(!p.classList.length && p.getAttribute('class') === ''){ p.removeAttribute('class'); }
+  }
+  function evaluar(els){
+    if(!activo()){
+      var marcados = document.querySelectorAll('#main-content .' + CLASE);
+      for(var k = 0; k < marcados.length; k++){ sacar(marcados[k]); }
+      return;
+    }
+    var lista = [];
+    raices(els).forEach(function(r){
+      if(r.tagName === 'P'){ lista.push(r); }
+      [].push.apply(lista, r.querySelectorAll('p'));
+    });
+    var poner = [], quitar = [];
+    for(var i = 0; i < lista.length; i++){                         /* 1) lectura */
+      var ok = false;
+      try{ ok = apto(lista[i]); }catch(e){}
+      if(ok !== lista[i].classList.contains(CLASE)){ (ok ? poner : quitar).push(lista[i]); }
+    }
+    poner.forEach(function(p){ p.classList.add(CLASE); });          /* 2) escritura */
+    quitar.forEach(sacar);
+    var rios = [];                                                  /* 3) control de ríos (lectura) */
+    for(var r = 0; r < lista.length; r++){
+      if(lista[r].classList.contains(CLASE)){ try{ if(huecoMax(lista[r]) > LIMITE_HUECO){ rios.push(lista[r]); } }catch(e){} }
+    }
+    rios.forEach(sacar);                                            /* 4) escritura */
+  }
+  var espera = null;
+  function luego(ms, els){ clearTimeout(espera); espera = setTimeout(function(){ evaluar(els); }, ms); }
+
+  document.addEventListener('pv:vista', function(e){
+    var els = e.detail && e.detail.els;
+    evaluar(els);
+    setTimeout(function(){ evaluar(); }, 700);                     /* lo que la vista dibuja al abrirse */
+  });
+  if(MQ){
+    if(MQ.addEventListener){ MQ.addEventListener('change', function(){ evaluar(); }); }
+    else if(MQ.addListener){ MQ.addListener(function(){ evaluar(); }); }
+  }
+  window.addEventListener('resize', function(){ luego(300); });
+  document.addEventListener('click', function(){ luego(350); });
+  document.addEventListener('toggle', function(){ luego(350); }, true);
+  if('MutationObserver' in window && document.body){
+    new MutationObserver(function(){ evaluar(); }).observe(document.body, { attributes: true, attributeFilter: ['data-lf'] });
+  }
+  if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', function(){ evaluar(); }); }
+  else{ evaluar(); }
+  window.addEventListener('load', function(){ evaluar(); });
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ evaluar(); }); }
 })();
 </script>
 

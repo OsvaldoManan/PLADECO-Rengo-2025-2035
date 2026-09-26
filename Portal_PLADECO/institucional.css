@@ -602,8 +602,12 @@ body .sec-header h2{ font-size:var(--fs-h2); line-height:1.18; font-weight:800; 
    y prioridad suficientes; el origen del VALOR sigue siendo el token. */
 body section[id] > .sec-header > p{ font-size:var(--fs-sub)!important; line-height:1.5!important; max-width:64ch; }
 #main-content section{ font-size:var(--fs-body); }
-body #main-content p:not([class]), body #main-content li:not([class]){ font-size:var(--fs-body); line-height:1.62; }
-#main-content p:not([class]){ max-width:72ch; }
+/* v45.362 · [lectura] · «p sin clase» incluye también al párrafo cuya única clase es .txt-justificado y al que quedó
+   con class="" (un script que agrega y quita una clase deja el atributo vacío): el script de justificación
+   selectiva pone esa clase y, con :not([class]) a secas, el párrafo perdía su tamaño e interlineado al
+   justificarse (medido: tres párrafos de #mbht-bienestar pasaban de 18 a 13 px). */
+body #main-content p:is(:not([class]),[class=""],[class="txt-justificado"]), body #main-content li:not([class]){ font-size:var(--fs-body); line-height:1.62; }
+#main-content p:is(:not([class]),[class=""],[class="txt-justificado"]){ max-width:72ch; }
 
 /* Fuente, fecha y nota metodológica: se diferencian del contenido por tamaño y color,
    no por color de texto llamativo. */
@@ -766,3 +770,123 @@ html.asistente-oculto .chatbot-restaurar{ display:flex; }
 .chatbot-restaurar button{ font:inherit; font-weight:700; color:var(--text); background:var(--card); border:1px solid var(--border-strong,#cbd5e1);
   border-radius:7px; padding:6px 12px; min-height:36px; cursor:pointer; }
 .chatbot-restaurar button:hover{ background:var(--bg); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v45.362 · [lectura] · TAMAÑOS Y MEDIDA DE LECTURA
+   QUÉ. Tres pisos para el texto corrido de #main-content (el texto no cambia, solo su tamaño):
+     1) PROSA CON CLASE → var(--fs-body) (17 px en teléfono, 18 px desde unos 1200 px), interlineado 1,6:
+        párrafos narrativos que llevaban su tamaño en una clase (12,5-14,5 px);
+     2) DESCRIPCIONES → piso de 14 px (--text-small): texto de tarjetas, bajadas de gráficos, avisos, notas de
+        lectura y los <p> con el tamaño escrito en línea (style="font-size:9-13,5px");
+     3) FUENTES, CRÉDITOS Y REFERENCIAS → 13,5 px (--fs-nota, la misma escala de .sec-fuente y figcaption): notas
+        que no llevan información esencial (pedido C§3: notas de 13-14 px).
+   Y la medida: los elementos de lista sin clase, las definiciones y las citas no pasan de --ancho-lectura
+   (58ch ≈ 73 caracteres de Poppins), como ya ocurría con los <p>.
+   POR QUÉ. Medido antes de este cambio (t_lectura.cjs, portada y 75 vistas): a 1440 px, 416 de 683 párrafos
+   visibles estaban bajo 14 px (311 de ellos con más de 100 caracteres, en 55 vistas) y 744 de 928 bloques de
+   texto de 60 caracteres o más; la regla de 17-18 px de este archivo solo alcanzaba a los p y li SIN clase y sin
+   tamaño en línea. Los elementos de lista llegaban a 212 caracteres por línea (#inversion-subdere) y a 155
+   (#proyeccion-poblacion, #gestion).
+   CÓMO. Las listas van dentro de :where() y todas las reglas con el mismo prefijo, «html body
+   #main-content#main-content» (el id repetido suma especificidad 2,0,2), para ganar con !important a las reglas
+   de origen, que en #mbht-bienestar llevan id y !important (1,1,1) y en el resto van en bloques <style> del cuerpo
+   que se cargan después de esta hoja; a igual especificidad dentro de este bloque, manda el orden (piso, notas,
+   prosa). Quedan fuera las piezas del sistema gráfico (sg-*, con su propia escala), los rótulos de gráficos y
+   leyendas y los controles. Va en esta hoja del <head> para regir desde la primera pintura (sin saltos).
+   VERIFICADO (mismas condiciones, después de este bloque y de los cambios de jerarquía y justificado de index.html):
+   a 1440 px, párrafos bajo 14 px 416 → 48 (28 son piezas del sistema gráfico, sin tocar; 17 son notas en 13,5 px;
+   3 son rótulos breves de #matriz) y de más de 100 caracteres 311 → 18, en 13 vistas en vez de 55; a 360 px,
+   433 → 55. Bloques de texto bajo 14 px 744 → 231 (quedan sobre todo <div> con el tamaño escrito en línea y
+   rótulos de gráficos: pendiente). Elementos de lista con más de 80 caracteres por línea 9 → 0 (máximo 212 → 78);
+   <p> con más de 80, 4 → 0. t_desborde a 360 y 1440 px: 0 vistas con elementos fuera de la pantalla. Desplegables
+   de #seguridad-vial, #seguridad-publica y #movilidad-vial abiertos: ninguno recorta su texto. */
+html body #main-content#main-content :where(
+  /* <p> de tarjetas, avisos y bajadas */
+  .glosario-term > p, .arg-card > p, .finding-card > p, p.sv-analisis-sub, .mbht-dim-card > p, p.mbht-dim-desc,
+  p.is-linea-desc, .foda-quote > p, .strat-card > p, .hist-marco-card > p, p.hist-marco-foot, p.mvv-card-text,
+  p.ficha-puente-desc, p.gr-exp-text, p.gr-biblio-text, .gr-territory-card > p, p.gr-result-sub, p.cro-d, p.cro-ev,
+  p.cro-lead, p.cro-leyenda, p.cro-nota, p.cf-periodo, p.proc-tl-sub, p.gf-lee, p.mbht-chart-sub, .proy-aviso > p,
+  p.ci-sintesis-intro, p.cp-legal-sub, p.cp-repo-note, p.et-vacio, p.dpv-aviso, p.mda-nota, p.ini-sub, p.ini-mapa-sub,
+  p.ini-id, p.sem-aviso, p.is-analisis-intro, p.is-lineas-intro, p.survey-subtitle, p.fuente-info-subtitle,
+  .contexto-header > p, .x-tab-panel > p, .sv-chart-card > p, .newsletter-text > p, .cuadernillo-card > p,
+  .tr-group > p, .encuesta-cta-content > p, p.visit-chart-desc, .ini-p > p, .proj-geo-soon > p, .me-section > p,
+  p.macro-divider-desc,
+  /* <p> con el tamaño en línea bajo 14 px */
+  p[style*="font-size:9px"], p[style*="font-size:9.5px"], p[style*="font-size:10px"], p[style*="font-size:10.5px"],
+  p[style*="font-size:11px"], p[style*="font-size:11.5px"], p[style*="font-size:12px"], p[style*="font-size:12.5px"],
+  p[style*="font-size:13px"], p[style*="font-size:13.5px"],
+  /* descripciones en <div> o <span> */
+  .pv-card-desc, .pv-parte-desc, .nota-seccion .nota-blk, .viz-sub, .callout-body, .sv-acc-inner, .fq-items > span,
+  .ficha-puente-card-text, .fin-hall-d, .sv-acard-txt, .mm-row, .test-texto, .voz-cita, .apm-row, .gp-desc, .idx-row,
+  .erd-del-text, .hz-text, .fin-recom-d, .sv-chart-sub, .mcual-grid > div, .ict-method-sub, .ict-hall-desc,
+  .mbht-rec-marco, .mbht-rec-evidencia, .arg-data, .ict-agrup-desc, .ict-glos-desc, .voz-nudo-desc, .voz-nna-quote,
+  .gr-instr-desc, .cl-reason, .fuente-info-src-text, .cp-desc, .fc-sub, .cp-duty, .anest-stat-lbl, .coh-tipo-desc,
+  .team-bio, .cg-note-desc, .fin-cx-nota, .fin-note, .hz-transform, .coh-seq-tens, .gr-author-cred,
+  .contexto-metodo-item, .fin-alerta, .hz-note, .gr-legal-art, .comp-insight, .fin-thesis, .cp-prov, .mcual-lim,
+  .ict-insight, .ict-ins-text, .mm-warn, .tp-note, .prosp-msg, .prosp-disclaimer, .ini-falta, .ods-note, .gs-sub,
+  .mtr-prov-banner, .poa-prov-banner, .da-lic-txt, .tr-note, .cta-sub, .cg-estado-nota,
+  .anest-block > div[style*="font-size:12"],
+  /* elementos de lista sin clase dentro de listas descriptivas */
+  .mbht-rec-list > li, .cg-list-card-acts > li, .fq-items > li, .coh-tipo-list > li, .foda-card li, .coh-seq-list > li,
+  .ci-duel-card li, .fin-rec > li, .gob-tab-panel li, .is-analisis > li, .anest-block > li, .gr-legal-list > li,
+  .is-lectura > li, .ini-resp > li, .gf-meta > li
+){ font-size:var(--text-small)!important; }
+/* Rutas por tiempo de la portada (#intro-rutas, «¿Cuánto tiempo tienes?»): en teléfonos van en dos columnas de
+   unos 105 px de texto y, a 14 px, palabras como «Interpretativa» o «Financiamiento» no caben y el navegador las
+   corta sin guion (medido a 360 px con t_lec_cortes.cjs: 4 palabras cortadas frente a 1 con el tamaño original).
+   Hasta 640 px conservan su tamaño; desde ahí, piso de 14 px. */
+@media (min-width:641px){
+  html body #main-content#main-content :where(.qi-ruta-desc){ font-size:var(--text-small)!important; }
+}
+
+html body #main-content#main-content :where(
+  p.gf-fte, p.graf-int-src, p.mvv-pie, p.cf-pie, p.hist-biblio-foot, p.dpv-foot, p.ini-mapa-nota, p.ini-mapa-ley-pie,
+  .heatmap-legend-box > p, .hist-biblio-list > li, .apm-refs > li, .fin-ref-list > li, .mv-refs > li, .gr-bib-list > li,
+  .idx-foot, .dato-meta, .fin-cx-fuente, .fin-fuente-min, .sec-fuente > span, .cp-legal-foot, .me-fn-note, .img-cred,
+  .traza-foot, .fuente-info-src-desc, .gr-source
+){ font-size:var(--fs-nota)!important; }
+
+html body #main-content#main-content :where(
+  p.anest-block-sub, p.anest-lead, .mbht-rec-block > p, p.drop-cap, .mbht-intro > p, p.gr-block-text, p.gr-intro,
+  p.fin-lead, p.fin-cx-intro, p.ict-h-sub, p.mvv-objetivo-text, p.dpv-lead, .erd-hero > p, p.hist-card-text,
+  .hist-closing p, .sv-corridor p,
+  /* párrafos sin clase de #mbht-bienestar: una regla con id e !important los fijaba en 13 px («sin clase»
+     incluye al que solo lleva .txt-justificado, que le pone el script de justificación selectiva) */
+  #mbht-bienestar > p:is(:not([class]),[class=""],[class="txt-justificado"]),
+  #mbht-bienestar > div > p:is(:not([class]),[class=""],[class="txt-justificado"])
+){ font-size:var(--fs-body)!important; line-height:1.6!important; }
+
+/* Separación: un párrafo narrativo seguido de otro párrafo deja 1 em (antes 8-12 px frente a una interlínea de
+   27-29 px). Solo la prosa de arriba y los párrafos sin clase del nivel de la sección, no el interior de tarjetas. */
+html body #main-content#main-content :where(
+  p.anest-block-sub, .mbht-rec-block > p, p.drop-cap, .mbht-intro > p, p.gr-block-text, p.fin-lead, p.fin-cx-intro,
+  .hist-closing p, .sv-corridor p,
+  #mbht-bienestar > p:is(:not([class]),[class=""],[class="txt-justificado"]),
+  #mbht-bienestar > div > p:is(:not([class]),[class=""],[class="txt-justificado"]),
+  section[id] > p:is(:not([class]),[class=""],[class="txt-justificado"]),
+  section[id] > div:not([class]) > p:is(:not([class]),[class=""],[class="txt-justificado"])
+):has(+ p){ margin-block-end:1em!important; }
+
+/* Jerarquía en #mbht-bienestar y en las tarjetas de gráficos en teléfonos: reglas con id e !important (15 px en
+   h3 y h4 de #mbht-bienestar) y una regla móvil (.viz-card h4 a 14 px) dejaban los títulos más chicos que el
+   párrafo aun después de llevar «section h3/h4» a --fs-h3 y --fs-body en index.html. */
+html body #main-content#main-content :where(#mbht-bienestar h3:not(.mbht-rec-title):not(.mbht-block-title)){ font-size:var(--fs-h3)!important; }
+html body #main-content#main-content :where(#mbht-bienestar h4, section .viz-card h4){ font-size:var(--fs-body)!important; }
+
+/* #mbht-bienestar · las cuatro tarjetas «Dimensión ↔ Eje» van en una retícula de dos columnas fijas escrita en
+   línea (repeat(2,1fr), sin versión para teléfonos). Con el título a 17 px y el texto a 14 px, a 360 px la primera
+   columna ya no cabía (t_desborde: la tarjeta salía 28 px de la pantalla; antes de este cambio, 0). Hasta 640 px
+   van en una columna; desde ahí, las dos de siempre. */
+@media (max-width:640px){
+  html body #main-content#main-content #mbht-bienestar > div[style*="grid-template-columns:repeat(2,1fr)"]{ grid-template-columns:minmax(0,1fr)!important; }
+}
+
+/* Medida: elementos de lista sin clase, definiciones y citas hasta --ancho-lectura (los <p> ya la tenían por
+   «section:not(.hero) p» en index.html). Fuera, las piezas del sistema gráfico y Lectura Fácil. */
+html body #main-content#main-content :where(section li:not([class]), section dd, section blockquote):not(:where([class*="sg-"] *, .lf-panel *)){
+  max-width:var(--ancho-lectura,58ch);
+}
+/* La bajada de los cuatro divisores de parte (.macro-divider-desc, fuera de toda <section>) tenía un tope de
+   780 px: a 14,5 px, 103-108 caracteres por línea (medido a 1440 px en la portada, #dashboard, #suenos y
+   #faq-concejo). Pasa a la misma medida de lectura. */
+html body #main-content#main-content :where(p.macro-divider-desc){ max-width:var(--ancho-lectura,58ch); }
