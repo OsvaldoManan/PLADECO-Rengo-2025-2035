@@ -6628,7 +6628,12 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
      #main-content, #topnav o #hero (o sus descendientes), extraída del navegador (t_carga_espejo.cjs) tal como el
      navegador las serializa. Los bloques originales siguen en su sitio y siguen ganando al final de la cascada: esta
      copia solo hace que el primer diseño coincida con el definitivo. Si se cambia una de esas reglas en su bloque
-     original, conviene regenerar esta copia (guion en scratchpad/modernizacion/insertar_espejo.cjs). -->
+     original, conviene regenerar esta copia (guion en scratchpad/modernizacion/insertar_espejo.cjs).
+     v45.362 · [carga] · revisión independiente · OJO: la copia no sigue sola a sus originales. Si una de estas reglas
+     se BORRA de su bloque o se acota con @media, aquí sigue aplicándose, porque ninguna regla posterior la contradice:
+     por ejemplo .txt-justificado (text-align:justify !important a todo ancho) o body a 14,5 px !important hasta
+     640 px de ancho y a 14 px hasta 479 px. Hay que borrarla o acotarla también aquí. El guion citado vive en la
+     carpeta temporal de la sesión y puede no estar disponible: la copia se puede editar a mano, regla por regla. -->
 <style id="espejo-primera-pantalla">
 /* — bloque de estilos n.º 29 del documento — */
 :root { --bg2: #f8fafc; }
@@ -39090,8 +39095,24 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
   }
   var TODAS=[]; Object.keys(POR_VISTA).forEach(function(k){ POR_VISTA[k].forEach(function(nm){ if(TODAS.indexOf(nm)<0) TODAS.push(nm); }); });
   var tandaEnCurso=false;
+  /* v45.362 · [carga] · revisión independiente · LIENZOS QUE MIDEN SU CONTENEDOR. renderWordCloud y renderSNA (#suenos)
+     dibujan en un <canvas> con el ancho que mide su contenedor en ese momento. Si corrían por esta ruta con la vista
+     oculta (el buscador la usa al abrirse), medían 0 px, el lienzo quedaba en blanco y, como ya constaban como hechas,
+     no se repetían al abrir #suenos. Con el motor de vistas encendido y otra vista abierta, esta ruta las deja para
+     cuando se abra su vista: no aportan texto al índice del buscador y desde otra vista no se imprimen. Sin motor
+     (?vista=completa) todo está a la vista y corren como las demás. Medido en Edge sin interfaz a 1440 px, abriendo
+     el buscador (openPortalSearch) y después #suenos por clic: antes, los dos lienzos en blanco (0 píxeles pintados en
+     la muestra); ahora, pintados como al entrar sin buscador (unos 8.000 y 9.669). Recorriendo las 75 vistas por clic
+     con el buscador abierto antes quedan en blanco los mismos lienzos que sin él (3, de #diagnostico-institucional,
+     que se dibujan al desplazarse hasta ellos). */
+  var MIDEN_CONTENEDOR={renderWordCloud:'suenos',renderSNA:'suenos'};
+  function esperaSuVista(nm){
+    var v=MIDEN_CONTENEDOR[nm]; if(!v) return false;
+    if(!document.body.classList.contains('pv-on')) return false;
+    try{ return !(window.PV&&typeof window.PV.actual==='function'&&window.PV.actual()===v); }catch(e){ return true; }
+  }
   function dibujarTodo(sincrono){
-    var faltan=TODAS.filter(function(nm){ return !hechas[nm]; });
+    var faltan=TODAS.filter(function(nm){ return !hechas[nm] && !esperaSuVista(nm); });
     if(!faltan.length) return 0;
     if(sincrono){ faltan.forEach(correr); construir(true); return faltan.length; }
     if(tandaEnCurso) return faltan.length;
@@ -40510,7 +40531,7 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
       }
       return false;
     }
-    function wrapNode(tn, seen){
+    function wrapNode(tn, seen, agrupar){
       var txt=tn.nodeValue; RE.lastIndex=0;
       if(!RE.test(txt)) return; RE.lastIndex=0;
       var frag=document.createDocumentFragment(), last=0, m, changed=false;
@@ -40527,7 +40548,19 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
       }
       if(!changed) return;
       if(last<txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
-      tn.parentNode.replaceChild(frag,tn);
+      /* v45.362 · [carga] · revisión independiente · EN UN CONTENEDOR FLEX O GRID EL TEXTO SIGUE SIENDO UNO. Partir el
+         nodo de texto en texto + abbr + texto convierte cada trozo en un elemento flexible aparte, con el hueco (gap) del
+         contenedor entre ellos: en las conexiones de #sna, que la pasada por vista enlaza desde este grupo, se leía
+         «AM , PcD , migrantes» y «SENCE /OTEC». En esa pasada (agrupar) los trozos van dentro de un <span> en línea, que
+         es un solo elemento flexible: el texto se ve como antes y la sigla conserva su tooltip. Las dos pasadas que
+         corren al cargar la página no cambian. Medido en las 75 vistas (Edge sin interfaz, 1440 px): 22 siglas partidas en contenedores flex o grid
+         antes de este cambio, 18 después (las mismas 18 que tiene la versión publicada v45.360, que no se tocan) y 764
+         siglas enlazadas en ambos casos. */
+      var nodo=frag, par=tn.parentNode;
+      if(agrupar && par && par.nodeType===1){
+        try{ if(/flex|grid/.test(getComputedStyle(par).display)){ var sp=document.createElement('span'); sp.className='sigla-grupo'; sp.appendChild(frag); nodo=sp; } }catch(e){}
+      }
+      par.replaceChild(nodo,tn);
     }
     /* v45.356 · glosario · el recorrido pasa a una función para poder repetirlo una vez (ver «segunda pasada» al
        final de run). Con presembrar, cada sección parte con las siglas que ya tienen abbr, así que la segunda
@@ -40543,7 +40576,7 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
         var seen={}, tw=document.createTreeWalker(secs[s], NodeFilter.SHOW_TEXT, null), batch=[], n;
         if(presembrar){ var ya=secs[s].querySelectorAll('abbr.sigla-tip[data-sigla]'); for(var y=0;y<ya.length;y++) seen[ya[y].getAttribute('data-sigla')]=1; }
         while((n=tw.nextNode())){ if(n.nodeValue && PRE.test(n.nodeValue) && !skip(n)) batch.push(n); } /* v45.356 · glosario · PRE en vez de /[A-Z]{3}/, para no saltarse las siglas cortas */
-        for(var b=0;b<batch.length;b++){ var before=Object.keys(seen).length; wrapNode(batch[b], seen); wrapped+=Object.keys(seen).length-before; }
+        for(var b=0;b<batch.length;b++){ var before=Object.keys(seen).length; wrapNode(batch[b], seen, !!raices); wrapped+=Object.keys(seen).length-before; }
       }
       window.__siglasWrapped=wrapped;
     }
