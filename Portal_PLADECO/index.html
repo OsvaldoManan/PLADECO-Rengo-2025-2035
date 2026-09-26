@@ -29797,8 +29797,13 @@ let cmdIdx=-1, cmdQuery='', cmdCat=null;
    recoge lo útil de las capas retiradas: las acciones de la .cmdp (Accesibilidad, Cambiar tema, Tour guiado) más
    «Atajos de teclado»; los capítulos (PV.chapters) cuando se escribe; y la búsqueda en el texto de las 75 secciones
    (searchPortal, con su extracto resaltado), que antes solo ofrecía #searchOverlay. Todo navega con PV.go (goToSection).
-   El primer carácter escrito pone en marcha el dibujo en tandas de lo que falta (__pvDibujarTodo, como hacía
-   openPortalSearch al abrir la capa retirada), para que el índice del texto encuentre también las tablas dibujadas por JS.
+   El índice del texto toma también lo que dibuja JS en cada vista, así que antes de armarlo hay que dibujar lo que falta.
+   Como hacía openPortalSearch con la capa retirada, al abrir la paleta se pone en marcha ese dibujo en tandas
+   (__pvDibujarTodo(false)), ahora 150 ms después de abrir para que la paleta se pinte primero; y la búsqueda en el texto
+   espera a que las tandas terminen (mientras, la línea de conteo lo dice y se listan los resultados por nombre). No se
+   arma el índice antes, porque buildPortalSearchIndex dibujaría de golpe lo pendiente y construiría TODOS los gráficos
+   encolados (Chart.__flush(true)): medido en Edge sin interfaz, escribiendo «vi» 0,6 s después de abrir, la primera
+   búsqueda tardaba 1,8 s en escritorio (una tarea de 1,5 s) y 9,0 s a 412 px con CPU 4× (una tarea de 8,1 s).
    Al cerrar sin elegir (Esc, fondo), el foco vuelve al control que abrió la paleta; al elegir, lo recibe el encabezado
    de la vista abierta (motor de vistas). */
 var CMD_ACCIONES=[
@@ -29807,7 +29812,26 @@ var CMD_ACCIONES=[
   {id:'tour',name:'Tour guiado',svg:'flag',desc:'Recorrido por las herramientas del portal',run:function(){ if(typeof startTour==='function') startTour(); }},
   {id:'atajos',name:'Atajos de teclado',svg:'info',desc:'Lista de atajos y el interruptor de los de una sola tecla',run:function(){ if(typeof openKbdCheat==='function') openKbdCheat(); }}
 ];
-var cmdOpener=null, _cmdTexto=null, _cmdTextoQ=null, _cmdDibujo=false, _cmdTimer=null;
+var cmdOpener=null, _cmdTexto=null, _cmdTextoQ=null, _cmdDibujo=false, _cmdTimer=null, _cmdEspera=null;
+/* dibujo en tandas de lo pendiente (una vez por carga) y consulta de si ya terminó, sin forzar nada síncrono */
+function _cmdPrepararTexto(){
+  if(_cmdDibujo) return; _cmdDibujo=true;
+  setTimeout(function(){ try{ if(window.__pvDibujarTodo) window.__pvDibujarTodo(false); }catch(e){} },150);
+}
+var _cmdPendUlt=-1, _cmdPendT=0;
+function _cmdTextoListo(){
+  if(typeof _portalSearchIndex!=='undefined'&&_portalSearchIndex) return true;
+  if(!_cmdDibujo) return false;
+  try{
+    if(!window.__pvDibujarTodo) return true;
+    const n=window.__pvDibujarTodo(false), ahora=Date.now();
+    if(n===0) return true;
+    /* si la serie en tandas deja de avanzar (medido en ?vista=completa: se detiene tras la primera tanda, ver el informe
+       del grupo), a los 2,5 s sin cambios se arma el índice igual, como hacía la capa retirada: dibuja lo que falte de golpe */
+    if(n!==_cmdPendUlt){ _cmdPendUlt=n; _cmdPendT=ahora; return false; }
+    return ahora-_cmdPendT>2500;
+  }catch(e){ return true; }
+}
 function _cmdNorm(s){ return (typeof _sinTildes==='function')?_sinTildes(s||''):stripAccents(String(s||'').toLowerCase()); }
 function cmdAccionesFiltradas(){
   if(cmdCat) return [];
@@ -29824,6 +29848,12 @@ function cmdCapitulosFiltrados(){
    por su nombre visible, no solo las 37 de CMD_SECTIONS); el resto, en «En el texto». Se omiten las repetidas. */
 function cmdTextoFiltrado(q,lista){
   if(cmdCat||q.length<2||typeof searchPortal!=='function') return {porTitulo:[],items:[],total:0,mostradas:0};
+  if(_cmdTextoQ!==q&&!_cmdTextoListo()){
+    /* el dibujo en tandas no terminó: se vuelve a mirar en 250 ms, sin bloquear (ver «UN SOLO BUSCADOR») */
+    _cmdPrepararTexto(); clearTimeout(_cmdEspera);
+    _cmdEspera=setTimeout(function(){ const p=document.getElementById('cmdPalette'); if(p&&p.classList.contains('open')&&(cmdQuery||'').trim()===q) renderCmd(); },250);
+    return {porTitulo:[],items:[],total:0,mostradas:0,pendiente:true};
+  }
   if(_cmdTextoQ!==q){ try{ _cmdTexto=searchPortal(q); }catch(e){ _cmdTexto=[]; } _cmdTextoQ=q; }
   const ya={}; lista.forEach(function(s){ ya[s.id]=1; });
   const r=(_cmdTexto||[]).filter(function(x){ return !ya[x.id]; }), total=(typeof searchPortal.total==='number')?searchPortal.total:(_cmdTexto||[]).length;
@@ -29902,7 +29932,8 @@ function renderCmd(){
   if(ctxEl){
     if(q){
       let t='<strong>'+nNombre+'</strong> '+(nNombre===1?'resultado':'resultados')+' por nombre';
-      if(q.length>=2&&!cmdCat){ t+=' &middot; el término aparece en el texto de <strong>'+texto.total+'</strong> '+(texto.total===1?'sección':'secciones')+(texto.total>texto.mostradas?' (se listan las '+texto.mostradas+' con más coincidencias)':''); }
+      if(q.length>=2&&!cmdCat&&texto.pendiente){ t+=' &middot; preparando la búsqueda en el texto de las secciones&hellip;'; }
+      else if(q.length>=2&&!cmdCat){ t+=' &middot; el término aparece en el texto de <strong>'+texto.total+'</strong> '+(texto.total===1?'sección':'secciones')+(texto.total>texto.mostradas?' (se listan las '+texto.mostradas+' con más coincidencias)':''); }
       ctxEl.innerHTML=t+' para &laquo;'+cmdEsc(q)+'&raquo;'+(cmdCat?(' en '+cmdCat):'');
     }
     else if(cmdCat){ ctxEl.innerHTML='Categoría <strong>'+cmdCat+'</strong> &middot; '+list.length+' '+(list.length===1?'sección':'secciones'); }
@@ -29910,7 +29941,8 @@ function renderCmd(){
   }
   if(!list.length&&!acciones.length&&!caps.length&&!texto.items.length&&!texto.porTitulo.length){
     res.classList.remove('cmd-grouped');
-    res.innerHTML='<div class="cmd-empty">Sin coincidencias.<br>Prueba con otra palabra o elige otra categoría.</div>';
+    res.innerHTML=texto.pendiente?'<div class="cmd-empty">Buscando en el texto de las secciones&hellip;</div>'   /* v45.362 · [interaccion] */
+      :'<div class="cmd-empty">Sin coincidencias.<br>Prueba con otra palabra o elige otra categoría.</div>';
     cmdIdx=-1; return;
   }
   const grouped=!q;        /* sin texto → vista por categorías · con texto → lista por tipo */
@@ -29942,6 +29974,7 @@ function openCmdPalette(){
   if(!pal.classList.contains('open')){ const a=document.activeElement; cmdOpener=(a&&a!==document.body&&!pal.contains(a))?a:null; }
   pal.classList.add('open');
   cmdQuery=''; cmdCat=null; cmdIdx=-1; clearTimeout(_cmdTimer);
+  _cmdPrepararTexto();   /* v45.362 · [interaccion] · dibujo en tandas de lo pendiente, 150 ms después de abrir (una vez) */
   const inp=document.getElementById('cmdInput');
   if(inp){inp.value='';}
   renderCmd();
@@ -29969,7 +30002,7 @@ function closeCmdPalette(){
 function searchCmd(q){
   cmdQuery=q||'';
   /* v45.362 · [interaccion] · el primer carácter adelanta en tandas el dibujo de lo que falta (índice del texto completo) */
-  if(cmdQuery.trim()&&!_cmdDibujo){ _cmdDibujo=true; try{ if(window.__pvDibujarTodo) window.__pvDibujarTodo(false); }catch(e){} }
+  if(cmdQuery.trim()) _cmdPrepararTexto();
   clearTimeout(_cmdTimer);
   if(cmdQuery.trim().length>=2){ _cmdTimer=setTimeout(renderCmd,120); } else { renderCmd(); }
 }
