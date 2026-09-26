@@ -7527,7 +7527,6 @@ html body #main-content#main-content p.ci-sintesis-intro, html body #main-conten
 html body #main-content#main-content p.ini-id, html body #main-content#main-content p.sem-aviso, html body #main-content#main-content p.is-analisis-intro, html body #main-content#main-content p.is-lineas-intro, html body #main-content#main-content p.survey-subtitle, html body #main-content#main-content p.fuente-info-subtitle,
 html body #main-content#main-content .contexto-header > p, html body #main-content#main-content .x-tab-panel > p, html body #main-content#main-content .sv-chart-card > p, html body #main-content#main-content .newsletter-text > p, html body #main-content#main-content .cuadernillo-card > p,
 html body #main-content#main-content .tr-group > p, html body #main-content#main-content .encuesta-cta-content > p, html body #main-content#main-content p.visit-chart-desc, html body #main-content#main-content .ini-p > p, html body #main-content#main-content .proj-geo-soon > p, html body #main-content#main-content .me-section > p,
-html body #main-content#main-content p.macro-divider-desc,
 /* <p> con el tamaño en línea bajo 14 px */
 html body #main-content#main-content p[style*="font-size:9px"], html body #main-content#main-content p[style*="font-size:9.5px"], html body #main-content#main-content p[style*="font-size:10px"], html body #main-content#main-content p[style*="font-size:10.5px"],
 html body #main-content#main-content p[style*="font-size:11px"], html body #main-content#main-content p[style*="font-size:11.5px"], html body #main-content#main-content p[style*="font-size:12px"], html body #main-content#main-content p[style*="font-size:12.5px"],
@@ -7550,6 +7549,25 @@ html body #main-content#main-content .is-lectura > li, html body #main-content#m
 /* rutas por tiempo de la portada: en teléfonos, a 14 px sus palabras no caben y se cortan sin guion */
 @media (min-width:641px){
   html body #main-content#main-content .qi-ruta-desc{ font-size:var(--text-small)!important; }
+}
+/* v45.362 · [lectura] · revisión independiente · el piso es un valor fijo, así que también ACHICABA lo que ya medía
+   más (comparado elemento por elemento contra 53a545b en la portada y las 75 vistas a 360, 768, 1024 y 1440 px):
+   · bajada de los divisores de parte: 14,5 px desde 769 px (bloque .macro-divider) bajaba a 14; el piso queda solo
+     hasta 768 px, donde sube de 13 a 14;
+   · hasta 640 px (donde el marco conceptual pasa a una columna), los párrafos del marco conceptual de #historia, el
+     del contexto territorial y la lista legal de #gestion medían 17 px por la regla de «p y li sin clase» de
+     institucional.css y el piso los dejaba en 14: son prosa y vuelven al cuerpo;
+   · #contexto: con la descripción de los pilares a 14 px, la retícula de dos columnas que rige hasta 600 px ya no
+     cabía bajo 430 px de ventana y su contenedor (overflow:hidden) cortaba el texto de la columna derecha («Articulació»,
+     «socioecon»: 40 px cortados a 390 px, 66 px a 360 px); hasta 480 px va en una columna. */
+@media (max-width:768px){
+  html body #main-content#main-content p.macro-divider-desc{ font-size:var(--text-small)!important; }
+}
+@media (max-width:640px){
+  html body #main-content#main-content .hist-marco-card > p, html body #main-content#main-content .gr-territory-card > p, html body #main-content#main-content .gr-legal-list > li{ font-size:var(--fs-body)!important; }
+}
+@media (max-width:480px){
+  html body #main-content#main-content .contexto-pilares{ grid-template-columns:minmax(0,1fr)!important; }
 }
 /* fuentes, créditos y referencias → 13,5 px */
 html body #main-content#main-content p.gf-fte, html body #main-content#main-content p.graf-int-src, html body #main-content#main-content p.mvv-pie, html body #main-content#main-content p.cf-pie, html body #main-content#main-content p.hist-biblio-foot, html body #main-content#main-content p.dpv-foot, html body #main-content#main-content p.ini-mapa-nota, html body #main-content#main-content p.ini-mapa-ley-pie,
