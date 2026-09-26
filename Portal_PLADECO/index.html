@@ -34311,7 +34311,19 @@ if('serviceWorker' in navigator){
   }
   if(document.readyState==='complete'){setTimeout(_registrarSW,0);}
   else{window.addEventListener('load',function(){setTimeout(_registrarSW,0);},{once:true});}
-  navigator.serviceWorker.addEventListener('controllerchange',function(){_schedule();});
+  /* v45.362 · [carga] · EN LA PRIMERA VISITA NO HAY «VERSIÓN NUEVA». Sin controlador previo, el primer
+     controllerchange es solo el Service Worker recién instalado tomando la página (sw.js hace clients.claim() al
+     activarse): la página ya viene de la red y es la última versión. Antes ese evento llamaba a _schedule(), que
+     mostraba «Nueva versión lista — se aplicará en una pausa.» a quien entraba por primera vez y dejaba pendiente una
+     recarga. Medido a 412 px con 4G lento y CPU 4× (Edge sin interfaz, perfil nuevo): ese aviso aparecía junto al de
+     la visita guiada y el contenedor de avisos, anclado abajo, subía y bajaba (0,0206 y 0,0248 de layout-shift). La
+     versión publicada hace lo mismo (en la misma prueba, el contenedor con los dos avisos figura entre los nodos de
+     un salto de 0,1115 durante la carga). Con un controlador previo (una actualización real) todo sigue igual. */
+  var _habiaControlador=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(!_habiaControlador){ _habiaControlador=true; return; }
+    _schedule();
+  });
   // API para el sello de versión del footer
   window.pwaUpdate={
     getVersion:function(cb){try{var ch=new MessageChannel();ch.port1.onmessage=function(e){cb(e.data||null);};if(navigator.serviceWorker.controller)navigator.serviceWorker.controller.postMessage({type:'GET_VERSION'},[ch.port2]);else cb(null);}catch(_){cb(null);}},
@@ -34528,6 +34540,23 @@ button:focus-visible,
 </style>
 
 <!-- ═══ v45.41 · SISTEMA RESPONSIVE ORDENADO · PC + Móvil ═══ -->
+<!-- ═══ v45.362 · [carga] · NUEVE BLOQUES DE ESTILO FUNDIDOS EN UNO ═══
+     QUÉ PASABA: estos nueve bloques (v45.41 · breakpoints canónicos, v45.40 · resolución global, v45.39 · mega
+     estética, v45.38 · storytelling, v45.37 · banner MBHT, v45.36 · fix MBHT, v45.35 · distribución, v45.34 · polish
+     de composición y v45.28 · polish UX) redefinen el héroe y se anulan en cadena: v45.41 y v45.40 le cambian el
+     relleno, el ancho y el cuerpo del título, v45.35 y v45.34 lo devuelven a medias y v45.28 lo deja como queda. En
+     el documento final eso no se ve, pero mientras llega la página el navegador pinta entre un bloque y otro, y la
+     primera pantalla saltaba de un estado a otro. Medido con el héroe ya pintado (Edge sin interfaz, 412 px, 4G lento,
+     CPU 4×): el contenido del héroe bajaba 48 px y se angostaba 52 px, y luego volvía (0,09 + 0,10 de layout-shift);
+     a 1350 px se corría 28 px a la derecha y volvía.
+     QUÉ SE HIZO: los nueve bloques van ahora en un solo <style>, en el mismo orden y sin cambiar una regla: una hoja
+     se aplica entera al cerrarse su etiqueta, así que el héroe pasa del estado del espejo temprano (<head>) al
+     definitivo sin estados intermedios. Los comentarios HTML que separaban los bloques quedan como comentarios CSS en
+     su lugar. Los dos guiones que había entre bloques (v45.39 · INIT Progress Rings y v45.38 · Storytelling Visual)
+     van a continuación, en el mismo orden respecto de los demás guiones; ambos solo registran un oyente de
+     DOMContentLoaded, así que su efecto no cambia.
+     VERIFICADO: la lista de reglas del documento (cssText de todas las hojas, en orden) es idéntica antes y después;
+     habilitando las hojas una a una ya no hay ninguna que mueva la barra o el héroe a 412 ni a 1350 px. -->
 <style>
 /* ═══════════════════════════════════════════════════════
    v45.41 · BREAKPOINTS CANÓNICOS
@@ -35066,10 +35095,10 @@ button:focus-visible,
     left:calc(12px + env(safe-area-inset-left))!important;
   }
 }
-</style>
 
-<!-- ═══ v45.40 · MEJORA DE RESOLUCIÓN GLOBAL + HERO IMAGE RECOVERY ═══ -->
-<style>
+
+/* (comentario HTML que separaba los bloques:) ═══ v45.40 · MEJORA DE RESOLUCIÓN GLOBAL + HERO IMAGE RECOVERY ═══ */
+
 /* ═══════════════════════════════════════════════════════
    v45.40 · RESOLUCIÓN GLOBAL · text + images + GPU layers
    ═══════════════════════════════════════════════════════ */
@@ -35334,11 +35363,12 @@ table th, table td{
     animation:none!important;
   }
 }
-</style>
 
-<!-- ═══ v45.39 · MEGA ESTÉTICA · B+C+D+E+F ═══ -->
-<!-- v45.225 · Playfair Display retirado: la tipografía display ahora es Poppins (familia única del portal) -->
-<style>
+
+/* (comentario HTML que separaba los bloques:) ═══ v45.39 · MEGA ESTÉTICA · B+C+D+E+F ═══ */
+
+/* (comentario HTML que separaba los bloques:) v45.225 · Playfair Display retirado: la tipografía display ahora es Poppins (familia única del portal) */
+
 /* ═══════════════════════════════════════════════════════
    v45.39 · PAQUETE F · COLOR POR CAPÍTULO
    ═══════════════════════════════════════════════════════ */
@@ -35801,84 +35831,10 @@ body.dark .hero-bg{
 .hero::before{background-image:none!important}
 .hero-dots,.hero-orb,.hero-mesh{display:none!important}
 .hero h1,.hero .sub,.hero-brand{text-shadow:0 2px 16px rgba(0,0,0,.72)}
-</style>
 
-<script>
-/* ═══════════════════════════════════════════════════════
-   v45.39 · INIT Progress Rings + Sparklines
-   ═══════════════════════════════════════════════════════ */
-(function(){
-  'use strict';
-  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function initProgressRings(){
-    var rings = document.querySelectorAll('.progress-ring[data-value]');
-    if(!rings.length || !('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(!e.isIntersecting || e.target.dataset.ringDone) return;
-        var ring = e.target;
-        ring.dataset.ringDone = '1';
-        var fill = ring.querySelector('.progress-ring-fill');
-        if(!fill) return;
-        var r = parseFloat(fill.getAttribute('r')) || 35;
-        var circumference = 2 * Math.PI * r;
-        var value = parseFloat(ring.dataset.value) || 0;
-        var max = parseFloat(ring.dataset.max) || 1;
-        var ratio = Math.max(0, Math.min(1, value / max));
-        if(reducedMotion){
-          fill.style.strokeDasharray = (ratio * circumference) + ' ' + circumference;
-          return;
-        }
-        fill.style.strokeDasharray = '0 ' + circumference;
-        setTimeout(function(){
-          fill.style.strokeDasharray = (ratio * circumference) + ' ' + circumference;
-        }, 50);
-        io.unobserve(ring);
-      });
-    }, {threshold:0.3});
-    rings.forEach(function(r){io.observe(r);});
-  }
+/* (comentario HTML que separaba los bloques:) ═══ v45.38 · STORYTELLING VISUAL · contadores + reveals + drop caps + pull quotes + parallax ═══ */
 
-  function initSparklines(){
-    var sparks = document.querySelectorAll('.sparkline[data-points]');
-    sparks.forEach(function(s){
-      var points = s.dataset.points.split(',').map(function(p){return parseFloat(p);});
-      if(!points.length || points.some(isNaN)) return;
-      var w = 50, h = 20;
-      var min = Math.min.apply(null, points);
-      var max = Math.max.apply(null, points);
-      var range = max - min || 1;
-      var step = w / (points.length - 1 || 1);
-      var coords = points.map(function(p, i){
-        var x = i * step;
-        var y = h - ((p - min) / range) * h;
-        return x.toFixed(1) + ',' + y.toFixed(1);
-      });
-      var path = 'M' + coords.join(' L');
-      var area = path + ' L' + w + ',' + h + ' L0,' + h + ' Z';
-      s.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
-      s.innerHTML = (s.classList.contains('sparkline-area')
-        ? '<path d="' + area + '"/>'
-        : '') + '<path d="' + path + '"/>';
-    });
-  }
-
-  function init(){
-    try{ initProgressRings(); }catch(e){ console.warn('[v45.39] rings error', e); }
-    try{ initSparklines(); }catch(e){ console.warn('[v45.39] sparklines error', e); }
-    console.log('[v45.39] Mega estetica inicializada');
-  }
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-</script>
-
-<!-- ═══ v45.38 · STORYTELLING VISUAL · contadores + reveals + drop caps + pull quotes + parallax ═══ -->
-<style>
 /* ═══════════════════════════════════════════════════════
    A1 · SCROLL REVEALS REFINADOS · v45.356 · [sistema-visual] · §2.23 · RETIRADO
    Ponía opacity:0, translateY(28px), una transición de 0,85 s y will-change:opacity,transform en todo
@@ -35999,85 +35955,10 @@ body.dark .pull-quote .pq-cite{color:#cbd5e1}
    Movía con el desplazamiento dos dibujos de la cabecera de #mbht-bienestar: una animación ligada al
    scroll fuera de la portada. Se retiran sus reglas y su función (initParallax); los dibujos quedan fijos.
    ═══════════════════════════════════════════════════════ */
-</style>
 
-<script>
-/* ═══════════════════════════════════════════════════════
-   v45.38 · STORYTELLING VISUAL · JavaScript
-   ═══════════════════════════════════════════════════════ */
-(function(){
-  'use strict';
-  /* v45.356 · [sistema-visual] · §2.23 · retirada la variable reducedMotion: solo la leía initParallax (retirada) */
 
-  // ─────────────────────────────────────────────────────
-  // A1 · SCROLL REVEALS · v45.356 · [sistema-visual] · §2.23 · RETIRADO initReveals (ponía .is-visible en
-  // cada .reveal; sus reglas se retiraron en el mismo cambio y no queda ninguna regla que lea .is-visible)
-  // ─────────────────────────────────────────────────────
+/* (comentario HTML que separaba los bloques:) ═══ v45.37 · BANNER MBHT INMERSIVO · nivel institucional con mini-viz ═══ */
 
-  // ─────────────────────────────────────────────────────
-  // A2 · CONTADORES ANIMADOS · v45.356: DESACTIVADOS (ver nota en initCounters)
-  // ─────────────────────────────────────────────────────
-  function initCounters(){
-    /* v45.356 · SIN CONTEO ANIMADO, TAMBIÉN AQUÍ. v45.350 dejó estático animateKPIs y dijo que
-       los indicadores quedaban completos desde el primer momento, pero esta función seguía
-       animando desde 0, al entrar en pantalla, todas las cifras con clase .kpi-value,
-       .mbht-kpi-value, .mbht-chip-val, .censo-kpi-value, .viz-num y .stat-num: entre ellas los
-       63.620 habitantes del censo (.mbht-chip-val), que pasaban por 25.448 y otros valores
-       parciales. Además, el formateador solo conservaba «+» y «%»: durante la animación
-       «1,96 m²/hab» se veía como «0,98», sin unidad (comprobado ejecutando las funciones
-       retiradas). Son información esencial: el lector debe ver la cifra real desde el primer momento, y
-       una interrupción no puede dejarle un valor parcial. La función se conserva, con su
-       llamada, para no alterar el orden de arranque, pero ya no anima ninguna cifra; se
-       eliminaron el analizador, el formateador y el bucle de animación que solo usaba ella.
-       Solo limpia la marca de estado por si quedara de una versión en caché. */
-    try{
-      document.querySelectorAll('.counter-animating').forEach(function(el){
-        el.classList.remove('counter-animating');
-      });
-    }catch(e){}
-  }
-
-  // ─────────────────────────────────────────────────────
-  // A3 · DROP CAPS · auto-aplicar a primer párrafo de secciones marcadas
-  // ─────────────────────────────────────────────────────
-  function initDropCaps(){
-    // Aplicar drop-cap a primer párrafo largo de bloques específicos
-    var candidates = [
-      '#mbht-bienestar .mbht-intro p:first-child',
-      '#analisis-estrategico-censo > .sec-header + p',
-      '#contexto > p:first-of-type'
-    ];
-    candidates.forEach(function(sel){
-      var p = document.querySelector(sel);
-      if(p && p.textContent.length > 120 && !p.classList.contains('drop-cap')){
-        p.classList.add('drop-cap');
-      }
-    });
-  }
-
-  // ─────────────────────────────────────────────────────
-  // A5 · PARALLAX · v45.356 · [sistema-visual] · §2.23 · RETIRADO initParallax: movía con el scroll dos
-  // dibujos de la cabecera de #mbht-bienestar (animación al desplazarse fuera de la portada)
-  // ─────────────────────────────────────────────────────
-
-  // ─────────────────────────────────────────────────────
-  // INIT
-  // ─────────────────────────────────────────────────────
-  function init(){
-    try{ initCounters(); }catch(e){ console.warn('[v45.38] counters error', e); }
-    try{ initDropCaps(); }catch(e){ console.warn('[v45.38] dropcaps error', e); }
-    console.log('[v45.38] Storytelling Visual inicializado');
-  }
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-</script>
-
-<!-- ═══ v45.37 · BANNER MBHT INMERSIVO · nivel institucional con mini-viz ═══ -->
-<style>
 /* ═══════════════════════════════════════════════════════
    ANULAR el banner v45.36 (vamos con uno nuevo y más rico)
    ═══════════════════════════════════════════════════════ */
@@ -36385,10 +36266,10 @@ body.dark .pull-quote .pq-cite{color:#cbd5e1}
   .mbht-hero-viz{padding:14px 16px}
 }
 
-</style>
 
-<!-- ═══ v45.36 · FIX INTEGRAL MBHT · banner identitario + colores coherentes light/dark ═══ -->
-<style>
+
+/* (comentario HTML que separaba los bloques:) ═══ v45.36 · FIX INTEGRAL MBHT · banner identitario + colores coherentes light/dark ═══ */
+
 /* ═══════════════════════════════════════════════════════
    MBHT · BANNER IDENTITARIO con gradiente Rengo
    ═══════════════════════════════════════════════════════ */
@@ -36841,10 +36722,10 @@ body.dark #mbht-bienestar > div > p{color:#cbd5e1!important}
 
 #mbht-bienestar p strong{color:#0c1f36!important;font-weight:700}
 body.dark #mbht-bienestar p strong{color:#fff!important}
-</style>
 
-<!-- ═══ v45.35 · DISTRIBUCIÓN INTEGRAL · spacing + tipografía completa + colores + composición ═══ -->
-<style>
+
+/* (comentario HTML que separaba los bloques:) ═══ v45.35 · DISTRIBUCIÓN INTEGRAL · spacing + tipografía completa + colores + composición ═══ */
+
 /* ═══════════════════════════════════════════════════════
    SISTEMA DE DISTRIBUCIÓN CANÓNICO · v45.35
    ═══════════════════════════════════════════════════════ */
@@ -37392,10 +37273,10 @@ section img:not([src*="logo"]):not([src*="escudo"]):not(.icon){
   .viz-card, .kpi, .mbht-kpi, .glosario-term, .mbht-dim-card,
   .mbht-rec-card{page-break-inside:avoid}
 }
-</style>
 
-<!-- ═══ v45.34 · POLISH DE COMPOSICIÓN INTEGRAL · hero + dividers + sec-headers + tipografía ═══ -->
-<style>
+
+/* (comentario HTML que separaba los bloques:) ═══ v45.34 · POLISH DE COMPOSICIÓN INTEGRAL · hero + dividers + sec-headers + tipografía ═══ */
+
 /* ═══════════════════════════════════════════════════════
    ESCALA TIPOGRÁFICA CANÓNICA · v45.34
    ═══════════════════════════════════════════════════════ */
@@ -37720,10 +37601,10 @@ body.dark .callout.callout-info{background:rgba(26,61,143,.12)}
   section[id] > .sec-header::after{width:48px}
   .callout{padding:12px 14px;gap:10px}
 }
-</style>
 
-<!-- ═══ POLISH UX v45.28 · mejoras visuales web + móvil ═══ -->
-<style>
+
+/* (comentario HTML que separaba los bloques:) ═══ POLISH UX v45.28 · mejoras visuales web + móvil ═══ */
+
 /* ═══════════════════════════════════════════════════
    v45.28 · Polish UX integral
    Aplica DESPUÉS de todo el CSS anterior (mayor especificidad)
@@ -38018,6 +37899,157 @@ input[type="email"]:focus,textarea:focus,select:focus{
   }
 }
 </style>
+
+<!-- v45.362 · [carga] · los dos guiones siguientes estaban entre los bloques de estilo fundidos arriba (el primero
+     tras «v45.39 · MEGA ESTÉTICA», el segundo tras «v45.38 · STORYTELLING VISUAL»); se trasladaron sin cambios. -->
+<script>
+/* ═══════════════════════════════════════════════════════
+   v45.39 · INIT Progress Rings + Sparklines
+   ═══════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initProgressRings(){
+    var rings = document.querySelectorAll('.progress-ring[data-value]');
+    if(!rings.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting || e.target.dataset.ringDone) return;
+        var ring = e.target;
+        ring.dataset.ringDone = '1';
+        var fill = ring.querySelector('.progress-ring-fill');
+        if(!fill) return;
+        var r = parseFloat(fill.getAttribute('r')) || 35;
+        var circumference = 2 * Math.PI * r;
+        var value = parseFloat(ring.dataset.value) || 0;
+        var max = parseFloat(ring.dataset.max) || 1;
+        var ratio = Math.max(0, Math.min(1, value / max));
+        if(reducedMotion){
+          fill.style.strokeDasharray = (ratio * circumference) + ' ' + circumference;
+          return;
+        }
+        fill.style.strokeDasharray = '0 ' + circumference;
+        setTimeout(function(){
+          fill.style.strokeDasharray = (ratio * circumference) + ' ' + circumference;
+        }, 50);
+        io.unobserve(ring);
+      });
+    }, {threshold:0.3});
+    rings.forEach(function(r){io.observe(r);});
+  }
+
+  function initSparklines(){
+    var sparks = document.querySelectorAll('.sparkline[data-points]');
+    sparks.forEach(function(s){
+      var points = s.dataset.points.split(',').map(function(p){return parseFloat(p);});
+      if(!points.length || points.some(isNaN)) return;
+      var w = 50, h = 20;
+      var min = Math.min.apply(null, points);
+      var max = Math.max.apply(null, points);
+      var range = max - min || 1;
+      var step = w / (points.length - 1 || 1);
+      var coords = points.map(function(p, i){
+        var x = i * step;
+        var y = h - ((p - min) / range) * h;
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      });
+      var path = 'M' + coords.join(' L');
+      var area = path + ' L' + w + ',' + h + ' L0,' + h + ' Z';
+      s.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+      s.innerHTML = (s.classList.contains('sparkline-area')
+        ? '<path d="' + area + '"/>'
+        : '') + '<path d="' + path + '"/>';
+    });
+  }
+
+  function init(){
+    try{ initProgressRings(); }catch(e){ console.warn('[v45.39] rings error', e); }
+    try{ initSparklines(); }catch(e){ console.warn('[v45.39] sparklines error', e); }
+    console.log('[v45.39] Mega estetica inicializada');
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   v45.38 · STORYTELLING VISUAL · JavaScript
+   ═══════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+  /* v45.356 · [sistema-visual] · §2.23 · retirada la variable reducedMotion: solo la leía initParallax (retirada) */
+
+  // ─────────────────────────────────────────────────────
+  // A1 · SCROLL REVEALS · v45.356 · [sistema-visual] · §2.23 · RETIRADO initReveals (ponía .is-visible en
+  // cada .reveal; sus reglas se retiraron en el mismo cambio y no queda ninguna regla que lea .is-visible)
+  // ─────────────────────────────────────────────────────
+
+  // ─────────────────────────────────────────────────────
+  // A2 · CONTADORES ANIMADOS · v45.356: DESACTIVADOS (ver nota en initCounters)
+  // ─────────────────────────────────────────────────────
+  function initCounters(){
+    /* v45.356 · SIN CONTEO ANIMADO, TAMBIÉN AQUÍ. v45.350 dejó estático animateKPIs y dijo que
+       los indicadores quedaban completos desde el primer momento, pero esta función seguía
+       animando desde 0, al entrar en pantalla, todas las cifras con clase .kpi-value,
+       .mbht-kpi-value, .mbht-chip-val, .censo-kpi-value, .viz-num y .stat-num: entre ellas los
+       63.620 habitantes del censo (.mbht-chip-val), que pasaban por 25.448 y otros valores
+       parciales. Además, el formateador solo conservaba «+» y «%»: durante la animación
+       «1,96 m²/hab» se veía como «0,98», sin unidad (comprobado ejecutando las funciones
+       retiradas). Son información esencial: el lector debe ver la cifra real desde el primer momento, y
+       una interrupción no puede dejarle un valor parcial. La función se conserva, con su
+       llamada, para no alterar el orden de arranque, pero ya no anima ninguna cifra; se
+       eliminaron el analizador, el formateador y el bucle de animación que solo usaba ella.
+       Solo limpia la marca de estado por si quedara de una versión en caché. */
+    try{
+      document.querySelectorAll('.counter-animating').forEach(function(el){
+        el.classList.remove('counter-animating');
+      });
+    }catch(e){}
+  }
+
+  // ─────────────────────────────────────────────────────
+  // A3 · DROP CAPS · auto-aplicar a primer párrafo de secciones marcadas
+  // ─────────────────────────────────────────────────────
+  function initDropCaps(){
+    // Aplicar drop-cap a primer párrafo largo de bloques específicos
+    var candidates = [
+      '#mbht-bienestar .mbht-intro p:first-child',
+      '#analisis-estrategico-censo > .sec-header + p',
+      '#contexto > p:first-of-type'
+    ];
+    candidates.forEach(function(sel){
+      var p = document.querySelector(sel);
+      if(p && p.textContent.length > 120 && !p.classList.contains('drop-cap')){
+        p.classList.add('drop-cap');
+      }
+    });
+  }
+
+  // ─────────────────────────────────────────────────────
+  // A5 · PARALLAX · v45.356 · [sistema-visual] · §2.23 · RETIRADO initParallax: movía con el scroll dos
+  // dibujos de la cabecera de #mbht-bienestar (animación al desplazarse fuera de la portada)
+  // ─────────────────────────────────────────────────────
+
+  // ─────────────────────────────────────────────────────
+  // INIT
+  // ─────────────────────────────────────────────────────
+  function init(){
+    try{ initCounters(); }catch(e){ console.warn('[v45.38] counters error', e); }
+    try{ initDropCaps(); }catch(e){ console.warn('[v45.38] dropcaps error', e); }
+    console.log('[v45.38] Storytelling Visual inicializado');
+  }
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
 
 <script>
 /* Polish UX v45.28 · drawer mejorado + lazy images + ESC */
@@ -40468,10 +40500,12 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
        pasada solo enlaza siglas de contenido que se pintó después de la primera: sigue habiendo un solo
        tooltip automático por sigla y sección. */
     var wrapped=0;
-    function enlazar(presembrar){
+    function enlazar(presembrar, raices){
       var secs=main.querySelectorAll('section');
       for(var s=0;s<secs.length;s++){
         if(secs[s].id==='glosario') continue;
+        /* v45.362 · [carga] · con raices (las de una vista recién abierta), solo las secciones de esa vista */
+        if(raices && !raices.some(function(r){ return r===secs[s] || (r && r.contains && r.contains(secs[s])); })) continue;
         var seen={}, tw=document.createTreeWalker(secs[s], NodeFilter.SHOW_TEXT, null), batch=[], n;
         if(presembrar){ var ya=secs[s].querySelectorAll('abbr.sigla-tip[data-sigla]'); for(var y=0;y<ya.length;y++) seen[ya[y].getAttribute('data-sigla')]=1; }
         while((n=tw.nextNode())){ if(n.nodeValue && PRE.test(n.nodeValue) && !skip(n)) batch.push(n); } /* v45.356 · glosario · PRE en vez de /[A-Z]{3}/, para no saltarse las siglas cortas */
@@ -40515,6 +40549,24 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
        _censoRenders ya estaba pintado cuando corrió. */
     var segunda=function(){ try{ enlazar(true); }catch(e){} };
     if('requestIdleCallback' in window){ requestIdleCallback(segunda,{timeout:4000}); } else { setTimeout(segunda,2000); }
+    /* v45.362 · [carga] · Y AL ABRIR CADA VISTA. Desde v45.362 el contenido que pintaban el lote censal
+       (_censoRenders) y el lote de gráficos se dibuja al abrir su vista (bloque «GRÁFICOS Y CONTENIDO DIFERIDO POR
+       VISTA»), después de que corrieron la primera y la segunda pasada: medido en el navegador (las 75 vistas abiertas
+       una a una), 31 siglas perdían su tooltip frente a la versión publicada, en #analisis-estrategico-censo (26 → 20),
+       #voz-institucional (20 → 4) y #coherencia (14 → 5). Al abrir una vista se repite la pasada con presiembra solo
+       sobre sus secciones (sigue habiendo un tooltip automático por sigla y sección): enseguida, tras el dibujo de la
+       vista (su oyente de «pv:vista» se registra antes que este), y otra vez a los 700 ms por lo que se pinte en
+       diferido. Medido después (mismo recorrido, Edge a 1440 px): las tres vistas vuelven a 26, 20 y 14, ninguna vista
+       queda con menos siglas enlazadas que en la versión publicada y 9 quedan con más (729 → 764 en total; sna 5 → 19,
+       sna-gobernanza 8 → 14, voz 4 → 8, seguridad-vial 1 → 6 y cinco vistas con una o dos más): es el contenido que
+       dibujaba el lote de gráficos con su respaldo de 5 s, que en la versión publicada solo quedaba enlazado si ese
+       lote terminaba antes de la segunda pasada (teléfono lento) y no en un equipo rápido; ahora se enlaza siempre,
+       con la misma regla de una sigla por sección. */
+    document.addEventListener('pv:vista',function(e){
+      var r=e&&e.detail&&e.detail.els; if(!r||!r.length) return;
+      setTimeout(function(){ try{ enlazar(true, r); }catch(x){} },0);
+      setTimeout(function(){ try{ enlazar(true, r); }catch(x){} },700);
+    });
   }
   if(document.readyState==='complete') run(); else window.addEventListener('load',run,{once:true});
 })();
@@ -45461,7 +45513,12 @@ html:has(> body.pv-on:not(.sg-en-portada)){ background:var(--c-fondo,#F7F8F5) !i
    el aviso medía 127 px, así que un desplazamiento fijo de 112 px montaba el aviso breve 15 px sobre él) */
 .pwa-install{ bottom:var(--asist-libre); }
 .toast-container{ right:var(--asist-der); bottom:var(--asist-libre); }
-body:has(#pwaInstall.pwa-show) .toast-container{ bottom:calc(var(--asist-libre) + var(--pwa-alto,112px) + 12px); }
+/* v45.362 · [carga] · el mismo desplazamiento hacia arriba, con transform en vez de cambiar bottom. Al aparecer el aviso
+   de instalación (y al medir su alto el ResizeObserver) el contenedor de avisos breves, que es fijo, cambiaba de
+   posición en el diseño y el navegador lo contaba como salto de diseño (medido a 412 px con 4G lento y CPU 4×:
+   0,0235 y 0,0021 de layout-shift, 25 s después de cargar). Con transform queda en el mismo lugar a la vista
+   (bottom + alto del aviso + 12 px), pero su posición en el diseño no cambia. */
+body:has(#pwaInstall.pwa-show) .toast-container{ transform:translateY(calc(-1 * (var(--pwa-alto,112px) + 12px))); }
 
 /* §2.18 · avisos breves: el diseño de tarjeta (2d) en los cinco tipos; el color del tipo queda en el filete y la barra */
 .toast.info, .toast.success, .toast.warning, .toast.warn, .toast.error{ background:var(--card); }
