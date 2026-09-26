@@ -21,12 +21,24 @@ const MAX_RUNTIME_CACHE=80;
 
 const OFFLINE_URL='./offline.html';
 
+/* v45.362 · [carga] · PRECARGA SOLO EL ESQUELETO. La lista precacheaba 70 entradas, 13.188.843 bytes, en la primera
+   visita: './' e './index.html' eran el mismo documento dos veces (4,1 MB cada uno, 1 MB comprimido), seis JPG cuyo
+   WebP es el que se muestra (Entrada-Rengo, collage y las cuatro mvv-*: 1.798.446 bytes), 1.png y 2.png, que solo se
+   citan en comentarios (243.516), y fotografías, og-image, sitemap y robots que no hacen falta para abrir el portal.
+   Queda el esqueleto: index.html (respaldo sin conexión; la navegación se guarda además en tiempo de ejecución),
+   las páginas de redirección capitulo-N, offline y 404, manifest, los datos JSON/GeoJSON que piden las secciones,
+   los CSS y JS propios, las panorámicas, los iconos y escudos, los tres logotipos en WebP, las fuentes, Chart.js y
+   Leaflet con sus imágenes: 49 entradas, 5.056.150 bytes (4.103.228 de ellos el propio documento), medidos sobre los
+   archivos del repositorio; antes 70 entradas y 13.188.843 bytes.
+   MENOS CONTENIDO SIN CONEXIÓN: ya no se garantizan sin red, salvo que se hayan visto antes en la misma instalación
+   (la caché de imágenes y la de ejecución los guardan al pedirlos), la foto de la portada, el collage de #historia,
+   las cuatro fotografías de Misión/Visión/Principios/Proyección, las fotos de Rosario del sistema gráfico,
+   qr-encuesta.png, fuente-info.png, los PNG originales de los logotipos, og-image.jpg, sitemap.xml, robots.txt y la
+   página analisis-territorial.html. */
 const STATIC_ASSETS=[
-  './',
   './index.html',
   './capitulo-1/','./capitulo-2/','./capitulo-3/','./capitulo-4/','./capitulo-5/','./capitulo-6/',
   './capitulo-7/','./capitulo-8/','./capitulo-9/','./capitulo-10/','./capitulo-11/',
-  './analisis-territorial.html',
   './offline.html',
   './404.html',
   './manifest.json',
@@ -43,32 +55,13 @@ const STATIC_ASSETS=[
   './graficos/sistema-grafico.js',
   './graficos/panoramica-rengo.svg',
   './graficos/panoramica-rengo-movil.svg',
-  './graficos/fotos/rosario-oficina-dideco-2025-10-29.webp',
-  './graficos/fotos/rosario-plaza-barrial-2026-02-04.webp',
-  './sitemap.xml',
-  './robots.txt',
-  './og-image.jpg',
-  './Entrada-Rengo-Color-Pladeco.jpg',
-  './Entrada-Rengo-Color-Pladeco.webp',
-  './rengo-historia-collage.jpg',
-  './rengo-historia-collage.webp',
-  './mvv-mision.webp',
-  './mvv-vision.webp',
-  './mvv-principios.webp',
-  './mvv-proyeccion.webp',
-  './qr-encuesta.png',
-  './1.png',
-  './2.png',
-  './splash-logo-2026.jpg',
-  './mvv-mision.jpg',
-  './mvv-vision.jpg',
-  './mvv-principios.jpg',
-  './mvv-proyeccion.jpg',
-  './fuente-info.png',
   './escudo-rengo.svg',
   './escudo-rengo-blanco.svg',
-  './logo-pladeco.png',
-  './Logo-Pladeco-Blanco.png',
+  './icon-192.png',
+  './icon-512.png',
+  './logo-pladeco-70.webp',
+  './Logo-Pladeco-Blanco-560.webp',
+  './splash-logo-2026-280.webp',
   './chatbot-dialogo.png',
   './fonts/Poppins-Medium-latin.woff',
   './fonts/Poppins-SemiBold-latin.woff',

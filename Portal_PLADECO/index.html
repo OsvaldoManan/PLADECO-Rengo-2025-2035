@@ -7,6 +7,54 @@
 (function(){try{var d=/[?&]debug=1\b/.test(location.search);try{d=d||localStorage.getItem('pladecoDebug')==='1';}catch(e){}if(!d){var n=function(){};console.log=n;console.info=n;console.debug=n;}}catch(e){}})();</script>
 <script>/* v45.195 · Modo captura/auditoría: ?nofx o ?capture activan .nofx (sin animaciones ni pollers). Se aplica temprano para evitar parpadeo. */
 (function(){try{if(/[?&](nofx|capture)(=|&|$)/.test(location.search))document.documentElement.classList.add('nofx');}catch(e){}})();</script>
+<!-- ═══ v45.362 · [carga] · ARRANQUE SIN ESPERAS: LA BARRA Y EL HÉROE SE PINTAN EN CUANTO LLEGAN ═══
+     QUÉ PASABA: una animación CSS (bootGate) mantenía #main-content, la barra y el botón del asistente con
+     visibility:hidden mientras la pantalla de precarga estaba activa, y esa pantalla se retiraba con un
+     setTimeout de 2,2 s que solo corría cuando el script principal (1,33 MB) había llegado entero. El contenido
+     aparecía, como mínimo, 2,2 s después de ese script; con red lenta, decenas de segundos después del héroe.
+     QUÉ HACE: este guion marca <html class="pv-arranque"> antes de que exista el cuerpo, y la regla de abajo
+     deja fuera del flujo (display:none) todo lo que sigue al héroe dentro de #main-content: exactamente lo que el
+     motor de vistas oculta o reordena al arrancar (inserta «Explora el Plan» tras el héroe y oculta los
+     capítulos). Así la barra y el héroe se pintan apenas el analizador los recibe y, cuando el motor arranca,
+     retira la clase en el mismo instante en que aplica sus propias clases de vista: lo que ya estaba pintado no
+     se mueve (sin salto de diseño) y el navegador se ahorra el diseño de las 75 secciones ocultas durante la
+     carga. Con un enlace directo a una sección (#matriz, #mapa/…) se añade pv-directo: el cuerpo queda invisible
+     (visibility) hasta que el motor abre esa vista, para que no se vea la portada en el intervalo.
+     RED DE SEGURIDAD: el motor quita las clases al arrancar (también en ?vista=completa y si falla); si el
+     documento llegara truncado y el motor no corriera, DOMContentLoaded las quita y retira la pantalla de
+     precarga. Sin JavaScript la clase nunca se pone y todo el contenido se ve, como antes.
+     El <picture> de los logotipos no participa del diseño (display:contents): el <img> se comporta igual que
+     cuando estaba suelto. -->
+<style>
+/* con !important: las aperturas de capítulo llevan display:block!important (#main-content > .group-divider.sg-con-apertura,
+   sistema-grafico.css) y sin él seguían en el flujo durante la carga (medido: display «block» bajo html.pv-arranque) */
+html.pv-arranque #main-content > #hero ~ *{display:none!important}
+html.pv-arranque.pv-directo #main-content{visibility:hidden}
+/* el héroe no se pinta hasta que su marcado está completo (clase pv-completo, puesta por el guion que lo sigue):
+   con red lenta el navegador pintaba la columna de texto antes de recibir la figura, que va primero en teléfonos
+   (order:-1), y al llegar empujaba el texto 247 px (medido: 0,26 de CLS a 412 px con 4G lento) */
+html.pv-arranque #hero:not(.pv-completo){visibility:hidden}
+.hero-col-txt > picture,.tn-pladeco-pill > picture,.splash-screen > picture{display:contents}
+</style>
+<!-- v45.362 · [carga] · Poppins se precarga (los cuatro pesos que usan la barra y el héroe): sin esto el texto se pintaba
+     en la fuente de respaldo y, al llegar Poppins, el héroe reflufía (medido: 14 a 27 px de salto en la columna de texto). -->
+<link rel="preload" as="font" type="font/woff" href="fonts/Poppins-Medium-latin.woff" crossorigin>
+<link rel="preload" as="font" type="font/woff" href="fonts/Poppins-SemiBold-latin.woff" crossorigin>
+<link rel="preload" as="font" type="font/woff" href="fonts/Poppins-Bold-latin.woff" crossorigin>
+<link rel="preload" as="font" type="font/woff" href="fonts/Poppins-ExtraBold-latin.woff" crossorigin>
+<script>
+(function(){
+  try{
+    var h=document.documentElement; h.classList.add('pv-arranque');
+    if(/^#(?!(inicio|hero)$)[\w-]/.test(location.hash||'')) h.classList.add('pv-directo');
+    document.addEventListener('DOMContentLoaded',function(){
+      h.classList.remove('pv-arranque'); h.classList.remove('pv-directo');
+      var s=document.getElementById('splashScreen');
+      if(s&&!s.classList.contains('hidden')){ s.classList.add('hidden'); setTimeout(function(){ try{ s.remove(); }catch(e){} },400); }
+    });
+  }catch(e){}
+})();
+</script>
 <title>PLADECO Rengo 2025-2035 | Portal Estratégico</title>
 <meta name="description" content="Portal interactivo del Plan de Desarrollo Comunal de Rengo 2025-2035. 6 ejes estrat&#233;gicos, 225 pol&#237;ticas p&#250;blicas, 63.620 habitantes (Censo 2024). Diagn&#243;stico territorial, cartograf&#237;a, datos y participaci&#243;n ciudadana.">
 <meta name="keywords" content="PLADECO, Rengo, plan desarrollo comunal, municipalidad rengo, censo 2024, sociedad civil, planificaci&#243;n territorial, O'Higgins, vulnerabilidad socioterritorial, espacios p&#250;blicos">
@@ -106,7 +154,7 @@
 <!-- v45.359 · Leaflet y Chart.js pasaron a vendor/ (autoalojados): ya no se anuncia unpkg. Quedan los
      dominios que todavía se usan: las teselas de los mapas (CARTO y OSM), D3 en la red y el Sankey
      (cdnjs) y JSZip para una descarga puntual (jsDelivr). -->
-<link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+<!-- v45.362 · [carga] · un solo preconnect por dominio (el de OSM estaba duplicado) -->
 <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="dns-prefetch" href="https://tile.openstreetmap.org">
@@ -115,11 +163,21 @@
 <!-- v45.225 · Tipografía ÚNICA Poppins · 100% autoalojada en /fonts (@font-face más abajo en este <head>). Sin Google Fonts: cero requests a terceros, más privacidad, funciona offline. -->
 
 
-<!-- v45.181 · Preload de assets criticos above-the-fold con fetchpriority -->
-<link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.jpg" fetchpriority="high">
-<link rel="preload" as="image" href="logo-pladeco.png" fetchpriority="high">
+<!-- v45.181 · Preload de assets criticos above-the-fold con fetchpriority
+     v45.362 · [carga] · SE PRECARGA LO QUE DE VERDAD SE MUESTRA. Se precargaba el JPG de la portada (642.668 bytes)
+     con prioridad alta, pero el <picture> del héroe elige el WebP (471.944 bytes): dos descargas para una sola
+     imagen. Ahora se precarga el WebP con type="image/webp" (un navegador sin WebP ignora esta precarga y toma el
+     JPG del <picture>). Los logotipos pasan a WebP al doble de su tamaño visible: el de la barra (logo-pladeco.png,
+     500×500, 185.797 bytes, se muestra a 35 px) → logo-pladeco-70.webp; el de la pantalla de precarga
+     (splash-logo-2026.jpg, 600×600, se muestra a 140 px) → splash-logo-2026-280.webp; el del héroe
+     (Logo-Pladeco-Blanco.png, 3103×1696, 125.523 bytes, se muestra a 200 px, 280 en teléfonos) →
+     Logo-Pladeco-Blanco-560.webp. Generados con Pillow a partir de los originales, que se conservan como respaldo.
+     Chart.js se pide con prioridad baja: su etiqueta ya no está en el <head> sino junto a su primer uso (ver ahí). -->
+<link rel="preload" as="image" href="Entrada-Rengo-Color-Pladeco.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="image" href="logo-pladeco-70.webp" type="image/webp">
 <link rel="preload" as="image" href="escudo-rengo-blanco.svg">
-<link rel="preload" as="image" href="splash-logo-2026.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="splash-logo-2026-280.webp" type="image/webp" fetchpriority="high">
+<link rel="preload" as="script" href="vendor/chartjs/chart.umd.min.js" fetchpriority="low">
 
 <!-- v45.181 · Leaflet CSS NO-BLOQUEANTE (print-onload trick) - los mapas son lazy-init
      v45.359 · AUTOALOJADO en vendor/leaflet (1.9.4, licencia BSD-2, con sus imágenes). Antes venía de
@@ -129,19 +187,20 @@
 <link rel="preload" as="style" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css" media="print" onload="this.media='all';this.onload=null"/>
 <noscript><link rel="stylesheet" href="vendor/leaflet/leaflet.css"/></noscript>
-<script src="vendor/leaflet/leaflet.js" defer></script>
+<script src="vendor/leaflet/leaflet.js" defer onload="if(window.__leafletPatch)window.__leafletPatch()"></script>
 <script>
 /* v45.119 · Wrap de L.map() para registrar instancias. Polling activo desde
    ya — captura a Leaflet apenas se carga, ANTES de que el script principal
-   llame a L.map(...). */
+   llame a L.map(...).
+   v45.362 · [carga] · SIN SONDEO: antes esta función se reintentaba cada 20 ms hasta 200 veces (4 s) esperando
+   a Leaflet. Como el script va con defer, corre antes de DOMContentLoaded y en un momento conocido: se engancha
+   al onload de su propia etiqueta (window.__leafletPatch) y, por si acaso, a DOMContentLoaded (idempotente por
+   L.__patched). Cuando termina de envolver L.map avisa con el evento «leaflet:listo», que escucha el bloque
+   ARRANQUE DE LOS MAPAS en lugar de sondear typeof L cada 250 ms. Verificado: los 8 mapas se dibujan igual. */
 window.__leafletMaps=window.__leafletMaps||[];
 (function(){
-  var tries=0;
   function patch(){
-    if(typeof L==='undefined'){
-      if(tries++<200){return setTimeout(patch,20);}
-      return;
-    }
+    if(typeof L==='undefined'){return;}
     if(L.__patched)return;
     var orig=L.map;
     L.map=function(){
@@ -165,8 +224,11 @@ window.__leafletMaps=window.__leafletMaps||[];
       L.Map.__patched=true;
     }
     L.__patched=true;
+    try{ document.dispatchEvent(new CustomEvent('leaflet:listo')); }catch(e){}
   }
+  window.__leafletPatch=patch;
   patch();
+  document.addEventListener('DOMContentLoaded',patch);
 })();
 </script>
 <script>
@@ -218,163 +280,7 @@ window.pladecoICP = window.pladecoICP || (function(){
   };
 })();
 </script>
-<!-- v45.187 · HOTFIX · Chart.js REVERTIDO a sincrono.
-     v45.181 lo habia puesto en defer para no bloquear first paint, pero los chart inits
-     inline en el body se ejecutan DURANTE el parsing (sync), antes de que defer'd Chart.js
-     termine. Resultado: window.Chart undefined cuando los inits intentan crear graficos
-     => TODOS los graficos del portal invisibles. Sync garantiza que Chart.js este listo
-     antes de cualquier "new Chart(...)" inline. -->
-<!-- v45.359 · Chart.js AUTOALOJADO en vendor/chartjs (4.4.4, licencia MIT). Se carga sin defer, como
-     antes, pero desde el propio sitio: si el CDN estaba bloqueado, esta etiqueta bloqueaba el pintado
-     hasta agotar el tiempo de espera y después ningún gráfico se dibujaba. -->
-<script src="vendor/chartjs/chart.umd.min.js"></script>
-<script>
-/* ─── v45.50 · Blindaje de Chart.js · v45.187 · vuelve a IIFE sincrono porque Chart.js ya es sync ─── */
-(function(){
-  if(typeof window.Chart!=='function') return;
-  if(window.Chart.__safe) return;
-  var RealChart=window.Chart;
-  /* v45.250 · LAZY CHARTS: el portal construía 96 gráficos al cargar, todos en secciones ocultas
-     por el motor de vistas (~1s de CPU aquí; 3-4s en equipos modestos). Ahora cada new Chart()
-     se ENCOLA y se construye recién cuando su sección se muestra. Un Proxy reenvía la API del
-     gráfico (pre-construcción: muta la config; post: delega en la instancia real). Fallbacks:
-     si el motor no arranca, load+4s construye todo lo visible (= comportamiento anterior);
-     beforeprint construye todo; window.__chartsEager=true desactiva el lazy (depuración). */
-  var queue=[]; var booted=false; var pending=false;
-  function canvasOf(item){
-    var el=(typeof item==='string')?document.getElementById(item):item;
-    if(el&&el.canvas)el=el.canvas;
-    return (el&&el.tagName==='CANVAS')?el:null;
-  }
-  function isShown(cv){
-    var m=document.getElementById('main-content');
-    if(!m||!m.contains(cv))return true;
-    var n=cv; while(n.parentElement&&n.parentElement!==m){n=n.parentElement;}
-    if(n.classList&&n.classList.contains('pv-hidden'))return false;
-    return getComputedStyle(n).display!=='none';
-  }
-  function recolor(ch){
-    try{
-      if(typeof getChartTextColor!=='function')return;
-      var tc=getChartTextColor(),gc=getChartGridColor();
-      if(ch.options&&ch.options.scales){Object.keys(ch.options.scales).forEach(function(k){var s=ch.options.scales[k];if(s.ticks)s.ticks.color=tc;if(s.grid)s.grid.color=gc;if(s.title)s.title.color=tc;});}
-      if(ch.options&&ch.options.plugins&&ch.options.plugins.legend&&ch.options.plugins.legend.labels){ch.options.plugins.legend.labels.color=tc;}
-      var cardColor=getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff';
-      if(ch.config&&(ch.config.type==='doughnut'||ch.config.type==='pie')){ch.data.datasets.forEach(function(ds){if(ds.borderColor)ds.borderColor=cardColor;});}
-      ch.update('none');
-    }catch(e){}
-  }
-  /* Sistema de diseño v45.313 · CROMO LEGIBLE sobre la config ANTES de construir:
-     piso de fuente de ejes >=11px (corrige los font:{size:10} ilegibles) + tooltip
-     theme-aware desde el token --chart-tooltip-bg. Aplica a los 159 gráficos sin tocar
-     datos. Se llama en AMBAS rutas de construcción del shim (lazy build + eager).
-     (El plugin global no sirve: Chart.register no propaga al RealChart con este shim.) */
-  function applyChrome(cfg){
-    try{
-      var o=cfg&&cfg.options;
-      if(o){
-        if(o.scales){ for(var sk in o.scales){ var sc=o.scales[sk]; if(sc&&typeof sc==='object'){ sc.ticks=sc.ticks||{}; sc.ticks.font=sc.ticks.font||{}; var fz=sc.ticks.font.size; if(fz==null||fz<11) sc.ticks.font.size=11; } } }
-        o.plugins=o.plugins||{}; o.plugins.tooltip=o.plugins.tooltip||{};
-        var tt=getComputedStyle(document.body).getPropertyValue('--chart-tooltip-bg').trim(); if(tt) o.plugins.tooltip.backgroundColor=tt;
-      }
-      /* Paleta compartida SOLO para datasets sin color (no pisa el color semántico intencional). */
-      var pal=(window.CHART_PALETTE&&window.CHART_PALETTE())||null;
-      if(pal&&pal.length&&cfg&&cfg.data&&cfg.data.datasets){
-        var t=cfg.type;
-        cfg.data.datasets.forEach(function(ds,i){
-          if(ds&&ds.backgroundColor==null&&ds.borderColor==null){
-            var c=pal[i%pal.length];
-            if(t==='line'||t==='radar'){ ds.borderColor=c; ds.backgroundColor=c+'22'; }
-            else { ds.backgroundColor=c; }
-          }
-        });
-      }
-    }catch(e){}
-  }
-  function build(st){
-    if(st.dead||st.real)return;
-    applyChrome(st.cfg);
-    try{st.real=new RealChart(st.cv,st.cfg);}
-    catch(e){st.dead=true;console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return;}
-    if(st.stash){for(var k in st.stash){try{st.real[k]=st.stash[k];}catch(e){}}}
-    if((document.body&&document.body.classList.contains('dark'))!==st.qDark)recolor(st.real);
-  }
-  function flushNow(force){
-    for(var i=queue.length-1;i>=0;i--){
-      var st=queue[i];
-      if(st.dead||st.real){queue.splice(i,1);continue;}
-      if(force||isShown(st.cv)){build(st);queue.splice(i,1);}
-    }
-  }
-  function flush(force){
-    if(pending)return;pending=true;
-    requestAnimationFrame(function(){pending=false;flushNow(force);});
-  }
-  function proxyFor(st){
-    var noop=function(){};
-    return new Proxy({},{
-      get:function(_,p){
-        if(st.real){var v=st.real[p];return(typeof v==='function')?v.bind(st.real):v;}
-        switch(p){
-          case '__lazy':return true;
-          case 'canvas':return st.cv;
-          case 'ctx':return st.cv.getContext&&st.cv.getContext('2d');
-          case 'data':return(st.cfg.data=st.cfg.data||{labels:[],datasets:[]});
-          case 'options':return(st.cfg.options=st.cfg.options||{});
-          case 'config':return st.cfg;
-          case 'destroy':return function(){st.dead=true;};
-          case 'update':case 'resize':case 'render':case 'reset':case 'stop':case 'clear':case 'draw':return noop;
-          case 'toBase64Image':return function(){build(st);var a=arguments;return st.real?st.real.toBase64Image.apply(st.real,a):'';};
-        }
-        return undefined;
-      },
-      set:function(_,p,v){
-        if(st.real){st.real[p]=v;}
-        else if(p==='data'){st.cfg.data=v;}
-        else if(p==='options'){st.cfg.options=v;}
-        else{(st.stash=st.stash||{})[p]=v;}
-        return true;
-      }
-    });
-  }
-  function SafeChart(item,config){
-    var cv=canvasOf(item);
-    if(!cv){
-      var id=String((item&&item.id)||item);
-      (window.__chartSkipped=window.__chartSkipped||[]).push(id);
-      console.warn('[Chart] gráfico omitido — canvas no encontrado:',id);
-      cv=document.createElement('canvas');
-    }
-    if(window.__chartsEager===true){
-      applyChrome(config);
-      try{return new RealChart(cv,config);}catch(e){console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return null;}
-    }
-    var st={cv:cv,cfg:config||{},qDark:!!(document.body&&document.body.classList.contains('dark'))};
-    queue.push(st);
-    if(booted)flush(false);
-    return proxyFor(st);
-  }
-  SafeChart.prototype=RealChart.prototype;
-  try{Object.setPrototypeOf(SafeChart,RealChart);}catch(_){}
-  SafeChart.__real=RealChart;
-  SafeChart.__safe=true;
-  SafeChart.__flush=function(f){booted=true;if(f)flushNow(true);else flush(false);};
-  SafeChart.__queue=queue;
-  window.Chart=SafeChart;
-  function arm(){
-    try{new MutationObserver(function(){booted=true;flush(false);}).observe(document.body,{attributes:true,attributeFilter:['class']});}catch(e){}
-    window.addEventListener('resize',function(){if(booted)flush(false);},{passive:true});
-    window.addEventListener('hashchange',function(){booted=true;flush(false);});
-    document.addEventListener('click',function(){if(booted)setTimeout(function(){flush(false);},120);},true);
-    window.addEventListener('beforeprint',function(){booted=true;flushNow(true);});
-    window.addEventListener('load',function(){
-      setTimeout(function(){booted=true;flush(false);},1200);
-      setTimeout(function(){booted=true;flush(false);},4000);
-    });
-  }
-  if(document.body){arm();}else{document.addEventListener('DOMContentLoaded',arm);}
-})();
-</script>
+<!-- v45.362 · [carga] · Chart.js y su blindaje (SafeChart) ya no van aquí: están junto a su primer uso, en el cuerpo. -->
 
 <!-- Manifest e iconos -->
 <link rel="manifest" href="manifest.json">
@@ -1147,6 +1053,13 @@ body.dark .arg-quote{background:rgb(26, 35, 68)}
 .hero-logo{display:block;width:auto;max-width:200px;height:auto;margin:0 auto 16px;filter:drop-shadow(0 6px 22px rgba(0,0,0,.42)) drop-shadow(0 2px 6px rgba(0,0,0,.28));image-rendering:-webkit-optimize-contrast;-webkit-user-select:none;user-select:none}
 @media(max-width:768px){.hero-logo{max-width:280px;margin-bottom:14px}}
 @media(max-width:480px){.hero-logo{max-width:220px;margin-bottom:12px}}
+/* v45.362 · [carga] · CAJA RESERVADA del logotipo del héroe: con width:auto y height:auto la imagen medía 0×0 hasta
+   cargarse y, al llegar, empujaba 109 px el título, la bajada y los botones (medido como fuente de layout-shift).
+   Se fija el ancho al mismo valor que ya imponía max-width (200 / 280 / 220 px: la imagen siempre es más ancha) y la
+   proporción real del archivo (560/306), así el hueco existe desde el primer diseño. El tamaño mostrado no cambia. */
+.hero-logo{width:200px;aspect-ratio:560/306}
+@media(max-width:768px){.hero-logo{width:280px}}
+@media(max-width:480px){.hero-logo{width:220px}}
 /* Screen-reader only (accesibilidad · SEO) */
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .kpi-alert{display:inline-block;font-size:11px;padding:2px 6px;border-radius:5px;font-weight:700;margin-left:6px;vertical-align:middle}
@@ -3789,7 +3702,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   /* v45.356 · [sistema-visual] · §2.23 · la lista de tarjetas con opacidad 1 forzada se reduce a .pl-aparece:
      las demás ya no tienen estado de entrada que anular */
   .pl-aparece{opacity:1!important;transform:none!important;transition:none!important}
-  .splash-bar-fill{animation:none;width:100%}
   .kpi::after{animation:none!important}
 }
 
@@ -3802,26 +3714,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 /* ── Splash / Loading Screen ── */
-.splash-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0c1f36 0%,#1F3864 50%,#0c1f36 100%);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .2s ease,visibility .2s;gap:20px;animation:splashAutoHide 3.5s ease-in-out forwards}
+.splash-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0c1f36 0%,#1F3864 50%,#0c1f36 100%);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .2s ease,visibility .2s;gap:20px}
 .splash-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
-/* Fallback CSS: oculta el splash a los ~3.5s aunque el JS falle (defensivo) */
-@keyframes splashAutoHide{0%,80%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden;pointer-events:none}}
-/* v45.249 · Gate de arranque (CLS): mientras el splash está activo, el contenido bajo él NO se pinta
-   (visibility) → el re-layout del boot del motor de vistas (~3-4s) deja de generar layout-shift; al
-   ocultarse el splash, el contenido aparece ya asentado (reveal por visibility = sin movimiento).
-   Failsafe CSS step-end 6s: aunque el JS muera, el contenido se pinta solo (como el splashAutoHide).
-   Navegadores sin :has() ignoran la regla (comportamiento actual). */
-body:has(#splashScreen:not(.hidden)) :is(#main-content,#topnav,.chatbot-fab){animation:bootGate 6s step-end forwards}
-@keyframes bootGate{from{visibility:hidden}to{visibility:visible}}
+/* v45.362 · [carga] · RETIRADOS splashAutoHide (ocultaba la pantalla a los 3,5 s pasara lo que pasara) y la
+   compuerta bootGate de v45.249 (visibility:hidden sobre #main-content, #topnav y .chatbot-fab hasta 6 s).
+   La pantalla de precarga se retira ahora con un guion mínimo colocado inmediatamente después del héroe (sin
+   espera fija), y la compuerta de arranque vive en el <head> (html.pv-arranque, display:none sobre lo que
+   sigue al héroe), que el motor de vistas levanta al arrancar. La barra de progreso y sus textos simulados
+   («Conectando con Open-Meteo…») se eliminaron: eran seis pasos de 420 ms sin relación con la carga real. */
 /* Defensa adicional: cualquier overlay con opacity:0 NO debe bloquear interacción */
 .chatbot-overlay:not(.show),.lightbox:not(.open),.mvv-viewer:not(.open),.cmd-palette:not(.open){visibility:hidden;pointer-events:none}
 /* v45.174 · Splash logo · nuevo emblema "Contigo Rengo · Mejor Comuna" con forma circular institucional propia */
 .splash-logo{width:140px;height:140px;border-radius:50%;background:#fff;animation:splashPulse 1.5s ease-in-out infinite;filter:none;box-shadow:0 6px 28px rgba(255,255,255,.32),0 2px 14px rgba(45,154,77,.28),0 0 0 4px rgba(255,255,255,.12);object-fit:cover;object-position:center}
 .splash-text{color:#fff;font-size:14px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;opacity:.8}
-.splash-bar{width:200px;height:3px;background:rgba(255,255,255,.15);border-radius:5px;overflow:hidden}
-.splash-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--orange));border-radius:5px;animation:splashLoad 1.8s ease-in-out forwards}
 @keyframes splashPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.85}}
-@keyframes splashLoad{0%{width:0}60%{width:75%}100%{width:100%}}
+/* v45.362 · [carga] · .splash-bar, .splash-bar-fill y splashLoad retirados junto con la barra de progreso simulada */
 
 /* v45.186 · Hero Stats VISIBLES POR DEFECTO (antes quedaban invisibles si fallaba el JS de reveal).
    v45.356 · [sistema-visual] · §2.23 · retirada la animación «opt-in» .hero-stats-animating (ningún código
@@ -4235,9 +4142,7 @@ body.dark .ripple-wave{background:rgba(245,146,29,.35)}
 .splash-orb-2{width:240px;height:240px;background:#f5921d;bottom:15%;right:20%;animation-delay:-3s}
 .splash-orb-3{width:200px;height:200px;background:#3b82f6;top:55%;left:60%;animation-delay:-1.5s}
 @keyframes splashOrbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.1)}}
-.splash-progress-text{font-size:11px;color:rgba(255,255,255,.55);font-weight:600;letter-spacing:.04em;text-transform:uppercase;min-height:14px;text-align:center;margin-top:6px;transition:opacity .25s}
-.splash-bar{width:240px;height:3px;background:rgba(255,255,255,.08);border-radius:var(--r-full);overflow:hidden;position:relative;z-index:2}
-.splash-bar-fill{background:linear-gradient(90deg,#2d9a4d,#f5921d);transition:width .25s ease;border-radius:var(--r-full)}
+/* v45.362 · [carga] · .splash-progress-text, .splash-bar y .splash-bar-fill retirados (barra de progreso simulada) */
 
 /* ── 4. Hero cinematográfico: gradient mesh animado ── */
 .hero-mesh{position:absolute;inset:0;z-index:0;opacity:.55;mix-blend-mode:screen;pointer-events:none;overflow:hidden}
@@ -6706,6 +6611,143 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
 <link rel="stylesheet" href="graficos/sistema-grafico.css">
 <script src="graficos/sg-graficos.js" defer></script>
 <script src="graficos/sistema-grafico.js" defer></script>
+<!-- ═══ v45.362 · [carga] · ESPEJO TEMPRANO DE LA PRIMERA PANTALLA ═══
+     POR QUÉ: el CSS del <head> deja la barra y el héroe con una base antigua (Inter 15 px, héroe en bloque) y los
+     estilos definitivos (Poppins 16 px, héroe en flex, tokens de espaciado y tipografía, main con relleno) llegan en
+     62 bloques <style> repartidos por el cuerpo, hasta 3,5 MB después. Con la compuerta antigua eso no se veía
+     porque la portada estaba oculta hasta el final; al pintarla apenas llega, el héroe se pintaba con la base
+     antigua y saltaba al llegar cada bloque (medido: 221 propiedades calculadas distintas entre el primer diseño y
+     DOMContentLoaded en la barra y el héroe; fuentes de layout-shift de 0,015 a 0,10).
+     QUÉ ES: una COPIA, en orden de documento, de las 110 reglas de esos bloques que coinciden con html, body,
+     #main-content, #topnav o #hero (o sus descendientes), extraída del navegador (t_carga_espejo.cjs) tal como el
+     navegador las serializa. Los bloques originales siguen en su sitio y siguen ganando al final de la cascada: esta
+     copia solo hace que el primer diseño coincida con el definitivo. Si se cambia una de esas reglas en su bloque
+     original, conviene regenerar esta copia (guion en scratchpad/modernizacion/insertar_espejo.cjs). -->
+<style id="espejo-primera-pantalla">
+/* — bloque de estilos n.º 29 del documento — */
+:root { --bg2: #f8fafc; }
+/* — bloque de estilos n.º 31 del documento — */
+:root { --max-content-mobile: 100%; --max-content-tablet: 720px; --max-content-laptop: 960px; --max-content-desktop: 1180px; --max-content-xl: 1320px; --pad-page-mobile: 14px; --pad-page-tablet: 24px; --pad-page-desktop: 36px; }
+@media (min-width: 1200px){main, .main { max-width: var(--max-content-xl); margin: 0px auto; padding-left: var(--pad-page-desktop); padding-right: var(--pad-page-desktop); }}
+@media (min-width: 1200px){.hero { min-height: 600px; display: flex; align-items: center; justify-content: center; padding: 100px 60px 110px !important; }}
+@media (min-width: 1200px){.hero-content { max-width: 1080px; margin: 0px auto; }}
+@media (min-width: 1200px){.hero h1, .hero-title { font-size: clamp(36px, 14px + 3.2vw, 56px) !important; line-height: 1.05 !important; }}
+@media (min-width: 1200px){.hero p.sub, .hero .sub { max-width: 64ch; font-size: 18px !important; margin: 18px auto 28px !important; }}
+@media (min-width: 900px) and (max-width: 1199px){main, .main { max-width: var(--max-content-desktop); padding-left: 28px; padding-right: 28px; }}
+@media (min-width: 900px) and (max-width: 1199px){.hero { min-height: 520px; padding: 80px 40px 90px !important; }}
+@media (min-width: 900px) and (max-width: 1199px){.hero h1, .hero-title { font-size: clamp(30px, 12px + 3vw, 44px) !important; }}
+@media (min-width: 640px) and (max-width: 899px){main, .main { max-width: var(--max-content-tablet); padding-left: 24px; padding-right: 24px; }}
+@media (min-width: 640px) and (max-width: 899px){.hero { min-height: auto; padding: 64px 24px 72px !important; }}
+@media (min-width: 640px) and (max-width: 899px){.hero h1, .hero-title { font-size: clamp(26px, 8px + 4vw, 38px) !important; }}
+@media (min-width: 640px) and (max-width: 899px){.hero p.sub { font-size: 15px !important; max-width: 56ch; }}
+@media (min-width: 480px) and (max-width: 639px){main, .main { max-width: 100%; padding-left: 16px; padding-right: 16px; }}
+@media (min-width: 480px) and (max-width: 639px){.hero { min-height: auto; padding: 40px 16px 48px !important; }}
+@media (min-width: 480px) and (max-width: 639px){.hero h1, .hero-title { font-size: clamp(24px, 6vw, 30px) !important; line-height: 1.15 !important; }}
+@media (min-width: 480px) and (max-width: 639px){.hero p.sub { max-width: 48ch; font-size: 14px !important; line-height: 1.55 !important; }}
+@media (max-width: 479px){body { font-size: 14px; }}
+@media (max-width: 479px){main, .main { padding-left: 12px !important; padding-right: 12px !important; }}
+@media (max-width: 479px){.hero { padding: 32px 14px 40px !important; }}
+@media (max-width: 479px){.hero h1, .hero-title { font-size: 22px !important; line-height: 1.15 !important; }}
+@media (max-width: 479px){.hero p.sub { font-size: 13px !important; line-height: 1.5 !important; }}
+@media (hover: none) and (pointer: coarse){.badge, .btn, button, .sidebar-nav a, .sec-fuente a, .mbht-dim-btn, .mbht-dl { min-height: 44px; }}
+@media (max-height: 500px) and (orientation: landscape){.hero { padding: 30px 24px 40px !important; min-height: auto !important; }}
+@media (max-height: 500px) and (orientation: landscape){.hero h1 { font-size: 22px !important; }}
+@media print{.hero { padding: 18pt !important; min-height: auto !important; }}
+@media print{.hero-bg { display: none !important; }}
+/* — bloque de estilos n.º 32 del documento — */
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizelegibility; text-size-adjust: 100%; font-feature-settings: "ss01", "cv11", "calt", "ss02", "kern", "liga"; font-kerning: normal; }
+body { text-rendering: optimizelegibility; font-feature-settings: "kern", "liga", "clig", "calt"; font-variant-ligatures: common-ligatures contextual; }
+h1, h2, h3, h4, h5, h6, .hero-title, .mbht-hero-title, .group-divider-label { text-rendering: optimizelegibility; -webkit-font-smoothing: antialiased; font-feature-settings: "kern", "liga", "calt", "ss01"; font-kerning: normal; }
+img { image-rendering: crisp-edges; }
+img.photo, .hero img, .footer img, picture img { image-rendering: auto; }
+img[src$=".svg"], svg { image-rendering: auto; shape-rendering: geometricprecision; text-rendering: geometricprecision; }
+.hero, .hero-bg, .hero-content, .mbht-hero, .mbht-hero-pattern, .mbht-hero-territory, .banner-strip, #backToTop, .viz-card, .mbht-rec-card { transform: translateZ(0px); backface-visibility: hidden; perspective: 1000px; }
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi){html { -webkit-font-smoothing: antialiased; }}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi){img:not([src$=".svg"]) { }}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi){.hero-bg { filter: blur(0.8px) saturate(0.85) brightness(0.85) !important; }}
+@media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 288dpi){.hero-bg { filter: blur(0.5px) saturate(0.85) brightness(0.85) !important; }}
+html { scroll-behavior: smooth; overscroll-behavior-y: none; }
+@media (prefers-reduced-motion: reduce){html { scroll-behavior: auto; }}
+button, .btn, a.btn, .badge, .hero-stat .num, .mbht-kpi-value { -webkit-font-smoothing: antialiased; }
+.hero { min-height: auto; padding: 80px 40px 90px !important; }
+.hero h1, .hero-title { text-shadow: rgba(0, 0, 0, 0.3) 0px 2px 12px; }
+.hero p, .hero .sub { text-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px; }
+.hero-logo-contigo, .hero img { filter: drop-shadow(rgba(0, 0, 0, 0.3) 0px 4px 16px); transition: filter 0.2s; }
+@media print{* { print-color-adjust: exact !important; }}
+@media print{img { max-width: 100%; height: auto; }}
+@media (prefers-reduced-motion: reduce){.hero-orb, .hero-orb-1, .hero-orb-2, .hero-orb-3, .hero-mesh, .hero-dots { animation: none !important; }}
+/* — bloque de estilos n.º 33 del documento — */
+:root { --cap-1-accent: #1F3864; --cap-2-accent: #0369a1; --cap-3-accent: #2d9a4d; --cap-4-accent: #6087c7; --cap-5-accent: #be185d; --cap-6-accent: #b45309; --cap-7-accent: #15803d; --cap-8-accent: #0891b2; --cap-9-accent: #c2410c; --cap-10-accent: #ea580c; --cap-11-accent: #475569; }
+.display-font, .hero h1, .hero-title, .mbht-hero-title, .pull-quote, .group-divider-label, h2.display { font-family: var(--font-titulo,'Poppins',system-ui,sans-serif) !important; letter-spacing: -0.022em; }
+.hero-bg { image-rendering: -webkit-optimize-contrast; position: absolute !important; inset: 0px !important; z-index: 0 !important; opacity: 1 !important; filter: none !important; }
+.hero-dots, .hero-orb, .hero-mesh { display: none !important; }
+.hero h1, .hero .sub, .hero-brand { text-shadow: rgba(0, 0, 0, 0.72) 0px 2px 16px; }
+/* — bloque de estilos n.º 37 del documento — */
+:root { --space-3xs: 2px; --space-2xs: 4px; --space-xs: 6px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px; --space-xl: 24px; --space-2xl: 32px; --space-3xl: 48px; --space-4xl: 64px; --container-narrow: 720px; --container-base: 1100px; --container-wide: 1280px; --container-full: 1440px; --gap-xs: 6px; --gap-sm: 10px; --gap-md: 14px; --gap-lg: 20px; --gap-xl: 28px; --fw-regular: 400; --fw-medium: 400; --fw-semibold: 600; --fw-bold: 700; --fw-extrabold: 700; --fw-black: 800; --c-hover-bg: rgba(45,154,77,.08); --c-active-bg: rgba(45,154,77,.16); --c-focus-ring: rgba(45,154,77,.30); --surface-1: var(--card); --surface-2: var(--card2); --surface-3: var(--bg-soft); --text-1: #0c1f36; --text-2: #1e293b; --text-3: #475569; --text-4: #64748b; --text-5: #94a3b8; --border-1: #f1f5f9; --border-2: #e2e8f0; --border-3: #cbd5e1; --border-4: #94a3b8; --grad-rengo: linear-gradient(135deg, #2d9a4d 0%, #15803d 100%); --grad-rengo-soft: linear-gradient(135deg, rgba(45,154,77,.10) 0%, rgba(21,128,61,.04) 100%); --grad-navy: linear-gradient(135deg, #0c1f36 0%, #1F3864 100%); --grad-navy-warm: linear-gradient(135deg, #0c1f36 0%, #1F3864 50%, #2d9a4d 100%); --grad-divider: linear-gradient(90deg, transparent, rgba(45,154,77,.18), transparent); }
+.main, main { max-width: var(--container-full); margin: 0px auto; padding: var(--space-xl) clamp(16px, 3.2vw, 48px) var(--space-4xl) !important; }
+@media (max-width: 900px){.main, main { padding: var(--space-lg) var(--space-md) var(--space-2xl) !important; }}
+@media screen and (min-width: 901px){#main-content { width: 100%; margin-left: auto !important; margin-right: auto !important; }}
+@media screen and (max-width: 900px){#main-content { margin-left: 0px !important; margin-right: 0px !important; }}
+body { font-feature-settings: "ss01", "cv11", "calt", "ss02"; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-feature-settings: "ss01", "cv11", "calt"; }
+.hero h1, .hero-title { font-optical-sizing: auto; font-variation-settings: "opsz" 32; }
+.hero { padding: var(--space-3xl) var(--space-2xl) !important; }
+@media (max-width: 640px){.hero { padding: var(--space-2xl) var(--space-lg) !important; }}
+:root { --btn-solido-fondo: var(--c-verde,#286449); --btn-solido-hover: #1d4d37; --btn-solido-texto: #fff; --btn-contorno-texto: var(--c-verde,#286449); --btn-contorno-hover: rgba(40,100,73,.08); --btn-enlace-texto: var(--id-azul,#17497C); --btn-radio: var(--rad-md,7px); }
+:where(.btn) { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); padding: 8px 16px; min-height: 36px; font-family: inherit; font-weight: var(--fw-bold); line-height: 1.25; text-decoration: none; cursor: pointer; }
+.btn { border: 1.5px solid transparent; border-radius: var(--btn-radio); box-shadow: none; transition: background-color 0.15s, border-color 0.15s, color 0.15s; }
+.btn.btn--solido { background: var(--btn-solido-fondo); border-color: var(--btn-solido-fondo); color: var(--btn-solido-texto); }
+.btn.btn--contorno { background: transparent; border-color: currentcolor; color: var(--btn-contorno-texto); }
+.btn.btn--sobre-oscuro.btn--contorno { color: rgb(255, 255, 255); border-color: rgba(255, 255, 255, 0.62); background: rgba(255, 255, 255, 0.06); }
+html { scroll-behavior: smooth; scroll-padding-top: var(--space-2xl); }
+@media print{:root { --space-3xl: 24pt; --space-2xl: 18pt; --space-xl: 12pt; }}
+/* — bloque de estilos n.º 38 del documento — */
+:root { --ts-xs: 11px; --ts-sm: 12.5px; --ts-base: 14px; --ts-md: 16px; --ts-lg: 20px; --ts-xl: 25px; --ts-2xl: 31px; --ts-3xl: 39px; --ts-4xl: 49px; --lh-tight: 1.15; --lh-snug: 1.3; --lh-normal: 1.5; --lh-relaxed: 1.7; --ls-tight: -.022em; --ls-snug: -.012em; --ls-normal: 0; --ls-wide: .04em; --ls-wider: .08em; --ls-widest: .12em; }
+.hero { position: relative; overflow: hidden; isolation: isolate; }
+.hero > * { position: relative; z-index: 1; }
+.hero h1, .hero-title { font-size: clamp(28px, 4.5vw, 48px) !important; font-weight: 700 !important; letter-spacing: var(--ls-tight) !important; line-height: var(--lh-tight) !important; margin-bottom: 14px !important; }
+.hero p, .hero-lead { max-width: 72ch; font-size: var(--ts-md) !important; line-height: var(--lh-normal) !important; letter-spacing: var(--ls-normal) !important; }
+/* — bloque de estilos n.º 39 del documento — */
+html { scroll-behavior: smooth; }
+img[loading="lazy"] { opacity: 0; transition: opacity 0.2s ease-out; }
+img[loading="lazy"].loaded, img[loading="lazy"][src]:not([src=""]) { opacity: 1; }
+@media (max-width: 900px){.hero { padding: 36px 18px 28px !important; }}
+@media (max-width: 900px){.hero h1 { font-size: clamp(22px, 5.5vw, 30px) !important; line-height: 1.18 !important; }}
+@media (max-width: 640px){body { font-size: 14.5px !important; }}
+@media (max-width: 640px){.hero { padding: 28px 14px 22px !important; min-height: auto !important; }}
+@media (max-width: 640px){.hero h1 { font-size: 22px !important; line-height: 1.15 !important; }}
+@media (max-width: 640px){.hero p, .hero .lead { font-size: 13.5px !important; line-height: 1.55 !important; }}
+@media (max-width: 380px){.hero h1 { font-size: 20px !important; }}
+/* — bloque de estilos n.º 40 del documento — */
+@media print{* { print-color-adjust: exact !important; box-shadow: none !important; text-shadow: none !important; }}
+@media print{body, html { margin: 0px !important; padding: 0px !important; background: rgb(255, 255, 255) !important; color: rgb(0, 0, 0) !important; font-family: Poppins, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important; font-size: 11pt !important; line-height: 1.5 !important; }}
+@media print{main, .main { margin-left: 0px !important; padding: 0px !important; max-width: 100% !important; }}
+@media print{.hero { break-after: page; text-align: center; padding: 20pt !important; background: rgb(255, 255, 255) !important; color: rgb(0, 0, 0) !important; }}
+@media print{.hero h1, .hero-title { font-size: 24pt !important; color: rgb(0, 0, 0) !important; margin-bottom: 12pt !important; }}
+@media print{.hero-bg, .hero-orbs, .hero-mesh, .hero-dots, .hero-particles { display: none !important; }}
+@media print{a { color: rgb(0, 0, 0) !important; text-decoration: none !important; }}
+@media print{img { break-inside: avoid; max-width: 100% !important; height: auto !important; }}
+@media print{.ico, .sf-icon { color: rgb(0, 0, 0) !important; filter: grayscale(100%); }}
+/* — bloque de estilos n.º 42 del documento — */
+@media (max-width: 768px){button, a, [role="button"], .chip, .gob-chip, .gob-edge-chip, .sem-f-btn, .proc-tl-arrow, .qi-link, .gob-tab, .chatbot-suggestions button, .md-link { min-height: 44px; }}
+@media (max-width: 768px){body { padding-bottom: 62px; }}
+:root { --font-titulo: 'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; --font-cuerpo: 'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; --text-h1: clamp(30px, 3.6vw, 44px); --text-h2: clamp(22px, 2.4vw, 30px); --text-h3: clamp(18px, 1.6vw, 22px); --text-body: 16px; --text-body-lg: 17px; --text-small: 14px; --text-nota: 15px; --lh-tight: 1.15; --lh-snug: 1.3; --lh-body: 1.6; --lh-loose: 1.7; --fw-body: 400; --fw-medium: 400; --fw-semibold: 600; --fw-bold: 700; --fw-extra: 700; --fw-black: 800; --ancho-lectura: 58ch; }
+body { font-size: var(--text-body); line-height: var(--lh-body); -webkit-font-smoothing: antialiased; text-rendering: optimizelegibility; }
+h1 { line-height: var(--lh-tight); }
+.hero h1 { font-size: var(--text-h1); line-height: 1.12; font-weight: var(--fw-bold); letter-spacing: -0.015em; }
+@media (prefers-reduced-motion: reduce){*, ::before, ::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }}
+html.nofx, html.nofx *, html.nofx ::before, html.nofx ::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+/* — bloque de estilos n.º 47 del documento — */
+:root { --on-accent: #ffffff; --success-txt: #15803d; --warning-txt: #92400e; --danger-txt: #b91c1c; }
+/* — bloque de estilos n.º 58 del documento — */
+.ico-auto { width: 1.05em; height: 1.05em; vertical-align: -0.14em; flex: 0 0 auto; }
+/* — bloque de estilos n.º 61 del documento — */
+.hero .hero-estado .he-item { display: block; }
+.hero .hero-estado { flex-direction: column; gap: 2px; border-radius: var(--rad-lg,10px); }
+.hero .hero-estado .he-sep { display: none; }
+/* — bloque de estilos n.º 69 del documento — */
+.txt-justificado { text-justify: inter-word; hyphens: auto; hyphenate-limit-chars: 7 3 3; text-align-last: start; text-align: justify !important; }
+</style>
 </head>
 <body>
 <!-- Sistema de iconos SVG de linea (un solo set, monocromatico, currentColor). Concepto de diseno · institucional.css -->
@@ -6778,10 +6820,13 @@ body.dark .gob-metric{background:var(--card,#1a2332)}
   <div class="splash-orb splash-orb-2" aria-hidden="true"></div>
   <div class="splash-orb splash-orb-3" aria-hidden="true"></div>
   <!-- v45.174 · Nuevo logo institucional "Contigo Rengo · Mejor Comuna" (reemplaza 1.png) -->
-  <img src="splash-logo-2026.jpg" alt="Contigo Rengo &middot; Mejor Comuna" class="splash-logo" width="140" height="140" decoding="async" fetchpriority="high" style="position:relative;z-index:2">
+  <!-- v45.362 · [carga] · el emblema en WebP al doble de su tamaño visible (280×280, 12.888 bytes frente a 39.840 del JPG,
+       que queda como respaldo); sin barra de progreso ni textos simulados: la pantalla dura lo que tarda en llegar el héroe -->
+  <picture>
+    <source type="image/webp" srcset="splash-logo-2026-280.webp">
+    <img src="splash-logo-2026.jpg" alt="Contigo Rengo &middot; Mejor Comuna" class="splash-logo" width="140" height="140" decoding="async" fetchpriority="high" style="position:relative;z-index:2">
+  </picture>
   <span class="splash-text" style="position:relative;z-index:2">PLADECO 2025&ndash;2035</span>
-  <div class="splash-bar"><div class="splash-bar-fill" id="splashBarFill" style="width:5%"></div></div>
-  <div class="splash-progress-text" id="splashProgress">Inicializando&hellip;</div>
 </div>
 <noscript>
 <!-- v45.249 · Degradación elegante sin JavaScript (§4.2): sin splash, contenido visible de inmediato y aviso honesto. -->
@@ -6937,7 +6982,12 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   </a>
   <!-- v45.150 · Pildora PLADECO + boton Home al lado del badge "En Construccion" -->
   <div class="tn-pladeco-pill">
-    <img src="logo-pladeco.png" alt="" width="46" height="34" loading="eager" decoding="async" aria-hidden="true">
+    <!-- v45.362 · [carga] · WebP a 70×70 (el doble de los 35 px visibles; 3.616 bytes frente a 185.797 del PNG, que queda como
+         respaldo). width/height declaran la proporción real (1:1) para que el hueco reservado no cambie al cargar. -->
+    <picture>
+      <source type="image/webp" srcset="logo-pladeco-70.webp">
+      <img src="logo-pladeco.png" alt="" width="70" height="70" loading="eager" decoding="async" aria-hidden="true">
+    </picture>
     <span class="tn-construccion-badge" aria-hidden="true"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-warning"></use></svg> En construcci&oacute;n</span>
     <a href="#hero" class="tn-home-btn" title="Volver al inicio del portal" aria-label="Volver al inicio del portal">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -6945,14 +6995,15 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
       </svg>
     </a>
   </div>
+  <!-- v45.362 · [carga] · las pestañas de relleno eran siete (Introducción … Proceso, nombres antiguos) y build() las
+       sustituía en DOMContentLoaded por las cuatro macro-pestañas: el cambio de ancho movía la píldora y la marca en la
+       barra ya pintada (fuente de layout-shift de 0,044). El relleno reproduce ahora exactamente lo que construye build()
+       (mismo marcado, iconos y nombres; los desplegables se llenan al construirse), así el reemplazo no mueve nada. -->
   <nav class="tn-tabs" id="tnTabs" aria-label="Capítulos del PLADECO">
-    <div class="tn-tab" data-cap="0"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">1</span>Introducción<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
-    <div class="tn-tab" data-cap="1"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">2</span>Diagnóstico<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
-    <div class="tn-tab" data-cap="2"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">3</span>Participación<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
-    <div class="tn-tab" data-cap="3"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">4</span>Planificación<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
-    <div class="tn-tab" data-cap="4"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">5</span>Gobernanza<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
-    <div class="tn-tab" data-cap="5"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">6</span>Seguimiento<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
-    <div class="tn-tab" data-cap="6"><button class="tn-tab-btn" type="button"><span class="tn-tab-num">7</span>Proceso<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop"></div></div>
+    <div class="tn-tab tn-macro" data-macro="0" style="--mc:#1e3a8a"><button class="tn-tab-btn" type="button" title="Parte 01 &middot; Introducción"><span class="tn-tab-num">01</span><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-book"></use></svg> Introducción<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop tn-drop-macro"></div></div>
+    <div class="tn-tab tn-macro" data-macro="1" style="--mc:#9a3412"><button class="tn-tab-btn" type="button" title="Parte 02 &middot; Diagnóstico"><span class="tn-tab-num">02</span><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-search"></use></svg> Diagnóstico<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop tn-drop-macro"></div></div>
+    <div class="tn-tab tn-macro" data-macro="2" style="--mc:#14532d"><button class="tn-tab-btn" type="button" title="Parte 03 &middot; Planificación"><span class="tn-tab-num">03</span><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-target"></use></svg> Planificación<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop tn-drop-macro"></div></div>
+    <div class="tn-tab tn-macro" data-macro="3" style="--mc:#1c304f"><button class="tn-tab-btn" type="button" title="Parte 04 &middot; Cierre"><span class="tn-tab-num">04</span><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-flag"></use></svg> Cierre<span class="tn-tab-car">&#9662;</span></button><div class="tn-drop tn-drop-macro"></div></div>
   </nav>
   <div class="tn-utils">
     <div class="tn-utils-group" role="group" aria-label="Herramientas del portal">
@@ -7194,6 +7245,9 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     S(hero.querySelector('.infographic-strip'),'margin-bottom','0px');
     S(hero.querySelector('.hero-scroll-hint'),'margin-top','14px');
   }
+  /* v45.362 · [carga] · expuesta para que el guion que sigue al héroe la aplique antes de su primer pintado
+     (aquí el héroe aún no existe y las llamadas de +800 y +2.200 ms lo agrandaban ya pintado) */
+  window.__tuneHero=tuneHero;
   function navTo(href){
     if(!href||href.charAt(0)!=='#'||href.length<2)return false;
     var el; try{el=document.querySelector(href);}catch(e){return false;}
@@ -7379,7 +7433,12 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
          El texto NO va incrustado en la imagen: es HTML y se lee completo a 360px.       -->
     <div class="hero-grid">
       <div class="hero-col-txt">
-        <img class="hero-logo" src="Logo-Pladeco-Blanco.png" alt="" aria-hidden="true" width="200" height="109" loading="eager" decoding="async" fetchpriority="high">
+        <!-- v45.362 · [carga] · WebP a 560×306 (el doble de los 280 px máximos visibles; 22.948 bytes frente a 125.523 del PNG
+             de 3103×1696, que queda como respaldo). width/height con la proporción real; el tamaño lo fija .hero-logo. -->
+        <picture>
+          <source type="image/webp" srcset="Logo-Pladeco-Blanco-560.webp">
+          <img class="hero-logo" src="Logo-Pladeco-Blanco.png" alt="" aria-hidden="true" width="560" height="306" loading="eager" decoding="async" fetchpriority="high">
+        </picture>
         <h1 class="hero-title">Plan de Desarrollo Comunal de Rengo <span class="hero-title-yr">2025&ndash;2035</span></h1>
         <p class="sub">Conoce las prioridades de Rengo, explora tu territorio y consulta c&oacute;mo se proyecta el desarrollo de la comuna. Este portal re&uacute;ne el diagn&oacute;stico, los seis ejes estrat&eacute;gicos y las acciones del plan, con sus fuentes abiertas a consulta.</p>
         <p class="hero-estado" id="heroEstado" hidden></p>
@@ -7406,6 +7465,38 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     </div>
   </div>
 </div>
+<script>/* v45.362 · [carga] · TRES COSAS JUSTO DESPUÉS DEL HÉROE, antes de su primer pintado:
+   (1) window.versionInfo (antes definido en el script principal, 1,33 MB más abajo) y el sello de estado #heroEstado,
+       que se rellena aquí con la misma lógica que el bloque «contadores de estructura DERIVADOS» (v45.330/331/356), el
+       cual ahora llama a esta función en DOMContentLoaded y load (mismo contenido → sin cambio). Medido: el sello
+       llegaba con DOMContentLoaded y empujaba 50 px el contenido del héroe (la mayor fuente de layout-shift, 0,095).
+   (2) tuneHero() de la barra superior (paddings y anchos del héroe en pantallas de 1000 px o más), que corría 800 y
+       2.200 ms después de la barra y agrandaba el héroe 32 px ya pintado; se aplica ahora antes de pintarlo.
+   (3) la pantalla de precarga se retira: sin espera fija ni progreso simulado. Con un enlace directo a una sección
+       (html.pv-directo) la retira el motor de vistas al abrir esa vista, para que no se vea la portada en el intervalo;
+       si el motor no corriera, la retira DOMContentLoaded (guion del head). */
+window.versionInfo={ version:'PLADECO 2025-2035', estado:'En construcción · mejora continua', ultimaActualizacion:'junio 2026', estadoInstrumento:'Sin constancia de aprobación registrada' };
+window.__sincronizarEstadoHero=function(){
+  try{
+    var h=document.getElementById('heroEstado'); if(!h) return;
+    var v=window.versionInfo||{};
+    if(!v.estado && !v.ultimaActualizacion && !v.estadoInstrumento) return;
+    var grupos=[];
+    function limpio(t){ return String(t).replace(/[<>]/g,''); }
+    if(v.estadoInstrumento) grupos.push('<b>PLADECO:<\/b> '+limpio(v.estadoInstrumento));
+    if(v.estado) grupos.push('<b>Portal:<\/b> '+limpio(v.estado));
+    if(v.ultimaActualizacion) grupos.push('Actualizado en '+limpio(v.ultimaActualizacion));
+    var out=grupos.map(function(g){ return '<span class="he-item">'+g+'<\/span>'; }).join(' <span class="he-sep" aria-hidden="true">·<\/span> ');
+    if(h.innerHTML!==out) h.innerHTML=out;
+    if(h.hidden) h.hidden=false;
+  }catch(e){}
+};
+(function(){
+  try{ window.__sincronizarEstadoHero(); }catch(e){}
+  try{ if(typeof window.__tuneHero==='function') window.__tuneHero(); }catch(e){}
+  try{ var he=document.getElementById('hero'); if(he) he.classList.add('pv-completo'); }catch(e){}   /* el héroe ya está completo: puede pintarse */
+  try{ if(document.documentElement.classList.contains('pv-directo')) return; var s=document.getElementById('splashScreen'); if(!s) return; s.classList.add('hidden'); setTimeout(function(){ try{ s.remove(); }catch(e){} },400); }catch(e){}
+})();</script>
 
 <!-- ═══ v45.343 · §2 y §5 · Cifras complementarias FUERA de la portada ═══════════════
      El encargo pide trasladarlas y presentarlas como una franja editorial sencilla, no
@@ -8119,6 +8210,172 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
 
 <p class="sec-fuente" style="margin-top:14px"><strong>Fuente:</strong> Comparador de Instrumentos PLADECO 2019-2031 / 2025-2035 (Mañán, O. &amp; Ramírez, P.; dir. D. Castillo — Secretaría Comunal de Planificación, 2026), elaborado sobre el PLADECO 2019-2031 (228 págs., I. Municipalidad de Rengo, 2019), las estructuras V2/V3 del proceso 2025 y el Manual PLADECO SUBDERE-IDER UFRO (2021). Codificación: Sí = documentado con evidencia verificable · No = ausencia constatada · S/I = el documento 2019 no permite establecerlo · Parcial = presente con cobertura insuficiente. Documento técnico completo disponible en SECPLAC.</p>
 
+<!-- ═══ v45.362 · [carga] · CHART.JS JUNTO A SU PRIMER USO ═══
+     QUÉ: la etiqueta síncrona de Chart.js (205.769 bytes, unos 70 KB comprimidos) estaba en el <head>, en el
+     byte 13.860 del documento: el analizador se detenía ahí hasta descargarla y compilarla, antes de la hoja de
+     estilos, de la barra y del héroe. Su primer uso está aquí (el gráfico del comparador de instrumentos), y todo
+     lo que la necesita —las 28 lecturas de Chart.defaults y cada new Chart()— viene después. Se conserva SÍNCRONA
+     (v45.187: con defer los gráficos en línea del cuerpo se construían antes de que existiera window.Chart) y el
+     blindaje SafeChart la sigue inmediatamente, como antes. Un preload de prioridad baja en el <head> adelanta la
+     descarga sin quitarle ancho de banda al documento.
+     VERIFICADO: no hay ninguna referencia a Chart entre el <head> y este punto; verificador de sintaxis en 0. -->
+<!-- v45.187 · HOTFIX · Chart.js REVERTIDO a sincrono.
+     v45.181 lo habia puesto en defer para no bloquear first paint, pero los chart inits
+     inline en el body se ejecutan DURANTE el parsing (sync), antes de que defer'd Chart.js
+     termine. Resultado: window.Chart undefined cuando los inits intentan crear graficos
+     => TODOS los graficos del portal invisibles. Sync garantiza que Chart.js este listo
+     antes de cualquier "new Chart(...)" inline. -->
+<!-- v45.359 · Chart.js AUTOALOJADO en vendor/chartjs (4.4.4, licencia MIT). Se carga sin defer, como
+     antes, pero desde el propio sitio: si el CDN estaba bloqueado, esta etiqueta bloqueaba el pintado
+     hasta agotar el tiempo de espera y después ningún gráfico se dibujaba. -->
+<script src="vendor/chartjs/chart.umd.min.js"></script>
+<script>
+/* ─── v45.50 · Blindaje de Chart.js · v45.187 · vuelve a IIFE sincrono porque Chart.js ya es sync ─── */
+(function(){
+  if(typeof window.Chart!=='function') return;
+  if(window.Chart.__safe) return;
+  var RealChart=window.Chart;
+  /* v45.250 · LAZY CHARTS: el portal construía 96 gráficos al cargar, todos en secciones ocultas
+     por el motor de vistas (~1s de CPU aquí; 3-4s en equipos modestos). Ahora cada new Chart()
+     se ENCOLA y se construye recién cuando su sección se muestra. Un Proxy reenvía la API del
+     gráfico (pre-construcción: muta la config; post: delega en la instancia real). Fallbacks:
+     si el motor no arranca, load+4s construye todo lo visible (= comportamiento anterior);
+     beforeprint construye todo; window.__chartsEager=true desactiva el lazy (depuración). */
+  var queue=[]; var booted=false; var pending=false;
+  function canvasOf(item){
+    var el=(typeof item==='string')?document.getElementById(item):item;
+    if(el&&el.canvas)el=el.canvas;
+    return (el&&el.tagName==='CANVAS')?el:null;
+  }
+  function isShown(cv){
+    var m=document.getElementById('main-content');
+    if(!m||!m.contains(cv))return true;
+    var n=cv; while(n.parentElement&&n.parentElement!==m){n=n.parentElement;}
+    if(n.classList&&n.classList.contains('pv-hidden'))return false;
+    return getComputedStyle(n).display!=='none';
+  }
+  function recolor(ch){
+    try{
+      if(typeof getChartTextColor!=='function')return;
+      var tc=getChartTextColor(),gc=getChartGridColor();
+      if(ch.options&&ch.options.scales){Object.keys(ch.options.scales).forEach(function(k){var s=ch.options.scales[k];if(s.ticks)s.ticks.color=tc;if(s.grid)s.grid.color=gc;if(s.title)s.title.color=tc;});}
+      if(ch.options&&ch.options.plugins&&ch.options.plugins.legend&&ch.options.plugins.legend.labels){ch.options.plugins.legend.labels.color=tc;}
+      var cardColor=getComputedStyle(document.documentElement).getPropertyValue('--card').trim()||'#fff';
+      if(ch.config&&(ch.config.type==='doughnut'||ch.config.type==='pie')){ch.data.datasets.forEach(function(ds){if(ds.borderColor)ds.borderColor=cardColor;});}
+      ch.update('none');
+    }catch(e){}
+  }
+  /* Sistema de diseño v45.313 · CROMO LEGIBLE sobre la config ANTES de construir:
+     piso de fuente de ejes >=11px (corrige los font:{size:10} ilegibles) + tooltip
+     theme-aware desde el token --chart-tooltip-bg. Aplica a los 159 gráficos sin tocar
+     datos. Se llama en AMBAS rutas de construcción del shim (lazy build + eager).
+     (El plugin global no sirve: Chart.register no propaga al RealChart con este shim.) */
+  function applyChrome(cfg){
+    try{
+      var o=cfg&&cfg.options;
+      if(o){
+        if(o.scales){ for(var sk in o.scales){ var sc=o.scales[sk]; if(sc&&typeof sc==='object'){ sc.ticks=sc.ticks||{}; sc.ticks.font=sc.ticks.font||{}; var fz=sc.ticks.font.size; if(fz==null||fz<11) sc.ticks.font.size=11; } } }
+        o.plugins=o.plugins||{}; o.plugins.tooltip=o.plugins.tooltip||{};
+        var tt=getComputedStyle(document.body).getPropertyValue('--chart-tooltip-bg').trim(); if(tt) o.plugins.tooltip.backgroundColor=tt;
+      }
+      /* Paleta compartida SOLO para datasets sin color (no pisa el color semántico intencional). */
+      var pal=(window.CHART_PALETTE&&window.CHART_PALETTE())||null;
+      if(pal&&pal.length&&cfg&&cfg.data&&cfg.data.datasets){
+        var t=cfg.type;
+        cfg.data.datasets.forEach(function(ds,i){
+          if(ds&&ds.backgroundColor==null&&ds.borderColor==null){
+            var c=pal[i%pal.length];
+            if(t==='line'||t==='radar'){ ds.borderColor=c; ds.backgroundColor=c+'22'; }
+            else { ds.backgroundColor=c; }
+          }
+        });
+      }
+    }catch(e){}
+  }
+  function build(st){
+    if(st.dead||st.real)return;
+    applyChrome(st.cfg);
+    try{st.real=new RealChart(st.cv,st.cfg);}
+    catch(e){st.dead=true;console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return;}
+    if(st.stash){for(var k in st.stash){try{st.real[k]=st.stash[k];}catch(e){}}}
+    if((document.body&&document.body.classList.contains('dark'))!==st.qDark)recolor(st.real);
+  }
+  function flushNow(force){
+    for(var i=queue.length-1;i>=0;i--){
+      var st=queue[i];
+      if(st.dead||st.real){queue.splice(i,1);continue;}
+      if(force||isShown(st.cv)){build(st);queue.splice(i,1);}
+    }
+  }
+  function flush(force){
+    if(pending)return;pending=true;
+    requestAnimationFrame(function(){pending=false;flushNow(force);});
+  }
+  function proxyFor(st){
+    var noop=function(){};
+    return new Proxy({},{
+      get:function(_,p){
+        if(st.real){var v=st.real[p];return(typeof v==='function')?v.bind(st.real):v;}
+        switch(p){
+          case '__lazy':return true;
+          case 'canvas':return st.cv;
+          case 'ctx':return st.cv.getContext&&st.cv.getContext('2d');
+          case 'data':return(st.cfg.data=st.cfg.data||{labels:[],datasets:[]});
+          case 'options':return(st.cfg.options=st.cfg.options||{});
+          case 'config':return st.cfg;
+          case 'destroy':return function(){st.dead=true;};
+          case 'update':case 'resize':case 'render':case 'reset':case 'stop':case 'clear':case 'draw':return noop;
+          case 'toBase64Image':return function(){build(st);var a=arguments;return st.real?st.real.toBase64Image.apply(st.real,a):'';};
+        }
+        return undefined;
+      },
+      set:function(_,p,v){
+        if(st.real){st.real[p]=v;}
+        else if(p==='data'){st.cfg.data=v;}
+        else if(p==='options'){st.cfg.options=v;}
+        else{(st.stash=st.stash||{})[p]=v;}
+        return true;
+      }
+    });
+  }
+  function SafeChart(item,config){
+    var cv=canvasOf(item);
+    if(!cv){
+      var id=String((item&&item.id)||item);
+      (window.__chartSkipped=window.__chartSkipped||[]).push(id);
+      console.warn('[Chart] gráfico omitido — canvas no encontrado:',id);
+      cv=document.createElement('canvas');
+    }
+    if(window.__chartsEager===true){
+      applyChrome(config);
+      try{return new RealChart(cv,config);}catch(e){console.warn('[Chart] no se pudo crear el gráfico:',e&&e.message);return null;}
+    }
+    var st={cv:cv,cfg:config||{},qDark:!!(document.body&&document.body.classList.contains('dark'))};
+    queue.push(st);
+    if(booted)flush(false);
+    return proxyFor(st);
+  }
+  SafeChart.prototype=RealChart.prototype;
+  try{Object.setPrototypeOf(SafeChart,RealChart);}catch(_){}
+  SafeChart.__real=RealChart;
+  SafeChart.__safe=true;
+  SafeChart.__flush=function(f){booted=true;if(f)flushNow(true);else flush(false);};
+  SafeChart.__queue=queue;
+  window.Chart=SafeChart;
+  function arm(){
+    try{new MutationObserver(function(){booted=true;flush(false);}).observe(document.body,{attributes:true,attributeFilter:['class']});}catch(e){}
+    window.addEventListener('resize',function(){if(booted)flush(false);},{passive:true});
+    window.addEventListener('hashchange',function(){booted=true;flush(false);});
+    document.addEventListener('click',function(){if(booted)setTimeout(function(){flush(false);},120);},true);
+    window.addEventListener('beforeprint',function(){booted=true;flushNow(true);});
+    window.addEventListener('load',function(){
+      setTimeout(function(){booted=true;flush(false);},1200);
+      setTimeout(function(){booted=true;flush(false);},4000);
+    });
+  }
+  if(document.body){arm();}else{document.addEventListener('DOMContentLoaded',arm);}
+})();
+</script>
 <script>
 (function(){
   var SEC=document.getElementById('comparador-instrumentos'); if(!SEC) return;
@@ -8233,14 +8490,17 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
     <p>Rengo no se construye sola. Desde los pueblos originarios <strong>picunche</strong> hasta el PLADECO 2025-2035, cada hito de la comuna ha estado sostenido por la <strong>organizaci&oacute;n colectiva</strong>: caciques mapuche, cofrad&iacute;as coloniales, sociedades obreras del ferrocarril, cooperativas agr&iacute;colas, juntas de vecinos, cuerpos de bomberos voluntarios, sindicatos rurales y las 95 organizaciones funcionales que hoy participan en este Plan. Esta secci&oacute;n presenta esa trayectoria &mdash;documentada por <em>Soto Pizarro (2010)</em> y la <em>Ilustre Municipalidad de Rengo (2024)</em>&mdash; como hilo conductor de la identidad comunal.</p>
   </div>
 
-  <!-- IMAGEN HISTORICA · COLLAGE (v45.168 · resolucion optimizada) -->
+  <!-- IMAGEN HISTORICA · COLLAGE (v45.168 · resolucion optimizada)
+       v45.362 · [carga] · pasa a loading="lazy" sin fetchpriority: iba con carga inmediata y prioridad alta aunque
+       está en #historia, sección oculta por el motor de vistas en la portada (260.576 bytes que se pedían en cada
+       visita antes que el contenido visible). Se descarga al abrir la sección. -->
   <figure class="hist-hero">
    <picture>
     <source type="image/webp" srcset="rengo-historia-collage.webp">
     <img src="rengo-historia-collage.jpg"
          alt="Collage historico de Rengo: trabajadores ferroviarios, bomberos antiguos, ferrocarril a vapor, iglesia parroquial, esculturas mapuche en la plaza y el rio Cachapoal con la cordillera de los Andes"
          width="1448" height="1086"
-         loading="eager" fetchpriority="high" decoding="async"
+         loading="lazy" decoding="async"
          onclick="if(typeof openLightbox==='function'){if(typeof GALERIA_FOTOS!=='undefined'){GALERIA_FOTOS.push({src:'rengo-historia-collage.jpg',titulo:'Historia de Rengo · Collage institucional'});openLightbox(GALERIA_FOTOS.length-1)}else{this.requestFullscreen&&this.requestFullscreen()}}"
          tabindex="0" role="button"
          aria-label="Ver el collage historico en pantalla completa"
@@ -25421,7 +25681,9 @@ window.discrepanciasDatos = (window.discrepanciasDatos && !window.discrepanciasD
    entregue el acuerdo o decreto, basta cambiar este valor (y la entrada 'estado-instrumento' de
    discrepanciasDatos). Verificado en el navegador: al cambiar el valor por código, los 6 elementos
    marcados con data-estado-instrumento lo reflejan. */
-window.versionInfo={ version:'PLADECO 2025-2035', estado:'En construcción · mejora continua', ultimaActualizacion:'junio 2026', estadoInstrumento:'Sin constancia de aprobación registrada' };
+/* v45.362 · [carga] · window.versionInfo se define ahora en el guion que sigue al héroe (mismo objeto, mismos valores),
+   para que el sello de estado (#heroEstado) exista antes del primer pintado y no empuje el contenido al llegar este
+   script. Una sola definición: para cambiar el estado del instrumento se edita allí. */
 window.changelog=[
   {fecha:'2026-06', titulo:'Rendimiento, accesibilidad y gobernanza del dato', cambios:['Gráficos lazy + imágenes WebP (−58% de peso) + dimensiones anti-CLS','Fuente única de cifras (datosClave) y notas de sección (Lectura + Implicancia PLADECO)','Optimización del asistente (ícono SVG, foco visible)']},
   {fecha:'2026-05', titulo:'Inversión y reencuadre del diagnóstico', cambios:['Cartera SUBDERE (110 proyectos) y sección BIP-SNI','Comparador de instrumentos 2019 vs 2025','Ficha Comunal reencuadrada como diagnóstico económico-laboral']},
@@ -27885,75 +28147,12 @@ renderInclChips();renderArgumentario();renderGestionKPIs();
 animateCounters();animateKPIs();
 initScrollProgress();initScrollReveal();initSectionReveal();
 
-// TIER 2: Lazy-load charts — only render when section scrolls into view
-/* Reading time estimate */
-(function(){
-  var text=document.querySelector('.main');
-  if(!text)return;
-  var words=text.textContent.split(/\s+/).length;
-  var mins=Math.ceil(words/200);
-  var el=document.getElementById('readingTime');
-  if(el) el.textContent='~'+mins+' min lectura · '+document.querySelectorAll('section').length+' secciones';
-})();
+// TIER 2 · v45.362 · [carga] · RETIRADOS aquí (1) el cálculo de #readingTime, que recorría el textContent de todo
+// .main para un elemento que no existe en el documento, y (2) el lote initLazyCharts: 93 funciones de dibujo que
+// esperaban a que dos secciones ocultas entraran en pantalla o, si no, corrían todas juntas a los 5 s. Cada una corre
+// ahora al abrir su sección: ver el bloque «GRÁFICOS Y CONTENIDO DIFERIDO POR VISTA» (tabla POR_VISTA), que
+// también conserva la ruta «dibujar todo» para imprimir, buscar y ?vista=completa.
 function _safeRun(fn){try{fn();}catch(e){console.warn('[PLADECO] Chart error:',fn.name||'anon',e.message);}}
-(function initLazyCharts(){
-  var t2=[renderRadar,renderDonut,renderPlazos,renderInclusion,renderODS,
-  renderTreemap,renderGauges,renderPyramid,renderMap,
-  renderNNA,renderNNAAge,renderNNAPartic,renderSurveyChart,
-  renderInequality,renderBIPSector,renderIdentityChart,
-  renderFinancial,renderWaterfall,renderSeguridad,
-  renderRengoVsNac,renderTransparencia,renderMetasBar,
-  renderGrupos,renderLorenz,renderRadarEje,renderURCompare,
-  renderScatter,renderInvCap,renderBipDens,renderPobLocal,
-  renderODSHeatmap,renderODSMulti,renderODSGap,
-  renderTagCloud,renderWordCloud,renderSNA,
-  renderParticipStats,renderRatingGrid,renderPriorBars,
-  renderServicios,renderInfraChart,renderPriorComp,
-  renderEmergencia,renderSaludChart,renderParticDemo,renderFunnel,
-  renderTopTemas,renderSlopeAdNNA,renderDistribTematica,renderActoresHeatmap,
-  renderFODAEntrev,renderPlazoEje,renderFinanc,renderInclusion2,
-  renderDeptos,renderSNAActors,renderCoresp,renderCentral,
-  renderConverg,renderMaturity,renderCrossLinks,renderERD,
-  renderOENet,renderDomainStats,renderDomainChart,renderCGRChart,
-  renderCapacity,renderSocCap,renderTensions,renderBrechas,
-  renderRiesgos,renderVulner,renderBench,renderRanking,
-  renderDemoProy,renderEtaria,renderCoher,renderCobertura,
-  renderGenero,renderGenEje,renderTablero,renderFreqAcc,
-  renderArgPeso,renderArgDim,renderAccEje,renderODSAcc,
-  renderBrechasMetas,renderProgresoEje,renderFinCards,renderFinEje,
-  renderPlazoFin,renderTreemapFin,renderPiramideDem];
-
-  /* Observe sections, render charts in batches when visible */
-  var rendered=false;
-  var chartObs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting&&!rendered){
-        rendered=true;
-        chartObs.disconnect();
-        /* Render charts in micro-batches to avoid blocking */
-        var idx=0;
-        /* v45.361 · el lote se encadena con setTimeout y no con requestAnimationFrame: si el observador lo
-           disparaba mientras la pestaña no pintaba cuadros (segundo plano), los cuadros no llegaban y
-           ninguno de estos gráficos se dibujaba (nube de #suenos, medidores, pirámide, mapa de calor ODS). */
-        function renderBatch(){
-          var end=Math.min(idx+8,t2.length);
-          for(;idx<end;idx++) _safeRun(t2[idx]);
-          if(idx<t2.length) setTimeout(renderBatch,16);
-        }
-        setTimeout(renderBatch,0);
-      }
-    });
-  },{rootMargin:'400px 0px'});
-
-  /* Observe first few content sections */
-  var secs=document.querySelectorAll('section');
-  if(secs.length>2) chartObs.observe(secs[2]);
-  if(secs.length>4) chartObs.observe(secs[4]);
-  /* Fallback: if user doesn't scroll, render after 5s */
-  setTimeout(function(){
-    if(!rendered){rendered=true;chartObs.disconnect();t2.forEach(_safeRun);}
-  },5000);
-})();
 
 
 // ══════════════════════════════════════════════════════════════════════
@@ -28152,30 +28351,16 @@ function renderProyAll(){
 }
 
 
-// TIER 3: Heavy deferred — Censo 2024 analytics (idle time)
-const _censoRenders=function(){
-  renderCensoKPI();renderCensoUR();renderCensoPiramide();renderCensoEtario();
-  renderCensoMigra();renderCensoViv();renderCensoVivKPI();renderCensoSvc();
-  renderCensoEduEmp();renderCensoVulnRanking();renderCensoBrechaUR();
-  renderCensoHeatmap();renderCensoMapaVuln();renderCensoComposicion();
-  renderAnalisisEstrategico();
-  // v45.124: 3 nuevas secciones
-  try{renderCoherencia();}catch(e){console.warn('Coherencia:',e);}
-  try{renderVozInstitucional();}catch(e){console.warn('VozInst:',e);}
-  try{initCUV();}catch(e){console.warn('CUV:',e);}
-  try{renderProyAll();}catch(e){console.warn('Proy:',e);}
-};
-if('requestIdleCallback' in window){requestIdleCallback(_censoRenders,{timeout:4000});}
-else{setTimeout(_censoRenders,2000);}
+// TIER 3 · v45.362 · [carga] · RETIRADO el lote censal _censoRenders (19 funciones en requestIdleCallback a los 4 s,
+// con un mapa Leaflet en contenedor oculto): renderCenso*, renderAnalisisEstrategico, renderCoherencia,
+// renderVozInstitucional, initCUV y las nueve renderProy* corren al abrir su sección (tabla POR_VISTA del bloque
+// «GRÁFICOS Y CONTENIDO DIFERIDO POR VISTA»); renderCensoMapaVuln la arranca el bloque ARRANQUE DE LOS MAPAS.
 initBreadcrumb();
 initDotNav();
 initBackToTopPct();
 
-// ── SPLASH SCREEN DISMISS ──
-setTimeout(()=>{
-  const splash=document.getElementById('splashScreen');
-  if(splash){splash.classList.add('hidden');setTimeout(()=>splash.remove(),700);}
-},2200);
+/* v45.362 · [carga] · retirado el «SPLASH SCREEN DISMISS» (setTimeout de 2.200 ms que solo corría al terminar este
+   script de 1,33 MB): la pantalla de precarga se retira ahora con un guion mínimo justo después del héroe. */
 
 /* v45.356 · [sistema-visual] · §2.23 · retirado el setTimeout que ponía .revealed en .hero-stat: solo servía a la
    animación .hero-stats-animating, que ningún código activaba (CSS retirado en el mismo cambio). */
@@ -30747,15 +30932,28 @@ function printSection(sec){
 // ══════════════════════════════════════════════════════
 // TIEMPO DE LECTURA POR SECCIÓN
 // ══════════════════════════════════════════════════════
-function initSectionReadingTime(){
+/* v45.362 · [carga] · (1) sin clonar: antes se clonaba cada una de las 75 secciones para contar sus palabras; ahora se
+   recorren sus nodos de texto (TreeWalker) saltando script, style, canvas, svg y los controles, que es exactamente lo
+   que se quitaba del clon, así que el recuento es el mismo; (2) por vista: recibe los nodos de la vista que se abre
+   (evento «pv:vista») y rotula solo esas secciones; sin motor de vistas (?vista=completa) rotula todas tras load. */
+function initSectionReadingTime(raices){
   var WORDS_PER_MIN=220;
-  document.querySelectorAll('section[id]').forEach(function(sec){
+  var OMITIR='script,style,canvas,svg,.share-btn,.fav-toggle,.print-btn';
+  var lista=[];
+  if(raices){
+    Array.prototype.forEach.call(raices,function(r){
+      if(!r||!r.querySelectorAll) return;
+      if(r.tagName==='SECTION'&&r.id) lista.push(r);
+      Array.prototype.push.apply(lista, Array.prototype.slice.call(r.querySelectorAll('section[id]')));
+    });
+  }else{ lista=Array.prototype.slice.call(document.querySelectorAll('section[id]')); }
+  lista.forEach(function(sec){
     if(typeof NO_ACTION_SECTIONS!=='undefined' && NO_ACTION_SECTIONS.has(sec.id))return;
     var h=sec.querySelector('.sec-header');
     if(!h||h.querySelector('.section-reading'))return;
-    var clone=sec.cloneNode(true);
-    clone.querySelectorAll('script,style,canvas,svg,.share-btn,.fav-toggle,.print-btn').forEach(function(el){el.remove();});
-    var txt=(clone.textContent||'').replace(/\s+/g,' ').trim();
+    var txt='',nd,w=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentElement;return (p&&p.closest&&p.closest(OMITIR))?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}});
+    while((nd=w.nextNode())){txt+=nd.nodeValue;}
+    txt=txt.replace(/\s+/g,' ').trim();
     var words=txt.split(' ').length;
     var mins=Math.max(1,Math.round(words/WORDS_PER_MIN));
     var lbl=document.createElement('span');
@@ -31428,6 +31626,9 @@ function _sinTildes(s){
 }
 function buildPortalSearchIndex(){
   if(_portalSearchIndex) return _portalSearchIndex;
+  /* v45.362 · [carga] · el índice toma el texto de todas las secciones: antes de construirlo se dibuja lo que aún no se
+     ha dibujado (los gráficos y tablas por vista), para que el buscador encuentre también ese contenido */
+  try{ if(window.__pvDibujarTodo) window.__pvDibujarTodo(true); }catch(e){}
   var idx=[];
   document.querySelectorAll('section[id]').forEach(function(sec){
     var id=sec.id;
@@ -31523,6 +31724,8 @@ function renderPortalSearchResults(results,query){
 }
 
 function openPortalSearch(){
+  /* v45.362 · [carga] · al abrir el buscador se adelanta, en tandas, el dibujo de lo que falta (ver __pvDibujarTodo) */
+  try{ if(window.__pvDibujarTodo) window.__pvDibujarTodo(false); }catch(e){}
   var ov=document.getElementById('searchOverlay');
   var inp=document.getElementById('portalSearchInput');
   ov.classList.add('open');
@@ -31766,151 +31969,13 @@ function submitReport(e){
   return false;
 }
 
-// ══════════════════════════════════════════════════════
-// Live Strip · Clima + Calidad del Aire (Open-Meteo · auto-refresh 5min)
-// Diseño compacto al inicio del portal · CORS habilitado · sin API key
-// ══════════════════════════════════════════════════════
-var RENGO_COORDS={lat:-34.4067,lon:-70.8597};
-
-// Mapeo WMO weather codes a emoji + descripción breve
-var WMO_CODES={
-  0:['☀️','Despejado'],1:['🌤','Despejado'],2:['⛅','Parc. nublado'],3:['☁️','Nublado'],
-  45:['🌫','Niebla'],48:['🌫','Niebla'],
-  51:['🌦','Llovizna'],53:['🌦','Llovizna'],55:['🌧','Llovizna'],
-  56:['🌨','Llovizna helada'],57:['🌨','Llovizna helada'],
-  61:['🌧','Lluvia ligera'],63:['🌧','Lluvia'],65:['🌧','Lluvia intensa'],
-  66:['🌨','Lluvia helada'],67:['🌨','Lluvia helada'],
-  71:['🌨','Nieve'],73:['🌨','Nieve'],75:['❄️','Nieve intensa'],77:['❄️','Granizo'],
-  80:['🌦','Chubascos'],81:['🌧','Chubascos'],82:['⛈','Chubascos fuertes'],
-  85:['🌨','Chubascos nieve'],86:['❄️','Chubascos nieve'],
-  95:['⛈','Tormenta'],96:['⛈','Tormenta granizo'],99:['⛈','Tormenta fuerte']
-};
-
-function fmtTime(d){
-  var h=String(d.getHours()).padStart(2,'0');
-  var m=String(d.getMinutes()).padStart(2,'0');
-  return h+':'+m;
-}
-
-// ── Fecha actual del Pulso Comunal · Día - Mes - Año ──
-var DIAS_SEM=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-var MESES_ES_FULL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-var MESES_ES_SHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
-function updateDateStrip(){
-  var d=new Date();
-  var diaEl=document.getElementById('lsDateDia');
-  var numEl=document.getElementById('lsDateNum');
-  var anioEl=document.getElementById('lsDateAnio');
-  if(diaEl)diaEl.textContent=DIAS_SEM[d.getDay()];
-  if(numEl)numEl.textContent=d.getDate()+' '+MESES_ES_SHORT[d.getMonth()];
-  if(anioEl)anioEl.textContent=d.getFullYear();
-  var box=document.getElementById('lsDate');
-  if(box){
-    var iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    box.setAttribute('title','Fecha actual: '+DIAS_SEM[d.getDay()]+' '+d.getDate()+' de '+MESES_ES_FULL[d.getMonth()]+' de '+d.getFullYear()+' ('+iso+')');
-  }
-}
-
-function loadLiveStrip(manual){
-  var btn=document.querySelector('.ls-refresh');
-  if(manual&&btn)btn.classList.add('spinning');
-  // Fecha SIEMPRE primero (sincrónica, no depende de red — evita que la barra quede vacía si fallan las APIs)
-  try{updateDateStrip();}catch(e){console.warn('updateDateStrip falló:',e);}
-  // Marcar hora actual aunque el clima aún no responda
-  var timeEl=document.getElementById('lsTime');
-  if(timeEl&&timeEl.textContent==='--:--')timeEl.textContent=fmtTime(new Date());
-  // Clima y aire en paralelo (no bloquean si fallan)
-  try{loadWeatherStrip();}catch(e){console.warn('loadWeatherStrip falló:',e);}
-  try{
-    loadAirStrip().finally(function(){if(btn)setTimeout(function(){btn.classList.remove('spinning');},800);});
-  }catch(e){console.warn('loadAirStrip falló:',e); if(btn)btn.classList.remove('spinning');}
-}
-
-function loadWeatherStrip(){
-  var item=document.getElementById('lsClima');
-  var tempEl=document.getElementById('lsWxTemp');
-  var iconEl=document.getElementById('lsWxIcon');
-  var descEl=document.getElementById('lsWxDesc');
-  var humEl=document.getElementById('lsWxHum');
-  var windEl=document.getElementById('lsWxWind');
-  var timeEl=document.getElementById('lsTime');
-  if(!tempEl)return Promise.resolve();
-  if(item)item.classList.add('loading');
-  var url='https://api.open-meteo.com/v1/forecast?latitude='+RENGO_COORDS.lat+'&longitude='+RENGO_COORDS.lon+'&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=America/Santiago';
-  return fetch(url).then(function(r){return r.json();}).then(function(data){
-    if(!data||!data.current)throw new Error('Respuesta vacía');
-    var c=data.current;
-    var info=WMO_CODES[c.weather_code]||['🌤','Rengo'];
-    if(tempEl)tempEl.textContent=Math.round(c.temperature_2m);
-    if(iconEl)iconEl.textContent=info[0];
-    if(descEl)descEl.textContent=info[1]+' · Rengo';
-    if(humEl)humEl.textContent=Math.round(c.relative_humidity_2m);
-    if(windEl)windEl.textContent=Math.round(c.wind_speed_10m);
-    if(timeEl)timeEl.textContent=fmtTime(new Date());
-    if(item)item.classList.remove('loading');
-  }).catch(function(){
-    if(descEl)descEl.textContent='Reconectando...';
-    if(item)item.classList.remove('loading');
-  });
-}
-
-function loadAirStrip(){
-  var item=document.getElementById('lsAire');
-  var icaEl=document.getElementById('lsAirICA');
-  var badgeEl=document.getElementById('lsAirBadge');
-  if(!icaEl)return Promise.resolve();
-  if(item)item.classList.add('loading');
-  var url='https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+RENGO_COORDS.lat+'&longitude='+RENGO_COORDS.lon+'&current=european_aqi&timezone=America/Santiago';
-  return fetch(url).then(function(r){return r.json();}).then(function(data){
-    if(!data||!data.current)throw new Error('Respuesta vacía');
-    var ica=Math.round(data.current.european_aqi||0);
-    icaEl.textContent=ica;
-    if(badgeEl){
-      var lvl,cls;
-      if(ica<=20){lvl='Muy bueno';cls='good';}
-      else if(ica<=40){lvl='Bueno';cls='good';}
-      else if(ica<=60){lvl='Moderado';cls='good';}
-      else if(ica<=80){lvl='Pobre';cls='warn';}
-      else if(ica<=100){lvl='Muy pobre';cls='bad';}
-      else{lvl='Extr. pobre';cls='bad';}
-      badgeEl.className='ls-air-badge '+cls;
-      badgeEl.textContent=lvl;
-    }
-    if(item)item.classList.remove('loading');
-  }).catch(function(){
-    if(badgeEl)badgeEl.textContent='⚠️';
-    if(item)item.classList.remove('loading');
-  });
-}
-
-// Auto-refresh: clima/aire cada 5 min · fecha cada minuto (por si cambia el día a medianoche)
-var _widgetTimer=null;
-var _dateTimer=null;
-function startWidgetAutoRefresh(){
-  if(_widgetTimer)return;
-  _widgetTimer=setInterval(function(){
-    if(document.visibilityState==='visible'){
-      loadLiveStrip();
-    }
-  },5*60*1000);
-  // Tick de fecha cada 60s (barato, sin red): si pasa medianoche se refleja en menos de 1 min
-  if(!_dateTimer){
-    _dateTimer=setInterval(function(){
-      if(document.visibilityState==='visible')updateDateStrip();
-    },60*1000);
-  }
-  document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState==='visible'){
-      updateDateStrip();
-      loadLiveStrip();
-    }
-  });
-}
-
-// Compat: stubs por si quedan llamadas en otros lugares
-function loadWeatherWidget(){loadWeatherStrip();}
-function loadAirQuality(){loadAirStrip();}
+// ════════════════════════════════════════════════════════
+// v45.362 · [carga] · RETIRADA la «Live Strip» de clima, calidad del aire y fecha (Open-Meteo): su marcado se
+// eliminó en v45.143 (lsWxTemp, lsAirICA, lsDate, lsTime no existen), pero seguían aquí RENGO_COORDS, WMO_CODES,
+// fmtTime, updateDateStrip, loadLiveStrip, loadWeatherStrip, loadAirStrip y startWidgetAutoRefresh, con un
+// setInterval de 5 minutos y otro de 60 s que no escribían en ningún sitio, más un oyente de visibilitychange.
+// Verificado con búsqueda: ninguna de esas funciones se llama desde otro lugar del documento.
+// ════════════════════════════════════════════════════════
 
 // ── Feed de noticias del proceso PLADECO ──
 var NEWS_FEED=[
@@ -32098,12 +32163,14 @@ initComparadorUV();
 initReadingProgress();
 initShareButtons();
 initFavButtons();
-initSectionReadingTime();
+/* v45.362 · [carga] · el tiempo de lectura se calcula por vista al abrirla (antes clonaba las 75 secciones al cargar) */
+document.addEventListener('pv:vista',function(e){try{initSectionReadingTime(e.detail&&e.detail.els);}catch(x){}});
+window.addEventListener('load',function(){try{if(!document.body.classList.contains('pv-on'))initSectionReadingTime();}catch(x){}});
 // MAJOR v35 inits
 initXTabs();
 renderCalendar();
-loadLiveStrip();
-startWidgetAutoRefresh();
+/* v45.362 · [carga] · retiradas las llamadas loadLiveStrip() y startWidgetAutoRefresh(): la franja de clima, aire y fecha
+   se eliminó del marcado en v45.143 (lsWxTemp, lsAirICA, lsDate no existen) y solo quedaban sus temporizadores */
 renderQuiz();
 maybeOfferTour();
 privacyAnalytics();
@@ -32133,31 +32200,9 @@ function lazyInitOnView(selector,fn){
   io.observe(el);
 }
 
-/* ══════════════════════════════════════════════════════
-   SPLASH SCREEN · Progreso real basado en assets cargados
-   ══════════════════════════════════════════════════════ */
-var SPLASH_STEPS=[
-  {pct:15,txt:'Inicializando…'},
-  {pct:32,txt:'Cargando estilos…'},
-  {pct:50,txt:'Conectando con Open-Meteo…'},
-  {pct:68,txt:'Cargando 826 manzanas censales…'},
-  {pct:85,txt:'Renderizando 50 secciones…'},
-  {pct:100,txt:'¡Bienvenido al PLADECO!'}
-];
-function animateSplashProgress(){
-  var fill=document.getElementById('splashBarFill'),txt=document.getElementById('splashProgress');
-  if(!fill||!txt)return;
-  var i=0;
-  function step(){
-    if(i>=SPLASH_STEPS.length)return;
-    var s=SPLASH_STEPS[i++];
-    fill.style.width=s.pct+'%';
-    txt.style.opacity='0';
-    setTimeout(function(){txt.textContent=s.txt;txt.style.opacity='1';},150);
-    setTimeout(step,420);
-  }
-  step();
-}
+/* v45.362 · [carga] · retirados SPLASH_STEPS y animateSplashProgress(): seis pasos de 420 ms con textos sin relación
+   con la carga real («Conectando con Open-Meteo…», «Cargando 826 manzanas censales…»). La pantalla de precarga ya
+   no tiene barra ni texto de progreso. */
 
 /* ══════════════════════════════════════════════════════
    HERO · Count-up DESACTIVADO (v43.2)
@@ -33381,10 +33426,7 @@ try{initV40Navigation();}catch(e){console.warn('v40 nav:',e);}
 try{initRippleEffect();}catch(e){console.warn('initRippleEffect:',e);}
 /* v45.8 · #mapa-proyectos eliminado, lazyInit removido */
 try{lazyInitOnView('#comparador',initComparador);}catch(e){console.warn('initComparador:',e);}
-try{animateSplashProgress();}catch(e){console.warn('animateSplashProgress:',e);}
 setTimeout(function(){try{animateHeroCountUps();}catch(e){console.warn('animateHeroCountUps:',e);}},400);
-// Garantizar que el strip de fecha se renderice al menos una vez aunque loadLiveStrip falle
-try{updateDateStrip();}catch(e){console.warn('updateDateStrip:',e);}
 
 // ══════════════════════════════════════════════════════
 // SAFE CHART WRAPPER (Error Boundary)
@@ -34244,6 +34286,10 @@ if('serviceWorker' in navigator){
   }
   /* si la pestaña vuelve a primer plano con una actualización pendiente, reintenta al instante */
   document.addEventListener('visibilitychange',function(){ if(!document.hidden&&_pendingReload) _reload(); });
+  /* v45.362 · [carga] · el Service Worker se registra DESPUÉS de load (antes lo hacía este script durante la carga):
+     su instalación descarga el esqueleto precacheado (sw.js, STATIC_ASSETS) y competía por la red y la CPU con el
+     propio documento. Registrarlo tras load no cambia lo que hace; solo cuándo empieza. */
+  function _registrarSW(){
   navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).then(function(reg){
     _swReg=reg;
     if(reg.waiting&&navigator.serviceWorker.controller){try{reg.waiting.postMessage({type:'SKIP_WAITING'});}catch(_){}}
@@ -34262,6 +34308,9 @@ if('serviceWorker' in navigator){
     document.addEventListener('visibilitychange',function(){if(!document.hidden){maybeCheckSW();_reload();}}); // al volver a la pestaña: buena pausa para recargar
     setInterval(maybeCheckSW,30*60*1000);
   }).catch(function(){});
+  }
+  if(document.readyState==='complete'){setTimeout(_registrarSW,0);}
+  else{window.addEventListener('load',function(){setTimeout(_registrarSW,0);},{once:true});}
   navigator.serviceWorker.addEventListener('controllerchange',function(){_schedule();});
   // API para el sello de versión del footer
   window.pwaUpdate={
@@ -38905,11 +38954,138 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
 }
 /* ═══ FIN v45.195 ═══ */
 </style>
+<!-- ═══ v45.362 · [carga] · GRÁFICOS Y CONTENIDO DIFERIDO POR VISTA ═══
+     QUÉ PASABA: 93 funciones de dibujo (initLazyCharts) esperaban a que dos secciones entraran en pantalla —el
+     motor de vistas las mantiene ocultas— o, si no, a un respaldo de 5 s, y entonces corrían TODAS en una sola
+     tanda aunque el lector estuviera en la portada; otras 19 (censo, coherencia, voz institucional, calculadora,
+     proyecciones) corrían en requestIdleCallback a los 4 s. Ninguna pinta algo visible en la portada.
+     QUÉ HACE: cada función queda registrada por la sección a la que pertenece (tabla POR_VISTA, derivada de los
+     ids que toca cada función y resueltos contra PV.units en el navegador: 118 funciones, 23 vistas, ninguna
+     función en dos vistas) y corre UNA sola vez, al abrir esa vista (evento «pv:vista» del motor; la vista de
+     entrada por URL también lo emite). Los dos mapas del lote (renderMap, renderCensoMapaVuln) quedan fuera:
+     los arranca el bloque ARRANQUE DE LOS MAPAS cuando hay Leaflet. Tras dibujar, se pide a SafeChart que
+     construya los gráficos encolados de la vista (Chart.__flush) y, cuando termina de cargar una fuente, los
+     gráficos ya construidos se actualizan una vez para que sus rótulos usen Poppins.
+     RUTA «DIBUJAR TODO» (window.__pvDibujarTodo): síncrona antes de imprimir (beforeprint, con construcción
+     inmediata de los gráficos) y al construir el índice del buscador (buildPortalSearchIndex, que toma el texto
+     de todas las secciones); en tandas de 8 con setTimeout al abrir el buscador (openPortalSearch) y tras load
+     cuando no hay motor de vistas (?vista=completa o fallo), que es lo que antes hacía el respaldo de 5 s.
+     Este bloque va ANTES del motor para que su oyente reciba también la primera vista. -->
+<script>
+(function(){
+  'use strict';
+  var POR_VISTA={
+    'analisis-estrategico-censo':['renderAnalisisEstrategico'],
+    'argumentario':['renderArgPeso','renderArgDim'],
+    'calculadora-uv':['initCUV'],
+    'censo':['renderCensoKPI','renderCensoUR','renderCensoPiramide','renderCensoEtario','renderCensoMigra','renderCensoViv','renderCensoVivKPI','renderCensoSvc','renderCensoEduEmp','renderCensoVulnRanking','renderCensoBrechaUR','renderCensoHeatmap','renderCensoComposicion'],
+    'coherencia':['renderCoherencia'],
+    'dashboard':['renderRengoVsNac','renderTransparencia'],
+    'desigualdad':['renderInequality','renderBIPSector','renderIdentityChart'],
+    'etnografia':['renderDomainStats','renderDomainChart','renderCGRChart','renderCapacity','renderSocCap','renderTensions'],
+    'financiamiento':['renderFinCards','renderFinEje','renderPlazoFin','renderTreemapFin'],
+    'gestion':['renderPlazoEje','renderFinanc','renderInclusion2','renderDeptos'],
+    'graficos':['renderBrechas','renderRiesgos','renderVulner','renderBench','renderRanking','renderDemoProy','renderEtaria','renderCoher','renderCobertura','renderGenero','renderGenEje','renderTablero','renderFreqAcc','renderPiramideDem'],
+    'nna':['renderNNA','renderNNAAge','renderNNAPartic','renderSurveyChart'],
+    'ods-sec':['renderODSHeatmap','renderODSMulti','renderODSGap'],
+    'proyeccion-poblacion':['renderProyTrayectoria','renderProyMetodos','renderProyEtaria','renderProyDependencia','renderProyEnvejecimiento','renderProyHistorica','renderProyVarDistrital','renderProyIEDistrital','renderProyEvolucionEtaria'],
+    'resumen':['renderAccEje','renderODSAcc'],
+    'semaforo':['renderBrechasMetas','renderProgresoEje'],
+    'sna':['renderSNAActors','renderCoresp','renderCentral','renderConverg','renderMaturity','renderCrossLinks','renderERD','renderOENet'],
+    'sociedad-civil':['renderTopTemas','renderSlopeAdNNA','renderDistribTematica','renderActoresHeatmap'],
+    'suenos':['renderTagCloud','renderWordCloud','renderSNA'],
+    'territorial-adv':['renderURCompare','renderScatter','renderInvCap','renderBipDens','renderPobLocal'],
+    'viz':['renderRadar','renderDonut','renderPlazos','renderInclusion','renderODS','renderTreemap','renderGauges','renderPyramid','renderFinancial','renderWaterfall','renderSeguridad','renderMetasBar','renderGrupos','renderLorenz','renderRadarEje'],
+    'voz':['renderParticipStats','renderRatingGrid','renderPriorBars','renderServicios','renderInfraChart','renderPriorComp','renderEmergencia','renderSaludChart','renderParticDemo','renderFunnel','renderFODAEntrev'],
+    'voz-institucional':['renderVozInstitucional']
+  };
+  var hechas={};
+  function correr(nombre){
+    if(hechas[nombre]) return false;
+    hechas[nombre]=true;
+    var f=window[nombre];
+    if(typeof f!=='function') return false;
+    try{ f(); }catch(e){ if(window.console&&console.warn) console.warn('[PLADECO] Chart error:',nombre,e&&e.message); }
+    return true;
+  }
+  function construir(sincrono){
+    try{
+      if(!(window.Chart&&window.Chart.__flush)) return;
+      if(sincrono){ window.Chart.__flush(true); return; }
+      window.Chart.__flush(false);
+      setTimeout(function(){ try{ window.Chart.__flush(false); }catch(e){} },300);
+    }catch(e){}
+  }
+  function dibujarVista(id){
+    var lista=POR_VISTA[id]; if(!lista) return 0;
+    var n=0; for(var i=0;i<lista.length;i++){ if(correr(lista[i])) n++; }
+    if(n) construir(false);
+    return n;
+  }
+  var TODAS=[]; Object.keys(POR_VISTA).forEach(function(k){ POR_VISTA[k].forEach(function(nm){ if(TODAS.indexOf(nm)<0) TODAS.push(nm); }); });
+  var tandaEnCurso=false;
+  function dibujarTodo(sincrono){
+    var faltan=TODAS.filter(function(nm){ return !hechas[nm]; });
+    if(!faltan.length) return 0;
+    if(sincrono){ faltan.forEach(correr); construir(true); return faltan.length; }
+    if(tandaEnCurso) return faltan.length;
+    tandaEnCurso=true; var i=0;
+    (function tanda(){
+      var fin=Math.min(i+8,faltan.length);
+      for(;i<fin;i++) correr(faltan[i]);
+      if(i<faltan.length){ setTimeout(tanda,16); } else { tandaEnCurso=false; construir(false); }
+    })();
+    return faltan.length;
+  }
+  window.__pvDibujarVista=dibujarVista;
+  window.__pvDibujarTodo=dibujarTodo;
+  window.__pvDibujadas=function(){ return Object.keys(hechas); };
+  document.addEventListener('pv:vista',function(e){ try{ dibujarVista(e.detail&&e.detail.id); }catch(x){} });
+  window.addEventListener('beforeprint',function(){ dibujarTodo(true); });
+  window.addEventListener('load',function(){
+    if(!document.body.classList.contains('pv-on')){ setTimeout(function(){ dibujarTodo(false); },0); }
+  });
+  /* rótulos con la fuente definitiva: los gráficos construidos antes de que llegara una fuente se actualizan una vez */
+  try{
+    if(document.fonts&&document.fonts.addEventListener){
+      document.fonts.addEventListener('loadingdone',function(){
+        try{ var R=window.Chart&&window.Chart.__real; var I=R&&R.instances; if(!I) return; Object.keys(I).forEach(function(k){ try{ I[k].update('none'); }catch(e){} }); }catch(e){}
+      });
+    }
+  }catch(e){}
+})();
+</script>
 <script>
 /* Motor de vistas v45.69 — portada + vistas por SECCIÓN. Tolerante a fallos:
    ante cualquier error desactiva el modo y el portal vuelve al scroll único. */
 (function(){
   'use strict';
+  /* ── v45.362 · [carga] · COMPUERTA DE ARRANQUE, EVENTO «pv:vista» Y RAÍCES DE LA VISTA ──
+     abrirCompuerta(): levanta la compuerta del <head> (html.pv-arranque / pv-directo, que deja fuera del flujo lo
+     que sigue al héroe hasta que el motor arranca) y retira la pantalla de precarga si sigue ahí (enlace directo
+     a una sección). Se llama dentro de show(), justo después de aplicar las clases .pv-hidden de la vista, de modo
+     que el navegador calcule un solo diseño con la vista ya asentada; también en ?vista=completa y si run() falla.
+     show() emite además document → CustomEvent('pv:vista', {detail:{id, key, els}}) en lugar de los tres eventos
+     resize sintéticos (60, 280 y 700 ms) que disparaban en cada navegación a los ocho oyentes de resize del portal:
+     los bloques que necesitan saber que se abrió una vista (gráficos por vista, mapas, corrector de legibilidad,
+     iconos, tiempo de lectura) escuchan este evento y trabajan solo sobre esa vista.
+     window.__pvRaices(conFuera): nodos de primer nivel de la vista visible (portada o sección + barra de navegación);
+     con conFuera, además los hijos de <body> que no son #main-content (barra, asistente, avisos). Sin motor de
+     vistas (?vista=completa o fallo) devuelve #main-content, que es lo que barrían antes los bloques globales. */
+  function abrirCompuerta(){
+    var h=document.documentElement;
+    if(!h.classList.contains('pv-arranque')&&!h.classList.contains('pv-directo')){return;}
+    h.classList.remove('pv-arranque');h.classList.remove('pv-directo');
+    var s=document.getElementById('splashScreen');
+    if(s&&!s.classList.contains('hidden')){s.classList.add('hidden');setTimeout(function(){try{s.remove();}catch(e){}},400);}
+  }
+  window.__pvRaices=function(conFuera){
+    var out=[],main=document.getElementById('main-content');
+    if(window.PV&&typeof window.PV.raices==='function'&&document.body.classList.contains('pv-on')){out=window.PV.raices();}
+    else{out=[main||document.body];}
+    if(conFuera&&main){for(var i=0;i<document.body.children.length;i++){var ch=document.body.children[i];if(ch!==main){out.push(ch);}}}
+    return out;
+  };
   function run(){
     var main=document.getElementById('main-content');
     if(!main){return;}
@@ -39070,6 +39246,7 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
       vistaActual=key;
       hideAll(portada,key!=='portada');
       for(var u=0;u<units.length;u++){hideAll(units[u].els,key!==u);}
+      abrirCompuerta();   /* v45.362 · [carga] · la compuerta del <head> se levanta con las clases de vista ya puestas */
       var inV=(key!=='portada');
       navBar.classList.toggle('pv-hidden',!inV);
       if(inV){
@@ -39090,7 +39267,8 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
         else{history.pushState(null,'',url);}
         navSilent=false;
       }catch(e){}
-      var ds=[60,280,700];for(var d=0;d<ds.length;d++){setTimeout(function(){try{window.dispatchEvent(new Event('resize'));}catch(e){}},ds[d]);}
+      /* v45.362 · [carga] · retirados los tres eventos resize sintéticos (60, 280 y 700 ms): los sustituye el
+         evento «pv:vista» que se emite al final de esta función */
       /* v45.119 · INVALIDAR TAMAÑO de TODOS los mapas Leaflet al cambiar de vista
          (los mapas se inicializan con height:0 cuando estaban en .pv-hidden, hay que recalcular) */
       try{
@@ -39110,6 +39288,8 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
           })(allMapDivs[i]);
         }
       }catch(e){console.warn('[PV] invalidateSize falló:',e);}
+      /* v45.362 · [carga] · aviso de vista abierta para los bloques que trabajan por vista */
+      try{document.dispatchEvent(new CustomEvent('pv:vista',{detail:{id:inV?units[key].id:'portada',key:key,els:inV?units[key].els.concat([navBar]):portada.slice()}}));}catch(e){}
     }
     function go(id,sub){
       var tgt=null;try{tgt=document.getElementById(id);}catch(e){}
@@ -39140,9 +39320,13 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     },true);
     var qi=document.getElementById('quickIndex');if(qi){qi.classList.add('collapsed');}
     document.body.classList.add('pv-on');
+    /* v45.362 · [carga] · PV se publica ANTES de la primera vista, con actual() y raices(), para que los oyentes de
+       «pv:vista» registrados antes de este bloque puedan consultarlo desde el arranque */
+    function actual(){return (vistaActual===null||vistaActual==='portada')?'portada':((units[vistaActual]||{}).id||'portada');}
+    function raices(){return (vistaActual===null||vistaActual==='portada')?portada.slice():units[vistaActual].els.concat([navBar]);}
+    window.PV={show:show,go:go,units:units,chapters:chapters,actual:actual,raices:raices};
     var hsh=(location.hash||'').replace('#','');
     if(!hsh||hsh==='inicio'||!go(hsh)){show('portada');}
-    window.PV={show:show,go:go,units:units,chapters:chapters};
     /* v45.253 · Atrás/Adelante del navegador recorren las vistas (popstate → mostrar sin re-apilar) */
     window.addEventListener('popstate',function(){
       navSilent=true;
@@ -39179,8 +39363,10 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
     /* v45.253 · Vista "documento completo" (§4.1): ?vista=completa omite el motor de vistas →
        todas las secciones fluyen linealmente (lectura continua / imprimir / exportar a PDF).
        Los gráficos se construyen igual (el fallback del lazy construye lo visible tras load). */
-    try{if(/[?&]vista=completa\b/.test(location.search)){document.body.classList.add('vista-completa');subSinVistas();return;}}catch(e){}
-    try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}try{subSinVistas();}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}}
+    try{if(/[?&]vista=completa\b/.test(location.search)){document.body.classList.add('vista-completa');abrirCompuerta();subSinVistas();return;}}catch(e){}
+    try{run();}catch(e){try{document.body.classList.remove('pv-on');}catch(x){}try{subSinVistas();}catch(x){}if(window.console&&console.warn){console.warn('[PV] motor de vistas desactivado por error:',e);}}
+    try{abrirCompuerta();}catch(e){}   /* v45.362 · [carga] · pase lo que pase, la compuerta no queda cerrada */
+  }
   boot();
 })();
 </script>
@@ -42552,26 +42738,16 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     /* v45.331 · §2 y §6 · Sello de estado del hero, DERIVADO de window.versionInfo.
        Se rotula explicitamente como estado del PORTAL para no confundirlo con el estado
        de aprobacion o ejecucion del PLADECO, que es otra cosa y no consta en los datos. */
-    try{
-      var h=document.getElementById('heroEstado'); if(!h) return;
-      var v=window.versionInfo||{};
-      if(!v.estado && !v.ultimaActualizacion && !v.estadoInstrumento) return;
-      var out='';
-      /* v45.356 · el encargo pide mostrar el estado documentado DEL INSTRUMENTO. Se antepone rotulado
-         «PLADECO:» y leído de versionInfo.estadoInstrumento; el estado del portal sigue rotulado aparte. */
-      /* Cada dato va en su propio grupo (.he-item); los tres grupos no caben en una línea ni a 1366 px,
-         así que se apilan a todo ancho y los separadores quedan ocultos (ver CSS del bloque v45.356 ·
-         REGISTROS). Medido: 392 × 90 px (tres líneas) a 1366 px; a 375 px, 255 × 122 px, porque los dos
-         primeros grupos ocupan dos líneas cada uno, sin separadores sueltos (corregido en la revisión
-         independiente: antes decía «tres líneas limpias a 375 px»). */
-      var grupos=[];
-      function limpio(t){ return String(t).replace(/[<>]/g,''); }
-      if(v.estadoInstrumento) grupos.push('<b>PLADECO:<\/b> '+limpio(v.estadoInstrumento));
-      if(v.estado) grupos.push('<b>Portal:<\/b> '+limpio(v.estado));
-      if(v.ultimaActualizacion) grupos.push('Actualizado en '+limpio(v.ultimaActualizacion));
-      out=grupos.map(function(g){ return '<span class="he-item">'+g+'<\/span>'; }).join(' <span class="he-sep" aria-hidden="true">·<\/span> ');
-      h.innerHTML=out; h.hidden=false;
-    }catch(e){}
+    /* v45.356 · el encargo pide mostrar el estado documentado DEL INSTRUMENTO. Se antepone rotulado
+       «PLADECO:» y leído de versionInfo.estadoInstrumento; el estado del portal sigue rotulado aparte. */
+    /* Cada dato va en su propio grupo (.he-item); los tres grupos no caben en una línea ni a 1366 px,
+       así que se apilan a todo ancho y los separadores quedan ocultos (ver CSS del bloque v45.356 ·
+       REGISTROS). Medido: 392 × 90 px (tres líneas) a 1366 px; a 375 px, 255 × 122 px, porque los dos
+       primeros grupos ocupan dos líneas cada uno, sin separadores sueltos (corregido en la revisión
+       independiente: antes decía «tres líneas limpias a 375 px»). */
+    /* v45.362 · [carga] · la lógica vive en window.__sincronizarEstadoHero (guion que sigue al héroe), que ya
+       rellenó el sello antes del primer pintado; aquí solo se vuelve a sincronizar (no cambia nada si es igual). */
+    try{ if(window.__sincronizarEstadoHero) window.__sincronizarEstadoHero(); }catch(e){}
   }
   if(document.readyState!=='loading') sync(); else window.addEventListener('DOMContentLoaded',sync,{once:true});
   window.addEventListener('load',sync,{once:true});
@@ -43150,18 +43326,31 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
     return n;
   }
 
+  /* v45.362 · [carga] · SOLO LA VISTA VISIBLE. corregir(document.body) recorría las 12.045 etiquetas del documento
+     (getClientRects y getComputedStyle por elemento) al cargar, en load, +1,4 s, +3,2 s, en cada hashchange y en
+     cada cambio de clase de body. Ahora cada pasada recibe las raíces de la vista visible (window.__pvRaices: la
+     portada o la sección abierta más la barra de navegación entre secciones; al cargar y al cambiar de tema, también
+     lo que está fuera de #main-content: barra superior, asistente, avisos) y corre al cargar, en load, al abrir una
+     vista (evento «pv:vista», que antes ni siquiera se cubría al navegar entre secciones: pushState no emite
+     hashchange y la clase de body solo cambia entre portada y sección) y al cambiar de tema. Sin repeticiones
+     fijas. La decisión de colores (corregir) no cambia. */
   var pend=null;
-  function pasar(){
+  function pasar(raices){
     clearTimeout(pend);
-    pend=setTimeout(function(){ try{ corregir(document.body); }catch(e){} }, 60);
+    pend=setTimeout(function(){
+      try{
+        var r=raices||(window.__pvRaices?window.__pvRaices(true):[document.body]);
+        for(var i=0;i<r.length;i++){ corregir(r[i]); }
+      }catch(e){}
+    }, 60);
   }
   window.corregirLegibilidad=function(){ return corregir(document.body); };
 
-  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
-  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1400); setTimeout(pasar,3200); });
-  window.addEventListener('hashchange', pasar);
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',function(){ pasar(); },{once:true});
+  window.addEventListener('load', function(){ pasar(); });
+  document.addEventListener('pv:vista', function(e){ pasar(e.detail&&e.detail.els?e.detail.els:null); });
   try{
-    new MutationObserver(pasar).observe(document.body, {attributes:true, attributeFilter:['class']});
+    new MutationObserver(function(){ pasar(); }).observe(document.body, {attributes:true, attributeFilter:['class']});
   }catch(e){}
 })();
 </script>
@@ -43328,11 +43517,23 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
 
   window.iconizarEmojis=function(){ return sustituir(document.body); };
 
+  /* v45.362 · [carga] · SOLO LA VISTA VISIBLE: el recorrido de nodos de texto se hace sobre las raíces de la vista
+     (window.__pvRaices; al cargar y en load, también lo que está fuera de #main-content: barra inferior móvil, avisos)
+     y al abrir cada vista (evento «pv:vista», que antes no se cubría al navegar entre secciones porque pushState no
+     emite hashchange). Sin las repeticiones fijas de +1,5 s y +3,4 s. El criterio de sustitución no cambia. */
   var pend=null;
-  function pasar(){ clearTimeout(pend); pend=setTimeout(function(){ try{ sustituir(document.body); }catch(e){} }, 90); }
-  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',pasar,{once:true});
-  window.addEventListener('load', function(){ pasar(); setTimeout(pasar,1500); setTimeout(pasar,3400); });
-  window.addEventListener('hashchange', pasar);
+  function pasar(raices){
+    clearTimeout(pend);
+    pend=setTimeout(function(){
+      try{
+        var r=raices||(window.__pvRaices?window.__pvRaices(true):[document.body]);
+        for(var i=0;i<r.length;i++){ sustituir(r[i]); }
+      }catch(e){}
+    }, 90);
+  }
+  if(document.readyState!=='loading') pasar(); else window.addEventListener('DOMContentLoaded',function(){ pasar(); },{once:true});
+  window.addEventListener('load', function(){ pasar(); });
+  document.addEventListener('pv:vista', function(e){ pasar(e.detail&&e.detail.els?e.detail.els:null); });
 })();
 </script>
 
@@ -45614,29 +45815,16 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
   var pendiente = null;
   function pasar(){ clearTimeout(pendiente); pendiente = setTimeout(function(){ revisar(); }, 150); }
 
-  /* Espera a Leaflet sin límite corto: en cuanto está, revisa. */
-  (function esperar(intentos){
-    if(typeof L !== 'undefined' && L.map){ listo = true; revisar(); return; }
-    if(intentos > 60){ avisarSinLibreria(); return; }   /* ~15 s */
-    setTimeout(function(){ esperar(intentos + 1); }, 250);
-  })(0);
-
-  /* Al abrir una vista: el motor de vistas cambia clases en #main-content. */
-  function enganchar(){
-    if(!window.PV) return false;
-    ['go', 'show'].forEach(function(nombre){
-      var original = window.PV[nombre];
-      if(typeof original !== 'function' || original.__conMapas) return;
-      var envoltura = function(){ var r = original.apply(this, arguments); pasar(); setTimeout(pasar, 700); return r; };
-      envoltura.__conMapas = true;
-      window.PV[nombre] = envoltura;
-    });
-    return true;
-  }
-  if(!enganchar()){
-    var t = setInterval(function(){ if(enganchar()) clearInterval(t); }, 300);
-    setTimeout(function(){ clearInterval(t); }, 20000);
-  }
+  /* v45.362 · [carga] · SIN SONDEOS. Leaflet avisa con el evento «leaflet:listo» (guion del <head>, enganchado al onload
+     de su etiqueta) en cuanto queda envuelto; si ya está, se revisa de inmediato. Un solo temporizador de 15 s da el
+     aviso «sin librería» si nunca llega (antes: sondeo de typeof L cada 250 ms). El motor de vistas avisa con «pv:vista»
+     al abrir cada vista (antes se envolvían PV.go y PV.show y, si PV no existía, se sondeaba cada 300 ms hasta 20 s).
+     Los dos pases (inmediato y a los 700 ms) son los mismos que tenía el envoltorio. */
+  function alLlegarLeaflet(){ listo = true; revisar(); }
+  if(typeof L !== 'undefined' && L.map){ alLlegarLeaflet(); }
+  else{ document.addEventListener('leaflet:listo', alLlegarLeaflet, { once: true }); }
+  setTimeout(function(){ if(!(typeof L !== 'undefined' && L.map)) avisarSinLibreria(); }, 15000);
+  document.addEventListener('pv:vista', function(){ pasar(); setTimeout(pasar, 700); });
   var main = document.getElementById('main-content');
   if(main && 'MutationObserver' in window){
     new MutationObserver(pasar).observe(main, { attributes: true, attributeFilter: ['class'], subtree: true });
@@ -45747,7 +45935,7 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
        ambientales (shimmer, shimmerBg, capituloShimmer, heroFloat, floatGlow, obraBounce, splashOrbFloat,
        meshDrift, mbhtHeroDrift, tutBob) e indicaciones de desplazamiento (scrollBounce, scrollHintBounce);
      · animaciones cuya duración ES su función: la vida del aviso (toastTimer, 3 s), el arranque y la
-       pantalla de carga (splashAutoHide, bootGate, splashLoad), las señales de atención tras una acción
+       pantalla de carga (splashAutoHide, bootGate y splashLoad, retiradas en v45.362 [carga]: ya no existen), las señales de atención tras una acción
        (sectionFlash, kpiPulse, surveyHighlight) y el confeti del voto (confettiFall).
    Con prefers-reduced-motion todas quedan en 0,001 ms y una sola vuelta (regla universal de v45.195). */
 @media (prefers-reduced-motion: no-preference){
