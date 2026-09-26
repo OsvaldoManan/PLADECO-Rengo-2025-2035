@@ -40623,7 +40623,10 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     function skip(node){
       for(var el=node.parentNode; el && el!==document.body; el=el.parentNode){
         if(el.nodeType!==1) continue;
-        if(SKIP[el.tagName]) return true;
+        /* v45.362 · [carga] · revisión · SIGLAS FUERA DE SVG: SKIP tiene «SVG» en mayúsculas, pero en los elementos SVG tagName va en
+           minúsculas (svg, g, text), así que la pasada por vista metía <abbr> dentro de los <text> del grafo D3 de
+           #sna-gobernanza (#gobSNAGraph). Se omite todo nodo en el espacio de nombres SVG. */
+        if(SKIP[el.tagName] || el.namespaceURI === 'http://www.w3.org/2000/svg') return true;
         if(el.id && SKIP_ID[el.id]) return true;
         if(el.isContentEditable) return true;
         if(el.classList && (el.classList.contains('lf-panel')||el.classList.contains('chatbot-panel')||el.classList.contains('no-sigla')||el.classList.contains('sigla-tip'))) return true;
