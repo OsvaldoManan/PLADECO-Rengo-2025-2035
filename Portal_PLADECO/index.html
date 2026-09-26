@@ -35,6 +35,12 @@ html.pv-arranque.pv-directo #main-content{visibility:hidden}
    (order:-1), y al llegar empujaba el texto 247 px (medido: 0,26 de CLS a 412 px con 4G lento) */
 html.pv-arranque #hero:not(.pv-completo){visibility:hidden}
 .hero-col-txt > picture,.tn-pladeco-pill > picture,.splash-screen > picture{display:contents}
+/* v45.362 · [carga] · revisión independiente · con display:contents en el <picture>, su <source> pasaba a ser un
+   elemento más de la caja flexible del padre (display:block, 0×0) y sumaba un hueco: la píldora PLADECO de la barra
+   medía 9 px más (267 en vez de 258 px a 1440 px; 7 px más a 360 y 768 px), el logotipo se corría dentro de ella y
+   la marca y las pestañas se movían 4 px; en la pantalla de precarga (columna con gap de 20 px) sumaba otro hueco.
+   El <source> no se pinta nunca: quitarle la caja no cambia la imagen que elige el navegador. */
+.hero-col-txt > picture > source,.tn-pladeco-pill > picture > source,.splash-screen > picture > source{display:none}
 </style>
 <!-- v45.362 · [carga] · Poppins se precarga (los cuatro pesos que usan la barra y el héroe): sin esto el texto se pintaba
      en la fuente de respaldo y, al llegar Poppins, el héroe reflufía (medido: 14 a 27 px de salto en la columna de texto). -->
@@ -8432,7 +8438,10 @@ body.dark #comparador-instrumentos .ci-sm-ar{color:#e57373}
      versionInfo.estadoInstrumento. Este bloque se ejecuta ANTES de que versionInfo exista (más abajo en
      la página): la primera pintura usa el mismo texto de respaldo y se vuelve a pintar al terminar de
      analizarse la página, ya con el campo. La fila sigue codificada como «Dato»: el gráfico de balance
-     no cambia. */
+     no cambia.
+     v45.362 · [carga] · revisión independiente · lo anterior ya no es así: versionInfo se define ahora en el guion
+     que sigue al héroe, antes de este bloque, así que la primera pintura ya usa el campo (el respaldo queda solo
+     por si faltara). */
   function estInstr(){ try{ return (window.versionInfo && window.versionInfo.estadoInstrumento) || 'Sin constancia de aprobación registrada'; }catch(e){ return 'Sin constancia de aprobación registrada'; } }
   function txt(s){ return (''+s).split('{estadoInstrumento}').join(estInstr()); }
   function render(){
@@ -30814,6 +30823,14 @@ function reorderSemaforoMobile(){
   }
 }
 window.addEventListener('resize',function(){var t;clearTimeout(t);t=setTimeout(reorderSemaforoMobile,300);});
+/* v45.362 · [carga] · revisión independiente · esta función solo corría con el evento resize. Hasta v45.361 el motor de
+   vistas emitía tres resize sintéticos en cada cambio de vista y así ordenaba el semáforo en teléfonos (rojas primero,
+   6 metas a la vista y el botón «Ver los N indicadores»); v45.362 [carga] retiró esos eventos y el semáforo quedaba en
+   el orden original y con las 16 metas a la vista. Medido a 390 px en Edge sin interfaz, abriendo #semaforo por código
+   y por clic: la versión publicada v45.360 y la anterior a este grupo daban el orden «RRRRRRAAAAAAAVVV», 6 visibles y
+   el botón; esta rama, sin esta línea, el orden original, 16 visibles y sin botón. Ahora corre también al abrir cada
+   vista (evento «pv:vista» del motor), con la misma espera de 300 ms; en escritorio la función no hace nada. */
+document.addEventListener('pv:vista',function(){ setTimeout(reorderSemaforoMobile,300); });
 
 /* ── A5 · Botón scroll-to-top ── */
 (function(){
@@ -30960,7 +30977,12 @@ function initSectionReadingTime(raices){
     lbl.className='section-reading';
     lbl.title=words.toLocaleString('es-CL')+' palabras · '+mins+' min lectura';
     lbl.innerHTML='⏱ '+mins+' min';
-    h.appendChild(lbl);
+    /* v45.362 · [carga] · revisión independiente · el rótulo va antes del botón «Imprimir», como en la versión
+       publicada: allí se ponía al cargar, antes de que el sistema de impresión (v45.26) agregara su botón a la
+       cabecera; al rotular por vista, el botón ya estaba y el rótulo quedaba detrás («☆ 🖨 Imprimir ⏱ 4 min» en vez
+       de «☆ ⏱ 4 min 🖨 Imprimir», medido en #resumen, #educacion y #comparador-uv). */
+    var pb=h.querySelector('.sec-print-btn');
+    if(pb&&pb.parentNode===h){ h.insertBefore(lbl,pb); } else { h.appendChild(lbl); }
   });
 }
 
@@ -32557,12 +32579,24 @@ function v40InsertChapterNavButtons(){
     var capEl=document.getElementById(cap.id);
     if(!capEl)continue;
     // Encontrar la última sección de ESTE capítulo (antes del próximo capítulo)
+    /* v45.362 · [carga] · revisión independiente · POR ORDEN DEL DOCUMENTO, NO POR POSICIÓN EN PANTALLA.
+       La búsqueda usaba offsetTop y offsetHeight, que valen 0 en lo que no se pinta. Desde v45.362 la compuerta
+       del <head> (html.pv-arranque) deja con display:none todo lo que sigue al héroe hasta que arranca el motor de
+       vistas, y después el motor oculta las secciones que no están abiertas: esta función (800 ms después de
+       initV40Navigation) ya no encontraba ninguna sección y los botones «Capítulo anterior / siguiente» no se
+       insertaban. Medido en Edge sin interfaz a 412 px con 4G lento y CPU 4×: la versión publicada v45.360 y la
+       anterior a este grupo los ponían en los 11 capítulos (al final de dashboard, etnografia, nna,
+       voz-institucional, resumen, comisiones, faq-concejo, institucional, antes-despues,
+       presupuesto-participativo y visitas) y esta rama en ninguno. En escritorio ya dependía de una carrera con el
+       motor: 0 bloques, o 1 puesto en #intro-rutas de la portada. La última sección de cada capítulo en el orden
+       del documento es exactamente la de esa lista, así que se busca así y el resultado ya no depende del momento. */
     var nextCapEl=next?document.getElementById(next.id):null;
     var lastSec=null;
-    var startY=capEl.offsetTop;
-    var endY=nextCapEl?nextCapEl.offsetTop:Infinity;
     document.querySelectorAll('section[id]').forEach(function(s){
-      if(s.offsetTop>=startY&&s.offsetTop<endY&&s.offsetHeight>50&&!s.hasAttribute('aria-hidden'))lastSec=s;
+      if(s.hasAttribute('aria-hidden'))return;
+      if(!(capEl.compareDocumentPosition(s)&Node.DOCUMENT_POSITION_FOLLOWING))return;
+      if(nextCapEl&&!(s.compareDocumentPosition(nextCapEl)&Node.DOCUMENT_POSITION_FOLLOWING))return;
+      lastSec=s;
     });
     if(!lastSec)continue;
     if(lastSec.querySelector('.cap-nav'))continue; // Ya insertado

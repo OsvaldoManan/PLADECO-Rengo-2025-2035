@@ -31,10 +31,22 @@ const OFFLINE_URL='./offline.html';
    Leaflet con sus imágenes: 49 entradas, 5.056.150 bytes (4.103.228 de ellos el propio documento), medidos sobre los
    archivos del repositorio; antes 70 entradas y 13.188.843 bytes.
    MENOS CONTENIDO SIN CONEXIÓN: ya no se garantizan sin red, salvo que se hayan visto antes en la misma instalación
-   (la caché de imágenes y la de ejecución los guardan al pedirlos), la foto de la portada, el collage de #historia,
+   (la caché de imágenes y la de ejecución los guardan al pedirlos), el JPG de la foto de la portada (su WebP sí se
+   precarga, ver abajo), el collage de #historia,
    las cuatro fotografías de Misión/Visión/Principios/Proyección, las fotos de Rosario del sistema gráfico,
    qr-encuesta.png, fuente-info.png, los PNG originales de los logotipos, og-image.jpg, sitemap.xml, robots.txt y la
-   página analisis-territorial.html. */
+   página analisis-territorial.html.
+   v45.362 · [carga] · revisión independiente · LA FOTO DE LA PORTADA EN WEBP VUELVE A LA PRECARGA (50 entradas,
+   unos 5,6 MB). Era la única imagen de la primera pantalla que había quedado fuera de la lista, y la portada la pide
+   dos veces mientras carga (la precarga del <head> y el <picture> del héroe). Sin ella en la precarga, la primera
+   visita controlada por este Service Worker la pedía a la red a través del manejador de imágenes, y en Edge sin
+   interfaz el documento a veces se quedaba a medio llegar (readyState «loading» sin fin, sin motor de vistas; se
+   cortó en puntos distintos, entre 0,8 y 3,9 millones de caracteres). Medido con una primera visita que instala el
+   Service Worker y una segunda pestaña en el mismo perfil, cada ensayo en un perfil nuevo: con esta página y la lista
+   sin esta línea, el documento se detuvo en 1 de 18 ensayos seguidos y en 2 de otras 11 cargas equivalentes de la
+   revisión (y en otra más el motor de vistas no existía 5 s después de load); con la página v45.361 y la lista sin esta línea, en 6 de 8; con la lista anterior (que precargaba todas
+   las imágenes de la primera pantalla), en 0 de 18; con esta línea, en 0 de 25. No se identificó la causa exacta
+   dentro del navegador: se corrige quitando la condición que la desencadena. */
 const STATIC_ASSETS=[
   './index.html',
   './capitulo-1/','./capitulo-2/','./capitulo-3/','./capitulo-4/','./capitulo-5/','./capitulo-6/',
@@ -55,6 +67,7 @@ const STATIC_ASSETS=[
   './graficos/sistema-grafico.js',
   './graficos/panoramica-rengo.svg',
   './graficos/panoramica-rengo-movil.svg',
+  './Entrada-Rengo-Color-Pladeco.webp',
   './escudo-rengo.svg',
   './escudo-rengo-blanco.svg',
   './icon-192.png',
