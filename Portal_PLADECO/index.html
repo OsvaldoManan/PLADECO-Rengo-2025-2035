@@ -27238,8 +27238,14 @@ function ictSelectMacrosector(id){
   var panel=document.getElementById('ictZonalPanel');
   if(!panel){
     panel=document.createElement('div');panel.id='ictZonalPanel';panel.className='mac-panel ict-zonal-panel';
-    panel.style.cssText='position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);z-index:600';
+    /* v45.362 · [mapas] · z-index 1001, por encima de los controles de Leaflet (1000): con 600 el botón «Perfil Zonal»
+       tapaba el × de cerrar (medido en 0f210da a 1440 y 390 px: el clic en el centro del × caía en ese botón y el
+       panel seguía abierto) y a 390 px «Ver leyenda» y el zoom tapaban el nombre de la zona */
+    panel.style.cssText='position:absolute;top:14px;right:14px;width:300px;max-width:calc(100% - 28px);z-index:1001';
     document.getElementById('ictMap').appendChild(panel);
+    /* v45.362 · [mapas] · el panel está dentro del mapa y ahora puede desplazarse por dentro (#ictZonalPanel en
+       mapas-ayudas-css): la rueda y el arrastre sobre él ya no llegan al mapa (antes acercaban o movían el mapa) */
+    try{ if(window.L && L.DomEvent){ L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(panel); } }catch(_){}
   }
   panel.innerHTML='<div class="mac-panel-head">'+
     '<div class="mac-panel-title"><span style="display:inline-block;width:12px;height:12px;background:'+m.color+';border-radius:3px;vertical-align:middle;margin-right:6px"></span>'+m.nombre+'</div>'+
@@ -43674,7 +43680,22 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
       var b=(ev.target&&ev.target.closest)?ev.target.closest('.et-chip,.et-clear,[data-et-fly]'):null;
       if(!b) return;
       if(b.classList.contains('et-clear')){ limpiar(); return; }
-      if(b.hasAttribute('data-et-fly')){ var u=porId(b.getAttribute('data-et-fly')); if(u) volar(u); return; }
+      if(b.hasAttribute('data-et-fly')){
+        var u=porId(b.getAttribute('data-et-fly'));
+        if(u){
+          volar(u);
+          /* v45.362 · [mapas] · bajo 900 px el mapa queda arriba de la ficha, fuera de la pantalla: «Centrar en el mapa»
+             lo trae a la vista (en pantallas anchas ya está al lado y no se desplaza nada) */
+          try{
+            var mw=document.getElementById('mapContainer'), rr=mw.getBoundingClientRect();
+            if(rr.bottom<80 || rr.top>window.innerHeight-80){
+              var quieto=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              mw.scrollIntoView({block:'center', behavior:quieto?'auto':'smooth'});
+            }
+          }catch(e){}
+        }
+        return;
+      }
       var id=b.getAttribute('data-et-id'); if(id) pintar(id,{focus:true});
     });
     engancharMarcadores();
@@ -46397,9 +46418,9 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
         Antes, un mapa de 500 px en un teléfono atrapaba el desplazamiento de la página. Con ratón el arrastre no
         cambia.
      4) PANTALLA COMPLETA en pantallas táctiles o de 768 px o menos, donde el navegador la ofrece (API Fullscreen;
-        el iPhone no la tiene para elementos y ahí el botón no aparece): un botón de 44 px bajo el zoom amplía el
-        mapa con su leyenda y sus controles (en el catastro, también el panel de estados; en territorios prioritarios,
-        la barra de capas). Dentro de la pantalla completa un dedo mueve el mapa.
+        donde no la ofrece —Safari en iPhone, por ejemplo— el botón no aparece; no se probó en un iPhone): un botón
+        de 44 px bajo el zoom amplía el mapa con su leyenda y sus controles (en el catastro, también el panel de
+        estados; en territorios prioritarios, la barra de capas). Dentro de la pantalla completa un dedo mueve el mapa.
      ═══════════════════════════════════════════════════════════════════════════ -->
 <style id="mapas-ayudas-css">
 /* anillo de los puntos (clase mapa-punto, en círculos y formas de los mapas): oscuro sobre el mapa claro, claro
@@ -46435,6 +46456,22 @@ body.dark .ict-section .leaflet-popup-content .mapa-muestra{box-shadow:0 0 0 1px
 body.dark .ict-sp-estado::before{box-shadow:0 0 0 1px rgba(241,245,249,.55)}
 /* en la cabecera oscura de la matriz, contorno claro: el paso más oscuro (Crítico) desaparecía sobre el azul de la cabecera */
 .ict-pmatrix th .mapa-muestra{margin-right:4px;box-shadow:0 0 0 1.5px rgba(255,255,255,.85)}
+/* listas de los paneles de los mapas: la regla de cuerpo de texto de institucional.css (body #main-content
+   li:not([class]), 17-18 px) gana en especificidad a las reglas propias de estos paneles, y sus listas salían a
+   17-18 px dentro de paneles escritos a 11,5-12 px (medido en 0f210da: 23 <li> en «Perfil Zonal» y «Ver detalle» del
+   catastro y en la ficha de «Explora tu territorio»; a 390 px el panel «Perfil Zonal» medía 550 px dentro de un mapa
+   de 540 y se cortaba por abajo). Es el mismo arreglo que v45.356 hizo para la clave y la ventana del mapa de
+   iniciativas: se sube la especificidad para que rija el tamaño que declara cada panel. */
+body #main-content .mac-panel-list li:not([class]){font-size:12px;line-height:1.45}
+body #main-content .ict-sp-list li:not([class]){font-size:11.5px;line-height:1.45}
+body #main-content .et-esp-p li:not([class]),body #main-content .et-falta li:not([class]){font-size:inherit}
+/* y el panel «Perfil Zonal» no pasa del alto del mapa: si no cabe, se desplaza por dentro (no se corta); su × de
+   cerrar medía 9 × 13 px con ratón: ahora 28 × 28 (y 44 × 44 en pantallas táctiles, como el resto de los botones) */
+#ictZonalPanel{max-height:calc(100% - 28px);overflow:auto;overscroll-behavior:contain}
+#ictZonalPanel .mac-panel-close{display:inline-flex;align-items:center;justify-content:center;min-width:28px;min-height:28px;margin:-6px -8px 0 0;border-radius:6px}
+#ictZonalPanel .mac-panel-close:hover{background:var(--card2)}
+#ictZonalPanel .mac-panel-close:focus-visible{outline:3px solid #2563eb;outline-offset:1px}
+@media (hover:none) and (pointer:coarse){ #ictZonalPanel .mac-panel-close{min-width:44px;min-height:44px} }
 /* sociedad civil: filtros por tipo agrupados en familias, contador y agrupación declarada */
 #mapSCFilters{flex:1 1 100%;max-width:none!important;justify-content:flex-start!important}
 #mapSCLegend{flex-direction:column!important;align-items:flex-start!important;gap:4px!important}
@@ -46513,7 +46550,7 @@ body.dark .mapa-ampliar button{background:#1a2332;color:#E8EDF1;border-color:#47
         muestra:'El BHT, o la dimensión elegida con los botones, de cada uno de los <b>'+D.length+' distritos censales</b>: el <b>promedio de sus manzanas</b> ('+num(manz)+' en total). <b>Color:</b> cinco clases con cortes fijos, iguales para todas las dimensiones (0,70 · 0,55 · 0,45 · 0,35); más oscuro = menor valor. <b>Tamaño:</b> población del distrito (radio de 8 a 32 px, que crece con la raíz cuadrada de la población).',
         norm:'Índice ya normalizado (0 a 1; 1 = mayor bienestar), no un conteo. El promedio de un distrito no muestra la variación entre sus manzanas: el resumen por distrito publicado en <b>MBHT/mbht_distrito_summary.json</b> trae además mediana, mínimo y máximo.',
         cobertura:D.length+' de '+D.length+' distritos, un punto por distrito; '+num(manz)+' manzanas con índice (la propia sección indica 826 manzanas censales en la comuna). La población de los '+D.length+' distritos suma <b>'+num(pob)+'</b> habitantes; el Censo 2024 registra 63.620 en la comuna (ver «Población de los distritos del MBHT» en el registro de datos pendientes).',
-        geodesia:'Datum WGS84. Cada distrito es un punto con coordenadas de tres decimales escritas en el portal: <b>posición referencial</b>, no un centroide calculado; el mapa no dibuja los límites de los distritos.',
+        geodesia:'Datum WGS84. Cada distrito es un punto con coordenadas de tres decimales escritas en el portal: <b>posición referencial</b> (no consta cómo se obtuvo; el resumen por distrito no trae coordenadas); el mapa no dibuja los límites de los distritos.',
         fuente:'Matriz de Bienestar Humano Territorial (MBHT) · metodología UAI y SUBDERE/Subsecretaría de Prevención del Delito · elaboración SECPLAC sobre Censo INE 2024 (conjunto «mbht» del catálogo datasets.json)', corte:'2024/2025 (actualizado en 2025-09)'
       };
     }
@@ -46526,7 +46563,7 @@ body.dark .mapa-ampliar button{background:#1a2332;color:#E8EDF1;border-color:#47
       M.mapSC = {
         after:'#mapSCLegend',
         tipo:'Mapa de puntos · símbolo proporcional', titulo:'Mapa de Participación Territorial',
-        muestra:'Las <b>'+O.length+' organizaciones con coordenada</b> que participaron en las sesiones del diagnóstico. <b>Color y forma:</b> cuatro familias que agrupan los '+tipos+' tipos (agrupación del portal, no una clasificación oficial). Al abrir se muestran las juntas de vecinos ('+jj+'); los demás tipos se encienden en los filtros. <b>Tamaño:</b> asistentes a la sesión, en cuatro escalones (5 o menos · 6 a 15 · 16 a 30 · 31 o más).',
+        muestra:'Las <b>'+O.length+' organizaciones con coordenada</b> del registro de sesiones del diagnóstico (fecha y asistentes de cada sesión). <b>Color y forma:</b> cuatro familias que agrupan los '+tipos+' tipos (agrupación del portal, no una clasificación oficial). Al abrir se muestran las juntas de vecinos ('+jj+'); los demás tipos se encienden en los filtros. <b>Tamaño:</b> asistentes a la sesión, en cuatro escalones (5 o menos · 6 a 15 · 16 a 30 · 31 o más).',
         norm:'Conteo absoluto de asistentes a una sesión: no es una tasa ni el número de socios. En '+cero+' organizaciones el registro es 0 y su ventana muestra «—». Los asistentes de las '+O.length+' suman '+num(suma)+'.',
         cobertura:O.length+' organizaciones con coordenada; la sección cita 95 organizaciones y el portal no documenta la diferencia. '+(rep.length?('Hay '+rep.length+' puntos compartidos por varias organizaciones ('+rep.join(' y ')+'): no son la sede de cada una, y su ventana lo advierte. '):'')+'Ver «Ubicación de las organizaciones en el mapa de sociedad civil» en el registro de datos pendientes.',
         geodesia:'Datum WGS84 (coordenadas geográficas).',
@@ -46545,7 +46582,7 @@ body.dark .mapa-ampliar button{background:#1a2332;color:#E8EDF1;border-color:#47
           tipo:'Mapa de capas superpuestas', titulo:'Territorios prioritarios · cruce de capas',
           muestra:'<b>Capa base:</b> el ICP de las '+nLoc+' localidades (círculo con tamaño según la población y color en cuatro niveles; más oscuro = más vulnerable). <b>Capas de contexto</b>, apagadas al abrir: '+nIct+' espacios del catastro (color por estado, de Excelente a Crítico) y los siniestros de tránsito 2020–2024 por severidad.',
           norm:'El ICP es un <b>índice normalizado</b> (0 a 1; 1 = máxima vulnerabilidad). El estado del catastro es <b>ordinal</b> (ICT 100, 75, 50, 25 y 0). Los siniestros son <b>conteos absolutos</b>: no hay tasa por exposición (faltan aforos) ni por población.',
-          cobertura:nLoc+' localidades con ICP; '+nIct+' espacios del catastro con coordenada y 903 de los 905 siniestros registrados. En el ranking, espacios y siniestros se atribuyen a la localidad cuyo punto queda a '+dec(radio,1)+' km o menos: <b>contexto provisional</b>, no una atribución administrativa.',
+          cobertura:nLoc+' localidades con ICP; '+nIct+' espacios del catastro con coordenada y 903 de los 905 siniestros registrados. En el ranking, cada espacio o siniestro se atribuye a la localidad más cercana, si su punto queda a '+dec(radio,1)+' km o menos: <b>contexto provisional</b>, no una atribución administrativa.',
           geodesia:'Datum WGS84 · un punto por localidad (posición referencial); no se dibujan límites de localidad.',
           fuente:'ICP: elaboración propia con datos INE Censo 2024 · ICT: Catastro SECPLAC de espacios públicos · Siniestros: CONASET · Carabineros de Chile', corte:'2024 · abril 2026 · 2020–2024'
         };
