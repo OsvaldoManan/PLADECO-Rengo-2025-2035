@@ -448,6 +448,19 @@ input,textarea,select,button,optgroup{
      leyendas seguian en semaforo. Es un dato, no un color de interfaz: no cambia en oscuro.
      La leen window.pladecoICP (mapas) y .tp-legend-row / .tp-icp-pill. */
   --seq-1:#E8B49A; --seq-2:#D07E5C; --seq-3:#AC4A2C; --seq-4:#7A2313;
+  /* v45.362 · [mapas] · dos rampas más de UN SOLO TONO, ordenadas por luminosidad y con la misma regla que el
+     ICP: más oscuro = más necesidad. Son datos, no colores de interfaz: no cambian en oscuro (allí el contorno
+     claro de cada punto las separa del fondo). Generadas en OKLCH con luminosidad monótona (ΔL 0,11 a 0,12
+     entre pasos) y validadas con un verificador de rampas ordinales: una sola tonalidad, luminosidad monótona,
+     saltos de 0,06 o más y el paso más claro a 2,03-2,10:1 sobre blanco. Son una propuesta de este encargo, no
+     una paleta oficial.
+     --ict-1..5  estado de conservación del catastro de espacios públicos (ICT), de Excelente (1) a
+                 Crítico (5), en azul. Reemplaza el semáforo verde-azul-amarillo-naranja-rojo
+                 que tenía un azul intercalado en «Bueno» y se leía mal con daltonismo rojo-verde.
+     --bht-1..5  bienestar (MBHT) por distrito, de 0,70 o más (1) a menos de 0,35 (5), en verde: más oscuro =
+                 menor bienestar. Reemplaza el semáforo verde-ámbar-rojo del mapa de distritos. */
+  --ict-1:#86b7ee; --ict-2:#5d93cf; --ict-3:#3a71ab; --ict-4:#1e5083; --ict-5:#083158;
+  --bht-1:#79c5a8; --bht-2:#4ca486; --bht-3:#228366; --bht-4:#046149; --bht-5:#02402f;
 }
 html{scroll-behavior:smooth;scroll-padding-top:80px;overflow-x:hidden}
 body{font-family:'Poppins','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;transition:background-color .2s ease,color .2s ease;overflow-x:hidden;max-width:100vw}
@@ -1405,13 +1418,20 @@ body.dark .anest-perfil-tag{background:rgba(255,255,255,.08);color:#cbd5e1}
 }
 
 /* ═══ ICT — Espacios Públicos (Inteligencia Territorial Sección 11.3) ═══ */
+/* v45.362 · [mapas] · los cinco estados del ICT dejan de ser un semáforo propio de esta sección
+   (#1a7a4a, #2a7abf, #c49b0a, #d47a20, #c0352a): leen la rampa --ict-1..5 de :root, la misma que lee ICT_HEX en
+   el guion del catastro, el mapa del caso en #matriz y la capa de contexto de #territorios-prioritarios. Los
+   fondos tenues se derivan de esa rampa (13 % sobre blanco en claro; en oscuro, el mismo tono con 16 a 42 % de
+   opacidad, más opaco en los pasos oscuros para que se note sobre la superficie oscura). El TEXTO de estado ya no
+   va en el color de la rampa (los pasos claros no llegan a 4,5:1 sobre blanco): va en la tinta del texto y el
+   color queda en la franja, la barra, el borde o la muestra que lo acompaña. */
 .ict-section{--ict-navy:#071d36;--ict-navy2:#0c2a4a;--ict-green:#2d9a4d;--ict-orange:#f5921d;
-  --ict-exc:#1a7a4a;--ict-bue:#2a7abf;--ict-reg:#c49b0a;--ict-def:#d47a20;--ict-cri:#c0352a;
-  --ict-bg-exc:#e8f5ee;--ict-bg-bue:#e8f0fb;--ict-bg-reg:#fdf6e3;--ict-bg-def:#fdf0e3;--ict-bg-cri:#fce8e8;
+  --ict-exc:var(--ict-1,#86b7ee);--ict-bue:var(--ict-2,#5d93cf);--ict-reg:var(--ict-3,#3a71ab);--ict-def:var(--ict-4,#1e5083);--ict-cri:var(--ict-5,#083158);
+  --ict-bg-exc:#eff6fd;--ict-bg-bue:#eaf1f9;--ict-bg-reg:#e5ecf4;--ict-bg-def:#e2e8ef;--ict-bg-cri:#dfe4e9;
   --ict-z-cen:#1a4a7a;--ict-z-per:#2a6a2a;--ict-z-loc:#7a5010;--ict-z-rur:#3a537a;
   --ict-zb-cen:#e8f0fb;--ict-zb-per:#eaf5ea;--ict-zb-loc:#fdf3e3;--ict-zb-rur:#ecf1f9;
   --ict-sand:#e8e0d0}
-body.dark .ict-section{--ict-bg-exc:rgba(26,122,74,.18);--ict-bg-bue:rgba(42,122,191,.18);--ict-bg-reg:rgba(196,155,10,.18);--ict-bg-def:rgba(212,122,32,.18);--ict-bg-cri:rgba(192,53,42,.18);
+body.dark .ict-section{--ict-bg-exc:rgba(134,183,238,.16);--ict-bg-bue:rgba(93,147,207,.18);--ict-bg-reg:rgba(58,113,171,.24);--ict-bg-def:rgba(30,80,131,.32);--ict-bg-cri:rgba(8,49,88,.42);
   --ict-zb-cen:rgba(26,74,122,.18);--ict-zb-per:rgba(42,106,42,.18);--ict-zb-loc:rgba(122,80,16,.18);--ict-zb-rur:rgba(58, 83, 122,.18);
   --ict-sand:rgba(255,255,255,.08)}
 
@@ -1429,15 +1449,19 @@ body.dark .ict-section{--ict-bg-exc:rgba(26,122,74,.18);--ict-bg-bue:rgba(42,122
 .ict-sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
 .ict-scard{border-radius:10px;padding:12px 14px;cursor:pointer;transition:transform .15s,box-shadow .15s;border:2px solid transparent;position:relative;overflow:hidden;user-select:none}
 .ict-scard:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.1)}
-.ict-scard.active{border-color:var(--cc)!important}
-.ict-scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--cc)}
+/* v45.362 · [mapas] · con la rampa de un tono, el borde de la tarjeta activa en el color del estado no se veía en
+   los pasos claros: la selección se marca con la tinta del texto, y la franja de color pasa de 3 a 5 px. */
+.ict-scard.active{border-color:var(--text)!important}
+.ict-scard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--cc)}
 .ict-scard.exc{background:var(--ict-bg-exc);--cc:var(--ict-exc)}
 .ict-scard.bue{background:var(--ict-bg-bue);--cc:var(--ict-bue)}
 .ict-scard.reg{background:var(--ict-bg-reg);--cc:var(--ict-reg)}
 .ict-scard.def{background:var(--ict-bg-def);--cc:var(--ict-def)}
 .ict-scard.cri{background:var(--ict-bg-cri);--cc:var(--ict-cri)}
-.ict-snum{font-family:inherit;font-size:30px;font-weight:700;line-height:1;color:var(--cc);letter-spacing:-.02em}
-.ict-slbl{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--cc);margin-top:2px}
+.ict-snum{font-family:inherit;font-size:30px;font-weight:700;line-height:1;color:var(--text);letter-spacing:-.02em}
+.ict-slbl{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text);margin-top:2px;display:flex;align-items:center;gap:6px}
+.ict-slbl::before{content:'';width:10px;height:10px;border-radius:50%;flex:none;background:var(--cc);box-shadow:0 0 0 1px rgba(15,23,42,.35)}
+body.dark .ict-slbl::before{box-shadow:0 0 0 1px rgba(241,245,249,.55)}
 .ict-spct{font-size:11px;color:var(--text2);margin-top:1px;font-weight:600}
 .ict-sbar{height:3px;border-radius:3px;background:rgba(0,0,0,.07);margin-top:8px}
 body.dark .ict-sbar{background:rgba(255,255,255,.1)}
@@ -1467,11 +1491,12 @@ body.dark .ict-sbar{background:rgba(255,255,255,.1)}
 .ict-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:14px;font-size:11px;font-weight:700;cursor:pointer;transition:opacity .15s;border:1.5px solid transparent}
 .ict-chip:hover{opacity:.75}
 .ict-chip-x{font-size:11px;opacity:.5;margin-left:1px}
-.ict-chip.exc{background:var(--ict-bg-exc);color:var(--ict-exc);border-color:var(--ict-exc)}
-.ict-chip.bue{background:var(--ict-bg-bue);color:var(--ict-bue);border-color:var(--ict-bue)}
-.ict-chip.reg{background:var(--ict-bg-reg);color:var(--ict-reg);border-color:var(--ict-reg)}
-.ict-chip.def{background:var(--ict-bg-def);color:var(--ict-def);border-color:var(--ict-def)}
-.ict-chip.cri{background:var(--ict-bg-cri);color:var(--ict-cri);border-color:var(--ict-cri)}
+/* v45.362 · [mapas] · texto de estado en la tinta del texto; el borde lleva el color de la rampa */
+.ict-chip.exc{background:var(--ict-bg-exc);color:var(--text);border-color:var(--ict-exc)}
+.ict-chip.bue{background:var(--ict-bg-bue);color:var(--text);border-color:var(--ict-bue)}
+.ict-chip.reg{background:var(--ict-bg-reg);color:var(--text);border-color:var(--ict-reg)}
+.ict-chip.def{background:var(--ict-bg-def);color:var(--text);border-color:var(--ict-def)}
+.ict-chip.cri{background:var(--ict-bg-cri);color:var(--text);border-color:var(--ict-cri)}
 .ict-chip.zona-cen{background:var(--ict-zb-cen);color:var(--ict-z-cen);border-color:var(--ict-z-cen)}
 .ict-chip.zona-per{background:var(--ict-zb-per);color:var(--ict-z-per);border-color:var(--ict-z-per)}
 .ict-chip.zona-loc{background:var(--ict-zb-loc);color:var(--ict-z-loc);border-color:var(--ict-z-loc)}
@@ -1588,12 +1613,15 @@ body.dark .ict-p-baja{background:rgba(26,122,74,.22)}
 .ict-twrap td.tname{font-weight:600;max-width:200px}
 .ict-twrap td.tname small{display:block;font-size:10px;color:var(--text2);font-weight:400;margin-top:1px}
 .ict-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:14px;font-size:10px;font-weight:700;white-space:nowrap}
-.ict-pill .dot{width:5px;height:5px;border-radius:50%}
-.ict-pill.exc{background:var(--ict-bg-exc);color:var(--ict-exc)}
-.ict-pill.bue{background:var(--ict-bg-bue);color:var(--ict-bue)}
-.ict-pill.reg{background:var(--ict-bg-reg);color:var(--ict-reg)}
-.ict-pill.def{background:var(--ict-bg-def);color:var(--ict-def)}
-.ict-pill.cri{background:var(--ict-bg-cri);color:var(--ict-cri)}
+/* v45.362 · [mapas] · la muestra de la píldora pasa de 5 a 8 px con contorno (en los pasos claros de la rampa no se
+   distinguía) y el nombre del estado va en la tinta del texto */
+.ict-pill .dot{width:8px;height:8px;border-radius:50%;box-shadow:0 0 0 1px rgba(15,23,42,.35)}
+body.dark .ict-pill .dot{box-shadow:0 0 0 1px rgba(241,245,249,.55)}
+.ict-pill.exc{background:var(--ict-bg-exc);color:var(--text)}
+.ict-pill.bue{background:var(--ict-bg-bue);color:var(--text)}
+.ict-pill.reg{background:var(--ict-bg-reg);color:var(--text)}
+.ict-pill.def{background:var(--ict-bg-def);color:var(--text)}
+.ict-pill.cri{background:var(--ict-bg-cri);color:var(--text)}
 .ict-zpill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;border:1px solid}
 .ict-zpill-cen{background:var(--ict-zb-cen);color:var(--ict-z-cen);border-color:var(--ict-z-cen)}
 .ict-zpill-per{background:var(--ict-zb-per);color:var(--ict-z-per);border-color:var(--ict-z-per)}
@@ -1626,8 +1654,10 @@ body.dark .ict-p-baja{background:rgba(26,122,74,.22)}
 .ict-sc-name{font-family:inherit;font-size:13.5px;font-weight:700;line-height:1.25;margin-bottom:2px;color:var(--text);letter-spacing:-.01em}
 .ict-sc-tipo{font-size:10.5px;color:var(--text2);margin-bottom:9px;font-weight:400}
 .ict-sc-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 15px;border-top:1px solid var(--border)}
-.ict-sc-estado{font-size:10px;font-weight:700;color:var(--cc);text-transform:uppercase;letter-spacing:.05em}
-.ict-sc-score-big{font-family:inherit;font-size:18px;font-weight:700;color:var(--cc);letter-spacing:-.02em}
+/* v45.362 · [mapas] · estado y puntaje de la tarjeta del catastro en la tinta del texto; el color queda en el filete
+   superior de 3 px (--cc), como en el resto de la sección */
+.ict-sc-estado{font-size:10px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.05em}
+.ict-sc-score-big{font-family:inherit;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.02em}
 .ict-sc-sub{font-size:11px;color:var(--text2);font-weight:600}
 
 .ict-empty{text-align:center;padding:48px 20px;color:var(--text2)}
@@ -5399,16 +5429,26 @@ section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-we
 .ict-var-desc{font-size:10.5px;color:var(--text2);line-height:1.45;margin-top:3px}
 .ict-scale-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:8px}
 .ict-scale-cell{padding:8px 6px;text-align:center;border-radius:7px;border:1px solid var(--border);position:relative;overflow:hidden}
-.ict-scale-cell::before{content:'';position:absolute;inset:0;opacity:.85;z-index:0}
+/* v45.362 · [mapas] · la escala ordinal de la metodología era un TERCER semáforo (degradados verde oscuro, verde
+   claro, ámbar, naranja y rojo) distinto del mapa y de las tarjetas: ahora es la misma rampa --ict-1..5, a opacidad
+   plena para que el color sea exactamente el del mapa en los dos temas. Tinta calculada (fórmula WCAG): casi negro
+   sobre los dos pasos claros (8,5:1 y 5,6:1) y blanco sobre los tres oscuros (5,1:1, 8,3:1 y 13,2:1); antes el
+   blanco sobre el ámbar y el verde claro no llegaba a 3:1 y lo rescataba el corrector de legibilidad en ejecución. */
+/* el color va en el fondo de la propia celda, no en un ::before: el corrector de legibilidad y el barrido de
+   contraste leen el fondo de los elementos, no el de sus pseudoelementos, y con el color en ::before veían «texto
+   blanco sobre la tarjeta» y el corrector lo oscurecía a gris (medido: rgb(112,112,112) sobre el azul) */
+.ict-scale-cell::before{content:none}
 .ict-scale-cell > *{position:relative;z-index:1}
-.ict-scale-cell.exc::before{background:linear-gradient(180deg,#2d9a4d,#1f7a39)}
-.ict-scale-cell.bue::before{background:linear-gradient(180deg,#4ade80,#22c55e)}
-.ict-scale-cell.reg::before{background:linear-gradient(180deg,#fbbf24,#f59e0b)}
-.ict-scale-cell.def::before{background:linear-gradient(180deg,#f5921d,#c97014)}
-.ict-scale-cell.cri::before{background:linear-gradient(180deg,#ef4444,#b91c1c)}
+.ict-scale-cell.exc{background:var(--ict-1,#86b7ee)}
+.ict-scale-cell.bue{background:var(--ict-2,#5d93cf)}
+.ict-scale-cell.reg{background:var(--ict-3,#3a71ab)}
+.ict-scale-cell.def{background:var(--ict-4,#1e5083)}
+.ict-scale-cell.cri{background:var(--ict-5,#083158)}
 .ict-scale-cell .sc-grade{font-size:22px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.03em}
 .ict-scale-cell .sc-label{font-size:10.5px;font-weight:700;color:#fff;margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
-.ict-scale-cell .sc-ict{font-size:11px;color:rgba(255,255,255,.85);margin-top:2px;font-weight:700}
+.ict-scale-cell .sc-ict{font-size:11px;color:#fff;margin-top:2px;font-weight:700}
+.ict-scale-cell.exc .sc-grade,.ict-scale-cell.exc .sc-label,.ict-scale-cell.exc .sc-ict,
+.ict-scale-cell.bue .sc-grade,.ict-scale-cell.bue .sc-label,.ict-scale-cell.bue .sc-ict{color:#0f172a}
 
 /* 5 Agrupaciones panel */
 .ict-agrup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:6px}
@@ -5438,19 +5478,21 @@ section table{display:block;overflow-x:auto;max-width:100%;width:max-content;-we
 /* Glosario estados */
 .ict-glos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:6px}
 .ict-glos-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-.ict-glos-card.exc{border-left:4px solid #2d9a4d}
-.ict-glos-card.bue{border-left:4px solid #22c55e}
-.ict-glos-card.reg{border-left:4px solid #f59e0b}
-.ict-glos-card.def{border-left:4px solid #f5921d}
-.ict-glos-card.cri{border-left:4px solid #ef4444}
+/* v45.362 · [mapas] · el glosario de estados usaba un cuarto juego de colores; ahora, la rampa --ict-1..5 con la
+   misma tinta que la escala ordinal (casi negro sobre los dos pasos claros, blanco sobre los tres oscuros) */
+.ict-glos-card.exc{border-left:4px solid var(--ict-1,#86b7ee)}
+.ict-glos-card.bue{border-left:4px solid var(--ict-2,#5d93cf)}
+.ict-glos-card.reg{border-left:4px solid var(--ict-3,#3a71ab)}
+.ict-glos-card.def{border-left:4px solid var(--ict-4,#1e5083)}
+.ict-glos-card.cri{border-left:4px solid var(--ict-5,#083158)}
 .ict-glos-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
 .ict-glos-name{font-size:12.5px;font-weight:700;color:var(--text)}
 .ict-glos-num{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:7px;letter-spacing:.05em}
-.ict-glos-card.exc .ict-glos-num{background:#2d9a4d}
-.ict-glos-card.bue .ict-glos-num{background:#22c55e}
-.ict-glos-card.reg .ict-glos-num{background:#f59e0b}
-.ict-glos-card.def .ict-glos-num{background:#f5921d}
-.ict-glos-card.cri .ict-glos-num{background:#ef4444}
+.ict-glos-card.exc .ict-glos-num{background:var(--ict-1,#86b7ee);color:#0f172a}
+.ict-glos-card.bue .ict-glos-num{background:var(--ict-2,#5d93cf);color:#0f172a}
+.ict-glos-card.reg .ict-glos-num{background:var(--ict-3,#3a71ab)}
+.ict-glos-card.def .ict-glos-num{background:var(--ict-4,#1e5083)}
+.ict-glos-card.cri .ict-glos-num{background:var(--ict-5,#083158)}
 .ict-glos-desc{font-size:11px;color:var(--text2);line-height:1.5}
 
 /* Hallazgos */
@@ -11153,14 +11195,21 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <!-- TAB MAPA -->
   <div class="ict-tab-panel active" data-ict-panel="mapa">
     <div class="ict-map-wrap">
-      <div class="ict-map-ctrls" id="ictMapCtrls">
-        <div class="ict-mc-title">Estado</div>
+      <!-- v45.362 · [mapas] · leyenda y filtros del mapa: el estado lleva su valor ICT y la regla de lectura de la
+           rampa; la zona filtra (oculta); macrosectores y círculos de zona son capas de referencia APAGADAS al abrir;
+           un contador anunciado dice cuántos espacios se ven. -->
+      <div class="ict-map-ctrls" id="ictMapCtrls" role="group" aria-label="Leyenda y filtros del mapa del catastro">
+        <div class="ict-mc-title">Estado &middot; valor ICT</div>
         <div id="ictEstadoToggles"></div>
+        <p class="ict-mc-nota">M&aacute;s oscuro = peor estado</p>
         <div class="ict-mc-sep"></div>
-        <div class="ict-mc-title">Zona</div>
+        <div class="ict-mc-title">Zona (filtro)</div>
         <div id="ictZonaToggles"></div>
         <div class="ict-mc-sep"></div>
-        <label class="ict-mc-toggle-row"><span>C&iacute;rculos de zona</span><input type="checkbox" id="ictZonaCirclesToggle" checked onchange="ictToggleZonaCircles(this.checked)"></label>
+        <div class="ict-mc-title">Capas de referencia</div>
+        <label class="ict-mc-toggle-row"><span>Macrosectores</span><input type="checkbox" id="ictMacroToggle" onchange="ictToggleMacro(this.checked)"></label>
+        <label class="ict-mc-toggle-row"><span>C&iacute;rculos y r&oacute;tulos de zona</span><input type="checkbox" id="ictZonaCirclesToggle" onchange="ictToggleZonaCircles(this.checked)"></label>
+        <p class="ict-mc-cuenta" id="ictMapCuenta" aria-live="polite"></p>
       </div>
       <div id="ictMap" class="ict-map"></div>
       <div class="ict-slide-panel" id="ictSlidePanel">
@@ -12831,14 +12880,15 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
 
   <!-- ═══ MAPA INTERACTIVO LEAFLET ═══ -->
   <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:24px 0 8px;letter-spacing:-.005em">&#128506; Mapa Interactivo &middot; BHT por Distrito Censal</h3>
-  <p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 14px;max-width:78ch">Cada c&iacute;rculo representa un distrito censal. <strong>Tama&ntilde;o</strong> = poblaci&oacute;n del distrito. <strong>Color</strong> = nivel BHT (verde alto, &aacute;mbar medio, rojo bajo). Cambia la dimensi&oacute;n con los botones para ver el ranking espec&iacute;fico.</p>
+  <p style="font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 14px;max-width:78ch">Cada c&iacute;rculo representa un distrito censal. <strong>Tama&ntilde;o</strong> = poblaci&oacute;n del distrito. <strong>Color</strong> = nivel BHT (m&aacute;s oscuro = menor bienestar; los cortes est&aacute;n en la leyenda del mapa).<!-- v45.362 · [mapas] · solo cambia este paréntesis, que describía los colores del semáforo retirado («verde alto, ámbar medio, rojo bajo»): con la rampa de un tono esa descripción dejaba de ser cierta --> Cambia la dimensi&oacute;n con los botones para ver el ranking espec&iacute;fico.</p>
 
-  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px">
-    <button type="button" class="mbht-dim-btn active" data-dim="bht" onclick="mbhtSwitchDim('bht', this)" style="padding:6px 12px;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .15s">BHT Global</button>
-    <button type="button" class="mbht-dim-btn" data-dim="acc" onclick="mbhtSwitchDim('acc', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Accesibilidad</button>
-    <button type="button" class="mbht-dim-btn" data-dim="amb" onclick="mbhtSwitchDim('amb', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Ambiental</button>
-    <button type="button" class="mbht-dim-btn" data-dim="soc" onclick="mbhtSwitchDim('soc', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Socioecon&oacute;mica</button>
-    <button type="button" class="mbht-dim-btn" data-dim="seg" onclick="mbhtSwitchDim('seg', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Seguridad</button>
+  <!-- v45.362 · [mapas] · grupo rotulado y estado anunciado (aria-pressed) de los botones de dimensión del mapa -->
+  <div role="group" aria-label="Dimensión que colorea el mapa de distritos" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px">
+    <button type="button" class="mbht-dim-btn active" aria-pressed="true" data-dim="bht" onclick="mbhtSwitchDim('bht', this)" style="padding:6px 12px;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:all .15s">BHT Global</button>
+    <button type="button" class="mbht-dim-btn" aria-pressed="false" data-dim="acc" onclick="mbhtSwitchDim('acc', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Accesibilidad</button>
+    <button type="button" class="mbht-dim-btn" aria-pressed="false" data-dim="amb" onclick="mbhtSwitchDim('amb', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Ambiental</button>
+    <button type="button" class="mbht-dim-btn" aria-pressed="false" data-dim="soc" onclick="mbhtSwitchDim('soc', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Socioecon&oacute;mica</button>
+    <button type="button" class="mbht-dim-btn" aria-pressed="false" data-dim="seg" onclick="mbhtSwitchDim('seg', this)" style="padding:6px 12px;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:var(--rad-full);font-family:inherit;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s">Seguridad</button>
   </div>
 
   <div id="mbhtMap" style="height:480px;width:100%;border-radius:var(--rad-md);border:1px solid var(--border);box-shadow:var(--sh-card);background:#f0f0f0;margin:0 0 22px"></div>
@@ -13417,24 +13467,64 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
     {d:'D10', name:'Periurbano poniente',            lat:-34.412, lon:-70.905, pop:2693,  manz:13,  area:19.81,  bht:0.654, acc:0.388, amb:0.725, soc:0.641, seg:0.991},
     {d:'D11', name:'Rural sur-poniente',             lat:-34.435, lon:-70.890, pop:2767,  manz:34,  area:38.05,  bht:0.615, acc:0.328, amb:0.723, soc:0.626, seg:0.993}
   ];
+  /* v45.362 · [mapas] · a la vista (solo lectura) para la ficha metodológica del mapa, que cuenta distritos,
+     manzanas y población desde estos mismos datos en vez de copiarlos a mano */
+  try{ window.MBHT_DISTRITOS = DISTRITOS; }catch(e){}
 
   var _mbhtMap = null;
   var _mbhtMarkers = [];
   var _mbhtCurrentDim = 'bht';
 
+  /* v45.362 · [mapas] · ESCALA SECUENCIAL DE UN TONO. El color iba de verde (alto) a ámbar y rojo (bajo): un
+     semáforo sobre una cantidad sin punto medio declarado, que con daltonismo rojo-verde no se distingue. Ahora es
+     la rampa --bht-1..5 (verde, de claro a oscuro): MÁS OSCURO = MENOR VALOR, la misma regla del ICP (más oscuro =
+     más necesidad). Los cinco CORTES NO CAMBIAN (0,70 · 0,55 · 0,45 · 0,35, iguales para las cinco dimensiones) y
+     ahora se declaran en la leyenda del mapa y en su ficha. No se usó una escala divergente: la sección no documenta
+     un valor de referencia para las dimensiones como punto medio (la auditoría proponía 0,537, que no aparece en el
+     portal; la media comunal del BHT es 0,627 y cada dimensión tiene la suya). */
+  var _MBHT_CORTES = [0.70, 0.55, 0.45, 0.35];
+  var _MBHT_RESPALDO = ['#79c5a8', '#4ca486', '#228366', '#046149', '#02402f'];
+  function _mbhtClase(v){ for(var i=0;i<_MBHT_CORTES.length;i++){ if(v >= _MBHT_CORTES[i]) return i; } return _MBHT_CORTES.length; }
+  function _mbhtTono(i){
+    try{ var s=getComputedStyle(document.documentElement).getPropertyValue('--bht-'+(i+1)).trim(); if(s) return s; }catch(e){}
+    return _MBHT_RESPALDO[i];
+  }
   function _colorForValue(v){
-    // verde alto, ámbar medio, rojo bajo
-    if(v >= 0.70) return '#15803d';
-    if(v >= 0.55) return '#65a30d';
-    if(v >= 0.45) return '#ca8a04';
-    if(v >= 0.35) return '#c2410c';
-    return '#b91c1c';
+    return _mbhtTono(_mbhtClase(v));
   }
 
   function _radiusForPop(pop){
     // 432 hab → 8px, 33.917 hab → 32px
     return Math.max(8, Math.min(32, 8 + Math.sqrt(pop) * 0.16));
   }
+
+  /* v45.362 · [mapas] · LEYENDA dentro del mapa (antes no tenía ninguna): el nombre de la dimensión activa, las cinco
+     clases con sus cortes y su color leídos de las MISMAS funciones que pintan los círculos, la regla de lectura y el
+     tamaño con tres referencias reales (mayor, mediana y menor población de los 11 distritos), como mapSizeRefs en
+     «Explora tu territorio». En teléfonos la pliega el bloque ARRANQUE DE LOS MAPAS («Ver leyenda»). */
+  var _MBHT_NOMBRE = {bht:'BHT Global', acc:'Accesibilidad', amb:'Ambiental', soc:'Socioeconómica', seg:'Seguridad'};
+  var _mbhtLeyenda = null;
+  function _dec(n){ return String(n.toFixed(2)).replace('.', ','); }
+  function _mbhtLeyendaHTML(dim){
+    var h = '<strong>' + (_MBHT_NOMBRE[dim] || dim) + ' · promedio del distrito</strong>';
+    for(var i=0;i<=_MBHT_CORTES.length;i++){
+      var r = (i===0) ? _dec(_MBHT_CORTES[0]) + ' o más'
+            : (i===_MBHT_CORTES.length) ? 'menos de ' + _dec(_MBHT_CORTES[i-1])
+            : _dec(_MBHT_CORTES[i]) + ' a ' + _dec(_MBHT_CORTES[i-1]);
+      var n = DISTRITOS.filter(function(d){ return _mbhtClase(d[dim]) === i; }).length;
+      h += '<div class="legend-item"><span class="legend-dot mapa-muestra" style="background:' + _mbhtTono(i) + '"></span><span>' + r + ' <em class="lg-n">(' + n + ')</em></span></div>';
+    }
+    h += '<div class="lg-nota">Más oscuro = menor valor (menor bienestar). Entre paréntesis, distritos en cada clase.</div>';
+    var pops = DISTRITOS.map(function(d){ return d.pop; }).sort(function(a,b){ return a-b; });
+    var refs = []; [pops[pops.length-1], pops[Math.floor((pops.length-1)/2)], pops[0]].forEach(function(p){ if(refs.indexOf(p)<0) refs.push(p); });
+    /* misma reducción que mapSizeRefs/updateMapLegend: el círculo mayor se dibuja a 17 px de radio y los demás en proporción */
+    var maxR = Math.max.apply(null, refs.map(_radiusForPop)), sc = Math.min(1, 17 / maxR);
+    h += '<div class="lg-metric">Tamaño según población del distrito (hab.)</div><div class="lg-sizes">';
+    refs.forEach(function(p){ var d = Math.max(7, Math.round(_radiusForPop(p) * sc * 2)); h += '<div class="lg-size"><span class="lg-circ" style="width:' + d + 'px;height:' + d + 'px"></span><em>' + p.toLocaleString('es-CL') + '</em></div>'; });
+    h += '</div>';
+    return h;
+  }
+  function _mbhtPintarLeyenda(dim){ if(_mbhtLeyenda) _mbhtLeyenda.innerHTML = _mbhtLeyendaHTML(dim); }
 
   function _renderMBHTMap(){
     var el = document.getElementById('mbhtMap');
@@ -13444,7 +13534,11 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
       _mbhtMap = L.map(el, {scrollWheelZoom:false, dragging:true, zoomControl:true})
         .setView([-34.425, -70.85], 11);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(_mbhtMap);
-      _drawDistritoMarkers('bht');
+      /* v45.362 · [mapas] · leyenda de clases y tamaño (abajo a la derecha) */
+      var ley = L.control({position:'bottomright'});
+      ley.onAdd = function(){ var div = L.DomUtil.create('div', 'map-legend mbht-leyenda'); div.setAttribute('aria-live', 'polite'); _mbhtLeyenda = div; return div; };
+      ley.addTo(_mbhtMap);
+      _drawDistritoMarkers(_mbhtCurrentDim || 'bht');
       console.log('[MBHT] Mapa inicializado');
     }catch(e){ console.warn('[MBHT] map error', e); }
   }
@@ -13453,28 +13547,36 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
     if(!_mbhtMap) return;
     _mbhtMarkers.forEach(function(m){ _mbhtMap.removeLayer(m); });
     _mbhtMarkers = [];
+    _mbhtPintarLeyenda(dim);
     DISTRITOS.forEach(function(d){
       var v = d[dim];
       var color = _colorForValue(v);
       var radius = _radiusForPop(d.pop);
+      /* v45.362 · [mapas] · anillo fino que cambia con el tema (clase mapa-punto) en vez del blanco fijo: sobre el mapa
+         claro el paso más claro de la rampa necesitaba un borde oscuro para distinguirse de las teselas */
       var marker = L.circleMarker([d.lat, d.lon], {
         radius: radius,
         fillColor: color,
-        color: '#fff',
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.75
+        color: '#10233a',
+        weight: 1.25,
+        opacity: 0.75,
+        fillOpacity: 0.85,
+        className: 'mapa-punto'
       }).addTo(_mbhtMap);
       var dimLabel = {bht:'BHT Global', acc:'Accesibilidad', amb:'Ambiental', soc:'Socioeconomica', seg:'Seguridad'}[dim] || dim;
       marker.bindPopup(
         '<div style="font-family:Inter,sans-serif;min-width:200px">' +
         '<div style="font-weight:700;font-size:14px;color:#0c1f36;margin-bottom:4px">' + d.d + ' &middot; ' + d.name + '</div>' +
         '<div style="font-size:11.5px;color:#475569;margin-bottom:8px">' + d.pop.toLocaleString('es-CL') + ' habitantes &middot; ' + d.manz + ' manzanas &middot; ' + d.area.toFixed(1) + ' km&sup2;</div>' +
-        '<div style="font-size:12.5px;color:#1e293b;margin-bottom:6px"><strong>' + dimLabel + '</strong>: <span style="font-weight:700;color:' + color + '">' + v.toFixed(3) + '</span></div>' +
+        /* v45.362 · [mapas] · el valor iba escrito en el color de su clase (los pasos claros no se leen sobre blanco):
+           va en la tinta de la ventana, con la muestra del color al lado */
+        '<div style="font-size:12.5px;color:#1e293b;margin-bottom:6px"><strong>' + dimLabel + '</strong>: <span class="mapa-muestra" style="background:' + color + '"></span><span style="font-weight:700">' + v.toFixed(3) + '</span></div>' +
         '<div style="display:grid;grid-template-columns:auto auto;gap:2px 8px;font-size:11.5px;color:#475569;border-top:1px solid #e2e8f0;padding-top:6px">' +
         '<span>BHT</span><span style="font-weight:700">' + d.bht.toFixed(3) + '</span>' +
         '<span style="color:#0369a1">Acc</span><span style="font-weight:700">' + d.acc.toFixed(3) + '</span>' +
-        '<span style="color:var(--success-txt,#15803d)">Amb</span><span style="font-weight:700">' + d.amb.toFixed(3) + '</span>' +
+        /* v45.362 · [mapas] · la ventana es blanca en los dos temas: con --success-txt el rótulo pasaba a verde claro en
+           oscuro (medido 2,06:1); va el verde de respaldo, 5,0:1 sobre blanco */
+        '<span style="color:#15803d">Amb</span><span style="font-weight:700">' + d.amb.toFixed(3) + '</span>' +
         '<span style="color:#be185d">Soc</span><span style="font-weight:700">' + d.soc.toFixed(3) + '</span>' +
         '<span style="color:#b45309">Seg</span><span style="font-weight:700">' + d.seg.toFixed(3) + '</span>' +
         '</div></div>'
@@ -13488,6 +13590,7 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
     _mbhtCurrentDim = dim;
     document.querySelectorAll('.mbht-dim-btn').forEach(function(b){
       b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');   /* v45.362 · [mapas] · el botón activo se anuncia (antes solo lo marcaba el color) */
       b.style.background = '#fff';
       b.style.color = 'var(--text)';
       b.style.borderColor = 'var(--border)';
@@ -13495,6 +13598,7 @@ window.VIAL_DATA={"years":[2015,2019,2021,2023],"ejes":[{"key":"rosario_rengo","
     });
     if(btn){
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       btn.style.background = 'var(--accent)';
       btn.style.color = '#fff';
       btn.style.borderColor = 'var(--accent)';
@@ -25961,13 +26065,19 @@ function renderCensoHeatmap(){
   var colTitles=['Ordenar por localidad','Población Censo 2024','Índice Compuesto de Priorización','Índice Vulnerabilidad Sociohabitacional','Índice Dependencia Demográfica Comunal','Índice Brecha Digital Territorial','Índice Vulnerabilidad Físico-Territorial','Índice Carencia Habitacional Territorial','Índice Precariedad Servicios Básicos'];
   var dims=['ivsh','iddc','ibdt','ivft','icht_vul','ipsb'];
   function heatLevel(v){return v<0.15?'bajo':v<0.25?'moderado':v<0.35?'medio':v<0.45?'alto':'crítico';}
-  function heatColor(v){
+  /* v45.362 · [mapas] · ESCALA SECUENCIAL DE UN TONO para la tabla de calor: antes, verde-amarillo-naranja-rojo
+     (semáforo sobre una cantidad, ilegible con daltonismo rojo-verde). Ahora, la terracota del ICP (--seq-3,
+     #AC4A2C) con opacidad creciente sobre la celda: más intenso = más vulnerable, la misma regla que el mapa de la
+     sección. Los cinco tramos, sus cortes (0,15 · 0,25 · 0,35 · 0,45) y sus nombres NO cambian. La tinta de la celda
+     sigue siendo la del texto. Medido en el navegador (105 celdas, fondo compuesto sobre la tabla, fórmula WCAG): en
+     claro la celda más intensa (52 %) deja 5,6:1 con la tinta #27343B y las demás entre 6,8 y 11,2:1; en oscuro (70 %)
+     7,0:1 con la tinta #F1F5F9 y las demás entre 8,3 y 12,2:1. La leyenda «Escala de riesgo» sale de esta misma función. */
+  var HEAT_ALFA={claro:[.08,.17,.28,.40,.52], oscuro:[.14,.26,.40,.55,.70]};
+  function heatClase(v){return v<0.15?0:v<0.25?1:v<0.35?2:v<0.45?3:4;}
+  function heatColor(v,forzarClase){
     var dk=document.body.classList.contains('dark');
-    if(v<0.15) return dk?'rgba(34,197,94,.35)':'rgba(34,197,94,.25)';
-    if(v<0.25) return dk?'rgba(234,179,8,.35)':'rgba(234,179,8,.25)';
-    if(v<0.35) return dk?'rgba(249,115,22,.4)':'rgba(249,115,22,.3)';
-    if(v<0.45) return dk?'rgba(239,68,68,.4)':'rgba(239,68,68,.3)';
-    return dk?'rgba(185,28,28,.5)':'rgba(185,28,28,.4)';
+    var i=(forzarClase!=null)?forzarClase:heatClase(v);
+    return 'rgba(172,74,44,'+(dk?HEAT_ALFA.oscuro:HEAT_ALFA.claro)[i]+')';
   }
   /* Sort data */
   var base=CENSO_VULNERABILIDAD.slice().sort(function(a,b){return b.icp-a.icp;}).slice(0,15);
@@ -26008,11 +26118,10 @@ function renderCensoHeatmap(){
   html+='<div><strong style="color:var(--text)">IPSB</strong> — Índice de Precariedad en Servicios Básicos</div>';
   html+='</div>';
   html+='<div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center"><strong style="color:var(--text);margin-right:4px">Escala de riesgo:</strong>';
-  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(34,197,94,.3)"></span> Bajo (&lt;0.15)</span>';
-  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(234,179,8,.3)"></span> Moderado (0.15–0.25)</span>';
-  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(249,115,22,.35)"></span> Medio (0.25–0.35)</span>';
-  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(239,68,68,.35)"></span> Alto (0.35–0.45)</span>';
-  html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:rgba(185,28,28,.45)"></span> Crítico (&gt;0.45)</span>';
+  /* v45.362 · [mapas] · las muestras salen de heatColor (antes, cinco rgba escritos a mano en semáforo); los rótulos no cambian */
+  ['Bajo (&lt;0.15)','Moderado (0.15–0.25)','Medio (0.25–0.35)','Alto (0.35–0.45)','Crítico (&gt;0.45)'].forEach(function(r,i){
+    html+='<span style="display:inline-flex;align-items:center;gap:4px"><span style="width:14px;height:14px;border-radius:3px;background:'+heatColor(null,i)+';box-shadow:inset 0 0 0 1px rgba(128,128,128,.35)"></span> '+r+'</span>';
+  });
   html+='</div>';
   html+='<p style="margin-top:10px;font-size:11px;color:var(--text2);opacity:.7">💡 Haz clic en cualquier encabezado de columna para ordenar la tabla.</p>';
   html+='</div>';
@@ -26909,7 +27018,19 @@ var ICT_ESPACIOS=[
 ICT_ESPACIOS.forEach(function(e){e.zona=ictGetZona(e.lat,e.lng);});
 
 var ICT_SCORE={"Excelente":5,"Bueno":4,"Regular":3,"Deficiente":2,"Crítico":1};
-var ICT_HEX={"Excelente":"#1a7a4a","Bueno":"#2a7abf","Regular":"#c49b0a","Deficiente":"#d47a20","Crítico":"#c0352a"};
+/* v45.362 · [mapas] · ICT_HEX lee la rampa ordinal --ict-1..5 de :root (de Excelente, el paso más claro, a Crítico,
+   el más oscuro) en vez de llevar su propio semáforo verde-azul-amarillo-naranja-rojo: así este guion, los tokens
+   --ict-* de la sección, el mapa del caso en #matriz y la capa de contexto de #territorios-prioritarios usan los
+   mismos cinco colores. Solo acepta hexadecimales de 6 dígitos (el guion les concatena opacidad: 'cc', '22', …);
+   si un token faltara, queda el mismo valor escrito aquí. */
+var ICT_HEX=(function(){
+  var R={"Excelente":"#86b7ee","Bueno":"#5d93cf","Regular":"#3a71ab","Deficiente":"#1e5083","Crítico":"#083158"};
+  try{
+    var cs=getComputedStyle(document.documentElement), n={"Excelente":1,"Bueno":2,"Regular":3,"Deficiente":4,"Crítico":5};
+    Object.keys(n).forEach(function(k){ var v=(cs.getPropertyValue('--ict-'+n[k])||'').trim(); if(/^#[0-9a-f]{6}$/i.test(v)) R[k]=v; });
+  }catch(e){}
+  return R;
+})();
 var ICT_CLS={"Excelente":"exc","Bueno":"bue","Regular":"reg","Deficiente":"def","Crítico":"cri"};
 var ICT_ESTADOS=["Excelente","Bueno","Regular","Deficiente","Crítico"];
 var ICT_ICO={"Excelente":"⭐","Bueno":"✅","Regular":"🔶","Deficiente":"⚠️","Crítico":"🚨"};
@@ -27065,11 +27186,31 @@ var ICT_MACROSECTORES=[
     bounds:[[-34.420,-70.820],[-34.520,-70.700]]}
 ];
 var _ictMacroLayers={},_ictMacroActive=null;
+/* v45.362 · [mapas] · CAPAS: una base encendida (los 65 puntos por estado) y el resto como capas de referencia
+   apagadas y acumulables. Antes el mapa abría con todo a la vez: puntos con doble código (relleno por estado y
+   borde por zona), cuatro rectángulos de macrosector, cuatro círculos de zona y tres rótulos sin control. Los
+   rectángulos van ahora en su propio grupo (_ictMacroGrupo), que se enciende con la casilla «Macrosectores» o al
+   pedir un perfil zonal; los círculos y sus rótulos, con «Círculos y rótulos de zona». */
+var _ictMacroGrupo=null,_ictRotulosZona=null;
+function ictOrdenarCapas(){
+  /* las capas de referencia van detrás de los puntos: al encenderlas, Leaflet las dibuja encima */
+  try{ Object.keys(ictZoneCircles).forEach(function(k){ var c=ictZoneCircles[k]; if(c&&ictMapInst&&ictMapInst.hasLayer(c)) c.bringToBack(); }); }catch(e){}
+  try{ if(_ictMacroGrupo&&ictMapInst&&ictMapInst.hasLayer(_ictMacroGrupo)) _ictMacroGrupo.eachLayer(function(r){ r.bringToBack(); }); }catch(e){}
+}
+function ictToggleMacro(v){
+  if(!ictMapInst||!_ictMacroGrupo) return;
+  if(v){ if(!ictMapInst.hasLayer(_ictMacroGrupo)) _ictMacroGrupo.addTo(ictMapInst); }
+  else { if(ictMapInst.hasLayer(_ictMacroGrupo)) ictMapInst.removeLayer(_ictMacroGrupo); }
+  var cb=document.getElementById('ictMacroToggle'); if(cb&&cb.checked!==!!v) cb.checked=!!v;
+  ictOrdenarCapas();
+}
+window.ictToggleMacro=ictToggleMacro;
 function ictBuildMacroPolygons(){
   if(!ictMapInst||typeof L==='undefined')return;
+  if(!_ictMacroGrupo) _ictMacroGrupo=L.layerGroup();
   ICT_MACROSECTORES.forEach(function(m){
     if(_ictMacroLayers[m.id])return;
-    var rect=L.rectangle(m.bounds,{color:m.color,weight:1.5,fillColor:m.color,fillOpacity:0.06,opacity:.45,dashArray:'4 6'}).addTo(ictMapInst);
+    var rect=L.rectangle(m.bounds,{color:m.color,weight:1.5,fillColor:m.color,fillOpacity:0.06,opacity:.45,dashArray:'4 6'}).addTo(_ictMacroGrupo);
     rect.bindTooltip('<strong>'+m.nombre+'</strong><br><small>Click para perfil zonal</small>',{permanent:false,direction:'center',className:'mac-tooltip'});
     rect.on('click',function(){ictSelectMacrosector(m.id);});
     rect.on('mouseover',function(){rect.setStyle({fillOpacity:.18,weight:2.5,opacity:.85});});
@@ -27081,6 +27222,9 @@ function ictSelectMacrosector(id){
   var m=ICT_MACROSECTORES.find(function(x){return x.id===id;});
   if(!m)return;
   _ictMacroActive=id;
+  /* v45.362 · [mapas] · los rectángulos parten apagados: al pedir un perfil zonal se encienden, para que se vea el
+     área a la que se refiere el panel */
+  ictToggleMacro(true);
   // Resaltar visualmente el polígono activo
   Object.keys(_ictMacroLayers).forEach(function(k){
     var lyr=_ictMacroLayers[k];
@@ -27133,23 +27277,31 @@ function ictInitMap(){
   ictMapInst=L.map('ictMap',{zoomControl:true}).setView([-34.3980,-70.8450],12);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(ictMapInst);
   // v44.6 · Polígonos macrosectores (al fondo para no tapar marcadores)
+  /* v45.362 · [mapas] · se crean en su grupo, APAGADOS (casilla «Macrosectores» o botón «Perfil Zonal») */
   ictBuildMacroPolygons();
   // Circles (referencias de zona haversiana)
-  ictZoneCircles["Centro Urbano"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:2000,color:ICT_ZHEX["Centro Urbano"],weight:2,opacity:.6,fillColor:ICT_ZHEX["Centro Urbano"],fillOpacity:.06,dashArray:'6 4'}).addTo(ictMapInst);
-  ictZoneCircles["Periferia Urbana"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:4500,color:ICT_ZHEX["Periferia Urbana"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Periferia Urbana"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
-  ictZoneCircles["Rosario_circle"]=L.circle([ICT_REFS.rosario.lat,ICT_REFS.rosario.lng],{radius:4000,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
-  ictZoneCircles["Popeta_circle"]=L.circle([ICT_REFS.popeta.lat,ICT_REFS.popeta.lng],{radius:3500,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'}).addTo(ictMapInst);
+  /* v45.362 · [mapas] · círculos y rótulos de zona: capa de referencia APAGADA (casilla «Círculos y rótulos de zona») */
+  ictZoneCircles["Centro Urbano"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:2000,color:ICT_ZHEX["Centro Urbano"],weight:2,opacity:.6,fillColor:ICT_ZHEX["Centro Urbano"],fillOpacity:.06,dashArray:'6 4'});
+  ictZoneCircles["Periferia Urbana"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:4500,color:ICT_ZHEX["Periferia Urbana"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Periferia Urbana"],fillOpacity:.04,dashArray:'4 6'});
+  ictZoneCircles["Rosario_circle"]=L.circle([ICT_REFS.rosario.lat,ICT_REFS.rosario.lng],{radius:4000,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'});
+  ictZoneCircles["Popeta_circle"]=L.circle([ICT_REFS.popeta.lat,ICT_REFS.popeta.lng],{radius:3500,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'});
   // Labels
   /* v45.360 · los rótulos de zona iban en el centro del círculo, encima de los puntos del catastro, y los
-     tapaban. Ahora van en el borde norte de su círculo, sin capturar clics. */
+     tapaban. Ahora van en el borde norte de su círculo, sin capturar clics.
+     v45.362 · [mapas] · como el círculo ya no está en el mapa al crearse, el borde norte se calcula con el radio
+     (grados de latitud = metros / 111.319,49, la misma cuenta que usa Leaflet para L.circle). */
+  _ictRotulosZona=L.layerGroup();
   [{c:ictZoneCircles["Centro Urbano"],txt:"Centro Urbano"},{c:ictZoneCircles["Rosario_circle"],txt:"Rosario"},{c:ictZoneCircles["Popeta_circle"],txt:"Popeta"}].forEach(function(l){
     if(!l.c) return;
-    var pos; try{ pos=L.latLng(l.c.getBounds().getNorth(), l.c.getLatLng().lng); }catch(e){ pos=l.c.getLatLng(); }
-    L.marker(pos,{interactive:false,keyboard:false,icon:L.divIcon({className:'ict-zona-rotulo',html:'<div style="background:#fff;padding:2px 7px;border-radius:5px;font-size:11px;font-weight:700;color:#071d36;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.15);transform:translate(-50%,-50%);display:inline-block;pointer-events:none">'+l.txt+'</div>',iconSize:[0,0],iconAnchor:[0,0]})}).addTo(ictMapInst);
+    var pos; try{ var cc=l.c.getLatLng(); pos=L.latLng(cc.lat+l.c.getRadius()/111319.49, cc.lng); }catch(e){ pos=l.c.getLatLng(); }
+    L.marker(pos,{interactive:false,keyboard:false,icon:L.divIcon({className:'ict-zona-rotulo',html:'<div style="background:#fff;padding:2px 7px;border-radius:5px;font-size:11px;font-weight:700;color:#071d36;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.15);transform:translate(-50%,-50%);display:inline-block;pointer-events:none">'+l.txt+'</div>',iconSize:[0,0],iconAnchor:[0,0]})}).addTo(_ictRotulosZona);
   });
   // Markers (encima de polígonos)
+  /* v45.362 · [mapas] · el relleno es el estado (rampa --ict-1..5) y el contorno ya no es la zona: es un anillo fino
+     que cambia con el tema (clase mapa-punto: oscuro sobre el mapa claro, claro sobre el mapa oscuro) para que los
+     pasos claros no se pierdan sobre las teselas. La zona es un filtro. */
   ICT_ESPACIOS.forEach(function(e){
-    var m=L.circleMarker([e.lat,e.lng],{radius:8,fillColor:ICT_HEX[e.estado],color:ICT_ZHEX[e.zona],weight:2.5,opacity:1,fillOpacity:.9});
+    var m=L.circleMarker([e.lat,e.lng],{radius:8,fillColor:ICT_HEX[e.estado],color:'#10233a',weight:1.25,opacity:.75,fillOpacity:.95,className:'mapa-punto'});
     m.bindPopup(ictMkPopup(e),{maxWidth:260,minWidth:200});
     m.on('click',function(){ictOpenPanel(e.id);});
     m.addTo(ictMapInst);
@@ -27171,34 +27323,50 @@ function ictInitMap(){
 function ictMkPopup(e){
   var s=ictN(e.estado);
   return '<div class="ict-mp">'
-    +'<div class="ict-mp-zona" style="color:'+ICT_ZHEX[e.zona]+'">'+ICT_ZICO[e.zona]+' '+e.zona+'</div>'
-    +'<div class="ict-mp-estado" style="color:'+ICT_HEX[e.estado]+'">'+ICT_ICO[e.estado]+' '+e.estado+'</div>'
+    /* v45.362 · [mapas] · la zona ya no colorea los puntos (es un filtro): su nombre va en la tinta secundaria del
+       texto (antes en el color de la zona, 1,73:1 sobre la ventana oscura) */
+    +'<div class="ict-mp-zona" style="color:var(--text2)">'+ICT_ZICO[e.zona]+' '+e.zona+'</div>'
+    /* v45.362 · [mapas] · estado y puntaje en la tinta del texto, con la muestra del color al lado */
+    +'<div class="ict-mp-estado"><span class="mapa-muestra" style="background:'+ICT_HEX[e.estado]+'"></span>'+ICT_ICO[e.estado]+' '+e.estado+'</div>'
     +'<div class="ict-mp-name">N°'+e.id+' — '+e.nombre+'</div>'
     +'<div class="ict-mp-bar"><div class="ict-mp-fill" style="width:'+s+'%;background:'+ICT_HEX[e.estado]+'"></div></div>'
-    +'<div class="ict-mp-score" style="color:'+ICT_HEX[e.estado]+'">ICT: '+s+'/100</div>'
+    +'<div class="ict-mp-score">ICT: '+s+'/100</div>'
     +'<button class="ict-mp-btn" type="button" onclick="ictOpenPanel('+e.id+')">Ver detalle →</button>'
     +'</div>';
 }
 
+/* v45.362 · [mapas] · los filtros OCULTAN: antes un punto filtrado quedaba al 8 % de relleno y 15 % de borde, así que
+   el filtro de zona «apagaba» en vez de quitar y los puntos tenues seguían recibiendo clics. Ahora el punto sale del
+   mapa (y su ventana se cierra) y vuelve al quitar el filtro. Un contador visible y anunciado (#ictMapCuenta) dice
+   cuántos de los 65 espacios se están mostrando, para que ningún filtro oculte sin decirlo. */
 function ictUpdateMapMarkers(data){
   if(!ictMapInst) return;
   var ids={};data.forEach(function(e){ids[e.id]=true;});
+  var n=0;
   ICT_ESPACIOS.forEach(function(e){
     var m=ictMapMkrs[e.id];if(!m) return;
     var vis=ids[e.id]&&ictLayerE[e.estado]&&ictLayerZ[e.zona];
-    m.setStyle({fillOpacity:vis?.9:.08,opacity:vis?1:.15});
+    if(vis){ n++; if(!ictMapInst.hasLayer(m)) m.addTo(ictMapInst); }
+    else if(ictMapInst.hasLayer(m)){ try{ m.closePopup(); }catch(_){} ictMapInst.removeLayer(m); }
   });
+  var c=document.getElementById('ictMapCuenta');
+  if(c){ var t='Se muestran '+n+' de '+ICT_ESPACIOS.length+' espacios'; if(c.textContent!==t) c.textContent=t; }
 }
 
+/* v45.362 · [mapas] · leyenda y filtros del mapa: cada estado con su valor ICT (100, 75, 50, 25 y 0) y la regla de
+   lectura de la rampa; las zonas, sin muestra de color (la zona ya no pinta los puntos: es un filtro). */
 function ictBuildMapToggles(){
   var et=document.getElementById('ictEstadoToggles');
-  if(et){et.innerHTML='';ICT_ESTADOS.forEach(function(e){et.innerHTML+='<label class="ict-mtog"><span class="ict-mtog-dot" style="background:'+ICT_HEX[e]+'"></span><span class="ict-mtog-name" style="font-size:11px">'+e+'</span><input type="checkbox" checked style="margin-left:auto;cursor:pointer" onchange="ictToggleE(\''+e+'\',this.checked)"></label>';});}
+  if(et){et.innerHTML='';ICT_ESTADOS.forEach(function(e){et.innerHTML+='<label class="ict-mtog"><span class="ict-mtog-dot mapa-muestra" style="background:'+ICT_HEX[e]+'"></span><span class="ict-mtog-name" style="font-size:11px">'+e+'</span><span class="ict-mtog-v" title="Valor ICT de la categoría">'+ictN(e)+'</span><input type="checkbox" checked style="cursor:pointer" onchange="ictToggleE(\''+e+'\',this.checked)"></label>';});}
   var zt=document.getElementById('ictZonaToggles');
-  if(zt){zt.innerHTML='';ICT_ZONAS.forEach(function(z){zt.innerHTML+='<label class="ict-mtog"><span class="ict-mtog-dot" style="background:'+ICT_ZHEX[z]+'"></span><span class="ict-mtog-name" style="font-size:11px">'+ICT_ZICO[z]+' '+z.split(' ')[0]+'</span><input type="checkbox" checked style="margin-left:auto;cursor:pointer" onchange="ictToggleZ(\''+z+'\',this.checked)"></label>';});}
+  if(zt){zt.innerHTML='';ICT_ZONAS.forEach(function(z){zt.innerHTML+='<label class="ict-mtog"><span class="ict-mtog-name" style="font-size:11px">'+ICT_ZICO[z]+' '+z.split(' ')[0]+'</span><input type="checkbox" checked style="margin-left:auto;cursor:pointer" onchange="ictToggleZ(\''+z+'\',this.checked)"></label>';});}
 }
 function ictToggleE(e,v){ictLayerE[e]=v;ictUpdateMapMarkers(ictFiltered());}
 function ictToggleZ(z,v){ictLayerZ[z]=v;ictUpdateMapMarkers(ictFiltered());}
-function ictToggleZonaCircles(v){['Centro Urbano','Periferia Urbana','Rosario_circle','Popeta_circle'].forEach(function(k){var c=ictZoneCircles[k];if(!c) return;v?c.addTo(ictMapInst):c.remove();});}
+function ictToggleZonaCircles(v){['Centro Urbano','Periferia Urbana','Rosario_circle','Popeta_circle'].forEach(function(k){var c=ictZoneCircles[k];if(!c) return;v?c.addTo(ictMapInst):c.remove();});
+  /* v45.362 · [mapas] · los rótulos de zona se encienden y apagan con sus círculos */
+  if(_ictRotulosZona&&ictMapInst){ if(v) _ictRotulosZona.addTo(ictMapInst); else ictMapInst.removeLayer(_ictRotulosZona); }
+  ictOrdenarCapas();}
 
 function ictOpenPanel(id){
   var e=ICT_ESPACIOS.find(function(x){return x.id===id;});if(!e) return;
@@ -27207,11 +27375,13 @@ function ictOpenPanel(id){
   zb.textContent=ICT_ZICO[e.zona]+' '+e.zona;
   zb.style.background=ICT_ZBHEX[e.zona];zb.style.color=ICT_ZHEX[e.zona];zb.style.borderColor=ICT_ZHEX[e.zona];
   document.getElementById('ict-sp-estado').textContent=ICT_ICO[e.estado]+' '+e.estado;
-  document.getElementById('ict-sp-estado').style.color=ICT_HEX[e.estado];
+  /* v45.362 · [mapas] · el estado va en la tinta del texto; su color, en la muestra (::before con --cc) y en la barra */
+  document.getElementById('ict-sp-estado').style.color='';
+  document.getElementById('ict-sp-estado').style.setProperty('--cc',ICT_HEX[e.estado]);
   document.getElementById('ict-sp-nombre').textContent='N°'+e.id+' — '+e.nombre;
   document.getElementById('ict-sp-tipo').textContent=e.tipologia;
   document.getElementById('ict-sp-fill').style.cssText='width:'+s+'%;background:'+ICT_HEX[e.estado];
-  document.getElementById('ict-sp-val').textContent=s;document.getElementById('ict-sp-val').style.color=ICT_HEX[e.estado];
+  document.getElementById('ict-sp-val').textContent=s;document.getElementById('ict-sp-val').style.color='';
   document.getElementById('ict-sp-coords').textContent=e.lat.toFixed(4)+', '+e.lng.toFixed(4);
   document.getElementById('ict-sp-body').innerHTML='<div class="ict-sp-stitle">Problemáticas</div>'
     +'<ul class="ict-sp-list ict-spl-prob">'+e.problemas.map(function(p){return '<li>'+p+'</li>';}).join('')+'</ul>'
@@ -27276,7 +27446,8 @@ function ictRenderPrioridad(){
   var mc=document.getElementById('ictMatrixContainer');if(!mc) return;
   var html='<div style="overflow-x:auto"><table class="ict-pmatrix"><thead><tr>'
     +'<th style="min-width:160px">Zona Territorial</th><th>N°</th>'
-    +ICT_ESTADOS.map(function(e){return '<th style="color:'+ICT_HEX[e]+'">'+ICT_ICO[e]+'<br>'+e+'</th>';}).join('')
+    /* v45.362 · [mapas] · encabezado del estado en la tinta de la tabla, con la muestra de su color */
+    +ICT_ESTADOS.map(function(e){return '<th scope="col">'+ICT_ICO[e]+'<br><span class="mapa-muestra" style="background:'+ICT_HEX[e]+'"></span>'+e+'</th>';}).join('')
     +'<th>ICT Prom</th><th>Brecha</th><th>Prioridad</th>'
     +'</tr></thead><tbody>';
   var totalCri=0,totalDef=0;
@@ -27288,13 +27459,16 @@ function ictRenderPrioridad(){
     totalCri+=cri;totalDef+=def;
     var urgPct=Math.round((cri+def)/arr.length*100);
     var priority=urgPct>=40||ict<35?'<span class="ict-priority-badge ict-p-alta">🔴 ALTA</span>':urgPct>=20||ict<55?'<span class="ict-priority-badge ict-p-media">🟡 MEDIA</span>':'<span class="ict-priority-badge ict-p-baja">🟢 BAJA</span>';
-    var ictColor=ict<35?'#c0352a':ict<55?'#d47a20':ict<75?'#c49b0a':'#1a7a4a';
+    /* v45.362 · [mapas] · mismos tramos de antes (35 · 55 · 75), que ya usaban el color de Crítico, Deficiente,
+       Regular y Excelente: ahora esos colores salen de ICT_HEX (la rampa ordinal) y las cifras van en la tinta del
+       texto (.ict-cell-val y la brecha); el color queda en la barra */
+    var ictColor=ict<35?ICT_HEX['Crítico']:ict<55?ICT_HEX['Deficiente']:ict<75?ICT_HEX['Regular']:ICT_HEX['Excelente'];
     html+='<tr style="cursor:pointer" onclick="ictSetZona(\''+z+'\')">'
       +'<td><div class="ict-zona-label"><span class="ict-zona-dot-big" style="background:'+ICT_ZHEX[z]+'"></span><strong style="color:'+ICT_ZHEX[z]+'">'+ICT_ZICO[z]+' '+z+'</strong></div></td>'
       +'<td><strong>'+arr.length+'</strong></td>'
-      +ICT_ESTADOS.map(function(e){var cnt=arr.filter(function(x){return x.estado===e;}).length;return cnt>0?'<td><span class="ict-estado-cell" style="background:'+ICT_HEX[e]+'22;color:'+ICT_HEX[e]+'">'+cnt+'</span></td>':'<td style="color:rgba(128,128,128,.4)">—</td>';}).join('')
-      +'<td><div class="ict-cell-val" style="color:'+ictColor+'">'+ict+'</div><div class="ict-brecha-bar"><div class="ict-brecha-fill" style="width:'+ict+'%;background:'+ictColor+'"></div></div></td>'
-      +'<td><strong style="color:'+ictColor+'">'+brecha+'</strong></td>'
+      +ICT_ESTADOS.map(function(e){var cnt=arr.filter(function(x){return x.estado===e;}).length;return cnt>0?'<td><span class="ict-estado-cell" style="background:'+ICT_HEX[e]+'2e;border-left:4px solid '+ICT_HEX[e]+'">'+cnt+'</span></td>':'<td style="color:rgba(128,128,128,.4)">—</td>';}).join('')
+      +'<td><div class="ict-cell-val">'+ict+'</div><div class="ict-brecha-bar"><div class="ict-brecha-fill" style="width:'+ict+'%;background:'+ictColor+'"></div></div></td>'
+      +'<td><strong>'+brecha+'</strong></td>'
       +'<td>'+priority+'</td>'
       +'</tr>';
   });
@@ -27361,7 +27535,7 @@ function ictRenderCards(data){
       +'<div class="ict-sc-num">N°'+e.id+' · <span style="color:'+ICT_ZHEX[e.zona]+';font-size:10px">'+ICT_ZICO[e.zona]+' '+e.zona+'</span></div>'
       +'<div class="ict-sc-name">'+e.nombre+'</div>'
       +'<div class="ict-sc-tipo">'+e.tipologia+'</div>'
-      +'<div class="ict-sbw"><div class="ict-st"><div class="ict-sf" style="width:'+s+'%;background:'+ICT_HEX[e.estado]+'"></div></div><span class="ict-sv" style="color:'+ICT_HEX[e.estado]+'">'+s+'</span></div>'
+      +'<div class="ict-sbw"><div class="ict-st"><div class="ict-sf" style="width:'+s+'%;background:'+ICT_HEX[e.estado]+'"></div></div><span class="ict-sv">'+s+'</span></div>'/* v45.362 · [mapas] · puntaje en la tinta del texto */
       +'</div>'
       +'<div class="ict-sc-foot"><span class="ict-sc-estado">'+ICT_ICO[e.estado]+' '+e.estado+'</span><div><div class="ict-sc-score-big">'+s+'</div><div class="ict-sc-sub">ICT/100</div></div></div>'
       +'</div>';
@@ -28505,7 +28679,39 @@ initBackToTopPct();
 })();
 
 // ─── MAPA SOCIEDAD CIVIL (Leaflet lazy-load via IntersectionObserver) ───
-var SC_TYPE_COLORS={'JJVV Urbana':'#1F3864','JJVV Rural':'#2d9a4d','Adulto Mayor':'#446cad','Cultural':'#f5921d','Transporte':'#475569','COSOC':'#c0392b','Seguridad':'#1e293b','Club Deportivo':'#2980b9','Comercio':'#d97706','NNA/Infancia':'#059669','Junta Vigilancia':'#92400e','Medio Ambiente':'#0891b2'};
+/* v45.362 · [mapas] · CUATRO FAMILIAS DE COLOR Y FORMA en vez de doce colores. Antes cada tipo tenía su propio color
+   (azules y grises oscuros casi iguales: «JJVV Urbana» #1F3864, «Seguridad» #1e293b, «Transporte» #475569) y el mapa
+   abría con los doce a la vez. Ahora los doce tipos se agrupan, solo para leer el mapa, en cuatro familias, cada una
+   con un color y una forma (círculo, cuadrado, rombo y triángulo): la forma es la segunda codificación que exige un
+   mapa, donde cualquier par de puntos puede quedar lado a lado. Colores validados con un verificador de paletas
+   categóricas (distancias OKLab, simulación de Machado 2009), en modo «todos los pares» y sobre el color de las
+   teselas: separación con daltonismo (protanopía y deuteranopía) de 9,2 como mínimo (meta 8) y 21,3 con visión
+   normal (piso 15); los tres primeros son los de una paleta categórica de referencia y el cuarto, un rojo oscuro
+   llevado a la banda de luminosidad de esa paleta. Dos colores
+   quedan bajo 3:1 contra las teselas claras (2,7:1 y 2,4:1): los compensa el anillo oscuro de cada punto, la forma y
+   la ventana con el tipo escrito. La agrupación es del portal, no una clasificación oficial, y se declara en la
+   leyenda; los doce tipos siguen disponibles como filtro. */
+var SC_FAMILIAS=[
+  {id:'jjvv', nombre:'Juntas de vecinos', color:'#2a78d6', forma:'circulo', tipos:['JJVV Urbana','JJVV Rural']},
+  {id:'comunitarias', nombre:'Organizaciones comunitarias', color:'#eb6834', forma:'cuadrado', tipos:['Adulto Mayor','NNA/Infancia','Cultural','Club Deportivo']},
+  {id:'economia', nombre:'Economía, agua y ambiente', color:'#1baf7a', forma:'rombo', tipos:['Comercio','Transporte','Junta Vigilancia','Medio Ambiente']},
+  {id:'instituciones', nombre:'Consejo y seguridad', color:'#a11f1f', forma:'triangulo', tipos:['COSOC','Seguridad']}
+];
+var SC_TYPE_COLORS=(function(){ var o={}; SC_FAMILIAS.forEach(function(f){ f.tipos.forEach(function(t){ o[t]=f.color; }); }); return o; })();
+function scFamiliaDe(tipo){ for(var i=0;i<SC_FAMILIAS.length;i++){ if(SC_FAMILIAS[i].tipos.indexOf(tipo)>=0) return SC_FAMILIAS[i]; } return {id:'otra',nombre:'Otra',color:'#64748b',forma:'circulo',tipos:[]}; }
+/* forma de igual área que el círculo de radio r (cuadrado de lado 1,77r, rombo de diagonal 2,5r, triángulo de lado
+   2,69r), en un SVG propio; el contorno lo pone la clase mapa-punto (cambia con el tema) */
+function scFormaSVG(forma, r, color){
+  var D=Math.ceil(r*2.9+4), c=D/2, s='';
+  if(forma==='cuadrado'){ var l=r*1.77; s='<rect class="sc-forma mapa-punto" x="'+(c-l/2).toFixed(2)+'" y="'+(c-l/2).toFixed(2)+'" width="'+l.toFixed(2)+'" height="'+l.toFixed(2)+'" rx="1"/>'; }
+  else if(forma==='rombo'){ var d=r*2.5/2; s='<polygon class="sc-forma mapa-punto" points="'+c+','+(c-d).toFixed(2)+' '+(c+d).toFixed(2)+','+c+' '+c+','+(c+d).toFixed(2)+' '+(c-d).toFixed(2)+','+c+'"/>'; }
+  else if(forma==='triangulo'){ var a=r*2.69, h=a*Math.sqrt(3)/2; s='<polygon class="sc-forma mapa-punto" points="'+c+','+(c-2*h/3).toFixed(2)+' '+(c-a/2).toFixed(2)+','+(c+h/3).toFixed(2)+' '+(c+a/2).toFixed(2)+','+(c+h/3).toFixed(2)+'"/>'; }
+  else { s='<circle class="sc-forma mapa-punto" cx="'+c+'" cy="'+c+'" r="'+r+'"/>'; }
+  return {D:D, html:'<svg width="'+D+'" height="'+D+'" viewBox="0 0 '+D+' '+D+'" aria-hidden="true" focusable="false" style="fill:'+color+'">'+s+'</svg>'};
+}
+/* los mismos escalones de tamaño que ya usaba el mapa (asistentes a la sesión) */
+var SC_TAMANOS=[{r:14,t:'31 o más'},{r:10,t:'16 a 30'},{r:8,t:'6 a 15'},{r:6,t:'5 o menos'}];
+function scRadio(a){ return a>30?14:a>15?10:a>5?8:6; }
 
 var SC_ORGS=[{"n":"UCAM","c":[-34.406749787851204,-70.86616298265547],"f":"15 oct - 11 nov","a":25,"t":"Adulto Mayor","s":"Externa"},{"n":"Club Deportivo Nacional de Rosario","c":[-34.35202777777778,-70.83683333333333],"f":"21 enero","a":7,"t":"Club Deportivo","s":"Externa"},{"n":"Club Deportivo Real Juventud","c":[-34.336232938776305,-70.83265067895863],"f":"12 enero","a":4,"t":"Club Deportivo","s":"Externa"},{"n":"Centro Cultural Rosario","c":[-34.350011822051044,-70.83970955767718],"f":"29 octubre","a":0,"t":"Cultural","s":"Externa"},{"n":"JJVV Apalta","c":[-34.336997710721604,-70.86711601924637],"f":"10 octubre","a":6,"t":"JJVV Rural","s":"Externa"},{"n":"JJV Popeta","c":[-34.433388888888885,-70.79183333333333],"f":"15 octubre","a":7,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Esmeralda Villa La Unión","c":[-34.33836111111111,-70.89952777777779],"f":"28 octubre","a":14,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Chanqueahue","c":[-34.41086111111111,-70.79069444444444],"f":"04 noviembre","a":5,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV San Jorge","c":[-34.330083333333334,-70.89886111111112],"f":"19 noviembre","a":20,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Pueblo Hundido","c":[-34.38011111111111,-70.88],"f":"20 noviembre","a":20,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Los Gomeros y Las 4 Puertas","c":[-34.349722222222226,-70.86136111111111],"f":"01 diciembre","a":8,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV El Llano","c":[-34.35813888888889,-70.81580555555556],"f":"15 diciembre","a":17,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Naicura","c":[-34.32368175078814,-70.92287506948998],"f":"15 diciembre","a":16,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa del Cóbil","c":[-34.40011111111111,-70.8933888888889],"f":"16 diciembre","a":11,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Las Nieves","c":[-34.47888888888889,-70.74352777777778],"f":"17 diciembre","a":9,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Las Pataguas","c":[-34.392805555555554,-70.94083333333333],"f":"23 diciembre","a":3,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Río Claro - La Chimba","c":[-34.41057017896319,-70.81140056811174],"f":"29 diciembre","a":3,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Cerrillos","c":[-34.39431913707723,-70.78022377654088],"f":"19 diciembre","a":6,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Choapinos","c":[-34.32425,-70.83333333333333],"f":"12 diciembre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Las Hojas","c":[-34.39302777777778,-70.87141666666667],"f":"26 noviembre","a":1,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV El Retiro","c":[-34.33686111111111,-70.83700000000001],"f":"27 octubre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Lo Cartagena","c":[-34.383544172932574,-70.86704622637166],"f":"10 octubre","a":1,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Lo de Lobo","c":[-34.37871437746787,-70.81407355027655],"f":"21 octubre","a":2,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Don Vicente","c":[-34.35118174333191,-70.83484089716688],"f":"05 enero","a":33,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Cordillera","c":[-34.35447222222222,-70.83652777777778],"f":"06 enero","a":21,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rinconada de Malambo","c":[-34.41586388888889,-70.83816666666667],"f":"06 enero","a":10,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rosario Pichuguao","c":[-34.34402590040686,-70.8353021103506],"f":"07 enero","a":14,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Villa Arcoíris","c":[-34.35738888888889,-70.83847222222222],"f":"08 enero","a":18,"t":"JJVV Rural","s":"Externa"},{"n":"JJVV Rosario Norte","c":[-34.33958156120555,-70.83510759394052],"f":"09 enero","a":16,"t":"JJVV Rural","s":"Externa"},{"n":"Esgrima","c":[-34.40856169980855,-70.8538534768708],"f":"—","a":1,"t":"Club Deportivo","s":"Externa"},{"n":"Club Océano","c":[-34.39395275274926,-70.8517232005266],"f":"—","a":1,"t":"Club Deportivo","s":"Externa"},{"n":"Carabineros","c":[-34.408692526531084,-70.86407945191705],"f":"23 febrero","a":2,"t":"Seguridad","s":"Externa"},{"n":"Consultivo Comunal NNA","c":[-34.4103413472238,-70.85712197599382],"f":"27 abril","a":21,"t":"NNA/Infancia","s":"Externa"},{"n":"Bomberos","c":[-34.405437312262606,-70.84967872588945],"f":"13 abril","a":5,"t":"Seguridad","s":"Externa"},{"n":"Club AM Villa Jardín","c":[-34.433388888888885,-70.79183333333333],"f":"06 marzo","a":17,"t":"Adulto Mayor","s":"Externa"},{"n":"Club AM Por Siempre Unidos","c":[-34.34490058665432,-70.8362390084657],"f":"04 marzo","a":13,"t":"Adulto Mayor","s":"Externa"},{"n":"Junta de Vigilancia","c":[-34.40127777777778,-70.85666666666667],"f":"06 marzo","a":2,"t":"Junta Vigilancia","s":"Externa"},{"n":"Actores Culturales","c":[-34.40842527084617,-70.86346224217233],"f":"26 noviembre","a":12,"t":"Cultural","s":"Municipal"},{"n":"Colectivos","c":[-34.40842527084617,-70.86346224217233],"f":"26 febrero","a":10,"t":"Transporte","s":"Municipal"},{"n":"Buses Urbanos / Interurbanos","c":[-34.40842527084617,-70.86346224217233],"f":"25 febrero","a":3,"t":"Transporte","s":"Municipal"},{"n":"COSOC","c":[-34.40842527084617,-70.86346224217233],"f":"11 diciembre","a":9,"t":"COSOC","s":"Municipal"},{"n":"Club de Huasos","c":[-34.40842527084617,-70.86346224217233],"f":"24 febrero","a":6,"t":"Cultural","s":"Municipal"},{"n":"Cámara de Comercio","c":[-34.40842527084617,-70.86346224217233],"f":"25 septiembre","a":4,"t":"Comercio","s":"Municipal"},{"n":"Ferias de Rengo","c":[-34.40842527084617,-70.86346224217233],"f":"05 diciembre","a":2,"t":"Comercio","s":"Municipal"},{"n":"Medio Ambiente","c":[-34.40842527084617,-70.86346224217233],"f":"30 septiembre","a":4,"t":"Medio Ambiente","s":"Municipal"},{"n":"Libertad","c":[-34.408505396644436,-70.85732528906746],"f":"19 enero","a":59,"t":"JJVV Urbana","s":"Municipal"},{"n":"Gregorio Araya","c":[-34.41495843262286,-70.85702330450339],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"P2","c":[-34.41070779873472,-70.85952870926779],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Las Torres Primera Etapa","c":[-34.414674838919865,-70.86010190222518],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Abedules","c":[-34.407483896166276,-70.84223688381466],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Caupolícan","c":[-34.406266402718984,-70.8512646078043],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Rienzi Valencia","c":[-34.395007168958124,-70.8502340043324],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valentín Letelier","c":[-34.403375417893294,-70.85187257479852],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Santa Laura","c":[-34.390137760775985,-70.85138889241368],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Deseada","c":[-34.402585954171954,-70.87094591312169],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa El Romeral","c":[-34.41087180969339,-70.85792543865755],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa El Molino","c":[-34.397529584674785,-70.84816005155788],"f":"21 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo","c":[-34.39464164292698,-70.85547623524762],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"La Isla","c":[-34.394302193644755,-70.84579167292951],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo II Etapa II","c":[-34.394827341124696,-70.8555387719292],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Rucahue","c":[-34.399334676180985,-70.8498704901876],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Alonso de Ercilla","c":[-34.404710978851064,-70.85166598394015],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa O'Higgins","c":[-34.39213879873815,-70.84976579955715],"f":"27 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Araucanía","c":[-34.391997844230026,-70.85207864680689],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"4 de Septiembre","c":[-34.39439394561628,-70.84556255939732],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Naranjal Norte","c":[-34.407077416959176,-70.86957673361844],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Viñedos de Rengo","c":[-34.39692638064187,-70.84576409114236],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Hacienda Las Palmas II","c":[-34.40974226040788,-70.86985047433768],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Migueles","c":[-34.39133820055936,-70.83190331667232],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"El Esfuerzo","c":[-34.39284050138423,-70.85211341255663],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa España","c":[-34.3971156265743,-70.8544334925729],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Álamos","c":[-34.39615559066269,-70.86260885547372],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Santa Ana","c":[-34.39993470471927,-70.8607128081818],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Altos de San Martín","c":[-34.390509739169154,-70.85574373231141],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"El Villorrio","c":[-34.41581560006812,-70.85021408775737],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Las Américas","c":[-34.41138888888889,-70.85111111111111],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"San Benito","c":[-34.414161862943125,-70.84816730772665],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Espinos","c":[-34.41054670675779,-70.84136415449328],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Domingo Paredes","c":[-34.41277559486109,-70.85998322633164],"f":"19 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Hacienda Las Palmas","c":[-34.409086948093055,-70.87109730839443],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Brisas del Valle de Rengo","c":[-34.413407684272485,-70.86995956759515],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Los Renguinos del 79","c":[-34.39552902781615,-70.85506883128758],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Valles de Rengo 1","c":[-34.39354849541132,-70.85697465050173],"f":"05 febrero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Primavera Etapa 7","c":[-34.411988529072154,-70.87608280250521],"f":"29 enero","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Francisco Ruiz","c":[-34.40250013783104,-70.85768836312475],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Oriente","c":[-34.41411358842348,-70.85188272822272],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Los Aromos","c":[-34.395231637959405,-70.85648414056246],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Augusto Poblete","c":[-34.39485897532925,-70.85623122320716],"f":"10 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"},{"n":"Villa Caupolicán","c":[-34.40028423913118,-70.85880220180249],"f":"12 marzo","a":0,"t":"JJVV Urbana","s":"Municipal"}];
 
@@ -28530,15 +28736,20 @@ function initSocCivMap(){
      llevan el aviso (8 + 2) y el resto no. */
   var _scCoordN={};
   SC_ORGS.forEach(function(o){ var k=o.c.join(','); _scCoordN[k]=(_scCoordN[k]||0)+1; });
+  /* v45.362 · [mapas] · cada organización es un marcador con la forma y el color de su familia (L.divIcon con SVG),
+     del mismo tamaño que antes según asistentes, sin foco de teclado propio (como los círculos de antes). El tipo va
+     escrito en la ventana en tinta oscura, con la muestra de su familia al lado (antes iba en el color del tipo, que
+     en varios casos no llegaba a 4,5:1 sobre el fondo blanco de la ventana). */
   SC_ORGS.forEach(function(org){
-    var col=SC_TYPE_COLORS[org.t]||'#888';
+    var fam=scFamiliaDe(org.t), col=fam.color;
     var _scCompartida=_scCoordN[org.c.join(',')]||1;
-    var r=org.a>30?14:org.a>15?10:org.a>5?8:6;
-    var m=L.circleMarker(org.c,{radius:r,fillColor:col,color:'#fff',weight:2,fillOpacity:.85}).addTo(map);
+    var r=scRadio(org.a);
+    var f=scFormaSVG(fam.forma, r, col);
+    var m=L.marker(org.c,{keyboard:false,riseOnHover:true,icon:L.divIcon({className:'sc-marca sc-f-'+fam.id,html:f.html,iconSize:[f.D,f.D],iconAnchor:[f.D/2,f.D/2],popupAnchor:[0,-r]})});
     m.orgType=org.t;
     m.bindPopup(
       '<div style="padding:8px 10px;min-width:200px">'+
-      '<span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;background:'+col+'22;color:'+col+';margin-bottom:6px">'+org.t+'</span>'+
+      '<span style="display:inline-flex;align-items:center;gap:6px;padding:2px 8px 2px 6px;border-radius:10px;font-size:10px;font-weight:700;background:'+col+'1f;color:#1e293b;margin-bottom:6px"><span class="mapa-muestra" style="background:'+col+';margin:0"></span>'+org.t+'</span>'+
       '<h3 style="font-size:13px;font-weight:700;margin:0 0 4px 0;color:#0f172a;line-height:1.3">'+org.n+'</h3>'+
       '<div style="display:flex;align-items:center;gap:8px;border-top:1px solid #eee;padding-top:8px;margin-top:8px">'+
         '<span style="font-size:20px;font-weight:700;color:#1F3864;line-height:1">'+(org.a||'—')+'</span>'+
@@ -28550,36 +28761,67 @@ function initSocCivMap(){
     );
     allMarkers.push(m);
   });
+  /* v45.362 · [mapas] · CAPAS ACUMULABLES. Antes los botones eran excluyentes (elegir un tipo apagaba los demás), no
+     anunciaban su estado y el mapa abría con los doce tipos. Ahora hay una capa base encendida, las juntas de vecinos
+     (69 de las 89 organizaciones), y cada uno de los doce tipos es un interruptor acumulable con aria-pressed,
+     agrupado por familia; «Mostrar las 89» y «Solo juntas de vecinos» dejan el mapa en esos dos estados. Un contador
+     visible y anunciado (aria-live) dice cuántas organizaciones se muestran y de qué tipos: nada queda oculto sin
+     decirlo, y los tipos apagados están a un clic. */
   var fc=document.getElementById('mapSCFilters');
   var leg=document.getElementById('mapSCLegend');
-  var btnAll=document.createElement('button');
-  btnAll.style.cssText='padding:5px 11px;background:#1F3864;color:#fff;border:none;border-radius:14px;font-size:10.5px;font-weight:700;cursor:pointer';
-  btnAll.textContent='Todos ('+allMarkers.length+')';
-  btnAll.onclick=function(){
-    fc.querySelectorAll('button').forEach(function(b){if(b!==btnAll){b.style.background='#fff';b.style.color=b._col;}});
-    btnAll.style.background='#1F3864';btnAll.style.color='#fff';
-    allMarkers.forEach(function(m){m.addTo(map);});
-  };
-  fc.appendChild(btnAll);
-  leg.innerHTML='<strong style="color:var(--text);margin-right:4px;font-size:11px">Tipos:</strong>';
-  Object.keys(SC_TYPE_COLORS).forEach(function(t){
-    var col=SC_TYPE_COLORS[t];
-    var count=SC_ORGS.filter(function(o){return o.t===t;}).length;
-    if(!count) return;
-    var btn=document.createElement('button');
-    btn._col=col;
-    btn.style.cssText='padding:4px 9px;background:#fff;color:'+col+';border:1.5px solid '+col+';border-radius:14px;font-size:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap';
-    btn.innerHTML='<span style="width:7px;height:7px;border-radius:50%;background:'+col+';display:inline-block"></span>'+t+' ('+count+')';
-    btn.onclick=function(){
-      fc.querySelectorAll('button').forEach(function(b){if(b===btnAll){b.style.background='#fff';b.style.color='#1F3864';}else if(b===btn){b.style.background=col;b.style.color='#fff';}else{b.style.background='#fff';b.style.color=b._col;}});
-      allMarkers.forEach(function(m){m.orgType===t?m.addTo(map):map.removeLayer(m);});
-    };
-    fc.appendChild(btn);
-    var ld=document.createElement('span');
-    ld.style.cssText='display:inline-flex;align-items:center;gap:5px;color:var(--text2);font-size:10.5px';
-    ld.innerHTML='<span style="width:9px;height:9px;border-radius:50%;background:'+col+';display:inline-block"></span>'+t;
-    leg.appendChild(ld);
+  var BASE=SC_FAMILIAS[0].tipos.slice();
+  var activos={}; BASE.forEach(function(t){ activos[t]=true; });
+  function cuenta(t){ return SC_ORGS.filter(function(o){ return o.t===t; }).length; }
+  function aplicar(){
+    var n=0;
+    allMarkers.forEach(function(m){
+      if(activos[m.orgType]){ n++; if(!map.hasLayer(m)) m.addTo(map); }
+      else if(map.hasLayer(m)){ try{ m.closePopup(); }catch(_){} map.removeLayer(m); }
+    });
+    [].forEach.call(fc.querySelectorAll('.sc-tipo'), function(b){ b.setAttribute('aria-pressed', activos[b.getAttribute('data-tipo')]?'true':'false'); });
+    var est=document.getElementById('mapSCEstado');
+    if(est){
+      var on=Object.keys(activos).filter(function(t){ return activos[t]; });
+      var t=n===SC_ORGS.length ? ('Se muestran las '+n+' organizaciones del mapa.')
+          : ('Se muestran '+n+' de '+SC_ORGS.length+' organizaciones'+(on.length?(' · tipos encendidos: '+on.join(', ')):' · ningún tipo encendido')+'.');
+      if(est.textContent!==t) est.textContent=t;
+    }
+  }
+  var h='<div class="sc-filtros" role="group" aria-label="Tipos de organización que se muestran en el mapa">';
+  SC_FAMILIAS.forEach(function(f){
+    var sw=scFormaSVG(f.forma, 6, f.color);
+    h+='<div class="sc-fam" role="group" aria-label="'+f.nombre+'"><span class="sc-fam-t">'+sw.html+f.nombre+'</span>';
+    f.tipos.forEach(function(t){ var c=cuenta(t); if(!c) return; h+='<button type="button" class="sc-tipo" data-tipo="'+t+'" aria-pressed="false">'+t+' <span class="sc-n">'+c+'</span></button>'; });
+    h+='</div>';
   });
+  h+='<div class="sc-acciones"><button type="button" class="sc-todas">Mostrar las '+SC_ORGS.length+'</button><button type="button" class="sc-base">Solo juntas de vecinos</button></div></div>';
+  fc.innerHTML=h;
+  fc.addEventListener('click',function(ev){
+    var b=ev.target&&ev.target.closest?ev.target.closest('button'):null; if(!b||!fc.contains(b)) return;
+    if(b.classList.contains('sc-tipo')){ var t=b.getAttribute('data-tipo'); activos[t]=!activos[t]; }
+    else if(b.classList.contains('sc-todas')){ SC_ORGS.forEach(function(o){ activos[o.t]=true; }); }
+    else if(b.classList.contains('sc-base')){ activos={}; BASE.forEach(function(t){ activos[t]=true; }); }
+    else return;
+    aplicar();
+  });
+  /* debajo del mapa: el contador y qué agrupa cada familia (los doce tipos, con su número) */
+  var lh='<p class="sc-estado" id="mapSCEstado" aria-live="polite"></p><p class="sc-agrupa"><strong>Familias de color (agrupación de este mapa, no una clasificación oficial):</strong> ';
+  lh+=SC_FAMILIAS.map(function(f){ return '<span class="sc-agrupa-f">'+scFormaSVG(f.forma, 5, f.color).html+'<b>'+f.nombre+'</b>: '+f.tipos.map(function(t){ return t+' ('+cuenta(t)+')'; }).join(', ')+'</span>'; }).join(' · ');
+  lh+='.</p>';
+  leg.innerHTML=lh;
+  /* leyenda dentro del mapa: familias (color y forma) y tamaño según asistentes, con los escalones reales */
+  var ley=L.control({position:'bottomright'});
+  ley.onAdd=function(){
+    var d=L.DomUtil.create('div','map-legend sc-leyenda');
+    var x='<strong>Tipo de organización</strong>';
+    SC_FAMILIAS.forEach(function(f){ x+='<div class="legend-item">'+scFormaSVG(f.forma, 5, f.color).html+'<span>'+f.nombre+'</span></div>'; });
+    x+='<div class="lg-metric">Tamaño según asistentes a la sesión</div><div class="lg-sizes">';
+    SC_TAMANOS.forEach(function(s){ x+='<div class="lg-size"><span class="lg-circ" style="width:'+(s.r*2)+'px;height:'+(s.r*2)+'px"></span><em>'+s.t+'</em></div>'; });
+    x+='</div>';
+    d.innerHTML=x; return d;
+  };
+  ley.addTo(map);
+  aplicar();
 }
 
 // Lazy-init cuando la sección Sociedad Civil entra en viewport
@@ -30862,34 +31104,14 @@ function getChatMetricsSummary(){
 }
 
 /* ── A3 · Guard táctil para mapas Leaflet en móvil ── */
+/* v45.362 · [mapas] · RETIRADO el velo «Toca para explorar el mapa». Corría UNA sola vez (3 s después de
+   DOMContentLoaded), cuando los mapas todavía no existen —ahora se crean al abrir su vista—, así que casi ningún mapa
+   lo recibía; y donde lo recibía tapaba todo el mapa, leyenda incluida, y volvía a aparecer cada 5 s. Lo reemplaza,
+   mapa por mapa y al crearse cada uno, window.__mapaAyudasTactiles (bloque «AYUDAS DE LOS MAPAS»): en pantallas
+   táctiles un dedo desplaza la página y dos dedos mueven y acercan el mapa, con un aviso breve que no captura toques.
+   Esta función queda como puente, por si algo la llama. */
 function initMobileMapGuards(){
-  if(typeof matchMedia==='undefined'||!matchMedia('(max-width:768px)').matches)return;
-  var maps=window.__leafletMaps||[];
-  maps.forEach(function(map){
-    try{
-      map.scrollWheelZoom.disable();
-      map.dragging.disable();
-      var container=map.getContainer();
-      if(container.querySelector('.map-touch-overlay'))return;
-      container.style.position='relative';
-      var ov=document.createElement('div');
-      ov.className='map-touch-overlay';
-      ov.innerHTML='<span>Toca para explorar el mapa</span>';
-      container.appendChild(ov);
-      ov.addEventListener('click',function(){
-        map.scrollWheelZoom.enable();map.dragging.enable();
-        ov.classList.add('map-overlay-hidden');
-        var timer;
-        map.on('movestart zoomstart',function(){clearTimeout(timer);});
-        map.on('moveend zoomend',function(){
-          timer=setTimeout(function(){
-            map.scrollWheelZoom.disable();map.dragging.disable();
-            ov.classList.remove('map-overlay-hidden');
-          },5000);
-        });
-      });
-    }catch(e){}
-  });
+  try{ (window.__leafletMaps||[]).forEach(function(m){ if(window.__mapaAyudasTactiles) window.__mapaAyudasTactiles(m); }); }catch(e){}
 }
 /* Ejecutar cuando Leaflet haya cargado mapas */
 if(window.__leafletMaps&&window.__leafletMaps.length){initMobileMapGuards();}
@@ -38908,50 +39130,18 @@ body.dark .pv-nav-ctx,body.dark .pv-nav .pv-d{color:#5cc98a}
    v45.192 · P1+P2 COMPLETO — Mapas táctiles, zoom SNA, scroll-top, métricas
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── A3 · Overlay de activación táctil para mapas ── */
-.map-touch-overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,.35);
-  display:flex;align-items:center;justify-content:center;
-  z-index:800;cursor:pointer;transition:opacity .2s;
-  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
-}
-.map-touch-overlay span{
-  background:rgba(0,0,0,.72);color:#fff;padding:10px 20px;
-  border-radius:14px;font-size:13px;font-weight:600;
-  pointer-events:none;
-}
-.map-overlay-hidden{opacity:0;pointer-events:none}
-
+/* v45.362 · [mapas] · RETIRADO el CSS sin uso de este bloque: el velo .map-touch-overlay (su función,
+   initMobileMapGuards, ya no lo crea), .map-legend-collapsible (ningún elemento la llevaba; las leyendas se pliegan
+   en teléfonos con el botón «Ver leyenda» del bloque ARRANQUE DE LOS MAPAS) y .map-fullscreen-btn (ningún elemento
+   la llevaba). Las ayudas táctiles y el botón de pantalla completa viven ahora, mapa por mapa, en el bloque
+   «AYUDAS DE LOS MAPAS». Se conservan los botones de zoom de 44 px en pantallas angostas. */
 @media(max-width:768px){
   /* Leaflet zoom buttons más grandes */
   .leaflet-control-zoom a{
     width:44px!important;height:44px!important;
     line-height:44px!important;font-size:20px!important;
   }
-  /* Leyendas colapsables */
-  .map-legend-collapsible{
-    max-height:36px;overflow:hidden;transition:max-height .2s ease;
-    cursor:pointer;position:relative;
-  }
-  .map-legend-collapsible::after{
-    content:'▾ Leyenda';position:absolute;bottom:0;left:0;right:0;
-    text-align:center;font-size:10px;font-weight:700;color:var(--success-txt,#15803d);
-    background:linear-gradient(transparent,var(--card) 60%);padding:4px 0;
-  }
-  .map-legend-collapsible.expanded{max-height:500px}
-  .map-legend-collapsible.expanded::after{content:'▴ Cerrar';background:var(--card)}
 }
-
-/* ── A3 · Botón fullscreen para contenedores de mapa ── */
-.map-fullscreen-btn{
-  position:absolute;top:10px;right:10px;width:44px;height:44px;
-  border-radius:10px;background:var(--card);border:1px solid var(--border);
-  display:none;align-items:center;justify-content:center;
-  font-size:18px;z-index:800;cursor:pointer;color:var(--text);
-  box-shadow:0 2px 8px rgba(0,0,0,.2);
-}
-@media(max-width:768px){.map-fullscreen-btn{display:flex}}
-.map-fullscreen-btn:active{background:var(--accent);color:#fff}
 
 /* ── A4 · Controles de zoom D3 para sociograma ── */
 .gob-zoom-ctrl{
@@ -39738,12 +39928,18 @@ html.nofx,html.nofx *,html.nofx *::before,html.nofx *::after{
         c.setAttribute('role','img');
         c.setAttribute('aria-label', t?('Gráfico — '+t):'Gráfico de datos del PLADECO');
       });
+      /* v45.362 · [mapas] · los mapas de Leaflet ya no llevan role="img": ese rol convierte el contenedor en una imagen
+         y esconde a los lectores de pantalla todo lo que tiene dentro (botones de acercar y alejar, «Ver leyenda»,
+         la leyenda, las ventanas de cada punto). Ahora son una región con nombre (role="region" + aria-label). Si el
+         mapa ya trae su propio nombre (aria-label o aria-labelledby, como #tpMap y el mapa del caso en #matriz) se
+         respeta su rol. */
       document.querySelectorAll('.leaflet-container').forEach(function(m){
-        if(m.getAttribute('aria-label'))return;
+        if(m.getAttribute('role')==='img') m.removeAttribute('role');
+        if(m.getAttribute('aria-label')||m.getAttribute('aria-labelledby')){ if(!m.getAttribute('role')) m.setAttribute('role','region'); return; }
         var card=m.closest('figure,.viz-card,.sv-chart-card,.map-card,.sv-map,section[id]');
         var t='';
         if(card){var h=card.querySelector('.sec-header h2,figcaption,h2,h3,h4');if(h)t=clean(h.textContent);}
-        m.setAttribute('role','img');
+        m.setAttribute('role','region');
         m.setAttribute('aria-label',(t?('Mapa — '+t):'Mapa interactivo del PLADECO')+'. Mapa interactivo; los datos también se presentan en las tablas y cifras de esta sección.');
       });
     }catch(e){}
@@ -42086,6 +42282,9 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       /* punto de inserción: el contenedor mismo o su wrapper declarado */
       var anchor=el;
       if(m.after && m.after.charAt(0)==='.'){ anchor=el.closest(m.after)||el; }
+      /* v45.362 · [mapas] · también un elemento hermano posterior por su id (p. ej. la leyenda y el contador que
+         #mapSC tiene justo debajo): así la ficha queda después de ellos y no entre el mapa y su leyenda */
+      else if(m.after && m.after.charAt(0)==='#' && m.after!=='#'+id){ anchor=document.querySelector(m.after)||el; }
       /* idempotente: no duplicar si ya existe la ficha tras el ancla */
       var next=anchor.nextElementSibling;
       if(next && next.classList && next.classList.contains('map-meta') && next.getAttribute('data-mm')===id) return;
@@ -42253,17 +42452,22 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
       bounds.push([d.lat,d.lng]);
       var r=Math.max(6,Math.min(28,Math.sqrt(d.pob)*0.13));
       L.circleMarker([d.lat,d.lng],{radius:r,fillColor:icpColor(d.icp),color:'#fff',weight:1.5,fillOpacity:.62}).bindPopup(
-        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:var(--text);font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700"><span class="icp-sw" style="background:'+icpColor(d.icp)+'"></span>'+icpNum(d.icp)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
+        /* v45.362 · [mapas] · el nivel iba en var(--text), que en oscuro es claro, sobre la ventana blanca (medido 1,10:1) */
+        '<div style="min-width:170px"><strong>'+esc(d.loc)+'</strong> <span style="color:#1e293b;font-weight:700">'+icpLevel(d.icp)+'</span><hr style="margin:5px 0;border:none;border-top:1px solid #e2e8f0"><table style="font-size:11px;width:100%"><tr><td>ICP</td><td style="text-align:right;font-weight:700"><span class="icp-sw" style="background:'+icpColor(d.icp)+'"></span>'+icpNum(d.icp)+'</td></tr><tr><td>Población</td><td style="text-align:right;font-weight:700">'+nf(d.pob)+'</td></tr><tr><td>Área</td><td style="text-align:right">'+esc(d.area)+'</td></tr></table></div>'
       ).addTo(gICP);
     });
     st.layers.icp=gICP; if(st.on.icp) gICP.addTo(map);
     /* capa ICT (espacios públicos) */
+    /* v45.362 · [mapas] · la capa de contexto tenía su propio semáforo de tres colores (rojo para Crítico y
+       Deficiente, amarillo para Regular, verde para Bueno y Excelente): ahora cada punto lleva el color de su estado en
+       la rampa ordinal del catastro (ICT_HEX, --ict-1..5), la misma del mapa de #ict-espacios-publicos, con el anillo
+       que cambia con el tema. El estado se escribe en la ventana en la tinta del texto, con la muestra al lado. */
     var gICT=L.layerGroup();
     getICT().forEach(function(e){
       if(typeof e.lat!=='number'||typeof e.lng!=='number') return;
-      var sc=ICT_SCOREMAP[e.estado]||3, col=sc<=2?'#c0352a':(sc===3?'#c49b0a':'#1a7a4a');
-      L.circleMarker([e.lat,e.lng],{radius:4.5,fillColor:col,color:'#fff',weight:1,fillOpacity:.9}).bindPopup(
-        '<div style="min-width:150px"><strong>'+esc(e.nombre)+'</strong><br><span style="font-size:11px;color:'+col+';font-weight:600">'+esc(e.estado)+' · '+esc(e.tipologia||'')+'</span></div>'
+      var col=ictTono(e.estado);
+      L.circleMarker([e.lat,e.lng],{radius:4.5,fillColor:col,color:'#10233a',weight:1,opacity:.75,fillOpacity:.95,className:'mapa-punto'}).bindPopup(
+        '<div style="min-width:150px"><strong>'+esc(e.nombre)+'</strong><br><span style="font-size:11px;font-weight:600"><span class="mapa-muestra" style="background:'+col+'"></span>'+esc(e.estado)+' · '+esc(e.tipologia||'')+'</span></div>'
       ).addTo(gICT);
     });
     st.layers.ict=gICT; if(st.on.ict) gICT.addTo(map);
@@ -42271,7 +42475,55 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     st.layers.sin=L.layerGroup(); if(st.on.sin) st.layers.sin.addTo(map);
     if(bounds.length) map.fitBounds(bounds,{padding:[28,28],maxZoom:13});
     setTimeout(function(){ try{map.invalidateSize();}catch(e){} },300);
+    /* v45.362 · [mapas] · leyenda dentro del mapa (antes solo había la fila de leyenda bajo el ranking, fuera del
+       mapa): una sección por cada capa ENCENDIDA, que se rehace al encender o apagar una capa. */
+    var ley=L.control({position:'bottomright'});
+    ley.onAdd=function(){ var d=L.DomUtil.create('div','map-legend tp-leyenda'); d.setAttribute('aria-live','polite'); st.leyenda=d; return d; };
+    ley.addTo(map);
+    pintarLeyenda();
     buildToolbar();
+  }
+  /* v45.362 · [mapas] · color del estado ICT desde la rampa común; respaldo con los mismos valores */
+  var ICT_RESPALDO={"Excelente":"#86b7ee","Bueno":"#5d93cf","Regular":"#3a71ab","Deficiente":"#1e5083","Crítico":"#083158"};
+  var ICT_ORDEN=["Excelente","Bueno","Regular","Deficiente","Crítico"];
+  function ictTono(estado){ try{ if(window.ICT_HEX&&window.ICT_HEX[estado]) return window.ICT_HEX[estado]; }catch(e){} return ICT_RESPALDO[estado]||'#64748b'; }
+  /* siniestros: tres grupos de severidad, los mismos colores y tamaños que dibuja fillSinLayer */
+  var SIN_CLASES=[{t:'Grave o fatal',c:'#b91c1c',r:4},{t:'Leve o menos grave',c:'#e07a2f',r:3},{t:'Sin lesionados',c:'#64748b',r:3}];
+  function radioICP(pob){ return Math.max(6,Math.min(28,Math.sqrt(pob)*0.13)); }
+  function pintarLeyenda(){
+    var d=st.leyenda; if(!d) return;
+    var h='', hay=false;
+    if(st.on.icp){
+      hay=true;
+      h+='<strong>Vulnerabilidad (ICP)</strong>';
+      (ICP?ICP.clases(icpColor):[]).forEach(function(c){ h+='<div class="legend-item"><span class="legend-dot icp-lg-dot" style="background:'+c.color+'"></span><span><b>'+c.nivel+'</b> · '+c.rango+'</span></div>'; });
+      h+='<div class="lg-nota">Más oscuro = más vulnerable</div>';
+      var pobs=(st.locs||[]).map(function(x){ return +x.pob||0; }).filter(function(v){ return v>0; }).sort(function(a,b){ return a-b; });
+      if(pobs.length){
+        /* referencias: mayor, mediana y menor población; las que caen en el tamaño mínimo (radio 6 px) se funden en
+           una sola, rotulada «N o menos» con la mayor población de las localidades que se dibujan a ese tamaño */
+        var rMin=radioICP(0), enMin=pobs.filter(function(p){ return radioICP(p)<=rMin; }), vistos={}, refs=[];
+        [pobs[pobs.length-1], pobs[Math.floor((pobs.length-1)/2)], pobs[0]].forEach(function(p){ var k=radioICP(p).toFixed(2); if(vistos[k]) return; vistos[k]=1; refs.push(p); });
+        var maxR=Math.max.apply(null, refs.map(radioICP)), sc=Math.min(1,17/maxR);
+        h+='<div class="lg-metric">Tamaño según población (hab.)</div><div class="lg-sizes">';
+        refs.forEach(function(p){ var dd=Math.max(7,Math.round(radioICP(p)*sc*2)); var et=(radioICP(p)<=rMin && enMin.length>1)?(nf(enMin[enMin.length-1])+' o menos'):nf(p); h+='<div class="lg-size"><span class="lg-circ" style="width:'+dd+'px;height:'+dd+'px"></span><em>'+et+'</em></div>'; });
+        h+='</div>';
+      }
+    }
+    if(st.on.ict){
+      if(hay) h+='<hr>'; hay=true;
+      h+='<strong>Espacios públicos (ICT)</strong>';
+      ICT_ORDEN.forEach(function(k){ h+='<div class="legend-item"><span class="legend-dot mapa-muestra" style="background:'+ictTono(k)+'"></span><span>'+k+'</span></div>'; });
+      h+='<div class="lg-nota">Más oscuro = peor estado · contexto provisional</div>';
+    }
+    if(st.on.sin){
+      if(hay) h+='<hr>'; hay=true;
+      h+='<strong>Siniestros 2020–2024</strong>';
+      SIN_CLASES.forEach(function(c){ h+='<div class="legend-item"><span class="legend-dot" style="background:'+c.c+';opacity:.75"></span><span>'+c.t+'</span></div>'; });
+      h+='<div class="lg-nota">Conteo de siniestros, no tasa por exposición</div>';
+    }
+    if(!hay) h='<strong>Sin capas encendidas</strong><div class="lg-nota">Enciende una capa en la barra de arriba.</div>';
+    d.innerHTML=h;
   }
   function fillSinLayer(){
     if(!st.layers.sin||!st.sinPoints) return;
@@ -42298,6 +42550,10 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
          es la rampa real, de la clase mas baja a la mas alta, leida de icpColor. */
       var swBg=L0.sw;
       if(L0.k==='icp'){ var cl=ICP?ICP.clases(icpColor):null; if(cl) swBg='linear-gradient(135deg,'+cl[0].color+' 0%,'+cl[1].color+' 38%,'+cl[2].color+' 66%,'+cl[3].color+' 100%)'; }
+      /* v45.362 · [mapas] · las muestras de ICT y de siniestros eran dos rojos que no correspondían a sus puntos: ahora
+         son la rampa del ICT (de Excelente a Crítico) y los tres grupos de severidad que dibuja el mapa */
+      if(L0.k==='ict'){ swBg='linear-gradient(135deg,'+ICT_ORDEN.map(function(k,i){ return ictTono(k)+' '+Math.round(i*25)+'%'; }).join(',')+')'; }
+      if(L0.k==='sin'){ swBg='linear-gradient(135deg,'+SIN_CLASES[2].c+' 0%,'+SIN_CLASES[1].c+' 50%,'+SIN_CLASES[0].c+' 100%)'; }
       /* v45.356 · [sistema-visual] · §2.32 · la capa de siniestros espera seguridad-vial.json: mientras llega está
          «ocupada» (aria-busy, indicador del estado común); si la carga falla queda «no disponible» y lo dice,
          en vez de quedarse para siempre en «Cargando…» */
@@ -42317,6 +42573,7 @@ body.dark #situacion-financiera .fin-block-h{color:#7ea4d8}
     if(!st.map||!st.layers[k]) return;
     st.on[k]=!st.on[k];
     if(st.on[k]) st.layers[k].addTo(st.map); else st.map.removeLayer(st.layers[k]);
+    pintarLeyenda();   /* v45.362 · [mapas] · la leyenda del mapa sigue a las capas encendidas */
   }
 
   /* ── nota metodológica + ranking ── */
@@ -43256,6 +43513,8 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
     var u=porId(id), cont=document.getElementById('etFicha');
     if(!cont||!u) return;
     cont.innerHTML=ficha(u);
+    /* v45.362 · [mapas] · la columna fija tiene desplazamiento propio: cada ficha nueva empieza desde arriba */
+    try{ var colF=cont.parentNode; if(colF && colF.classList && colF.classList.contains('et-col-ficha')) colF.scrollTop=0; }catch(e){}
     var sel=document.getElementById('etSel'); if(sel&&sel.value!==id) sel.value=id;
     [].forEach.call(document.querySelectorAll('.et-chip[data-et-id]'), function(b){
       b.setAttribute('aria-pressed', b.getAttribute('data-et-id')===id ? 'true' : 'false');
@@ -43263,6 +43522,17 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
     var lim=document.querySelector('.et-clear'); if(lim) lim.hidden=false;
     if(opts.fly!==false) volar(u);
     if(opts.focus){ try{ cont.focus({preventScroll:true}); }catch(e){} }
+    /* v45.362 · [mapas] · la ficha elegida queda A LA VISTA: si su borde superior está fuera de la ventana (bajo 900 px
+       va debajo del mapa; en pantallas anchas puede quedar abajo si se eligió desde el selector), se desplaza lo
+       justo para mostrarla, sin animación si la persona pidió reducir el movimiento. La barra superior ya la
+       descuenta scroll-padding-top. */
+    try{
+      var r=cont.getBoundingClientRect(), nav=document.getElementById('topnav'), arriba=(nav&&nav.offsetHeight)||0;
+      if(r.top < arriba || r.top > window.innerHeight-80){
+        var quieto=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        cont.scrollIntoView({block:'start', behavior:quieto?'auto':'smooth'});
+      }
+    }catch(e){}
   }
   function limpiar(){
     var cont=document.getElementById('etFicha');
@@ -43357,9 +43627,43 @@ body.dark .et-links a{color:#a9c6e8;border-bottom-color:rgba(169,198,232,.35)}
     f.setAttribute('aria-live','polite'); f.tabIndex=-1;
     /* la ficha va al final del contenido, NO pegada al mapa: el enhancer de fichas
        metodologicas comprueba que su hermano siguiente sea .map-meta y, si se interpone
-       otro nodo, inserta una copia en cada pasada (duplicado observado al verificar). */
-    var pie=sec.querySelector('.sec-fuente');
-    if(pie) sec.insertBefore(f, pie); else sec.appendChild(f);
+       otro nodo, inserta una copia en cada pasada (duplicado observado al verificar).
+       v45.362 · [mapas] · RETÍCULA MAPA + FICHA. La ficha quedaba al final de la sección, después de la ficha
+       completa de Rosario: al elegir un territorio no se veía (medido tras elegir «Rosario Centro» en el selector: su
+       borde superior quedaba 1.722 px bajo el mapa a 1.280 px y 3.690 px a 390 px). Ahora el mapa y la ficha van lado
+       a lado desde 900 px (columnas 62/38) y la ficha queda fija junto al mapa (sticky bajo la barra superior, con alto
+       máximo y desplazamiento propio; requiere body con overflow-x:clip, ver el bloque «AYUDAS DE LOS MAPAS»); bajo
+       900 px se apilan (mapa, ficha metodológica, ficha del territorio) y al elegir se desplaza hasta la ficha. La
+       condición del enhancer se conserva: la columna del mapa contiene la barra de capas, la nota de escala, el
+       contenedor del mapa y, JUSTO DESPUÉS de él, su .map-meta; la ficha del territorio va en la otra columna. La
+       ficha completa de Rosario (sistema gráfico) queda DESPUÉS de la retícula: si ya está, la retícula se inserta
+       antes que ella; si llega después, sistema-grafico.js no encuentra #etFicha como hija directa de la sección y
+       la pone antes de la fuente, es decir, también después de la retícula. */
+    var ret=document.createElement('div'); ret.className='et-reticula';
+    var colM=document.createElement('div'); colM.className='et-col-mapa';
+    var colF=document.createElement('div'); colF.className='et-col-ficha';
+    ret.appendChild(colM); ret.appendChild(colF);
+    var barra=sec.querySelector('.map-controls');
+    sec.insertBefore(ret, (barra && barra.parentNode===sec) ? barra : nota);
+    var meta=wrap.nextElementSibling;
+    if(!(meta && meta.classList && meta.classList.contains('map-meta'))) meta=null;
+    [barra, nota, wrap, meta].forEach(function(n){ if(n) colM.appendChild(n); });
+    colF.appendChild(f);
+    var ros=document.getElementById('ficha-rosario');
+    if(ros && ros.parentNode===sec && (ret.compareDocumentPosition(ros) & Node.DOCUMENT_POSITION_PRECEDING)) sec.insertBefore(ret, ros);
+    /* tope de la ficha fija: la altura real de la barra superior (cambia con el ancho) */
+    function tope(){ var n=document.getElementById('topnav'); ret.style.setProperty('--et-tope', ((n&&n.offsetHeight)||66)+12+'px'); }
+    tope(); window.addEventListener('resize', tope, {passive:true});
+    /* al cambiar el ancho de la columna (paso de una a dos columnas, barra lateral, fuente) Leaflet no se entera
+       solo: se recalcula el tamaño del mapa (el bloque ARRANQUE DE LOS MAPAS ya lo hace en cada «resize» de la
+       ventana; esto cubre los cambios de ancho del contenedor sin «resize») */
+    if('ResizeObserver' in window){
+      var anchoPrevio=0, espera=null;
+      new ResizeObserver(function(ent){
+        var w=Math.round(ent[0].contentRect.width); if(!w || w===anchoPrevio) return; anchoPrevio=w;
+        clearTimeout(espera); espera=setTimeout(function(){ var m=mapaRengo(); if(m){ try{ m.invalidateSize(); }catch(e){} } }, 150);
+      }).observe(wrap);
+    }
     limpiar();
 
     sec.addEventListener('change', function(ev){
@@ -44690,7 +44994,9 @@ body #main-content .leaflet-popup-content .ini-pop li{font-size:12px;line-height
                   + probs.map(function(p){ return '<li>'+esc(p)+'</li>'; }).join('')+'</ul>'
                 : '<div class="ini-pop-t">El catastro no anota problemas para este espacio.</div>')
             + '</div>';
-          L.circleMarker([e.lat,e.lng],{radius:6,fillColor:col,color:'#fff',weight:1.5,opacity:1,fillOpacity:.92})
+          /* v45.362 · [mapas] · anillo que cambia con el tema (clase mapa-punto), como en el mapa del catastro: con la
+             rampa de un tono, el paso más claro necesitaba borde oscuro sobre las teselas claras */
+          L.circleMarker([e.lat,e.lng],{radius:6,fillColor:col,color:'#10233a',weight:1.25,opacity:.75,fillOpacity:.95,className:'mapa-punto'})
             .bindPopup(pop,{maxWidth:280,maxHeight:240}).addTo(map);
         });
         if(bounds.length) map.fitBounds(bounds,{padding:[24,24],maxZoom:14});
@@ -46071,6 +46377,294 @@ body.dark .mapa-leyenda-boton{ color:#E8EDF1; background:#1a2332; border-color:#
   window.addEventListener('hashchange', pasar);
   window.addEventListener('resize', pasar);
   window.addEventListener('load', function(){ pasar(); setTimeout(pasar, 1500); });
+})();
+</script>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.362 · [mapas] · AYUDAS DE LOS MAPAS: FICHAS DE PROCEDENCIA, REGISTRO, TACTO Y PANTALLA COMPLETA
+     (junto con los cambios en el lugar de cada mapa, marcados «v45.362 · [mapas]»)
+     1) FICHAS .map-meta para los tres mapas que no la tenían (#mbhtMap, #mapSC, #tpMap), con el formato de las
+        cuatro existentes (window.mapasMetadata) y declarando solo lo que el código y los datos del portal permiten
+        comprobar. Las cifras se CUENTAN al cargar desde los mismos datos que dibujan cada mapa (MBHT_DISTRITOS,
+        SC_ORGS, CENSO_LOCALIDADES_GEO, ICT_ESPACIOS, territoriosPrioritarios); no se copian a mano.
+     2) REGISTRO en window.discrepanciasDatos de dos diferencias halladas al preparar las fichas y las escalas
+        (población de los distritos del MBHT; dos clasificaciones del ICP en #censo). No se resuelve ninguna.
+     3) AYUDAS TÁCTILES, mapa por mapa y al crearse cada uno (se engancha a window.__pladecoMapEnhance, que el
+        envoltorio de L.map llama con cada instancia): en pantallas táctiles (hover: none y pointer: coarse) un dedo
+        desplaza la PÁGINA y dos dedos mueven y acercan el MAPA —Leaflet ya mueve el mapa al pellizcar con dos dedos;
+        se apaga el arrastre de un dedo—, con un aviso breve «Usa dos dedos para mover el mapa» que no captura toques.
+        Antes, un mapa de 500 px en un teléfono atrapaba el desplazamiento de la página. Con ratón el arrastre no
+        cambia.
+     4) PANTALLA COMPLETA en pantallas táctiles o de 768 px o menos, donde el navegador la ofrece (API Fullscreen;
+        el iPhone no la tiene para elementos y ahí el botón no aparece): un botón de 44 px bajo el zoom amplía el
+        mapa con su leyenda y sus controles (en el catastro, también el panel de estados; en territorios prioritarios,
+        la barra de capas). Dentro de la pantalla completa un dedo mueve el mapa.
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<style id="mapas-ayudas-css">
+/* anillo de los puntos (clase mapa-punto, en círculos y formas de los mapas): oscuro sobre el mapa claro, claro
+   sobre el oscuro, para que los pasos claros de las rampas no se pierdan sobre las teselas. En CSS porque así gana a
+   los atributos de presentación que escribe Leaflet y cambia con el tema sin redibujar. */
+.leaflet-container .mapa-punto{stroke:#10233a;stroke-opacity:.75;stroke-width:1.25px}
+body.dark .leaflet-container .mapa-punto{stroke:#f1f5f9;stroke-opacity:.9}
+/* atribución de OpenStreetMap en tema oscuro: el enlace tomaba el azul claro de los enlaces del tema oscuro sobre
+   el fondo blanco del control (medido 3,2-3,3:1 en #svMap, #mapSC y el mapa del caso); ahora el control va oscuro y
+   el enlace claro */
+body.dark .leaflet-container .leaflet-control-attribution{background:rgba(17,24,39,.88);color:#cbd5e1}
+body.dark .leaflet-container .leaflet-control-attribution a{color:#93c5fd!important}
+/* muestra de color junto a un texto (ventanas, leyendas, tablas) */
+.mapa-muestra{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;flex:none;box-shadow:0 0 0 1px rgba(15,23,42,.35)}
+body.dark .mapa-muestra{box-shadow:0 0 0 1px rgba(241,245,249,.55)}
+.leaflet-popup-content .mapa-muestra{box-shadow:0 0 0 1px rgba(15,23,42,.35)}
+body.dark .ict-section .leaflet-popup-content .mapa-muestra{box-shadow:0 0 0 1px rgba(241,245,249,.55)}
+/* leyendas dentro de los mapas */
+.map-legend .lg-nota{font-size:10.5px;line-height:1.35;color:var(--text2);margin:3px 0 4px}
+.map-legend .lg-n{font-style:normal;color:var(--text2)}
+.map-legend .legend-item svg{flex:none}
+.map-legend .legend-dot.mapa-muestra{margin-right:0}
+.map-legend.sc-leyenda .legend-item{gap:7px}
+/* catastro de espacios públicos (ICT): valor de cada estado, regla de lectura, contador y capas de referencia */
+.ict-mtog .mapa-muestra{margin-right:0}
+.ict-mtog-v{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--text2);font-variant-numeric:tabular-nums;min-width:20px;text-align:right}
+.ict-mc-nota{margin:3px 0 0;font-size:10.5px;line-height:1.35;color:var(--text2)}
+.ict-mc-cuenta{margin:8px 0 0;font-size:11px;font-weight:700;color:var(--text)}
+#ictZonaToggles{display:grid;grid-template-columns:1fr 1fr;column-gap:10px}
+.ict-mc-toggle-row{gap:10px}
+.ict-sp-estado,.ict-sp-val,.ict-mp-estado,.ict-mp-score,.ict-estado-cell,.ict-sv{color:var(--text)}
+.ict-sp-estado::before{content:'';display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;background:var(--cc,transparent);box-shadow:0 0 0 1px rgba(15,23,42,.35)}
+body.dark .ict-sp-estado::before{box-shadow:0 0 0 1px rgba(241,245,249,.55)}
+/* en la cabecera oscura de la matriz, contorno claro: el paso más oscuro (Crítico) desaparecía sobre el azul de la cabecera */
+.ict-pmatrix th .mapa-muestra{margin-right:4px;box-shadow:0 0 0 1.5px rgba(255,255,255,.85)}
+/* sociedad civil: filtros por tipo agrupados en familias, contador y agrupación declarada */
+#mapSCFilters{flex:1 1 100%;max-width:none!important;justify-content:flex-start!important}
+#mapSCLegend{flex-direction:column!important;align-items:flex-start!important;gap:4px!important}
+.sc-filtros{display:flex;flex-direction:column;gap:8px;width:100%}
+.sc-fam{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.sc-fam-t{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--text);min-width:200px}
+.sc-fam-t svg,.sc-agrupa-f svg,.sc-leyenda svg{flex:none;overflow:visible}
+.sc-tipo{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;min-height:32px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font:inherit;font-size:11px;font-weight:600;cursor:pointer;line-height:1.2}
+.sc-tipo:hover{border-color:#17324D}
+.sc-tipo[aria-pressed="true"]{background:#17324D;border-color:#17324D;color:#fff}
+body.dark .sc-tipo:hover{border-color:#9db8e0}
+body.dark .sc-tipo[aria-pressed="true"]{background:#9db8e0;border-color:#9db8e0;color:#0f1b2d}
+.sc-tipo .sc-n{font-variant-numeric:tabular-nums;font-weight:700}
+.sc-acciones{display:flex;flex-wrap:wrap;gap:8px}
+.sc-acciones button{padding:5px 12px;min-height:32px;border-radius:7px;border:1.5px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.sc-acciones button:hover{border-color:var(--text2)}
+.sc-tipo:focus-visible,.sc-acciones button:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+@media (hover:none) and (pointer:coarse){ .sc-tipo,.sc-acciones button{min-height:44px} }
+.sc-estado{margin:0;font-size:12px;font-weight:700;color:var(--text)}
+.sc-agrupa{margin:0;font-size:11.5px;line-height:1.6;color:var(--text2)}
+.sc-agrupa b{color:var(--text)}
+.sc-agrupa-f{display:inline}
+.sc-agrupa-f svg{vertical-align:-1px;margin-right:4px}
+.sc-marca{background:none;border:0}
+.sc-marca svg{display:block;overflow:visible}
+/* «Explora tu territorio»: mapa y ficha lado a lado desde 900 px; la ficha queda fija junto al mapa.
+   Para que «sticky» funcione, ningún ancestro puede ser un contenedor de desplazamiento, y body lo era: su
+   overflow-x:hidden obliga a overflow-y:auto (medido: la columna no quedaba fija y se iba con la página). Con
+   overflow-x:clip el recorte horizontal es el mismo y body deja de ser contenedor de desplazamiento; html sigue con
+   overflow-x:hidden, que es el que evita el desplazamiento lateral de la ventana. Donde clip no existe (Safari
+   anterior a 16) la regla se ignora y todo queda como antes (la ficha, sin fijar). */
+@supports (overflow-x:clip){ body{overflow-x:clip} }
+@media (min-width:900px){
+  #mapa .et-reticula{display:grid;grid-template-columns:minmax(0,62fr) minmax(0,38fr);gap:20px;align-items:start}
+  #mapa .et-col-ficha{position:sticky;top:var(--et-tope,78px);max-height:calc(100vh - var(--et-tope,78px) - 12px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+  #mapa .et-col-ficha .et-ficha{margin-top:0}
+}
+/* ayudas táctiles: aviso breve sobre el mapa (no captura toques) */
+.mapa-aviso-gesto{position:absolute;inset:0;z-index:1001;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;font-size:15px;font-weight:700;line-height:1.3;color:#fff;background:rgba(15,23,42,.7);pointer-events:none;opacity:0;transition:opacity .2s ease}
+.mapa-aviso-gesto.visible{opacity:1}
+@media (prefers-reduced-motion:reduce){ .mapa-aviso-gesto{transition:none} }
+/* botón de pantalla completa (control de Leaflet, bajo el zoom) */
+.leaflet-bar.mapa-ampliar{border:none;box-shadow:none;background:none}
+.mapa-ampliar button{display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;margin:0;border:1px solid rgba(0,0,0,.25);border-radius:7px;background:#fff;color:#17324D;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.mapa-ampliar button svg{width:20px;height:20px;display:block}
+.mapa-ampliar button:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+body.dark .mapa-ampliar button{background:#1a2332;color:#E8EDF1;border-color:#475569}
+/* pantalla completa: el mapa (o el bloque que lo contiene con sus controles) llena la pantalla */
+.leaflet-container:fullscreen{width:100%!important;height:100%!important;border-radius:0!important}
+.leaflet-container:-webkit-full-screen{width:100%!important;height:100%!important;border-radius:0!important}
+.ict-map-wrap:fullscreen{border-radius:0}
+.ict-map-wrap:-webkit-full-screen{border-radius:0}
+.ict-map-wrap:fullscreen .ict-map{height:100%!important}
+.ict-map-wrap:-webkit-full-screen .ict-map{height:100%!important}
+.tp-map-card:fullscreen{display:flex;flex-direction:column;margin:0;border-radius:0;background:var(--card)}
+.tp-map-card:-webkit-full-screen{display:flex;flex-direction:column;margin:0;border-radius:0;background:var(--card)}
+.tp-map-card:fullscreen .tp-map-wrap{flex:1 1 auto;height:auto!important;min-height:50vh}
+.tp-map-card:-webkit-full-screen .tp-map-wrap{flex:1 1 auto;height:auto!important;min-height:50vh}
+</style>
+<script>
+(function(){
+  'use strict';
+  function num(n){ try{ return (+n).toLocaleString('es-CL'); }catch(e){ return ''+n; } }
+  function dec(n, d){ return (+n).toFixed(d==null?2:d).replace('.', ','); }
+
+  /* ── 1 · fichas de procedencia de tres mapas ─────────────────────────────── */
+  var M = window.mapasMetadata;
+  if(M && !M.nodeType){
+    /* #mbhtMap · distritos del MBHT */
+    var D = window.MBHT_DISTRITOS || [];
+    if(!M.mbhtMap && D.length){
+      var manz=0, pob=0; D.forEach(function(d){ manz+=(+d.manz||0); pob+=(+d.pop||0); });
+      M.mbhtMap = {
+        after:'#mbhtMap',
+        tipo:'Mapa de símbolos · índice', titulo:'Mapa Interactivo · BHT por Distrito Censal',
+        muestra:'El BHT, o la dimensión elegida con los botones, de cada uno de los <b>'+D.length+' distritos censales</b>: el <b>promedio de sus manzanas</b> ('+num(manz)+' en total). <b>Color:</b> cinco clases con cortes fijos, iguales para todas las dimensiones (0,70 · 0,55 · 0,45 · 0,35); más oscuro = menor valor. <b>Tamaño:</b> población del distrito (radio de 8 a 32 px, que crece con la raíz cuadrada de la población).',
+        norm:'Índice ya normalizado (0 a 1; 1 = mayor bienestar), no un conteo. El promedio de un distrito no muestra la variación entre sus manzanas: el resumen por distrito publicado en <b>MBHT/mbht_distrito_summary.json</b> trae además mediana, mínimo y máximo.',
+        cobertura:D.length+' de '+D.length+' distritos, un punto por distrito; '+num(manz)+' manzanas con índice (la propia sección indica 826 manzanas censales en la comuna). La población de los '+D.length+' distritos suma <b>'+num(pob)+'</b> habitantes; el Censo 2024 registra 63.620 en la comuna (ver «Población de los distritos del MBHT» en el registro de datos pendientes).',
+        geodesia:'Datum WGS84. Cada distrito es un punto con coordenadas de tres decimales escritas en el portal: <b>posición referencial</b>, no un centroide calculado; el mapa no dibuja los límites de los distritos.',
+        fuente:'Matriz de Bienestar Humano Territorial (MBHT) · metodología UAI y SUBDERE/Subsecretaría de Prevención del Delito · elaboración SECPLAC sobre Censo INE 2024 (conjunto «mbht» del catálogo datasets.json)', corte:'2024/2025 (actualizado en 2025-09)'
+      };
+    }
+    /* #mapSC · organizaciones de la sociedad civil */
+    if(!M.mapSC && typeof SC_ORGS!=='undefined' && SC_ORGS.length){
+      var O=SC_ORGS, suma=0, cero=0, jj=0, grupos={};
+      O.forEach(function(o){ suma+=(+o.a||0); if(!(+o.a)) cero++; if(/^JJVV/.test(o.t)) jj++; var k=o.c.join(','); grupos[k]=(grupos[k]||0)+1; });
+      var rep=Object.keys(grupos).map(function(k){ return grupos[k]; }).filter(function(n){ return n>1; }).sort(function(a,b){ return b-a; });
+      var tipos=Object.keys(O.reduce(function(a,o){ a[o.t]=1; return a; }, {})).length;
+      M.mapSC = {
+        after:'#mapSCLegend',
+        tipo:'Mapa de puntos · símbolo proporcional', titulo:'Mapa de Participación Territorial',
+        muestra:'Las <b>'+O.length+' organizaciones con coordenada</b> que participaron en las sesiones del diagnóstico. <b>Color y forma:</b> cuatro familias que agrupan los '+tipos+' tipos (agrupación del portal, no una clasificación oficial). Al abrir se muestran las juntas de vecinos ('+jj+'); los demás tipos se encienden en los filtros. <b>Tamaño:</b> asistentes a la sesión, en cuatro escalones (5 o menos · 6 a 15 · 16 a 30 · 31 o más).',
+        norm:'Conteo absoluto de asistentes a una sesión: no es una tasa ni el número de socios. En '+cero+' organizaciones el registro es 0 y su ventana muestra «—». Los asistentes de las '+O.length+' suman '+num(suma)+'.',
+        cobertura:O.length+' organizaciones con coordenada; la sección cita 95 organizaciones y el portal no documenta la diferencia. '+(rep.length?('Hay '+rep.length+' puntos compartidos por varias organizaciones ('+rep.join(' y ')+'): no son la sede de cada una, y su ventana lo advierte. '):'')+'Ver «Ubicación de las organizaciones en el mapa de sociedad civil» en el registro de datos pendientes.',
+        geodesia:'Datum WGS84 (coordenadas geográficas).',
+        fuente:'Diagnóstico Sociedad Civil Rengo 2024–2025 · proceso participativo PLADECO 2025–2035', corte:'Septiembre 2024 – abril 2025'
+      };
+    }
+    /* #tpMap · cruce de capas de territorios prioritarios */
+    if(!M.tpMap){
+      var nLoc=0, nIct=0, radio=2.5;
+      try{ nLoc=(typeof CENSO_LOCALIDADES_GEO!=='undefined')?CENSO_LOCALIDADES_GEO.length:0; }catch(e){}
+      try{ nIct=(typeof ICT_ESPACIOS!=='undefined')?ICT_ESPACIOS.filter(function(e){ return typeof e.lat==='number' && typeof e.lng==='number'; }).length:0; }catch(e){}
+      try{ if(window.territoriosPrioritarios && +window.territoriosPrioritarios.joinRadiusKm) radio=+window.territoriosPrioritarios.joinRadiusKm; }catch(e){}
+      if(nLoc){
+        M.tpMap = {
+          after:'.tp-map-card',
+          tipo:'Mapa de capas superpuestas', titulo:'Territorios prioritarios · cruce de capas',
+          muestra:'<b>Capa base:</b> el ICP de las '+nLoc+' localidades (círculo con tamaño según la población y color en cuatro niveles; más oscuro = más vulnerable). <b>Capas de contexto</b>, apagadas al abrir: '+nIct+' espacios del catastro (color por estado, de Excelente a Crítico) y los siniestros de tránsito 2020–2024 por severidad.',
+          norm:'El ICP es un <b>índice normalizado</b> (0 a 1; 1 = máxima vulnerabilidad). El estado del catastro es <b>ordinal</b> (ICT 100, 75, 50, 25 y 0). Los siniestros son <b>conteos absolutos</b>: no hay tasa por exposición (faltan aforos) ni por población.',
+          cobertura:nLoc+' localidades con ICP; '+nIct+' espacios del catastro con coordenada y 903 de los 905 siniestros registrados. En el ranking, espacios y siniestros se atribuyen a la localidad cuyo punto queda a '+dec(radio,1)+' km o menos: <b>contexto provisional</b>, no una atribución administrativa.',
+          geodesia:'Datum WGS84 · un punto por localidad (posición referencial); no se dibujan límites de localidad.',
+          fuente:'ICP: elaboración propia con datos INE Censo 2024 · ICT: Catastro SECPLAC de espacios públicos · Siniestros: CONASET · Carabineros de Chile', corte:'2024 · abril 2026 · 2020–2024'
+        };
+      }
+    }
+    if(typeof window.renderMapasMetadata==='function'){ try{ window.renderMapasMetadata(); }catch(e){} }
+  }
+
+  /* ── 2 · registro de datos pendientes ────────────────────────────────────── */
+  var R = window.discrepanciasDatos;
+  if(R && R.push){
+    var ya=function(id){ return R.some(function(x){ return x && x.id===id; }); };
+    if(!ya('mbht-poblacion-distritos')){
+      R.push({id:'mbht-poblacion-distritos', tema:'Población de los distritos del MBHT', estado:'por validar',
+        valores:['63.620 habitantes: cifra de la portada de #mbht-bienestar, junto a «665 manzanas» (es la población censal de la comuna)',
+                 '58.570 habitantes: suma de la población de los 11 distritos en la tabla y el mapa de #mbht-bienestar y en MBHT/mbht_distrito_summary.json',
+                 '665 manzanas con índice; la propia sección indica que la comuna tiene 826 manzanas censales'],
+        nota:'Las dos cifras no se contradicen si 58.570 es la población de las 665 manzanas con índice y 63.620 la de toda la comuna, pero la sección no lo dice: la portada presenta 665 manzanas y 63.620 habitantes lado a lado, como si fueran el mismo universo. Tampoco consta por qué 161 manzanas quedaron fuera del índice.',
+        resolucion:'Pendiente. Requiere que SECPLAC confirme el universo de población del MBHT (manzanas con índice o comuna completa) y el criterio con que se excluyeron manzanas.'});
+    }
+    if(!ya('censo-niveles-icp')){
+      R.push({id:'censo-niveles-icp', tema:'Niveles de vulnerabilidad del ICP en #censo', estado:'por validar',
+        valores:['Mapa de vulnerabilidad de #censo y ranking de #territorios-prioritarios: cuatro niveles con cortes 0,22 · 0,28 · 0,32 (Bajo, Medio, Alto, Crítico)',
+                 'Tabla de calor de #censo: cinco niveles de «riesgo» con cortes 0,15 · 0,25 · 0,35 · 0,45 (bajo, moderado, medio, alto, crítico), aplicados al ICP y a sus seis dimensiones',
+                 'Las 15 localidades de la tabla (ICP de 0,282 a 0,348) son «medio» en la tabla y «Alto» (10) o «Crítico» (5) en el mapa'],
+        nota:'Un mismo valor del ICP recibe dos nombres de nivel en la misma sección. No consta de dónde salen los cortes de cada escala ni cuál corresponde al análisis. Desde v45.362 las dos usan el mismo tono (terracota; más oscuro o más intenso = más vulnerable), pero conservan sus cortes y sus nombres: no se eligió ninguna.',
+        resolucion:'Pendiente. Requiere que SECPLAC fije una sola clasificación del ICP (cortes y nombres) o declare por qué la tabla usa otra.'});
+    }
+  }
+
+  /* ── 3 y 4 · ayudas táctiles y pantalla completa, mapa por mapa ─────────── */
+  var TACTIL = window.matchMedia ? window.matchMedia('(hover: none) and (pointer: coarse)') : {matches:false};
+  var ANGOSTA = window.matchMedia ? window.matchMedia('(max-width: 768px)') : {matches:false};
+  var ICONO_AMPLIAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  var ICONO_REDUCIR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+  function pcElemento(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
+  function pcSoportada(){
+    var d=document.documentElement;
+    return !!((d.requestFullscreen || d.webkitRequestFullscreen) && (document.fullscreenEnabled || document.webkitFullscreenEnabled));
+  }
+  /* en el catastro se amplía el bloque con su panel de estados y en territorios prioritarios la tarjeta con su barra de
+     capas (en teléfonos ocupan poco: el panel va plegado y la barra en una o dos filas); en sociedad civil, solo el mapa:
+     sus filtros ocupan media pantalla de un teléfono (medido: el mapa quedaba en 422 de 844 px) */
+  function objetivo(cont){ return (cont.closest && cont.closest('.ict-map-wrap, .tp-map-card')) || cont; }
+  function alternar(map){
+    var obj; try{ obj=objetivo(map.getContainer()); }catch(e){ return; }
+    if(pcElemento()){ var s=document.exitFullscreen || document.webkitExitFullscreen; if(s){ try{ var q=s.call(document); if(q && q.catch) q.catch(function(){}); }catch(e){} } return; }
+    var r=obj.requestFullscreen || obj.webkitRequestFullscreen;
+    if(r){ try{ var p=r.call(obj); if(p && p.catch) p.catch(function(){}); }catch(e){} }
+  }
+  function alCambiar(){
+    var el=pcElemento();
+    (window.__leafletMaps || []).forEach(function(m){
+      var cont; try{ cont=m.getContainer(); }catch(e){ return; }
+      var dentro = !!el && (el===cont || el.contains(cont));
+      var b=m.__plBotonAmpliar;
+      if(b){
+        b.setAttribute('aria-pressed', dentro ? 'true' : 'false');
+        b.setAttribute('aria-label', dentro ? 'Salir de pantalla completa' : 'Ver el mapa en pantalla completa');
+        b.title = dentro ? 'Salir de pantalla completa' : 'Pantalla completa';
+        b.innerHTML = dentro ? ICONO_REDUCIR : ICONO_AMPLIAR;
+      }
+      /* dentro de la pantalla completa la página no se desplaza: un dedo mueve el mapa */
+      if(m.__plTactil){ try{ if(dentro) m.dragging.enable(); else m.dragging.disable(); }catch(e){} }
+      if(dentro || m.__plEraPC){ setTimeout(function(){ try{ m.invalidateSize(); }catch(e){} }, 150); }
+      m.__plEraPC = dentro;
+    });
+  }
+  document.addEventListener('fullscreenchange', alCambiar);
+  document.addEventListener('webkitfullscreenchange', alCambiar);
+
+  function ayudas(map){
+    if(!map || map.__plAyudas || typeof L==='undefined') return;
+    var cont; try{ cont=map.getContainer(); }catch(e){ return; }
+    if(!cont) return;
+    map.__plAyudas = true;
+    if(TACTIL.matches){
+      map.__plTactil = true;
+      try{ map.dragging.disable(); }catch(e){}
+      var aviso=document.createElement('div');
+      aviso.className='mapa-aviso-gesto'; aviso.setAttribute('aria-hidden','true');
+      aviso.textContent='Usa dos dedos para mover el mapa';
+      cont.appendChild(aviso);
+      var t=null;
+      cont.addEventListener('touchmove', function(ev){
+        if(!ev.touches || ev.touches.length!==1) return;
+        try{ if(map.dragging.enabled()) return; }catch(e){}
+        aviso.classList.add('visible'); clearTimeout(t);
+        t=setTimeout(function(){ aviso.classList.remove('visible'); }, 1500);
+      }, {passive:true});
+      cont.addEventListener('touchstart', function(ev){
+        if(ev.touches && ev.touches.length>1){ clearTimeout(t); aviso.classList.remove('visible'); }
+      }, {passive:true});
+    }
+    if(pcSoportada() && (TACTIL.matches || ANGOSTA.matches)){
+      var Ctl = L.Control.extend({
+        options:{position:'topleft'},
+        onAdd:function(){
+          var d=L.DomUtil.create('div','leaflet-bar mapa-ampliar');
+          var b=L.DomUtil.create('button','',d);
+          b.type='button'; b.innerHTML=ICONO_AMPLIAR; b.title='Pantalla completa';
+          b.setAttribute('aria-pressed','false'); b.setAttribute('aria-label','Ver el mapa en pantalla completa');
+          L.DomEvent.disableClickPropagation(d);
+          L.DomEvent.on(b,'click',function(ev){ L.DomEvent.stop(ev); alternar(map); });
+          map.__plBotonAmpliar=b;
+          return d;
+        }
+      });
+      try{ map.addControl(new Ctl()); }catch(e){}
+    }
+  }
+  window.__mapaAyudasTactiles = ayudas;
+  /* enganche por instancia: el envoltorio de L.map llama a window.__pladecoMapEnhance con cada mapa nuevo */
+  var original = window.__pladecoMapEnhance;
+  window.__pladecoMapEnhance = function(m){
+    if(typeof original==='function'){ try{ original(m); }catch(e){} }
+    ayudas(m);
+  };
+  try{ (window.__leafletMaps || []).forEach(ayudas); }catch(e){}
 })();
 </script>
 
