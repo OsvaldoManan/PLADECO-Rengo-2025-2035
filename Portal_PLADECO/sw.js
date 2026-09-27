@@ -76,6 +76,7 @@ const STATIC_ASSETS=[
   './Logo-Pladeco-Blanco-560.webp',
   './splash-logo-2026-280.webp',
   './chatbot-dialogo.png',
+  './fonts/Poppins-Regular-latin.woff',
   './fonts/Poppins-Medium-latin.woff',
   './fonts/Poppins-SemiBold-latin.woff',
   './fonts/Poppins-Bold-latin.woff',

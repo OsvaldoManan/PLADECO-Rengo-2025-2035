@@ -44,6 +44,7 @@ html.pv-arranque #hero:not(.pv-completo){visibility:hidden}
 </style>
 <!-- v45.362 · [carga] · Poppins se precarga (los cuatro pesos que usan la barra y el héroe): sin esto el texto se pintaba
      en la fuente de respaldo y, al llegar Poppins, el héroe reflufía (medido: 14 a 27 px de salto en la columna de texto). -->
+<link rel="preload" as="font" type="font/woff" href="fonts/Poppins-Regular-latin.woff" crossorigin>
 <link rel="preload" as="font" type="font/woff" href="fonts/Poppins-Medium-latin.woff" crossorigin>
 <link rel="preload" as="font" type="font/woff" href="fonts/Poppins-SemiBold-latin.woff" crossorigin>
 <link rel="preload" as="font" type="font/woff" href="fonts/Poppins-Bold-latin.woff" crossorigin>
@@ -319,7 +320,12 @@ window.pladecoICP = window.pladecoICP || (function(){
    un archivo por peso (ExtraBold estaba declarado en 700 y tapaba a Bold). Sin caras itálicas: apuntaban a archivos rectos
    e impedían que el navegador inclinara em y cite. Se sirven subconjuntos latinos en WOFF (unos 15 KB por peso
    en lugar de 155 KB): los TTF traían también la escritura devanagari. Se regeneran con fonts/subconjunto_poppins.py. */
-@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Medium-latin.woff') format('woff')}
+/* v45.362 · Poppins Regular (4.004, Google Fonts, licencia OFL; descargada con autorización del encargado el
+   26-09-2026). Hasta aquí el peso 400 apuntaba al archivo Medium, porque Regular no estaba en el equipo, y el texto
+   corriente se veía más grueso que lo previsto. Ahora 400 es Regular y 500 es Medium (antes 500 caía en el mismo
+   archivo Medium declarado como 400, así que lo escrito en 500 no cambia). Mismo subconjunto latino (374 caracteres). */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/Poppins-Regular-latin.woff') format('woff')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/Poppins-Medium-latin.woff') format('woff')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/Poppins-SemiBold-latin.woff') format('woff')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/Poppins-Bold-latin.woff') format('woff')}
 @font-face{font-family:'Poppins';font-style:normal;font-weight:800;font-display:swap;src:url('fonts/Poppins-ExtraBold-latin.woff') format('woff')}
@@ -11196,7 +11202,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
   <div class="ict-tab-panel active" data-ict-panel="mapa">
     <div class="ict-map-wrap">
       <!-- v45.362 · [mapas] · leyenda y filtros del mapa: el estado lleva su valor ICT y la regla de lectura de la
-           rampa; la zona filtra (oculta); macrosectores y círculos de zona son capas de referencia APAGADAS al abrir;
+           rampa; la zona filtra (oculta); macrosectores y círculos de zona son capas de referencia que se ven al abrir
+           (decisión del encargado, 26-09-2026) y se apagan con su casilla;
            un contador anunciado dice cuántos espacios se ven. -->
       <div class="ict-map-ctrls" id="ictMapCtrls" role="group" aria-label="Leyenda y filtros del mapa del catastro">
         <div class="ict-mc-title">Estado &middot; valor ICT</div>
@@ -11207,8 +11214,8 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
         <div id="ictZonaToggles"></div>
         <div class="ict-mc-sep"></div>
         <div class="ict-mc-title">Capas de referencia</div>
-        <label class="ict-mc-toggle-row"><span>Macrosectores</span><input type="checkbox" id="ictMacroToggle" onchange="ictToggleMacro(this.checked)"></label>
-        <label class="ict-mc-toggle-row"><span>C&iacute;rculos y r&oacute;tulos de zona</span><input type="checkbox" id="ictZonaCirclesToggle" onchange="ictToggleZonaCircles(this.checked)"></label>
+        <label class="ict-mc-toggle-row"><span>Macrosectores</span><input type="checkbox" id="ictMacroToggle" checked onchange="ictToggleMacro(this.checked)"></label>
+        <label class="ict-mc-toggle-row"><span>C&iacute;rculos y r&oacute;tulos de zona</span><input type="checkbox" id="ictZonaCirclesToggle" checked onchange="ictToggleZonaCircles(this.checked)"></label>
         <p class="ict-mc-cuenta" id="ictMapCuenta" aria-live="polite"></p>
       </div>
       <div id="ictMap" class="ict-map"></div>
@@ -27283,10 +27290,10 @@ function ictInitMap(){
   ictMapInst=L.map('ictMap',{zoomControl:true}).setView([-34.3980,-70.8450],12);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(ictMapInst);
   // v44.6 · Polígonos macrosectores (al fondo para no tapar marcadores)
-  /* v45.362 · [mapas] · se crean en su grupo, APAGADOS (casilla «Macrosectores» o botón «Perfil Zonal») */
+  /* v45.362 · [mapas] · se crean en su grupo; se encienden al abrir (ver «decisión del encargado» más abajo) y la casilla «Macrosectores» los apaga */
   ictBuildMacroPolygons();
   // Circles (referencias de zona haversiana)
-  /* v45.362 · [mapas] · círculos y rótulos de zona: capa de referencia APAGADA (casilla «Círculos y rótulos de zona») */
+  /* v45.362 · [mapas] · círculos y rótulos de zona: capa de referencia encendida al abrir (casilla «Círculos y rótulos de zona») */
   ictZoneCircles["Centro Urbano"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:2000,color:ICT_ZHEX["Centro Urbano"],weight:2,opacity:.6,fillColor:ICT_ZHEX["Centro Urbano"],fillOpacity:.06,dashArray:'6 4'});
   ictZoneCircles["Periferia Urbana"]=L.circle([ICT_REFS.rengo.lat,ICT_REFS.rengo.lng],{radius:4500,color:ICT_ZHEX["Periferia Urbana"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Periferia Urbana"],fillOpacity:.04,dashArray:'4 6'});
   ictZoneCircles["Rosario_circle"]=L.circle([ICT_REFS.rosario.lat,ICT_REFS.rosario.lng],{radius:4000,color:ICT_ZHEX["Localidades"],weight:1.5,opacity:.5,fillColor:ICT_ZHEX["Localidades"],fillOpacity:.04,dashArray:'4 6'});
@@ -27314,6 +27321,10 @@ function ictInitMap(){
     ictMapMkrs[e.id]=m;m._e=e;
   });
   ictBuildMapToggles();
+  /* v45.362 · [mapas] · decisión del encargado del PLADECO (26-09-2026): los mapas abren con todo encendido, como en la
+     versión publicada. Macrosectores y círculos y rótulos de zona se ven al abrir, detrás de los puntos; sus casillas
+     de «Capas de referencia» los apagan. */
+  try{ ictToggleMacro(true); ictToggleZonaCircles(true); var zcb=document.getElementById('ictZonaCirclesToggle'); if(zcb) zcb.checked=true; }catch(e){}
   // v44.6 · Botón flotante para abrir perfil zonal de macrosectores
   // v45.360 · color de texto propio: en tema oscuro heredaba texto claro sobre su fondo blanco y el rótulo no se veía
   var zonalBtn=L.control({position:'topright'});
@@ -28776,7 +28787,9 @@ function initSocCivMap(){
   var fc=document.getElementById('mapSCFilters');
   var leg=document.getElementById('mapSCLegend');
   var BASE=SC_FAMILIAS[0].tipos.slice();
-  var activos={}; BASE.forEach(function(t){ activos[t]=true; });
+  /* v45.362 · [mapas] · decisión del encargado del PLADECO (26-09-2026): el mapa abre con las 89 organizaciones
+     encendidas, como en la versión publicada; «Solo juntas de vecinos» y los interruptores por tipo filtran desde ahí. */
+  var activos={}; SC_ORGS.forEach(function(o){ activos[o.t]=true; });
   function cuenta(t){ return SC_ORGS.filter(function(o){ return o.t===t; }).length; }
   function aplicar(){
     var n=0;
@@ -46563,7 +46576,7 @@ body.dark .mapa-ampliar button{background:#1a2332;color:#E8EDF1;border-color:#47
       M.mapSC = {
         after:'#mapSCLegend',
         tipo:'Mapa de puntos · símbolo proporcional', titulo:'Mapa de Participación Territorial',
-        muestra:'Las <b>'+O.length+' organizaciones con coordenada</b> del registro de sesiones del diagnóstico (fecha y asistentes de cada sesión). <b>Color y forma:</b> cuatro familias que agrupan los '+tipos+' tipos (agrupación del portal, no una clasificación oficial). Al abrir se muestran las juntas de vecinos ('+jj+'); los demás tipos se encienden en los filtros. <b>Tamaño:</b> asistentes a la sesión, en cuatro escalones (5 o menos · 6 a 15 · 16 a 30 · 31 o más).',
+        muestra:'Las <b>'+O.length+' organizaciones con coordenada</b> del registro de sesiones del diagnóstico (fecha y asistentes de cada sesión). <b>Color y forma:</b> cuatro familias que agrupan los '+tipos+' tipos (agrupación del portal, no una clasificación oficial). Al abrir se muestran todas; «Solo juntas de vecinos» deja las '+jj+' juntas y cada tipo se apaga o enciende en los filtros. <b>Tamaño:</b> asistentes a la sesión, en cuatro escalones (5 o menos · 6 a 15 · 16 a 30 · 31 o más).',
         norm:'Conteo absoluto de asistentes a una sesión: no es una tasa ni el número de socios. En '+cero+' organizaciones el registro es 0 y su ventana muestra «—». Los asistentes de las '+O.length+' suman '+num(suma)+'.',
         cobertura:O.length+' organizaciones con coordenada; la sección cita 95 organizaciones y el portal no documenta la diferencia. '+(rep.length?('Hay '+rep.length+' puntos compartidos por varias organizaciones ('+rep.join(' y ')+'): no son la sede de cada una, y su ventana lo advierte. '):'')+'Ver «Ubicación de las organizaciones en el mapa de sociedad civil» en el registro de datos pendientes.',
         geodesia:'Datum WGS84 (coordenadas geográficas).',
