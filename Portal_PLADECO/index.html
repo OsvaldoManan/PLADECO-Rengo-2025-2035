@@ -29888,10 +29888,31 @@ function cmdCapituloHtml(c){
     '<span class="cmd-sec-text"><span class="cmd-sec-name">Capítulo '+cmdEsc(c.roman||'')+' · '+cmdEsc(c.name)+'</span>'+(c.desc?'<span class="cmd-sec-desc">'+cmdEsc(c.desc)+'</span>':'')+'</span>'+
     '<span class="cmd-sec-cat">'+c.units.length+' secciones</span></div>';
 }
+/* v45.362 · [interaccion] · revisión independiente · la capa retirada (#searchOverlay) rotulaba cada resultado del texto con
+   su capítulo (.sr-cat, lo que el asistente llama «la categoría temática de cada resultado»); la paleta los listaba sin él.
+   Vuelve como la etiqueta de la derecha que ya llevan las secciones por nombre («Capítulo III»), tomada del motor de vistas;
+   sin motor (?vista=completa) no se muestra, y hasta 480 px tampoco (ver la regla junto a los extractos, en «CAPAS Y
+   CONTROLES GLOBALES»). Medido en Edge sin interfaz a 1440 px con diez búsquedas: 180 de 187 resultados con etiqueta; los
+   otros 7 son secciones de la portada (#ejes-prioridades, #desafios-plan, #intro-rutas), fuera de los capítulos. La
+   paleta con los resultados del texto a la vista, sin fallos de contraste en claro ni en oscuro. */
+function cmdCapituloDe(id){
+  try{
+    if(!(window.PV&&PV.units)) return '';
+    const el=document.getElementById(id);
+    for(var i=0;i<PV.units.length;i++){
+      var u=PV.units[i];
+      var dentro=u.id===id||(el&&u.els&&u.els.some(function(x){ return x!==el&&x.contains&&x.contains(el); }));   /* también secciones anidadas */
+      if(dentro) return (u.chapter&&u.chapter.roman)?'Capítulo '+u.chapter.roman:'';
+    }
+  }catch(e){}
+  return '';
+}
 function cmdTextoHtml(r){
+  const cap=cmdCapituloDe(r.id);
   return '<div class="cmd-item cmd-texto" role="option" onclick="goToSection(\''+r.id+'\');closeCmdPalette()">'+
     '<span class="cmd-sec-icon"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-doc"></use></svg></span>'+
-    '<span class="cmd-sec-text"><span class="cmd-sec-name">'+cmdEsc(r.title)+'</span>'+(r.snippet?'<span class="cmd-snip">'+cmdSnip(r.snippet)+'</span>':'')+'</span></div>';
+    '<span class="cmd-sec-text"><span class="cmd-sec-name">'+cmdEsc(r.title)+'</span>'+(r.snippet?'<span class="cmd-snip">'+cmdSnip(r.snippet)+'</span>':'')+'</span>'+
+    (cap?'<span class="cmd-sec-cat">'+cmdEsc(cap)+'</span>':'')+'</div>';
 }
 function cmdAccion(id){
   const a=CMD_ACCIONES.filter(function(x){ return x.id===id; })[0];
@@ -32313,6 +32334,26 @@ var TOUR_STEPS=[
   {sel:'.chatbot-fab',title:'Asistente Contigo Rengo',text:'85 temas respondidos automáticamente: PLADECO, Censo, índices, FODA, sociedad civil, glosario y mucho más.'},
   {sel:'#institucional',title:'¡Listo!',text:'Has completado el tour. Explora libremente, usa el buscador y vuelve cuando quieras. Tu opinión nos importa: usa el "Reporte Ciudadano" en la sección Participa.'}
 ];
+/* v45.362 · [interaccion] · revisión independiente · dos afirmaciones del tour que el grupo dejó para validación editorial
+   quedan en el registro de datos pendientes (window.discrepanciasDatos, tabla visible al final de #metodologia), como pide
+   el encargo para las inconsistencias de información. No se cambió el texto del tour. Idempotente por id. Comprobado: el
+   primer paso apunta a #planStatus, que no existe en el documento (el tour muestra la nota al centro, sin señalar nada), y
+   CHATBOT_QA declara 109 entradas, a las que el bloque de preguntas frecuentes suma 14 al cargar: 123, todas con varias
+   claves (medido en Edge sin interfaz; el informe del grupo daba solo las 109 escritas). */
+(function(){
+  var D=window.discrepanciasDatos; if(!D||!D.push) return;
+  function hay(id){ for(var i=0;i<D.length;i++){ if(D[i]&&D[i].id===id) return true; } return false; }
+  if(!hay('tour-panel-avance')) D.push({id:'tour-panel-avance', tema:'Tour guiado · paso «¿Cómo va el plan?»', estado:'por validar',
+    valores:['Primer paso del tour guiado: «Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones»',
+             'El paso señala el elemento #planStatus, que no existe en el portal: la nota aparece al centro de la pantalla sin indicar ningún panel'],
+    nota:'El paso describe un panel de seis indicadores sobre el avance del plan que se actualizaría con el progreso de las acciones, y el portal no identifica a qué panel se refiere. No se modificó el texto del paso.',
+    resolucion:'Pendiente. Requiere confirmar a qué panel se refiere y si su información se actualiza con el avance de las acciones; si no existe, retirar o reescribir el paso.'});
+  if(!hay('tour-temas-asistente')) D.push({id:'tour-temas-asistente', tema:'Tour guiado · temas del asistente', estado:'por validar',
+    valores:['Sexto paso del tour guiado: «85 temas respondidos automáticamente»',
+             'Base de respuestas del asistente (CHATBOT_QA): 109 entradas escritas, más 14 preguntas frecuentes que se agregan al cargar el portal (123 en total)'],
+    nota:'La cifra del tour no coincide con la cantidad de entradas del asistente, y no está definido qué cuenta como «tema» (cada entrada agrupa varias formas de preguntar lo mismo). No se modificó el texto del paso.',
+    resolucion:'Pendiente. Requiere definir el criterio y fijar la cifra, o retirarla del paso.'});
+})();
 var tourIdx=0;
 function startTour(){
   tourIdx=0;
@@ -39726,6 +39767,9 @@ html body #btnTop.back-to-top:not(.show){visibility:hidden;pointer-events:none}
 .cmd-item.cmd-texto{align-items:flex-start}
 .cmd-item .cmd-snip{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.45;color:var(--text2);white-space:normal}
 .cmd-item mark{background:rgba(245,146,29,.25);color:var(--text);font-weight:700;padding:0 2px;border-radius:3px}
+/* revisión independiente · etiqueta de capítulo de los resultados del texto (cmdTextoHtml): hasta 480 px se omite, porque
+   a 390 px ocupaba unos 74 de los 290 px de la fila y recortaba el título a unas 24 letras */
+@media (max-width:480px){ .cmd-item.cmd-texto .cmd-sec-cat{display:none} }
 /* el cuadro «Atajos de teclado» (z-index 9100) quedaba bajo el aviso de instalación (9988), el botón «Volver arriba»
    (9989) y el del asistente (9997); como las demás ventanas modales del portal (visores, buscador), va sobre ellos */
 html body .kbd-cheat{z-index:10000}
