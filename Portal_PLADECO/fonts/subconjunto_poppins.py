@@ -1,4 +1,4 @@
-# Genera las versiones web de Poppins que usa el portal (v45.358).
+# Genera las versiones web de Poppins que usa el portal (v45.358; Regular agregado en v45.362).
 #
 # Los TTF originales pesan unos 155 KB cada uno porque traen, además del alfabeto latino, la
 # escritura devanagari (conjuntos y reglas de composición). El portal solo usa caracteres latinos,
@@ -15,7 +15,7 @@ import sys
 from fontTools.ttLib import TTFont
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
-PESOS = ['Medium', 'SemiBold', 'Bold', 'ExtraBold']
+PESOS = ['Regular', 'Medium', 'SemiBold', 'Bold', 'ExtraBold']
 
 
 def es_latino(cp):
