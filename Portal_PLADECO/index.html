@@ -21437,6 +21437,10 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
         <li><kbd>/</kbd> Buscar secciones</li>
         <li><kbd>T</kbd> Ir al inicio</li>
         <li><kbd>Esc</kbd> Cerrar modales</li>
+        <!-- v45.362 · [interaccion] · revisión independiente · D, / y T son atajos de una sola tecla: desde este grupo vienen
+             apagados (WCAG 2.1.4) y se encienden con el interruptor del cuadro «Atajos de teclado». El pie los seguía listando
+             como siempre activos (medido en Edge sin interfaz: con los atajos apagados, «t» y «d» no hacen nada). -->
+        <li><span>D, / y T vienen desactivados: se activan en <kbd>Ctrl+K</kbd> → «Atajos de teclado».</span></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -24362,6 +24366,7 @@ function renderGaleria(){
   if(counter) counter.textContent='📷 '+GALERIA_FOTOS.length+' registros fotográficos · haz clic en una imagen para ampliar';
 }
 function openLightbox(idx){
+  window._grafLightboxActive=false; window._cartoLightboxActive=false;   /* v45.362 · [interaccion] · revisión · conjunto de la galería (ver _lbConjunto) */
   lightboxIdx=idx;
   const lb=document.getElementById('lightbox');
   const img=document.getElementById('lightboxImg');
@@ -24395,12 +24400,23 @@ document.addEventListener('keydown',function(e){
     if(e.key==='End'){e.preventDefault();goMvvViewer(MVV_IMGS.length-1);}
   }
 });
+/* v45.362 · [interaccion] · revisión independiente · UN VISOR, TRES CONJUNTOS. #lightbox muestra la galería (#galeria y el
+   collage de #historia), los gráficos y las cartografías de #documentos. Solo las flechas del teclado elegían el conjunto
+   abierto: los botones ‹ › de la pantalla y el deslizamiento táctil (navLightbox) recorrían siempre la galería, el
+   contador (updateLightboxUI) contaba siempre las fotos, y las marcas de gráficos o cartografías solo se borraban con Esc.
+   No se notaba porque el visor no se abría fuera de #faq (ver «CAPAS GLOBALES» en el motor de vistas); ahora se ve desde
+   todas las vistas. Medido en Edge sin interfaz a 1440 px antes de este arreglo: en «Visión General» de #documentos, con
+   el gráfico 6/7 abierto, «›» mostraba «Registro proceso PLADECO #7 (7/16)» y el contador quedaba vacío y luego en
+   «7 / 16»; tras cerrar con «×», la flecha → en una foto de #galeria mostraba un gráfico. Ahora cada apertura fija su
+   conjunto, y botones, flechas, deslizamiento y contador usan el mismo (_lbConjunto). */
+function _lbConjunto(){ return window._cartoLightboxActive?_cartoLBItems:window._grafLightboxActive?_grafLBItems:GALERIA_FOTOS; }
 function navLightbox(dir){
-  lightboxIdx=(lightboxIdx+dir+GALERIA_FOTOS.length)%GALERIA_FOTOS.length;
+  const items=_lbConjunto(); if(!items.length) return;
+  lightboxIdx=(lightboxIdx+dir+items.length)%items.length;
   const img=document.getElementById('lightboxImg');
   const cap=document.getElementById('lightboxCaption');
-  img.src=GALERIA_FOTOS[lightboxIdx].src;
-  cap.textContent=GALERIA_FOTOS[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+GALERIA_FOTOS.length+')';
+  img.src=items[lightboxIdx].src;
+  cap.textContent=items[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+items.length+')';
 }
 // ── MVV IMAGE VIEWER ──
 const MVV_IMGS=[
@@ -24694,6 +24710,7 @@ function openGrafLightbox(idx,cat){
   lb.classList.add('open');
   document.body.style.overflow='hidden';
   window._grafLightboxActive=true;
+  window._cartoLightboxActive=false; if(typeof updateLightboxUI==='function') updateLightboxUI();   /* v45.362 · [interaccion] · revisión · ver _lbConjunto */
 }
 // ── GRÁFICOS INTERACTIVOS (datos de PNGs estáticos) ──
 function renderGrafInteractive(){
@@ -24910,6 +24927,7 @@ function openCartoLightbox(idx,cat){
   lb.classList.add('open');
   document.body.style.overflow='hidden';
   window._cartoLightboxActive=true;
+  window._grafLightboxActive=false; if(typeof updateLightboxUI==='function') updateLightboxUI();   /* v45.362 · [interaccion] · revisión · ver _lbConjunto */
 }
 // ── UNIFIED LIGHTBOX KEYBOARD HANDLER (replaces 4 separate keydown listeners) ──
 document.addEventListener('keydown',function(e){
@@ -24926,11 +24944,9 @@ document.addEventListener('keydown',function(e){
   var lb=document.getElementById('lightbox');
   if(!lb||!lb.classList.contains('open'))return;
   if(e.key==='Escape'){closeLightbox();window._grafLightboxActive=false;window._cartoLightboxActive=false;return;}
-  // Determine active dataset
-  var items=window._cartoLightboxActive?_cartoLBItems:window._grafLightboxActive?_grafLBItems:GALERIA_FOTOS;
-  lightboxIdx=(lightboxIdx+dir+items.length)%items.length;
-  document.getElementById('lightboxImg').src=items[lightboxIdx].src;
-  document.getElementById('lightboxCaption').textContent=items[lightboxIdx].titulo+' ('+(lightboxIdx+1)+'/'+items.length+')';
+  /* v45.362 · [interaccion] · revisión · la flecha va por navLightbox, que usa el conjunto abierto (_lbConjunto) y, con su
+     envoltura de «LIGHTBOX SWIPE + ENHANCED COUNTER», pone al día también el contador (antes solo el pie y la imagen) */
+  navLightbox(dir);
 });
 
 // ── LÍNEA DE TIEMPO ──
@@ -30111,7 +30127,7 @@ navLightbox=function(dir){
 function updateLightboxUI(){
   const counter=document.getElementById('lightboxCounter');
   const progress=document.getElementById('lightboxProgress');
-  const total=GALERIA_FOTOS.length;
+  const total=(typeof _lbConjunto==='function'?_lbConjunto():GALERIA_FOTOS).length;   /* v45.362 · [interaccion] · revisión · el conjunto abierto, no siempre la galería */
   if(counter) counter.textContent=(lightboxIdx+1)+' / '+total;
   if(progress) progress.style.width=((lightboxIdx+1)/total*100)+'%';
 }
@@ -30471,9 +30487,12 @@ const CHATBOT_QA=[
       TMDA e IIGAM, que ahora tienen tooltip. */
    ans:'**Glosario automático de siglas:**\n\n🔍 **¿Cómo funciona?** En cada sección, la primera vez que aparece una sigla técnica queda subrayada con puntos verdes. Pasa el mouse, tócala o llega a ella con la tecla Tab para ver su nombre y su definición.\n\n📖 **De dónde salen las definiciones:** de los 70 términos de la sección Glosario PLADECO y de siglas de uso público que no están en esa sección (por ejemplo CPLT, SLEP, NNA, INE, KPI, CAGR y TMDA). El nombre completo de IIGAM está pendiente de confirmación por SECPLAC.\n\n📚 **Categorías:**\n\n📋 **Instrumentos:** PLADECO, BIP, FNDR, FRIL, PMU, PMB, ERD\n\n🏛️ **Direcciones Municipales:** SECPLAC, DIDECO, DOM, DAO, DAEM\n\n⚙️ **Servicios Públicos:** MIDESO, MINVU, INDAP, SENCE, SENAMA, SENDA, SUBDERE, SUBTEL, GORE, SERCOTEC, SLEP\n\n🏥 **Salud:** CESFAM, APS, SAR, SAPU, FONASA\n\n👥 **Demografía:** NNA, AM, PcD, VIF\n\n📊 **Índices censales:** IVSH, IDDC, IBDT, IVFT, ICHT, IPSB, **ICP**, ICT, ICVU\n\n📈 **Indicadores y tasas:** KPI, CAGR, TMDA, IIGAM\n\n🔬 **Metodologías:** SIVUST, ISMT, CIUO, CPV, INE, SNA, FODA\n\n🌐 **Territorio y sociedad civil:** COSOC, UV, JJVV, APR\n\nTodos los tooltips se activan también con foco de teclado (Tab) para accesibilidad.'},
 
+  /* v45.362 · [interaccion] · revisión independiente · la tecla D ya no actúa «en cualquier momento»: los atajos de una sola
+     tecla vienen apagados (WCAG 2.1.4) y se encienden en el cuadro «Atajos de teclado». Solo se corrigió esa frase; el resto
+     de esta respuesta (selector en el sidebar, botón flotante) describe controles que ya no existen y queda para revisión. */
   {keys:['tema oscuro','modo claro','dark mode','apariencia','cambiar tema','noche dia','color portal'],sec:null,cat:null,
    follow:['Buscador del portal','Mi PLADECO favoritos','FAQ','7 grupos temáticos'],
-   ans:'**Modo Claro / Oscuro:**\n\n🌗 **3 formas de cambiar el tema:**\n\n1. 🌗 **Selector visible** en el sidebar (parte inferior, encima del footer):\n   • Botón segmentado «☀️ Claro / 🌙 Oscuro»\n   • Estado actual destacado en verde (claro) o indigo (oscuro)\n\n2. 🌙 **Botón flotante** en esquina inferior derecha (cambia entre ☾/☀)\n\n3. ⌨️ **Atajo de teclado** `D` (presiona D en cualquier momento)\n\n💾 **Persistencia:** tu preferencia se guarda en `localStorage` y se recupera automáticamente al volver a visitar el portal.\n\n🤖 **Auto-detección:** si nunca elegiste manualmente, el portal respeta la preferencia del sistema operativo (`prefers-color-scheme`).'},
+   ans:'**Modo Claro / Oscuro:**\n\n🌗 **3 formas de cambiar el tema:**\n\n1. 🌗 **Selector visible** en el sidebar (parte inferior, encima del footer):\n   • Botón segmentado «☀️ Claro / 🌙 Oscuro»\n   • Estado actual destacado en verde (claro) o indigo (oscuro)\n\n2. 🌙 **Botón flotante** en esquina inferior derecha (cambia entre ☾/☀)\n\n3. ⌨️ **Atajo de teclado** `D` (los atajos de una sola tecla vienen desactivados: se activan en `Ctrl+K` → «Atajos de teclado»)\n\n💾 **Persistencia:** tu preferencia se guarda en `localStorage` y se recupera automáticamente al volver a visitar el portal.\n\n🤖 **Auto-detección:** si nunca elegiste manualmente, el portal respeta la preferencia del sistema operativo (`prefers-color-scheme`).'},
 
   {keys:['buscador','buscar portal','ctrl k','cmd k','find','search','encontrar','buscar texto'],sec:null,cat:null,
    follow:['Mi PLADECO favoritos','Tema claro/oscuro','FAQ','7 grupos temáticos'],
@@ -31972,8 +31991,8 @@ function renderPortalSearchResults(results,query){
 
 /* v45.362 · [interaccion] · la capa #searchOverlay se retiró: su búsqueda en el texto vive en la paleta #cmdPalette, que es
    el único buscador. Estas dos funciones se conservan (las usan el botón flotante #searchFab y «Buscar en el portal»
-   del cierre) y abren o cierran la paleta. El dibujo en tandas que se adelantaba aquí corre ahora con el primer carácter
-   escrito en la paleta (searchCmd). */
+   del cierre) y abren o cierran la paleta. El dibujo en tandas que se adelantaba aquí corre ahora al abrir la paleta
+   (_cmdPrepararTexto, 150 ms después de openCmdPalette; ver «UN SOLO BUSCADOR»). */
 function openPortalSearch(){
   if(typeof openCmdPalette==='function') openCmdPalette();
 }
