@@ -46991,6 +46991,11 @@ body.dark .mapa-ampliar button{background:#1a2332;color:#E8EDF1;border-color:#47
   window.__pladecoMapEnhance = function(m){
     if(typeof original==='function'){ try{ original(m); }catch(e){} }
     ayudas(m);
+    /* v45.363 · revisión de mapas (02-10-2026) · NOMBRE ACCESIBLE AL CREARSE CADA MAPA. labelCharts (que da a cada
+       mapa role="region" y su aria-label) solo corría tras 'load', un clic o un hashchange; los mapas se crean al abrir
+       su vista, así que uno creado más tarde (teléfono lento, Atrás o PV.go sin clic) quedaba sin rol ni nombre:
+       medido a 390 px, #mapContainer con role null y aria-label vacío. Ahora se llama al crearse cada mapa. */
+    try{ if(typeof window.__labelCharts==='function') setTimeout(window.__labelCharts, 0); }catch(e){}
   };
   try{ (window.__leafletMaps || []).forEach(ayudas); }catch(e){}
 })();
