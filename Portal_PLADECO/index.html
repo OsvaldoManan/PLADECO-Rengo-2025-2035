@@ -7254,6 +7254,11 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
     var ticking=false;
     function syncActive(){
       ticking=false;
+      /* v45.362 · [componentes] · la marca de la barra la pone el motor de vistas (syncTopnavActive, aria-current). Esta
+         función buscaba la sección activa en .sidebar-nav, que ya no existe (v45.74): en cada desplazamiento no
+         encontraba nada y borraba la pestaña activa (medido: tras un scroll, 0 .tn-tab.active). Sin barra lateral o
+         con el motor encendido no hace nada. */
+      if(document.body.classList.contains('pv-on')||!document.querySelector('.sidebar-nav')) return;
       var act=document.querySelector('.sidebar-nav a.active');
       var idx=-1;
       if(act&&act.closest){
@@ -7337,11 +7342,14 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
 
 <!-- ═══ CHATBOT PANEL (outside nav to fix mobile position:fixed) ═══ -->
 <div class="chatbot-overlay" id="chatOverlay"></div>
-<div class="chatbot-panel" id="chatPanel">
+<!-- v45.362 · [componentes] · el panel es un diálogo modal (velo + centrado): role, aria-modal y nombre; los mensajes son un
+     registro (role="log": el lector anuncia cada respuesta nueva). Escape, foco inicial (#chatInput), trampa de Tab y
+     retorno del foco al botón que lo abrió los pone la base común de diálogos. -->
+<div class="chatbot-panel" id="chatPanel" role="dialog" aria-modal="true" aria-labelledby="chatTitulo">
   <div class="chatbot-header">
     <img src="chatbot-dialogo.png" alt="Asistente PLADECO Rengo" width="38" height="38" loading="lazy" decoding="async">
     <div class="chatbot-header-info">
-      <h4>Asistente PLADECO Rengo</h4>
+      <h4 id="chatTitulo">Asistente PLADECO Rengo</h4>
       <span>&#9679; En l&iacute;nea &mdash; Datos Censo 2024</span>
     </div>
     <button type="button" class="chatbot-close" onclick="event.preventDefault();event.stopPropagation();if(typeof window.toggleChatbot==='function')window.toggleChatbot();return false;" aria-label="Cerrar el chat" title="Cerrar chat (ESC)">&times;</button>
@@ -7349,7 +7357,7 @@ body.dark .tn-drop a:hover,body.dark .tn-mlinks a:hover{color:#4ade80}
   <div class="chatbot-disclaimer" role="note"><strong>Respuestas referenciales</strong> generadas automáticamente. La fuente oficial es el documento PLADECO; verifica los datos críticos.</div>
   <!-- v45.356 · [flotantes] · §2.21 · solo visible con html.asistente-oculto: deshace el cierre del botón flotante -->
   <div class="chatbot-restaurar" id="chatRestaurar"><span>El botón flotante del asistente está oculto.</span><button type="button" id="chatRestaurarFab">Volver a mostrarlo</button></div>
-  <div class="chatbot-messages" id="chatMessages"></div>
+  <div class="chatbot-messages" id="chatMessages" role="log" aria-live="polite" aria-relevant="additions"></div>
   <div class="chatbot-suggestions" id="chatSugg"></div>
   <div class="chatbot-input-row">
     <input type="text" id="chatInput" placeholder="Pregunta sobre Rengo..." autocomplete="off" aria-label="Escribe tu pregunta sobre el PLADECO">
@@ -10804,7 +10812,7 @@ body.dark #situacion-financiera .fin-alerta b{color:#fca5a5}
 </section>
 
 <!-- Modal -->
-<div class="modal-overlay" id="modal" onclick="this.classList.remove('show')">
+<div class="modal-overlay" id="modal" onclick="this.classList.remove('show')" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
   <button class="modal-close" onclick="document.getElementById('modal').classList.remove('show')">&times;</button>
   <img id="modal-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" alt="Imagen ampliada del contenido seleccionado">
 </div>
@@ -12069,7 +12077,22 @@ body.dark .sv-tag{background:rgba(46,111,149,.22);color:#8fb6d6}body.dark .sv-ta
     fetch('seguridad-vial.json').then(function(r){return r.json();}).then(function(d){
       DATA=d;renderKPIs();charts();legend();cartera();try{renderAnalisis();}catch(e){console.warn('[sv] analisis:',e);}
       waitLeaflet(function(){try{buildMap();bindMapControls();}catch(e){console.warn('[sv] mapa:',e);}});
-    }).catch(function(e){console.warn('[sv] datos:',e);});
+    }).catch(function(e){
+      console.warn('[sv] datos:',e);
+      /* v45.362 · [componentes] · si seguridad-vial.json no llega, el error iba solo a la consola y la sección quedaba con
+         sus indicadores en blanco. Ahora lo dice en la sección (role="alert") y ofrece reintentar (init es idempotente
+         por «inited»: se repone para que el reintento vuelva a pedir el archivo). Comprobado bloqueando la URL. */
+      try{
+        var kp=document.getElementById('svKpis');
+        if(kp&&!document.getElementById('svAvisoCarga')){
+          var av=document.createElement('div'); av.id='svAvisoCarga'; av.className='pv-aviso-carga'; av.setAttribute('role','alert');
+          av.innerHTML='<p>No se pudieron cargar los datos de siniestralidad (seguridad-vial.json). Los indicadores, gr&aacute;ficos y el mapa de esta secci&oacute;n se mostrar&aacute;n cuando el archivo est&eacute; disponible.</p>';
+          var b=document.createElement('button'); b.type='button'; b.className='btn btn--contorno'; b.textContent='Reintentar';
+          b.onclick=function(){ av.remove(); inited=false; init(); };
+          av.appendChild(b); kp.parentNode.insertBefore(av,kp);
+        }
+      }catch(_){}
+    });
   }
   /* Disparadores robustos: el motor de vistas oculta la sección (display:none) hasta
      navegar, por lo que IntersectionObserver no basta. Init es idempotente. */
@@ -15413,11 +15436,19 @@ body.dark .prosp-disclaimer a{color:#8fb6d6}
   function tk(v,f){try{var c=getComputedStyle(document.body).getPropertyValue(v).trim();return c||f;}catch(e){return f;}}
   function nf(v){return String(v).replace('.',',');}
 
+  /* v45.362 · [componentes] · las pestañas se pintan una vez y después solo cambian de estado: antes cada elección
+     volvía a escribir el innerHTML y destruía el botón que tenía el foco (con teclado, el foco caía a <body>).
+     Los roles, aria-controls y las flechas los pone el componente común de pestañas (bloque [componentes]). */
   function renderTabs(){
     var el=document.getElementById('prospTabs'); if(!el) return;
-    el.innerHTML=ESCENARIOS.map(function(v,i){
-      return '<button type="button" class="prosp-tab'+(i===active?' active':'')+'" role="tab" aria-selected="'+(i===active?'true':'false')+'" data-i="'+i+'" aria-label="Ver escenarios de: '+v.nombre+'">'+v.nombre+'</button>';
-    }).join('');
+    var btns=el.querySelectorAll('.prosp-tab');
+    if(btns.length!==ESCENARIOS.length){
+      el.innerHTML=ESCENARIOS.map(function(v,i){
+        return '<button type="button" class="prosp-tab'+(i===active?' active':'')+'" role="tab" aria-selected="'+(i===active?'true':'false')+'" data-i="'+i+'" aria-label="Ver escenarios de: '+v.nombre+'">'+v.nombre+'</button>';
+      }).join('');
+      return;
+    }
+    btns.forEach(function(b,i){ b.classList.toggle('active',i===active); b.setAttribute('aria-selected',i===active?'true':'false'); });
   }
 
   function renderChart(){
@@ -19373,6 +19404,9 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
      agrupamiento por vistas (antes quedaban dentro de la vista #faq y no se veían al abrirlas desde otra; ver el motor de vistas) -->
 <div class="lightbox" id="lightbox" data-pv-global onclick="closeLightbox(event)" role="dialog" aria-modal="true" aria-label="Visor de imagen ampliada">
   <button class="lightbox-close" onclick="closeLightbox()" aria-label="Cerrar visor (ESC)" title="Cerrar (ESC)">&#10005;</button>
+  <!-- v45.362 · [componentes] · descarga del original abierto (foto, gráfico o cartografía): href y nombre de archivo los pone
+       updateLightboxUI con el conjunto abierto (_lbConjunto); el visor es global, así que sirve desde cualquier vista -->
+  <a id="lightboxDl" class="lightbox-dl" download href="#" onclick="event.stopPropagation()" aria-label="Descargar la imagen abierta"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-download"></use></svg> Descargar</a>
   <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)" aria-label="Imagen anterior" title="Anterior (&larr;)">&#10094;</button>
   <img id="lightboxImg" src="" alt="Foto galer&iacute;a">
   <button class="lightbox-nav lightbox-next" onclick="navLightbox(1)" aria-label="Imagen siguiente" title="Siguiente (&rarr;)">&#10095;</button>
@@ -19383,7 +19417,9 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 </div>
 
 <!-- Lightbox Diagramas -->
-<div class="lightbox" id="diagLightbox" data-pv-global onclick="closeDiagLightbox(event)">
+<!-- v45.362 · [componentes] · es un diálogo modal como #lightbox: role, aria-modal y nombre (foco, trampa de Tab, Escape y
+     retorno del foco los pone la base común de diálogos, al final del documento) -->
+<div class="lightbox" id="diagLightbox" data-pv-global onclick="closeDiagLightbox(event)" role="dialog" aria-modal="true" aria-label="Visor de diagramas">
   <button class="lightbox-close" onclick="closeDiagLightbox()" aria-label="Cerrar">&#10005;</button>
   <a id="diagDlBtn" class="lightbox-dl" download href="#" onclick="event.stopPropagation()"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-download"></use></svg> Descargar JPG</a>
   <button class="lightbox-nav lightbox-prev" onclick="navDiagLightbox(-1)" aria-label="Anterior">&#10094;</button>
@@ -19395,6 +19431,8 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 <!-- ═══ MVV IMAGE VIEWER · v45.166 popup accesible + keyboard nav ═══ -->
 <div class="mvv-viewer" id="mvvViewer" data-pv-global onclick="if(event.target===this)closeMvvViewer()" role="dialog" aria-modal="true" aria-labelledby="mvvViewerCap" aria-hidden="true">
   <button class="lightbox-close" onclick="closeMvvViewer()" aria-label="Cerrar visor (ESC)" title="Cerrar (ESC)" type="button">&#10005;</button>
+  <!-- v45.362 · [componentes] · descarga del original abierto (href y nombre los pone loadMvvImage) -->
+  <a id="mvvDl" class="lightbox-dl" download href="#" onclick="event.stopPropagation()" aria-label="Descargar la imagen abierta"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-download"></use></svg> Descargar</a>
   <button class="mvv-nav mvv-nav-prev" onclick="navMvvViewer(-1)" aria-label="Imagen anterior" title="Anterior (&larr;)" type="button">&#10094;</button>
   <div class="mvv-viewer-img-wrap" id="mvvViewerImgWrap">
     <span class="mvv-viewer-loader" aria-hidden="true"></span>
@@ -21771,7 +21809,7 @@ body.dark #inversion-bip-sni .bip-eje-tag{color:#7ea4d8}
 </div>
 
 <!-- v45.129 · FAB de accesibilidad eliminado para evitar duplicidad con el icono al lado de la lupa en el topbar. Las funciones toggleA11y, a11ySetSize, a11yToggleContrast, etc. siguen disponibles via Command Palette (Ctrl+K -> "Accesibilidad") y el panel se construye dinamicamente cuando se invoca. -->
-<div class="a11y-panel" id="a11yPanel" role="dialog" aria-labelledby="a11yTitle" aria-hidden="true" style="display:none">
+<div class="a11y-panel" id="a11yPanel" role="dialog" aria-modal="true" aria-labelledby="a11yTitle" aria-hidden="true" style="display:none">
   <h5 id="a11yTitle"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><use href="#ico-gear"></use></svg> Accesibilidad</h5>
   <div class="a11y-row"><span>Tama&ntilde;o texto</span><div class="a11y-buttons"><button onclick="a11ySetSize('normal')" id="a11yBtnN" title="Normal">A</button><button onclick="a11ySetSize('large')" id="a11yBtnL" title="Grande">A+</button><button onclick="a11ySetSize('xlarge')" id="a11yBtnXL" title="Muy grande">A++</button></div></div>
   <div class="a11y-row"><span>Alto contraste</span><div class="a11y-buttons"><button onclick="a11yToggleContrast()" id="a11yBtnC" title="Alternar alto contraste">&#127769;</button></div></div>
@@ -22786,13 +22824,18 @@ function renderTreemap(){
     html+=`<div class="tm-eje" style="width:${w}px;height:280px;background:${EJE_COLORS[i]}22"><span class="tm-eje-label">Eje ${i+1} (${acc})</span>${items}</div>`;
   });
   container.innerHTML=html;
+  /* v45.362 · [componentes] · el aviso del treemap pasa al emergente común (#pvTooltip, role="tooltip"); #vizTooltip queda
+     como respaldo si el bloque común no cargó. Las 225 celdas siguen sin foco de teclado (no se agregan 225 paradas de
+     tabulación); el detalle equivalente está en la Matriz Estratégica. */
   container.querySelectorAll('.tm-item').forEach(el=>{
+    const htmlDe=t=>`<strong>${t.dataset.eje}</strong><br>${t.dataset.oe}<br><span style="opacity:.8">Acción #${t.dataset.n}</span>`;
     el.addEventListener('mouseenter',e=>{
-      tooltip.innerHTML=`<strong>${e.target.dataset.eje}</strong><br>${e.target.dataset.oe}<br><span style="opacity:.6">Acción #${e.target.dataset.n}</span>`;
+      if(window.__pvTooltip){ window.__pvTooltip.mostrar(null,htmlDe(e.target),{x:e.clientX,y:e.clientY}); return; }
+      tooltip.innerHTML=htmlDe(e.target);
       tooltip.classList.add('show');
     });
-    el.addEventListener('mousemove',e=>{tooltip.style.left=(e.clientX+14)+'px';tooltip.style.top=(e.clientY-44)+'px';});
-    el.addEventListener('mouseleave',()=>tooltip.classList.remove('show'));
+    el.addEventListener('mousemove',e=>{ if(window.__pvTooltip){ window.__pvTooltip.mover({x:e.clientX,y:e.clientY}); return; } tooltip.style.left=(e.clientX+14)+'px';tooltip.style.top=(e.clientY-44)+'px';});
+    el.addEventListener('mouseleave',()=>{ if(window.__pvTooltip){ window.__pvTooltip.ocultar(); return; } tooltip.classList.remove('show'); });
   });
 }
 
@@ -24009,7 +24052,7 @@ function renderEthnoTabs(){
      ni Político (#f59e0b). Ahora son <button> con aria-pressed; la activa va en la superficie con texto
      normal y el color del dominio queda como filete superior (--dom), que es lo que la identifica. */
   tabsEl.innerHTML=ETHNO_DOMAINS.map((d,i)=>`
-    <button type="button" class="ethno-tab ${i===0?'active':''}" aria-pressed="${i===0?'true':'false'}" style="--dom:${d.color}" onclick="showEthno(${i})">${d.icon} ${d.name} (${d.n})</button>
+    <button type="button" class="ethno-tab ${i===0?'active':''}" role="tab" aria-selected="${i===0?'true':'false'}" style="--dom:${d.color}" onclick="showEthno(${i})">${d.icon} ${d.name} (${d.n})</button>
   `).join('');
   panelsEl.innerHTML=ETHNO_DOMAINS.map((d,i)=>{
     const quote=ETHNO_QUOTES.find(q=>q.domain===d.id);
@@ -24031,7 +24074,7 @@ function showEthno(idx){
   const panels=document.querySelectorAll('.ethno-panel');
   tabs.forEach((t,i)=>{
     t.classList.toggle('active',i===idx);
-    t.setAttribute('aria-pressed',i===idx?'true':'false');   /* v45.356 · [sistema-visual] · el color va en el filete (--dom), no en el relleno */
+    t.setAttribute('aria-selected',i===idx?'true':'false');   /* v45.356 · [sistema-visual] · el color va en el filete (--dom), no en el relleno · v45.362 · [componentes] · son pestañas (role=tab): aria-selected, no aria-pressed */
   });
   panels.forEach((p,i)=>p.classList.toggle('active',i===idx));
 }
@@ -24589,6 +24632,8 @@ function loadMvvImage(idx){
   img.src=MVV_IMGS[idx].src;
   img.alt=MVV_IMGS[idx].titulo;
   cap.textContent=MVV_IMGS[idx].titulo;
+  /* v45.362 · [componentes] · «Descargar» con el original abierto */
+  try{ var dl=document.getElementById('mvvDl'); if(dl){ var src=MVV_IMGS[idx].src; dl.href=src; var ext=(String(src).match(/\.(jpe?g|png|webp|gif|svg)$/i)||['','jpg'])[1].toLowerCase(); dl.setAttribute('download',String(MVV_IMGS[idx].titulo).split(' — ')[0].replace(/[\\/:*?"<>|]/g,'_')+'.'+ext); } }catch(e){}
 }
 function navMvvViewer(dir){
   mvvIdx=(mvvIdx+dir+MVV_IMGS.length)%MVV_IMGS.length;
@@ -26700,7 +26745,10 @@ function renderCoherencia(){
         var d=COH_MATRIZ[key];
         var sym=d.t==='+'?'+':d.t==='-'?'−':'0';
         var cls=d.t==='+'?'pos':d.t==='-'?'neg':'neu';
-        html+='<div class="coh-matriz-cell '+cls+'" title="'+d.acc+'">'+sym+'<div class="coh-tip"><strong>'+d.acc+'</strong><br>'+d.just+'</div></div>';
+        /* v45.362 · [componentes] · la celda se puede enfocar y su detalle (.coh-tip) lo muestra el aviso emergente común
+           (#pvTooltip, role="tooltip", con puntero, foco y Escape); antes era un title más un div que aparecía solo al pasar
+           el ratón, sin teclado. El title se retira para no duplicar el aviso. */
+        html+='<div class="coh-matriz-cell '+cls+'" tabindex="0">'+sym+'<div class="coh-tip"><strong>'+d.acc+'</strong><br>'+d.just+'</div></div>';
       });
     });
     html+='</div>';
@@ -27158,7 +27206,7 @@ function ictRenderChips(){
   if(ICT_S.zonaF) add(ICT_ZPILL[ICT_S.zonaF],ICT_ZICO[ICT_S.zonaF]+' '+ICT_S.zonaF,function(){ICT_S.zonaF=null;ictApplyAll();});
   if(ICT_S.tipoF) add('tipo','🏛 '+ICT_S.tipoF,function(){ICT_S.tipoF='';var f=document.getElementById('ictTipoFilter');if(f) f.value='';ictApplyAll();});
   if(ICT_S.search) add('search','🔍 "'+ICT_S.search+'"',function(){ICT_S.search='';var s=document.getElementById('ictSearchInput');if(s) s.value='';ictApplyAll();});
-  var r=document.createElement('button');r.className='ict-chip-reset';r.type='button';r.textContent='Limpiar todo';r.onclick=ictResetAll;row.appendChild(r);
+  var r=document.createElement('button');r.className='ict-chip-reset';r.type='button';r.textContent='Limpiar filtros';r.onclick=ictResetAll;row.appendChild(r);   /* v45.362 · [componentes] · mismo rótulo que el resto de los filtros */
 }
 
 function ictSwitchTab(name){
@@ -27521,7 +27569,7 @@ function ictRenderCatastro(data){
 }
 function ictRenderTable(data){
   var c=document.getElementById('ictCatContainer');if(!c) return;
-  if(!data.length){c.innerHTML='<div class="ict-empty"><div style="font-size:32px">🔍</div><p>Sin resultados.</p></div>';return;}
+  if(!data.length){c.innerHTML='<div class="ict-empty" role="status"><p>No se encontraron resultados.</p><button type="button" class="pv-limpiar" onclick="ictResetAll()">Limpiar filtros</button></div>';return;}   /* v45.362 · [componentes] · redacción común de vacío */
   var h='<div class="ict-twrap"><table><thead><tr>'
     +'<th onclick="ictDoSort(\'id\')">N° <span class="ict-si">↕</span></th>'
     +'<th onclick="ictDoSort(\'nombre\')">Espacio <span class="ict-si">↕</span></th>'
@@ -27547,7 +27595,7 @@ function ictRenderTable(data){
 }
 function ictRenderCards(data){
   var c=document.getElementById('ictCatContainer');if(!c) return;
-  if(!data.length){c.innerHTML='<div class="ict-empty"><div style="font-size:32px">🔍</div><p>Sin resultados.</p></div>';return;}
+  if(!data.length){c.innerHTML='<div class="ict-empty" role="status"><p>No se encontraron resultados.</p><button type="button" class="pv-limpiar" onclick="ictResetAll()">Limpiar filtros</button></div>';return;}   /* v45.362 · [componentes] · redacción común de vacío */
   c.innerHTML='<div class="ict-cgrid">'+data.map(function(e){
     var s=ictN(e.estado);
     return '<div class="ict-spc" style="--cc:'+ICT_HEX[e.estado]+'" onclick="ictCardClick('+e.id+')">'
@@ -29066,12 +29114,15 @@ function renderInstSNA(){
 }
 
 /* Helpers para filtros e interactividad */
+/* v45.362 · [componentes] · el aviso de la red institucional usa el emergente común (#pvTooltip, role="tooltip"); el div propio
+   queda solo como respaldo si el bloque común no cargó. Los nodos de D3 siguen sin foco de teclado (limitación declarada). */
 function showSnaTooltip(ev,html){
+  if(window.__pvTooltip){ window.__pvTooltip.mostrar(null,html,{x:ev.clientX,y:ev.clientY}); return; }
   var t=document.getElementById('snaInstTooltip');
-  if(!t){t=document.createElement('div');t.id='snaInstTooltip';t.style.cssText='position:fixed;z-index:9999;background:rgba(15,45,82,.96);color:#fff;padding:8px 12px;border-radius:7px;font-size:11px;font-weight:400;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:260px;line-height:1.45';document.body.appendChild(t);}
+  if(!t){t=document.createElement('div');t.id='snaInstTooltip';t.setAttribute('role','tooltip');t.style.cssText='position:fixed;z-index:9999;background:rgba(15,45,82,.96);color:#fff;padding:8px 12px;border-radius:7px;font-size:11px;font-weight:400;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:260px;line-height:1.45';document.body.appendChild(t);}
   t.innerHTML=html;t.style.display='block';t.style.left=(ev.clientX+12)+'px';t.style.top=(ev.clientY+12)+'px';
 }
-function hideSnaTooltip(){var t=document.getElementById('snaInstTooltip');if(t)t.style.display='none';}
+function hideSnaTooltip(){if(window.__pvTooltip){ window.__pvTooltip.ocultar(); }var t=document.getElementById('snaInstTooltip');if(t)t.style.display='none';}
 
 function highlightNodeInst(d){
   var connected=new Set([d.id]);
@@ -29422,9 +29473,14 @@ function filtrarCitasCat(cat,btn){
 })();
 
 /* ─── Tabs Sociedad Civil · Switching ─── */
+/* v45.362 · [componentes] · acotado a su propio grupo: recorría TODOS los .sc-tab-btn y .sc-tab-panel del documento, y
+   #diagnostico-institucional usa las mismas clases, así que cada clic aquí dejaba sin pestaña seleccionada (ni panel
+   activo) a esa otra sección. Ahora solo toca los botones de su barra y los paneles de #sociedad-civil. */
 function switchSCTab(tabId,btn){
-  document.querySelectorAll('.sc-tab-btn').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false');});
-  document.querySelectorAll('.sc-tab-panel').forEach(function(p){p.classList.remove('active');});
+  var nav=btn.closest('.sc-tab-nav')||document.querySelector('#sociedad-civil .sc-tab-nav');
+  var sec=btn.closest('section')||document.getElementById('sociedad-civil');
+  (nav?nav.querySelectorAll('.sc-tab-btn'):[]).forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false');});
+  (sec?sec.querySelectorAll('.sc-tab-panel'):[]).forEach(function(p){p.classList.remove('active');});
   btn.classList.add('active');btn.setAttribute('aria-selected','true');
   var panel=document.getElementById('sc-panel-'+tabId);
   if(panel) panel.classList.add('active');
@@ -30239,8 +30295,9 @@ function renderCmd(){
   }
   if(!list.length&&!acciones.length&&!caps.length&&!texto.items.length&&!texto.porTitulo.length){
     res.classList.remove('cmd-grouped');
+    /* v45.362 · [componentes] · una sola redacción de vacío en todo el portal, con «Limpiar filtros» cuando hay una categoría activa */
     res.innerHTML=texto.pendiente?'<div class="cmd-empty">Buscando en el texto de las secciones&hellip;</div>'   /* v45.362 · [interaccion] */
-      :'<div class="cmd-empty">Sin coincidencias.<br>Prueba con otra palabra o elige otra categoría.</div>';
+      :'<div class="cmd-empty" role="status">No se encontraron resultados.'+(cmdCat?' <button type="button" class="pv-limpiar" onclick="setCmdCat(null)">Limpiar filtros</button>':'')+'</div>';
     cmdIdx=-1; return;
   }
   const grouped=!q;        /* sin texto → vista por categorías · con texto → lista por tipo */
@@ -30248,6 +30305,27 @@ function renderCmd(){
   let html='';
   function grupo(rotulo,cuerpo){ return cuerpo?'<div class="cmd-group"><div class="cmd-group-label">'+rotulo+'</div>'+cuerpo+'</div>':''; }
   if(grouped){
+    /* v45.362 · [componentes] · «Mi PLADECO»: las secciones marcadas con la estrella se veían antes en #sidebarFavs (barra
+       lateral retirada en v45.74: la marca no llevaba a ningún lado). Ahora encabezan la vista por categorías del único
+       buscador, con un último elemento para quitar todas las marcas (clearFavs, que pide confirmación). */
+    try{
+      var favs=(typeof getFavs==='function')?getFavs():[];
+      if(favs&&favs.length){
+        var favHtml=favs.map(function(f){
+          var el=document.getElementById(f.id); if(!el) return '';
+          var nm=(typeof secName==='function'?secName(f.id):'')||f.title||f.id;
+          return '<div class="cmd-item" role="option" onclick="goToSection(\''+cmdEsc(f.id)+'\');closeCmdPalette()">'+
+            '<span class="cmd-sec-icon" aria-hidden="true">★</span>'+
+            '<span class="cmd-sec-text"><span class="cmd-sec-name">'+cmdEsc(nm)+'</span><span class="cmd-sec-desc">Sección marcada como favorita</span></span>'+
+            '<span class="cmd-sec-cat">'+cmdEsc(cmdCapituloDe(f.id)||'Favorito')+'</span></div>';
+        }).join('');
+        favHtml+='<div class="cmd-item" role="option" onclick="closeCmdPalette();if(typeof clearFavs===\'function\')clearFavs()">'+
+          '<span class="cmd-sec-icon" aria-hidden="true">☆</span>'+
+          '<span class="cmd-sec-text"><span class="cmd-sec-name">Quitar todas las marcas de Mi PLADECO</span><span class="cmd-sec-desc">'+favs.length+' '+(favs.length===1?'sección marcada':'secciones marcadas')+' en este navegador</span></span>'+
+          '<span class="cmd-sec-cat">Acción</span></div>';
+        html+=grupo('Mi PLADECO · favoritos',favHtml);
+      }
+    }catch(e){}
     html+=grupo('Acciones',acciones.map(cmdAccionHtml).join(''));
     cats.forEach(function(c){
       const items=list.filter(function(s){return s.cat===c.cat;});
@@ -30412,6 +30490,15 @@ function updateLightboxUI(){
   const total=(typeof _lbConjunto==='function'?_lbConjunto():GALERIA_FOTOS).length;   /* v45.362 · [interaccion] · revisión · el conjunto abierto, no siempre la galería */
   if(counter) counter.textContent=(lightboxIdx+1)+' / '+total;
   if(progress) progress.style.width=((lightboxIdx+1)/total*100)+'%';
+  /* v45.362 · [componentes] · el botón «Descargar» del visor toma el src del elemento abierto (conjunto _lbConjunto) */
+  try{
+    var dl=document.getElementById('lightboxDl'), img=document.getElementById('lightboxImg');
+    if(dl&&img){
+      var items=(typeof _lbConjunto==='function'?_lbConjunto():GALERIA_FOTOS), it=items[lightboxIdx]||{};
+      var src=it.src||img.getAttribute('src')||'';
+      if(src){ dl.href=src; var ext=(String(src).split('?')[0].match(/\.(jpe?g|png|webp|gif|svg)$/i)||['','jpg'])[1].toLowerCase(); dl.setAttribute('download',String(it.titulo||'imagen').replace(/[\\/:*?"<>|]/g,'_')+'.'+ext); }
+    }
+  }catch(e){}
 }
 
 // ══════════════════════════════════════════════════════
@@ -30782,7 +30869,7 @@ const CHATBOT_QA=[
 
   {keys:['mi pladeco','favoritos','marcar seccion','guardar seccion','estrella','star','bookmark'],sec:null,cat:null,
    follow:['Buscador del portal','Tema claro/oscuro','FAQ','Compartir sección'],
-   ans:'**Mi PLADECO · Favoritos personales:**\n\n⭐ **Cómo funciona:**\n• Cada sección tiene un botón **☆/⭐** junto al título\n• Clic para marcar/desmarcar como favorita\n• Las favoritas aparecen en un panel **«⭐ Mi PLADECO»** en el sidebar (lateral)\n\n💾 **Persistencia:** tus favoritos se guardan en el navegador (localStorage `pladeco-favs`) y permanecen entre sesiones.\n\n🧹 **Limpiar:** botón «Limpiar» en el header del panel con confirmación.\n\n💡 **Casos de uso:**\n• Concejales: marca las secciones que más consultan\n• Funcionarios: acceso rápido a tu eje de trabajo\n• Investigadores: arma tu propia ruta de lectura\n• Ciudadanos: secciones que más te interesan\n\n📌 El panel solo aparece en el sidebar cuando tienes al menos 1 sección favorita.'},
+   ans:'**Mi PLADECO · Favoritos personales:**\n\n⭐ **Cómo funciona:**\n• Cada sección tiene un botón **☆/⭐** junto al título\n• Clic para marcar/desmarcar como favorita\n• Las favoritas aparecen en el buscador (Ctrl+K), en el grupo **«Mi PLADECO»**\n\n💾 **Persistencia:** tus favoritos se guardan en el navegador (localStorage `pladeco-favs`) y permanecen entre sesiones.\n\n🧹 **Limpiar:** opción «Quitar todas las marcas de Mi PLADECO» al final del grupo, con confirmación.\n\n💡 **Casos de uso:**\n• Concejales: marca las secciones que más consultan\n• Funcionarios: acceso rápido a tu eje de trabajo\n• Investigadores: arma tu propia ruta de lectura\n• Ciudadanos: secciones que más te interesan\n\n📌 El panel solo aparece en el sidebar cuando tienes al menos 1 sección favorita.'},
 
   {keys:['canales oficiales','contacto municipalidad','rengo cl','redes sociales','facebook','instagram','twitter','youtube','transparencia','contacto secplac'],sec:null,cat:null,
    follow:['¿Qué es el PLADECO?','FAQ','Equipo técnico','Documentos'],
@@ -32240,7 +32327,7 @@ function renderPortalSearchResults(results,query){
     return;
   }
   if(!results.length){
-    el.innerHTML='<div class="search-modal-empty"><div class="sme-emoji">🤷</div><div class="sme-text">Sin resultados para <strong>"'+query+'"</strong>.<br>Prueba con otro término.</div></div>';
+    el.innerHTML='<div class="search-modal-empty" role="status"><div class="sme-text">No se encontraron resultados.</div></div>';   /* v45.362 · [componentes] · redacción común (capa retirada en v45.362; se mantiene por si se repone) */
     return;
   }
   el.innerHTML=results.map(function(r,i){
@@ -32333,6 +32420,8 @@ function toggleFav(id,title){
     btn.classList.toggle('is-fav',isFav);
     btn.innerHTML=isFav?'★':'☆';
     btn.title=isFav?'Quitar de Mi PLADECO':'Agregar a Mi PLADECO';
+    /* v45.362 · [componentes] · el nombre accesible y el estado cambian con la marca (el aria-label quedaba fijo) */
+    btn.setAttribute('aria-label',btn.title); btn.setAttribute('aria-pressed',isFav?'true':'false');
     if(typeof showToast==='function'){
       showToast(isFav?'Agregado a Mi PLADECO ⭐':'Quitado de Mi PLADECO','success');
     }
@@ -32343,6 +32432,7 @@ function clearFavs(){
   setFavs([]);
   document.querySelectorAll('.fav-toggle.is-fav').forEach(function(b){
     b.classList.remove('is-fav');b.innerHTML='☆';b.title='Agregar a Mi PLADECO';
+    b.setAttribute('aria-label',b.title);b.setAttribute('aria-pressed','false');   /* v45.362 · [componentes] */
   });
   if(typeof showToast==='function')showToast('Mi PLADECO vaciado','info');
 }
@@ -32566,14 +32656,26 @@ function restartQuiz(){quizState={i:0,score:0,ans:[]};renderQuiz();}
 // ══════════════════════════════════════════════════════
 // TOUR INTERACTIVO GUIADO
 // ══════════════════════════════════════════════════════
+/* v45.362 · [componentes] · PASOS A ELEMENTOS QUE EXISTEN. De los 7 pasos, 5 señalaban elementos ausentes (medido con
+   document.querySelector en Edge sin interfaz): #planStatus no existe; .search-fab es #searchFab (id); .dark-toggle ya no
+   existe (el tema se cambia con #tnTheme en la barra); #censo .share-btn fue retirado por decisión del encargado en v45.4
+   (initShareButtons borra cualquier .share-btn); #censo .fav-toggle existe pero solo si la vista #censo está abierta, y
+   #institucional está oculto fuera de su vista. Ahora cada paso apunta a un selector existente, y los que viven dentro de
+   una vista la abren antes (campo «vista», con PV.go). Se retiran dos pasos: «¿Cómo va el plan?» (su elemento no existe
+   y su afirmación está registrada en window.discrepanciasDatos, id tour-panel-avance, pendiente de validación) y
+   «Compartir cada sección» (función retirada). El texto de favoritos decía «en el sidebar», que no existe desde v45.74:
+   ahora dice dónde se ven (buscador, grupo «Mi PLADECO»); el de tema decía «en el sidebar»: es el menú móvil. Los
+   pasos retirados quedan en TOUR_PASOS_RETIRADOS para no perder su texto. */
+var TOUR_PASOS_RETIRADOS=[
+  {sel:'#planStatus',title:'¿Cómo va el plan?',text:'Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones.',motivo:'El elemento #planStatus no existe; afirmación pendiente de validación (discrepancia tour-panel-avance).'},
+  {sel:'#censo .share-btn',title:'Compartir cada sección',text:'Copia el link directo a la sección actual. Útil para enviar a concejales, funcionarios o vecinos.',motivo:'Los botones «compartir» por sección se retiraron en v45.4 por decisión del encargado.'}
+];
 var TOUR_STEPS=[
-  {sel:'#planStatus',title:'¿Cómo va el plan?',text:'Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones.'},
-  {sel:'.search-fab',title:'Buscador full-text',text:'Encuentra cualquier palabra en las 75 secciones. Atajo de teclado: Ctrl+K (Cmd+K en Mac).'},
-  {sel:'.dark-toggle',title:'Tema claro / oscuro',text:'Cambia entre modos visuales. También disponible en el sidebar y con la tecla "D" (si activas los atajos de una tecla en Ctrl+K → Atajos de teclado). Se guarda tu preferencia.'},   /* v45.362 · [interaccion] · la tecla «D» ahora depende del interruptor de atajos (WCAG 2.1.4) */
-  {sel:'#censo .share-btn',title:'Compartir cada sección',text:'Copia el link directo a la sección actual. Útil para enviar a concejales, funcionarios o vecinos.'},
-  {sel:'#censo .fav-toggle',title:'Mi PLADECO · Favoritos',text:'Marca tus secciones favoritas con la estrella. Aparecen en el sidebar para acceso rápido.'},
-  {sel:'.chatbot-fab',title:'Asistente Contigo Rengo',text:'85 temas respondidos automáticamente: PLADECO, Censo, índices, FODA, sociedad civil, glosario y mucho más.'},
-  {sel:'#institucional',title:'¡Listo!',text:'Has completado el tour. Explora libremente, usa el buscador y vuelve cuando quieras. Tu opinión nos importa: usa el "Reporte Ciudadano" en la sección Participa.'}
+  {sel:'#searchFab, .search-fab',title:'Buscador full-text',text:'Encuentra cualquier palabra en las 75 secciones. Atajo de teclado: Ctrl+K (Cmd+K en Mac).'},
+  {sel:'#tnTheme, #tnmTheme',title:'Tema claro / oscuro',text:'Cambia entre modos visuales. También disponible en el menú móvil y con la tecla "D" (si activas los atajos de una tecla en Ctrl+K → Atajos de teclado). Se guarda tu preferencia.'},   /* v45.362 · [interaccion] · la tecla «D» ahora depende del interruptor de atajos (WCAG 2.1.4) */
+  {sel:'.sec-header .fav-toggle',vista:'censo',title:'Mi PLADECO · Favoritos',text:'Marca tus secciones favoritas con la estrella. Aparecen en el buscador (Ctrl+K), en el grupo «Mi PLADECO», para acceso rápido.'},
+  {sel:'#chatFab, .chatbot-fab',title:'Asistente Contigo Rengo',text:'85 temas respondidos automáticamente: PLADECO, Censo, índices, FODA, sociedad civil, glosario y mucho más.'},
+  {sel:'#institucional .sec-header h2, #institucional',vista:'institucional',title:'¡Listo!',text:'Has completado el tour. Explora libremente, usa el buscador y vuelve cuando quieras. Tu opinión nos importa: usa el "Reporte Ciudadano" en la sección Participa.'}
 ];
 /* v45.362 · [interaccion] · revisión independiente · dos afirmaciones del tour que el grupo dejó para validación editorial
    quedan en el registro de datos pendientes (window.discrepanciasDatos, tabla visible al final de #metodologia), como pide
@@ -32587,8 +32689,8 @@ var TOUR_STEPS=[
   if(!hay('tour-panel-avance')) D.push({id:'tour-panel-avance', tema:'Tour guiado · paso «¿Cómo va el plan?»', estado:'por validar',
     valores:['Primer paso del tour guiado: «Panel ejecutivo con 6 KPIs en tiempo real sobre el avance del PLADECO. Las cifras se actualizan con el progreso de las 225 acciones»',
              'El paso señala el elemento #planStatus, que no existe en el portal: la nota aparece al centro de la pantalla sin indicar ningún panel'],
-    nota:'El paso describe un panel de seis indicadores sobre el avance del plan que se actualizaría con el progreso de las acciones, y el portal no identifica a qué panel se refiere. No se modificó el texto del paso.',
-    resolucion:'Pendiente. Requiere confirmar a qué panel se refiere y si su información se actualiza con el avance de las acciones; si no existe, retirar o reescribir el paso.'});
+    nota:'El paso describe un panel de seis indicadores sobre el avance del plan que se actualizaría con el progreso de las acciones, y el portal no identifica a qué panel se refiere. No se modificó el texto del paso. v45.362 [componentes]: el paso se retiró del recorrido (señalaba un elemento inexistente); su texto se conserva en TOUR_PASOS_RETIRADOS hasta que se valide.',
+    resolucion:'Pendiente. Requiere confirmar a qué panel se refiere y si su información se actualiza con el avance de las acciones; si existe, reponer el paso apuntando a ese panel; si no, dejarlo retirado o reescribirlo.'});
   if(!hay('tour-temas-asistente')) D.push({id:'tour-temas-asistente', tema:'Tour guiado · temas del asistente', estado:'por validar',
     valores:['Sexto paso del tour guiado: «85 temas respondidos automáticamente»',
              'Base de respuestas del asistente (CHATBOT_QA): 109 entradas escritas, más 14 preguntas frecuentes que se agregan al cargar el portal (123 en total)'],
@@ -32611,8 +32713,18 @@ function showTourStep(){
   var bd=document.getElementById('tourBackdrop'),st=document.getElementById('tourStep');
   bd.classList.add('active');
   document.querySelectorAll('.tour-highlight').forEach(function(el){el.classList.remove('tour-highlight');});
-  var target=document.querySelector(step.sel);
+  /* v45.362 · [componentes] · se elige la primera coincidencia VISIBLE del selector; si el paso declara «vista» y no hay
+     ninguna visible, se abre esa vista con el motor y se vuelve a buscar. El transform del caso centrado se repone
+     (quedaba puesto y desplazaba la ficha de los pasos siguientes). */
+  function _tourVisible(el){ try{ return !!(el&&el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden'); }catch(e){ return false; } }
+  function _tourBuscar(){ var c=document.querySelectorAll(step.sel); for(var i=0;i<c.length;i++){ if(_tourVisible(c[i])) return c[i]; } return null; }
+  var target=null;
+  try{
+    target=_tourBuscar();
+    if(!target&&step.vista&&window.PV&&typeof PV.go==='function'&&document.body.classList.contains('pv-on')){ PV.go(step.vista); target=_tourBuscar(); }
+  }catch(e){ target=null; }
   if(target){
+    st.style.transform='';
     target.scrollIntoView({behavior:'smooth',block:'center'});
     setTimeout(function(){
       target.classList.add('tour-highlight');
@@ -34195,7 +34307,7 @@ function renderPol(){
     });
     h+='</div></div>';
   });
-  if(!h) h='<div style="text-align:center;padding:40px;color:var(--me-sub)">No se encontraron políticas con ese criterio.</div>';
+  if(!h) h='<div class="pv-sin-resultados" role="status"><p>No se encontraron resultados.</p><button type="button" class="pv-limpiar" onclick="limpiarPol()">Limpiar filtros</button></div>';   /* v45.362 · [componentes] · redacción común de vacío */
   document.getElementById('polContent').innerHTML=h;
   /* v45.356 · [matriz] · §2.14 y §2.3 · «Limpiar filtros» solo con algo que limpiar; nota y botón CSV al día */
   var lim=document.getElementById('polLimpiar'); if(lim) lim.hidden=!(_polEje>0||_polQ);
@@ -34746,7 +34858,17 @@ if('serviceWorker' in navigator){
     if(Date.now()-_lastInteract<15000)return true;            // interacción reciente (<15s)
     var a=document.activeElement;
     if(a&&(/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)||a.isContentEditable))return true; // escribiendo
-    if(document.querySelector('.chatbot-window.open,.chatbot.open,#chatbot.open,[aria-modal="true"],.modal.open'))return true;
+    if(document.querySelector('.chatbot-window.open,.chatbot.open,#chatbot.open,.modal.open'))return true;
+    /* v45.362 · [componentes] · «[aria-modal="true"]» contaba las capas FIJAS del documento (#lightbox, #mvvViewer,
+       #kbdCheat, #cmdPalette llevan el atributo siempre), así que esta función devolvía true aunque estuvieran
+       cerradas y la recarga automática nunca llegaba. Ahora cuenta solo capas abiertas y visibles (clase de
+       apertura + geometría + opacidad), a través del registro común de diálogos cuando existe. Comprobado abriendo y
+       cerrando dos capas: true con una abierta, false con las dos cerradas. */
+    if(window.__pvDialogo&&typeof window.__pvDialogo.hayAbierta==='function'){ if(window.__pvDialogo.hayAbierta())return true; }
+    else{
+      var am=document.querySelectorAll('[aria-modal="true"]');
+      for(var i=0;i<am.length;i++){ var cs=getComputedStyle(am[i]); if(am[i].getClientRects().length&&cs.visibility!=='hidden'&&cs.display!=='none'&&parseFloat(cs.opacity)>0)return true; }
+    }
     return false;
   }
   function _reload(){
@@ -40027,7 +40149,7 @@ body.dark .mobile-drawer .md-link[aria-current="page"]{background:rgba(92,201,13
   </button>
 </nav>
 <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()"></div>
-<aside class="mobile-drawer" id="mobileDrawer" aria-label="Men&uacute; de secciones">
+<aside class="mobile-drawer" id="mobileDrawer" aria-label="Men&uacute; de secciones" role="dialog" aria-modal="true">
   <div class="md-header">
     <strong>Secciones del PLADECO</strong>
     <button type="button" onclick="toggleMobileDrawer()" aria-label="Cerrar">&times;</button>
@@ -40629,7 +40751,7 @@ body.dark .nota-seccion .nota-borrador{color:#fde68a;background:#422006}
     var list=filtered();
     var c=document.getElementById('poaCount');
     if(c) c.textContent=list.length+' '+(list.length===1?'acción':'acciones')+(list.length!==DATA.length?(' de '+DATA.length):'');
-    if(!list.length){body.innerHTML='<tr><td colspan="8" class="poa-empty">No hay acciones con esos filtros. <button class="poa-chip" type="button" onclick="window.__poaReset&&window.__poaReset()">Limpiar filtros</button></td></tr>';return;}
+    if(!list.length){body.innerHTML='<tr><td colspan="8" class="poa-empty" role="status">No se encontraron resultados. <button class="pv-limpiar" type="button" onclick="window.__poaReset&&window.__poaReset()">Limpiar filtros</button></td></tr>';return;}   /* v45.362 · [componentes] · redacción común de vacío */
     var h='';
     list.forEach(function(a){
       var ei=ESTADOS.indexOf(a.estado);if(ei<0)ei=0;
@@ -47398,5 +47520,602 @@ body.dark section#intro-rutas.intro-rutas{ background:#0a1526; }
 body .pv-portada{ background-color:#F7F8F5; border-radius:16px; padding-top:22px; padding-bottom:10px; }
 body.dark .pv-portada{ background-color:#0b1624; }
 </style>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     v45.362 · [componentes] · PESTAÑAS, DIÁLOGOS, FILTROS CON ESTADO Y AVISOS EMERGENTES
+     Un solo componente para cada familia, aplicado a lo que ya existe sin reescribir contenido:
+
+     1) PESTAÑAS (13 grupos + los puntos del visor de Misión y Visión). Cada grupo queda como role="tablist"
+        con role="tab" / role="tabpanel", aria-controls y aria-labelledby (los paneles reciben id si no lo
+        tenían), aria-selected y tabindex itinerante (solo la pestaña activa está en el orden de tabulación),
+        flechas (← → ↑ ↓), Inicio y Fin con activación automática (la flecha hace clic en la pestaña de
+        destino, así corre la lógica que ya tenía cada grupo: dibujar gráficos, invalidar mapas, etc.) y
+        Enter/Espacio en las pestañas que no son <button> (.ana-tab eran <div onclick>). El estado se lee de la
+        clase .active que todos los grupos ya mantienen, con un MutationObserver por grupo: sirve igual cuando
+        la pestaña cambia por programa (#matriz/ejeN, ictSwitchTab) o cuando el grupo vuelve a pintar sus
+        botones (prospectiva, etnografía). Cada grupo queda acotado a su contenedor (switchSCTab, que recorría
+        todos los .sc-tab-btn del documento, se acotó en su propia función).
+     2) DIÁLOGOS Y CAPAS (11 capas): base común sobre las capas existentes sin tocar cómo se abren: un
+        MutationObserver por capa detecta abierto/cerrado por su clase (open, show, active, mdr-open, fijo),
+        guarda quién la abrió, lleva el foco adentro si la capa no lo hizo por su cuenta (80 ms), atrapa Tab
+        y Mayús+Tab dentro de la capa modal, cierra con Escape (una sola vez: en captura y deteniendo la
+        propagación solo cuando cerró algo) y devuelve el foco al abrir‑la al cerrar (si el foco quedó dentro
+        o en <body>; si la capa lo llevó a otra parte, por ejemplo al encabezado de la vista elegida, se
+        respeta). Capas: #lightbox, #diagLightbox, #mvvViewer, #kbdCheat, #a11yPanel, #cmdPalette, #chatPanel,
+        #mobileDrawer, #modal, el paso del tour (#tourStep, creado al iniciarlo) y la ficha fija del Gantt
+        (#cgTooltip.fijo). role="dialog" + aria-modal="true" en las que no lo declaraban (marcado).
+        #chatMessages pasa a role="log"; #cmdResults a role="listbox" real con opciones identificadas y
+        aria-activedescendant en el campo (que pasa a combobox).
+     3) FILTROS CON ESTADO (patrón de #matriz extendido): grupo rotulado (role="group" + aria-label),
+        aria-pressed sincronizado con .active, línea role="status" con el conteo o el filtro vigente,
+        botón «Limpiar filtros» visible solo cuando hay algo que limpiar, y UNA redacción de vacío:
+        «No se encontraron resultados.» seguida de «Limpiar filtros». Familias: semáforo, comisiones, FODA,
+        gobernanza (tipo y relación), unidades vecinales, red institucional (SNA), citas, años de
+        siniestros, datos abiertos, catastro ICT (tarjetas de estado y zonas como botones con teclado),
+        Gantt, POA (conserva el foco al volver a pintar las fichas), comparador, SUBDERE y BIP (mensaje de
+        vacío en tablas que quedaban en blanco). Las tres esperas reales (ZIP, paquete de mapas, buscar
+        actualización) ya llevaban aria-busy desde v45.356: se comprobó y no se tocaron.
+     4) AVISOS EMERGENTES: una sola implementación (#pvTooltip, role="tooltip", aria-describedby, se abre con
+        el puntero y con el foco, se cierra con Escape y al desplazarse) para los [data-tooltip] de la MBHT
+        (que eran solo CSS y no se podían enfocar), la matriz de coherencia (.coh-tip, antes title + hover) y
+        los dos avisos que seguían al puntero (red institucional y treemap). Las siglas (#siglaTip) y la ficha
+        del Gantt ya seguían este patrón y se dejaron como están.
+     5) RESTOS: favoritos visibles en el buscador (grupo «Mi PLADECO») en vez del #sidebarFavs que ya no
+        existe; marca activa del menú que ya no se borra al desplazarse; descarga del original en los dos
+        visores de fotos; tour con pasos a elementos existentes y foco en cada paso.
+     Medido en Edge sin interfaz (ver t_comp_*.cjs del grupo): las 13 pestañas recorren con flechas, las 5
+     capas abren con el foco adentro y lo devuelven, y 4 secciones anuncian «No se encontraron resultados.».
+     ═══════════════════════════════════════════════════════════════════════════ -->
+<style>
+/* estado de filtros y vacío común */
+.pv-filtro-estado{font-size:12px;font-weight:600;color:var(--text2);white-space:nowrap;margin-left:auto;align-self:center}
+.pv-limpiar{background:transparent;border:1.5px solid var(--border-strong,#cbd5e1);border-radius:5px;padding:5px 12px;font-size:11.5px!important;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit;min-height:32px;line-height:1.2;white-space:nowrap}
+.pv-limpiar:hover{background:var(--bg-soft,#f1f5f9)}
+body.dark .pv-limpiar:hover{background:rgba(255,255,255,.06)}
+.pv-limpiar[hidden],.pv-sin-resultados[hidden]{display:none!important}
+.pv-sin-resultados{margin:12px 0;padding:14px 16px;border:1px dashed var(--border-strong,#cbd5e1);border-radius:7px;color:var(--text);font-size:14px;line-height:1.5;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--card)}
+.pv-sin-resultados p{margin:0;flex:1 1 auto;max-width:none!important;text-align:left!important}
+.poa-empty,.ict-empty p,.cmd-empty{font-size:14px}
+.pv-aviso-carga{margin:0 0 14px;padding:12px 14px;border-left:4px solid var(--danger-txt,#b91c1c);background:var(--card);border-radius:0 7px 7px 0;color:var(--text);font-size:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.pv-aviso-carga p{margin:0;flex:1 1 auto}
+/* aviso emergente común */
+.pv-tooltip{position:fixed;z-index:10050;max-width:300px;padding:8px 12px;background:#0c1f36;color:#fff;font-size:12.5px;line-height:1.45;border-radius:7px;box-shadow:0 8px 24px rgba(0,0,0,.28);pointer-events:none;font-family:'Poppins',system-ui,sans-serif}
+.pv-tooltip[hidden]{display:none}
+.pv-tooltip strong{color:#fff}
+[data-tooltip]::after,[data-tooltip]::before{content:none!important;display:none!important}
+[data-tooltip]{cursor:help;border-bottom:1px dotted currentColor}
+.coh-matriz-cell .coh-tip{display:none!important}
+.coh-matriz-cell[tabindex]{cursor:help}
+.dot-nav a:focus-visible .dn-tip{opacity:1}
+/* foco visible en pestañas y botones que no son <button> */
+[role="tab"]:focus-visible,[role="button"]:not(button):focus-visible,.coh-matriz-cell:focus-visible,[data-tooltip]:focus-visible{outline:2px solid var(--focus-ring,var(--c-navy,#1F3864));outline-offset:2px}
+.ict-scard[role="button"],.ict-zona-btn[role="button"]{cursor:pointer}
+/* descarga en los visores */
+#lightboxDl,#mvvDl{text-decoration:none}
+.mvv-viewer .lightbox-dl{z-index:2}
+/* grupos de filtros del POA: el rótulo es el nombre del grupo */
+#poa .poa-fgroup[role="group"]{align-items:center}
+#poa .pv-limpiar{margin:0 0 12px}
+/* paleta: la opción activa también por aria-selected */
+#cmdResults [role="option"][aria-selected="true"]{outline:none}
+@media (max-width:600px){.pv-filtro-estado{margin-left:0;white-space:normal}}
+</style>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+function visible(el){
+  if(!el||!el.isConnected) return false;
+  if(!el.getClientRects().length) return false;
+  var cs=getComputedStyle(el);
+  if(cs.visibility==='hidden'||cs.display==='none'||parseFloat(cs.opacity)===0) return false;
+  return true;
+}
+var SEL_FOCO='a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"]),summary,[contenteditable="true"]';
+function enfocables(raiz){
+  return [].filter.call(raiz.querySelectorAll(SEL_FOCO),function(e){ return visible(e)&&!e.closest('[hidden]')&&e.getAttribute('aria-hidden')!=='true'; });
+}
+function enfocar(el){ if(!el||typeof el.focus!=='function') return false; try{ el.focus({preventScroll:true}); return document.activeElement===el; }catch(e){ return false; } }
+var nId=0; function idDe(el,pref){ if(!el.id){ el.id=pref+'-'+(++nId); } return el.id; }
+function esc(x){ var d=document.createElement('div'); d.textContent=(x==null?'':String(x)); return d.innerHTML; }
+function plural(n,s,p){ return n+' '+(n===1?s:p); }
+
+/* ───────────────────────── 1 · PESTAÑAS ───────────────────────── */
+function Pestanas(cont,cfg){
+  this.cont=cont; this.cfg=cfg; this._sync=false; this._t=null;
+  if(cont.getAttribute('role')!=='tablist') cont.setAttribute('role','tablist');
+  if(cfg.label&&!cont.getAttribute('aria-label')&&!cont.getAttribute('aria-labelledby')) cont.setAttribute('aria-label',cfg.label);
+  var self=this;
+  cont.addEventListener('keydown',function(e){ self.tecla(e); });
+  cont.addEventListener('click',function(){ setTimeout(function(){ self.sync(); },0); });
+  var mo=new MutationObserver(function(){ self.pedir(); });
+  mo.observe(cont,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  this.sync();
+}
+Pestanas.prototype.tabs=function(){
+  var c=this.cont;
+  return [].filter.call(c.querySelectorAll(this.cfg.tabs),function(t){ return t.closest('[role="tablist"]')===c; });
+};
+Pestanas.prototype.pedir=function(){ if(this._t) return; var s=this; this._t=setTimeout(function(){ s._t=null; s.sync(); },0); };
+Pestanas.prototype.sync=function(){
+  if(this._sync) return; this._sync=true;
+  try{
+    var tabs=this.tabs(), cfg=this.cfg;
+    var hay=tabs.some(function(t){ return t.classList.contains('active'); });
+    tabs.forEach(function(t,i){
+      var on=t.classList.contains('active')||(!hay&&i===0);
+      if(t.getAttribute('role')!=='tab') t.setAttribute('role','tab');
+      if(t.getAttribute('aria-selected')!==(on?'true':'false')) t.setAttribute('aria-selected',on?'true':'false');
+      var ti=on?'0':'-1'; if(t.getAttribute('tabindex')!==ti) t.setAttribute('tabindex',ti);
+      if(t.hasAttribute('aria-pressed')) t.removeAttribute('aria-pressed');   /* una pestaña no es un conmutador */
+      var tid=idDe(t,cfg.nombre+'-tab');
+      var p=null; try{ p=cfg.panel?cfg.panel(t,i,this.cont):null; }catch(e){}
+      if(p){
+        var pid=idDe(p,cfg.nombre+'-panel');
+        if(p.getAttribute('role')!=='tabpanel') p.setAttribute('role','tabpanel');
+        if(p.getAttribute('aria-labelledby')!==tid) p.setAttribute('aria-labelledby',tid);
+        if(t.getAttribute('aria-controls')!==pid) t.setAttribute('aria-controls',pid);
+      }
+    },this);
+  }finally{ this._sync=false; }
+};
+Pestanas.prototype.tecla=function(e){
+  var t=e.target&&e.target.closest?e.target.closest(this.cfg.tabs):null;
+  if(!t||!this.cont.contains(t)) return;
+  var tabs=this.tabs().filter(function(x){ return visible(x)&&!x.disabled; });
+  var i=tabs.indexOf(t); if(i<0) return;
+  var k=e.key, n=-1;
+  if(k==='ArrowRight'||k==='ArrowDown') n=(i+1)%tabs.length;
+  else if(k==='ArrowLeft'||k==='ArrowUp') n=(i-1+tabs.length)%tabs.length;
+  else if(k==='Home') n=0;
+  else if(k==='End') n=tabs.length-1;
+  else if((k==='Enter'||k===' ')&&t.tagName!=='BUTTON'&&t.tagName!=='A'){ e.preventDefault(); t.click(); return; }
+  if(n<0) return;
+  e.preventDefault();
+  var self=this, dest=tabs[n];
+  dest.click();
+  var mover=function(){ var ahora=self.tabs().filter(function(x){ return visible(x)&&!x.disabled; }); var d=ahora[n]||dest; if(d&&d.isConnected) enfocar(d); };
+  mover(); setTimeout(mover,0);
+};
+var GRUPOS_TAB=[
+  {sel:'#educacion .x-tabs, #institucional .x-tabs, #participa .x-tabs', tabs:'.x-tab', nombre:'xt', label:'Apartados de la sección',
+   panel:function(t,i,c){ var s=c.closest('section'); return s?s.querySelector('.x-tab-panel[data-xp="'+(t.dataset.xt||'')+'"]'):null; }},
+  {sel:'#diagnostico-institucional .sc-tab-nav', tabs:'.sc-tab-btn', nombre:'inst', label:'Apartados del diagnóstico institucional',
+   panel:function(t){ var m=/switchInstTab\('([^']+)'/.exec(t.getAttribute('onclick')||''); return m?$('inst-panel-'+m[1]):null; }},
+  {sel:'#sociedad-civil .sc-tab-nav', tabs:'.sc-tab-btn', nombre:'sc', label:'Apartados de sociedad civil',
+   panel:function(t){ var m=/switchSCTab\('([^']+)'/.exec(t.getAttribute('onclick')||''); return m?$('sc-panel-'+m[1]):null; }},
+  {sel:'#prospTabs', tabs:'.prosp-tab', nombre:'prosp', panel:function(){ return document.querySelector('#prospectiva .prosp-grid'); }},
+  {sel:'#erd .erd-tabs', tabs:'.erd-tab', nombre:'erd',
+   panel:function(t){ return document.querySelector('#erd .erd-tabpanel[data-panel="'+(t.dataset.tab||'')+'"]'); }},
+  {sel:'#graficos .ana-tabs', tabs:'.ana-tab', nombre:'ana', label:'Análisis interactivos',
+   panel:function(t,i){ return document.querySelector('#graficos .ana-panel[data-ana="'+i+'"]'); }},
+  {sel:'#analisis-estrategico-censo .anest-tab-nav', tabs:'.anest-tab-btn', nombre:'anest', label:'Apartados del análisis estratégico',
+   panel:function(t){ return document.querySelector('#analisis-estrategico-censo .anest-tab-panel[data-anest-panel="'+(t.dataset.anest||'')+'"]'); }},
+  {sel:'#ict-espacios-publicos .ict-tabs-nav', tabs:'.ict-tab-btn', nombre:'ict', label:'Apartados del catastro de espacios públicos',
+   panel:function(t){ return document.querySelector('#ict-espacios-publicos .ict-tab-panel[data-ict-panel="'+(t.dataset.ictTab||'')+'"]'); }},
+  {sel:'#matriz .me-tab-bar', tabs:'.me-tab-btn', nombre:'me', label:'Vistas de la matriz estratégica',
+   panel:function(t){ return $('me-tab-'+(t.dataset.meTab||'')); }},
+  {cont:function(){ var g=document.querySelector('#sna-gobernanza .gob-tab'); return g?g.parentElement:null; }, tabs:'.gob-tab', nombre:'gob', label:'Perspectivas de la gobernanza',
+   panel:function(t,i){ return $('gobTab'+i); }},
+  {sel:'#ethnoTabs', tabs:'.ethno-tab', nombre:'ethno', label:'Dominios etnográficos',
+   panel:function(t,i){ return document.querySelector('#etnografia .ethno-panel[data-ethno="'+i+'"]'); }},
+  {sel:'#mvvDots', tabs:'.mvv-viewer-dot', nombre:'mvv', panel:function(){ return $('mvvViewerImgWrap'); }}
+];
+var LISTAS_TAB=[];
+function registrarPestanas(){
+  GRUPOS_TAB.forEach(function(g){
+    var conts=g.cont?[g.cont()]:[].slice.call(document.querySelectorAll(g.sel));
+    conts.forEach(function(c){ if(c&&!c.__pvTabs){ c.__pvTabs=new Pestanas(c,g); LISTAS_TAB.push(c.__pvTabs); } });
+  });
+}
+registrarPestanas();
+document.addEventListener('pv:vista',registrarPestanas);
+
+/* ───────────────────────── 2 · DIÁLOGOS Y CAPAS ───────────────────────── */
+var CAPAS=[], ORDEN=[];
+function registrarCapa(c){
+  if(!c.el||c.el.__pvCapa) return; c.el.__pvCapa=c;
+  CAPAS.push(c); c.estaba=false; c.opener=null;
+  if(c.modal!==false){
+    if(!c.el.getAttribute('role')) c.el.setAttribute('role','dialog');
+    if(c.el.getAttribute('aria-modal')!=='true') c.el.setAttribute('aria-modal','true');
+  }
+  var mo=new MutationObserver(function(){ revisarCapa(c); });
+  mo.observe(c.el,{attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
+  revisarCapa(c);
+}
+function revisarCapa(c){
+  var ahora=!!c.abierta();
+  if(ahora===c.estaba) return;
+  c.estaba=ahora;
+  if(ahora) alAbrir(c); else alCerrar(c);
+}
+function alAbrir(c){
+  var a=document.activeElement;
+  c.opener=(a&&a!==document.body&&!c.el.contains(a))?a:null;
+  ORDEN=ORDEN.filter(function(x){ return x!==c; }); ORDEN.push(c);
+  setTimeout(function(){
+    if(!c.abierta()||!visible(c.el)) return;
+    var a2=document.activeElement; if(a2&&a2!==document.body&&c.el.contains(a2)) return;
+    var dest=null;
+    try{ dest=typeof c.foco==='function'?c.foco():(c.foco?c.el.querySelector(c.foco):null); }catch(e){}
+    if(!dest||!visible(dest)) dest=enfocables(c.el)[0]||null;
+    if(!dest){ if(!c.el.hasAttribute('tabindex')) c.el.setAttribute('tabindex','-1'); dest=c.el; }
+    enfocar(dest);
+  },80);
+}
+function alCerrar(c){
+  ORDEN=ORDEN.filter(function(x){ return x!==c; });
+  var a=document.activeElement;
+  var dentro=!a||a===document.body||c.el.contains(a)||!visible(a);
+  if(dentro){
+    var ok=false;
+    if(c.opener&&c.opener.isConnected&&visible(c.opener)) ok=enfocar(c.opener);
+    if(!ok&&window.PV&&typeof PV.enfocarEncabezado==='function'){ try{ PV.enfocarEncabezado(); }catch(e){} }
+  }
+  c.opener=null;
+}
+function capaActiva(){
+  for(var i=ORDEN.length-1;i>=0;i--){ var c=ORDEN[i]; if(c.abierta()&&visible(c.el)) return c; }
+  return null;
+}
+document.addEventListener('keydown',function(e){
+  var c=capaActiva(); if(!c) return;
+  if(e.key==='Escape'){
+    if(typeof c.cerrar==='function'){ e.preventDefault(); e.stopPropagation(); try{ c.cerrar(); }catch(x){} }
+    return;
+  }
+  if(e.key==='Tab'&&c.modal!==false){
+    var f=enfocables(c.el);
+    if(!f.length){ e.preventDefault(); return; }
+    var a=document.activeElement, i=f.indexOf(a);
+    if(e.shiftKey){ if(i<=0){ e.preventDefault(); enfocar(f[f.length-1]); } }
+    else if(i===-1||i===f.length-1){ e.preventDefault(); enfocar(f[0]); }
+  }
+},true);
+function abierta(el,cls){ return function(){ return el.classList.contains(cls); }; }
+(function registrarCapas(){
+  var el;
+  if((el=$('lightbox'))) registrarCapa({el:el,nombre:'lightbox',abierta:abierta(el,'open'),foco:'.lightbox-close',
+    cerrar:function(){ if(typeof closeLightbox==='function') closeLightbox(); window._grafLightboxActive=false; window._cartoLightboxActive=false; }});
+  if((el=$('diagLightbox'))) registrarCapa({el:el,nombre:'diagLightbox',abierta:abierta(el,'open'),foco:'.lightbox-close',
+    cerrar:function(){ if(typeof closeDiagLightbox==='function') closeDiagLightbox(); }});
+  if((el=$('mvvViewer'))) registrarCapa({el:el,nombre:'mvvViewer',abierta:abierta(el,'open'),foco:'.lightbox-close',
+    cerrar:function(){ if(typeof closeMvvViewer==='function') closeMvvViewer(); }});
+  if((el=$('kbdCheat'))) registrarCapa({el:el,nombre:'kbdCheat',abierta:abierta(el,'open'),foco:'#atajosSwitch',
+    cerrar:function(){ if(typeof closeKbdCheat==='function') closeKbdCheat(); }});
+  if((el=$('a11yPanel'))) registrarCapa({el:el,nombre:'a11yPanel',abierta:abierta(el,'show'),foco:'button',
+    cerrar:function(){ if(typeof toggleA11y==='function'&&el.classList.contains('show')) toggleA11y(); }});
+  if((el=$('cmdPalette'))) registrarCapa({el:el,nombre:'cmdPalette',abierta:abierta(el,'open'),foco:'#cmdInput',
+    cerrar:function(){ if(typeof closeCmdPalette==='function') closeCmdPalette(); }});
+  if((el=$('chatPanel'))) registrarCapa({el:el,nombre:'chatPanel',abierta:abierta(el,'open'),foco:'#chatInput',
+    cerrar:function(){ if(el.classList.contains('open')&&typeof window.toggleChatbot==='function') window.toggleChatbot(); }});
+  if((el=$('mobileDrawer'))) registrarCapa({el:el,nombre:'mobileDrawer',abierta:abierta(el,'mdr-open'),foco:'a.md-link[aria-current], a.md-link',
+    cerrar:function(){ if(typeof window.cerrarCajonMovil==='function') window.cerrarCajonMovil(true); }});
+  if((el=$('modal'))) registrarCapa({el:el,nombre:'modal',abierta:abierta(el,'show'),foco:'.modal-close',
+    cerrar:function(){ el.classList.remove('show'); }});
+  if((el=$('cgTooltip'))) registrarCapa({el:el,nombre:'cgFicha',abierta:function(){ return el.classList.contains('fijo')&&el.classList.contains('visible'); },foco:'.cg-tt-cerrar',
+    cerrar:function(){ if(typeof cgCerrarTip==='function') cgCerrarTip(true); }});
+})();
+/* el paso del tour se crea al iniciarlo: se registra entonces, y cada paso vuelve a pintar sus botones (foco al «Siguiente») */
+if(typeof window.startTour==='function'){
+  var _startTour=window.startTour;
+  window.startTour=function(){
+    var r=_startTour.apply(this,arguments);
+    var st=$('tourStep');
+    if(st&&!st.__pvCapa){
+      registrarCapa({el:st,nombre:'tour',abierta:abierta(st,'active'),foco:'.btn--solido',
+        cerrar:function(){ if(typeof endTour==='function') endTour(); }});
+    }
+    return r;
+  };
+}
+if(typeof window.showTourStep==='function'){
+  var _showTourStep=window.showTourStep;
+  window.showTourStep=function(){
+    var r=_showTourStep.apply(this,arguments);
+    var st=$('tourStep');
+    if(st){
+      var tit=st.querySelector('.tour-title'); if(tit){ tit.id=tit.id||'tourTitulo'; st.setAttribute('aria-labelledby',tit.id); }
+      setTimeout(function(){ if(!st.classList.contains('active')) return; var b=st.querySelector('.btn--solido')||enfocables(st)[0]; if(b) enfocar(b); },60);
+    }
+    return r;
+  };
+}
+window.__pvDialogo={
+  abiertas:function(){ return ORDEN.filter(function(c){ return c.abierta()&&visible(c.el); }).map(function(c){ return c.nombre; }); },
+  hayAbierta:function(){ return !!capaActiva(); },
+  registrar:registrarCapa,
+  visible:visible
+};
+
+/* paleta: lista real de opciones + combobox */
+if(typeof window.renderCmd==='function'){
+  var _renderCmd=window.renderCmd;
+  function decorarPaleta(){
+    var res=$('cmdResults'), inp=$('cmdInput'); if(!res) return;
+    if(res.getAttribute('role')!=='listbox'){ res.setAttribute('role','listbox'); res.setAttribute('aria-label','Resultados del buscador'); }
+    if(inp&&inp.getAttribute('role')!=='combobox'){
+      inp.setAttribute('role','combobox'); inp.setAttribute('aria-expanded','true'); inp.setAttribute('aria-controls','cmdResults');
+      inp.setAttribute('aria-autocomplete','list'); inp.setAttribute('aria-haspopup','listbox');
+    }
+    [].forEach.call(res.querySelectorAll('.cmd-group'),function(g,i){
+      var l=g.querySelector('.cmd-group-label'); if(l){ l.id=l.id||('cmdGrupo'+i); g.setAttribute('role','group'); g.setAttribute('aria-labelledby',l.id); }
+    });
+    var act=null;
+    [].forEach.call(res.querySelectorAll('.cmd-item'),function(it,i){
+      it.id='cmdOpcion'+i; var on=it.classList.contains('active');
+      it.setAttribute('aria-selected',on?'true':'false'); if(on) act=it;
+    });
+    if(inp){ if(act) inp.setAttribute('aria-activedescendant',act.id); else inp.removeAttribute('aria-activedescendant'); }
+  }
+  window.renderCmd=function(){ var r=_renderCmd.apply(this,arguments); try{ decorarPaleta(); }catch(e){} return r; };
+  var inpCmd=$('cmdInput');
+  if(inpCmd) inpCmd.addEventListener('keydown',function(e){ if(e.key==='ArrowDown'||e.key==='ArrowUp') setTimeout(decorarPaleta,0); });
+}
+
+/* ───────────────────────── 3 · FILTROS CON ESTADO ───────────────────────── */
+var TXT_VACIO='No se encontraron resultados.';
+function mensajeVacio(ancla,mostrar,limpiar,dentro){
+  if(!ancla) return;
+  var m=ancla.__pvVacio;
+  if(!m){
+    m=document.createElement('div'); m.className='pv-sin-resultados'; m.setAttribute('role','status'); m.hidden=true;
+    m.innerHTML='<p>'+TXT_VACIO+'</p>';
+    var b=document.createElement('button'); b.type='button'; b.className='pv-limpiar'; b.textContent='Limpiar filtros'; b.hidden=true; m.appendChild(b);
+    m.__btn=b;
+    if(dentro) ancla.appendChild(m); else if(ancla.parentNode) ancla.parentNode.insertBefore(m,ancla.nextSibling);
+    ancla.__pvVacio=m;
+  }
+  m.__btn.hidden=!limpiar; m.__btn.onclick=limpiar?function(){ limpiar(); }:null;
+  m.hidden=!mostrar;
+}
+function grupoFiltro(cfg){
+  var cont=typeof cfg.cont==='function'?cfg.cont():cfg.cont; if(!cont||cont.__pvFiltro) return cont?cont.__pvFiltro:null;
+  if(!cont.getAttribute('role')) cont.setAttribute('role','group');
+  if(cfg.label&&!cont.getAttribute('aria-label')&&!cont.getAttribute('aria-labelledby')) cont.setAttribute('aria-label',cfg.label);
+  var estadoEl=cfg.estadoEn?(typeof cfg.estadoEn==='function'?cfg.estadoEn():cfg.estadoEn):null;
+  if(!estadoEl&&cfg.estado){ estadoEl=document.createElement('span'); estadoEl.className='pv-filtro-estado'; (cfg.estadoDonde||cont).appendChild(estadoEl); }
+  if(estadoEl){ if(!estadoEl.getAttribute('role')) estadoEl.setAttribute('role','status'); if(!estadoEl.getAttribute('aria-live')) estadoEl.setAttribute('aria-live','polite'); }
+  var limpiarBtn=null, tocado=false;
+  if(cfg.limpiar){
+    limpiarBtn=document.createElement('button'); limpiarBtn.type='button'; limpiarBtn.className='pv-limpiar'; limpiarBtn.textContent='Limpiar filtros'; limpiarBtn.hidden=true;
+    limpiarBtn.addEventListener('click',function(){ limpiar(); });
+    var donde=cfg.limpiarDonde?cfg.limpiarDonde():null;
+    if(donde&&donde.parentNode) donde.parentNode.insertBefore(limpiarBtn,donde.nextSibling); else cont.appendChild(limpiarBtn);
+  }
+  function limpiar(){
+    try{ cfg.limpiar(); }catch(e){}
+    setTimeout(function(){ sync(); var f=null; try{ f=cfg.focoAlLimpiar?cfg.focoAlLimpiar():null; }catch(e){} enfocar(f||cont.querySelector(cfg.botones||SEL_FOCO)||cont); },0);
+  }
+  function sync(){
+    if(cfg.botones){
+      [].forEach.call(cont.querySelectorAll(cfg.botones),function(b){
+        var on=cfg.esActivo?!!cfg.esActivo(b):b.classList.contains('active');
+        if(b.getAttribute('aria-pressed')!==(on?'true':'false')) b.setAttribute('aria-pressed',on?'true':'false');
+      });
+    }
+    var act=false; try{ act=cfg.activo?!!cfg.activo():false; }catch(e){}
+    if(limpiarBtn) limpiarBtn.hidden=!act;
+    if(estadoEl&&cfg.estado){ var t=null; try{ t=cfg.estado(); }catch(e){} if(t!=null&&estadoEl.textContent!==t) estadoEl.textContent=t; }
+    if(cfg.vacio&&(tocado||cfg.vacio.siempre)){
+      var vc=null; try{ vc=typeof cfg.vacio.cont==='function'?cfg.vacio.cont():cfg.vacio.cont; }catch(e){}
+      if(vc){ var n=-1; try{ n=cfg.vacio.cuenta(); }catch(e){} mensajeVacio(vc,n===0,(n===0&&act)?limpiar:null,cfg.vacio.dentro); }
+    }
+  }
+  function tocar(){ tocado=true; setTimeout(sync,0); }
+  cont.addEventListener('click',tocar);
+  (cfg.entradas||[]).forEach(function(i){ var el=typeof i==='function'?i():i; if(el){ el.addEventListener('input',tocar); el.addEventListener('change',tocar); } });
+  if(cfg.observar){ var ob=typeof cfg.observar==='function'?cfg.observar():cfg.observar; if(ob){ var mo=new MutationObserver(function(){ setTimeout(sync,0); }); mo.observe(ob,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style','hidden']}); } }
+  sync();
+  cont.__pvFiltro={sync:sync,limpiar:limpiar};
+  return cont.__pvFiltro;
+}
+function primerBoton(cont,sel){ return cont?cont.querySelector(sel):null; }
+function nVisibles(sel,oculto){ return [].filter.call(document.querySelectorAll(sel),function(e){ return oculto?!oculto(e):visible(e); }).length; }
+function registrarFiltros(){
+  var sec, cont, inp;
+  /* semáforo de metas */
+  if((cont=$('semFilterRow'))) grupoFiltro({cont:cont,botones:'.sem-f-btn',label:'Filtrar metas por estado',
+    estado:function(){ var all=document.querySelectorAll('#semaforoGrid .meta-card').length; if(!all) return null; var vis=document.querySelectorAll('#semaforoGrid .meta-card:not(.sem-hidden)').length; return (vis===all?all:vis+' de '+all)+(all===1?' meta':' metas'); },
+    activo:function(){ var a=cont.querySelector('.sem-f-btn.active'); return !!(a&&a!==cont.querySelector('.sem-f-btn')); },
+    limpiar:function(){ var b=cont.querySelector('.sem-f-btn'); if(b&&typeof filterSemaforo==='function') filterSemaforo('all',b); },
+    observar:function(){ return $('semaforoGrid'); },
+    vacio:{cont:function(){ return $('semaforoGrid'); },cuenta:function(){ var all=document.querySelectorAll('#semaforoGrid .meta-card').length; return all?document.querySelectorAll('#semaforoGrid .meta-card:not(.sem-hidden)').length:-1; }}});
+  /* comisiones de trabajo */
+  if((cont=document.querySelector('#comisiones .com-filters'))) grupoFiltro({cont:cont,botones:'.com-f-btn',label:'Filtrar sesiones por fecha',
+    estado:function(){ var n=document.querySelectorAll('#com-timeline .com-item').length; var tot=(typeof COMISIONES!=='undefined'&&COMISIONES.length)||0; var a=cont.querySelector('.com-f-btn.active'); if(!tot||(!n&&(!a||a===cont.querySelector('.com-f-btn')))) return null; return (n===tot?n:n+' de '+tot)+(tot===1?' sesión':' sesiones'); },
+    activo:function(){ var a=cont.querySelector('.com-f-btn.active'); return !!(a&&a!==cont.querySelector('.com-f-btn')); },
+    limpiar:function(){ var b=cont.querySelector('.com-f-btn'); if(b&&typeof filterCom==='function') filterCom(b,'all'); },
+    vacio:{cont:function(){ return $('com-timeline'); },cuenta:function(){ return document.querySelectorAll('#com-timeline .com-item').length; }}});
+  /* FODA comunal */
+  if((cont=document.querySelector('#foda .foda-controls'))) grupoFiltro({cont:cont,botones:'.fbtn',label:'Filtrar el FODA por tipo',entradas:[function(){ return $('fodaSearch'); }],
+    estado:function(){ var tot=document.querySelectorAll('#foda .foda-card li').length; if(!tot) return null; var n=0; [].forEach.call(document.querySelectorAll('#foda .foda-card'),function(c){ if(c.style.display==='none') return; n+=[].filter.call(c.querySelectorAll('li'),function(l){ return l.style.display!=='none'; }).length; }); return (n===tot?n:n+' de '+tot)+(tot===1?' elemento':' elementos'); },
+    activo:function(){ var q=$('fodaSearch'); var a=cont.querySelector('.fbtn.active'); return !!((q&&q.value.trim())||(a&&a!==cont.querySelector('.fbtn'))); },
+    limpiar:function(){ var q=$('fodaSearch'); if(q) q.value=''; var b=cont.querySelector('.fbtn'); if(b&&typeof filterFODAType==='function') filterFODAType(b,'all'); else if(typeof filterFODA==='function') filterFODA(); },
+    focoAlLimpiar:function(){ return $('fodaSearch'); },
+    vacio:{cont:function(){ return document.querySelector('#foda .foda-grid'); },cuenta:function(){ var n=0; [].forEach.call(document.querySelectorAll('#foda .foda-card'),function(c){ if(c.style.display==='none') return; n+=[].filter.call(c.querySelectorAll('li'),function(l){ return l.style.display!=='none'; }).length; }); return n; }}});
+  /* gobernanza: tipo de nodo y tipo de relación (la red se atenúa, no se vacía) */
+  var gobTipo=document.querySelector('#sna-gobernanza .gob-chip:not(.gob-edge-chip)'), gobEdge=document.querySelector('#sna-gobernanza .gob-edge-chip');
+  if(gobTipo&&gobEdge){
+    var cT=gobTipo.parentElement, cE=gobEdge.parentElement;
+    [cT,cE].forEach(function(c){ var l=c.querySelector('span'); if(l){ l.id=l.id||('gobRotulo-'+(++nId)); c.setAttribute('aria-labelledby',l.id); } });
+    var estGob=document.createElement('p'); estGob.className='pv-filtro-estado'; estGob.style.margin='0 0 14px';
+    cE.parentNode.insertBefore(estGob,cE.nextSibling);
+    var textoGob=function(){ var a=cT.querySelector('.gob-chip.active'), b=cE.querySelector('.gob-chip.active'); return 'Mostrando: '+(a?a.textContent.replace(/\s+/g,' ').trim():'Todos')+' · '+(b?b.textContent.replace(/\s+/g,' ').trim():'Todas las relaciones'); };
+    var activoGob=function(){ var a=cT.querySelector('.gob-chip.active'), b=cE.querySelector('.gob-chip.active'); return !!((a&&a!==cT.querySelector('.gob-chip'))||(b&&b!==cE.querySelector('.gob-chip'))); };
+    var limpiarGob=function(){ var a=cT.querySelector('.gob-chip'), b=cE.querySelector('.gob-chip'); if(typeof filterGobTipo==='function'&&a) filterGobTipo(a,'ALL'); if(typeof filterGobEdge==='function'&&b) filterGobEdge(b,'ALL'); };
+    var gT=grupoFiltro({cont:cT,botones:'.gob-chip',estadoEn:estGob,estado:textoGob,activo:activoGob,limpiar:limpiarGob,limpiarDonde:function(){ return estGob; }});
+    var gE=grupoFiltro({cont:cE,botones:'.gob-chip',estado:null,activo:activoGob});
+    cT.addEventListener('click',function(){ setTimeout(function(){ gE&&gE.sync(); },0); });
+    cE.addEventListener('click',function(){ setTimeout(function(){ gT&&gT.sync(); },0); });
+  }
+  /* 21 unidades vecinales */
+  if((inp=$('uvSearchInput'))&&(cont=inp.parentElement)) grupoFiltro({cont:cont,botones:'[data-uvf]',label:'Buscar y filtrar localidades',entradas:[inp],
+    estado:function(){ var tot=(typeof UV_DATA!=='undefined'&&UV_DATA.length)||0; var n=document.querySelectorAll('#uv-tbody tr').length; if(!tot||(!n&&!inp.value&&!cont.querySelector('[data-uvf].active:not([data-uvf="all"])'))) return null; return (n===tot?n:n+' de '+tot)+(tot===1?' localidad':' localidades'); },
+    activo:function(){ var a=cont.querySelector('[data-uvf].active'); return !!(inp.value.trim()||(a&&a.dataset.uvf!=='all')); },
+    limpiar:function(){ inp.value=''; if(typeof filterUVTipo==='function') filterUVTipo('all'); else if(typeof filterUVTable==='function') filterUVTable(); },
+    focoAlLimpiar:function(){ return inp; },
+    vacio:{cont:function(){ return document.querySelector('#territorio .uv-table-wrap'); },cuenta:function(){ return document.querySelectorAll('#uv-tbody tr').length; }}});
+  /* red institucional (SNA) · temáticas */
+  if((cont=$('snaInstThemes'))) grupoFiltro({cont:cont,botones:'.sna-theme-chip',label:'Filtrar la red por temática',estadoEn:function(){ return $('snaInstFilterStats'); },
+    estado:null,activo:function(){ var a=cont.querySelector('.sna-theme-chip.active'); return !!(a&&a.dataset.theme!=='all'); },
+    limpiar:function(){ var b=cont.querySelector('.sna-theme-chip[data-theme="all"]'); if(b&&typeof filterSNAInst==='function') filterSNAInst('all',b); }});
+  /* citas representativas */
+  if((cont=$('citasFilters'))) grupoFiltro({cont:cont,botones:'.cita-fchip',label:'Filtrar citas por dimensión',entradas:[function(){ return $('citasSearch'); }],
+    estado:function(){ var all=document.querySelectorAll('#citasGrid > .viz-card'); if(!all.length) return null; var n=[].filter.call(all,function(c){ return c.style.display!=='none'; }).length; return (n===all.length?n:n+' de '+all.length)+(all.length===1?' cita':' citas'); },
+    activo:function(){ var q=$('citasSearch'); var a=cont.querySelector('.cita-fchip.active'); return !!((q&&q.value.trim())||(a&&a.dataset.cat!=='all')); },
+    limpiar:function(){ var q=$('citasSearch'); if(q) q.value=''; var b=cont.querySelector('.cita-fchip[data-cat="all"]'); if(b&&typeof filtrarCitasCat==='function') filtrarCitasCat('all',b); else if(typeof filtrarCitas==='function') filtrarCitas(); },
+    focoAlLimpiar:function(){ return $('citasSearch'); },
+    estadoDonde:cont.parentElement,
+    vacio:{cont:function(){ return $('citasGrid'); },cuenta:function(){ var all=document.querySelectorAll('#citasGrid > .viz-card'); return all.length?[].filter.call(all,function(c){ return c.style.display!=='none'; }).length:-1; }}});
+  /* siniestros · años (el conteo ya existía: pasa a región viva) */
+  if((cont=$('svYearBtns'))) grupoFiltro({cont:cont,botones:'.sv-ybtn',estadoEn:function(){ var c=$('svCount'); return c?c.parentElement:null; },estado:null,
+    activo:function(){ var a=cont.querySelector('.sv-ybtn.active'); return !!(a&&a.dataset.y!=='ALL'); },
+    limpiar:function(){ var b=cont.querySelector('.sv-ybtn[data-y="ALL"]'); if(b) b.click(); }});
+  /* datos abiertos · categorías */
+  if((cont=$('daFilters'))) grupoFiltro({cont:cont,botones:'.da-fbtn',label:'Filtrar conjuntos de datos por categoría',
+    estado:function(){ var all=document.querySelectorAll('#dsGrid .ds-card'); if(!all.length) return null; var n=document.querySelectorAll('#dsGrid .ds-card:not(.ds-hidden)').length; return (n===all.length?n:n+' de '+all.length)+(all.length===1?' conjunto de datos':' conjuntos de datos'); },
+    activo:function(){ var a=cont.querySelector('.da-fbtn.active'); return !!(a&&a.dataset.f!=='ALL'); },
+    limpiar:function(){ var b=cont.querySelector('.da-fbtn[data-f="ALL"]'); if(b) b.click(); },
+    estadoDonde:cont.parentElement,observar:cont});
+  /* Carta Gantt · proceso */
+  if((cont=$('cgFilterRow'))) grupoFiltro({cont:cont,botones:'.cg-f-btn',label:'Filtrar por proceso',
+    estado:function(){ var a=cont.querySelector('.cg-f-btn.active'); return a?'Mostrando: '+a.textContent.replace(/\s+/g,' ').trim():null; },
+    activo:function(){ var a=cont.querySelector('.cg-f-btn.active'); return !!(a&&a.dataset.filter!=='all'); },
+    limpiar:function(){ var b=cont.querySelector('.cg-f-btn[data-filter="all"]'); if(b&&typeof cgFilter==='function') cgFilter('all',b); }});
+  /* comparador de instrumentos */
+  if((cont=document.querySelector('.ci-toolbar'))) grupoFiltro({cont:cont,botones:'.ci-chip',esActivo:function(b){ return b.getAttribute('aria-pressed')==='true'; },estadoEn:function(){ return $('ciCount'); },estado:null,entradas:[function(){ return $('ciBuscar'); }],
+    activo:function(){ var q=$('ciBuscar'); var a=cont.querySelector('.ci-chip[aria-pressed="true"]'); return !!((q&&q.value.trim())||(a&&a.dataset.dim!=='0')); },
+    limpiar:function(){ var q=$('ciBuscar'); if(q){ q.value=''; q.dispatchEvent(new Event('input',{bubbles:true})); } var b=cont.querySelector('.ci-chip[data-dim="0"]'); if(b) b.click(); },
+    focoAlLimpiar:function(){ return $('ciBuscar'); },
+    vacio:{cont:function(){ return document.querySelector('.ci-wrap'); },cuenta:function(){ return document.querySelectorAll('#ciMatriz tbody tr:not(.ci-dim-row):not(.ci-obs-row)').length; }}});
+  /* SUBDERE y BIP (toolbars que se pintan al abrir su sección) */
+  [{tb:'.is-toolbar',chip:'.is-chip',attr:'data-est',buscar:'isBuscar',sel:['isProg','isAnio'],wrap:'.is-wrap',body:'isBody'},
+   {tb:'.bip-toolbar',chip:'.bip-chip',attr:'data-eta',buscar:'bipBuscar',sel:['bipSector','bipAnio'],wrap:'.bip-wrap',body:'bipBody'}].forEach(function(d){
+    var tb=document.querySelector(d.tb); if(!tb||tb.__pvFiltro) return;
+    grupoFiltro({cont:tb,botones:d.chip,esActivo:function(b){ return b.getAttribute('aria-pressed')==='true'; },estado:null,
+      entradas:[function(){ return $(d.buscar); }].concat(d.sel.map(function(s){ return function(){ return $(s); }; })),
+      activo:function(){ var q=$(d.buscar); var a=tb.querySelector(d.chip+'[aria-pressed="true"]'); var sels=d.sel.some(function(s){ var e=$(s); return e&&e.value; }); return !!((q&&q.value.trim())||sels||(a&&a.getAttribute(d.attr))); },
+      limpiar:function(){ var q=$(d.buscar); if(q){ q.value=''; q.dispatchEvent(new Event('input',{bubbles:true})); } d.sel.forEach(function(s){ var e=$(s); if(e&&e.value){ e.value=''; e.dispatchEvent(new Event('change',{bubbles:true})); } }); var b=tb.querySelector(d.chip+'['+d.attr+'=""]'); if(b) b.click(); },
+      focoAlLimpiar:function(){ return $(d.buscar); },
+      vacio:{cont:function(){ return tb.parentElement?tb.parentElement.querySelector(d.wrap):null; },cuenta:function(){ var b=$(d.body); return b?b.querySelectorAll('tr').length:-1; }}});
+  });
+  /* POA: los grupos de fichas se rotulan con su propio rótulo y conservan el foco al volver a pintarse */
+  var poaF=$('poaFilters');
+  if(poaF&&!poaF.__pvPoa){
+    poaF.__pvPoa=true;
+    var decorarPoa=function(){
+      [].forEach.call(poaF.querySelectorAll('.poa-fgroup'),function(g){
+        var l=g.querySelector('.poa-fgroup-lbl'); if(l){ l.id=l.id||('poaRotulo-'+(++nId)); g.setAttribute('role','group'); g.setAttribute('aria-labelledby',l.id); }
+        [].forEach.call(g.querySelectorAll('.poa-chip'),function(b){ var on=b.classList.contains('active'); if(b.getAttribute('aria-pressed')!==(on?'true':'false')) b.setAttribute('aria-pressed',on?'true':'false'); });
+      });
+      var c=$('poaCount'); if(c&&!c.getAttribute('role')){ c.setAttribute('role','status'); c.setAttribute('aria-live','polite'); }
+    };
+    var poaClic=null;
+    poaF.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('.poa-chip'); poaClic=b?{g:b.getAttribute('data-g'),v:b.getAttribute('data-v')}:null; },true);
+    poaF.addEventListener('click',function(){ var c=poaClic; poaClic=null; decorarPoa(); if(c){ var nb=poaF.querySelector('.poa-chip[data-g="'+c.g+'"][data-v="'+c.v+'"]'); if(nb&&document.activeElement!==nb) enfocar(nb); } });
+    new MutationObserver(function(){ setTimeout(decorarPoa,0); }).observe(poaF,{childList:true});
+    decorarPoa();
+    grupoFiltro({cont:poaF,label:'Filtros del Plan Operativo Anual',estado:null,
+      activo:function(){ var act=[].some.call(poaF.querySelectorAll('.poa-chip.active'),function(b){ var v=b.getAttribute('data-v'); return v!=='0'&&v!==''; }); var r=$('poaResp'), f=$('poaFin'), q=$('poaQ'); return !!(act||(r&&r.value)||(f&&f.value)||(q&&q.value.trim())); },
+      limpiar:function(){ if(typeof window.__poaReset==='function') window.__poaReset(); },
+      focoAlLimpiar:function(){ return $('poaQ'); },
+      limpiarDonde:function(){ return poaF; },
+      entradas:[function(){ return $('poaQ'); },function(){ return $('poaResp'); },function(){ return $('poaFin'); }],
+      observar:poaF});
+  }
+  /* catastro ICT: tarjetas de estado y zonas son botones (eran <div onclick>), con teclado y estado; el resumen es región viva */
+  sec=$('ict-espacios-publicos');
+  if(sec&&!sec.__pvIct){
+    sec.__pvIct=true;
+    var decorarIct=function(){
+      [].forEach.call(sec.querySelectorAll('.ict-scard, .ict-zona-btn'),function(c){
+        if(c.getAttribute('role')!=='button') c.setAttribute('role','button');
+        if(!c.hasAttribute('tabindex')) c.setAttribute('tabindex','0');
+        var on=c.classList.contains('active'); if(c.getAttribute('aria-pressed')!==(on?'true':'false')) c.setAttribute('aria-pressed',on?'true':'false');
+      });
+      var g=sec.querySelector('.ict-sgrid'); if(g&&!g.getAttribute('role')){ g.setAttribute('role','group'); g.setAttribute('aria-label','Filtrar espacios por estado'); }
+      var z=$('ictZonaStrip'); if(z&&!z.getAttribute('role')){ z.setAttribute('role','group'); z.setAttribute('aria-label','Filtrar espacios por zona'); }
+      var t=$('ictInsText'); if(t&&!t.getAttribute('role')){ t.setAttribute('role','status'); t.setAttribute('aria-live','polite'); }
+      var rc=$('ictRcount'); if(rc&&!rc.getAttribute('role')){ rc.setAttribute('role','status'); rc.setAttribute('aria-live','polite'); }
+    };
+    sec.addEventListener('keydown',function(e){
+      if(e.key!=='Enter'&&e.key!==' ') return;
+      var b=e.target&&e.target.closest?e.target.closest('.ict-scard[role="button"], .ict-zona-btn[role="button"]'):null;
+      if(b){ e.preventDefault(); b.click(); }
+    });
+    if(typeof window.ictRenderZonaStrip==='function'){
+      var _zona=window.ictRenderZonaStrip;
+      window.ictRenderZonaStrip=function(){
+        var a=document.activeElement, z=(a&&a.classList&&a.classList.contains('ict-zona-btn'))?a.dataset.zona:null;
+        var r=_zona.apply(this,arguments);
+        decorarIct();
+        if(z){ var nb=sec.querySelector('.ict-zona-btn[data-zona="'+z+'"]'); if(nb) enfocar(nb); }
+        return r;
+      };
+    }
+    if(typeof window.ictRenderStatCards==='function'){
+      var _stat=window.ictRenderStatCards;
+      window.ictRenderStatCards=function(){ var r=_stat.apply(this,arguments); decorarIct(); return r; };
+    }
+    decorarIct();
+    new MutationObserver(function(){ setTimeout(decorarIct,0); }).observe(sec,{childList:true,subtree:true});
+  }
+}
+registrarFiltros();
+document.addEventListener('pv:vista',function(){ setTimeout(registrarFiltros,0); setTimeout(registrarFiltros,900); });
+
+/* ───────────────────────── 4 · AVISO EMERGENTE COMÚN ───────────────────────── */
+var tip=document.createElement('div'); tip.id='pvTooltip'; tip.className='pv-tooltip'; tip.setAttribute('role','tooltip'); tip.hidden=true;
+document.body.appendChild(tip);
+var tipAncla=null;
+function tipColocar(ancla,pos){
+  var tw=tip.offsetWidth, th=tip.offsetHeight, left=8, top=8;
+  if(pos){ left=pos.x+12; top=pos.y+12; if(left+tw>innerWidth-8) left=pos.x-tw-12; if(top+th>innerHeight-8) top=pos.y-th-12; }
+  else if(ancla&&ancla.getBoundingClientRect){ var r=ancla.getBoundingClientRect(); left=Math.max(8,Math.min(innerWidth-tw-8,r.left)); top=r.bottom+6; if(top+th>innerHeight-8) top=r.top-th-6; }
+  tip.style.left=Math.max(8,left)+'px'; tip.style.top=Math.max(8,top)+'px';
+}
+function tipMostrar(ancla,html,pos){
+  tip.innerHTML=html; tip.hidden=false;
+  if(tipAncla&&tipAncla!==ancla&&tipAncla.removeAttribute) tipAncla.removeAttribute('aria-describedby');
+  tipAncla=ancla||null;
+  if(ancla&&ancla.setAttribute) ancla.setAttribute('aria-describedby','pvTooltip');
+  tipColocar(ancla,pos);
+}
+function tipMover(pos){ if(!tip.hidden) tipColocar(null,pos); }
+function tipOcultar(){ tip.hidden=true; if(tipAncla&&tipAncla.removeAttribute) tipAncla.removeAttribute('aria-describedby'); tipAncla=null; }
+window.__pvTooltip={mostrar:tipMostrar,mover:tipMover,ocultar:tipOcultar,el:tip};
+function anclaDe(e){
+  var t=e.target; if(!t||!t.closest) return null;
+  var a=t.closest('[data-tooltip]'); if(a) return {el:a,html:esc(a.getAttribute('data-tooltip'))};
+  var c=t.closest('.coh-matriz-cell'); if(c){ var d=c.querySelector('.coh-tip'); if(d) return {el:c,html:d.innerHTML}; }
+  return null;
+}
+document.addEventListener('mouseover',function(e){ var a=anclaDe(e); if(a) tipMostrar(a.el,a.html); });
+document.addEventListener('mouseout',function(e){ var a=anclaDe(e); if(a&&tipAncla===a.el){ var to=e.relatedTarget; if(!to||!a.el.contains(to)) tipOcultar(); } });
+document.addEventListener('focusin',function(e){ var a=anclaDe(e); if(a) tipMostrar(a.el,a.html); });
+document.addEventListener('focusout',function(e){ var a=anclaDe(e); if(a&&tipAncla===a.el) tipOcultar(); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!tip.hidden) tipOcultar(); });
+window.addEventListener('scroll',function(){ if(tipAncla) tipOcultar(); },{passive:true});
+function enfocableTooltips(raiz){ [].forEach.call((raiz||document).querySelectorAll('[data-tooltip]'),function(el){ if(!el.hasAttribute('tabindex')) el.setAttribute('tabindex','0'); }); }
+enfocableTooltips();
+document.addEventListener('pv:vista',function(){ enfocableTooltips(); });
+
+/* ───────────────────────── 5 · RESTOS ───────────────────────── */
+/* favoritos: el botón declara su estado y su nombre cambia al marcar */
+function decorarFavoritos(){
+  [].forEach.call(document.querySelectorAll('.fav-toggle'),function(b){
+    var on=b.classList.contains('is-fav');
+    var nombre=on?'Quitar de Mi PLADECO':'Agregar a Mi PLADECO';
+    if(b.getAttribute('aria-pressed')!==(on?'true':'false')) b.setAttribute('aria-pressed',on?'true':'false');
+    if(b.getAttribute('aria-label')!==nombre) b.setAttribute('aria-label',nombre);
+    if(b.title!==nombre) b.title=nombre;
+  });
+}
+decorarFavoritos();
+document.addEventListener('pv:vista',function(){ setTimeout(decorarFavoritos,0); });
+document.addEventListener('click',function(e){ if(e.target&&e.target.closest&&e.target.closest('.fav-toggle')) setTimeout(decorarFavoritos,0); });
+})();
+</script>
 </body>
 </html>
