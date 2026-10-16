@@ -47632,5 +47632,174 @@ body.dark .pl-pata-compartida{stroke:#cbd5e1}
 })();
 </script>
 
+<!-- ═════════════════════════════════════════════════════════════════
+     v45.365 · [mapas-2] · CAPAS OFICIALES DEL INE (Censo 2017) EN LOS MAPAS (autorizado por el encargado, 15-10-2026)
+     DATOS: carpeta ine-censo-2017/ (ver su LEEME.md): distritos censales (11 polígonos, códigos 611501-611511),
+     entidades rurales (116, con código y nombre de localidad censal), aldeas (12) y caseríos (28) de Rengo, descargados
+     del portal de datos abiertos del INE (licencia de uso público, CC BY-SA 4.0; atribución en cada mapa).
+     QUÉ PASABA (cotejo del 15-10-2026 con esos polígonos): los 11 «distritos» del mapa de bienestar SON los 11 distritos
+     censales del INE (sus poblaciones coinciden una a una con el Censo 2017: 2.269, 4.992, 432, 33.917, 983, 1.791,
+     1.937, 4.854, 1.980, 2.693 y 2.766 habitantes), pero sus puntos estaban escritos a mano con 3 decimales y 9 de los 11
+     caían FUERA de su propio distrito (el casco urbano, con 33.917 habitantes, estaba dibujado dentro del distrito 2);
+     los mapas de localidades no tenían ningún límite de referencia y 11 de los 24 puntos de localidad caen fuera de la
+     localidad censal homónima.
+     QUÉ HACE: (1) bienestar territorial: dibuja los 11 distritos como polígonos coloreados con la misma clase y color del
+     círculo de cada distrito (coropleta), con la misma ventana, y mueve el círculo de cada distrito al centro geométrico
+     de su polígono oficial (la posición anterior queda registrada en window.discrepanciasDatos); (2) censo, territorios
+     prioritarios y Explora tu territorio: capas conmutables, encendidas al abrir, con las localidades censales (entidades
+     rurales agrupadas por localidad) y los asentamientos (aldeas y caseríos) del INE, detrás de los datos del portal;
+     (3) atribución del INE en esos mapas y líneas de precisión actualizadas en las fichas. Las coordenadas de las
+     localidades del portal NO se mueven (decisión del encargado): las capas permiten verlas junto al límite oficial.
+     VERIFICADO: ver el commit. ═════════════════════════════════════════════════════════════════ -->
+<style id="capas-ine-css">
+.pl-ine-localidad{stroke:#17324D;stroke-width:.9;stroke-opacity:.45;fill:#17324D;fill-opacity:.06}
+.pl-ine-asentamiento{stroke:#7A5406;stroke-width:.9;stroke-opacity:.8;fill:#A66B16;fill-opacity:.3}
+.pl-ine-distrito{stroke:#ffffff;stroke-width:1.4;stroke-opacity:.9}
+body.dark .pl-ine-localidad{stroke:#a9c6e8;fill:#a9c6e8;fill-opacity:.08}
+body.dark .pl-ine-asentamiento{stroke:#f2c27b;fill:#d9a24a;fill-opacity:.3}
+body.dark .pl-ine-distrito{stroke:#0b1624}
+.pl-ine-ctl{background:var(--card,#fff);border:1px solid var(--border,#D8E0E5);border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.15);padding:6px;display:flex;flex-direction:column;gap:4px}
+.pl-ine-ctl button{font:inherit;font-size:11.5px;font-weight:600;line-height:1.2;text-align:left;color:var(--text,#27343B);background:var(--card,#fff);border:1px solid var(--border,#D8E0E5);border-radius:5px;padding:6px 8px;cursor:pointer;display:flex;align-items:center;gap:7px;min-height:30px}
+.pl-ine-ctl button[aria-pressed="true"]{border-color:#17324D;box-shadow:inset 0 0 0 1px #17324D}
+.pl-ine-ctl button:focus-visible{outline:3px solid #2563eb;outline-offset:1px}
+.pl-ine-ctl .pl-ine-sw{display:inline-block;width:14px;height:11px;border-radius:2px;flex:none}
+.pl-ine-ctl .pl-ine-sw.loc{background:rgba(23,50,77,.12);border:1.5px solid rgba(23,50,77,.6)}
+.pl-ine-ctl .pl-ine-sw.asent{background:rgba(166,107,22,.35);border:1.5px solid #7A5406}
+.pl-ine-ctl .pl-ine-fuente{font-size:10px;color:var(--text2,#526170);padding:0 2px}
+body.dark .pl-ine-ctl{background:#1a2332;border-color:#334155}
+body.dark .pl-ine-ctl button{background:#1a2332;color:#e2e8f0;border-color:#334155}
+body.dark .pl-ine-ctl button[aria-pressed="true"]{border-color:#a9c6e8;box-shadow:inset 0 0 0 1px #a9c6e8}
+body.dark .pl-ine-ctl .pl-ine-fuente{color:#cbd5e1}
+@media (hover:none) and (pointer:coarse){ .pl-ine-ctl button{min-height:44px} }
+@media (max-width:768px){ .pl-ine-ctl{padding:4px} .pl-ine-ctl button{font-size:11px;padding:5px 7px} }
+</style>
+<script>
+(function(){
+  'use strict';
+  var RUTA='ine-censo-2017/';
+  var ATRIB='Cartografía censal &copy; <a href="https://www.ine.gob.cl/herramientas/portal-de-mapas/geodatos-abiertos" target="_blank" rel="noopener">INE</a> 2017';
+  var cache={};
+  function capa(n){ if(!cache[n]) cache[n]=fetch(RUTA+n+'_rengo_2017.geojson').then(function(r){ return r.ok?r.json():null; }).catch(function(){ return null; }); return cache[n]; }
+  function cont(m){ try{ return m.getContainer(); }catch(e){ return null; } }
+  function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function atribuir(m){ try{ if(!m.__plIneAtrib && m.attributionControl){ m.attributionControl.addAttribution(ATRIB); m.__plIneAtrib=true; } }catch(e){} }
+  /* centro geométrico (ponderado por área) de un polígono o multipolígono GeoJSON: [lat, lng] */
+  function centroide(g){
+    var polys=g.type==='Polygon'?[g.coordinates]:(g.type==='MultiPolygon'?g.coordinates:[]); var A=0,X=0,Y=0;
+    polys.forEach(function(p){ var r=p[0], a=0,cx=0,cy=0; for(var i=0,j=r.length-1;i<r.length;j=i++){ var f=r[j][0]*r[i][1]-r[i][0]*r[j][1]; a+=f; cx+=(r[j][0]+r[i][0])*f; cy+=(r[j][1]+r[i][1])*f; } a/=2; if(!a) return; A+=Math.abs(a); X+=cx/(6*a)*Math.abs(a); Y+=cy/(6*a)*Math.abs(a); });
+    return A?[Y/A, X/A]:null;
+  }
+  function pedir(r){ try{ if(window.__ordenarRotulos) window.__ordenarRotulos(r); }catch(e){} }
+
+  /* ── 1 · bienestar territorial: coropleta de distritos y círculos en su centro oficial ─────────── */
+  function distritosMBHT(m){
+    var c=cont(m); if(!c || c.id!=='mbhtMap') return;
+    capa('distritos').then(function(gj){
+      if(!gj || !window.L) return;
+      if(!m.__plDistritos){
+        m.__plDistritos=L.geoJSON(gj,{style:function(){ return {className:'pl-ine-distrito', fillColor:'#9aa8b5', fillOpacity:.45, weight:1.4, color:'#fff'}; }}).addTo(m);
+        try{ m.__plDistritos.bringToBack(); }catch(e){}
+        try{ if(m.__plCapaLimite) m.__plCapaLimite.bringToBack(); }catch(e){}
+        atribuir(m);
+        var ley=c.querySelector('.mbht-leyenda'); if(ley && !ley.querySelector('.pl-ine-nota')){ var n=document.createElement('div'); n.className='lg-nota pl-ine-nota'; n.textContent='Límites de distrito censal: INE, Censo 2017. El círculo va en el centro geométrico de cada distrito.'; ley.appendChild(n); }
+      }
+      sincronizarMBHT(m);
+    });
+  }
+  function sincronizarMBHT(m){
+    var D=window.MBHT_DISTRITOS; if(!D || !m.__plDistritos) return;
+    /* la leyenda se vuelve a escribir en cada cambio de dimensión: la nota se repone si falta */
+    try{ var cc=cont(m), ley=cc&&cc.querySelector('.mbht-leyenda'); if(ley && !ley.querySelector('.pl-ine-nota')){ var n=document.createElement('div'); n.className='lg-nota pl-ine-nota'; n.textContent='Límites de distrito censal: INE, Censo 2017. El círculo va en el centro geométrico de cada distrito.'; ley.appendChild(n); } }catch(e){}
+    var poli={}; m.__plDistritos.eachLayer(function(l){ var p=l.feature&&l.feature.properties||{}; poli[+p.COD_DISTRI]=l; });
+    var movidos=[];
+    m.eachLayer(function(l){
+      if(!(l instanceof L.CircleMarker) || (l instanceof L.Circle)) return;
+      var d=l.__plDistrito; if(!d){ var ll=l.getLatLng(); d=D.filter(function(x){ return Math.abs(x.lat-ll.lat)<1e-7 && Math.abs(x.lon-ll.lng)<1e-7; })[0]; if(!d) return; l.__plDistrito=d; }
+      var num=+String(d.d).replace(/\D/g,''), pl=poli[num]; if(!pl) return;
+      try{ pl.setStyle({fillColor:l.options.fillColor||'#9aa8b5', fillOpacity:.45}); }catch(e){}
+      try{ var pop=l.getPopup(); if(pop && pop.getContent()){ pl.unbindPopup(); pl.bindPopup(pop.getContent(),{maxWidth:280}); } }catch(e){}
+      var ce=centroide(pl.feature.geometry); if(ce && !l.__plCentrado){ l.__plCentrado=true; l.setLatLng(ce); movidos.push({d:d.d, antes:[d.lat,d.lon], ahora:[+ce[0].toFixed(5), +ce[1].toFixed(5)]}); }
+    });
+    try{ if(window.__mapasComposicion){ window.__mapasComposicion.ordenar(m); } }catch(e){}
+    try{ m.__plDistritos.bringToBack(); if(m.__plCapaLimite) m.__plCapaLimite.bringToBack(); }catch(e){}
+    if(movidos.length) registrarMBHT(movidos);
+  }
+  var _regMBHT=false;
+  function registrarMBHT(mov){
+    if(_regMBHT) return; _regMBHT=true;
+    try{
+      var R=window.discrepanciasDatos; if(!R||!R.push||R.some(function(x){ return x&&x.id==='mbht-distritos-ine-2017'; })) return;
+      R.push({id:'mbht-distritos-ine-2017', tema:'Distritos del MBHT: identidad, población y posición de los símbolos', estado:'por validar',
+        valores:['Los 11 distritos D01-D11 del MBHT coinciden con los 11 distritos censales INE de Rengo (611501-611511): sus poblaciones son las del Censo 2017 (2.269, 4.992, 432, 33.917, 983, 1.791, 1.937, 4.854, 1.980, 2.693 y 2.766 habitantes; suma 58.614), no del Censo 2024 (la sección dice INE 2024 y 63.620 habitantes comunales)',
+                 'Los puntos escritos a mano con 3 decimales caían fuera de su distrito en 9 de 11 casos (cotejo con los polígonos INE del 15-10-2026). Desde v45.365 cada círculo va en el centro geométrico de su polígono oficial: '+mov.map(function(x){ return x.d+' de '+x.antes.join(', ')+' a '+x.ahora.join(', '); }).join('; ')],
+        nota:'Los límites y las poblaciones de los distritos son del Censo 2017 (cartografía censal INE, licencia de uso público). La posición nueva de los símbolos se deriva de la geometría oficial; las cifras del índice no cambian.',
+        resolucion:'Pendiente. Requiere que SECPLAC confirme si el MBHT se calculó sobre manzanas del Censo 2017 o del 2024 y corrija la fuente declarada en la sección.'});
+    }catch(e){}
+  }
+
+  /* ── 2 · localidades censales y asentamientos (censo, territorios prioritarios, Explora) ────────── */
+  var CON_LOCALIDADES={ mapContainer:1, tpMap:1, mapCensoVuln:1 };
+  function capasLocalidades(m){
+    var c=cont(m); if(!c || !CON_LOCALIDADES[c.id] || m.__plIneLoc) return; m.__plIneLoc=true;
+    Promise.all([capa('entidades'), capa('aldeas'), capa('caserios')]).then(function(r){
+      if(!r[0] || !window.L) return;
+      var loc=L.geoJSON(r[0],{interactive:false, style:function(){ return {className:'pl-ine-localidad', weight:.9, color:'#17324D', opacity:.45, fillColor:'#17324D', fillOpacity:.06}; }});
+      var asentF={type:'FeatureCollection',features:[].concat(r[1]?r[1].features:[], r[2]?r[2].features:[])};
+      var asent=L.geoJSON(asentF,{style:function(){ return {className:'pl-ine-asentamiento', weight:.9, color:'#7A5406', opacity:.8, fillColor:'#A66B16', fillOpacity:.3}; },
+        onEachFeature:function(f,l){ var p=f.properties||{}; l.bindTooltip(esc(p.NOM_ENT||'')+' · '+esc(String(p.CATEGORIA||'').toLowerCase())+' · '+esc(p.TOT_PERSON!=null?p.TOT_PERSON.toLocaleString('es-CL')+' hab. (2017)':''),{sticky:true,direction:'top',className:'pl-ine-tip'}); }});
+      loc.addTo(m); asent.addTo(m);
+      try{ loc.bringToBack(); if(m.__plCapaLimite) m.__plCapaLimite.bringToBack(); }catch(e){}
+      try{ if(window.__mapasComposicion){ window.__mapasComposicion.ordenar(m); } }catch(e){}
+      atribuir(m);
+      var Ctl=L.Control.extend({ options:{position:'topright'}, onAdd:function(){
+        var d=L.DomUtil.create('div','pl-ine-ctl'); d.setAttribute('role','group'); d.setAttribute('aria-label','Capas de referencia del INE, Censo 2017');
+        function boton(txt, clase, capaL){ var b=L.DomUtil.create('button','',d); b.type='button'; b.setAttribute('aria-pressed','true'); b.innerHTML='<span class="pl-ine-sw '+clase+'" aria-hidden="true"></span><span>'+txt+'</span>';
+          b.addEventListener('click',function(){ var on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',on?'true':'false'); if(on){ capaL.addTo(m); try{ if(capaL===loc) loc.bringToBack(); if(m.__plCapaLimite) m.__plCapaLimite.bringToBack(); }catch(e){} } else m.removeLayer(capaL); }); return b; }
+        boton('Localidades censales', 'loc', loc); boton('Aldeas y caseríos', 'asent', asent);
+        var f=L.DomUtil.create('div','pl-ine-fuente',d); f.textContent='INE, Censo 2017';
+        L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d); return d; } });
+      m.__plIneCtl=new Ctl(); m.__plIneCtl.addTo(m);
+      pedir(m);
+    });
+  }
+
+  /* ── 3 · fichas: precisión con el cotejo contra los polígonos oficiales ─────────────────────────── */
+  var PRECISION2={
+    mapContainer:' Cotejo con los polígonos oficiales (INE, Censo 2017, capa «Localidades censales» del mapa): los 16 territorios rurales caen en 10 distritos censales distintos; las unidades vecinales son municipales y no tienen equivalente en la cartografía censal.',
+    mapCensoVuln:' Cotejo con los polígonos oficiales (INE, Censo 2017, capas del mapa): 11 de los 24 puntos caen dentro de la localidad censal homónima; 11 caen fuera (Rosario en El Retiro; Los Gomeros en Camarico; Chanqueahue en Popeta; Lo Cartagena en Villa Las Hojas; La Ariana en Lo de Lobo; La Chimba, Chapetón y Rosario Oriente en entidades indeterminadas; Apalta, Camarico y Naicura en zona urbana o sin cobertura rural); Rengo y El Placer no tienen localidad rural homónima. Los puntos no se movieron: la capa permite compararlos.',
+    tpMap:' Los polígonos oficiales de localidad y los asentamientos (INE, Censo 2017) se muestran como capas de referencia; 11 de los 24 puntos caen fuera de su localidad censal homónima (ver el mapa del censo).',
+    mbhtMap:' Desde v45.365 los límites son los polígonos oficiales de los distritos censales (INE, Censo 2017; códigos 611501 a 611511) y cada círculo va en el centro geométrico de su polígono; antes, 9 de los 11 puntos escritos a mano caían fuera de su propio distrito. Las poblaciones por distrito coinciden con el Censo 2017, no con el 2024 (registrado para validación).'
+  };
+  function fichas(){
+    var M=window.mapasMetadata; if(!M || M.nodeType) return;
+    Object.keys(PRECISION2).forEach(function(id){ if(M[id] && M[id].precision && M[id].precision.indexOf('INE, Censo 2017')<0) M[id].precision+=PRECISION2[id]; if(M[id] && M[id].fuente && M[id].fuente.indexOf('cartografía censal')<0) M[id].fuente+=' · Límites: INE, Censo 2017, cartografía censal (uso público)'; });
+    Object.keys(PRECISION2).forEach(function(id){
+      try{ var ficha=document.querySelector('.map-meta[data-mm="'+id+'"]'); if(!ficha) return;
+        [].forEach.call(ficha.querySelectorAll('.mm-row'), function(f){ var b=f.querySelector('b'); if(!b) return; if(/^Precisi/.test(b.textContent) && f.textContent.indexOf('INE, Censo 2017')<0) f.appendChild(document.createTextNode(PRECISION2[id])); if(/^Fuente/.test(b.textContent) && f.textContent.indexOf('cartografía censal')<0){ var bc=f.querySelector('b:nth-of-type(2)'); if(bc) f.insertBefore(document.createTextNode('Límites: INE, Censo 2017, cartografía censal (uso público) · '), bc); else f.appendChild(document.createTextNode(' · Límites: INE, Censo 2017, cartografía censal (uso público)')); } });
+      }catch(e){}
+    });
+    try{
+      var R=window.discrepanciasDatos; if(!R||!R.push||R.some(function(x){ return x&&x.id==='localidades-ine-2017'; })) return;
+      R.push({id:'localidades-ine-2017', tema:'Puntos de localidad frente a los polígonos oficiales de localidad censal', estado:'por validar',
+        valores:['Portal: 24 puntos de localidad (CENSO_LOCALIDADES_GEO)','INE, Censo 2017 (entidades rurales por localidad): 11 puntos dentro de su localidad homónima, 11 fuera (Rosario, Los Gomeros, Chanqueahue, Lo Cartagena, La Ariana, La Chimba, Chapetón, Rosario Oriente, Apalta, Camarico y Naicura) y 2 sin localidad rural homónima (Rengo, El Placer)'],
+        nota:'Parte de los casos son esperables (Rosario y Apalta son áreas urbanas, que no forman entidades rurales); otros indican un punto en otro sector (Camarico y Chapetón en zona urbana de Rengo; Los Gomeros dentro de Camarico). No se movió ningún punto.',
+        resolucion:'Pendiente. Requiere que SECPLAC valide o reemplace los puntos con los centroides oficiales de las localidades censales del Censo 2024.'});
+    }catch(e){}
+  }
+
+  /* ── enganche ───────────────────────────────────────────────────────────────────────────────── */
+  function instalar(m){
+    if(!m || m.__plIne || typeof L==='undefined') return; m.__plIne=true;
+    setTimeout(function(){ distritosMBHT(m); capasLocalidades(m); }, 400);
+    var t=null; m.on('layeradd', function(ev){ if(ev && ev.layer instanceof L.CircleMarker && cont(m) && cont(m).id==='mbhtMap'){ clearTimeout(t); t=setTimeout(function(){ sincronizarMBHT(m); }, 200); } });
+  }
+  var original=window.__pladecoMapEnhance;
+  window.__pladecoMapEnhance=function(m){ if(typeof original==='function'){ try{ original(m); }catch(e){} } instalar(m); };
+  try{ (window.__leafletMaps||[]).forEach(instalar); }catch(e){}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fichas, {once:true}); else fichas();
+  window.addEventListener('load', function(){ setTimeout(fichas, 50); }, {once:true});
+})();
+</script>
+
 </body>
 </html>
